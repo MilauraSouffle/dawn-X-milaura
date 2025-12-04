@@ -1,86 +1,87 @@
 {% style %}
   /* --- TYPO & BASE --- */
-  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700&family=Playfair+Display:wght@600&display=swap');
 
-  /* Le Conteneur Flottant (Invisible, sert juste à positionner) */
+  /* Le Conteneur Flottant */
   #MilauraNav-{{ section.id }} {
     position: fixed;
-    top: 20px;
+    top: 50px; /* Descendu pour laisser la place à la barre d'annonce */
     left: 0;
     width: 100%;
-    z-index: 9999; /* Toujours au-dessus de tout */
+    z-index: 9999;
     display: flex;
     justify-content: center;
-    padding: 0 20px;
-    pointer-events: none; /* Laisse cliquer à côté */
+    padding: 0 40px;
+    pointer-events: none;
+    transition: top 0.3s ease;
   }
 
-  /* --- LE SNAKE CONTAINER (La Bordure Animée) --- */
+  /* Si on scrolle, on pourrait le remonter un peu via JS, mais restons simple pour l'instant */
+
+  /* --- LE SNAKE CONTAINER --- */
   #MilauraNav-{{ section.id }} .nav-snake-wrapper {
     position: relative;
-    padding: 2px; /* Épaisseur du Snake */
-    border-radius: 50px;
+    padding: 1.5px; /* Bordure fine et élégante */
+    border-radius: 100px;
     overflow: hidden;
-    pointer-events: auto; /* Réactive les clics sur le menu */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    /* Animation d'entrée */
-    animation: slideDown 0.8s ease-out;
+    pointer-events: auto;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08); /* Ombre portée douce */
+    animation: slideDown 1s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  /* L'Animation du Snake (Le moteur rotatif) */
+  /* Le Serpent Doré (Ralenti et adouci) */
   #MilauraNav-{{ section.id }} .nav-snake-wrapper::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
     background: conic-gradient(
-      transparent, 
-      transparent, 
-      transparent, 
-      #D4AF37 /* La Tête du serpent (Doré) */
+      transparent 80%, 
+      rgba(212, 175, 55, 0.8) 100%
     );
-    animation: snakeRotate 4s linear infinite; /* Vitesse du serpent */
-    z-index: 0;
+    animation: snakeRotate 6s linear infinite; /* Plus lent (6s) pour l'élégance */
   }
 
-  /* --- L'INTERIEUR DU MENU (Vision OS) --- */
+  /* --- L'INTERIEUR DU MENU (Vision OS GLASS) --- */
   #MilauraNav-{{ section.id }} .nav-inner {
     position: relative;
     z-index: 1;
-    background: rgba(255, 255, 255, 0.85); /* Blanc laiteux */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border-radius: 48px; /* Un peu moins que le wrapper */
+    /* C'est ICI la magie : Fond quasi transparent + Blur puissant */
+    background: rgba(255, 255, 255, 0.25); 
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    
+    border-radius: 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 30px;
-    gap: 40px;
-    min-width: 600px; /* Largeur mini */
+    
+    /* TAILLE AUGMENTÉE */
+    padding: 12px 50px; /* Plus large sur les côtés */
+    gap: 60px; /* Plus d'espace entre les éléments */
+    min-width: 800px; /* Force une largeur minimale luxueuse */
+    
+    /* Petite bordure intérieure blanche pour l'effet verre */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
   }
 
   /* LOGO */
   #MilauraNav-{{ section.id }} .nav-logo {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #1A1A1A;
     text-decoration: none;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     font-weight: 600;
-  }
-  
-  #MilauraNav-{{ section.id }} .nav-logo img {
-    height: 30px;
-    width: auto;
-    display: block;
+    white-space: nowrap;
   }
 
   /* LIENS DU MENU */
   #MilauraNav-{{ section.id }} .nav-links {
     display: flex;
-    gap: 25px;
+    gap: 40px; /* Espacement aéré entre les liens */
     list-style: none;
     margin: 0;
     padding: 0;
@@ -88,50 +89,66 @@
 
   #MilauraNav-{{ section.id }} .nav-link {
     font-family: 'Lato', sans-serif;
-    font-size: 0.95rem;
-    color: #444;
+    font-size: 0.95rem; /* Texte un peu plus gros */
+    color: #2A2A2A; /* Gris foncé lisible */
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s ease;
     text-transform: uppercase;
-    font-size: 0.8rem;
     letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  /* Petit point doré au survol sous le lien */
+  #MilauraNav-{{ section.id }} .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 50%;
+    background-color: #D4AF37;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-link:hover::after {
+    width: 100%;
   }
 
   #MilauraNav-{{ section.id }} .nav-link:hover {
-    color: #D4AF37; /* Doré au survol */
+    color: #000;
   }
 
-  /* ICONES (Droite) */
+  /* ICONES */
   #MilauraNav-{{ section.id }} .nav-icons {
     display: flex;
-    gap: 20px;
+    gap: 25px;
     align-items: center;
   }
 
   #MilauraNav-{{ section.id }} .nav-icon {
-    color: #1A1A1A;
-    text-decoration: none;
+    color: #333;
     display: flex;
     align-items: center;
-    transition: transform 0.2s ease, color 0.3s ease;
+    transition: transform 0.3s ease;
   }
 
   #MilauraNav-{{ section.id }} .nav-icon:hover {
-    transform: scale(1.1);
-    color: #D4AF37;
+    transform: scale(1.15);
+    color: #000;
   }
 
   #MilauraNav-{{ section.id }} .nav-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 22px; /* Icônes un peu plus grosses */
+    height: 22px;
     fill: none;
     stroke: currentColor;
     stroke-width: 1.5;
   }
 
-  /* ANIMATIONS */
   @keyframes snakeRotate {
+    0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
 
@@ -140,18 +157,17 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
-  /* RESPONSIVE MOBILE (Version simplifiée) */
-  @media screen and (max-width: 768px) {
+  /* RESPONSIVE */
+  @media screen and (max-width: 1024px) {
     #MilauraNav-{{ section.id }} .nav-inner {
       min-width: auto;
-      width: 90vw;
+      width: 95%;
       padding: 10px 20px;
-      gap: 15px;
+      gap: 20px;
     }
     #MilauraNav-{{ section.id }} .nav-links {
-      display: none; /* On cache les liens texte sur mobile pour l'instant */
+      display: none; /* Mobile menu caché pour l'instant */
     }
-    /* On pourrait ajouter un menu burger ici plus tard */
   }
 {% endstyle %}
 
@@ -161,7 +177,7 @@
       
       <a href="/" class="nav-logo">
         {% if section.settings.logo != blank %}
-          {{ section.settings.logo | image_url: height: 60 | image_tag: loading: 'eager' }}
+          {{ section.settings.logo | image_url: height: 80 | image_tag: loading: 'eager' }}
         {% else %}
           Mil'Aura
         {% endif %}
@@ -176,13 +192,13 @@
       </ul>
 
       <div class="nav-icons">
-        <a href="{{ routes.search_url }}" class="nav-icon">
+        <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Recherche">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </a>
-        <a href="{{ routes.account_url }}" class="nav-icon">
+        <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Compte">
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
         </a>
-        <a href="{{ routes.cart_url }}" class="nav-icon">
+        <a href="{{ routes.cart_url }}" class="nav-icon" aria-label="Panier">
           <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
         </a>
       </div>
@@ -193,7 +209,7 @@
 
 {% schema %}
 {
-  "name": "Milaura Nav Vision",
+  "name": "Milaura Nav Vision V2",
   "settings": [
     {
       "type": "image_picker",
@@ -209,7 +225,7 @@
   ],
   "presets": [
     {
-      "name": "Milaura Nav Vision"
+      "name": "Milaura Nav Vision V2"
     }
   ]
 }
