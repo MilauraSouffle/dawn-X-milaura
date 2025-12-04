@@ -1,186 +1,144 @@
 {% style %}
-  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap');
+  /* Import de la police Dancing Script pour le côté 'Manuscrit/Luxe' */
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
 
   #MilauraHero-{{ section.id }} {
     position: relative;
-    min-height: 90vh;
+    width: 100%;
+    min-height: 85vh; /* Hauteur généreuse pour l'immersion */
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background-color: #FDFBF7; /* Fond crème par défaut si pas d'image */
   }
 
-  #MilauraHero-{{ section.id }} .hero-background {
+  /* L'image de fond */
+  #MilauraHero-{{ section.id }} .hero-bg-image {
     position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    {% if section.settings.image != blank %}
-      background-image: url('{{ section.settings.image | image_url: width: 2000 }}');
-    {% endif %}
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1; /* Tout au fond */
   }
 
-  #MilauraHero-{{ section.id }} .hero-background::after {
-    content: '';
+  /* Le voile sombre/doré pour que le texte reste lisible sur l'image */
+  #MilauraHero-{{ section.id }} .hero-overlay {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(var(--color-foreground), 0.2),
-      rgba(var(--color-foreground), 0.1),
-      rgb(var(--color-background))
-    );
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4));
+    z-index: 2;
   }
 
+  /* Le contenu (Carte) */
   #MilauraHero-{{ section.id }} .hero-content {
     position: relative;
-    z-index: 10;
+    z-index: 10; /* Devant tout le monde */
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    text-align: center;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
   }
 
   #MilauraHero-{{ section.id }} .hero-card {
-    max-width: 42rem;
-    margin: 0 auto;
-    background: rgba(212, 175, 55, 0.8);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-radius: 1.5rem;
-    padding: 2rem;
-    animation: fadeIn 0.8s ease-in;
-  }
-
-  @media screen and (min-width: 750px) {
-    #MilauraHero-{{ section.id }} .hero-card {
-      padding: 3rem;
-    }
+    background: rgba(255, 255, 255, 0.15); /* Effet verre plus subtil */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 600px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    animation: fadeInUp 1s ease-out;
   }
 
   #MilauraHero-{{ section.id }} .hero-title {
-    font-family: 'Dancing Script', cursive, serif;
-    font-size: 2.25rem;
-    font-weight: 600;
-    color: rgb(var(--color-background));
-    margin-bottom: 1.5rem;
-    animation: fadeIn 0.8s ease-in 0.2s both;
-  }
-
-  @media screen and (min-width: 750px) {
-    #MilauraHero-{{ section.id }} .hero-title {
-      font-size: 3.75rem;
-    }
+    font-family: 'Dancing Script', cursive !important; /* Force la police */
+    font-size: 3.5rem;
+    line-height: 1.2;
+    color: #FFFFFF;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
 
   #MilauraHero-{{ section.id }} .hero-subtitle {
-    color: rgba(var(--color-background), 0.9);
-    font-size: 1.125rem;
-    font-weight: 300;
-    line-height: 1.75;
+    font-family: 'Playfair Display', serif !important;
+    font-size: 1.2rem;
+    color: #FDFBF7;
     margin-bottom: 2rem;
-    animation: fadeIn 0.8s ease-in 0.4s both;
+    line-height: 1.6;
   }
 
-  @media screen and (min-width: 750px) {
-    #MilauraHero-{{ section.id }} .hero-subtitle {
-      font-size: 1.25rem;
-    }
-  }
-
-  #MilauraHero-{{ section.id }} .hero-button {
-    background-color: rgb(var(--color-background));
-    color: rgb(var(--color-foreground));
-    padding: 1rem 2rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    font-size: 1.125rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
+  #MilauraHero-{{ section.id }} .hero-btn {
     display: inline-block;
-    animation: fadeIn 0.8s ease-in 0.6s both;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   }
 
-  #MilauraHero-{{ section.id }} .hero-button:hover {
-    box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
-    transform: translateY(-4px);
+  #MilauraHero-{{ section.id }} .hero-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    background-color: #FDFBF7;
   }
 
-  #MilauraHero-{{ section.id }} .hero-trust-badge {
-    margin-top: 2rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: rgba(var(--color-background), 0.9);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    animation: fadeIn 0.8s ease-in 0.8s both;
-  }
-
-  #MilauraHero-{{ section.id }} .hero-trust-badge-flag {
-    font-size: 1.5rem;
-  }
-
-  #MilauraHero-{{ section.id }} .hero-trust-badge-text {
-    color: rgba(var(--color-foreground), 0.8);
-    font-size: 0.875rem;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
+  /* Mobile Responsive */
+  @media screen and (max-width: 768px) {
+    #MilauraHero-{{ section.id }} {
+      min-height: 70vh;
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+    #MilauraHero-{{ section.id }} .hero-title {
+      font-size: 2.5rem;
     }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 {% endstyle %}
 
-<section id="MilauraHero-{{ section.id }}" class="milaura-hero">
+<div id="MilauraHero-{{ section.id }}">
   {%- if section.settings.image != blank -%}
-    <div class="hero-background"></div>
+    {{ section.settings.image | image_url: width: 2000 | image_tag: class: 'hero-bg-image', loading: 'eager' }}
+  {%- else -%}
+    {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-bg-image' }}
   {%- endif -%}
+
+  <div class="hero-overlay"></div>
 
   <div class="hero-content">
     <div class="hero-card">
-      {%- if section.settings.title != blank -%}
-        <h1 class="hero-title">
-          {{ section.settings.title }}
-        </h1>
-      {%- endif -%}
-
-      {%- if section.settings.subtitle != blank -%}
-        <div class="hero-subtitle">
-          {{ section.settings.subtitle }}
-        </div>
-      {%- endif -%}
-
-      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
-        <a href="{{ section.settings.button_link }}" class="hero-button">
+      <h1 class="hero-title">{{ section.settings.title }}</h1>
+      <div class="hero-subtitle">{{ section.settings.subtitle }}</div>
+      
+      {% if section.settings.button_link != blank %}
+        <a href="{{ section.settings.button_link }}" class="hero-btn">
           {{ section.settings.button_label }}
         </a>
-      {%- endif -%}
-    </div>
-
-    <div class="hero-trust-badge">
-      <span class="hero-trust-badge-flag">🇫🇷</span>
-      <span class="hero-trust-badge-text"> Pierres certifiées • Préparé avec soin en France </span>
+      {% endif %}
     </div>
   </div>
-</section>
+</div>
 
 {% schema %}
 {
-  "name": "Milaura Hero",
-  "tag": "section",
-  "class": "section",
+  "name": "Milaura Hero V2",
   "settings": [
     {
       "type": "image_picker",
@@ -197,23 +155,23 @@
       "type": "richtext",
       "id": "subtitle",
       "label": "Sous-titre",
-      "default": "<p>Découvrez votre bougie émotionnelle, faites notre quizz émotionnel et laissez-vous guider par la magie Mil'Aura.</p>"
+      "default": "<p>Laissez-vous guider par vos émotions.</p>"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Texte du bouton",
-      "default": "Découvrir ma pierre"
+      "label": "Texte Bouton",
+      "default": "Découvrir"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Lien du bouton"
+      "label": "Lien Bouton"
     }
   ],
   "presets": [
     {
-      "name": "Milaura Hero"
+      "name": "Milaura Hero V2"
     }
   ]
 }
