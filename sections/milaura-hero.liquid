@@ -85,10 +85,20 @@
   }
 
   /* Bouton Blanc sur fond Or */
+  /* D'abord, on définit l'animation du passage lumineux */
+  @keyframes goldenShine {
+    0% { left: -150%; }
+    20% { left: 150%; } /* Passe vite */
+    100% { left: 150%; } /* Attend un peu avant de relancer */
+  }
+
+  /* Le Bouton lui-même */
   #MilauraHero-{{ section.id }} .hero-btn {
+    position: relative; /* Important pour contenir le souffle */
+    overflow: hidden;   /* Pour que le souffle ne dépasse pas du bouton */
     display: inline-block;
     background-color: #FFFFFF;
-    color: #C9A961; /* Texte doré */
+    color: #C9A961;
     font-family: 'Playfair Display', serif;
     font-weight: 700;
     text-transform: uppercase;
@@ -96,9 +106,38 @@
     padding: 16px 48px;
     border-radius: 50px;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transition fluide */
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     border: none;
+    z-index: 1;
+  }
+
+  /* L'effet de GROSSISSEMENT au survol */
+  #MilauraHero-{{ section.id }} .hero-btn:hover {
+    transform: scale(1.05); /* Grossit de 5% */
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3); /* L'ombre dorée s'intensifie */
+    background-color: #FFF;
+    color: #B8964B;
+  }
+
+  /* L'effet de SOUFFLE DORÉ (Le pseudo-élément) */
+  #MilauraHero-{{ section.id }} .hero-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 80%;
+    height: 100%;
+    /* Le dégradé : Transparent -> Doré léger -> Transparent */
+    background: linear-gradient(
+      90deg, 
+      transparent, 
+      rgba(212, 175, 55, 0.4), 
+      transparent
+    );
+    transform: skewX(-20deg); /* On incline le rayon */
+    animation: goldenShine 4s infinite; /* Répétition infinie toutes les 4s */
+    pointer-events: none; /* Ne gêne pas le clic */
   }
 
   #MilauraHero-{{ section.id }} .hero-btn:hover {
