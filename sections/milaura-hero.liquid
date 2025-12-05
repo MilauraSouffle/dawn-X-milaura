@@ -1,20 +1,20 @@
 {% style %}
-  /* --- BASE --- */
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap');
+
   #MilauraHero-{{ section.id }} {
     position: relative;
     width: 100%;
-    /* Hauteur minimale ajustable selon l'écran pour bien voir l'image */
-    min-height: 60vh; 
+    min-height: 85vh;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    /* On aligne verticalement selon le choix de l'utilisateur (voir schema) */
-    align-items: center; 
     overflow: hidden;
     background-color: #FDFBF7;
   }
 
-  /* --- IMAGE --- */
-  #MilauraHero-{{ section.id }} .hero-full-image {
+  /* Image de fond */
+  #MilauraHero-{{ section.id }} .hero-bg-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -24,154 +24,228 @@
     z-index: 1;
   }
 
-  /* --- CONTENEUR DU BOUTON --- */
-  #MilauraHero-{{ section.id }} .hero-overlay-content {
+  /* Overlay sombre léger pour contraste */
+  #MilauraHero-{{ section.id }} .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+    z-index: 2;
+  }
+
+  /* Conteneur principal */
+  #MilauraHero-{{ section.id }} .hero-content {
     position: relative;
     z-index: 10;
     width: 100%;
+    max-width: 1200px;
+    padding: 20px;
     display: flex;
-    justify-content: center;
-    /* Le fameux réglage vertical */
-    margin-top: {{ section.settings.vertical_offset }}%; 
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem; /* Espace entre la carte et le badge */
   }
 
-  /* --- ANIMATION DU SOUFFLE --- */
+  /* LA CARTE GOLD VISION OS */
+  #MilauraHero-{{ section.id }} .hero-card {
+    /* Le dégradé doré EXACT de ta capture */
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.85), rgba(242, 208, 107, 0.85));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    padding: 3.5rem 2rem;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 700px;
+    width: 100%;
+    color: white;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  #MilauraHero-{{ section.id }} .hero-title {
+    font-family: 'Dancing Script', cursive !important;
+    font-size: 3.8rem;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #FFFFFF;
+    margin: 0 0 1.5rem 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  #MilauraHero-{{ section.id }} .hero-subtitle {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* Bouton Blanc sur fond Or */
+  /* D'abord, on définit l'animation du passage lumineux */
   @keyframes goldenShine {
     0% { left: -150%; }
-    20% { left: 150%; }
-    100% { left: 150%; }
+    20% { left: 150%; } /* Passe vite */
+    100% { left: 150%; } /* Attend un peu avant de relancer */
   }
 
-  @keyframes floatButton {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
-  }
-
-  /* --- LE BOUTON MAGIQUE --- */
+  /* Le Bouton lui-même */
   #MilauraHero-{{ section.id }} .hero-btn {
-    position: relative;
-    overflow: hidden;
+    position: relative; /* Important pour contenir le souffle */
+    overflow: hidden;   /* Pour que le souffle ne dépasse pas du bouton */
     display: inline-block;
-    
-    /* STYLE VISION OS / LUXE */
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    
-    /* TEXTE */
-    color: #1A1A1A;
-    font-family: 'Playfair Display', serif; /* Typo Luxe */
+    background-color: #FFFFFF;
+    color: #C9A961;
+    font-family: 'Playfair Display', serif;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 1rem;
-    
-    /* FORME */
-    padding: 18px 50px;
+    letter-spacing: 1px;
+    padding: 16px 48px;
     border-radius: 50px;
     text-decoration: none;
-    border: 1px solid rgba(212, 175, 55, 0.3); /* Bordure dorée fine */
-    
-    /* OMBRE ET ANIMATION DE FLOTTEMENT */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    animation: floatButton 4s ease-in-out infinite;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transition fluide */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: none;
+    z-index: 1;
   }
 
-  /* HOVER EFFECT (Grossissement + Ombre dorée) */
+  /* L'effet de GROSSISSEMENT au survol */
   #MilauraHero-{{ section.id }} .hero-btn:hover {
-    transform: scale(1.05) translateY(-5px);
-    background: #FFFFFF;
-    color: #D4AF37; /* Le texte devient doré */
-    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
-    border-color: #D4AF37;
+    transform: scale(1.05); /* Grossit de 10% */
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3); /* L'ombre dorée s'intensifie */
+    background-color: #FFF;
+    color: #B8964B;
   }
 
-  /* LE SOUFFLE DORÉ (L'éclair qui passe) */
+  /* L'effet de SOUFFLE DORÉ (Le pseudo-élément) */
   #MilauraHero-{{ section.id }} .hero-btn::after {
     content: '';
     position: absolute;
     top: 0;
-    left: -150%;
-    width: 60%;
+    left: -150;
+    width: 80%;
     height: 100%;
+    /* Le dégradé : Transparent -> Doré léger -> Transparent */
     background: linear-gradient(
       90deg, 
       transparent, 
-      rgba(212, 175, 55, 0.6), 
+      rgba(212, 175, 55, 0.4), 
       transparent
     );
-    transform: skewX(-20deg);
-    animation: goldenShine 5s infinite;
-    pointer-events: none;
+    transform: skewX(-20deg); /* On incline le rayon */
+    animation: goldenShine 2s infinite; /* Répétition infinie toutes les 2s */
+    pointer-events: none; /* Ne gêne pas le clic */
   }
 
-  /* Mobile Responsive : Ajuster la hauteur de l'image si besoin */
+  #MilauraHero-{{ section.id }} .hero-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    background-color: #FAFAFA;
+  }
+
+  /* LE BADGE FLOTTANT (En dessous de la carte) */
+  #MilauraHero-{{ section.id }} .hero-trust-badge {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 12px 24px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    animation: fadeInUp 1s ease-out 0.3s both;
+  }
+
+  #MilauraHero-{{ section.id }} .badge-flag {
+    font-size: 1.2rem;
+  }
+
+  #MilauraHero-{{ section.id }} .badge-text {
+    color: #555;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
   @media screen and (max-width: 768px) {
-    #MilauraHero-{{ section.id }} {
-      min-height: 500px;
-    }
+    #MilauraHero-{{ section.id }} .hero-title { font-size: 2.5rem; }
+    #MilauraHero-{{ section.id }} .hero-card { padding: 2rem 1.5rem; margin: 0 1rem; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 {% endstyle %}
 
 <div id="MilauraHero-{{ section.id }}">
-  
   {%- if section.settings.image != blank -%}
-    {{ section.settings.image | image_url: width: 2500 | image_tag: class: 'hero-full-image', loading: 'eager', alt: section.settings.image.alt | escape }}
+    {{ section.settings.image | image_url: width: 2000 | image_tag: class: 'hero-bg-image', loading: 'eager' }}
   {%- else -%}
-    {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-full-image' }}
+    {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-bg-image' }}
   {%- endif -%}
 
-  <div class="hero-overlay-content">
-    {% if section.settings.button_link != blank %}
-      <a href="{{ section.settings.button_link }}" class="hero-btn">
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-card">
+      <h1 class="hero-title">{{ section.settings.title }}</h1>
+      <div class="hero-subtitle">{{ section.settings.subtitle }}</div>
+      
+      <a href="{{ section.settings.button_link | default: '#' }}" class="hero-btn">
         {{ section.settings.button_label }}
       </a>
-    {% endif %}
-  </div>
+    </div>
 
+    <div class="hero-trust-badge">
+      <span class="badge-flag">🇫🇷</span>
+      <span class="badge-text">Pierres certifiées • Préparé avec soin en France</span>
+    </div>
+  </div>
 </div>
 
 {% schema %}
 {
-  "name": "Milaura Hero + CTA",
+  "name": "Milaura Hero V3",
   "settings": [
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image de bannière complète"
+      "label": "Image de fond"
     },
     {
-      "type": "header",
-      "content": "Configuration du Bouton"
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Chaque pierre raconte une histoire"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "<p>Découvrez votre bougie émotionnelle et laissez-vous guider par la magie Mil'Aura.</p>"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Texte du bouton",
-      "default": "DÉCOUVRIR MA PIERRE"
+      "label": "Texte Bouton",
+      "default": "Découvrir ma pierre"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Lien du bouton"
-    },
-    {
-      "type": "range",
-      "id": "vertical_offset",
-      "min": -50,
-      "max": 50,
-      "step": 2,
-      "unit": "%",
-      "label": "Position Verticale du bouton",
-      "default": 10,
-      "info": "Utilisez ce curseur pour placer le bouton pile sous votre texte."
+      "label": "Lien du bouton (OBLIGATOIRE)"
     }
   ],
   "presets": [
     {
-      "name": "Milaura Hero + CTA"
+      "name": "Milaura Hero V3"
     }
   ]
 }
