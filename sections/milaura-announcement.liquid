@@ -1,0 +1,180 @@
+{% style %}
+  /* --- LE CONTENEUR PRINCIPAL (OR) --- */
+  #MilauraAnnouncement-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    height: 44px; /* Hauteur fine et élégante */
+    overflow: hidden;
+    background: linear-gradient(90deg, #D4AF37, #F2D06B, #D4AF37); /* Fond Or Riche */
+    z-index: 50; /* Au-dessus de tout */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  /* --- LE BROUILLARD ARGENTÉ (SHIMMER) --- */
+  #MilauraAnnouncement-{{ section.id }}::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    /* Le voile argenté : Transparent -> Blanc léger -> Transparent */
+    background: linear-gradient(
+      110deg, 
+      transparent 30%, 
+      rgba(255, 255, 255, 0.4) 50%, 
+      transparent 70%
+    );
+    animation: silverFog 3s infinite linear; /* Animation rapide et constante */
+    pointer-events: none;
+    mix-blend-mode: overlay; /* Fusionne joliment avec l'or */
+  }
+
+  /* --- LE TEXTE DÉFILANT (BFM STYLE) --- */
+  .marquee-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .marquee-track {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    animation: scrollText 20s linear infinite; /* Vitesse du défilement */
+    gap: 4rem; /* Espace entre la fin et le début de la boucle */
+    padding-left: 4rem;
+  }
+  
+  /* Pause au survol pour laisser lire */
+  .marquee-container:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .announcement-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #FFFFFF; /* Texte Blanc pour le contraste sur l'or */
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+
+  .announcement-icon {
+    font-size: 1.1rem;
+  }
+
+  /* --- ANIMATIONS --- */
+  @keyframes silverFog {
+    0% { transform: translateX(-150%); }
+    100% { transform: translateX(50%); }
+  }
+
+  @keyframes scrollText {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* On déplace de 50% car on a dupliqué le contenu */
+  }
+
+  /* Mobile : on accélère un peu car l'écran est plus petit */
+  @media screen and (max-width: 768px) {
+    .marquee-track {
+      animation-duration: 15s;
+    }
+    #MilauraAnnouncement-{{ section.id }} {
+      height: 40px;
+    }
+    .announcement-item {
+      font-size: 0.8rem;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraAnnouncement-{{ section.id }}">
+  <div class="marquee-container">
+    <div class="marquee-track">
+      
+      {%- for block in section.blocks -%}
+        <div class="announcement-item">
+          {% if block.settings.icon != blank %}
+            <span class="announcement-icon">{{ block.settings.icon }}</span>
+          {% endif %}
+          <span>{{ block.settings.text }}</span>
+        </div>
+        <div class="announcement-item">•</div> 
+      {%- endfor -%}
+
+      {%- for block in section.blocks -%}
+        <div class="announcement-item">
+          {% if block.settings.icon != blank %}
+            <span class="announcement-icon">{{ block.settings.icon }}</span>
+          {% endif %}
+          <span>{{ block.settings.text }}</span>
+        </div>
+        <div class="announcement-item">•</div>
+      {%- endfor -%}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Milaura Announce Gold",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Message",
+          "default": "Bienvenue chez Mil'Aura"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji/Icône",
+          "default": "✨",
+          "info": "Copiez-collez un emoji ici (ex: 🇫🇷, 💎, 📦)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Announce Gold",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Livraison offerte dès 39 €",
+            "icon": "✨"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Chaque commande préparée avec soin en France",
+            "icon": "🇫🇷"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Pierres certifiées",
+            "icon": "💎"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
