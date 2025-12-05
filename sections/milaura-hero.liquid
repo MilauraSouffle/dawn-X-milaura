@@ -1,29 +1,29 @@
 {% style %}
-  /* --- 1. LE CONTENEUR ET SON MASQUE (L'effet "Insaisissable") --- */
+  /* --- 1. CONTENEUR GLOBAL --- */
   #MilauraHero-{{ section.id }} {
     position: relative;
     width: 100%;
     height: auto;
     display: block;
-    background-color: transparent; /* Laisse voir le fond Beige du site */
-    overflow: visible;
-    
-    /* C'EST ICI LA MAGIE : L'image devient transparente sur les 20 derniers % */
-    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-    
-    padding-bottom: 20px; /* Petit espace de respiration */
+    background-color: transparent; 
+    overflow: visible; 
+    padding-bottom: 0px; 
   }
 
-  /* L'IMAGE */
+  /* --- 2. L'IMAGE (LE GRAND FONDU) --- */
   #MilauraHero-{{ section.id }} .hero-full-image {
     width: 100%;
     height: auto;
     display: block;
     object-fit: cover;
+    
+    /* LE SECRET : Le fondu commence dès le milieu (50%) */
+    /* Le bas de l'image devient totalement invisible pour laisser place au Beige */
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
   }
 
-  /* --- 2. LE BOUTON (Positionnement Stratégique) --- */
+  /* --- 3. LE BOUTON (Position & Lévitation) --- */
   #MilauraHero-{{ section.id }} .hero-overlay-content {
     position: absolute;
     top: 0;
@@ -33,22 +33,25 @@
     z-index: 20;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centre verticalement par défaut */
+    justify-content: center; 
     align-items: center;
+    pointer-events: none; /* Permet de cliquer à travers la zone vide */
   }
 
   #MilauraHero-{{ section.id }} .hero-btn-wrapper {
+    pointer-events: auto; /* Réactive le clic sur le bouton */
+    
     /* REMONTÉE DU BOUTON */
-    /* On le décale vers le haut pour dégager la bougie */
-    transform: translateY(-80px); /* Ajuste cette valeur si tu veux monter/descendre plus */
+    /* On le remonte fortement pour qu'il soit dans la partie visible de l'image */
+    transform: translateY(-90px); 
     margin-top: 20px;
   }
 
-  /* STYLE DU BOUTON (Lingot d'Or) */
+  /* Animation Flottante */
   @keyframes floatButton { 
-    0% { transform: translateY(-80px); } 
-    50% { transform: translateY(-88px); } /* Flotte un peu plus haut */
-    100% { transform: translateY(-80px); } 
+    0% { transform: translateY(-90px); } 
+    50% { transform: translateY(-98px); } 
+    100% { transform: translateY(-90px); } 
   }
   
   @keyframes goldenShine { 0% { left: -150%; } 100% { left: 150%; } }
@@ -56,7 +59,7 @@
   #MilauraHero-{{ section.id }} .hero-btn { 
     position: relative; 
     display: inline-block; 
-    background: rgba(255, 255, 255, 0.9); 
+    background: rgba(255, 255, 255, 0.95); /* Blanc presque pur */
     color: #1A1A1A; 
     font-family: 'Playfair Display', serif; 
     font-weight: 700; 
@@ -66,10 +69,9 @@
     padding: 18px 50px; 
     border-radius: 50px; 
     text-decoration: none; 
-    border: 1px solid rgba(192, 160, 98, 0.4); 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+    border: 1px solid rgba(192, 160, 98, 0.5); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
     
-    /* On applique l'animation de flottaison en prenant en compte le décalage */
     animation: floatButton 4s ease-in-out infinite; 
     backdrop-filter: blur(5px);
   }
@@ -79,9 +81,9 @@
     color: #C0A062; 
     border-color: #C0A062; 
     box-shadow: 0 15px 40px rgba(192, 160, 98, 0.3); 
+    transform: scale(1.02); /* Petit zoom au survol */
   }
   
-  /* L'effet de brillance qui traverse le bouton */
   #MilauraHero-{{ section.id }} .hero-btn::after { 
     content: ''; 
     position: absolute; 
@@ -94,19 +96,26 @@
     animation: goldenShine 5s infinite; 
   }
 
-  /* MOBILE : Ajustements */
+  /* MOBILE */
   @media screen and (max-width: 768px) {
     #MilauraHero-{{ section.id }} .hero-btn {
       padding: 15px 30px;
       font-size: 0.8rem;
     }
+    /* Sur mobile, on remonte un peu moins car l'écran est petit */
     #MilauraHero-{{ section.id }} .hero-btn-wrapper {
-      transform: translateY(-40px); /* Moins haut sur mobile */
+      transform: translateY(-50px); 
     }
     @keyframes floatButton { 
-      0% { transform: translateY(-40px); } 
-      50% { transform: translateY(-46px); } 
-      100% { transform: translateY(-40px); } 
+      0% { transform: translateY(-50px); } 
+      50% { transform: translateY(-56px); } 
+      100% { transform: translateY(-50px); } 
+    }
+    
+    /* Sur mobile, on peut accentuer le fade pour gagner de la place */
+    #MilauraHero-{{ section.id }} .hero-full-image {
+        -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
     }
   }
 {% endstyle %}
@@ -131,7 +140,7 @@
 
 {% schema %}
 {
-  "name": "Milaura Hero Ethereal",
+  "name": "Milaura Hero Fade",
   "settings": [
     {
       "type": "image_picker",
@@ -152,7 +161,7 @@
   ],
   "presets": [
     {
-      "name": "Milaura Hero Ethereal"
+      "name": "Milaura Hero Fade"
     }
   ]
 }
