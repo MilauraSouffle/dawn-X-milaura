@@ -1,198 +1,230 @@
 {% style %}
-  /* --- CONTENEUR DU MENU (Positionnement) --- */
+  /* --- TYPO & BASE --- */
+  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600&display=swap');
+
+  /* Le Conteneur Flottant */
   #MilauraNav-{{ section.id }} {
     position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 95%;
-    max-width: 900px; /* Largeur idéale pour le style pilule */
-    z-index: 1000000; /* Toujours au-dessus */
-    padding: 0 10px;
-  }
-
-  /* --- LA PILULE VISION OS (Le verre) --- */
-  .milaura-nav {
+    top: 40px; /* Un peu plus haut pour équilibrer la taille */
+    left: 0;
+    width: 100%;
+    z-index: 1000000;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 30px;
-    
-    /* FOND VERRE (Glassmorphism) */
-    background: rgba(255, 255, 255, 0.65); /* Blanc laiteux */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    
-    border-radius: 100px; /* Pilule parfaite */
-    border: 1px solid rgba(255, 255, 255, 0.8); /* Bordure fine */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Ombre douce */
-    
-    overflow: hidden; /* Important pour que le voile ne dépasse pas */
-    position: relative;
-    transition: all 0.3s ease;
+    justify-content: center;
+    padding: 0 40px;
+    pointer-events: none;
+    transition: top 0.3s ease;
   }
 
-  /* --- L'ANIMATION "VOILE NOIR" (L'Effet Chic) --- */
-  .milaura-nav::after {
+  /* --- LE SNAKE CONTAINER --- */
+  #MilauraNav-{{ section.id }} .nav-snake-wrapper {
+    position: relative;
+    padding: 2px; /* Bordure un peu plus épaisse */
+    border-radius: 100px;
+    overflow: hidden;
+    pointer-events: auto;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    animation: slideDown 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Le Serpent Doré */
+  #MilauraNav-{{ section.id }} .nav-snake-wrapper::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -150%; /* Départ hors champ */
-    width: 50%; /* Largeur du rayon */
-    height: 100%;
-    
-    /* LE VOILE : Transparent -> Noir très léger -> Transparent */
-    background: linear-gradient(
-      90deg, 
-      transparent, 
-      rgba(0, 0, 0, 0.06), /* L'ombre noire subtile (6% opacité) */
-      transparent
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: conic-gradient(
+      transparent 75%, 
+      rgba(212, 175, 55, 0.9) 100%
     );
+    animation: snakeRotate 5s linear infinite;
+  }
+
+  /* --- L'INTERIEUR DU MENU (Vision OS GLASS) --- */
+  #MilauraNav-{{ section.id }} .nav-inner {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.15); /* Encore plus transparent */
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
     
-    transform: skewX(-25deg); /* Inclinaison élégante */
-    animation: blackVeilPass 6s infinite ease-in-out; /* Passage toutes les 6s */
-    pointer-events: none;
-  }
-
-  @keyframes blackVeilPass {
-    0% { left: -100%; }
-    15% { left: 200%; } /* Passe rapidement */
-    100% { left: 200%; } /* Attend avant de recommencer */
-  }
-
-  /* --- LOGO --- */
-  .nav-logo img {
-    height: 40px;
-    width: auto;
-    display: block;
-  }
-
-  /* --- LIENS --- */
-  .nav-links {
+    border-radius: 100px;
     display: flex;
-    gap: 25px;
+    align-items: center;
+    justify-content: space-between;
+    
+    /* --- TAILLES AUGMENTÉES (VERSION XL) --- */
+    padding: -0px 10px; /* Plus d'espace interne */
+    gap: 0px;
+    min-width: 1000px; /* Barrière très large */
+    
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  }
+
+  /* LOGO IMAGE */
+  #MilauraNav-{{ section.id }} .nav-logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-logo-img {
+    height: 90px; /* Hauteur du logo augmentée */
+    width: auto;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  }
+  
+  /* Fallback texte si pas de logo */
+  #MilauraNav-{{ section.id }} .nav-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #1A1A1A;
+    font-weight: 600;
+  }
+
+  /* LIENS DU MENU */
+  #MilauraNav-{{ section.id }} .nav-links {
+    display: flex;
+    gap: 45px; /* Liens plus espacés */
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .nav-link {
-    text-decoration: none;
-    color: #1A1A1A; /* Noir Encre */
+  #MilauraNav-{{ section.id }} .nav-link {
     font-family: 'Lato', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 1.05rem; /* Texte plus grand (16-17px) */
+    color: #1A1A1A; /* Noir profonds pour contraste max */
+    text-decoration: none;
+    font-weight: 600; /* Plus gras */
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
     position: relative;
-    transition: color 0.3s;
   }
 
-  /* Petit point doré au survol du lien */
-  .nav-link::after {
+  /* Soulignement doré animé */
+  #MilauraNav-{{ section.id }} .nav-link::after {
     content: '';
     position: absolute;
-    bottom: -5px;
-    left: 50%;
     width: 0;
-    height: 2px;
-    background: #C0A062; /* Or */
-    transition: all 0.3s ease;
+    height: 8px; /* Trait plus épais */
+    bottom: -6px;
+    left: 50%;
+    background-color: #D4AF37;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(-50%);
   }
-  
-  .nav-link:hover::after {
+
+  #MilauraNav-{{ section.id }} .nav-link:hover::after {
     width: 100%;
   }
 
-  .nav-link:hover {
-    color: #C0A062;
-  }
-
-  /* --- ICÔNES (Droite) --- */
-  .nav-icons {
+  /* ICONES */
+  #MilauraNav-{{ section.id }} .nav-icons {
     display: flex;
-    gap: 15px;
+    gap: 30px;
     align-items: center;
   }
 
-  .nav-icon {
+  #MilauraNav-{{ section.id }} .nav-icon svg {
+    width: 26px; /* Icônes plus grosses */
+    height: 26px;
     color: #1A1A1A;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease, color 0.3s ease;
   }
-
-  .nav-icon:hover {
-    color: #C0A062;
+  
+  #MilauraNav-{{ section.id }} .nav-icon:hover svg {
+    color: #D4AF37;
     transform: scale(1.1);
   }
 
-  /* --- MOBILE --- */
-  @media screen and (max-width: 900px) {
-    #MilauraNav-{{ section.id }} {
-      top: 10px; /* Plus haut sur mobile */
-      width: 98%;
+  @keyframes snakeRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes slideDown {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* RESPONSIVE TABLETTE/MOBILE */
+  @media screen and (max-width: 1100px) {
+    #MilauraNav-{{ section.id }} .nav-inner {
+      min-width: auto;
+      width: 95%;
+      padding: 12px 30px;
+      gap: 20px;
     }
-    .nav-links { display: none; } /* On cache les liens textes sur mobile */
-    .milaura-nav {
-      justify-content: space-between;
-      padding: 10px 20px;
+    #MilauraNav-{{ section.id }} .nav-links {
+      display: none; /* Menu burger à prévoir plus tard */
+    }
+    #MilauraNav-{{ section.id }} .nav-logo-img {
+      height: 45px;
     }
   }
 {% endstyle %}
 
 <div id="MilauraNav-{{ section.id }}">
-  <div class="milaura-nav">
-    
-    <a href="/" class="nav-logo">
-      {% if section.settings.logo != blank %}
-        {{ section.settings.logo | image_url: width: 200 | image_tag: loading: 'eager' }}
-      {% else %}
-        <span style="font-family: 'Playfair Display'; font-weight:bold; font-size:1.2rem;">Mil'Aura</span>
-      {% endif %}
-    </a>
+  <div class="nav-snake-wrapper">
+    <div class="nav-inner">
+      
+      <a href="/" class="nav-logo-link">
+        {% if section.settings.logo != blank %}
+          {{ section.settings.logo | image_url: height: 120 | image_tag: class: 'nav-logo-img', loading: 'eager' }}
+        {% else %}
+          <span class="nav-logo-text">Mil'Aura</span>
+        {% endif %}
+      </a>
 
-    <ul class="nav-links">
-      {% for link in section.settings.menu.links %}
-        <li><a href="{{ link.url }}" class="nav-link">{{ link.title }}</a></li>
-      {% endfor %}
-    </ul>
+      <ul class="nav-links">
+        {%- for link in linklists[section.settings.menu].links -%}
+          <li>
+            <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
 
-    <div class="nav-icons">
-      <a href="{{ routes.search_url }}" class="nav-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      </a>
-      <a href="{{ routes.account_url }}" class="nav-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      </a>
-      <a href="{{ routes.cart_url }}" class="nav-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-      </a>
+      <div class="nav-icons">
+        <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Recherche">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </a>
+        <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Compte">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </a>
+        <a href="{{ routes.cart_url }}" class="nav-icon" aria-label="Panier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        </a>
+      </div>
+
     </div>
-
   </div>
 </div>
 
 {% schema %}
 {
-  "name": "Milaura Nav Pure",
+  "name": "Milaura Nav Vision V3",
   "settings": [
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo"
+      "label": "Logo (PNG Transparent conseillé)"
     },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu",
+      "label": "Menu à afficher",
       "default": "main-menu"
     }
   ],
   "presets": [
     {
-      "name": "Milaura Nav Pure"
+      "name": "Milaura Nav Vision V3"
     }
   ]
 }
