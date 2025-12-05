@@ -1,116 +1,129 @@
 {% style %}
-  /* --- BASE --- */
+  /* --- 1. LE CONTENEUR ET SON MASQUE (L'effet "Insaisissable") --- */
   #MilauraHero-{{ section.id }} {
-    position: relative; /* Sert d'ancre pour le bouton */
+    position: relative;
     width: 100%;
-    height: auto; /* La hauteur s'adapte à l'image */
+    height: auto;
     display: block;
-    overflow: hidden;
-    line-height: 0; /* Supprime les micro-espaces sous l'image */
+    background-color: transparent; /* Laisse voir le fond Beige du site */
+    overflow: visible;
+    
+    /* C'EST ICI LA MAGIE : L'image devient transparente sur les 20 derniers % */
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    
+    padding-bottom: 20px; /* Petit espace de respiration */
   }
 
-  /* --- IMAGE (Moteur principal de la hauteur) --- */
+  /* L'IMAGE */
   #MilauraHero-{{ section.id }} .hero-full-image {
     width: 100%;
-    height: auto; /* Garde les proportions exactes */
+    height: auto;
     display: block;
+    object-fit: cover;
   }
 
-  /* --- CALQUE DU BOUTON (Flotte par dessus) --- */
+  /* --- 2. LE BOUTON (Positionnement Stratégique) --- */
   #MilauraHero-{{ section.id }} .hero-overlay-content {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10;
-    
-    /* Flexbox pour centrer le bouton */
+    z-index: 20;
     display: flex;
-    justify-content: center;
-    align-items: center; /* Centre verticalement par défaut */
-  }
-
-  /* --- LE BOUTON + ANIMATIONS --- */
-  @keyframes goldenShine {
-    0% { left: -150%; }
-    20% { left: 150%; }
-    100% { left: 150%; }
-  }
-
-  @keyframes floatButton {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
+    flex-direction: column;
+    justify-content: center; /* Centre verticalement par défaut */
+    align-items: center;
   }
 
   #MilauraHero-{{ section.id }} .hero-btn-wrapper {
-    /* Le wrapper permet de déplacer le bouton avec le curseur sans casser le flexbox */
-    transform: translateY({{ section.settings.vertical_offset }}%);
+    /* REMONTÉE DU BOUTON */
+    /* On le décale vers le haut pour dégager la bougie */
+    transform: translateY(-80px); /* Ajuste cette valeur si tu veux monter/descendre plus */
+    margin-top: 20px;
   }
 
-  #MilauraHero-{{ section.id }} .hero-btn {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: #1A1A1A;
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 1rem;
-    padding: 18px 50px;
-    border-radius: 50px;
-    text-decoration: none;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    animation: floatButton 4s ease-in-out infinite;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    line-height: normal; /* Restaure la ligne de texte pour le bouton */
+  /* STYLE DU BOUTON (Lingot d'Or) */
+  @keyframes floatButton { 
+    0% { transform: translateY(-80px); } 
+    50% { transform: translateY(-88px); } /* Flotte un peu plus haut */
+    100% { transform: translateY(-80px); } 
+  }
+  
+  @keyframes goldenShine { 0% { left: -150%; } 100% { left: 150%; } }
+
+  #MilauraHero-{{ section.id }} .hero-btn { 
+    position: relative; 
+    display: inline-block; 
+    background: rgba(255, 255, 255, 0.9); 
+    color: #1A1A1A; 
+    font-family: 'Playfair Display', serif; 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+    font-size: 0.9rem; 
+    padding: 18px 50px; 
+    border-radius: 50px; 
+    text-decoration: none; 
+    border: 1px solid rgba(192, 160, 98, 0.4); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+    
+    /* On applique l'animation de flottaison en prenant en compte le décalage */
+    animation: floatButton 4s ease-in-out infinite; 
+    backdrop-filter: blur(5px);
   }
 
-  #MilauraHero-{{ section.id }} .hero-btn:hover {
-    transform: scale(1.05);
-    background: #FFFFFF;
-    color: #D4AF37;
-    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
-    border-color: #D4AF37;
+  #MilauraHero-{{ section.id }} .hero-btn:hover { 
+    background: #FFFFFF; 
+    color: #C0A062; 
+    border-color: #C0A062; 
+    box-shadow: 0 15px 40px rgba(192, 160, 98, 0.3); 
+  }
+  
+  /* L'effet de brillance qui traverse le bouton */
+  #MilauraHero-{{ section.id }} .hero-btn::after { 
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: -150%; 
+    width: 50%; 
+    height: 100%; 
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent); 
+    transform: skewX(-20deg); 
+    animation: goldenShine 5s infinite; 
   }
 
-  #MilauraHero-{{ section.id }} .hero-btn::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent);
-    transform: skewX(-20deg);
-    animation: goldenShine 5s infinite;
-    pointer-events: none;
+  /* MOBILE : Ajustements */
+  @media screen and (max-width: 768px) {
+    #MilauraHero-{{ section.id }} .hero-btn {
+      padding: 15px 30px;
+      font-size: 0.8rem;
+    }
+    #MilauraHero-{{ section.id }} .hero-btn-wrapper {
+      transform: translateY(-40px); /* Moins haut sur mobile */
+    }
+    @keyframes floatButton { 
+      0% { transform: translateY(-40px); } 
+      50% { transform: translateY(-46px); } 
+      100% { transform: translateY(-40px); } 
+    }
   }
-
-  /* Mobile : L'image reste en auto, donc elle sera petite. C'est normal si on veut tout voir. */
 {% endstyle %}
 
 <div id="MilauraHero-{{ section.id }}">
   
   {%- if section.settings.image != blank -%}
-    {{ section.settings.image | image_url: width: 2500 | image_tag: class: 'hero-full-image', loading: 'eager', alt: section.settings.image.alt | escape }}
+    {{ section.settings.image | image_url: width: 2500 | image_tag: class: 'hero-full-image', loading: 'eager' }}
   {%- else -%}
     {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-full-image' }}
   {%- endif -%}
 
   <div class="hero-overlay-content">
     <div class="hero-btn-wrapper">
-      {% if section.settings.button_link != blank %}
-        <a href="{{ section.settings.button_link }}" class="hero-btn">
-          {{ section.settings.button_label }}
-        </a>
-      {% endif %}
+      <a href="{{ section.settings.button_link | default: '#' }}" class="hero-btn">
+        {{ section.settings.button_label }}
+      </a>
     </div>
   </div>
 
@@ -118,43 +131,28 @@
 
 {% schema %}
 {
-  "name": "Milaura Hero V5 (Full)",
+  "name": "Milaura Hero Ethereal",
   "settings": [
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image de bannière (Format complet)"
-    },
-    {
-      "type": "header",
-      "content": "Bouton"
+      "label": "Image Hero"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Texte",
+      "label": "Texte Bouton",
       "default": "DÉCOUVRIR MA PIERRE"
     },
     {
       "type": "url",
       "id": "button_link",
-      "label": "Lien"
-    },
-    {
-      "type": "range",
-      "id": "vertical_offset",
-      "min": -200,
-      "max": 200,
-      "step": 5,
-      "unit": "%",
-      "label": "Position Verticale (+ bas, - haut)",
-      "default": 30,
-      "info": "Ajuste la hauteur du bouton par rapport au centre."
+      "label": "Lien Bouton"
     }
   ],
   "presets": [
     {
-      "name": "Milaura Hero V5 (Full)"
+      "name": "Milaura Hero Ethereal"
     }
   ]
 }
