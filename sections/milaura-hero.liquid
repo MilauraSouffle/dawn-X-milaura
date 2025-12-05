@@ -1,56 +1,160 @@
 {% style %}
-  /* Le conteneur principal */
+  /* --- BASE --- */
   #MilauraHero-{{ section.id }} {
-    position: relative;
+    position: relative; /* Sert d'ancre pour le bouton */
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: auto; /* La hauteur s'adapte à l'image */
+    display: block;
     overflow: hidden;
-    background-color: #FDFBF7; /* Couleur de fond de secours */
-    padding: 0;
-    margin: 0;
+    line-height: 0; /* Supprime les micro-espaces sous l'image */
   }
 
-  /* L'image elle-même */
+  /* --- IMAGE (Moteur principal de la hauteur) --- */
   #MilauraHero-{{ section.id }} .hero-full-image {
     width: 100%;
-    height: auto; /* L'image garde ses proportions naturelles */
+    height: auto; /* Garde les proportions exactes */
     display: block;
-    object-fit: cover;
   }
 
-  /* Ajustement pour mobile si besoin, pour éviter que l'image soit trop petite */
-  @media screen and (max-width: 768px) {
-    #MilauraHero-{{ section.id }} .hero-full-image {
-      min-height: 400px; /* Force une hauteur minimale sur mobile */
-      object-fit: cover; /* Recadre l'image pour remplir la zone */
-      object-position: center;
-    }
+  /* --- CALQUE DU BOUTON (Flotte par dessus) --- */
+  #MilauraHero-{{ section.id }} .hero-overlay-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    
+    /* Flexbox pour centrer le bouton */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centre verticalement par défaut */
   }
+
+  /* --- LE BOUTON + ANIMATIONS --- */
+  @keyframes goldenShine {
+    0% { left: -150%; }
+    20% { left: 150%; }
+    100% { left: 150%; }
+  }
+
+  @keyframes floatButton {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+  }
+
+  #MilauraHero-{{ section.id }} .hero-btn-wrapper {
+    /* Le wrapper permet de déplacer le bouton avec le curseur sans casser le flexbox */
+    transform: translateY({{ section.settings.vertical_offset }}%);
+  }
+
+  #MilauraHero-{{ section.id }} .hero-btn {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #1A1A1A;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1rem;
+    padding: 18px 50px;
+    border-radius: 50px;
+    text-decoration: none;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    animation: floatButton 4s ease-in-out infinite;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    line-height: normal; /* Restaure la ligne de texte pour le bouton */
+  }
+
+  #MilauraHero-{{ section.id }} .hero-btn:hover {
+    transform: scale(1.05);
+    background: #FFFFFF;
+    color: #D4AF37;
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+    border-color: #D4AF37;
+  }
+
+  #MilauraHero-{{ section.id }} .hero-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent);
+    transform: skewX(-20deg);
+    animation: goldenShine 5s infinite;
+    pointer-events: none;
+  }
+
+  /* Mobile : L'image reste en auto, donc elle sera petite. C'est normal si on veut tout voir. */
 {% endstyle %}
 
 <div id="MilauraHero-{{ section.id }}">
+  
   {%- if section.settings.image != blank -%}
-    {{ section.settings.image | image_url: width: 2000 | image_tag: class: 'hero-full-image', loading: 'eager', alt: section.settings.image.alt | escape }}
+    {{ section.settings.image | image_url: width: 2500 | image_tag: class: 'hero-full-image', loading: 'eager', alt: section.settings.image.alt | escape }}
   {%- else -%}
     {{ 'lifestyle-2' | placeholder_svg_tag: 'hero-full-image' }}
   {%- endif -%}
+
+  <div class="hero-overlay-content">
+    <div class="hero-btn-wrapper">
+      {% if section.settings.button_link != blank %}
+        <a href="{{ section.settings.button_link }}" class="hero-btn">
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
 </div>
 
 {% schema %}
 {
-  "name": "Milaura Hero Image",
+  "name": "Milaura Hero V5 (Full)",
   "settings": [
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image de bannière complète"
+      "label": "Image de bannière (Format complet)"
+    },
+    {
+      "type": "header",
+      "content": "Bouton"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texte",
+      "default": "DÉCOUVRIR MA PIERRE"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien"
+    },
+    {
+      "type": "range",
+      "id": "vertical_offset",
+      "min": -200,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "label": "Position Verticale (+ bas, - haut)",
+      "default": 30,
+      "info": "Ajuste la hauteur du bouton par rapport au centre."
     }
   ],
   "presets": [
     {
-      "name": "Milaura Hero Image"
+      "name": "Milaura Hero V5 (Full)"
     }
   ]
 }
