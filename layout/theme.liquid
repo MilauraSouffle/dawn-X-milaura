@@ -297,38 +297,53 @@
       }
     </script>
     <style>
-  /* --- 1. LE FOND GLOBAL (ECRASE TOUT DAWN) --- */
-  body, html, .gradient, main, .page-width {
+  <style>
+  /* --- 1. LE FOND NUCLÉAIRE (ON TUE LES VARIABLES DAWN) --- */
+  :root, body, html, .gradient, main, .page-width, .shopify-section {
+    --gradient-background: transparent !important;
+    --color-background: transparent !important;
+    --color-base-background-1: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
   }
 
-  /* On applique l'image sur le Body uniquement, en mode Fixe (Luxe) */
+  /* On applique l'image sur le Body en mode Fixe */
   body {
-    /* REMPLACE LE LIEN CI-DESSOUS PAR LE TIEN */
     background: url('https://cdn.shopify.com/s/files/1/0977/2806/9979/files/background_MilAura.png?v=1764948037') no-repeat center center fixed !important;
     background-size: cover !important;
-    background-color: #2A1B3D !important; /* Couleur de secours (Violet foncé) si l'image charge mal */
+    background-color: #2A1B3D !important;
+    background-attachment: fixed; /* Assure que le fond ne bouge pas */
   }
 
-  /* --- 2. LE MENU AU DESSUS DE L'UNIVERS (FIX DEFINITIF) --- */
-  /* On cible toutes les sections qui pourraient contenir le menu */
-  [id*="milaura-navbar"], .header-wrapper, header {
-    z-index: 2147483647 !important; /* Valeur max possible en CSS */
+  /* --- 2. LE MENU : FIX DES GROUPES (C'EST ICI LE SECRET) --- */
+  /* On force le groupe d'en-tête entier à être au-dessus de tout */
+  .shopify-section-group-header-group {
+    z-index: 2147483647 !important;
+    position: relative; /* Nécessaire pour le z-index */
+  }
+
+  /* Ton menu spécifique */
+  [id*="milaura-navbar"] {
     position: fixed !important;
-    top: 0;
-    width: 100%;
+    top: 20px; /* Un peu d'air en haut */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%; /* Largeur max */
+    max-width: 1400px;
+    z-index: 2147483647 !important;
   }
 
-  /* --- 3. RENDRE LES SECTIONS TRANSPARENTES --- */
-  /* Pour que ton fond violet se voie à travers les sections */
-  .shopify-section, section {
-    background: transparent !important;
+  /* --- 3. FIX DE LA GRILLE PRODUIT --- */
+  /* On s'assure que les cartes ne passent jamais devant le menu */
+  #MainContent, .shopify-section-group-footer-group {
+    position: relative;
+    z-index: 1; /* Reste en bas */
   }
   
-  /* Sauf le footer si tu le veux opaque, sinon laisse transparent */
+  /* Sauf le footer si on le veut lisible */
   footer {
-    background: rgba(0,0,0,0.5) !important; /* Exemple : footer un peu sombre */
+    background: rgba(42, 27, 61, 0.9) !important; /* Fond sombre pour le pied de page */
+    backdrop-filter: blur(10px);
   }
 </style>
   </head>
