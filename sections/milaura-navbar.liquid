@@ -27,19 +27,23 @@
     animation: slideDown 1s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  /* Le Serpent Doré */
+  /* Voile noir subtil qui traverse de gauche à droite */
   #MilauraNav-{{ section.id }} .nav-snake-wrapper::before {
     content: '';
     position: absolute;
-    top: -100%;
+    top: 0;
     left: -100%;
-    width: 300%;
-    height: 300%;
-    background: conic-gradient(
-      transparent 75%, 
-      rgba(212, 175, 55, 0.9) 100%
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(0, 0, 0, 0.15) 50%,
+      transparent 100%
     );
-    animation: snakeRotate 5s linear infinite;
+    animation: breathSweep 4s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
   }
 
   /* --- L'INTERIEUR DU MENU (Vision OS GLASS) --- */
@@ -49,17 +53,17 @@
     background: rgba(255, 255, 255, 0.15); /* Encore plus transparent */
     backdrop-filter: blur(25px) saturate(180%);
     -webkit-backdrop-filter: blur(25px) saturate(180%);
-    
+
     border-radius: 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
+
     /* --- TAILLES AUGMENTÉES (VERSION XL) --- */
     padding: -0px 10px; /* Plus d'espace interne */
     gap: 0px;
     min-width: 1000px; /* Barrière très large */
-    
+
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
   }
 
@@ -77,7 +81,7 @@
     display: block;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
   }
-  
+
   /* Fallback texte si pas de logo */
   #MilauraNav-{{ section.id }} .nav-logo-text {
     font-family: 'Playfair Display', serif;
@@ -137,15 +141,24 @@
     color: #1A1A1A;
     transition: transform 0.3s ease, color 0.3s ease;
   }
-  
+
   #MilauraNav-{{ section.id }} .nav-icon:hover svg {
     color: #D4AF37;
     transform: scale(1.1);
   }
 
-  @keyframes snakeRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  @keyframes breathSweep {
+    0% {
+      left: -100%;
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      left: 150%;
+      opacity: 0;
+    }
   }
 
   @keyframes slideDown {
@@ -173,7 +186,6 @@
 <div id="MilauraNav-{{ section.id }}">
   <div class="nav-snake-wrapper">
     <div class="nav-inner">
-      
       <a href="/" class="nav-logo-link">
         {% if section.settings.logo != blank %}
           {{ section.settings.logo | image_url: height: 120 | image_tag: class: 'nav-logo-img', loading: 'eager' }}
@@ -192,16 +204,21 @@
 
       <div class="nav-icons">
         <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Recherche">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
         </a>
         <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Compte">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+          </svg>
         </a>
         <a href="{{ routes.cart_url }}" class="nav-icon" aria-label="Panier">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
         </a>
       </div>
-
     </div>
   </div>
 </div>
