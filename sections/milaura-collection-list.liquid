@@ -1,139 +1,137 @@
 {% style %}
-  /* --- GRILLE & LAYOUT --- */
+  /* --- LAYOUT GLOBAL --- */
   #MilauraColl-{{ section.id }} {
-    padding: 60px 20px;
-    background-color: #FDFBF7; /* Fond Crème léger */
+    padding: 80px 20px;
+    /* FOND TRANSPARENT pour laisser passer le background global du site */
+    background: transparent; 
+    position: relative;
+    z-index: 1; /* Reste bas pour que le menu passe au-dessus */
   }
 
+  /* Header de section */
   .section-header-{{ section.id }} {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
   }
 
   .section-title-{{ section.id }} {
     font-family: 'Dancing Script', cursive;
-    font-size: 3rem;
-    color: #C0A062; /* Ton Or Mat */
-    margin-bottom: 10px;
+    font-size: 3.5rem;
+    /* Couleur Or ou Blanc selon ton fond global (ici Or pour contraste) */
+    color: #C0A062; 
+    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
   }
 
   .section-desc-{{ section.id }} {
     font-family: 'Lato', sans-serif;
-    color: #555;
-    font-size: 1rem;
-    max-width: 600px;
+    color: #666; /* Ou blanc cassé si ton fond est très sombre */
+    font-size: 1.1rem;
+    max-width: 700px;
     margin: 0 auto;
+    line-height: 1.6;
   }
 
   /* --- GRID SYSTEM --- */
   .milaura-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colonnes PC */
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
   }
 
-  /* --- LA CARTE CATÉGORIE (PIED DORÉ) --- */
+  /* --- LA CARTE VISION OS (Glassmorphism) --- */
   .cat-card {
     position: relative;
-    border-radius: 20px;
+    border-radius: 24px; /* Arrondi plus doux */
     overflow: hidden;
-    background: #fff;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
+    
+    /* C'EST ICI LA MAGIE VISION OS : */
+    background: rgba(255, 255, 255, 0.6); /* Blanc semi-transparent */
+    backdrop-filter: blur(12px); /* Le flou derrière la carte */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.8); /* Bordure de verre */
+    
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Ombre douce */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-decoration: none;
     display: flex;
     flex-direction: column;
-    height: 350px; /* Hauteur fixe pour régularité */
+    height: 400px; /* Plus haute pour l'élégance */
   }
 
   .cat-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(192, 160, 98, 0.2); /* Ombre dorée */
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(192, 160, 98, 0.25); /* Glow doré */
+    background: rgba(255, 255, 255, 0.8); /* Devient plus opaque au survol */
+    border-color: #C0A062;
   }
 
-  /* L'IMAGE (Partie Haute) */
+  /* ZONE MÉDIA (Image/Vidéo) */
   .cat-image-wrapper {
-    height: 80%; /* 80% de la carte */
+    height: 75%;
     width: 100%;
     overflow: hidden;
+    position: relative;
+    /* Petit masque pour fondre l'image dans la carte */
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
   }
 
-  .cat-image {
+  .cat-media {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.8s ease;
+    display: block;
   }
 
-  .cat-card:hover .cat-image {
-    transform: scale(1.1); /* Zoom doux au survol */
+  .cat-card:hover .cat-media {
+    transform: scale(1.1);
   }
 
-  /* LE PIED DORÉ (Partie Basse) */
+  /* LE PIED (Intégré dans le verre) */
   .cat-footer {
-    height: 20%; /* 20% de la carte */
+    height: 25%;
     width: 100%;
-    background: linear-gradient(90deg, #C0A062, #E6C88B, #C0A062); /* TON OR LUXE */
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center; /* Centré */
-    padding: 0 15px;
+    justify-content: center;
+    padding: 0 20px;
     position: relative;
     z-index: 2;
   }
 
-  /* Petit effet de brillance sur le doré */
-  .cat-footer::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .cat-card:hover .cat-footer::after {
-    opacity: 1;
-  }
-
   .cat-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    color: #FFFFFF; /* Texte Blanc sur fond Or */
+    font-size: 1.4rem;
+    color: #1A1A1A; /* Texte foncé pour lisibilité sur le verre */
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     text-align: center;
+    margin-bottom: 5px;
   }
 
-  .cat-count {
-    display: block;
-    font-size: 0.7rem;
+  .cat-action {
     font-family: 'Lato', sans-serif;
-    color: rgba(255,255,255,0.8);
-    margin-top: 4px;
-    text-transform: none;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #C0A062; /* Doré */
+    font-weight: 700;
+    opacity: 0.8;
   }
 
   /* MOBILE */
-  @media screen and (max-width: 768px) {
-    .milaura-grid {
-      grid-template-columns: 1fr; /* 1 colonne sur mobile */
-      gap: 20px;
-    }
-    .cat-card {
-      height: 250px; /* Moins haut sur mobile */
-    }
+  @media screen and (max-width: 900px) {
+    .milaura-grid { grid-template-columns: 1fr; gap: 20px; }
+    .cat-card { height: 280px; }
+    .section-title-{{ section.id }} { font-size: 2.5rem; }
   }
 {% endstyle %}
 
 <div id="MilauraColl-{{ section.id }}">
-  
   <div class="section-header-{{ section.id }}">
     <h2 class="section-title-{{ section.id }}">{{ section.settings.title }}</h2>
     <p class="section-desc-{{ section.id }}">{{ section.settings.subtitle }}</p>
@@ -144,84 +142,74 @@
       <a href="{{ block.settings.link }}" class="cat-card">
         
         <div class="cat-image-wrapper">
-          {% if block.settings.image != blank %}
-            {{ block.settings.image | image_url: width: 600 | image_tag: class: 'cat-image', loading: 'lazy' }}
+          {% if block.settings.video != blank %}
+            {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'cat-media', playsinline: true }}
+          {% elsif block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 800 | image_tag: class: 'cat-media', loading: 'lazy' }}
           {% else %}
-            {{ 'collection-1' | placeholder_svg_tag: 'cat-image' }}
+            {{ 'collection-1' | placeholder_svg_tag: 'cat-media' }}
           {% endif %}
         </div>
 
         <div class="cat-footer">
-          <div>
-            <div class="cat-title">{{ block.settings.title }}</div>
-            {% if block.settings.show_count %}
-               <span class="cat-count">{{ block.settings.subtext }}</span>
-            {% endif %}
-          </div>
+          <div class="cat-title">{{ block.settings.title }}</div>
+          <div class="cat-action">Découvrir →</div>
         </div>
 
       </a>
     {%- endfor -%}
   </div>
-
 </div>
 
 {% schema %}
 {
-  "name": "Milaura Categories Or",
+  "name": "Milaura Collections Glass",
   "settings": [
     {
       "type": "text",
       "id": "title",
       "label": "Titre Section",
-      "default": "Nos Collections"
+      "default": "Nos Univers"
     },
     {
       "type": "text",
       "id": "subtitle",
       "label": "Sous-titre",
-      "default": "Explorez nos univers et trouvez les créations qui résonnent avec votre âme."
+      "default": "Laissez-vous guider par vos émotions"
     }
   ],
   "blocks": [
     {
       "type": "category",
-      "name": "Catégorie",
+      "name": "Collection",
       "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Vidéo (MP4) - Prioritaire"
+        },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
+          "label": "Image (Si pas de vidéo)"
         },
         {
           "type": "text",
           "id": "title",
           "label": "Titre",
-          "default": "Bijoux Énergétiques"
-        },
-        {
-          "type": "text",
-          "id": "subtext",
-          "label": "Petit texte (ex: 5 articles)",
-          "default": "Découvrir"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_count",
-          "label": "Afficher le sous-texte",
-          "default": true
+          "default": "Bijoux"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Lien Collection"
+          "label": "Lien"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Milaura Categories Or",
+      "name": "Milaura Collections Glass",
       "blocks": [
         {"type": "category"},
         {"type": "category"},
