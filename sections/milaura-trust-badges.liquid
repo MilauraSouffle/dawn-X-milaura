@@ -1,0 +1,183 @@
+{% style %}
+  #MilauraTrust-{{ section.id }} {
+    padding: 60px 20px;
+    background: transparent;
+  }
+
+  .trust-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .trust-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 2rem;
+    color: var(--milaura-gold);
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+
+  .trust-badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .trust-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px 20px;
+    background: #ffffff;
+    border-radius: var(--milaura-border-radius);
+    border: 2px solid transparent;
+    box-shadow: var(--milaura-shadow-sm);
+    transition: all 0.3s ease;
+  }
+
+  .trust-badge:hover {
+    border-color: var(--milaura-gold);
+    transform: translateY(-5px);
+    box-shadow: var(--milaura-shadow-md);
+  }
+
+  .trust-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    line-height: 1;
+  }
+
+  .trust-badge-title {
+    font-family: var(--milaura-font-heading);
+    color: var(--milaura-gold);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .trust-badge-text {
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text-light);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 768px) {
+    .trust-badges-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .trust-title {
+      font-size: 1.5rem;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraTrust-{{ section.id }}">
+  {% if section.settings.title != blank %}
+    <div class="trust-header">
+      <h2 class="trust-title">{{ section.settings.title }}</h2>
+    </div>
+  {% endif %}
+
+  <div class="trust-badges-grid">
+    {%- for block in section.blocks -%}
+      <div class="trust-badge milaura-card" {{ block.shopify_attributes }}>
+        {% if block.settings.icon != blank %}
+          <div class="trust-icon">{{ block.settings.icon }}</div>
+        {% endif %}
+
+        {% if block.settings.title != blank %}
+          <h3 class="trust-badge-title">{{ block.settings.title }}</h3>
+        {% endif %}
+
+        {% if block.settings.text != blank %}
+          <p class="trust-badge-text">{{ block.settings.text }}</p>
+        {% endif %}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Milaura Badges",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre Section (optionnel)",
+      "default": "Pourquoi nous faire confiance ?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji/Icône",
+          "default": "✨",
+          "info": "Copiez-collez un emoji ici (ex: 🚚, 💎, 🇫🇷, 📦)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Livraison offerte"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Livraison gratuite dès 39€ d'achat"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Badges",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "🚚",
+            "title": "Livraison offerte",
+            "text": "Livraison gratuite dès 39€ d'achat en France métropolitaine"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "💎",
+            "title": "Pierres certifiées",
+            "text": "Toutes nos pierres sont authentiques et certifiées"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "🇫🇷",
+            "title": "Fabriqué en France",
+            "text": "Chaque commande préparée avec soin en France"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon": "📦",
+            "title": "Emballage cadeau",
+            "text": "Emballage soigné offert pour toutes vos commandes"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

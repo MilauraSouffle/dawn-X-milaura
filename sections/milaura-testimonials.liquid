@@ -1,0 +1,217 @@
+{% style %}
+  #MilauraTestimonials-{{ section.id }} {
+    padding: 80px 20px;
+    background: transparent;
+  }
+
+  .testimonials-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .testimonials-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 2.5rem;
+    color: var(--milaura-gold);
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+
+  .testimonials-subtitle {
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text-light);
+    font-size: 1rem;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .testimonial-card {
+    background: #ffffff;
+    border-radius: var(--milaura-border-radius);
+    padding: 30px;
+    text-align: center;
+    border: 2px solid transparent;
+    box-shadow: var(--milaura-shadow-sm);
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    border-color: var(--milaura-gold);
+    transform: translateY(-5px);
+    box-shadow: var(--milaura-shadow-md);
+  }
+
+  .testimonial-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    object-fit: cover;
+    border: 3px solid var(--milaura-gold);
+  }
+
+  .testimonial-text {
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    font-family: var(--milaura-font-heading);
+    color: var(--milaura-gold);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .testimonial-rating {
+    color: var(--milaura-gold);
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+    .testimonials-title {
+      font-size: 2rem;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraTestimonials-{{ section.id }}">
+  <div class="testimonials-header">
+    <h2 class="testimonials-title">{{ section.settings.title }}</h2>
+    {% if section.settings.subtitle != blank %}
+      <p class="testimonials-subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+  </div>
+
+  <div class="testimonials-grid">
+    {%- for block in section.blocks -%}
+      <div class="testimonial-card milaura-card" {{ block.shopify_attributes }}>
+        {% if block.settings.avatar != blank %}
+          {{ block.settings.avatar | image_url: width: 160 | image_tag: class: 'testimonial-avatar', loading: 'lazy' }}
+        {% else %}
+          <div class="testimonial-avatar" style="background: var(--milaura-beige-mid);"></div>
+        {% endif %}
+
+        {% if block.settings.rating > 0 %}
+          <div class="testimonial-rating">
+            {% for i in (1..block.settings.rating) %}
+              ★
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if block.settings.text != blank %}
+          <p class="testimonial-text">"{{ block.settings.text }}"</p>
+        {% endif %}
+
+        {% if block.settings.author != blank %}
+          <div class="testimonial-author">{{ block.settings.author }}</div>
+        {% endif %}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Milaura Témoignages",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre Section",
+      "default": "Ce que disent nos clients"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre (optionnel)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Témoignage",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Photo du client"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Nom du client",
+          "default": "Marie D."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Témoignage",
+          "default": "Un produit magnifique qui m'a vraiment aidée. Je recommande !"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Note (étoiles)",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Témoignages",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Sophie M.",
+            "text": "Ma pierre m'accompagne au quotidien. Un vrai coup de cœur !",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Julie L.",
+            "text": "Livraison rapide et emballage soigné. Produit de qualité.",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Camille R.",
+            "text": "Les bougies sont parfaites, l'odeur est divine et apaisante.",
+            "rating": 5
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
