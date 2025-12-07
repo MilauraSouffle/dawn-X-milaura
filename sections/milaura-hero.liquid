@@ -1,65 +1,51 @@
 {% style %}
-  /* --- 1. CONTENEUR GLOBAL --- */
+  /* --- CONTENEUR --- */
   #MilauraHero-{{ section.id }} {
     position: relative;
     width: 100%;
     height: auto;
     display: block;
-    background-color: transparent;
-    overflow: visible;
-    padding-bottom: 0px;
+    overflow: hidden; /* Coupe ce qui dépasse */
+    margin-top: -120px; /* Astuce pour remonter le Hero SOUS le menu transparent */
+    padding-top: 120px; /* Compenstion pour ne pas couper l'image */
   }
 
-  /* --- 2. L'IMAGE (LE GRAND FONDU) --- */
+  /* --- IMAGE AVEC FADE --- */
   #MilauraHero-{{ section.id }} .hero-full-image {
     width: 100%;
     height: auto;
-    display: block;
+    min-height: 600px; /* Hauteur min pour mobile */
     object-fit: cover;
-
-    /* LE SECRET : Le fondu commence dès le milieu (50%) */
-    /* Le bas de l'image devient totalement invisible pour laisser place au Beige */
-    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    display: block;
+    /* Le masque dégradé vers le bas */
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
   }
 
-  /* --- 3. LE BOUTON (Position & Lévitation) --- */
+  /* --- CONTENU (BOUTON) --- */
   #MilauraHero-{{ section.id }} .hero-overlay-content {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 20;
+    z-index: 10; /* Z-index faible pour rester SOUS le menu */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    pointer-events: none; /* Permet de cliquer à travers la zone vide */
+    pointer-events: none;
   }
 
   #MilauraHero-{{ section.id }} .hero-btn-wrapper {
-    pointer-events: auto; /* Réactive le clic sur le bouton */
-
-    /* REMONTÉE DU BOUTON */
-    /* On le remonte fortement pour qu'il soit dans la partie visible de l'image */
-    transform: translateY(-90px);
-    margin-top: 20px;
+    pointer-events: auto;
+    margin-top: 15%; /* On le descend un peu visuellement */
   }
 
-  /* Animation Flottante */
-  @keyframes floatButton {
-    0% { transform: translateY(-90px); }
-    50% { transform: translateY(-98px); }
-    100% { transform: translateY(-90px); }
-  }
-
-  @keyframes goldenShine { 0% { left: -150%; } 100% { left: 150%; } }
-
+  /* --- STYLE BOUTON (Lingot) --- */
   #MilauraHero-{{ section.id }} .hero-btn {
-    position: relative;
     display: inline-block;
-    background: rgba(255, 255, 255, 0.95); /* Blanc presque pur */
+    background: rgba(255, 255, 255, 0.9);
     color: #1A1A1A;
     font-family: 'Playfair Display', serif;
     font-weight: 700;
@@ -71,52 +57,22 @@
     text-decoration: none;
     border: 1px solid rgba(192, 160, 98, 0.5);
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-
-    animation: floatButton 4s ease-in-out infinite;
     backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
   }
 
   #MilauraHero-{{ section.id }} .hero-btn:hover {
     background: #FFFFFF;
     color: #C0A062;
-    border-color: #C0A062;
+    transform: scale(1.05);
     box-shadow: 0 15px 40px rgba(192, 160, 98, 0.3);
-    transform: scale(1.02); /* Petit zoom au survol */
-  }
-
-  #MilauraHero-{{ section.id }} .hero-btn::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
-    transform: skewX(-20deg);
-    animation: goldenShine 5s infinite;
   }
 
   /* MOBILE */
   @media screen and (max-width: 768px) {
-    #MilauraHero-{{ section.id }} .hero-btn {
-      padding: 15px 30px;
-      font-size: 0.8rem;
-    }
-    /* Sur mobile, on remonte un peu moins car l'écran est petit */
-    #MilauraHero-{{ section.id }} .hero-btn-wrapper {
-      transform: translateY(-50px);
-    }
-    @keyframes floatButton {
-      0% { transform: translateY(-50px); }
-      50% { transform: translateY(-56px); }
-      100% { transform: translateY(-50px); }
-    }
-
-    /* Sur mobile, on peut accentuer le fade pour gagner de la place */
-    #MilauraHero-{{ section.id }} .hero-full-image {
-        -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-        mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-    }
+    #MilauraHero-{{ section.id }} { margin-top: -100px; padding-top: 100px; }
+    #MilauraHero-{{ section.id }} .hero-full-image { min-height: 500px; }
+    #MilauraHero-{{ section.id }} .hero-btn { padding: 15px 30px; font-size: 0.8rem; }
   }
 {% endstyle %}
 
@@ -129,7 +85,7 @@
 
   <div class="hero-overlay-content">
     <div class="hero-btn-wrapper">
-      <a href="{{ section.settings.button_link | default: '#' }}" class="hero-btn milaura-btn milaura-btn-primary">
+      <a href="{{ section.settings.button_link | default: '#' }}" class="hero-btn milaura-btn">
         {{ section.settings.button_label }}
       </a>
     </div>
