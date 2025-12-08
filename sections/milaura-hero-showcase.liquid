@@ -79,29 +79,82 @@
     display: flex;
     align-items: center;
     gap: var(--milaura-spacing-md);
-    padding: var(--milaura-spacing-sm) var(--milaura-spacing-md);
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(192, 160, 98, 0.5);
+    padding: var(--milaura-spacing-md) var(--milaura-spacing-lg);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 2px solid rgba(192, 160, 98, 0.3);
     border-radius: var(--milaura-border-radius);
-    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.12);
-    transition: all 0.3s ease;
+    box-shadow:
+      0 8px 25px rgba(192, 160, 98, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-decoration: none;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Effet de brillance au survol */
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card:hover::before {
+    left: 100%;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(192, 160, 98, 0.25);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow:
+      0 20px 50px rgba(192, 160, 98, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+      0 0 30px rgba(192, 160, 98, 0.2);
     border-color: var(--milaura-gold);
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 1);
+  }
+
+  /* Indicateur de clic (flèche) */
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card::after {
+    content: '→';
+    position: absolute;
+    right: var(--milaura-spacing-md);
+    top: 50%;
+    transform: translateY(-50%) translateX(-10px);
+    font-size: 1.5rem;
+    color: var(--milaura-gold);
+    opacity: 0;
+    transition: all 0.3s ease;
+    font-weight: 300;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-icon {
-    font-size: 1.6rem;
+    font-size: 2rem;
     line-height: 1;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card:hover .hero-pillar-icon {
+    transform: scale(1.15) rotate(5deg);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-content {
@@ -110,19 +163,29 @@
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-title {
     font-family: var(--milaura-font-heading);
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--milaura-text);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     display: block;
+    transition: color 0.3s ease;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card:hover .hero-pillar-title {
+    color: var(--milaura-gold);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
     font-family: var(--milaura-font-body);
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--milaura-text-light);
-    line-height: 1.5;
+    line-height: 1.6;
     display: block;
+    transition: color 0.3s ease;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card:hover .hero-pillar-text {
+    color: var(--milaura-text);
   }
 
   /* --- COLONNE DROITE : CARROUSEL --- */
@@ -229,7 +292,11 @@
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card {
-      padding: var(--milaura-spacing-sm) var(--milaura-spacing-md);
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-lg);
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card::after {
+      display: none; /* Masquer la flèche sur mobile */
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-icon {
@@ -273,8 +340,11 @@
     <div class="hero-main-grid">
       <!-- COLONNE GAUCHE : PILIERS -->
       <div class="hero-pillars">
-        {% if section.settings.pillar_1_title != blank and section.settings.pillar_1_link != blank %}
-          <a href="{{ section.settings.pillar_1_link }}" class="hero-pillar-card">
+        {% if section.settings.pillar_1_title != blank %}
+          <a
+            href="{% if section.settings.pillar_1_link != blank %}{{ section.settings.pillar_1_link }}{% else %}#{% endif %}"
+            class="hero-pillar-card"
+          >
             {% if section.settings.pillar_1_icon != blank %}
               <div class="hero-pillar-icon">{{ section.settings.pillar_1_icon }}</div>
             {% endif %}
@@ -287,8 +357,11 @@
           </a>
         {% endif %}
 
-        {% if section.settings.pillar_2_title != blank and section.settings.pillar_2_link != blank %}
-          <a href="{{ section.settings.pillar_2_link }}" class="hero-pillar-card">
+        {% if section.settings.pillar_2_title != blank %}
+          <a
+            href="{% if section.settings.pillar_2_link != blank %}{{ section.settings.pillar_2_link }}{% else %}#{% endif %}"
+            class="hero-pillar-card"
+          >
             {% if section.settings.pillar_2_icon != blank %}
               <div class="hero-pillar-icon">{{ section.settings.pillar_2_icon }}</div>
             {% endif %}
@@ -301,8 +374,11 @@
           </a>
         {% endif %}
 
-        {% if section.settings.pillar_3_title != blank and section.settings.pillar_3_link != blank %}
-          <a href="{{ section.settings.pillar_3_link }}" class="hero-pillar-card">
+        {% if section.settings.pillar_3_title != blank %}
+          <a
+            href="{% if section.settings.pillar_3_link != blank %}{{ section.settings.pillar_3_link }}{% else %}#{% endif %}"
+            class="hero-pillar-card"
+          >
             {% if section.settings.pillar_3_icon != blank %}
               <div class="hero-pillar-icon">{{ section.settings.pillar_3_icon }}</div>
             {% endif %}
