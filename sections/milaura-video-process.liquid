@@ -1,0 +1,305 @@
+{% style %}
+  #MilauraVideoProcess-{{ section.id }} {
+    width: 100%;
+    padding: var(--milaura-spacing-lg) var(--milaura-spacing-sm);
+    background: transparent;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .video-process-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--milaura-spacing-md);
+    align-items: start;
+  }
+
+  /* Colonne gauche : Vidéo */
+  #MilauraVideoProcess-{{ section.id }} .video-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm);
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .video-title {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    line-height: 1.2;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .video-subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--milaura-border-radius);
+    overflow: hidden;
+    background: #f9f9f9;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .video-wrapper video,
+  #MilauraVideoProcess-{{ section.id }} .video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .video-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--milaura-beige-mid);
+    color: var(--milaura-text-light);
+    font-family: var(--milaura-font-body);
+  }
+
+  /* Colonne droite : Produits */
+  #MilauraVideoProcess-{{ section.id }} .products-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm);
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .products-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm);
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .product-item {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .product-item:hover {
+    text-decoration: none;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .product-card {
+    display: flex;
+    gap: var(--milaura-spacing-sm);
+    align-items: center;
+    padding: 15px;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .product-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--milaura-border-radius-sm);
+    flex-shrink: 0;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .product-name {
+    font-family: var(--milaura-font-heading);
+    font-size: 1rem;
+    color: var(--milaura-text);
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .product-price {
+    font-family: var(--milaura-font-body);
+    font-size: 1.1rem;
+    color: var(--milaura-gold);
+    font-weight: 700;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .collection-button {
+    margin-top: var(--milaura-spacing-sm);
+    text-align: center;
+  }
+
+  /* Responsive Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraVideoProcess-{{ section.id }} {
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-sm);
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .video-process-container {
+      grid-template-columns: 1fr;
+      gap: var(--milaura-spacing-md);
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .video-title {
+      font-size: 2rem;
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .product-card {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .product-image {
+      width: 150px;
+      height: 150px;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraVideoProcess-{{ section.id }}">
+  <div class="video-process-container">
+    <!-- Colonne gauche : Vidéo -->
+    <div class="video-column">
+      {% if section.settings.title != blank %}
+        <h2 class="video-title milaura-heading">{{ section.settings.title }}</h2>
+      {% endif %}
+
+      {% if section.settings.subtitle != blank %}
+        <p class="video-subtitle milaura-text">{{ section.settings.subtitle }}</p>
+      {% endif %}
+
+      <div class="video-wrapper">
+        {% if section.settings.video_url != blank %}
+          {% assign video_url = section.settings.video_url %}
+          
+          {% comment %} Détecter si c'est une URL YouTube {% endcomment %}
+          {% if video_url contains 'youtube.com' or video_url contains 'youtu.be' %}
+            {% assign video_id = '' %}
+            {% if video_url contains 'youtube.com/watch?v=' %}
+              {% assign video_id = video_url | split: 'v=' | last | split: '&' | first %}
+            {% elsif video_url contains 'youtu.be/' %}
+              {% assign video_id = video_url | split: 'youtu.be/' | last | split: '?' | first %}
+            {% endif %}
+            
+            {% if video_id != blank %}
+              <iframe 
+                src="https://www.youtube.com/embed/{{ video_id }}?rel=0" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+            {% else %}
+              <div class="video-placeholder">URL YouTube invalide</div>
+            {% endif %}
+          {% elsif video_url contains '.mp4' or video_url contains '.webm' or video_url contains '.ogg' %}
+            {% comment %} Vidéo directe (MP4, WebM, OGG) {% endcomment %}
+            <video controls preload="metadata" loading="lazy">
+              <source src="{{ video_url }}" type="video/mp4">
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+          {% else %}
+            {% comment %} Autre type d'URL, on essaie de l'afficher comme iframe {% endcomment %}
+            <iframe 
+              src="{{ video_url }}" 
+              frameborder="0" 
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          {% endif %}
+        {% else %}
+          <div class="video-placeholder">
+            <p>Aucune vidéo configurée</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Colonne droite : Produits -->
+    <div class="products-column">
+      {% assign selected_collection = collections[section.settings.collection] %}
+      
+      {% if selected_collection != blank and selected_collection.products.size > 0 %}
+        <div class="products-list">
+          {% for product in selected_collection.products limit: 4 %}
+            <a href="{{ product.url }}" class="product-item">
+              <div class="product-card milaura-card">
+                {% if product.featured_image != blank %}
+                  {{ product.featured_image | image_url: width: 200 | image_tag: class: 'product-image', loading: 'lazy', alt: product.title }}
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'product-image' }}
+                {% endif %}
+                
+                <div class="product-info">
+                  <h3 class="product-name">{{ product.title }}</h3>
+                  <div class="product-price">{{ product.price | money }}</div>
+                </div>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+
+        {% if section.settings.button_label != blank %}
+          <div class="collection-button">
+            <a href="{{ selected_collection.url }}" class="milaura-btn milaura-btn-primary">
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="products-list">
+          {% comment %} Placeholders si aucune collection n'est sélectionnée {% endcomment %}
+          {% for i in (1..3) %}
+            <div class="product-card milaura-card">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'product-image' }}
+              <div class="product-info">
+                <h3 class="product-name">Produit Exemple {{ i }}</h3>
+                <div class="product-price">29,90 €</div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Milaura Process Vidéo",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Notre Artisanat"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Découvrez comment nous créons chaque pièce avec passion et attention aux détails."
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "URL de la vidéo",
+      "info": "URL YouTube (youtube.com ou youtu.be) ou URL directe d'une vidéo (MP4, WebM, OGG)"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection de produits"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Label du bouton",
+      "default": "Voir tous les produits du rituel"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Process Vidéo"
+    }
+  ]
+}
+{% endschema %}
+
