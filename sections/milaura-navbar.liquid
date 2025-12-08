@@ -111,15 +111,15 @@
     position: relative;
   }
 
-  /* Soulignement doré animé */
+  /* Soulignement violet élégant animé */
   #MilauraNav-{{ section.id }} .nav-link::after {
     content: '';
     position: absolute;
     width: 0;
-    height: 8px; /* Trait plus épais */
+    height: 2px; /* Trait fin et élégant */
     bottom: -6px;
     left: 50%;
-    background-color: #D4AF37;
+    background-color: #8B5CF6; /* Violet élégant (couleur du logo) */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(-50%);
   }
@@ -166,6 +166,84 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
+  /* MENU BURGER */
+  #MilauraNav-{{ section.id }} .nav-burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 10;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-burger span {
+    width: 25px;
+    height: 2px;
+    background-color: #1A1A1A;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+  }
+
+  /* MENU MOBILE DÉROULANT */
+  #MilauraNav-{{ section.id }} .nav-mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 999999;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 100px 40px 40px;
+    overflow-y: auto;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-menu.active {
+    transform: translateX(0);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-link {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.5rem;
+    color: #1A1A1A;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: color 0.3s ease;
+    display: block;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-link:hover {
+    color: #8B5CF6;
+  }
+
   /* RESPONSIVE TABLETTE/MOBILE */
   @media screen and (max-width: 1100px) {
     #MilauraNav-{{ section.id }} .nav-inner {
@@ -175,7 +253,10 @@
       gap: 20px;
     }
     #MilauraNav-{{ section.id }} .nav-links {
-      display: none; /* Menu burger à prévoir plus tard */
+      display: none;
+    }
+    #MilauraNav-{{ section.id }} .nav-burger {
+      display: flex;
     }
     #MilauraNav-{{ section.id }} .nav-logo-img {
       height: 45px;
@@ -186,7 +267,7 @@
 <div id="MilauraNav-{{ section.id }}">
   <div class="nav-snake-wrapper">
     <div class="nav-inner milaura-glass">
-      <a href="/" class="nav-logo-link">
+      <a href="{{ routes.root_url }}" class="nav-logo-link">
         {% if section.settings.logo != blank %}
           {{ section.settings.logo | image_url: height: 120 | image_tag: class: 'nav-logo-img', loading: 'eager' }}
         {% else %}
@@ -196,11 +277,20 @@
 
       <ul class="nav-links">
         {%- for link in linklists[section.settings.menu].links -%}
-          <li>
-            <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
-          </li>
+          {%- unless link.title == 'ACCUEIL' or link.title == 'Accueil' or link.title == 'accueil' -%}
+            <li>
+              <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
+            </li>
+          {%- endunless -%}
         {%- endfor -%}
       </ul>
+
+      <!-- Menu Burger -->
+      <button class="nav-burger" aria-label="Menu" id="burger-{{ section.id }}">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
       <div class="nav-icons">
         <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Recherche">
@@ -221,7 +311,50 @@
       </div>
     </div>
   </div>
+
+  <!-- Menu Mobile Déroulant -->
+  <div class="nav-mobile-menu" id="mobile-menu-{{ section.id }}">
+    <ul class="nav-mobile-links">
+      {%- for link in linklists[section.settings.menu].links -%}
+        {%- unless link.title == 'ACCUEIL' or link.title == 'Accueil' or link.title == 'accueil' -%}
+          <li>
+            <a
+              href="{{ link.url }}"
+              class="nav-mobile-link"
+              onclick="document.getElementById('mobile-menu-{{ section.id }}').classList.remove('active'); document.getElementById('burger-{{ section.id }}').classList.remove('active');"
+            >
+              {{- link.title -}}
+            </a>
+          </li>
+        {%- endunless -%}
+      {%- endfor -%}
+    </ul>
+  </div>
 </div>
+
+<script>
+  (function () {
+    const burger = document.getElementById('burger-{{ section.id }}');
+    const mobileMenu = document.getElementById('mobile-menu-{{ section.id }}');
+
+    if (burger && mobileMenu) {
+      burger.addEventListener('click', function () {
+        burger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+      });
+
+      // Fermer le menu en cliquant en dehors
+      mobileMenu.addEventListener('click', function (e) {
+        if (e.target === mobileMenu) {
+          burger.classList.remove('active');
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+  })();
+</script>
 
 {% schema %}
 {
