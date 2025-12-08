@@ -1,0 +1,275 @@
+{% style %}
+  /* ============================================
+     MILAURA IMAGE TEXT - STORYTELLING FLEXIBLE
+     ============================================ */
+
+  #MilauraImageText-{{ section.id }} {
+    width: 100%;
+    padding: var(--milaura-spacing-xl) var(--milaura-spacing-sm);
+    background: {% if section.settings.background_color == 'white_glass' %}rgba(255, 255, 255, 0.6){% else %}transparent{% endif %};
+    {% if section.settings.background_color == 'white_glass' %}
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    {% endif %}
+  }
+
+  /* --- CONTENEUR GLOBAL --- */
+  #MilauraImageText-{{ section.id }} .image-text-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--milaura-spacing-lg);
+    align-items: center;
+  }
+
+  /* --- COLONNE IMAGE (AVEC CORDON D'OR) --- */
+  #MilauraImageText-{{ section.id }} .image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+  }
+
+  /* L'image avec coins arrondis */
+  #MilauraImageText-{{ section.id }} .image-wrapper img,
+  #MilauraImageText-{{ section.id }} .image-wrapper svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--milaura-border-radius);
+    position: relative;
+    z-index: 1;
+    display: block;
+  }
+
+  /* Le cordon d'or (bordure décalée) */
+  #MilauraImageText-{{ section.id }} .image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: -15px;
+    bottom: -15px;
+    border: 1px solid var(--milaura-gold);
+    border-radius: var(--milaura-border-radius);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* --- COLONNE TEXTE --- */
+  #MilauraImageText-{{ section.id }} .text-wrapper {
+    padding: var(--milaura-spacing-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--milaura-spacing-md);
+  }
+
+  #MilauraImageText-{{ section.id }} .text-wrapper h2 {
+    font-family: var(--milaura-font-heading);
+    color: var(--milaura-gold);
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  #MilauraImageText-{{ section.id }} .text-wrapper .text-content {
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text);
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  #MilauraImageText-{{ section.id }} .text-wrapper .text-content p {
+    margin: 0 0 1em 0;
+  }
+
+  #MilauraImageText-{{ section.id }} .text-wrapper .text-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* --- BOUTON --- */
+  #MilauraImageText-{{ section.id }} .text-wrapper .button-wrapper {
+    margin-top: var(--milaura-spacing-sm);
+  }
+
+  /* --- LAYOUT INVERSE (Image à droite) --- */
+  #MilauraImageText-{{ section.id }}.layout-right .image-text-container {
+    direction: rtl;
+  }
+
+  #MilauraImageText-{{ section.id }}.layout-right .image-text-container > * {
+    direction: ltr;
+  }
+
+  /* --- MOBILE --- */
+  @media screen and (max-width: 990px) {
+    #MilauraImageText-{{ section.id }} {
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-xs);
+    }
+
+    #MilauraImageText-{{ section.id }} .image-text-container {
+      grid-template-columns: 1fr;
+      gap: var(--milaura-spacing-md);
+    }
+
+    /* Sur mobile, l'image est toujours en premier */
+    #MilauraImageText-{{ section.id }} .image-text-container {
+      direction: ltr;
+    }
+
+    #MilauraImageText-{{ section.id }} .image-wrapper {
+      min-height: 300px;
+      order: 1;
+    }
+
+    #MilauraImageText-{{ section.id }} .text-wrapper {
+      order: 2;
+      padding: var(--milaura-spacing-sm);
+    }
+
+    #MilauraImageText-{{ section.id }} .text-wrapper h2 {
+      font-size: 2rem;
+    }
+
+    #MilauraImageText-{{ section.id }} .text-wrapper .text-content {
+      font-size: 1rem;
+    }
+
+    /* Ajuster le cordon d'or sur mobile */
+    #MilauraImageText-{{ section.id }} .image-wrapper::before {
+      top: 10px;
+      left: 10px;
+      right: -10px;
+      bottom: -10px;
+    }
+  }
+
+  /* --- MOBILE TRÈS PETIT --- */
+  @media screen and (max-width: 480px) {
+    #MilauraImageText-{{ section.id }} .image-wrapper {
+      min-height: 250px;
+    }
+
+    #MilauraImageText-{{ section.id }} .text-wrapper h2 {
+      font-size: 1.75rem;
+    }
+
+    #MilauraImageText-{{ section.id }} .text-wrapper .text-content {
+      font-size: 0.95rem;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraImageText-{{ section.id }}" class="{% if section.settings.layout == 'right' %}layout-right{% endif %}">
+  <div class="image-text-container">
+    {%- if section.settings.image != blank -%}
+      <div class="image-wrapper">
+        {{
+          section.settings.image
+          | image_url: width: 1400
+          | image_tag: loading: 'lazy', alt: section.settings.title
+        }}
+      </div>
+    {%- else -%}
+      <div class="image-wrapper">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-image' }}
+      </div>
+    {%- endif -%}
+
+    <div class="text-wrapper">
+      {%- if section.settings.title != blank -%}
+        <h2 class="milaura-heading">{{ section.settings.title }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.content != blank -%}
+        <div class="text-content milaura-text">
+          {{ section.settings.content }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <div class="button-wrapper">
+          <a href="{{ section.settings.button_link }}" class="milaura-btn">
+            {{ section.settings.button_label }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Milaura Image Text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "left",
+          "label": "Image à gauche"
+        },
+        {
+          "value": "right",
+          "label": "Image à droite"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Milaura créateur d'émotions"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Contenu",
+      "default": "<p>Racontez votre histoire, présentez un rituel ou partagez votre vision. Cette section flexible s'adapte à tous vos besoins éditoriaux.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Label du bouton"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Couleur de fond",
+      "options": [
+        {
+          "value": "transparent",
+          "label": "Transparent"
+        },
+        {
+          "value": "white_glass",
+          "label": "Blanc verre"
+        }
+      ],
+      "default": "transparent"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Image Text"
+    }
+  ]
+}
+{% endschema %}
+
