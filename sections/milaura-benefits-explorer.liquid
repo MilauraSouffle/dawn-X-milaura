@@ -1,6 +1,6 @@
 {% style %}
   /* ============================================
-     MILAURA BENEFITS EXPLORER - STYLES VISION OS
+     MILAURA BENEFITS EXPLORER - V2 (GRID STACK)
      ============================================ */
 
   #MilauraBenefits-{{ section.id }} {
@@ -13,7 +13,6 @@
   #MilauraBenefits-{{ section.id }} .benefits-dashboard {
     max-width: 1400px;
     margin: 0 auto;
-    /* Le cadre global en verre */
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -24,27 +23,24 @@
     overflow: hidden;
   }
 
-  /* --- EN-TÊTE --- */
   #MilauraBenefits-{{ section.id }} .benefits-header {
     text-align: center;
     margin-bottom: 40px;
   }
 
-  /* --- LAYOUT PRINCIPAL (Nav Gauche + Visuel Droite) --- */
+  /* --- LAYOUT GRID --- */
   #MilauraBenefits-{{ section.id }} .benefits-layout {
     display: grid;
-    grid-template-columns: 350px 1fr; /* Nav fixe à gauche, Reste à droite */
+    grid-template-columns: 350px 1fr;
     gap: 40px;
-    align-items: stretch;
-    min-height: 600px; /* Hauteur min pour l'immersion */
+    align-items: start;
   }
 
-  /* --- COLONNE GAUCHE : NAVIGATION --- */
+  /* --- NAVIGATION GAUCHE --- */
   #MilauraBenefits-{{ section.id }} .benefits-nav {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    justify-content: center; /* Centré verticalement */
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn {
@@ -55,7 +51,7 @@
     text-align: left;
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
+    width: 100%; /* Important */
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn:hover {
@@ -63,9 +59,8 @@
     transform: translateX(5px);
   }
 
-  /* État Actif : Lingot d'or subtil */
   #MilauraBenefits-{{ section.id }} .benefit-btn.is-active {
-    background: linear-gradient(135deg, #fff 0%, #fff 100%);
+    background: #ffffff;
     border-color: var(--milaura-gold);
     box-shadow: 0 10px 25px rgba(192, 160, 98, 0.15);
     transform: scale(1.02);
@@ -97,84 +92,70 @@
     margin-top: 4px;
   }
 
-  /* --- COLONNE DROITE : VISUEL IMMERSIF --- */
+  /* --- ZONE DROITE (GRID STACKING) --- */
+  /* C'est ici que la magie opère pour la hauteur auto */
   #MilauraBenefits-{{ section.id }} .benefits-content {
-    position: relative;
+    display: grid;
+    grid-template-areas: "stack"; /* Zone unique */
     border-radius: 25px;
     overflow: hidden;
-    /* Ombre interne pour effet cadre */
+    position: relative;
+    min-height: 500px;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-card {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    grid-area: stack; /* Tous les blocs s'empilent ici */
 
-    /* L'IMAGE EN FOND (BACKGROUND) */
+    /* Animation et Visibilité */
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease;
+    transform: scale(0.98);
+
+    /* Style de la carte */
     background-size: cover;
     background-position: center;
-
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease-in-out;
-
-    /* Layout Flex pour centrer la carte texte */
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Texte à gauche ou centré */
     padding: 60px;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-card.is-active {
     opacity: 1;
-    visibility: visible;
-    z-index: 2;
+    z-index: 1;
+    pointer-events: auto;
+    transform: scale(1);
   }
 
-  /* Overlay sombre léger sur l'image pour faire ressortir le texte */
+  /* Overlay image */
   #MilauraBenefits-{{ section.id }} .benefit-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to right, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 100%);
+    inset: 0;
+    background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 60%, rgba(255,255,255,0) 100%);
     z-index: 1;
   }
 
-  /* --- LA CARTE TEXTE FLOTTANTE (GLASS) --- */
+  /* --- BOITE TEXTE FLOTTANTE --- */
   #MilauraBenefits-{{ section.id }} .benefit-info-box {
     position: relative;
-    z-index: 10;
-    max-width: 450px;
-
-    background: rgba(255, 255, 255, 0.85); /* Blanc laiteux */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-
-    padding: 40px;
+    z-index: 2; /* Au-dessus de l'overlay */
+    max-width: 480px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 30px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-
-    /* Animation d'entrée */
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.5s ease 0.2s; /* Délai pour arriver après le fond */
-  }
-
-  #MilauraBenefits-{{ section.id }} .benefit-card.is-active .benefit-info-box {
-    transform: translateY(0);
-    opacity: 1;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-info-title {
     font-family: var(--milaura-font-heading);
-    font-size: 2.5rem;
-    line-height: 1.1;
+    font-size: 2.2rem;
     color: var(--milaura-text);
     margin-bottom: 10px;
+    line-height: 1.2;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-info-subtitle {
@@ -186,25 +167,19 @@
     margin-bottom: 20px;
   }
 
-  #MilauraBenefits-{{ section.id }} .benefit-info-desc {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 30px;
-    color: #444;
-  }
-
-  /* Produit intégré */
+  /* Produit Mini */
   #MilauraBenefits-{{ section.id }} .benefit-product-mini {
     display: flex;
     align-items: center;
     gap: 15px;
+    margin-top: 25px;
     padding-top: 20px;
     border-top: 1px solid rgba(0,0,0,0.1);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-product-thumb {
-    width: 60px; height: 60px;
-    border-radius: 10px;
+    width: 70px; height: 70px;
+    border-radius: 12px;
     object-fit: cover;
   }
 
@@ -212,20 +187,18 @@
   @media screen and (max-width: 990px) {
     #MilauraBenefits-{{ section.id }} .benefits-layout {
       grid-template-columns: 1fr;
-      min-height: auto;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefits-content {
-        min-height: 500px;
+      gap: 20px;
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-card {
-        padding: 20px;
-        align-items: flex-end; /* Texte en bas sur mobile */
+        padding: 30px 20px;
+        align-items: flex-end; /* Texte en bas */
+        min-height: 500px;
     }
 
+    /* Overlay plus sombre sur mobile pour lire le texte en bas */
     #MilauraBenefits-{{ section.id }} .benefit-card::before {
-        background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+        background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 50%, rgba(0,0,0,0) 100%);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-info-box {
@@ -249,10 +222,14 @@
     <div class="benefits-layout">
       <nav class="benefits-nav" role="tablist">
         {%- for block in section.blocks -%}
-          <div
+          <button
+            type="button"
+            id="benefit-btn-{{ block.id }}"
             class="benefit-btn {% if forloop.first %}is-active{% endif %}"
             data-target="benefit-{{ block.id }}"
             role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-controls="benefit-{{ block.id }}"
             {{ block.shopify_attributes }}
           >
             <div class="benefit-btn-content">
@@ -262,7 +239,7 @@
                 <span class="benefit-btn-tagline">{{ block.settings.tagline }}</span>
               </div>
             </div>
-          </div>
+          </button>
         {%- endfor -%}
       </nav>
 
@@ -271,27 +248,29 @@
           <div
             id="benefit-{{ block.id }}"
             class="benefit-card {% if forloop.first %}is-active{% endif %}"
+            role="tabpanel"
+            aria-labelledby="benefit-btn-{{ block.id }}"
             style="background-image: url('{{ block.settings.stone_image | image_url: width: 1400 }}');"
           >
             <div class="benefit-info-box">
               <div class="benefit-info-subtitle">{{ block.settings.stone_subtitle }}</div>
               <h3 class="benefit-info-title">{{ block.settings.stone_name }}</h3>
-              <div class="benefit-info-desc">{{ block.settings.description }}</div>
+              <div class="benefit-info-desc milaura-text">{{ block.settings.description }}</div>
 
               {%- if block.settings.product != blank -%}
                 {% assign prod = block.settings.product %}
                 <div class="benefit-product-mini">
                   {% if prod.featured_image %}
-                    {{ prod.featured_image | image_url: width: 100 | image_tag: class: 'benefit-product-thumb' }}
+                    {{ prod.featured_image | image_url: width: 140 | image_tag: class: 'benefit-product-thumb' }}
                   {% endif %}
                   <div>
-                    <div style="font-weight:700; font-size:0.9rem;">{{ prod.title }}</div>
-                    <div style="color:var(--milaura-gold); font-size:0.9rem;">{{ prod.price | money }}</div>
+                    <div style="font-weight:700; margin-bottom:5px;">{{ prod.title }}</div>
+                    <div style="color:var(--milaura-gold); font-weight:700;">{{ prod.price | money }}</div>
                   </div>
                   <a
                     href="{{ prod.url }}"
                     class="milaura-btn milaura-btn-primary"
-                    style="padding: 10px 20px; font-size: 0.8rem; margin-left: auto;"
+                    style="padding: 12px 20px; font-size: 0.85rem; margin-left: auto;"
                   >
                     {{ block.settings.product_cta_label | default: 'Voir' }}
                   </a>
@@ -315,15 +294,19 @@
 
     btns.forEach((btn) => {
       btn.addEventListener('click', function () {
-        // 1. Reset all
-        btns.forEach((b) => b.classList.remove('is-active'));
+        // 1. Reset
+        btns.forEach((b) => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
         cards.forEach((c) => c.classList.remove('is-active'));
 
-        // 2. Active clicked
+        // 2. Activate
         this.classList.add('is-active');
+        this.setAttribute('aria-selected', 'true');
+
         const targetId = this.dataset.target;
         const targetCard = container.querySelector('#' + targetId);
-
         if (targetCard) {
           targetCard.classList.add('is-active');
         }
@@ -362,9 +345,7 @@
       "blocks": [
         { "type": "benefit", "settings": { "emotion": "Stress", "stone_name": "Améthyste" } },
         { "type": "benefit", "settings": { "emotion": "Amour", "stone_name": "Quartz Rose" } },
-        { "type": "benefit", "settings": { "emotion": "Énergie", "stone_name": "Citrine" } },
-        { "type": "benefit", "settings": { "emotion": "Protection", "stone_name": "Tourmaline" } },
-        { "type": "benefit", "settings": { "emotion": "Chance", "stone_name": "Aventurine" } }
+        { "type": "benefit", "settings": { "emotion": "Énergie", "stone_name": "Citrine" } }
       ]
     }
   ]
