@@ -311,8 +311,16 @@
           <div class="hero-carousel" id="hero-carousel-{{ section.id }}">
             {% for block in section.blocks %}
               {% if block.type == 'slide' and block.settings.image != blank %}
-                <div class="hero-slide {% if forloop.first %}is-active{% endif %}" data-slide-index="{{ forloop.index0 }}">
-                  {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'eager', alt: block.settings.image.alt | default: 'Milaura' }}
+                <div
+                  class="hero-slide {% if forloop.first %}is-active{% endif %}"
+                  data-slide-index="{{ forloop.index0 }}"
+                >
+                  {{
+                    block.settings.image
+                    | image_url: width: 1200
+                    | image_tag: loading: 'eager', alt: block.settings.image.alt
+                    | default: 'Milaura'
+                  }}
                 </div>
               {% endif %}
             {% endfor %}
@@ -331,14 +339,14 @@
 </div>
 
 <script>
-  (function() {
+  (function () {
     const sectionId = '{{ section.id }}';
     const carousel = document.getElementById('hero-carousel-' + sectionId);
-    
+
     if (!carousel) return;
 
     const slides = carousel.querySelectorAll('.hero-slide');
-    
+
     // Si une seule slide ou aucune, pas de carrousel
     if (slides.length <= 1) return;
 
@@ -349,8 +357,8 @@
 
     function showSlide(index) {
       // Retirer la classe active de toutes les slides
-      slides.forEach(slide => slide.classList.remove('is-active'));
-      
+      slides.forEach((slide) => slide.classList.remove('is-active'));
+
       // Ajouter la classe active à la slide courante
       if (slides[index]) {
         slides[index].classList.add('is-active');
@@ -391,6 +399,9 @@
   "name": "Milaura Hero Showcase",
   "tag": "section",
   "class": "section",
+  "enabled_on": {
+    "templates": ["*"]
+  },
   "settings": [
     {
       "type": "text",
@@ -534,4 +545,3 @@
   ]
 }
 {% endschema %}
-
