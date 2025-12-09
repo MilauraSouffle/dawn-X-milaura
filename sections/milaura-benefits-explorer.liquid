@@ -286,6 +286,33 @@
 
   /* --- MOBILE ≤ 768px - LAYOUT VERTICAL CLEAN --- */
   @media screen and (max-width: 768px) {
+    /* Background image de section avec overlay */
+    #MilauraBenefits-{{ section.id }} {
+      position: relative !important;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      transition: background-image 0.5s ease-in-out !important;
+      /* Padding ajusté pour que le background couvre bien */
+      padding: var(--milaura-spacing-lg) var(--milaura-spacing-sm) !important;
+    }
+
+    /* Overlay léger pour lisibilité du texte */
+    #MilauraBenefits-{{ section.id }}::before {
+      content: '' !important;
+      position: absolute !important;
+      inset: 0 !important;
+      background: rgba(255, 255, 255, 0.4) !important;
+      z-index: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* S'assurer que le contenu est au-dessus de l'overlay */
+    #MilauraBenefits-{{ section.id }} > * {
+      position: relative !important;
+      z-index: 1 !important;
+    }
+
     /* Header : texte centré, espacement propre */
     #MilauraBenefits-{{ section.id }} .benefits-header {
       text-align: center !important;
@@ -305,6 +332,7 @@
       flex-direction: row !important;
       overflow-x: auto !important;
       scroll-snap-type: x mandatory !important;
+      justify-content: center !important;
       gap: var(--milaura-spacing-sm) !important;
       -webkit-overflow-scrolling: touch !important;
       /* Padding vertical pour éviter les coupures des halos */
@@ -323,9 +351,9 @@
     
     /* Chaque carte de besoin */
     #MilauraBenefits-{{ section.id }} .benefit-btn {
-      width: 75vw !important;
-      max-width: 75vw !important;
-      min-width: 75vw !important;
+      width: 80vw !important;
+      max-width: 80vw !important;
+      min-width: 80vw !important;
       flex-shrink: 0 !important;
       overflow: visible !important;
       scroll-snap-align: center !important;
@@ -381,7 +409,7 @@
       min-height: auto !important;
       position: relative !important;
       overflow: visible !important;
-      margin-top: var(--milaura-spacing-lg) !important;
+      margin-top: var(--milaura-spacing-md) !important;
     }
 
     /* Grande carte pierre + texte - Une seule visible */
@@ -396,7 +424,7 @@
       align-items: stretch !important;
       justify-content: flex-start !important;
       padding: 0 !important;
-      margin-top: var(--milaura-spacing-lg) !important;
+      margin-top: 0 !important;
       margin-bottom: 0 !important;
       /* Supprimer le background-image sur mobile */
       background-image: none !important;
@@ -527,6 +555,7 @@
             class="benefit-btn {% if forloop.first %}is-active{% endif %}"
             data-target="benefit-{{ block.id }}"
             data-index="{{ forloop.index0 }}"
+            data-bg="{% if block.settings.stone_image %}{{ block.settings.stone_image | image_url: width: 1400 }}{% endif %}"
             role="tab"
             aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
             aria-controls="benefit-{{ block.id }}"
@@ -618,7 +647,7 @@
     const dots = dotsContainer ? dotsContainer.querySelectorAll('.benefit-dot') : [];
 
     // Fonction principale pour activer un besoin par index
-    // Synchronise : nav (boutons) ↔ dots (indicateurs) ↔ carte principale
+    // Synchronise : nav (boutons) ↔ dots (indicateurs) ↔ carte principale ↔ background-image
     function setActiveBenefit(index) {
       if (index < 0 || index >= btns.length) return;
       
@@ -641,6 +670,14 @@
       if (dots[index]) {
         dots[index].classList.add('is-active');
       }
+
+      // Mise à jour du background-image de la section (mobile uniquement)
+      if (window.innerWidth <= 768 && btns[index]) {
+        const bgUrl = btns[index].dataset.bg;
+        if (bgUrl) {
+          container.style.backgroundImage = `url('${bgUrl}')`;
+        }
+      }
     }
 
     // Initialisation : s'assurer que le premier besoin est actif au chargement
@@ -649,10 +686,35 @@
     if (firstActiveBtn) {
       const initialIndex = parseInt(firstActiveBtn.dataset.index, 10);
       setActiveBenefit(initialIndex);
+      // Initialiser le background-image au chargement si on est en mobile
+      if (window.innerWidth <= 768 && firstActiveBtn.dataset.bg) {
+        container.style.backgroundImage = `url('${firstActiveBtn.dataset.bg}')`;
+      }
     } else if (btns.length > 0) {
       // Fallback : activer le premier si aucun n'est actif
       setActiveBenefit(0);
+      if (window.innerWidth <= 768 && btns[0].dataset.bg) {
+        container.style.backgroundImage = `url('${btns[0].dataset.bg}')`;
+      }
     }
+
+    // Gestion du resize pour réinitialiser le background si on passe en desktop
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        if (window.innerWidth > 768) {
+          // En desktop, on supprime le background-image de la section
+          container.style.backgroundImage = '';
+        } else {
+          // En mobile, on réapplique le background de la bulle active
+          const activeBtn = container.querySelector('.benefit-btn.is-active');
+          if (activeBtn && activeBtn.dataset.bg) {
+            container.style.backgroundImage = `url('${activeBtn.dataset.bg}')`;
+          }
+        }
+      }, 250);
+    });
 
     // Fonction pour scroller la nav vers un bouton spécifique (mobile uniquement)
     // Utilise scrollIntoView pour centrer le bouton dans la nav
