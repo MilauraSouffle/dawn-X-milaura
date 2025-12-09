@@ -8,19 +8,15 @@
     padding-top: var(--header-height-offset, 120px);
     padding-bottom: var(--milaura-spacing-lg);
     background: transparent;
+    /* Espacement vertical harmonisé */
+    margin-top: var(--milaura-spacing-lg);
+    margin-bottom: var(--milaura-spacing-lg);
   }
 
   /* --- CONTENEUR PRINCIPAL AVEC HALO --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-card {
-    max-width: 1400px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(192, 160, 98, 0.4);
-    border-radius: 30px;
-    box-shadow: 0 20px 50px rgba(192, 160, 98, 0.15);
-    padding: var(--milaura-spacing-xl) var(--milaura-spacing-lg);
+    /* Utilise la classe générique .milaura-section-card */
+    /* max-width, width, margin, background, border, box-shadow gérés par .milaura-section-card */
   }
 
   /* --- HEADER FULL-WIDTH --- */
@@ -205,6 +201,9 @@
     backdrop-filter: blur(10px);
     box-shadow: var(--milaura-shadow-md);
     transform: translate(8px, 8px);
+    /* S'assurer que le transform ne cause pas de débordement */
+    margin-right: 8px;
+    margin-bottom: 8px;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel {
@@ -248,51 +247,157 @@
 
   /* --- MOBILE (< 768px) --- */
   @media screen and (max-width: 768px) {
+    /* Wrapper principal : position relative pour le positionnement absolu du carrousel */
     #MilauraHeroShowcase-{{ section.id }} {
       padding-top: var(--header-height-offset, 100px);
-      padding-bottom: var(--milaura-spacing-md);
+      padding-bottom: 0;
+      position: relative;
+      min-height: 70vh;
+      overflow: hidden;
     }
 
+    /* Conteneur hero-card : retirer le padding et background pour mobile */
     #MilauraHeroShowcase-{{ section.id }} .hero-card {
-      padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
-      border-radius: 20px;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      border-radius: 0;
+      max-width: 100%;
+      width: 100%;
+      margin: 0;
     }
 
+    /* Header : reste au-dessus, taille réduite */
     #MilauraHeroShowcase-{{ section.id }} .hero-header {
-      margin-bottom: var(--milaura-spacing-md);
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      margin-bottom: 0;
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-sm);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: var(--milaura-border-radius);
+      margin: var(--milaura-spacing-sm);
+      box-shadow: 0 10px 30px rgba(192, 160, 98, 0.2);
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
       font-size: 2.4rem;
+      color: var(--milaura-gold);
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
       font-size: 1rem;
       max-width: 100%;
-      padding: 0 var(--milaura-spacing-sm);
+      padding: 0;
+      color: var(--milaura-text);
     }
 
+    /* Grille principale : devient un conteneur relatif avec flexbox */
     #MilauraHeroShowcase-{{ section.id }} .hero-main-grid {
-      grid-template-columns: 1fr;
-      gap: var(--milaura-spacing-lg);
-      margin-top: var(--milaura-spacing-md);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin: 0;
+      padding: 0;
+      min-height: 70vh;
     }
 
-    /* Ordre mobile : Header -> Carrousel -> Piliers */
-    #MilauraHeroShowcase-{{ section.id }} .hero-header {
-      order: 1;
-    }
-
+    /* CARROUSEL EN FOND (position absolute) */
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel-wrapper {
-      order: 2;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      border-radius: 0;
     }
 
+    /* Retirer le cadre doré sur mobile */
+    #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      padding: 0;
+      margin: 0;
+      transform: none;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+      border-radius: 0;
+    }
+
+    /* Carrousel : occupe toute la hauteur */
+    #MilauraHeroShowcase-{{ section.id }} .hero-carousel {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: unset;
+      border-radius: 0;
+    }
+
+    /* Overlay pour lisibilité (dégradé sombre en bas) */
+    #MilauraHeroShowcase-{{ section.id }} .hero-carousel-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(
+        to top,
+        rgba(253, 251, 247, 0.95) 0%,
+        rgba(253, 251, 247, 0.85) 40%,
+        rgba(253, 251, 247, 0.5) 70%,
+        transparent 100%
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* PILIERS : positionnés par-dessus le carrousel */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillars {
-      order: 3;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: var(--milaura-spacing-sm);
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-sm) var(--milaura-spacing-lg);
+      margin-top: 0;
+      pointer-events: auto; /* Assurer que les clics fonctionnent */
     }
 
+    /* Cartes piliers : style glassmorphism renforcé pour lisibilité */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card {
       padding: var(--milaura-spacing-md) var(--milaura-spacing-lg);
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid rgba(192, 160, 98, 0.4);
+      border-radius: var(--milaura-border-radius);
+      box-shadow: 
+        0 10px 30px rgba(192, 160, 98, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+      max-width: 90%;
+      margin: 0 auto;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    /* Effet au tap sur mobile */
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card:active {
+      transform: translateY(-2px) scale(0.98);
+      box-shadow: 
+        0 15px 40px rgba(192, 160, 98, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 1) inset;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card::after {
@@ -310,17 +415,11 @@
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
       font-size: 0.9rem;
     }
-
-    /* Réduire l'offset du cadre doré sur mobile */
-    #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
-      transform: translate(4px, 4px);
-      padding: 6px;
-    }
   }
 {% endstyle %}
 
 <div id="MilauraHeroShowcase-{{ section.id }}">
-  <div class="hero-card">
+  <div class="hero-card milaura-section-card">
     <!-- HEADER FULL-WIDTH -->
     <div class="hero-header">
       {% if section.settings.kicker != blank %}
