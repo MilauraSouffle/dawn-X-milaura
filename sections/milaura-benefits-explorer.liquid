@@ -284,79 +284,35 @@
     }
   }
 
-  /* --- MOBILE ≤ 768px - LAYOUT VERTICAL CLEAN --- */
+  /* --- MOBILE ≤ 768px - LAYOUT VERTICAL SIMPLE --- */
   @media screen and (max-width: 768px) {
-    /* Background image de section avec overlay */
-    #MilauraBenefits-{{ section.id }} {
-      position: relative !important;
-      background-size: cover !important;
-      background-position: center !important;
-      background-repeat: no-repeat !important;
-      transition: background-image 0.5s ease-in-out !important;
-      /* Padding ajusté pour que le background couvre bien */
-      padding: var(--milaura-spacing-lg) var(--milaura-spacing-sm) !important;
-    }
-
-    /* Overlay léger pour lisibilité du texte */
-    #MilauraBenefits-{{ section.id }}::before {
-      content: '' !important;
-      position: absolute !important;
-      inset: 0 !important;
-      background: rgba(255, 255, 255, 0.4) !important;
-      z-index: 0 !important;
-      pointer-events: none !important;
-    }
-
-    /* S'assurer que le contenu est au-dessus de l'overlay */
-    #MilauraBenefits-{{ section.id }} > * {
-      position: relative !important;
-      z-index: 1 !important;
-    }
-
     /* Header : texte centré, espacement propre */
     #MilauraBenefits-{{ section.id }} .benefits-header {
       text-align: center !important;
       margin-bottom: var(--milaura-spacing-lg) !important;
     }
 
-    /* Layout vertical : titre + nav + dots + carte pierre */
+    /* Layout vertical : titre + nav + carte pierre */
     #MilauraBenefits-{{ section.id }} .benefits-layout {
       display: flex !important;
       flex-direction: column !important;
       gap: var(--milaura-spacing-md) !important;
     }
 
-    /* Carrousel horizontal propre pour la navigation des besoins */
+    /* Navigation des besoins : LISTE VERTICALE */
     #MilauraBenefits-{{ section.id }} .benefits-nav {
       display: flex !important;
-      flex-direction: row !important;
-      overflow-x: auto !important;
-      scroll-snap-type: x mandatory !important;
-      justify-content: center !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
       gap: var(--milaura-spacing-sm) !important;
-      -webkit-overflow-scrolling: touch !important;
-      /* Padding vertical pour éviter les coupures des halos */
-      padding-top: var(--milaura-spacing-sm) !important;
-      padding-bottom: var(--milaura-spacing-sm) !important;
-      padding-left: var(--milaura-spacing-sm) !important;
-      padding-right: var(--milaura-spacing-sm) !important;
-      /* Masquer la scrollbar */
-      scrollbar-width: none !important; /* Firefox */
-      -ms-overflow-style: none !important; /* IE et Edge */
     }
     
-    #MilauraBenefits-{{ section.id }} .benefits-nav::-webkit-scrollbar {
-      display: none !important; /* Chrome, Safari, Opera */
-    }
-    
-    /* Chaque carte de besoin */
+    /* Chaque carte de besoin : pleine largeur */
     #MilauraBenefits-{{ section.id }} .benefit-btn {
-      width: 80vw !important;
-      max-width: 80vw !important;
-      min-width: 80vw !important;
-      flex-shrink: 0 !important;
-      overflow: visible !important;
-      scroll-snap-align: center !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 100% !important;
+      flex-shrink: 1 !important;
       /* Contour doré TOUJOURS visible en mobile */
       border: 1px solid rgba(192, 160, 98, 0.4) !important;
     }
@@ -369,40 +325,12 @@
       box-shadow: 0 4px 15px rgba(192, 160, 98, 0.3) !important;
     }
 
-    /* Conteneur des indicateurs dots : centrés sous la nav */
+    /* Masquer les dots en mobile */
     #MilauraBenefits-{{ section.id }} .benefits-dots {
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-      gap: 6px !important;
-      margin-top: var(--milaura-spacing-sm) !important;
-      margin-bottom: var(--milaura-spacing-md) !important;
-      padding: 0 !important;
+      display: none !important;
     }
 
-    /* Style des dots inactifs : petit cercle doré très clair */
-    #MilauraBenefits-{{ section.id }} .benefit-dot {
-      width: 7px !important;
-      height: 7px !important;
-      border-radius: 999px !important;
-      background: rgba(192, 160, 98, 0.25) !important;
-      border: none !important;
-      padding: 0 !important;
-      cursor: pointer !important;
-      transition: all 0.3s ease !important;
-      flex-shrink: 0 !important;
-    }
-
-    /* Dot actif : pilule horizontale avec fond doré */
-    #MilauraBenefits-{{ section.id }} .benefit-dot.is-active {
-      width: 16px !important;
-      height: 7px !important;
-      border-radius: 999px !important;
-      background: var(--milaura-gold) !important;
-      opacity: 1 !important;
-    }
-
-    /* Zone de contenu : carte pierre en dessous des dots */
+    /* Zone de contenu : carte pierre en dessous de la nav */
     #MilauraBenefits-{{ section.id }} .benefits-content {
       display: block !important;
       grid-template-areas: none !important;
@@ -426,8 +354,6 @@
       padding: 0 !important;
       margin-top: 0 !important;
       margin-bottom: 0 !important;
-      /* Supprimer le background-image sur mobile */
-      background-image: none !important;
     }
 
     /* Afficher uniquement la carte active sur mobile */
@@ -435,9 +361,9 @@
       display: flex !important;
     }
 
-    /* Image de la carte : MASQUÉE en mobile (pas d'image pleine hauteur) */
+    /* Image de la carte : visible si elle existe (dans la carte) */
     #MilauraBenefits-{{ section.id }} .benefit-card-image {
-      display: none !important;
+      display: block !important;
     }
 
     /* Supprimer l'overlay ::before en mobile */
@@ -642,12 +568,9 @@
 
     const btns = container.querySelectorAll('.benefit-btn');
     const cards = container.querySelectorAll('.benefit-card');
-    const nav = container.querySelector('#benefits-nav-{{ section.id }}');
-    const dotsContainer = container.querySelector('#benefits-dots-{{ section.id }}');
-    const dots = dotsContainer ? dotsContainer.querySelectorAll('.benefit-dot') : [];
 
     // Fonction principale pour activer un besoin par index
-    // Synchronise : nav (boutons) ↔ dots (indicateurs) ↔ carte principale ↔ background-image
+    // Synchronise : nav (boutons) ↔ carte principale
     function setActiveBenefit(index) {
       if (index < 0 || index >= btns.length) return;
       
@@ -657,7 +580,6 @@
         b.setAttribute('aria-selected', 'false');
       });
       cards.forEach((c) => c.classList.remove('is-active'));
-      dots.forEach((d) => d.classList.remove('is-active'));
 
       // Activation de l'élément correspondant à l'index
       if (btns[index]) {
@@ -667,17 +589,6 @@
       if (cards[index]) {
         cards[index].classList.add('is-active');
       }
-      if (dots[index]) {
-        dots[index].classList.add('is-active');
-      }
-
-      // Mise à jour du background-image de la section (mobile uniquement)
-      if (window.innerWidth <= 768 && btns[index]) {
-        const bgUrl = btns[index].dataset.bg;
-        if (bgUrl) {
-          container.style.backgroundImage = `url('${bgUrl}')`;
-        }
-      }
     }
 
     // Initialisation : s'assurer que le premier besoin est actif au chargement
@@ -686,48 +597,9 @@
     if (firstActiveBtn) {
       const initialIndex = parseInt(firstActiveBtn.dataset.index, 10);
       setActiveBenefit(initialIndex);
-      // Initialiser le background-image au chargement si on est en mobile
-      if (window.innerWidth <= 768 && firstActiveBtn.dataset.bg) {
-        container.style.backgroundImage = `url('${firstActiveBtn.dataset.bg}')`;
-      }
     } else if (btns.length > 0) {
       // Fallback : activer le premier si aucun n'est actif
       setActiveBenefit(0);
-      if (window.innerWidth <= 768 && btns[0].dataset.bg) {
-        container.style.backgroundImage = `url('${btns[0].dataset.bg}')`;
-      }
-    }
-
-    // Gestion du resize pour réinitialiser le background si on passe en desktop
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function() {
-        if (window.innerWidth > 768) {
-          // En desktop, on supprime le background-image de la section
-          container.style.backgroundImage = '';
-        } else {
-          // En mobile, on réapplique le background de la bulle active
-          const activeBtn = container.querySelector('.benefit-btn.is-active');
-          if (activeBtn && activeBtn.dataset.bg) {
-            container.style.backgroundImage = `url('${activeBtn.dataset.bg}')`;
-          }
-        }
-      }, 250);
-    });
-
-    // Fonction pour scroller la nav vers un bouton spécifique (mobile uniquement)
-    // Utilise scrollIntoView pour centrer le bouton dans la nav
-    function scrollNavToButton(index) {
-      if (!nav || window.innerWidth > 768) return;
-      if (!btns[index]) return;
-      
-      // Utiliser scrollIntoView pour centrer le bouton
-      btns[index].scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'nearest', 
-        inline: 'center' 
-      });
     }
 
     // Gestion des clics sur les cartes nav (boutons)
@@ -736,20 +608,6 @@
         const index = parseInt(this.dataset.index, 10);
         if (!isNaN(index)) {
           setActiveBenefit(index);
-          // Scroll la nav pour centrer approximativement ce bouton
-          scrollNavToButton(index);
-        }
-      });
-    });
-
-    // Gestion des clics sur les dots (indicateurs)
-    dots.forEach((dot) => {
-      dot.addEventListener('click', function () {
-        const index = parseInt(this.dataset.index, 10);
-        if (!isNaN(index)) {
-          setActiveBenefit(index);
-          // Scroll la nav vers le bouton correspondant
-          scrollNavToButton(index);
         }
       });
     });
