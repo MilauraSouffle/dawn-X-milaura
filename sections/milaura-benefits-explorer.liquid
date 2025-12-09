@@ -1,15 +1,15 @@
 {% style %}
   /* ============================================
-     MILAURA BENEFITS EXPLORER - V5 (MOBILE FRAME + SCROLL FIX)
+     MILAURA BENEFITS EXPLORER - V6 (FLUID MOBILE)
      ============================================ */
 
   #MilauraBenefits-{{ section.id }} {
     width: 100%;
-    padding: var(--milaura-spacing-lg) 0; /* Padding latéral géré par la carte */
+    /* Padding vertical pour que l'image de fond respire */
+    padding: var(--milaura-spacing-lg) 0;
     background: transparent;
     margin-top: var(--milaura-spacing-lg);
     margin-bottom: var(--milaura-spacing-lg);
-    /* Transition douce du background (image de fond globale) */
     transition: background-image 0.5s ease-in-out;
     background-size: cover;
     background-position: center;
@@ -21,7 +21,7 @@
     overflow: hidden;
     position: relative;
     z-index: 2;
-    /* On force le style Halo Vision OS ici si la classe générique ne suffit pas */
+    /* Style Halo Vision OS Desktop */
     border: 1px solid rgba(192, 160, 98, 0.4);
     box-shadow: 0 10px 40px rgba(192, 160, 98, 0.15);
     border-radius: 30px;
@@ -30,7 +30,7 @@
     -webkit-backdrop-filter: blur(20px);
     margin: 0 auto;
     max-width: 1400px;
-    width: 92%; /* Largeur desktop standard */
+    width: 92%;
     padding: var(--milaura-spacing-md);
   }
 
@@ -229,7 +229,7 @@
   }
 
   #MilauraBenefits-{{ section.id }} .benefits-dots {
-    display: none; /* Masqué sur desktop */
+    display: none;
   }
 
   /* ============================================
@@ -244,49 +244,55 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(255, 255, 255, 0.3); /* Overlay léger sur l'image de fond */
+      background: rgba(255, 255, 255, 0.35); /* Un peu plus opaque pour lisibilité */
       z-index: 1;
       pointer-events: none;
     }
 
-    /* RESTAURATION DU CADRE DORÉ SUR MOBILE */
+    /* Cadre mobile */
     #MilauraBenefits-{{ section.id }} .benefits-dashboard {
-      width: 95%; /* Un peu de marge sur les côtés */
+      width: 95%;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.7) !important; /* Fond semi-transparent */
-      border: 1px solid rgba(192, 160, 98, 0.4) !important; /* LE CADRE */
+      background: rgba(255, 255, 255, 0.75) !important;
+      border: 1px solid rgba(192, 160, 98, 0.4) !important;
       box-shadow: 0 10px 30px rgba(192, 160, 98, 0.15) !important;
-      padding: 20px 0; /* Padding vertical */
+      padding: 20px 0;
       border-radius: 20px;
     }
 
     #MilauraBenefits-{{ section.id }} .benefits-layout {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 10px;
     }
 
     #MilauraBenefits-{{ section.id }} .benefits-header {
       padding: 0 20px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
-    /* --- CARROUSEL NAV (SCROLL FIXE) --- */
+    /* --- CARROUSEL NAV (FIX SCROLL) --- */
     #MilauraBenefits-{{ section.id }} .benefits-nav {
+      display: flex;
       flex-direction: row;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
+      flex-wrap: nowrap; /* Force la ligne unique */
+      overflow-x: auto; /* Active le scroll */
+      -webkit-overflow-scrolling: touch; /* Scroll natif iOS */
+      scroll-behavior: smooth;
 
-      /* PADDING INTELLIGENT : Permet au 1er et dernier item d'être centrés */
-      /* Les items font 80vw. Reste 20vw. Donc 10vw de chaque côté */
-      padding: 10px calc(50% - 40vw + 10px) 20px calc(50% - 40vw + 10px);
+      /* On retire scroll-snap strict qui bloque parfois le slide fluide */
+      scroll-snap-type: none;
+
+      /* Padding latéral pour que le premier élément ne soit pas collé */
+      padding: 10px 20px 20px 20px;
 
       gap: 15px;
-      justify-content: flex-start; /* CRUCIAL pour le scroll */
+      justify-content: flex-start; /* Important : aligne à gauche pour permettre le scroll */
+      width: 100%;
 
+      /* Cache la scrollbar */
       scrollbar-width: none;
       -ms-overflow-style: none;
-      -webkit-overflow-scrolling: touch;
     }
 
     #MilauraBenefits-{{ section.id }} .benefits-nav::-webkit-scrollbar {
@@ -294,14 +300,16 @@
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn {
-      min-width: 80vw;
-      width: 80vw;
-      flex-shrink: 0;
-      scroll-snap-align: center;
-      background: rgba(255, 255, 255, 0.9);
+      min-width: 85%; /* Largeur confortable */
+      width: 85%;
+      flex-shrink: 0; /* Empêche l'écrasement */
+      background: rgba(255, 255, 255, 0.95);
       border: 1px solid rgba(192, 160, 98, 0.3);
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       margin: 0;
+      /* On s'assure que le clic marche */
+      pointer-events: auto;
+      touch-action: pan-x; /* Dit au navigateur : "laisse le doigt scroller horizontalement" */
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn.is-active {
@@ -312,14 +320,15 @@
       box-shadow: 0 8px 25px rgba(192, 160, 98, 0.2);
     }
 
-    /* --- DOTS (CENTRAGE PARFAIT) --- */
+    /* --- DOTS (CENTRAGE FORCÉ) --- */
     #MilauraBenefits-{{ section.id }} .benefits-dots {
       display: flex;
       width: 100%;
-      justify-content: center;
+      justify-content: center; /* Centre horizontalement */
       align-items: center;
       gap: 8px;
-      margin-bottom: 15px;
+      margin-top: 5px;
+      margin-bottom: 20px;
       padding: 0;
     }
 
@@ -344,7 +353,7 @@
     #MilauraBenefits-{{ section.id }} .benefits-content {
       display: block;
       min-height: auto;
-      padding: 0 15px; /* Padding latéral interne */
+      padding: 0 20px;
       background: transparent;
       box-shadow: none;
       overflow: visible;
@@ -368,10 +377,10 @@
 
     #MilauraBenefits-{{ section.id }} .benefit-info-box {
       width: 100%;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(192, 160, 98, 0.2);
-      box-shadow: 0 5px 20px rgba(192, 160, 98, 0.1);
+      box-shadow: 0 10px 30px rgba(192, 160, 98, 0.1);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-product-cta {
@@ -481,7 +490,6 @@
     // --- FONCTIONS ---
 
     function updateBackground(url) {
-      // Uniquement sur mobile, on change le fond global de la section
       if (window.innerWidth <= 990 && url) {
         container.style.backgroundImage = `url('${url}')`;
       } else {
@@ -512,12 +520,11 @@
       if (window.innerWidth > 990 || !nav || !btns[index]) return;
 
       const btn = btns[index];
-      // Utilisation de scrollLeft manuel au lieu de scrollIntoView pour éviter les sauts de page
       const navWidth = nav.offsetWidth;
       const btnWidth = btn.offsetWidth;
-      const btnLeft = btn.offsetLeft; // Position par rapport au parent scrollable
+      const btnLeft = btn.offsetLeft;
 
-      // Calcul pour centrer : Position de l'élément - Moitié de l'écran + Moitié de l'élément
+      // Calcul propre pour centrer sans faire sauter la page
       const scrollPos = btnLeft - navWidth / 2 + btnWidth / 2;
 
       nav.scrollTo({
@@ -528,7 +535,7 @@
 
     // --- EVENTS ---
 
-    // 1. Clic sur Bouton Nav
+    // 1. Clic sur Bouton (Nav)
     btns.forEach((btn, i) => {
       btn.addEventListener('click', () => {
         activateTab(i);
@@ -536,7 +543,7 @@
       });
     });
 
-    // 2. Clic sur un dot
+    // 2. Clic sur Dot
     dots.forEach((dot, i) => {
       dot.addEventListener('click', () => {
         activateTab(i);
@@ -544,41 +551,16 @@
       });
     });
 
-    // 3. Détection du Scroll (Swipe) pour mettre à jour l'actif
-    let isScrolling;
-    nav.addEventListener('scroll', () => {
-      window.clearTimeout(isScrolling);
-
-      isScrolling = setTimeout(() => {
-        const center = nav.scrollLeft + nav.offsetWidth / 2;
-        let closestIndex = 0;
-        let minDiff = Infinity;
-
-        btns.forEach((btn, i) => {
-          const btnCenter = btn.offsetLeft + btn.offsetWidth / 2;
-          const diff = Math.abs(center - btnCenter);
-
-          if (diff < minDiff) {
-            minDiff = diff;
-            closestIndex = i;
-          }
-        });
-
-        if (!btns[closestIndex].classList.contains('is-active')) {
-          activateTab(closestIndex);
-        }
-      }, 50);
-    });
-
-    // 4. Init
+    // 3. Init
     const activeBtn = nav.querySelector('.benefit-btn.is-active');
     if (activeBtn) {
+      const index = parseInt(activeBtn.dataset.index);
       updateBackground(activeBtn.dataset.bg);
     } else {
       activateTab(0);
     }
 
-    // 5. Resize
+    // 4. Resize Reset
     window.addEventListener('resize', () => {
       const active = nav.querySelector('.benefit-btn.is-active');
       if (active) updateBackground(active.dataset.bg);
