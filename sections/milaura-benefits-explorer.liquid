@@ -329,14 +329,16 @@
       flex-shrink: 0 !important;
       overflow: visible !important;
       scroll-snap-align: center !important;
+      /* Contour doré TOUJOURS visible en mobile */
+      border: 1px solid rgba(192, 160, 98, 0.4) !important;
     }
 
-    /* État actif des cartes nav en mobile : contour doré visible */
+    /* État actif des cartes nav en mobile : contour doré plus marqué */
     #MilauraBenefits-{{ section.id }} .benefit-btn.is-active {
       background: rgba(255, 255, 255, 0.95) !important;
       border-color: var(--milaura-gold) !important;
       border-width: 1.5px !important;
-      box-shadow: 0 4px 15px rgba(192, 160, 98, 0.2) !important;
+      box-shadow: 0 4px 15px rgba(192, 160, 98, 0.3) !important;
     }
 
     /* Conteneur des indicateurs dots : centrés sous la nav */
@@ -345,7 +347,8 @@
       justify-content: center !important;
       align-items: center !important;
       gap: 6px !important;
-      margin: var(--milaura-spacing-sm) auto 0 !important;
+      margin-top: var(--milaura-spacing-sm) !important;
+      margin-bottom: var(--milaura-spacing-md) !important;
       padding: 0 !important;
     }
 
@@ -366,7 +369,7 @@
     #MilauraBenefits-{{ section.id }} .benefit-dot.is-active {
       width: 16px !important;
       height: 7px !important;
-      border-radius: 3.5px !important;
+      border-radius: 999px !important;
       background: var(--milaura-gold) !important;
       opacity: 1 !important;
     }
@@ -393,7 +396,7 @@
       align-items: stretch !important;
       justify-content: flex-start !important;
       padding: 0 !important;
-      margin-top: 0 !important;
+      margin-top: var(--milaura-spacing-lg) !important;
       margin-bottom: 0 !important;
       /* Supprimer le background-image sur mobile */
       background-image: none !important;
@@ -404,15 +407,9 @@
       display: flex !important;
     }
 
-    /* Image de la carte : visible sur mobile avec aspect-ratio 4/5 */
+    /* Image de la carte : MASQUÉE en mobile (pas d'image pleine hauteur) */
     #MilauraBenefits-{{ section.id }} .benefit-card-image {
-      display: block !important;
-      width: 100% !important;
-      aspect-ratio: 4 / 5 !important;
-      object-fit: cover !important;
-      border-radius: var(--milaura-border-radius) var(--milaura-border-radius) 0 0 !important;
-      margin: 0 !important;
-      padding: 0 !important;
+      display: none !important;
     }
 
     /* Supprimer l'overlay ::before en mobile */
@@ -420,12 +417,12 @@
       display: none !important;
     }
 
-    /* Boîte texte - Positionnée en dessous de l'image pierre */
+    /* Boîte texte - Positionnée en dessous (pas d'image pierre en mobile) */
     #MilauraBenefits-{{ section.id }} .benefit-info-box {
       position: static !important;
       width: 100% !important;
       max-width: 100% !important;
-      margin-top: var(--milaura-spacing-md) !important;
+      margin-top: 0 !important;
       margin-bottom: 0 !important;
       padding: var(--milaura-spacing-md) !important;
       background: rgba(255, 255, 255, 0.75) !important;
@@ -435,6 +432,8 @@
       border-radius: var(--milaura-border-radius) !important;
       box-shadow: 0 10px 40px rgba(192, 160, 98, 0.15) !important;
       z-index: 1 !important;
+      /* Pas de background-image en mobile */
+      background-image: none !important;
     }
 
     /* Produit Mini - Responsive */
@@ -656,14 +655,17 @@
     }
 
     // Fonction pour scroller la nav vers un bouton spécifique (mobile uniquement)
+    // Utilise scrollIntoView pour centrer le bouton dans la nav
     function scrollNavToButton(index) {
       if (!nav || window.innerWidth > 768) return;
       if (!btns[index]) return;
       
-      const btnRect = btns[index].getBoundingClientRect();
-      const navRect = nav.getBoundingClientRect();
-      const scrollLeft = nav.scrollLeft + (btnRect.left - navRect.left) - (navRect.width / 2) + (btnRect.width / 2);
-      nav.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+      // Utiliser scrollIntoView pour centrer le bouton
+      btns[index].scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'nearest', 
+        inline: 'center' 
+      });
     }
 
     // Gestion des clics sur les cartes nav (boutons)
