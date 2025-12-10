@@ -1,238 +1,117 @@
 {% comment %}
-  Section de recommandations produits Milaura
-  Basée sur related-products.liquid de Dawn mais avec design Milaura
+  Milaura – Recommandations produits
+  Logique simple : afficher d'autres produits de la même collection que le produit actuel.
+  - Si le produit n'a pas de collection, on ne montre rien.
+  - Si la collection n'a qu'un seul produit (celui-ci), on ne montre rien.
 {% endcomment %}
 
-{%- style -%}
-  #MilauraRecos-{{ section.id }} {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
+{% assign reco_collection = product.collections | first %}
 
-  @media screen and (min-width: 750px) {
-    #MilauraRecos-{{ section.id }} {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
+{% if reco_collection and reco_collection.products_count > 1 %}
+  {% style %}
+    #milaura-recos-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | default: 36 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 36 }}px;
     }
-  }
+  {% endstyle %}
 
-  #MilauraRecos-{{ section.id }} .milaura-recos-wrapper {
-    max-width: 1400px;
-    width: 92%;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(192, 160, 98, 0.4);
-    border-radius: 30px;
-    box-shadow: 0 20px 50px rgba(192, 160, 98, 0.15);
-    padding: var(--milaura-spacing-xl) var(--milaura-spacing-lg);
-    position: relative;
-    overflow: hidden;
-  }
+  <section id="milaura-recos-{{ section.id }}" class="milaura-section milaura-recos">
+    <div class="page-width">
+      {% if section.settings.heading != blank %}
+        <h2 class="milaura-section-title">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
 
-  #MilauraRecos-{{ section.id }} .milaura-recos-heading {
-    font-family: var(--milaura-font-heading);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--milaura-text);
-    text-align: center;
-    margin-bottom: var(--milaura-spacing-xl);
-  }
+      <div class="milaura-recos-grid">
+        {% assign max = section.settings.max_products | default: 4 %}
+        {% assign shown = 0 %}
 
-  #MilauraRecos-{{ section.id }} .milaura-recos-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--milaura-spacing-lg);
-  }
+        {% for reco_product in reco_collection.products %}
+          {% if reco_product.id == product.id %}
+            {% continue %}
+          {% endif %}
 
-  #MilauraRecos-{{ section.id }} .milaura-recos-card {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: var(--milaura-border-radius);
-    overflow: hidden;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  }
+          <a
+            href="{{ reco_product.url }}"
+            class="milaura-recos-card"
+          >
+            <div class="milaura-recos-image-wrapper">
+              {% if reco_product.featured_media %}
+                <img
+                  src="{{ reco_product.featured_media | image_url: width: 500 }}"
+                  alt="{{ reco_product.featured_media.alt | escape }}"
+                  loading="lazy"
+                  width="500"
+                  height="500"
+                  class="milaura-recos-image"
+                >
+              {% endif %}
+            </div>
 
-  #MilauraRecos-{{ section.id }} .milaura-recos-card:hover {
-    border-color: var(--milaura-gold);
-    transform: translateY(-4px);
-    box-shadow: var(--milaura-shadow-md);
-  }
+            <div class="milaura-recos-content">
+              <h3 class="milaura-recos-title">
+                {{ reco_product.title }}
+              </h3>
 
-  #MilauraRecos-{{ section.id }} .milaura-recos-image-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1;
-    overflow: hidden;
-    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
-  }
+              {% assign price = reco_product.price %}
+              {% assign compare_at = reco_product.compare_at_price %}
 
-  #MilauraRecos-{{ section.id }} .milaura-recos-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
+              <div class="milaura-recos-price-row">
+                <span class="milaura-recos-price">
+                  {{ price | money }}
+                </span>
 
-  #MilauraRecos-{{ section.id }} .milaura-recos-card:hover .milaura-recos-image {
-    transform: scale(1.05);
-  }
-
-  #MilauraRecos-{{ section.id }} .milaura-recos-info {
-    padding: var(--milaura-spacing-md);
-  }
-
-  #MilauraRecos-{{ section.id }} .milaura-recos-title {
-    font-family: var(--milaura-font-heading);
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--milaura-text);
-    margin-bottom: var(--milaura-spacing-xs);
-    line-height: 1.3;
-  }
-
-  #MilauraRecos-{{ section.id }} .milaura-recos-price {
-    font-family: var(--milaura-font-heading);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--milaura-gold);
-    margin-bottom: var(--milaura-spacing-xs);
-  }
-
-  #MilauraRecos-{{ section.id }} .milaura-recos-price-compare {
-    text-decoration: line-through;
-    color: var(--milaura-text-light);
-    font-size: 0.9rem;
-    margin-left: var(--milaura-spacing-xs);
-  }
-
-  #MilauraRecos-{{ section.id }} .milaura-recos-stone {
-    font-family: var(--milaura-font-body);
-    font-size: 0.85rem;
-    color: var(--milaura-text-light);
-    margin-top: var(--milaura-spacing-xs);
-  }
-
-  /* Responsive */
-  @media screen and (max-width: 1024px) {
-    #MilauraRecos-{{ section.id }} .milaura-recos-wrapper {
-      width: calc(100% - 2 * var(--milaura-spacing-sm));
-      padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
-      border-radius: 25px;
-    }
-
-    #MilauraRecos-{{ section.id }} .milaura-recos-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--milaura-spacing-md);
-    }
-
-    #MilauraRecos-{{ section.id }} .milaura-recos-heading {
-      font-size: 2rem;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    #MilauraRecos-{{ section.id }} .milaura-recos-wrapper {
-      width: calc(100% - 2 * var(--milaura-spacing-sm));
-      padding: calc(var(--milaura-spacing-lg) * 0.7) calc(var(--milaura-spacing-md) * 0.7);
-      border-radius: 14px;
-    }
-
-    #MilauraRecos-{{ section.id }} .milaura-recos-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--milaura-spacing-sm);
-    }
-
-    #MilauraRecos-{{ section.id }} .milaura-recos-heading {
-      font-size: 1.75rem;
-      margin-bottom: var(--milaura-spacing-lg);
-    }
-
-    #MilauraRecos-{{ section.id }} .milaura-recos-title {
-      font-size: 1rem;
-    }
-  }
-{%- endstyle -%}
-
-<product-recommendations
-  class="milaura-product-recommendations"
-  data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.max_products }}"
-  data-section-id="{{ section.id }}"
-  data-product-id="{{ product.id }}"
->
-  {% if recommendations.performed and recommendations.products_count > 0 %}
-    <section id="MilauraRecos-{{ section.id }}" class="milaura-recos-section">
-      <div class="milaura-recos-wrapper">
-        {% if section.settings.heading != blank %}
-          <h2 class="milaura-recos-heading">{{ section.settings.heading }}</h2>
-        {% endif %}
-
-        <div class="milaura-recos-grid">
-          {% for recommendation in recommendations.products limit: section.settings.max_products %}
-            <a href="{{ recommendation.url }}" class="milaura-recos-card">
-              <div class="milaura-recos-image-wrapper">
-                {% if recommendation.featured_media %}
-                  <img
-                    src="{{ recommendation.featured_media | image_url: width: 400 }}"
-                    alt="{{ recommendation.featured_media.alt | escape }}"
-                    class="milaura-recos-image"
-                    width="400"
-                    height="400"
-                    loading="lazy"
-                  >
-                {% else %}
-                  {{ 'product-1' | placeholder_svg_tag: 'milaura-recos-image' }}
+                {% if compare_at > price %}
+                  <span class="milaura-recos-compare">
+                    {{ compare_at | money }}
+                  </span>
+                  {% assign reduction = 100 | times: price | divided_by: compare_at | round %}
+                  <span class="milaura-recos-badge"> -{{ 100 | minus: reduction }}% </span>
                 {% endif %}
               </div>
-              <div class="milaura-recos-info">
-                <h3 class="milaura-recos-title">{{ recommendation.title }}</h3>
-                <div class="milaura-recos-price">
-                  {% assign variant = recommendation.selected_or_first_available_variant %}
-                  {% if variant.compare_at_price > variant.price %}
-                    <span class="milaura-recos-price-compare">{{ variant.compare_at_price | money }}</span>
-                  {% endif %}
-                  {{ variant.price | money }}
+
+              {% if reco_product.metafields.custom.stone %}
+                <div class="milaura-recos-meta">
+                  <span class="milaura-recos-meta-label">Pierre :</span>
+                  <span class="milaura-recos-meta-value">
+                    {{ reco_product.metafields.custom.stone }}
+                  </span>
                 </div>
-                {% if recommendation.metafields.custom.stone %}
-                  <p class="milaura-recos-stone">Pierre : {{ recommendation.metafields.custom.stone }}</p>
-                {% endif %}
-              </div>
-            </a>
-          {% endfor %}
-        </div>
+              {% endif %}
+            </div>
+          </a>
+
+          {% assign shown = shown | plus: 1 %}
+          {% if shown >= max %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
       </div>
-    </section>
-  {% endif %}
-</product-recommendations>
+    </div>
+  </section>
+{% endif %}
 
 {% schema %}
 {
   "name": "Milaura recos",
   "tag": "section",
-  "class": "section",
+  "class": "milaura-recos-section",
   "settings": [
     {
       "type": "text",
       "id": "heading",
-      "label": "Titre de la section",
+      "label": "Titre",
       "default": "Tu pourrais aussi aimer"
     },
     {
       "type": "range",
       "id": "max_products",
+      "label": "Nombre de produits",
       "min": 2,
-      "max": 8,
+      "max": 6,
       "step": 1,
-      "default": 4,
-      "label": "Nombre maximum de produits"
-    },
-    {
-      "type": "header",
-      "content": "Espacement"
+      "default": 4
     },
     {
       "type": "range",
