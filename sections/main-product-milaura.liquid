@@ -3,7 +3,8 @@
 {% style %}
   #MilauraProduct-{{ section.id }} {
     width: 100%;
-    padding: var(--milaura-spacing-lg) 0;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
     background: transparent;
   }
 
@@ -93,7 +94,16 @@
     font-size: 3rem;
     font-weight: 900;
     color: var(--milaura-text);
-    margin-bottom: var(--milaura-spacing-sm);
+    margin-bottom: var(--milaura-spacing-xs);
+  }
+
+  #MilauraProduct-{{ section.id }} .milaura-product-subtitle {
+    font-family: var(--milaura-font-body);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--milaura-text-light);
+    margin-bottom: var(--milaura-spacing-md);
+    line-height: 1.6;
   }
 
   #MilauraProduct-{{ section.id }} .milaura-product-price {
@@ -122,12 +132,15 @@
     align-items: center;
     gap: var(--milaura-spacing-sm);
     margin-bottom: var(--milaura-spacing-md);
+    font-family: var(--milaura-font-body);
+    font-size: 0.95rem;
+    color: var(--milaura-text-light);
   }
 
   #MilauraProduct-{{ section.id }} .milaura-stars {
     display: flex;
     gap: 4px;
-    color: #ddd;
+    color: var(--milaura-gold);
   }
 
   #MilauraProduct-{{ section.id }} .milaura-stars .star {
@@ -186,36 +199,22 @@
     border-left: 3px solid var(--milaura-gold);
     border-radius: var(--milaura-border-radius-sm);
     padding: var(--milaura-spacing-md);
+    margin-bottom: var(--milaura-spacing-md);
   }
 
   #MilauraProduct-{{ section.id }} .milaura-urgency-text {
     font-family: var(--milaura-font-body);
     font-weight: 600;
     color: var(--milaura-text);
-    margin-bottom: var(--milaura-spacing-sm);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-progress-bar {
-    width: 100%;
-    height: 8px;
-    background: rgba(192, 160, 98, 0.2);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: var(--milaura-spacing-sm);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-progress-fill {
-    height: 100%;
-    width: 70%;
-    background: linear-gradient(90deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
-    border-radius: 4px;
-    transition: width 0.3s ease;
+    margin: 0;
   }
 
   #MilauraProduct-{{ section.id }} .milaura-reassurance-text {
     font-family: var(--milaura-font-body);
     font-size: 0.9rem;
     color: var(--milaura-text-light);
+    margin-top: var(--milaura-spacing-sm);
+    text-align: center;
   }
 
   /* Formulaire d'achat */
@@ -412,8 +411,17 @@
         {% if product.media.size > 1 %}
           <div class="milaura-product-thumbnails">
             {% for media in product.media limit: 5 %}
-              <div class="milaura-thumbnail {% if forloop.first %}is-active{% endif %}" data-image="{{ media | image_url: width: 800 }}">
-                <img src="{{ media | image_url: width: 150 }}" alt="{{ media.alt | escape }}" width="150" height="150" loading="lazy">
+              <div
+                class="milaura-thumbnail {% if forloop.first %}is-active{% endif %}"
+                data-image="{{ media | image_url: width: 800 }}"
+              >
+                <img
+                  src="{{ media | image_url: width: 150 }}"
+                  alt="{{ media.alt | escape }}"
+                  width="150"
+                  height="150"
+                  loading="lazy"
+                >
               </div>
             {% endfor %}
           </div>
@@ -422,77 +430,60 @@
 
       <!-- Colonne droite - Informations -->
       <div class="milaura-product-info">
-        <!-- Header -->
+        <!-- Header : Titre et sous-titre -->
         <div class="milaura-product-header">
           <h1>{{ product.title }}</h1>
-          <div class="milaura-product-price">
-            {{ product.selected_or_first_available_variant.price | money }}
-            {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
-              <span class="milaura-product-price-compare">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
-            {% endif %}
-          </div>
-          <p class="milaura-product-taxes">Taxes incluses</p>
-          <div class="milaura-product-rating">
-            <div class="milaura-stars">
-              <span class="star">★</span>
-              <span class="star">★</span>
-              <span class="star">★</span>
-              <span class="star">★</span>
-              <span class="star">★</span>
-            </div>
-            <span>Avis clients</span>
-          </div>
+          {% if product.metafields.custom.subtitle %}
+            <p class="milaura-product-subtitle">{{ product.metafields.custom.subtitle }}</p>
+          {% endif %}
         </div>
 
-        <!-- Bloc Identité Pierre -->
-        {% if product.metafields.custom.stone.value != blank or product.metafields.custom.quality.value != blank or product.metafields.custom.origin.value != blank %}
-          <div class="milaura-stone-identity">
-            {% if product.metafields.custom.stone.value != blank %}
-              <div class="milaura-stone-identity-item">
-                <span>💎</span>
-                <strong>Pierre :</strong>
-                <span>{{ product.metafields.custom.stone.value }}</span>
-              </div>
-            {% endif %}
-            {% if product.metafields.custom.quality.value != blank %}
-              <div class="milaura-stone-identity-item">
-                <span>✨</span>
-                <strong>Qualité :</strong>
-                <span>{{ product.metafields.custom.quality.value }}</span>
-              </div>
-            {% endif %}
-            {% if product.metafields.custom.origin.value != blank %}
-              <div class="milaura-stone-identity-item">
-                <span>🌍</span>
-                <strong>Provenance :</strong>
-                <span>{{ product.metafields.custom.origin.value }}</span>
-              </div>
-            {% endif %}
+        <!-- Bloc rating / preuve sociale -->
+        <div class="milaura-product-rating">
+          <div class="milaura-stars">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
           </div>
-        {% endif %}
-
-        <!-- Bloc Bénéfices Émotionnels -->
-        {% if product.metafields.custom.benefits.value != blank %}
-          <div class="milaura-benefits-block">
-            <h3>{{ section.settings.benefits_title | default: "Pourquoi elle est faite pour toi :" }}</h3>
-            <div class="milaura-benefits-content">
-              {{ product.metafields.custom.benefits.value }}
-            </div>
-          </div>
-        {% endif %}
-
-        <!-- Bloc Urgence & Rassurance -->
-        <div class="milaura-urgency-block">
-          <p class="milaura-urgency-text">{{ section.settings.urgency_text | default: "🔥 Très populaire — stock limité." }}</p>
-          <div class="milaura-progress-bar">
-            <div class="milaura-progress-fill"></div>
-          </div>
-          <p class="milaura-reassurance-text">{{ section.settings.reassurance_text | default: "🚚 Livraison offerte dès 2 articles." }}</p>
+          <span>4,9/5 basé sur plus de 120 avis clients</span>
         </div>
+
+        <!-- Bloc prix -->
+        <div class="milaura-product-price">
+          {% if product.selected_or_first_available_variant.compare_at_price
+              > product.selected_or_first_available_variant.price
+          %}
+            <span class="milaura-product-price-compare">
+              {{- product.selected_or_first_available_variant.compare_at_price | money -}}
+            </span>
+          {% endif %}
+          {{ product.selected_or_first_available_variant.price | money }}
+        </div>
+        <p class="milaura-product-taxes">Taxes incluses</p>
+
+        <!-- Bloc d'urgence -->
+        {% if section.settings.urgency_text != blank %}
+          <div class="milaura-urgency-block">
+            <p class="milaura-urgency-text">{{ section.settings.urgency_text }}</p>
+          </div>
+        {% endif %}
 
         <!-- Formulaire d'achat -->
-        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="milaura-product-form" id="milaura-product-form-{{ section.id }}">
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" id="milaura-variant-id-{{ section.id }}">
+        <form
+          action="{{ routes.cart_add_url }}"
+          method="post"
+          enctype="multipart/form-data"
+          class="milaura-product-form"
+          id="milaura-product-form-{{ section.id }}"
+        >
+          <input
+            type="hidden"
+            name="id"
+            value="{{ product.selected_or_first_available_variant.id }}"
+            id="milaura-variant-id-{{ section.id }}"
+          >
 
           {% unless product.has_only_default_variant %}
             <div class="milaura-variant-picker">
@@ -518,11 +509,76 @@
             </div>
           {% endunless %}
 
+          <div class="milaura-quantity-wrapper" style="margin-bottom: var(--milaura-spacing-md);">
+            <label
+              for="Quantity-{{ section.id }}"
+              style="display: block; margin-bottom: var(--milaura-spacing-xs); font-weight: 600; color: var(--milaura-text);"
+            >
+              Quantité
+            </label>
+            {% render 'quantity-input', variant: product.selected_or_first_available_variant %}
+          </div>
+
           <button type="submit" class="milaura-add-to-cart" id="milaura-add-to-cart-{{ section.id }}">
             AJOUTER AU PANIER
           </button>
-          <p class="milaura-payment-note">Paiement sécurisé. Expédition rapide.</p>
+          {% if section.settings.reassurance_text != blank %}
+            <p class="milaura-reassurance-text">{{ section.settings.reassurance_text }}</p>
+          {% endif %}
         </form>
+
+        <!-- Bloc Identité Pierre -->
+        {% if product.metafields.custom.stone
+          or product.metafields.custom.quality
+          or product.metafields.custom.origin
+        %}
+          <div class="milaura-stone-identity">
+            {% if product.metafields.custom.stone %}
+              <div class="milaura-stone-identity-item">
+                <span>💎</span>
+                <strong>Pierre :</strong>
+                <span>{{ product.metafields.custom.stone }}</span>
+              </div>
+            {% endif %}
+            {% if product.metafields.custom.quality %}
+              <div class="milaura-stone-identity-item">
+                <span>✨</span>
+                <strong>Qualité :</strong>
+                <span>{{ product.metafields.custom.quality }}</span>
+              </div>
+            {% endif %}
+            {% if product.metafields.custom.origin %}
+              <div class="milaura-stone-identity-item">
+                <span>🌍</span>
+                <strong>Provenance :</strong>
+                <span>{{ product.metafields.custom.origin }}</span>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <!-- Bloc Bénéfices -->
+        {% if product.metafields.custom.benefits %}
+          <div class="milaura-benefits-block">
+            <h3>{{ section.settings.benefits_title | default: 'Pourquoi elle est faite pour toi :' }}</h3>
+            <div class="milaura-benefits-content">
+              {% assign benefits_text = product.metafields.custom.benefits | strip %}
+              {% if benefits_text contains '\n' or benefits_text contains '<br>' %}
+                <ul>
+                  {% assign benefits_lines = benefits_text | split: '\n' %}
+                  {% for line in benefits_lines %}
+                    {% assign clean_line = line | strip %}
+                    {% if clean_line != blank %}
+                      <li>{{ clean_line }}</li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p>{{ product.metafields.custom.benefits }}</p>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
 
         <!-- Accordéons -->
         <div class="milaura-accordions">
@@ -545,7 +601,10 @@
             </div>
             <div class="milaura-accordion-content">
               <div class="milaura-accordion-body">
-                {{ section.settings.technical_details | default: "Poids, dimensions et informations complémentaires à venir." }}
+                {{
+                  section.settings.technical_details
+                  | default: 'Poids, dimensions et informations complémentaires à venir.'
+                }}
               </div>
             </div>
           </div>
@@ -557,7 +616,10 @@
             </div>
             <div class="milaura-accordion-content">
               <div class="milaura-accordion-body">
-                {{ section.settings.shipping_returns | default: "Informations de livraison et politique de retours à venir." }}
+                {{
+                  section.settings.shipping_returns
+                  | default: 'Informations de livraison et politique de retours à venir.'
+                }}
               </div>
             </div>
           </div>
@@ -658,6 +720,10 @@
           addToCartBtn.textContent = 'AJOUT...';
         }
 
+        // Récupérer la quantité depuis l'input
+        const quantityInput = form.querySelector('.quantity__input');
+        const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
+
         fetch('{{ routes.cart_add_url }}', {
           method: 'POST',
           headers: {
@@ -667,7 +733,7 @@
           body: JSON.stringify({
             items: [{
               id: variantInput.value,
-              quantity: 1
+              quantity: quantity
             }]
           })
         })
@@ -784,4 +850,3 @@
   ]
 }
 {% endschema %}
-
