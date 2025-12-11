@@ -1,17 +1,167 @@
 {% comment %}
-  Milaura – Recommandations produits
-  Logique simple : afficher d'autres produits de la même collection que le produit actuel.
-  - Si le produit n'a pas de collection, on ne montre rien.
-  - Si la collection n'a qu'un seul produit (celui-ci), on ne montre rien.
+  MILAURA – RECOMMANDATIONS PRODUITS (VISION OS)
+  Logique : Affiche les produits de la même collection.
+  Design : Vision OS Gold (Halo, Verre, Or)
 {% endcomment %}
 
 {% assign reco_collection = product.collections | first %}
 
 {% if reco_collection and reco_collection.products_count > 1 %}
   {% style %}
+    /* --- SECTION WRAPPER --- */
     #milaura-recos-{{ section.id }} {
-      padding-top: {{ section.settings.padding_top | default: 36 }}px;
-      padding-bottom: {{ section.settings.padding_bottom | default: 36 }}px;
+      padding-top: {{ section.settings.padding_top | default: 60 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(249, 245, 240, 0.5) 100%);
+    }
+
+    .milaura-recos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* 4 colonnes Desktop */
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .milaura-section-title {
+      text-align: center;
+      font-family: var(--milaura-font-heading, "Playfair Display", serif);
+      font-size: 2.4rem;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+
+    /* --- CARTE VISION OS --- */
+    .milaura-recos-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.65); /* Effet verre */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(212, 175, 55, 0.25); /* Bordure Dorée Subtile */
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .milaura-recos-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(212, 175, 55, 0.8);
+      box-shadow: 0 15px 30px rgba(212, 175, 55, 0.15); /* Halo doré */
+    }
+
+    /* --- IMAGE --- */
+    .milaura-recos-image-wrapper {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    }
+
+    .milaura-recos-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .milaura-recos-card:hover .milaura-recos-image {
+      transform: scale(1.08);
+    }
+
+    /* --- CONTENU --- */
+    .milaura-recos-content {
+      padding: 20px;
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .milaura-recos-title {
+      font-family: var(--milaura-font-heading, serif);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #333;
+      margin: 0 0 8px 0;
+      line-height: 1.4;
+    }
+
+    /* --- PRIX & BADGES --- */
+    .milaura-recos-price-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .milaura-recos-price {
+      color: #c0a062;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .milaura-recos-compare {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    .milaura-recos-badge {
+      background: #fdf6e3;
+      color: #c0a062;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      border: 1px solid rgba(192, 160, 98, 0.3);
+    }
+
+    /* --- META (Pierre) --- */
+    .milaura-recos-meta {
+      font-size: 0.85rem;
+      color: #666;
+      border-top: 1px dashed rgba(0,0,0,0.05);
+      padding-top: 10px;
+      margin-top: auto;
+    }
+
+    .milaura-recos-meta-label {
+      color: #999;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-right: 4px;
+    }
+
+    /* --- MOBILE --- */
+    @media screen and (max-width: 768px) {
+      .milaura-recos-grid {
+        display: flex;
+        overflow-x: auto;
+        gap: 16px;
+        padding-bottom: 20px;
+        scroll-snap-type: x mandatory;
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .milaura-recos-card {
+        min-width: 220px;
+        scroll-snap-align: center;
+      }
+
+      .milaura-section-title {
+        font-size: 1.8rem;
+      }
     }
   {% endstyle %}
 
@@ -32,10 +182,7 @@
             {% continue %}
           {% endif %}
 
-          <a
-            href="{{ reco_product.url }}"
-            class="milaura-recos-card"
-          >
+          <a href="{{ reco_product.url }}" class="milaura-recos-card">
             <div class="milaura-recos-image-wrapper">
               {% if reco_product.featured_media %}
                 <img
