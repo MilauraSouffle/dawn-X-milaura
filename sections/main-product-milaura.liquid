@@ -1,8 +1,9 @@
 {% comment %}
-  MILAURA MASTERCLASS V15 - FINAL MOBILE FIX
-  - Marges gérées par l'éditeur Shopify.
-  - Titre Mobile : Au-dessus de la photo.
-  - Titre Desktop : Dans la colonne de droite.
+  MILAURA MASTERCLASS V16 - PROD READY
+  - Design : V15 (Validé)
+  - Patch A (Associé) : Sécurisation des listes de bénéfices (ignorer lignes vides).
+  - Mobile : Titre au-dessus de l'image.
+  - Desktop : Layout optimisé.
 {% endcomment %}
 
 {%- style -%}
@@ -141,7 +142,7 @@
 
   /* --- MOBILE SPECIFIQUE --- */
   @media screen and (max-width: 990px) {
-    .milaura-product-wrapper { grid-template-columns: 1fr; gap: 10px; }
+    .milaura-product-wrapper { grid-template-columns: 1fr; gap: 30px; }
 
     /* ASTUCE MOBILE : ON AFFICHE LE TITRE AU DESSUS */
     .mobile-title-wrapper { display: block; text-align: center; margin-bottom: 20px; }
@@ -237,7 +238,10 @@
             <h3>{{ section.settings.benefits_title }}</h3>
             {% assign benefits = product.metafields.custom.benefits | split: '•' %}
             {% for benefit in benefits %}
-              <div class="benefits-item"><span class="check-icon">✔</span> {{ benefit | strip }}</div>
+              {% assign b_clean = benefit | strip %}
+              {% if b_clean != blank %}
+                <div class="benefits-item"><span class="check-icon">✔</span> {{ b_clean }}</div>
+              {% endif %}
             {% endfor %}
           </div>
         {% endif %}
@@ -364,7 +368,7 @@
 
 {% schema %}
 {
-  "name": "Milaura Masterclass V15",
+  "name": "Milaura Masterclass V16",
   "settings": [
     {
       "type": "text",
@@ -398,7 +402,7 @@
       "step": 10,
       "unit": "px",
       "label": "Marge Haut",
-      "default": 180
+      "default": 60
     },
     {
       "type": "range",
@@ -411,6 +415,6 @@
       "default": 60
     }
   ],
-  "presets": [{ "name": "Milaura Masterclass V15" }]
+  "presets": [{ "name": "Milaura Masterclass V16" }]
 }
 {% endschema %}
