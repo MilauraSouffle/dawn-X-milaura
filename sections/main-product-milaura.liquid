@@ -1,8 +1,8 @@
 {% comment %}
-  MILAURA MASTERCLASS V9 - FINAL GOLD
-  - Titre : Cadre fin 1px, aéré.
+  MILAURA MASTERCLASS V10 - SHIMMER EDITION
+  - Titre : Full Width + Animation Souffle Argenté.
   - Hook : Fond Or Mat / Texte Noir.
-  - Mobile : Remonté à 100px.
+  - Mobile : Optimisé.
 {% endcomment %}
 
 {%- style -%}
@@ -18,23 +18,59 @@
     display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
   }
 
-  /* --- TITRE LUXE (Cadre Fin) --- */
-  .global-title-wrapper { text-align: center; margin-bottom: 50px; }
+  /* --- TITRE FULL WIDTH + ANIMATION SOUFFLE --- */
+  .global-title-wrapper {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+    max-width: 1200px; /* Largeur max du cadre */
+    margin-left: auto; margin-right: auto;
+  }
 
   .global-subtitle {
     display: block; text-align: center; text-transform: uppercase;
     letter-spacing: 3px; font-size: 0.9rem; color: #c0a062; font-weight: 700;
-    margin-bottom: 20px; /* Espace avant le cadre */
+    margin-bottom: 15px;
+  }
+
+  .global-product-title-container {
+    border: 1px solid #c0a062; /* BORDURE OR MAT */
+    background: rgba(255, 255, 255, 0.4); /* Fond léger */
+    padding: 20px 0; /* Hauteur du bandeau */
+    width: 100%; /* PREND TOUTE LA LARGEUR */
+    position: relative;
+    overflow: hidden; /* Pour couper l'animation qui dépasse */
+    border-radius: 4px; /* Très léger arrondi */
   }
 
   .global-product-title {
     font-family: var(--milaura-font-heading, "Playfair Display", serif);
     font-size: 3.5rem; line-height: 1.1; color: #1a1a1a;
-    display: inline-block; /* Le cadre colle au texte */
-    border: 1px solid #c0a062; /* BORDURE FINE OR MAT */
-    padding: 20px 60px; /* ESPACE AÉRÉ */
-    margin: 0;
-    background: rgba(255,255,255,0.5);
+    margin: 0; position: relative; z-index: 2;
+  }
+
+  /* L'ANIMATION SOUFFLE (SHIMMER) */
+  .global-product-title-container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.8) 50%,
+      transparent 100%
+    );
+    transform: skewX(-25deg);
+    animation: shimmer 4s infinite; /* Vitesse du souffle */
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  @keyframes shimmer {
+    0% { left: -100%; }
+    20% { left: 200%; } /* Passe vite */
+    100% { left: 200%; } /* Pause longue */
   }
 
   /* --- 2. MEDIA (GAUCHE) & VARIANTES --- */
@@ -144,8 +180,9 @@
 
   /* --- MOBILE --- */
   @media screen and (max-width: 990px) {
-    .milaura-product-section { padding-top: 100px; } /* REMONTÉE DRASTIQUE */
-    .global-product-title { font-size: 2.2rem; padding: 15px 30px; border-width: 1px; } /* Cadre adapté mobile */
+    .milaura-product-section { padding-top: 100px; }
+    .global-product-title { font-size: 2.2rem; }
+    .global-product-title-container { padding: 15px 0; } /* Ajustement mobile */
     .milaura-product-wrapper { grid-template-columns: 1fr; gap: 30px; }
     .split-layout-container { grid-template-columns: 1fr; gap: 20px; }
     .price-offer-split { grid-template-columns: 1fr; text-align: center; gap: 15px;}
@@ -167,7 +204,10 @@
     {% if product.metafields.custom.subtitle %}
       <span class="global-subtitle">{{ product.metafields.custom.subtitle }}</span>
     {% endif %}
-    <h1 class="global-product-title">{{ product.title }}</h1>
+
+    <div class="global-product-title-container">
+      <h1 class="global-product-title">{{ product.title }}</h1>
+    </div>
   </div>
 
   <div class="milaura-product-wrapper">
@@ -355,7 +395,7 @@
 
 {% schema %}
 {
-  "name": "Milaura Masterclass V9",
+  "name": "Milaura Masterclass V10",
   "settings": [
     {
       "type": "text",
@@ -402,6 +442,6 @@
       "default": 60
     }
   ],
-  "presets": [{ "name": "Milaura Masterclass V9" }]
+  "presets": [{ "name": "Milaura Masterclass V10" }]
 }
 {% endschema %}
