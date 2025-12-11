@@ -1,15 +1,15 @@
 {% comment %}
-  MILAURA MASTERCLASS V13 - FINAL RIGHT
-  - Titre : Bulle Dorée Mat (Style Hook) dans la colonne de droite.
-  - Plus de bandeau haut.
-  - Padding corrigé.
+  MILAURA MASTERCLASS V15 - FINAL MOBILE FIX
+  - Marges gérées par l'éditeur Shopify.
+  - Titre Mobile : Au-dessus de la photo.
+  - Titre Desktop : Dans la colonne de droite.
 {% endcomment %}
 
 {%- style -%}
   /* --- 1. LAYOUT GLOBAL --- */
   .milaura-product-section {
-    padding-top: {{ section.settings.padding_top | default: 10 }}px; /* ON REVIENT A LA NORMALE */
-    padding-bottom: {{ section.settings.padding_bottom | default: 10 }}px;
+    padding-top: {{ section.settings.padding_top | default: 60 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
     background: linear-gradient(180deg, #fff 0%, #faf9f6 100%);
   }
 
@@ -17,6 +17,28 @@
     max-width: 1400px; margin: 0 auto; padding: 0 30px;
     display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
   }
+
+  /* --- STYLE DU TITRE BULLE DORÉE --- */
+  .product-title-bubble {
+    background: #c0a062; /* OR MAT */
+    color: #000; /* NOIR */
+    font-family: var(--milaura-font-heading, "Playfair Display", serif);
+    font-size: 2.2rem;
+    line-height: 1.2;
+    padding: 15px 30px;
+    border-radius: 50px;
+    display: inline-block;
+    box-shadow: 0 8px 20px rgba(192, 160, 98, 0.2);
+    margin: 0 0 10px 0;
+  }
+  .product-subtitle {
+    text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;
+    color: #c0a062; font-weight: 700; margin-bottom: 5px; display: block;
+  }
+
+  /* GESTION AFFICHAGE MOBILE/DESKTOP */
+  .mobile-title-wrapper { display: none; } /* Caché sur PC */
+  .desktop-title-wrapper { display: block; } /* Visible sur PC */
 
   /* --- 2. COLONNE GAUCHE (MEDIA) --- */
   .product-left-col { position: sticky; top: 120px; }
@@ -49,26 +71,6 @@
 
   /* --- 3. COLONNE DROITE (INFOS) --- */
   .product-info-wrapper { color: #333; font-size: 1.1rem; display: flex; flex-direction: column; gap: 20px; }
-
-  /* TITRE BULLE DORÉE (STYLE "BOOSTEZ") */
-  .title-bubble-wrapper { text-align: left; margin-bottom: 10px; }
-  .product-title-bubble {
-    background: #c0a062; /* OR MAT */
-    color: #000; /* NOIR */
-    font-family: var(--milaura-font-heading, "Playfair Display", serif);
-    font-size: 2.2rem; /* Gros mais pas géant */
-    line-height: 1.2;
-    padding: 15px 30px;
-    border-radius: 50px; /* Forme Pilule */
-    display: inline-block;
-    box-shadow: 0 8px 20px rgba(192, 160, 98, 0.2);
-    margin: 0;
-  }
-
-  .product-subtitle {
-    text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;
-    color: #c0a062; font-weight: 700; margin-bottom: 5px; display: block;
-  }
 
   /* --- 4. METAFIELDS COTE A COTE --- */
   .split-layout-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 25px; align-items: start; }
@@ -106,14 +108,10 @@
   .price-box-final { background: #fdfbf7; border: 1px solid #e8e0c9; padding: 15px; border-radius: 12px; text-align: center; }
   .final-price { font-size: 2rem; font-weight: 700; color: #000; display:block; line-height:1; font-family: var(--milaura-font-heading, serif);}
 
-  /* HOOK : FOND OR MAT - TEXTE NOIR */
   .offer-hook-container { text-align: center; }
   .offer-hook-badge {
-    background: #c0a062; /* OR MAT */
-    color: #000000; /* NOIR */
-    font-weight: 800; font-size: 0.9rem;
-    padding: 10px 20px; border-radius: 8px;
-    display: inline-block;
+    background: #c0a062; color: #000000; font-weight: 800; font-size: 0.9rem;
+    padding: 10px 20px; border-radius: 8px; display: inline-block;
     text-transform: uppercase; letter-spacing: 1px;
     box-shadow: 0 4px 10px rgba(192, 160, 98, 0.3);
   }
@@ -141,10 +139,16 @@
   .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s; opacity: 0; padding: 0; font-size: 1.1rem; line-height: 1.7; }
   .accordion-content.open { opacity: 1; padding-bottom: 25px; }
 
-  /* --- MOBILE --- */
+  /* --- MOBILE SPECIFIQUE --- */
   @media screen and (max-width: 990px) {
-    .milaura-product-section { padding-top: 30px; } /* REMONTÉ STANDARD */
     .milaura-product-wrapper { grid-template-columns: 1fr; gap: 30px; }
+
+    /* ASTUCE MOBILE : ON AFFICHE LE TITRE AU DESSUS */
+    .mobile-title-wrapper { display: block; text-align: center; margin-bottom: 20px; }
+    .desktop-title-wrapper { display: none; }
+
+    .product-title-bubble { font-size: 1.8rem; padding: 10px 20px; width: 100%; box-sizing: border-box; }
+
     .split-layout-container { grid-template-columns: 1fr; gap: 20px; }
     .price-offer-split { grid-template-columns: 1fr; text-align: center; gap: 15px;}
     .bundle-selector-v6 { grid-template-columns: 1fr; }
@@ -162,6 +166,13 @@
 
 <section class="milaura-product-section" id="MainProduct-{{ section.id }}">
   <div class="milaura-product-wrapper">
+    <div class="mobile-title-wrapper">
+      {% if product.metafields.custom.subtitle %}
+        <span class="product-subtitle">{{ product.metafields.custom.subtitle }}</span>
+      {% endif %}
+      <h1 class="product-title-bubble">{{ product.title }}</h1>
+    </div>
+
     <div class="product-left-col">
       <div class="main-image-wrapper">
         {% if section.settings.sticker_text != blank %}
@@ -198,7 +209,7 @@
     </div>
 
     <div class="product-info-wrapper">
-      <div class="title-bubble-wrapper">
+      <div class="desktop-title-wrapper title-bubble-wrapper">
         {% if product.metafields.custom.subtitle %}
           <span class="product-subtitle">{{ product.metafields.custom.subtitle }}</span>
         {% endif %}
@@ -353,7 +364,7 @@
 
 {% schema %}
 {
-  "name": "Milaura Masterclass V13",
+  "name": "Milaura Masterclass V15",
   "settings": [
     {
       "type": "text",
@@ -383,11 +394,11 @@
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 100,
-      "step": 4,
+      "max": 300,
+      "step": 10,
       "unit": "px",
       "label": "Marge Haut",
-      "default": 60
+      "default": 180
     },
     {
       "type": "range",
@@ -400,6 +411,6 @@
       "default": 60
     }
   ],
-  "presets": [{ "name": "Milaura Masterclass V13" }]
+  "presets": [{ "name": "Milaura Masterclass V15" }]
 }
 {% endschema %}
