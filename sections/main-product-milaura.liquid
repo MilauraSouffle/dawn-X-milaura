@@ -1,822 +1,481 @@
-{% comment %} Section produit Milaura Masterclass - isolée de la section d'origine {% endcomment %}
+{% comment %}
+  MILAURA MASTERCLASS - FICHE PRODUIT VISION OS
+  Design : Luxe, Glassmorphism, Gold, Conversion High-End.
+{% endcomment %}
 
-{% style %}
-  #MilauraProduct-{{ section.id }} {
-    width: 100%;
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
-    background: transparent;
+{%- style -%}
+  /* --- LAYOUT GLOBAL --- */
+  .milaura-product-section {
+    padding-top: {{ section.settings.padding_top | default: 40 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | default: 40 }}px;
+    background: linear-gradient(180deg, #fff 0%, #faf9f6 100%); /* Fond subtil */
   }
 
-  #MilauraProduct-{{ section.id }} .milaura-product-wrapper {
-    max-width: 1400px;
-    width: 92%;
+  .milaura-product-wrapper {
+    max-width: 1300px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(192, 160, 98, 0.4);
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 50/50 Desktop */
+    gap: 60px;
+    align-items: start;
+  }
+
+  /* --- COLONNE GAUCHE (MEDIA) --- */
+  .product-media-gallery {
+    position: sticky;
+    top: 120px; /* Sticky au scroll */
+  }
+
+  .main-image-wrapper {
     border-radius: 30px;
-    box-shadow: 0 20px 50px rgba(192, 160, 98, 0.15);
-    padding: var(--milaura-spacing-xl) var(--milaura-spacing-lg);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08); /* Ombre douce luxe */
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    position: relative;
+    aspect-ratio: 4 / 5; /* Ratio Portrait élégant */
+    background: #f4f4f4;
+  }
+
+  .main-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+
+  .main-image-wrapper:hover .main-product-image {
+    transform: scale(1.05);
+  }
+
+  /* --- COLONNE DROITE (INFOS) --- */
+  .product-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* 1. HEADER */
+  .product-subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    color: #c0a062;
+    font-weight: 700;
+    margin-bottom: -10px;
+  }
+
+  .product-title {
+    font-family: var(--milaura-font-heading, "Playfair Display", serif);
+    font-size: 3rem;
+    line-height: 1.1;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  .product-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+  }
+
+  .product-price {
+    font-size: 1.8rem;
+    color: #c0a062; /* OR */
+    font-weight: 700;
+    font-family: var(--milaura-font-heading, serif);
+  }
+
+  .product-price-compare {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 1.2rem;
+  }
+
+  .price-tax-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: -5px;
+  }
+
+  /* 2. PREUVE SOCIALE */
+  .reviews-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(253, 246, 227, 0.6);
+    padding: 8px 16px;
+    border-radius: 50px;
+    width: fit-content;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+  }
+  .stars-svg { width: 80px; height: auto; }
+  .reviews-text { font-size: 0.9rem; color: #555; font-weight: 500; }
+
+  /* 3. CARTE D'IDENTITÉ (Vision OS) */
+  .identity-card {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: 15px 20px;
+    margin-top: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  }
+
+  .id-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    flex: 1;
+    border-right: 1px solid rgba(0,0,0,0.05);
+  }
+  .id-item:last-child { border-right: none; }
+
+  .id-label { font-size: 0.7rem; text-transform: uppercase; color: #888; letter-spacing: 1px; }
+  .id-value { font-weight: 600; color: #1a1a1a; font-size: 0.95rem; }
+
+  /* 4. BENEFICES & VERTUS */
+  .benefits-block { margin-top: 10px; }
+  .benefits-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 12px; font-family: var(--milaura-font-heading, serif); }
+  .benefits-list { list-style: none; padding: 0; margin: 0; }
+  .benefits-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.5;
+  }
+  .check-icon { color: #c0a062; font-size: 1.1rem; }
+
+  /* 5. URGENCE */
+  .urgency-box {
+    background: #fff;
+    border: 1px solid #f0e6d2;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 10px;
+  }
+  .urgency-text { font-weight: 700; color: #d32f2f; margin-bottom: 8px; display: block; font-size: 0.95rem; }
+  .progress-bar-bg { width: 100%; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; }
+  .progress-bar-fill {
+    height: 100%; width: 85%;
+    background: linear-gradient(90deg, #c0a062, #eacda3);
+    border-radius: 10px;
+    animation: loadBar 2s ease-out;
+  }
+  @keyframes loadBar { from { width: 0; } to { width: 85%; } }
+
+  /* 6. FORMULAIRE & CTA */
+  .product-form { margin-top: 20px; }
+
+  .variant-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+  .variant-btn {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .variant-btn.selected {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #d4af37 0%, #c5a059 100%); /* LINGOT D'OR */
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 18px;
+    border: none;
+    border-radius: 100px; /* Pillule */
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(197, 160, 89, 0.4);
+    transition: all 0.3s;
     position: relative;
     overflow: hidden;
   }
 
-  #MilauraProduct-{{ section.id }} .milaura-product-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--milaura-spacing-xl);
-    align-items: start;
+  .add-to-cart-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(197, 160, 89, 0.5);
+    background: linear-gradient(135deg, #e5c14e 0%, #d4af37 100%);
   }
 
-  /* Colonne gauche - Médias */
-  #MilauraProduct-{{ section.id }} .milaura-product-media {
-    position: sticky;
-    top: calc(var(--header-height-offset) + var(--milaura-spacing-md));
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-product-image-wrapper {
-    border: 3px solid var(--milaura-gold);
-    border-radius: var(--milaura-border-radius);
-    box-shadow: var(--milaura-shadow-md);
-    overflow: hidden;
-    background: #ffffff;
-    margin-bottom: var(--milaura-spacing-md);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-product-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    aspect-ratio: 1;
-    object-fit: cover;
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-product-thumbnails {
-    display: flex;
-    gap: var(--milaura-spacing-sm);
-    flex-wrap: wrap;
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-thumbnail {
-    width: 80px;
-    height: 80px;
-    border: 2px solid transparent;
-    border-radius: var(--milaura-border-radius-sm);
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-thumbnail:hover,
-  #MilauraProduct-{{ section.id }} .milaura-thumbnail.is-active {
-    border-color: var(--milaura-gold);
-    transform: scale(1.05);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Colonne droite - Informations */
-  #MilauraProduct-{{ section.id }} .milaura-product-info {
-    display: flex;
-    flex-direction: column;
-    gap: var(--milaura-spacing-lg);
-  }
-
-  /* Header */
-  #MilauraProduct-{{ section.id }} .milaura-product-header h1 {
-    font-family: var(--milaura-font-heading);
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--milaura-text);
-    margin-bottom: var(--milaura-spacing-xs);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-product-subtitle {
-    font-family: var(--milaura-font-body);
-    font-size: 1.1rem;
-    font-weight: 400;
-    color: var(--milaura-text-light);
-    margin-bottom: var(--milaura-spacing-md);
-    line-height: 1.6;
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-product-price {
-    font-family: var(--milaura-font-heading);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--milaura-gold);
-    margin-bottom: var(--milaura-spacing-xs);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-product-price-compare {
-    text-decoration: line-through;
-    color: var(--milaura-text-light);
-    font-size: 1.5rem;
-    margin-left: var(--milaura-spacing-sm);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-product-taxes {
-    font-size: 0.9rem;
-    color: var(--milaura-text-light);
-    margin-bottom: var(--milaura-spacing-md);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-product-rating {
-    display: flex;
-    align-items: center;
-    gap: var(--milaura-spacing-sm);
-    margin-bottom: var(--milaura-spacing-md);
-    font-family: var(--milaura-font-body);
-    font-size: 0.95rem;
-    color: var(--milaura-text-light);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-stars {
-    display: flex;
-    gap: 4px;
-    color: var(--milaura-gold);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-stars .star {
-    font-size: 1.2rem;
-  }
-
-  /* Bloc Identité Pierre */
-  #MilauraProduct-{{ section.id }} .milaura-stone-identity {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: var(--milaura-border-radius);
-    padding: var(--milaura-spacing-md);
-    box-shadow: var(--milaura-shadow-sm);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-stone-identity-item {
-    display: flex;
-    align-items: center;
-    gap: var(--milaura-spacing-sm);
-    margin-bottom: var(--milaura-spacing-sm);
-    font-family: var(--milaura-font-body);
-    font-size: 1rem;
-    color: var(--milaura-text);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-stone-identity-item:last-child {
-    margin-bottom: 0;
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-stone-identity-item strong {
-    color: var(--milaura-gold);
-    font-weight: 700;
-  }
-
-  /* Bloc Bénéfices */
-  #MilauraProduct-{{ section.id }} .milaura-benefits-block h3 {
-    font-family: var(--milaura-font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--milaura-text);
-    margin-bottom: var(--milaura-spacing-sm);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-benefits-content {
-    font-family: var(--milaura-font-body);
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--milaura-text);
-  }
-
-  /* Bloc Urgence & Rassurance */
-  #MilauraProduct-{{ section.id }} .milaura-urgency-block {
-    background: rgba(192, 160, 98, 0.1);
-    border-left: 3px solid var(--milaura-gold);
-    border-radius: var(--milaura-border-radius-sm);
-    padding: var(--milaura-spacing-md);
-    margin-bottom: var(--milaura-spacing-md);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-urgency-text {
-    font-family: var(--milaura-font-body);
-    font-weight: 600;
-    color: var(--milaura-text);
-    margin: 0;
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-reassurance-text {
-    font-family: var(--milaura-font-body);
-    font-size: 0.9rem;
-    color: var(--milaura-text-light);
-    margin-top: var(--milaura-spacing-sm);
-    text-align: center;
-  }
-
-  /* Formulaire d'achat */
-  #MilauraProduct-{{ section.id }} .milaura-product-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--milaura-spacing-md);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-variant-picker {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--milaura-spacing-sm);
-    margin-bottom: var(--milaura-spacing-md);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-variant-option {
-    padding: 12px 24px;
-    border: 2px solid rgba(192, 160, 98, 0.3);
-    border-radius: var(--milaura-border-radius-lg);
-    background: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: var(--milaura-font-body);
-    font-weight: 600;
-    color: var(--milaura-text);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-variant-option:hover {
-    border-color: var(--milaura-gold);
-    background: rgba(255, 255, 255, 1);
-    transform: translateY(-2px);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-variant-option.is-selected {
-    background: var(--milaura-gold);
-    color: white;
-    border-color: var(--milaura-gold);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-add-to-cart {
-    width: 100%;
-    padding: 20px 50px;
-    background: var(--milaura-gold);
-    color: white;
-    font-family: var(--milaura-font-heading);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 1rem;
-    border: none;
-    border-radius: var(--milaura-border-radius-lg);
-    cursor: pointer;
-    box-shadow: var(--milaura-shadow-md);
-    transition: all 0.3s ease;
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-add-to-cart:hover {
-    background: var(--milaura-gold-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--milaura-shadow-lg);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-add-to-cart:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-payment-note {
+  .reassurance-line {
     text-align: center;
     font-size: 0.85rem;
-    color: var(--milaura-text-light);
-    font-family: var(--milaura-font-body);
-  }
-
-  /* Accordéons */
-  #MilauraProduct-{{ section.id }} .milaura-accordions {
+    color: #666;
+    margin-top: 12px;
     display: flex;
-    flex-direction: column;
-    gap: var(--milaura-spacing-sm);
-    margin-top: var(--milaura-spacing-md);
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
 
-  #MilauraProduct-{{ section.id }} .milaura-accordion {
-    border: 1px solid rgba(192, 160, 98, 0.2);
-    border-radius: var(--milaura-border-radius-sm);
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.5);
-  }
+  /* 7. ACCORDEONS RITUALS */
+  .accordion-group { margin-top: 30px; border-top: 1px solid #eaeaea; }
+  .accordion-item { border-bottom: 1px solid #eaeaea; }
 
-  #MilauraProduct-{{ section.id }} .milaura-accordion-header {
-    padding: var(--milaura-spacing-md);
+  .accordion-header {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 20px 0;
+    font-family: var(--milaura-font-heading, serif);
+    font-size: 1.1rem;
+    color: #1a1a1a;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: var(--milaura-font-heading);
-    font-weight: 700;
-    color: var(--milaura-text);
-    transition: all 0.3s ease;
   }
 
-  #MilauraProduct-{{ section.id }} .milaura-accordion-header:hover {
-    background: rgba(192, 160, 98, 0.1);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-accordion-icon {
-    transition: transform 0.3s ease;
-    font-size: 1.2rem;
-    color: var(--milaura-gold);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-accordion.is-open .milaura-accordion-icon {
-    transform: rotate(180deg);
-  }
-
-  #MilauraProduct-{{ section.id }} .milaura-accordion-content {
+  .accordion-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.4s ease;
+    opacity: 0;
   }
 
-  #MilauraProduct-{{ section.id }} .milaura-accordion.is-open .milaura-accordion-content {
-    max-height: 1000px;
+  .accordion-content.open {
+    opacity: 1;
+    padding-bottom: 20px;
+    color: #555;
+    line-height: 1.6;
   }
 
-  #MilauraProduct-{{ section.id }} .milaura-accordion-body {
-    padding: 0 var(--milaura-spacing-md) var(--milaura-spacing-md);
-    font-family: var(--milaura-font-body);
-    line-height: 1.7;
-    color: var(--milaura-text);
-  }
+  .icon-plus { font-size: 1.2rem; transition: transform 0.3s; }
+  .accordion-header.active .icon-plus { transform: rotate(45deg); }
 
-  /* Responsive */
-  @media screen and (max-width: 1024px) {
-    #MilauraProduct-{{ section.id }} .milaura-product-wrapper {
-      width: calc(100% - 2 * var(--milaura-spacing-sm));
-      padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
-      border-radius: 25px;
+  /* --- MOBILE RESPONSIVE --- */
+  @media screen and (max-width: 990px) {
+    .milaura-product-wrapper {
+      grid-template-columns: 1fr; /* Stack */
+      gap: 30px;
     }
-
-    #MilauraProduct-{{ section.id }} .milaura-product-grid {
-      gap: var(--milaura-spacing-lg);
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    #MilauraProduct-{{ section.id }} .milaura-product-wrapper {
-      width: calc(100% - 2 * var(--milaura-spacing-sm));
-      padding: calc(var(--milaura-spacing-lg) * 0.7) calc(var(--milaura-spacing-md) * 0.7);
-      border-radius: 14px;
-    }
-
-    #MilauraProduct-{{ section.id }} .milaura-product-grid {
-      grid-template-columns: 1fr;
-      gap: var(--milaura-spacing-md);
-    }
-
-    #MilauraProduct-{{ section.id }} .milaura-product-media {
-      position: static;
-    }
-
-    #MilauraProduct-{{ section.id }} .milaura-product-header h1 {
-      font-size: 2rem;
-    }
-
-    #MilauraProduct-{{ section.id }} .milaura-product-price {
-      font-size: 1.5rem;
+    .main-image-wrapper { aspect-ratio: 1 / 1; }
+    .product-title { font-size: 2.2rem; }
+    .product-media-gallery { position: static; }
+    .add-to-cart-btn {
+        position: sticky;
+        bottom: 20px;
+        z-index: 100;
+        width: calc(100% - 40px);
+        left: 20px;
+        margin: 0 auto;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
   }
-{% endstyle %}
+{%- endstyle -%}
 
-<section id="MilauraProduct-{{ section.id }}" class="milaura-product-section">
+<section class="milaura-product-section" data-section-id="{{ section.id }}">
   <div class="milaura-product-wrapper">
-    <div class="milaura-product-grid">
-      <!-- Colonne gauche - Médias -->
-      <div class="milaura-product-media">
-        <div class="milaura-product-image-wrapper">
-          {% if product.featured_media %}
-            <img
-              src="{{ product.featured_media | image_url: width: 800 }}"
-              alt="{{ product.featured_media.alt | escape }}"
-              class="milaura-product-image"
-              id="milaura-main-image-{{ section.id }}"
-              width="800"
-              height="800"
-              loading="lazy"
-            >
-          {% else %}
-            {{ 'product-1' | placeholder_svg_tag: 'milaura-product-image' }}
-          {% endif %}
-        </div>
-        {% if product.media.size > 1 %}
-          <div class="milaura-product-thumbnails">
-            {% for media in product.media limit: 5 %}
-              <div
-                class="milaura-thumbnail {% if forloop.first %}is-active{% endif %}"
-                data-image="{{ media | image_url: width: 800 }}"
-              >
-                <img
-                  src="{{ media | image_url: width: 150 }}"
-                  alt="{{ media.alt | escape }}"
-                  width="150"
-                  height="150"
-                  loading="lazy"
-                >
-              </div>
-            {% endfor %}
-          </div>
+    <div class="product-media-gallery">
+      <div class="main-image-wrapper">
+        {% if product.featured_media %}
+          <img
+            src="{{ product.featured_media | image_url: width: 1000 }}"
+            alt="{{ product.title | escape }}"
+            class="main-product-image"
+            width="1000"
+            height="1000"
+            loading="eager"
+          >
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'main-product-image' }}
         {% endif %}
       </div>
+    </div>
 
-      <!-- Colonne droite - Informations -->
-      <div class="milaura-product-info">
-        <!-- Header : Titre et sous-titre -->
-        <div class="milaura-product-header">
-          <h1>{{ product.title }}</h1>
-          {% if product.metafields.custom.subtitle %}
-            <p class="milaura-product-subtitle">{{ product.metafields.custom.subtitle }}</p>
+    <div class="product-info-wrapper">
+      <div class="product-header">
+        {% if product.metafields.custom.subtitle %}
+          <div class="product-subtitle">{{ product.metafields.custom.subtitle }}</div>
+        {% endif %}
+        <h1 class="product-title">{{ product.title }}</h1>
+
+        <div class="reviews-badge">
+          <svg class="stars-svg" viewBox="0 0 100 20" fill="#c0a062">
+            <path d="M10 1L13 7L19 8L15 12L16 18L10 15L4 18L5 12L1 8L7 7L10 1Z"/>
+            <path d="M30 1L33 7L39 8L35 12L36 18L30 15L24 18L25 12L21 8L27 7L30 1Z"/>
+            <path d="M50 1L53 7L59 8L55 12L56 18L50 15L44 18L45 12L41 8L47 7L50 1Z"/>
+            <path d="M70 1L73 7L79 8L75 12L76 18L70 15L64 18L65 12L61 8L67 7L70 1Z"/>
+            <path d="M90 1L93 7L99 8L95 12L96 18L90 15L84 18L85 12L81 8L87 7L90 1Z"/>
+          </svg>
+          <span class="reviews-text">4.9/5 (120+ avis)</span>
+        </div>
+
+        <div class="product-price-row">
+          <span class="product-price">{{ product.price | money }}</span>
+          {% if product.compare_at_price > product.price %}
+            <span class="product-price-compare">{{ product.compare_at_price | money }}</span>
           {% endif %}
         </div>
+        <div class="price-tax-note">Taxes incluses. Livraison calculée à la caisse.</div>
+      </div>
 
-        <!-- Bloc rating / preuve sociale -->
-        <div class="milaura-product-rating">
-          <div class="milaura-stars">
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
-          </div>
-          <span>4,9/5 basé sur plus de 120 avis clients</span>
-        </div>
-
-        <!-- Bloc prix -->
-        <div class="milaura-product-price">
-          {% if product.selected_or_first_available_variant.compare_at_price
-              > product.selected_or_first_available_variant.price
-          %}
-            <span class="milaura-product-price-compare">
-              {{- product.selected_or_first_available_variant.compare_at_price | money -}}
-            </span>
+      {% if product.metafields.custom.stone or product.metafields.custom.quality or product.metafields.custom.origin %}
+        <div class="identity-card">
+          {% if product.metafields.custom.stone %}
+            <div class="id-item">
+              <span class="id-label">Pierre</span>
+              <span class="id-value">💎 {{ product.metafields.custom.stone }}</span>
+            </div>
           {% endif %}
-          {{ product.selected_or_first_available_variant.price | money }}
+          {% if product.metafields.custom.quality %}
+            <div class="id-item">
+              <span class="id-label">Qualité</span>
+              <span class="id-value">✨ {{ product.metafields.custom.quality }}</span>
+            </div>
+          {% endif %}
+          {% if product.metafields.custom.origin %}
+            <div class="id-item">
+              <span class="id-label">Origine</span>
+              <span class="id-value">🌍 {{ product.metafields.custom.origin }}</span>
+            </div>
+          {% endif %}
         </div>
-        <p class="milaura-product-taxes">Taxes incluses</p>
+      {% endif %}
 
-        <!-- Bloc d'urgence -->
-        {% if section.settings.urgency_text != blank %}
-          <div class="milaura-urgency-block">
-            <p class="milaura-urgency-text">{{ section.settings.urgency_text }}</p>
+      {% if product.metafields.custom.benefits %}
+        <div class="benefits-block">
+          <div class="benefits-title">{{ section.settings.benefits_title }}</div>
+          <ul class="benefits-list">
+            {% assign benefits = product.metafields.custom.benefits | split: '•' %}
+            {% for benefit in benefits %}
+              <li class="benefits-item"><span class="check-icon">✔</span> {{ benefit | strip }}</li>
+            {% else %}
+              <li class="benefits-item"><span class="check-icon">✔</span> {{ product.metafields.custom.benefits }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if section.settings.urgency_text != blank %}
+        <div class="urgency-box">
+          <span class="urgency-text">{{ section.settings.urgency_text }}</span>
+          <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+        </div>
+      {% endif %}
+
+      {% form 'product', product, class: 'product-form' %}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        <button type="submit" name="add" class="add-to-cart-btn">
+          Ajouter au panier • {{ product.price | money }}
+        </button>
+
+        {% if section.settings.reassurance_text != blank %}
+          <div class="reassurance-line">
+            {{ section.settings.reassurance_text }}
           </div>
         {% endif %}
+      {% endform %}
 
-        <!-- Formulaire d'achat -->
-        <form
-          action="{{ routes.cart_add_url }}"
-          method="post"
-          enctype="multipart/form-data"
-          class="milaura-product-form"
-          id="milaura-product-form-{{ section.id }}"
-        >
-          <input
-            type="hidden"
-            name="id"
-            value="{{ product.selected_or_first_available_variant.id }}"
-            id="milaura-variant-id-{{ section.id }}"
-          >
-
-          {% unless product.has_only_default_variant %}
-            <div class="milaura-variant-picker">
-              {% for option in product.options_with_values %}
-                <div class="milaura-variant-group">
-                  <label style="display: block; margin-bottom: var(--milaura-spacing-xs); font-weight: 600; color: var(--milaura-text);">
-                    {{ option.name }}
-                  </label>
-                  <div style="display: flex; flex-wrap: wrap; gap: var(--milaura-spacing-sm);">
-                    {% for value in option.values %}
-                      <button
-                        type="button"
-                        class="milaura-variant-option {% if option.selected_value == value %}is-selected{% endif %}"
-                        data-option="{{ option.name }}"
-                        data-value="{{ value }}"
-                      >
-                        {{ value }}
-                      </button>
-                    {% endfor %}
-                  </div>
-                </div>
-              {% endfor %}
-            </div>
-          {% endunless %}
-
-          <div class="milaura-quantity-wrapper" style="margin-bottom: var(--milaura-spacing-md);">
-            <label
-              for="Quantity-{{ section.id }}"
-              style="display: block; margin-bottom: var(--milaura-spacing-xs); font-weight: 600; color: var(--milaura-text);"
-            >
-              Quantité
-            </label>
-            {% render 'quantity-input', variant: product.selected_or_first_available_variant %}
-          </div>
-
-          <button type="submit" class="milaura-add-to-cart" id="milaura-add-to-cart-{{ section.id }}">
-            AJOUTER AU PANIER
+      <div class="accordion-group">
+        <div class="accordion-item">
+          <button class="accordion-header active" onclick="toggleAccordion(this)">
+            <span>Description & Histoire</span>
+            <span class="icon-plus">+</span>
           </button>
-          {% if section.settings.reassurance_text != blank %}
-            <p class="milaura-reassurance-text">{{ section.settings.reassurance_text }}</p>
-          {% endif %}
-        </form>
-
-        <!-- Bloc Identité Pierre -->
-        {% if product.metafields.custom.stone
-          or product.metafields.custom.quality
-          or product.metafields.custom.origin
-        %}
-          <div class="milaura-stone-identity">
-            {% if product.metafields.custom.stone %}
-              <div class="milaura-stone-identity-item">
-                <span>💎</span>
-                <strong>Pierre :</strong>
-                <span>{{ product.metafields.custom.stone }}</span>
-              </div>
-            {% endif %}
-            {% if product.metafields.custom.quality %}
-              <div class="milaura-stone-identity-item">
-                <span>✨</span>
-                <strong>Qualité :</strong>
-                <span>{{ product.metafields.custom.quality }}</span>
-              </div>
-            {% endif %}
-            {% if product.metafields.custom.origin %}
-              <div class="milaura-stone-identity-item">
-                <span>🌍</span>
-                <strong>Provenance :</strong>
-                <span>{{ product.metafields.custom.origin }}</span>
-              </div>
-            {% endif %}
-          </div>
-        {% endif %}
-
-        <!-- Bloc Bénéfices -->
-        {% if product.metafields.custom.benefits %}
-          <div class="milaura-benefits-block">
-            <h3>{{ section.settings.benefits_title | default: 'Pourquoi elle est faite pour toi :' }}</h3>
-            <div class="milaura-benefits-content">
-              {% assign benefits_text = product.metafields.custom.benefits | strip %}
-              {% if benefits_text contains '\n' or benefits_text contains '<br>' %}
-                <ul>
-                  {% assign benefits_lines = benefits_text | split: '\n' %}
-                  {% for line in benefits_lines %}
-                    {% assign clean_line = line | strip %}
-                    {% if clean_line != blank %}
-                      <li>{{ clean_line }}</li>
-                    {% endif %}
-                  {% endfor %}
-                </ul>
-              {% else %}
-                <p>{{ product.metafields.custom.benefits }}</p>
-              {% endif %}
-            </div>
-          </div>
-        {% endif %}
-
-        <!-- Accordéons -->
-        <div class="milaura-accordions">
-          <div class="milaura-accordion {% if section.settings.accordion_1_open %}is-open{% endif %}">
-            <div class="milaura-accordion-header">
-              <span>Description & Histoire</span>
-              <span class="milaura-accordion-icon">▼</span>
-            </div>
-            <div class="milaura-accordion-content">
-              <div class="milaura-accordion-body">
-                {{ product.description }}
-              </div>
-            </div>
-          </div>
-
-          <div class="milaura-accordion">
-            <div class="milaura-accordion-header">
-              <span>Détails techniques</span>
-              <span class="milaura-accordion-icon">▼</span>
-            </div>
-            <div class="milaura-accordion-content">
-              <div class="milaura-accordion-body">
-                {{
-                  section.settings.technical_details
-                  | default: 'Poids, dimensions et informations complémentaires à venir.'
-                }}
-              </div>
-            </div>
-          </div>
-
-          <div class="milaura-accordion">
-            <div class="milaura-accordion-header">
-              <span>Livraison & retours</span>
-              <span class="milaura-accordion-icon">▼</span>
-            </div>
-            <div class="milaura-accordion-content">
-              <div class="milaura-accordion-body">
-                {{
-                  section.settings.shipping_returns
-                  | default: 'Informations de livraison et politique de retours à venir.'
-                }}
-              </div>
-            </div>
-          </div>
+          <div class="accordion-content open" style="max-height: 500px;">{{ product.description }}</div>
         </div>
+
+        {% if section.settings.technical_details != blank %}
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Détails techniques</span>
+              <span class="icon-plus">+</span>
+            </button>
+            <div class="accordion-content">
+              {{ section.settings.technical_details }}
+            </div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.shipping_returns != blank %}
+          <div class="accordion-item">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Livraison & Retours</span>
+              <span class="icon-plus">+</span>
+            </button>
+            <div class="accordion-content">
+              {{ section.settings.shipping_returns }}
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>
 </section>
 
 <script>
-  (function() {
-    const sectionId = '{{ section.id }}';
-    const form = document.getElementById('milaura-product-form-' + sectionId);
-    const variantInput = document.getElementById('milaura-variant-id-' + sectionId);
-    const addToCartBtn = document.getElementById('milaura-add-to-cart-' + sectionId);
-    const mainImage = document.getElementById('milaura-main-image-' + sectionId);
-    const priceElement = document.querySelector('#MilauraProduct-' + sectionId + ' .milaura-product-price');
-
-    // Gestion des thumbnails
-    const thumbnails = document.querySelectorAll('#MilauraProduct-' + sectionId + ' .milaura-thumbnail');
-    thumbnails.forEach(thumb => {
-      thumb.addEventListener('click', function() {
-        const imageUrl = this.dataset.image;
-        if (mainImage && imageUrl) {
-          mainImage.src = imageUrl;
-          thumbnails.forEach(t => t.classList.remove('is-active'));
-          this.classList.add('is-active');
-        }
-      });
-    });
-
-    // Gestion des variantes
-    {% unless product.has_only_default_variant %}
-      const variantOptions = document.querySelectorAll('#MilauraProduct-' + sectionId + ' .milaura-variant-option');
-      const variants = {{ product.variants | json }};
-      const options = {{ product.options_with_values | json }};
-
-      variantOptions.forEach(option => {
-        option.addEventListener('click', function(e) {
-          e.preventDefault();
-          const optionName = this.dataset.option;
-          const optionValue = this.dataset.value;
-
-          // Mettre à jour l'état visuel
-          const sameGroup = document.querySelectorAll(`[data-option="${optionName}"]`);
-          sameGroup.forEach(btn => btn.classList.remove('is-selected'));
-          this.classList.add('is-selected');
-
-          // Trouver la variante correspondante
-          const selectedOptions = {};
-          document.querySelectorAll('#MilauraProduct-' + sectionId + ' .milaura-variant-option.is-selected').forEach(selected => {
-            selectedOptions[selected.dataset.option] = selected.dataset.value;
-          });
-
-          const matchingVariant = variants.find(variant => {
-            return options.every((option, index) => {
-              return variant.options[index] === selectedOptions[option.name];
-            });
-          });
-
-          if (matchingVariant) {
-            variantInput.value = matchingVariant.id;
-            
-            // Mettre à jour le prix
-            if (priceElement) {
-              const price = new Intl.NumberFormat('fr-FR', {
-                style: 'currency',
-                currency: 'EUR'
-              }).format(matchingVariant.price / 100);
-              
-              let priceHtml = price;
-              if (matchingVariant.compare_at_price && matchingVariant.compare_at_price > matchingVariant.price) {
-                const comparePrice = new Intl.NumberFormat('fr-FR', {
-                  style: 'currency',
-                  currency: 'EUR'
-                }).format(matchingVariant.compare_at_price / 100);
-                priceHtml += ` <span class="milaura-product-price-compare">${comparePrice}</span>`;
-              }
-              priceElement.innerHTML = priceHtml;
-            }
-
-            // Mettre à jour l'image si la variante a une image
-            if (matchingVariant.featured_media && mainImage) {
-              mainImage.src = matchingVariant.featured_media.preview_image.src;
-            }
-          }
-        });
-      });
-    {% endunless %}
-
-    // Gestion du formulaire
-    if (form) {
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        if (addToCartBtn) {
-          addToCartBtn.disabled = true;
-          addToCartBtn.textContent = 'AJOUT...';
-        }
-
-        // Récupérer la quantité depuis l'input
-        const quantityInput = form.querySelector('.quantity__input');
-        const quantity = quantityInput ? parseInt(quantityInput.value) || 1 : 1;
-
-        fetch('{{ routes.cart_add_url }}', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          body: JSON.stringify({
-            items: [{
-              id: variantInput.value,
-              quantity: quantity
-            }]
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Rafraîchir le panier
-          document.dispatchEvent(new CustomEvent('cart:refresh'));
-          
-          if (addToCartBtn) {
-            addToCartBtn.disabled = false;
-            addToCartBtn.textContent = 'AJOUTÉ AU PANIER ✓';
-            setTimeout(() => {
-              addToCartBtn.textContent = 'AJOUTER AU PANIER';
-            }, 2000);
-          }
-        })
-        .catch(error => {
-          console.error('Erreur:', error);
-          if (addToCartBtn) {
-            addToCartBtn.disabled = false;
-            addToCartBtn.textContent = 'ERREUR - RÉESSAYER';
-            setTimeout(() => {
-              addToCartBtn.textContent = 'AJOUTER AU PANIER';
-            }, 2000);
-          }
-        });
-      });
+  function toggleAccordion(button) {
+    button.classList.toggle('active');
+    var content = button.nextElementSibling;
+    if (content.style.maxHeight) {
+      content.style.maxHeight = null;
+      content.classList.remove('open');
+    } else {
+      content.style.maxHeight = content.scrollHeight + 'px';
+      content.classList.add('open');
     }
-
-    // Gestion des accordéons
-    const accordions = document.querySelectorAll('#MilauraProduct-' + sectionId + ' .milaura-accordion');
-    accordions.forEach(accordion => {
-      const header = accordion.querySelector('.milaura-accordion-header');
-      if (header) {
-        header.addEventListener('click', function() {
-          accordion.classList.toggle('is-open');
-        });
-      }
-    });
-  })();
+  }
 </script>
 
 {% schema %}
 {
   "name": "Milaura Masterclass",
-  "tag": "section",
-  "class": "section",
   "settings": [
     {
       "type": "text",
       "id": "benefits_title",
-      "label": "Titre du bloc bénéfices",
+      "label": "Titre Bénéfices",
       "default": "Pourquoi elle est faite pour toi :"
     },
     {
       "type": "text",
       "id": "urgency_text",
       "label": "Texte d'urgence",
-      "default": "🔥 Très populaire — stock limité."
+      "default": "🔥 Forte demande - Stock limité"
     },
     {
       "type": "text",
       "id": "reassurance_text",
-      "label": "Texte de rassurance",
+      "label": "Texte Rassurance",
       "default": "🚚 Livraison offerte dès 2 articles."
     },
     {
       "type": "richtext",
       "id": "technical_details",
-      "label": "Détails techniques",
+      "label": "Contenu Détails Techniques",
       "default": "<p>Poids, dimensions et informations complémentaires à venir.</p>"
     },
     {
       "type": "richtext",
       "id": "shipping_returns",
-      "label": "Livraison & retours",
+      "label": "Contenu Livraison",
       "default": "<p>Informations de livraison et politique de retours à venir.</p>"
     },
     {
       "type": "checkbox",
       "id": "accordion_1_open",
-      "label": "Ouvrir le premier accordéon par défaut",
-      "default": false
+      "label": "Ouvrir 1er accordéon par défaut",
+      "default": true
     },
     {
       "type": "header",
@@ -829,8 +488,8 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Espacement haut",
-      "default": 36
+      "label": "Haut",
+      "default": 40
     },
     {
       "type": "range",
@@ -839,8 +498,8 @@
       "max": 100,
       "step": 4,
       "unit": "px",
-      "label": "Espacement bas",
-      "default": 36
+      "label": "Bas",
+      "default": 40
     }
   ],
   "presets": [
