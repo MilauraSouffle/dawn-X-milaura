@@ -8,15 +8,13 @@
     padding-top: var(--header-height-offset, 120px);
     padding-bottom: var(--milaura-spacing-lg);
     background: transparent;
-    /* Espacement vertical harmonisé */
     margin-top: var(--milaura-spacing-md);
     margin-bottom: var(--milaura-spacing-lg);
   }
 
   /* --- CONTENEUR PRINCIPAL AVEC HALO --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-card {
-    /* Utilise la classe générique .milaura-section-card */
-    /* max-width, width, margin, background, border, box-shadow gérés par .milaura-section-card */
+    position: relative; /* nécessaire pour le logo "chapeau" */
   }
 
   /* --- HEADER FULL-WIDTH --- */
@@ -46,15 +44,21 @@
     color: #fff;
   }
 
+  /* --- LOGO "CHAPEAU" (débordant du cadre doré) --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo {
-    margin-bottom: 4px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(35%, -35%);
+    z-index: 9999;
+    pointer-events: none;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo img {
     display: block;
-    max-height: 56px;
+    max-height: 160px; /* ~3x l'ancien */
     width: auto;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.25));
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-text {
@@ -104,14 +108,14 @@
   #MilauraHeroShowcase-{{ section.id }} .hero-pillars {
     display: flex;
     flex-direction: column;
-    gap: var(--milaura-spacing-md);
+    gap: var(--milaura-spacing-sm); /* un peu plus compact */
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card {
     display: flex;
     align-items: center;
     gap: var(--milaura-spacing-md);
-    padding: var(--milaura-spacing-md) var(--milaura-spacing-lg);
+    padding: 12px var(--milaura-spacing-lg); /* hauteur divisée ~par 2 */
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
@@ -198,7 +202,7 @@
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--milaura-text);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     display: block;
     transition: color 0.3s ease;
   }
@@ -211,7 +215,7 @@
     font-family: var(--milaura-font-body);
     font-size: 1rem;
     color: var(--milaura-text-light);
-    line-height: 1.6;
+    line-height: 1.5;
     display: block;
     transition: color 0.3s ease;
   }
@@ -237,7 +241,6 @@
     backdrop-filter: blur(10px);
     box-shadow: var(--milaura-shadow-md);
     transform: translate(8px, 8px);
-    /* S'assurer que le transform ne cause pas de débordement */
     margin-right: 8px;
     margin-bottom: 8px;
   }
@@ -283,9 +286,6 @@
 
   /* --- MOBILE (< 768px) - LAYOUT SIMPLE ET CLAIR --- */
   @media screen and (max-width: 768px) {
-    /* ============================================
-       RÉDUCTION HEADER MOBILE (GLOBAL)
-       ============================================ */
     .section-header {
       padding-top: 8px !important;
       padding-bottom: 8px !important;
@@ -309,9 +309,6 @@
       height: 20px !important;
     }
 
-    /* ============================================
-       HERO CONTAINER - SIMPLE ET PROPRE
-       ============================================ */
     #MilauraHeroShowcase-{{ section.id }} {
       padding-top: var(--header-height-offset, 60px);
       padding-bottom: var(--milaura-spacing-lg);
@@ -319,14 +316,6 @@
       margin-bottom: var(--milaura-spacing-lg);
     }
 
-    /* Conteneur hero-card : garde le style normal */
-    #MilauraHeroShowcase-{{ section.id }} .hero-card {
-      /* Utilise les styles de .milaura-section-card */
-    }
-
-    /* ============================================
-       HEADER TEXT - CENTRÉ DANS LA BANNIÈRE
-       ============================================ */
     #MilauraHeroShowcase-{{ section.id }} .hero-header {
       text-align: center;
       margin-bottom: var(--milaura-spacing-lg);
@@ -337,6 +326,15 @@
       padding: 16px 18px;
       border-radius: 24px;
       margin-bottom: var(--milaura-spacing-lg);
+    }
+
+    /* logo chapeau sur mobile: plus petit pour ne pas flinguer la lisibilité */
+    #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo {
+      transform: translate(28%, -35%);
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo img {
+      max-height: 110px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
@@ -361,9 +359,6 @@
       line-height: 1.5;
     }
 
-    /* ============================================
-       GRILLE PRINCIPALE - FLEX COLUMN
-       ============================================ */
     #MilauraHeroShowcase-{{ section.id }} .hero-main-grid {
       display: flex;
       flex-direction: column;
@@ -372,7 +367,6 @@
       padding: 0;
     }
 
-    /* Réorganisation de l'ordre : carrousel avant piliers */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillars {
       order: 2;
     }
@@ -381,9 +375,6 @@
       order: 1;
     }
 
-    /* ============================================
-       CARROUSEL - IMAGE NORMALE RESPONSIVE
-       ============================================ */
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel-wrapper {
       position: relative;
       width: 100%;
@@ -420,18 +411,15 @@
       border-radius: calc(var(--milaura-border-radius) - 4px);
     }
 
-    /* ============================================
-       3 PILIERS - CARTES SOUS LE CARROUSEL
-       ============================================ */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillars {
       display: flex;
       flex-direction: column;
-      gap: var(--milaura-spacing-md);
+      gap: var(--milaura-spacing-sm);
       width: 100%;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card {
-      padding: var(--milaura-spacing-md) var(--milaura-spacing-lg);
+      padding: 12px var(--milaura-spacing-lg);
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
@@ -460,7 +448,7 @@
       font-size: 1.2rem;
       font-weight: 800;
       color: var(--milaura-text);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       display: block;
       transition: color 0.3s ease;
     }
@@ -490,7 +478,6 @@
       color: var(--milaura-gold);
     }
 
-    /* Masquer la flèche sur mobile */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-card::after {
       display: none;
     }
@@ -504,7 +491,7 @@
       <div class="hero-banner">
         {% if settings.logo != blank %}
           <div class="hero-banner-logo">
-            {{ settings.logo | image_url: width: 120 | image_tag: alt: shop.name }}
+            {{ settings.logo | image_url: width: 360 | image_tag: alt: shop.name }}
           </div>
         {% endif %}
 
@@ -617,29 +604,19 @@
   (function () {
     const sectionId = '{{ section.id }}';
     const carousel = document.getElementById('hero-carousel-' + sectionId);
-    const heroSection = document.getElementById('MilauraHeroShowcase-' + sectionId);
-
     if (!carousel) return;
 
     const slides = carousel.querySelectorAll('.hero-slide');
-    const carouselWrapper = carousel.closest('.hero-carousel-wrapper');
-
-    // Si une seule slide ou aucune, pas de carrousel
     if (slides.length <= 1) return;
 
     let currentIndex = 0;
     const totalSlides = slides.length;
-    const intervalDuration = 4000; // 4 secondes
+    const intervalDuration = 4000;
     let intervalId = null;
 
     function showSlide(index) {
-      // Retirer la classe active de toutes les slides
       slides.forEach((slide) => slide.classList.remove('is-active'));
-
-      // Ajouter la classe active à la slide courante
-      if (slides[index]) {
-        slides[index].classList.add('is-active');
-      }
+      if (slides[index]) slides[index].classList.add('is-active');
     }
 
     function nextSlide() {
@@ -659,13 +636,9 @@
       }
     }
 
-    // Initialiser la première slide
     showSlide(0);
-
-    // Démarrer le carrousel automatique
     startCarousel();
 
-    // Pause au survol (optionnel, pour meilleure UX)
     carousel.addEventListener('mouseenter', stopCarousel);
     carousel.addEventListener('mouseleave', startCarousel);
   })();
