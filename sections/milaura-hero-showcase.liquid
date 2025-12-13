@@ -10,6 +10,11 @@
     background: transparent;
     margin-top: var(--milaura-spacing-md);
     margin-bottom: var(--milaura-spacing-lg);
+    /* Variables pour l'opacité du doré */
+    --milaura-gold-a: calc({{ section.settings.gold_opacity | default: 96 }} / 100);
+    --milaura-gold-1: rgba(209, 178, 120, var(--milaura-gold-a));
+    --milaura-gold-2: rgba(186, 149, 90, var(--milaura-gold-a));
+    --milaura-gold-border: rgba(192, 160, 98, var(--milaura-gold-a));
   }
 
   /* --- CONTENEUR PRINCIPAL AVEC HALO --- */
@@ -33,8 +38,8 @@
     border-radius: 32px;
     background: linear-gradient(
       135deg,
-      rgba(209, 178, 120, 0.96),
-      rgba(186, 149, 90, 0.96)
+      var(--milaura-gold-1),
+      var(--milaura-gold-2)
     );
     box-shadow:
       0 18px 45px rgba(150, 120, 70, 0.35),
@@ -47,17 +52,17 @@
   /* --- LOGO "CHAPEAU" (débordant du cadre doré) --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo {
     position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(35%, -35%);
+    top: {{ section.settings.logo_y | default: -50 }}px;
+    right: {{ section.settings.logo_x | default: -50 }}px;
+    transform: rotate({{ section.settings.logo_rotate | default: 0 }}deg);
     z-index: 9999;
     pointer-events: none;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo img {
     display: block;
-    max-height: 160px; /* ~3x l'ancien */
-    width: auto;
+    width: {{ section.settings.logo_size | default: 160 }}px;
+    height: auto;
     filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.25));
   }
 
@@ -119,7 +124,7 @@
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border: 2px solid rgba(192, 160, 98, 0.3);
+    border: 2px solid rgba(192, 160, 98, calc(var(--milaura-gold-a) * 0.3));
     border-radius: var(--milaura-border-radius);
     box-shadow:
       0 8px 25px rgba(192, 160, 98, 0.15),
@@ -234,7 +239,7 @@
   /* Effet cadre doré décalé */
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
     position: relative;
-    border: 3px solid var(--milaura-gold);
+    border: 3px solid var(--milaura-gold-1);
     border-radius: var(--milaura-border-radius);
     padding: 8px;
     background: rgba(255, 255, 255, 0.1);
@@ -330,11 +335,16 @@
 
     /* logo chapeau sur mobile: plus petit pour ne pas flinguer la lisibilité */
     #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo {
-      transform: translate(28%, -35%);
+      /* Les settings de position et rotation s'appliquent aussi en mobile */
+      top: {{ section.settings.logo_y | default: -50 }}px;
+      right: {{ section.settings.logo_x | default: -50 }}px;
+      transform: rotate({{ section.settings.logo_rotate | default: 0 }}deg);
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo img {
-      max-height: 110px;
+      /* Taille réduite en mobile pour garder la lisibilité */
+      width: min({{ section.settings.logo_size | default: 160 }}px, 110px);
+      height: auto;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
@@ -384,7 +394,7 @@
 
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
       position: relative;
-      border: 3px solid var(--milaura-gold);
+      border: 3px solid var(--milaura-gold-1);
       border-radius: var(--milaura-border-radius);
       padding: 8px;
       background: rgba(255, 255, 255, 0.1);
@@ -423,7 +433,7 @@
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(15px);
       -webkit-backdrop-filter: blur(15px);
-      border: 2px solid rgba(192, 160, 98, 0.3);
+      border: 2px solid rgba(192, 160, 98, calc(var(--milaura-gold-a) * 0.3));
       border-radius: var(--milaura-border-radius);
       box-shadow:
         0 8px 25px rgba(192, 160, 98, 0.15),
@@ -653,6 +663,64 @@
     "templates": ["*"]
   },
   "settings": [
+    {
+      "type": "header",
+      "content": "Logo (position)"
+    },
+    {
+      "type": "range",
+      "id": "logo_x",
+      "label": "Position X (depuis la droite)",
+      "min": -200,
+      "max": 200,
+      "step": 1,
+      "unit": "px",
+      "default": -50
+    },
+    {
+      "type": "range",
+      "id": "logo_y",
+      "label": "Position Y (depuis le haut)",
+      "min": -200,
+      "max": 200,
+      "step": 1,
+      "unit": "px",
+      "default": -50
+    },
+    {
+      "type": "range",
+      "id": "logo_size",
+      "label": "Taille du logo",
+      "min": 40,
+      "max": 240,
+      "step": 1,
+      "unit": "px",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "logo_rotate",
+      "label": "Rotation",
+      "min": -30,
+      "max": 30,
+      "step": 1,
+      "unit": "deg",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Doré"
+    },
+    {
+      "type": "range",
+      "id": "gold_opacity",
+      "label": "Opacité du doré",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 96
+    },
     {
       "type": "header",
       "content": "Header"
