@@ -1,147 +1,118 @@
 {% style %}
   /* ============================================
-     MILAURA HERO SHOWCASE - LUXE & CONVERSION (clean + smooth)
+     MILAURA HERO SHOWCASE - LUXE & CONVERSION
      ============================================ */
 
   #MilauraHeroShowcase-{{ section.id }} {
     width: 100%;
     padding-top: var(--header-height-offset, 120px);
-    padding-bottom: var(--milaura-spacing-lg, 32px);
+    padding-bottom: var(--milaura-spacing-lg);
     background: transparent;
-    margin-top: var(--milaura-spacing-md, 18px);
-    margin-bottom: var(--milaura-spacing-lg, 32px);
+    margin-top: var(--milaura-spacing-md);
+    margin-bottom: var(--milaura-spacing-lg);
 
-    /* Fallbacks sûrs (même si base.css n'a pas tes variables) */
-    --milaura-radius: var(--milaura-border-radius, 18px);
-    --milaura-text: var(--milaura-text, #1b1b1b);
-    --milaura-text-light: var(--milaura-text-light, rgba(27, 27, 27, 0.72));
-    --milaura-beige: var(--milaura-beige, #f7f3ea);
-    --milaura-shadow-md: var(--milaura-shadow-md, 0 18px 45px rgba(0,0,0,0.08));
-    --milaura-font-heading: var(--milaura-font-heading, inherit);
-    --milaura-font-body: var(--milaura-font-body, inherit);
+    /* Fallbacks si le système global n'est pas présent */
+    --milaura-gold-a: 0.55;
+    --milaura-gold-1-local: rgba(209, 178, 120, var(--milaura-gold-a));
+    --milaura-gold-2-local: rgba(186, 149, 90, var(--milaura-gold-a));
+    --milaura-gold-border-local: rgba(192, 160, 98, var(--milaura-gold-a));
+    --milaura-gold-grad-local: linear-gradient(135deg, var(--milaura-gold-1-local), rgba(240, 220, 170, 0.55), var(--milaura-gold-2-local));
+    --milaura-sheen-local: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 35%, rgba(255,255,255,0) 70%);
 
-    /* Doré "bijou" interne à la section (pas dépendant du global) */
-    --milaura-gold-ink: #2a1c07;
-    --milaura-gold-a: 0.92;
-
-    --milaura-gold-grad: linear-gradient(
-      135deg,
-      rgba(255, 240, 200, var(--milaura-gold-a)) 0%,
-      rgba(214, 176, 96, var(--milaura-gold-a)) 18%,
-      rgba(255, 232, 172, var(--milaura-gold-a)) 42%,
-      rgba(176, 130, 48, var(--milaura-gold-a)) 70%,
-      rgba(255, 240, 200, var(--milaura-gold-a)) 100%
-    );
-
-    --milaura-gold-sheen: linear-gradient(
-      120deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.50) 35%,
-      transparent 70%
-    );
-
-    --milaura-gold-border: rgba(214, 176, 96, 0.75);
-    --milaura-gold-glow: rgba(214, 176, 96, 0.28);
+    /* Utilise le global si dispo, sinon fallback local */
+    --milaura-gold-grad-safe: var(--milaura-gold-grad, var(--milaura-gold-grad-local));
+    --milaura-sheen-safe: var(--milaura-sheen, var(--milaura-sheen-local));
   }
 
-  /* Préférences accessibilité */
-  @media (prefers-reduced-motion: reduce) {
-    #MilauraHeroShowcase-{{ section.id }} * {
-      transition: none !important;
-      animation: none !important;
-      scroll-behavior: auto !important;
-    }
-  }
-
-  /* --- CONTENEUR --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-card {
     position: relative;
   }
 
-  /* --- HEADER --- */
+  /* --- HEADER FULL-WIDTH --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-header {
     text-align: center;
-    margin-bottom: var(--milaura-spacing-lg, 32px);
+    margin-bottom: var(--milaura-spacing-lg);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-wrap {
     position: relative;
     max-width: 960px;
-    margin: 0 auto var(--milaura-spacing-lg, 32px) auto;
+    margin: 0 auto var(--milaura-spacing-lg) auto;
   }
 
-  /* --- BANDEAU DORÉ (bijou) --- */
+  /* --- BANNIÈRE DORÉE --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner {
-    position: relative;
-    z-index: 2;
-    overflow: hidden;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--milaura-spacing-sm, 10px);
-    padding: 22px 32px;
+    gap: var(--milaura-spacing-sm);
+    padding: 20px 28px;
     border-radius: 32px;
-
-    background: var(--milaura-gold-grad);
+    background: var(--milaura-gold-grad-safe);
     box-shadow:
-      0 20px 55px rgba(130, 90, 30, 0.22),
-      0 0 0 1px rgba(255, 255, 255, 0.32) inset,
-      0 0 0 1px rgba(214, 176, 96, 0.22);
-
+      0 18px 45px rgba(150, 120, 70, 0.28),
+      0 0 0 1px rgba(255, 255, 255, 0.30) inset;
+    max-width: 960px;
     color: #fff;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
   }
 
-  /* Voile lumineux subtil (statique), et sheen au hover (pas en boucle, donc pas de lag) */
+  /* Voile lumineux subtil sur le bandeau */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(1200px 300px at 20% 0%, rgba(255,255,255,0.22), transparent 55%);
-    opacity: 0.85;
+    background: var(--milaura-sheen-safe);
+    opacity: 0.22;
     pointer-events: none;
     z-index: 1;
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-banner::after {
-    content: '';
-    position: absolute;
-    inset: -40% -60%;
-    background: var(--milaura-gold-sheen);
-    opacity: 0;
-    transform: translateX(-18%);
-    transition: opacity 380ms ease, transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-banner:hover::after {
-    opacity: 0.35;
-    transform: translateX(18%);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-text {
     position: relative;
     z-index: 2;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.18);
   }
 
-  /* --- LOGO "chapeau" (corrigé: px + intégration douce) --- */
+  /* --- LOGO "CHAPEAU" DEVANT + À DROITE --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo {
     position: absolute;
-    top: -30px;
-    right: 30px;
-    z-index: 1;
+    top: -26px;
+    right: -22px; /* on le pousse à fond à droite */
+    z-index: 4; /* devant le bandeau */
     pointer-events: none;
-    opacity: 0.92;
-    filter: saturate(1.05);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo img {
     display: block;
-    width: 140px;
+    width: 148px;
     height: auto;
-    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.22));
+    filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.30));
+  }
+
+  /* --- TEXTE LISIBILITÉ: BLANC + CONTOUR NOIR --- */
+  #MilauraHeroShowcase-{{ section.id }} .hero-kicker,
+  #MilauraHeroShowcase-{{ section.id }} .hero-title-script,
+  #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
+    text-shadow:
+      0 1px 0 rgba(0,0,0,0.55),
+      0 -1px 0 rgba(0,0,0,0.55),
+      1px 0 0 rgba(0,0,0,0.55),
+      -1px 0 0 rgba(0,0,0,0.55),
+      0 6px 18px rgba(0,0,0,0.22);
+  }
+
+  @supports (-webkit-text-stroke: 1px rgba(0,0,0,0.4)) {
+    #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
+      -webkit-text-stroke: 1px rgba(0,0,0,0.35);
+      paint-order: stroke fill;
+    }
+    #MilauraHeroShowcase-{{ section.id }} .hero-subtitle,
+    #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
+      -webkit-text-stroke: 0.6px rgba(0,0,0,0.28);
+      paint-order: stroke fill;
+    }
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
@@ -149,109 +120,105 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.92);
-    font-weight: 650;
-    margin-bottom: var(--milaura-spacing-sm, 10px);
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 700;
+    margin-bottom: var(--milaura-spacing-sm);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
     font-family: var(--milaura-font-script, 'Dancing Script', cursive);
     font-size: 4rem;
-    font-weight: 650;
+    font-weight: 700;
     color: #ffffff;
-    line-height: 1.08;
+    line-height: 1.05;
     margin: 0;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
     font-family: var(--milaura-font-body);
-    font-size: 1.08rem;
-    color: rgba(255, 255, 255, 0.96);
-    line-height: 1.6;
-    max-width: 800px;
-    margin: var(--milaura-spacing-sm, 10px) auto 0 auto;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.98);
+    line-height: 1.55;
+    max-width: 820px;
+    margin: var(--milaura-spacing-sm) auto 0 auto;
     text-align: center;
   }
 
-  /* --- GRILLE --- */
+  /* --- GRILLE PRINCIPALE --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-main-grid {
     max-width: 1200px;
-    margin: var(--milaura-spacing-lg, 32px) auto 0 auto;
+    margin: var(--milaura-spacing-lg) auto 0 auto;
     display: grid;
     grid-template-columns: 40% 60%;
-    gap: var(--milaura-spacing-lg, 32px);
+    gap: var(--milaura-spacing-lg);
     align-items: start;
   }
 
-  /* --- ONGLETS GAUCHE (doré bijou en bordure, pas “plastique plein”) --- */
+  /* --- COLONNE GAUCHE : ONGLETS --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-pillars {
     display: flex;
     flex-direction: column;
-    gap: var(--milaura-spacing-sm, 10px);
+    gap: var(--milaura-spacing-sm);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-tab {
     display: flex;
     align-items: center;
-    gap: var(--milaura-spacing-md, 14px);
-    padding: 12px 18px;
-    width: 100%;
-    text-align: left;
-    font-family: inherit;
+    gap: var(--milaura-spacing-md);
+    padding: 12px var(--milaura-spacing-lg);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 2px solid rgba(192, 160, 98, calc(var(--milaura-gold-a) * 0.30));
+    border-radius: var(--milaura-border-radius);
+    box-shadow:
+      0 8px 25px rgba(192, 160, 98, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    text-decoration: none;
     cursor: pointer;
     position: relative;
     overflow: hidden;
-
-    border-radius: var(--milaura-radius);
-    border: 2px solid transparent;
-
-    /* technique bordure gradient bijou */
-    background:
-      linear-gradient(#ffffff, #ffffff) padding-box,
-      var(--milaura-gold-grad) border-box;
-
-    box-shadow:
-      0 10px 28px rgba(0,0,0,0.06),
-      0 0 0 1px rgba(255,255,255,0.65) inset;
-
-    transition: transform 220ms ease, box-shadow 260ms ease, background 260ms ease;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab::after {
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab::before {
     content: '';
     position: absolute;
-    inset: 0;
-    background: var(--milaura-gold-sheen);
-    opacity: 0;
-    transform: translateX(-18%);
-    transition: opacity 260ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 0;
+    background: var(--milaura-gold-grad-safe);
+    border-radius: 0 2px 2px 0;
+    transition: height 0.25s ease;
+    z-index: 1;
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover {
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active::before {
+    height: 62%;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover:not(.is-active) {
     transform: translateY(-2px);
+    border-color: rgba(192, 160, 98, 0.62);
     box-shadow:
-      0 14px 40px rgba(0,0,0,0.10),
-      0 0 0 1px rgba(255,255,255,0.75) inset,
-      0 0 24px var(--milaura-gold-glow);
+      0 12px 30px rgba(192, 160, 98, 0.22),
+      0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+      0 0 18px rgba(192, 160, 98, 0.12);
+    background: rgba(255, 255, 255, 1);
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover::after {
-    opacity: 0.30;
-    transform: translateX(18%);
-  }
-
-  /* Actif: léger fond doré translucide + glow, mais on garde le côté “bijou” */
   #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active {
-    background:
-      linear-gradient(rgba(255, 248, 225, 0.92), rgba(255, 248, 225, 0.92)) padding-box,
-      var(--milaura-gold-grad) border-box;
-
+    background: var(--milaura-gold-grad-safe);
+    border-color: rgba(192, 160, 98, 0.82);
     box-shadow:
-      0 16px 46px rgba(0,0,0,0.12),
-      0 0 0 1px rgba(255,255,255,0.55) inset,
-      0 0 34px var(--milaura-gold-glow);
-
+      0 12px 32px rgba(192, 160, 98, 0.26),
+      0 0 0 1px rgba(255, 255, 255, 0.32) inset,
+      0 0 22px rgba(192, 160, 98, 0.18);
     transform: translateY(-1px);
   }
 
@@ -259,20 +226,29 @@
     font-size: 2rem;
     line-height: 1;
     flex-shrink: 0;
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
-    transition: transform 240ms ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.10));
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover .hero-pillar-icon {
-    transform: scale(1.06);
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-content {
+    flex: 1;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-title {
     font-family: var(--milaura-font-heading);
-    font-size: 1.22rem;
-    font-weight: 780;
+    font-size: 1.15rem;
+    font-weight: 800;
     color: var(--milaura-text);
     margin-bottom: 4px;
+    display: block;
+    transition: color 0.25s ease;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover:not(.is-active) .hero-pillar-title {
+    color: var(--milaura-gold, #c6a15c);
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active .hero-pillar-title {
+    color: #1a1a1a;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
@@ -280,33 +256,54 @@
     font-size: 0.98rem;
     color: var(--milaura-text-light);
     line-height: 1.45;
+    display: block;
   }
 
-  /* --- CARROUSEL DROITE + TRANSITIONS SMOOTH --- */
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active .hero-pillar-text {
+    color: rgba(26, 26, 26, 0.82);
+  }
+
+  /* --- CTA UNIQUE SOUS LES PILIERS --- */
+  #MilauraHeroShowcase-{{ section.id }} .hero-cta-row {
+    margin-top: var(--milaura-spacing-md);
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-cta-row .button {
+    border-radius: 999px;
+    padding-left: 22px;
+    padding-right: 22px;
+    min-height: 44px;
+  }
+
+  /* --- COLONNE DROITE : CARROUSEL --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel-wrapper {
     position: relative;
-    border-radius: var(--milaura-radius);
+    border-radius: var(--milaura-border-radius);
     overflow: visible;
+    width: 100%;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
     position: relative;
-    border: 2px solid rgba(214, 176, 96, 0.55);
-    border-radius: var(--milaura-radius);
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.14);
+    border: 3px solid var(--milaura-gold-1, var(--milaura-gold-1-local));
+    border-radius: var(--milaura-border-radius);
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.10);
     backdrop-filter: blur(10px);
     box-shadow: var(--milaura-shadow-md);
     transform: translate(0px, 8px);
     margin-right: 8px;
     margin-bottom: 8px;
+    width: 100%;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel {
     position: relative;
     width: 100%;
     aspect-ratio: 4 / 3;
-    border-radius: calc(var(--milaura-radius) - 6px);
+    border-radius: calc(var(--milaura-border-radius) - 4px);
     overflow: hidden;
     background: var(--milaura-beige);
   }
@@ -316,148 +313,143 @@
     inset: 0;
     opacity: 0;
     pointer-events: none;
-
-    transform: scale(1.015);
-    transition:
-      opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
-
-    will-change: opacity, transform;
-    border-radius: calc(var(--milaura-radius) - 6px);
+    transition: opacity 0.45s ease-in-out;
+    border-radius: calc(var(--milaura-border-radius) - 4px);
     overflow: hidden;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-slide.is-active {
     opacity: 1;
+    z-index: 1;
     pointer-events: auto;
-    transform: scale(1);
-    z-index: 2;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-slide[aria-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-slide[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: calc(var(--milaura-radius) - 6px);
-    display: block;
-    transform: translateZ(0);
-  }
-
-  /* CTA sous la photo */
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-row {
-    display: flex;
-    justify-content: center;
-    margin-top: 14px;
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-main {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    padding: 12px 18px;
-    border-radius: 999px;
-    border: 1px solid rgba(214, 176, 96, 0.55);
-
-    background: var(--milaura-gold-grad);
-    color: #fff;
-    text-decoration: none;
-    font-weight: 750;
-    letter-spacing: 0.2px;
-
-    box-shadow:
-      0 18px 40px rgba(130, 90, 30, 0.18),
-      0 0 0 1px rgba(255,255,255,0.25) inset;
-
-    position: relative;
-    overflow: hidden;
-
-    transition: transform 180ms ease, box-shadow 220ms ease, filter 220ms ease;
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-main::after {
-    content: '';
-    position: absolute;
-    inset: -40% -60%;
-    background: var(--milaura-gold-sheen);
-    opacity: 0;
-    transform: translateX(-18%);
-    transition: opacity 260ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-main:hover {
-    transform: translateY(-1px);
-    box-shadow:
-      0 22px 50px rgba(130, 90, 30, 0.22),
-      0 0 0 1px rgba(255,255,255,0.30) inset,
-      0 0 30px var(--milaura-gold-glow);
-    filter: saturate(1.05);
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-main:hover::after {
-    opacity: 0.38;
-    transform: translateX(18%);
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-main.is-hidden {
-    display: none;
+    border-radius: calc(var(--milaura-border-radius) - 4px);
   }
 
   /* --- MOBILE --- */
   @media screen and (max-width: 768px) {
     #MilauraHeroShowcase-{{ section.id }} {
-      padding-top: var(--header-height-offset, 60px);
+      padding-top: var(--header-height-offset, 56px);
+      margin-top: 10px;
+      margin-bottom: var(--milaura-spacing-md);
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-header {
+      margin-bottom: 12px;
+      padding: 0 10px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-banner-wrap {
+      margin-bottom: 12px;
+      max-width: 100%;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-banner {
-      padding: 16px 18px;
-      border-radius: 24px;
-      margin-bottom: var(--milaura-spacing-lg, 32px);
+      padding: 12px 14px;
+      border-radius: 22px;
     }
 
-    /* logo chapeau mobile: même position mais plus petit */
+    /* logo devant, plus petit, toujours à droite */
     #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo {
-      top: -14px;
-      right: 14px;
+      top: -18px;
+      right: -18px;
+      z-index: 4;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo img {
-      width: 78px;
+      width: 86px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
+      font-size: 0.78rem;
+      margin-bottom: 6px;
+      letter-spacing: 1.6px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
-      font-size: 2.55rem;
-      line-height: 1.08;
+      font-size: 2.2rem;
+      line-height: 1.05;
     }
 
+    /* Clamp pour éviter que le bandeau mange tout l'écran */
     #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+      line-height: 1.35;
+      max-width: 100%;
+      margin-top: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-main-grid {
       display: flex;
       flex-direction: column;
-      gap: var(--milaura-spacing-lg, 32px);
+      gap: 12px;
       margin: 0;
-      padding: 0;
+      padding: 0 10px;
+    }
+
+    /* Photo d'abord, grande */
+    #MilauraHeroShowcase-{{ section.id }} .hero-carousel-wrapper {
+      order: 1;
+      width: 100%;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
-      transform: translate(8px, 8px);
+      transform: translate(6px, 6px);
+      margin-right: 6px;
+      margin-bottom: 6px;
+      width: 100%;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel {
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 4 / 5; /* plus haut, plus impact */
+      width: 100%;
     }
 
+    /* Piliers ensuite */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillars {
       order: 2;
+      width: 100%;
+      gap: 10px;
     }
 
-    #MilauraHeroShowcase-{{ section.id }} .hero-carousel-wrapper {
-      order: 1;
+    #MilauraHeroShowcase-{{ section.id }} .hero-tab {
+      padding: 12px 14px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-title {
+      font-size: 1.05rem;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
+      font-size: 0.92rem;
+    }
+
+    /* CTA sous les piliers, compact */
+    #MilauraHeroShowcase-{{ section.id }} .hero-cta-row {
+      order: 3;
+      margin-top: 10px;
+      justify-content: center;
     }
   }
 {% endstyle %}
@@ -495,79 +487,86 @@
     </div>
 
     <div class="hero-main-grid">
-      <div class="hero-pillars" role="tablist" aria-label="Sélectionner un univers">
-        {% assign tab_index = 0 %}
-        {% for block in section.blocks %}
-          {% if block.type == 'universe' %}
-            <button
-              type="button"
-              class="hero-tab {% if tab_index == 0 %}is-active{% endif %}"
-              data-index="{{ tab_index }}"
-              data-cta-label="{{ block.settings.cta_label | escape }}"
-              data-cta-link="{{ block.settings.cta_link }}"
-              role="tab"
-              aria-selected="{% if tab_index == 0 %}true{% else %}false{% endif %}"
-              aria-controls="hero-slide-{{ section.id }}-{{ tab_index }}"
-              id="hero-tab-{{ section.id }}-{{ tab_index }}"
-              {{ block.shopify_attributes }}
-            >
-              {% if block.settings.icon != blank %}
-                <div class="hero-pillar-icon">{{ block.settings.icon }}</div>
-              {% endif %}
-              <div class="hero-pillar-content">
-                {% if block.settings.tab_label != blank %}
-                  <div class="hero-pillar-title">{{ block.settings.tab_label }}</div>
-                {% elsif block.settings.title != blank %}
-                  <div class="hero-pillar-title">{{ block.settings.title }}</div>
+      <div>
+        <div class="hero-pillars" role="tablist" aria-label="Sélectionner un univers">
+          {% assign has_universe = false %}
+          {% for block in section.blocks %}
+            {% if block.type == 'universe' or block.type == 'slide' %}
+              {% assign has_universe = true %}
+              <button
+                type="button"
+                class="hero-tab {% if forloop.first %}is-active{% endif %}"
+                data-index="{{ forloop.index0 }}"
+                data-cta-label="{{ block.settings.cta_label | escape }}"
+                data-cta-link="{{ block.settings.cta_link }}"
+                role="tab"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="hero-slide-{{ section.id }}-{{ forloop.index0 }}"
+                id="hero-tab-{{ section.id }}-{{ forloop.index0 }}"
+                {{ block.shopify_attributes }}
+              >
+                {% if block.settings.icon != blank %}
+                  <div class="hero-pillar-icon">{{ block.settings.icon }}</div>
                 {% endif %}
-                {% if block.settings.text != blank %}
-                  <div class="hero-pillar-text milaura-text">{{ block.settings.text }}</div>
-                {% endif %}
-              </div>
-            </button>
-            {% assign tab_index = tab_index | plus: 1 %}
-          {% endif %}
-        {% endfor %}
+                <div class="hero-pillar-content">
+                  {% if block.settings.tab_label != blank %}
+                    <div class="hero-pillar-title">{{ block.settings.tab_label }}</div>
+                  {% elsif block.settings.title != blank %}
+                    <div class="hero-pillar-title">{{ block.settings.title }}</div>
+                  {% endif %}
+                  {% if block.settings.text != blank %}
+                    <div class="hero-pillar-text milaura-text">{{ block.settings.text }}</div>
+                  {% endif %}
+                </div>
+              </button>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="hero-cta-row">
+          <a
+            href="#"
+            class="button button--primary milaura-gold-sheen"
+            id="hero-main-cta-{{ section.id }}"
+          >
+            Découvrir
+          </a>
+        </div>
       </div>
 
       <div class="hero-carousel-wrapper">
         <div class="hero-carousel-frame">
           <div class="hero-carousel" id="hero-carousel-{{ section.id }}">
-            {% assign slide_index = 0 %}
-            {% for block in section.blocks %}
-              {% if block.type == 'universe' and block.settings.image != blank %}
-                <div
-                  class="hero-slide {% if slide_index == 0 %}is-active{% endif %}"
-                  id="hero-slide-{{ section.id }}-{{ slide_index }}"
-                  data-index="{{ slide_index }}"
-                  role="tabpanel"
-                  aria-labelledby="hero-tab-{{ section.id }}-{{ slide_index }}"
-                  aria-hidden="{% if slide_index == 0 %}false{% else %}true{% endif %}"
-                  {{ block.shopify_attributes }}
-                >
-                  {{
-                    block.settings.image
-                    | image_url: width: 1400
-                    | image_tag: loading: 'eager', alt: block.settings.image.alt
-                    | default: block.settings.title
-                    | default: 'Milaura'
-                  }}
-                </div>
-                {% assign slide_index = slide_index | plus: 1 %}
-              {% endif %}
-            {% endfor %}
-
-            {% assign universe_blocks = section.blocks | where: 'type', 'universe' %}
-            {% if universe_blocks.size == 0 %}
+            {% if has_universe %}
+              {% for block in section.blocks %}
+                {% if block.type == 'universe' or block.type == 'slide' %}
+                  <div
+                    class="hero-slide {% if forloop.first %}is-active{% endif %}"
+                    id="hero-slide-{{ section.id }}-{{ forloop.index0 }}"
+                    data-index="{{ forloop.index0 }}"
+                    role="tabpanel"
+                    aria-labelledby="hero-tab-{{ section.id }}-{{ forloop.index0 }}"
+                    aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+                    {{ block.shopify_attributes }}
+                  >
+                    {% if block.settings.image != blank %}
+                      {{
+                        block.settings.image
+                        | image_url: width: 1400
+                        | image_tag: loading: 'eager', alt: block.settings.image.alt
+                      }}
+                    {% else %}
+                      {{ 'image' | placeholder_svg_tag: 'hero-placeholder' }}
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% else %}
               <div class="hero-slide is-active" role="tabpanel" aria-hidden="false">
                 {{ 'image' | placeholder_svg_tag: 'hero-placeholder' }}
               </div>
             {% endif %}
           </div>
-        </div>
-
-        <div class="hero-cta-row">
-          <a href="#" class="hero-cta-main" data-hero-cta> Découvrir </a>
         </div>
       </div>
     </div>
@@ -577,30 +576,26 @@
 <script>
   (function () {
     const sectionId = '{{ section.id }}';
-    const root = document.getElementById('MilauraHeroShowcase-' + sectionId);
-    if (!root) return;
+    const sectionElement = document.getElementById('MilauraHeroShowcase-' + sectionId);
+    if (!sectionElement) return;
 
-    const tabs = Array.from(root.querySelectorAll('.hero-tab[data-index]'));
-    const slides = Array.from(root.querySelectorAll('.hero-slide[data-index]'));
-    const pillars = root.querySelector('.hero-pillars');
-    const carousel = root.querySelector('.hero-carousel');
-    const cta = root.querySelector('[data-hero-cta]');
+    const tabs = sectionElement.querySelectorAll('.hero-tab[data-index]');
+    const slides = sectionElement.querySelectorAll('.hero-slide[data-index]');
+    const pillars = sectionElement.querySelector('.hero-pillars');
+    const carousel = sectionElement.querySelector('.hero-carousel');
+    const mainCta = sectionElement.querySelector('#hero-main-cta-' + sectionId);
 
-    if (!tabs.length || !slides.length) return;
+    if (tabs.length === 0 || slides.length === 0) return;
 
-    const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Assure index aligné
-    const max = Math.min(tabs.length, slides.length);
     let currentIndex = 0;
-    let autoplay = null;
+    let autoplayInterval = null;
     let resumeTimeout = null;
+    const autoplayDuration = 3000;
+    const resumeDelay = 8000;
 
-    const autoplayDuration = 3800; // plus doux qu'un 3000ms trop nerveux
-    const resumeDelay = 9000;
+    function applyCtaFromIndex(index) {
+      if (!mainCta) return;
 
-    function updateCTA(index) {
-      if (!cta) return;
       const tab = tabs[index];
       if (!tab) return;
 
@@ -608,99 +603,95 @@
       const link = (tab.getAttribute('data-cta-link') || '').trim();
 
       if (!label || !link || link === '#') {
-        cta.classList.add('is-hidden');
-        cta.setAttribute('href', '#');
-        cta.textContent = 'Découvrir';
+        mainCta.style.display = 'none';
         return;
       }
 
-      cta.classList.remove('is-hidden');
-      cta.setAttribute('href', link);
-      cta.textContent = label;
+      mainCta.style.display = '';
+      mainCta.textContent = label;
+      mainCta.setAttribute('href', link);
     }
 
-    function setActive(nextIndex) {
-      if (nextIndex === currentIndex) return;
-      if (nextIndex < 0 || nextIndex >= max) return;
-
-      const prevTab = tabs[currentIndex];
-      const nextTab = tabs[nextIndex];
-      const prevSlide = slides[currentIndex];
-      const nextSlide = slides[nextIndex];
-
-      if (prevTab) {
-        prevTab.classList.remove('is-active');
-        prevTab.setAttribute('aria-selected', 'false');
-      }
-      if (prevSlide) {
-        prevSlide.classList.remove('is-active');
-        prevSlide.setAttribute('aria-hidden', 'true');
-      }
-
-      if (nextTab) {
-        nextTab.classList.add('is-active');
-        nextTab.setAttribute('aria-selected', 'true');
-      }
-      if (nextSlide) {
-        nextSlide.classList.add('is-active');
-        nextSlide.setAttribute('aria-hidden', 'false');
-      }
-
-      currentIndex = nextIndex;
-      updateCTA(currentIndex);
-    }
-
-    function goto(index) {
-      window.requestAnimationFrame(function () {
-        setActive(index);
+    function setActive(index) {
+      slides.forEach((slide, i) => {
+        if (i === index) {
+          slide.classList.add('is-active');
+          slide.setAttribute('aria-hidden', 'false');
+        } else {
+          slide.classList.remove('is-active');
+          slide.setAttribute('aria-hidden', 'true');
+        }
       });
+
+      tabs.forEach((tab, i) => {
+        if (i === index) {
+          tab.classList.add('is-active');
+          tab.setAttribute('aria-selected', 'true');
+        } else {
+          tab.classList.remove('is-active');
+          tab.setAttribute('aria-selected', 'false');
+        }
+      });
+
+      currentIndex = index;
+      applyCtaFromIndex(index);
     }
 
-    function next() {
-      const n = (currentIndex + 1) % max;
-      goto(n);
-    }
-
-    function stopAutoplay() {
-      if (autoplay) {
-        clearInterval(autoplay);
-        autoplay = null;
-      }
+    function nextSlide() {
+      const nextIndex = (currentIndex + 1) % slides.length;
+      setActive(nextIndex);
     }
 
     function startAutoplay() {
-      if (reducedMotion) return;
       stopAutoplay();
-      autoplay = setInterval(next, autoplayDuration);
+      autoplayInterval = setInterval(nextSlide, autoplayDuration);
+    }
+
+    function stopAutoplay() {
+      if (autoplayInterval) {
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
+      }
     }
 
     function scheduleResume() {
-      if (reducedMotion) return;
       if (resumeTimeout) clearTimeout(resumeTimeout);
-      resumeTimeout = setTimeout(startAutoplay, resumeDelay);
+      resumeTimeout = setTimeout(() => {
+        startAutoplay();
+      }, resumeDelay);
     }
 
-    tabs.slice(0, max).forEach((tab) => {
+    tabs.forEach((tab) => {
       tab.addEventListener('click', function (e) {
         e.preventDefault();
         stopAutoplay();
-        const idx = parseInt(this.getAttribute('data-index'), 10);
-        if (!isNaN(idx)) goto(idx);
+        const indexToShow = parseInt(this.getAttribute('data-index'), 10);
+        if (!isNaN(indexToShow) && indexToShow >= 0 && indexToShow < slides.length) {
+          setActive(indexToShow);
+        }
         scheduleResume();
       });
 
       tab.addEventListener('keydown', function (e) {
-        let idx = currentIndex;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') idx = (currentIndex + 1) % max;
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') idx = (currentIndex - 1 + max) % max;
-        if (e.key === 'Home') idx = 0;
-        if (e.key === 'End') idx = max - 1;
-
-        if (idx !== currentIndex) {
+        let newIndex = currentIndex;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
           e.preventDefault();
+          newIndex = (currentIndex + 1) % tabs.length;
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          newIndex = 0;
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          newIndex = tabs.length - 1;
+        }
+
+        if (newIndex !== currentIndex) {
           stopAutoplay();
-          goto(idx);
-          tabs[idx].focus();
+          setActive(newIndex);
+          tabs[newIndex].focus();
           scheduleResume();
         }
       });
@@ -712,22 +703,30 @@
     });
 
     if (pillars) {
-      pillars.addEventListener('mouseenter', stopAutoplay);
-      pillars.addEventListener('mouseleave', startAutoplay);
-    }
-    if (carousel) {
-      carousel.addEventListener('mouseenter', stopAutoplay);
-      carousel.addEventListener('mouseleave', startAutoplay);
+      pillars.addEventListener('mouseenter', function () {
+        stopAutoplay();
+      });
+      pillars.addEventListener('mouseleave', function () {
+        startAutoplay();
+      });
     }
 
-    root.addEventListener('focusin', function () {
+    if (carousel) {
+      carousel.addEventListener('mouseenter', function () {
+        stopAutoplay();
+      });
+      carousel.addEventListener('mouseleave', function () {
+        startAutoplay();
+      });
+    }
+
+    sectionElement.addEventListener('focusin', function () {
       stopAutoplay();
       scheduleResume();
     });
 
-    // init
-    updateCTA(0);
-    if (!reducedMotion) startAutoplay();
+    setActive(0);
+    startAutoplay();
   })();
 </script>
 
@@ -746,46 +745,26 @@
       "id": "showcase_logo",
       "label": "Logo du showcase (optionnel, sinon logo du thème)"
     },
+
     { "type": "header", "content": "Header" },
-    { "type": "text", "id": "kicker", "label": "Kicker (Sur-titre)", "default": "Découvrez" },
-    { "type": "text", "id": "title", "label": "Titre principal", "default": "Votre univers énergétique" },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker (Sur-titre)",
+      "default": "Découvrez"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre principal",
+      "default": "Votre univers énergétique"
+    },
     {
       "type": "textarea",
       "id": "subtitle",
       "label": "Sous-titre descriptif",
       "default": "Pierres précieuses, bijoux uniques et rituels pour élever votre énergie"
-    },
-
-    { "type": "header", "content": "Legacy (non utilisé si tu passes par les blocs)" },
-    { "type": "text", "id": "pillar_1_icon", "label": "Pilier 1 icône", "default": "💎" },
-    { "type": "text", "id": "pillar_1_title", "label": "Pilier 1 titre", "default": "Pierres & cristaux" },
-    {
-      "type": "textarea",
-      "id": "pillar_1_text",
-      "label": "Pilier 1 texte",
-      "default": "Sélection de pierres naturelles de haute qualité, choisies à la main."
-    },
-    { "type": "url", "id": "pillar_1_link", "label": "Pilier 1 lien" },
-
-    { "type": "text", "id": "pillar_2_icon", "label": "Pilier 2 icône", "default": "✨" },
-    { "type": "text", "id": "pillar_2_title", "label": "Pilier 2 titre", "default": "Bijoux artisanaux" },
-    {
-      "type": "textarea",
-      "id": "pillar_2_text",
-      "label": "Pilier 2 texte",
-      "default": "Créations artisanales uniques, chargées d'intention et d'énergie."
-    },
-    { "type": "url", "id": "pillar_2_link", "label": "Pilier 2 lien" },
-
-    { "type": "text", "id": "pillar_3_icon", "label": "Pilier 3 icône", "default": "🕯️" },
-    { "type": "text", "id": "pillar_3_title", "label": "Pilier 3 titre", "default": "Rituels & bougies" },
-    {
-      "type": "textarea",
-      "id": "pillar_3_text",
-      "label": "Pilier 3 texte",
-      "default": "Expériences énergétiques pour transformer votre espace et votre bien-être."
-    },
-    { "type": "url", "id": "pillar_3_link", "label": "Pilier 3 lien" }
+    }
   ],
   "blocks": [
     {
@@ -794,8 +773,78 @@
       "limit": 10,
       "settings": [
         { "type": "header", "content": "Onglet" },
-        { "type": "text", "id": "tab_label", "label": "Label onglet", "default": "Pierres & cristaux" },
-        { "type": "text", "id": "icon", "label": "Icône (Emoji)", "default": "💎" },
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Label de l'onglet",
+          "default": "Pierres & cristaux",
+          "info": "Texte affiché sur le bouton onglet à gauche"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icône (Emoji)",
+          "default": "💎",
+          "info": "Emoji ou icône affiché dans l'onglet"
+        },
+
+        { "type": "header", "content": "Contenu" },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre court",
+          "default": "Pierres & cristaux",
+          "info": "Titre affiché dans l'onglet (utilisé si label vide)"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texte descriptif",
+          "default": "Sélection de pierres naturelles de haute qualité, choisies à la main.",
+          "info": "Texte affiché sous le titre dans l'onglet"
+        },
+
+        { "type": "header", "content": "Slide" },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image de la slide",
+          "info": "Image affichée dans la slide à droite"
+        },
+
+        { "type": "header", "content": "Bouton d'action" },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Texte du bouton CTA",
+          "default": "Découvrir"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Lien du bouton CTA"
+        }
+      ]
+    },
+
+    {
+      "type": "slide",
+      "name": "Univers (legacy)",
+      "limit": 10,
+      "settings": [
+        { "type": "header", "content": "Onglet" },
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Label de l'onglet",
+          "default": "Pierres & cristaux"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icône (Emoji)",
+          "default": "💎"
+        },
 
         { "type": "header", "content": "Contenu" },
         { "type": "text", "id": "title", "label": "Titre court", "default": "Pierres & cristaux" },
@@ -809,47 +858,16 @@
         { "type": "header", "content": "Slide" },
         { "type": "image_picker", "id": "image", "label": "Image de la slide" },
 
-        { "type": "header", "content": "CTA" },
-        { "type": "text", "id": "cta_label", "label": "Texte du bouton", "default": "Découvrir" },
-        { "type": "url", "id": "cta_link", "label": "Lien du bouton" }
+        { "type": "header", "content": "Bouton d'action" },
+        { "type": "text", "id": "cta_label", "label": "Texte du bouton CTA", "default": "Découvrir" },
+        { "type": "url", "id": "cta_link", "label": "Lien du bouton CTA" }
       ]
     }
   ],
   "presets": [
     {
       "name": "Milaura Hero Showcase",
-      "blocks": [
-        {
-          "type": "universe",
-          "settings": {
-            "tab_label": "Pierres & cristaux",
-            "icon": "💎",
-            "title": "Pierres & cristaux",
-            "text": "Sélection de pierres naturelles de haute qualité, choisies à la main.",
-            "cta_label": "Découvrir"
-          }
-        },
-        {
-          "type": "universe",
-          "settings": {
-            "tab_label": "Bijoux artisanaux",
-            "icon": "✨",
-            "title": "Bijoux artisanaux",
-            "text": "Créations artisanales uniques, chargées d'intention et d'énergie.",
-            "cta_label": "Découvrir"
-          }
-        },
-        {
-          "type": "universe",
-          "settings": {
-            "tab_label": "Rituels & bougies",
-            "icon": "🕯️",
-            "title": "Rituels & bougies",
-            "text": "Expériences énergétiques pour transformer votre espace et votre bien-être.",
-            "cta_label": "Découvrir"
-          }
-        }
-      ]
+      "blocks": [{ "type": "universe" }, { "type": "universe" }, { "type": "universe" }]
     }
   ]
 }
