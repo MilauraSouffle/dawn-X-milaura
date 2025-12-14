@@ -11,19 +11,19 @@
     margin-top: var(--milaura-spacing-md);
     margin-bottom: var(--milaura-spacing-lg);
 
-    /* Fallbacks si le système global n'est pas présent */
-    --milaura-gold-a: 0.55;
-    --milaura-gold-1-local: rgba(209, 178, 120, var(--milaura-gold-a));
-    --milaura-gold-2-local: rgba(186, 149, 90, var(--milaura-gold-a));
-    --milaura-gold-border-local: rgba(192, 160, 98, var(--milaura-gold-a));
-    --milaura-gold-grad-local: linear-gradient(135deg, var(--milaura-gold-1-local), rgba(240, 220, 170, 0.55), var(--milaura-gold-2-local));
-    --milaura-sheen-local: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 35%, rgba(255,255,255,0) 70%);
+    /* Fallback "doré bijoux" (même feeling que le footer des cartes) */
+    --milaura-gold-solid: #C0A062;
+    --milaura-gold-grad: linear-gradient(90deg, #C0A062, #E6C88B, #C0A062);
+    --milaura-sheen: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%);
 
-    /* Utilise le global si dispo, sinon fallback local */
-    --milaura-gold-grad-safe: var(--milaura-gold-grad, var(--milaura-gold-grad-local));
-    --milaura-sheen-safe: var(--milaura-sheen, var(--milaura-sheen-local));
+    /* Pour borders / ombres */
+    --milaura-gold-a: 0.55;
+    --milaura-gold-1: rgba(209, 178, 120, var(--milaura-gold-a));
+    --milaura-gold-2: rgba(186, 149, 90, var(--milaura-gold-a));
+    --milaura-gold-border: rgba(192, 160, 98, var(--milaura-gold-a));
   }
 
+  /* --- CONTENEUR PRINCIPAL --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-card {
     position: relative;
   }
@@ -34,40 +34,45 @@
     margin-bottom: var(--milaura-spacing-lg);
   }
 
+  /* --- WRAP BANNIÈRE --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-wrap {
     position: relative;
     max-width: 960px;
-    margin: 0 auto var(--milaura-spacing-lg) auto;
+    margin: 0 auto var(--milaura-spacing-md) auto;
   }
 
-  /* --- BANNIÈRE DORÉE --- */
+  /* --- BANNIÈRE DORÉE (bijou + voile) --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--milaura-spacing-sm);
-    padding: 20px 28px;
-    border-radius: 32px;
-    background: var(--milaura-gold-grad-safe);
+    padding: 20px 30px;
+    border-radius: 30px;
+    background: var(--milaura-gold-grad);
     box-shadow:
-      0 18px 45px rgba(150, 120, 70, 0.28),
-      0 0 0 1px rgba(255, 255, 255, 0.30) inset;
+      0 18px 45px rgba(150, 120, 70, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.32) inset;
     max-width: 960px;
     color: #fff;
     position: relative;
     z-index: 2;
-    overflow: hidden;
+    overflow: visible; /* important: autorise le logo à dépasser */
   }
 
-  /* Voile lumineux subtil sur le bandeau */
+  /* Voile lumineux bijou */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--milaura-sheen-safe);
+    background: var(--milaura-sheen);
     opacity: 0.22;
     pointer-events: none;
     z-index: 1;
+    transition: opacity 0.25s ease;
+  }
+  #MilauraHeroShowcase-{{ section.id }} .hero-banner:hover::before {
+    opacity: 0.42;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-text {
@@ -75,44 +80,31 @@
     z-index: 2;
   }
 
-  /* --- LOGO "CHAPEAU" DEVANT + À DROITE --- */
+  /* --- LOGO (ne plus toucher) : devant, à droite, peut dépasser --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo {
     position: absolute;
-    top: -26px;
-    right: -22px; /* on le pousse à fond à droite */
-    z-index: 4; /* devant le bandeau */
+    top: -34px;
+    right: -16px;
+    z-index: 6;
     pointer-events: none;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo img {
     display: block;
-    width: 148px;
+    width: 150px;
     height: auto;
-    filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.30));
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.28));
   }
 
-  /* --- TEXTE LISIBILITÉ: BLANC + CONTOUR NOIR --- */
-  #MilauraHeroShowcase-{{ section.id }} .hero-kicker,
-  #MilauraHeroShowcase-{{ section.id }} .hero-title-script,
-  #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
+  /* --- OUTLINE NOIR POUR LISIBILITÉ (blanc + contour) --- */
+  #MilauraHeroShowcase-{{ section.id }} .hero-outline {
+    color: #ffffff;
     text-shadow:
-      0 1px 0 rgba(0,0,0,0.55),
-      0 -1px 0 rgba(0,0,0,0.55),
-      1px 0 0 rgba(0,0,0,0.55),
-      -1px 0 0 rgba(0,0,0,0.55),
-      0 6px 18px rgba(0,0,0,0.22);
-  }
-
-  @supports (-webkit-text-stroke: 1px rgba(0,0,0,0.4)) {
-    #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
-      -webkit-text-stroke: 1px rgba(0,0,0,0.35);
-      paint-order: stroke fill;
-    }
-    #MilauraHeroShowcase-{{ section.id }} .hero-subtitle,
-    #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
-      -webkit-text-stroke: 0.6px rgba(0,0,0,0.28);
-      paint-order: stroke fill;
-    }
+      -1px -1px 0 rgba(0,0,0,0.70),
+       1px -1px 0 rgba(0,0,0,0.70),
+      -1px  1px 0 rgba(0,0,0,0.70),
+       1px  1px 0 rgba(0,0,0,0.70),
+       0px  2px 6px rgba(0,0,0,0.35);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
@@ -120,28 +112,27 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.95);
     font-weight: 700;
     margin-bottom: var(--milaura-spacing-sm);
+    opacity: 0.98;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
     font-family: var(--milaura-font-script, 'Dancing Script', cursive);
     font-size: 4rem;
     font-weight: 700;
-    color: #ffffff;
-    line-height: 1.05;
+    line-height: 1.06;
     margin: 0;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
     font-family: var(--milaura-font-body);
-    font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0.98);
+    font-size: 1.08rem;
     line-height: 1.55;
     max-width: 820px;
     margin: var(--milaura-spacing-sm) auto 0 auto;
     text-align: center;
+    opacity: 0.98;
   }
 
   /* --- GRILLE PRINCIPALE --- */
@@ -166,15 +157,15 @@
     align-items: center;
     gap: var(--milaura-spacing-md);
     padding: 12px var(--milaura-spacing-lg);
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border: 2px solid rgba(192, 160, 98, calc(var(--milaura-gold-a) * 0.30));
+    border: 2px solid rgba(192, 160, 98, calc(var(--milaura-gold-a) * 0.35));
     border-radius: var(--milaura-border-radius);
     box-shadow:
-      0 8px 25px rgba(192, 160, 98, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      0 8px 25px rgba(192, 160, 98, 0.14),
+      0 0 0 1px rgba(255, 255, 255, 0.52) inset;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
     text-decoration: none;
     cursor: pointer;
     position: relative;
@@ -184,6 +175,25 @@
     font-family: inherit;
   }
 
+  /* petite brillance hover */
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 120%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+    opacity: 0.0;
+    transition: left 0.6s ease, opacity 0.2s ease;
+    pointer-events: none;
+  }
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover::after {
+    left: 120%;
+    opacity: 1;
+  }
+
+  /* Indicateur gauche actif */
   #MilauraHeroShowcase-{{ section.id }} .hero-tab::before {
     content: '';
     position: absolute;
@@ -192,33 +202,31 @@
     transform: translateY(-50%);
     width: 4px;
     height: 0;
-    background: var(--milaura-gold-grad-safe);
+    background: var(--milaura-gold-grad);
     border-radius: 0 2px 2px 0;
-    transition: height 0.25s ease;
+    transition: height 0.22s ease;
     z-index: 1;
   }
-
   #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active::before {
     height: 62%;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover:not(.is-active) {
     transform: translateY(-2px);
-    border-color: rgba(192, 160, 98, 0.62);
+    border-color: rgba(192, 160, 98, 0.65);
     box-shadow:
-      0 12px 30px rgba(192, 160, 98, 0.22),
-      0 0 0 1px rgba(255, 255, 255, 0.8) inset,
-      0 0 18px rgba(192, 160, 98, 0.12);
+      0 12px 35px rgba(192, 160, 98, 0.24),
+      0 0 0 1px rgba(255, 255, 255, 0.82) inset;
     background: rgba(255, 255, 255, 1);
   }
 
+  /* Actif = doré bijoux */
   #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active {
-    background: var(--milaura-gold-grad-safe);
-    border-color: rgba(192, 160, 98, 0.82);
+    background: var(--milaura-gold-grad);
+    border-color: rgba(192, 160, 98, 0.85);
     box-shadow:
-      0 12px 32px rgba(192, 160, 98, 0.26),
-      0 0 0 1px rgba(255, 255, 255, 0.32) inset,
-      0 0 22px rgba(192, 160, 98, 0.18);
+      0 12px 35px rgba(192, 160, 98, 0.32),
+      0 0 0 1px rgba(255, 255, 255, 0.28) inset;
     transform: translateY(-1px);
   }
 
@@ -226,29 +234,26 @@
     font-size: 2rem;
     line-height: 1;
     flex-shrink: 0;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.10));
+    transition: transform 0.22s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    position: relative;
+    z-index: 2;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-content {
     flex: 1;
+    position: relative;
+    z-index: 2;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-title {
     font-family: var(--milaura-font-heading);
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--milaura-text);
     margin-bottom: 4px;
     display: block;
-    transition: color 0.25s ease;
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover:not(.is-active) .hero-pillar-title {
-    color: var(--milaura-gold, #c6a15c);
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active .hero-pillar-title {
-    color: #1a1a1a;
+    transition: color 0.2s ease;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
@@ -257,24 +262,41 @@
     color: var(--milaura-text-light);
     line-height: 1.45;
     display: block;
+    transition: color 0.2s ease;
   }
 
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover:not(.is-active) .hero-pillar-icon {
+    transform: scale(1.10) rotate(3deg);
+  }
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover:not(.is-active) .hero-pillar-title {
+    color: var(--milaura-gold-solid);
+  }
+
+  /* Contraste sur actif (doré) */
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active .hero-pillar-title {
+    color: #141414;
+  }
   #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-active .hero-pillar-text {
-    color: rgba(26, 26, 26, 0.82);
+    color: rgba(20, 20, 20, 0.78);
   }
 
-  /* --- CTA UNIQUE SOUS LES PILIERS --- */
+  /* --- CTA SOUS LES PILIERS (comme demandé) --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-cta-row {
     margin-top: var(--milaura-spacing-md);
     display: flex;
     justify-content: flex-start;
   }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-row .button {
+  #MilauraHeroShowcase-{{ section.id }} .hero-main-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 999px;
-    padding-left: 22px;
-    padding-right: 22px;
-    min-height: 44px;
+    padding: 12px 18px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+    white-space: nowrap;
   }
 
   /* --- COLONNE DROITE : CARROUSEL --- */
@@ -282,12 +304,11 @@
     position: relative;
     border-radius: var(--milaura-border-radius);
     overflow: visible;
-    width: 100%;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
     position: relative;
-    border: 3px solid var(--milaura-gold-1, var(--milaura-gold-1-local));
+    border: 3px solid var(--milaura-gold-1);
     border-radius: var(--milaura-border-radius);
     padding: 8px;
     background: rgba(255, 255, 255, 0.10);
@@ -296,7 +317,6 @@
     transform: translate(0px, 8px);
     margin-right: 8px;
     margin-bottom: 8px;
-    width: 100%;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel {
@@ -313,26 +333,15 @@
     inset: 0;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.45s ease-in-out;
+    transition: opacity 0.38s ease-in-out;
     border-radius: calc(var(--milaura-border-radius) - 4px);
     overflow: hidden;
+    will-change: opacity;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-slide.is-active {
     opacity: 1;
     z-index: 1;
-    pointer-events: auto;
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-slide[aria-hidden="true"] {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-slide[aria-hidden="false"] {
-    opacity: 1;
-    visibility: visible;
     pointer-events: auto;
   }
 
@@ -343,7 +352,7 @@
     border-radius: calc(var(--milaura-border-radius) - 4px);
   }
 
-  /* --- MOBILE --- */
+  /* --- MOBILE (< 768px) : priorité visibilité photo + compaction --- */
   @media screen and (max-width: 768px) {
     #MilauraHeroShowcase-{{ section.id }} {
       padding-top: var(--header-height-offset, 56px);
@@ -356,81 +365,62 @@
       padding: 0 10px;
     }
 
-    #MilauraHeroShowcase-{{ section.id }} .hero-banner-wrap {
-      margin-bottom: 12px;
-      max-width: 100%;
-    }
-
+    /* Bandeau beaucoup plus compact */
     #MilauraHeroShowcase-{{ section.id }} .hero-banner {
       padding: 12px 14px;
-      border-radius: 22px;
+      border-radius: 20px;
+      gap: 6px;
     }
 
-    /* logo devant, plus petit, toujours à droite */
+    /* Logo (ne pas toucher) mais plus petit mobile */
     #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo {
-      top: -18px;
-      right: -18px;
-      z-index: 4;
+      top: -16px;
+      right: -10px;
     }
-
     #MilauraHeroShowcase-{{ section.id }} .hero-banner-logo img {
-      width: 86px;
+      width: 92px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
       font-size: 0.78rem;
-      margin-bottom: 6px;
+      margin-bottom: 2px;
       letter-spacing: 1.6px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
-      font-size: 2.2rem;
+      font-size: 2.25rem;
       line-height: 1.05;
     }
 
-    /* Clamp pour éviter que le bandeau mange tout l'écran */
+    /* Subtitle plus courte visuellement */
     #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       line-height: 1.35;
-      max-width: 100%;
-      margin-top: 8px;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      margin-top: 6px;
     }
 
+    /* Layout mobile : photo en premier, grande, sans “gros vide” */
     #MilauraHeroShowcase-{{ section.id }} .hero-main-grid {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin: 0;
+      margin: 10px 0 0 0;
       padding: 0 10px;
     }
 
-    /* Photo d'abord, grande */
-    #MilauraHeroShowcase-{{ section.id }} .hero-carousel-wrapper {
-      order: 1;
-      width: 100%;
-    }
+    #MilauraHeroShowcase-{{ section.id }} .hero-carousel-wrapper { order: 1; }
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillars { order: 2; }
+    #MilauraHeroShowcase-{{ section.id }} .hero-cta-row { order: 3; margin-top: 10px; }
 
+    /* Photo plus grande */
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
       transform: translate(6px, 6px);
       margin-right: 6px;
       margin-bottom: 6px;
-      width: 100%;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel {
-      aspect-ratio: 4 / 5; /* plus haut, plus impact */
-      width: 100%;
-    }
-
-    /* Piliers ensuite */
-    #MilauraHeroShowcase-{{ section.id }} .hero-pillars {
-      order: 2;
-      width: 100%;
-      gap: 10px;
+      aspect-ratio: 1 / 1; /* + grand en hauteur, visible sans scroll */
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-tab {
@@ -438,18 +428,11 @@
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-title {
-      font-size: 1.05rem;
+      font-size: 1.12rem;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
-      font-size: 0.92rem;
-    }
-
-    /* CTA sous les piliers, compact */
-    #MilauraHeroShowcase-{{ section.id }} .hero-cta-row {
-      order: 3;
-      margin-top: 10px;
-      justify-content: center;
+      font-size: 0.95rem;
     }
   }
 {% endstyle %}
@@ -471,15 +454,15 @@
         <div class="hero-banner">
           <div class="hero-banner-text">
             {% if section.settings.kicker != blank %}
-              <div class="hero-kicker">{{ section.settings.kicker }}</div>
+              <div class="hero-kicker hero-outline">{{ section.settings.kicker }}</div>
             {% endif %}
 
             {% if section.settings.title != blank %}
-              <h1 class="hero-title-script">{{ section.settings.title }}</h1>
+              <h1 class="hero-title-script hero-outline">{{ section.settings.title }}</h1>
             {% endif %}
 
             {% if section.settings.subtitle != blank %}
-              <p class="hero-subtitle milaura-text">{{ section.settings.subtitle }}</p>
+              <p class="hero-subtitle hero-outline">{{ section.settings.subtitle }}</p>
             {% endif %}
           </div>
         </div>
@@ -487,47 +470,43 @@
     </div>
 
     <div class="hero-main-grid">
-      <div>
-        <div class="hero-pillars" role="tablist" aria-label="Sélectionner un univers">
-          {% assign has_universe = false %}
-          {% for block in section.blocks %}
-            {% if block.type == 'universe' or block.type == 'slide' %}
-              {% assign has_universe = true %}
-              <button
-                type="button"
-                class="hero-tab {% if forloop.first %}is-active{% endif %}"
-                data-index="{{ forloop.index0 }}"
-                data-cta-label="{{ block.settings.cta_label | escape }}"
-                data-cta-link="{{ block.settings.cta_link }}"
-                role="tab"
-                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-                aria-controls="hero-slide-{{ section.id }}-{{ forloop.index0 }}"
-                id="hero-tab-{{ section.id }}-{{ forloop.index0 }}"
-                {{ block.shopify_attributes }}
-              >
-                {% if block.settings.icon != blank %}
-                  <div class="hero-pillar-icon">{{ block.settings.icon }}</div>
-                {% endif %}
-                <div class="hero-pillar-content">
-                  {% if block.settings.tab_label != blank %}
-                    <div class="hero-pillar-title">{{ block.settings.tab_label }}</div>
-                  {% elsif block.settings.title != blank %}
-                    <div class="hero-pillar-title">{{ block.settings.title }}</div>
-                  {% endif %}
-                  {% if block.settings.text != blank %}
-                    <div class="hero-pillar-text milaura-text">{{ block.settings.text }}</div>
-                  {% endif %}
-                </div>
-              </button>
+      <div class="hero-pillars" role="tablist" aria-label="Sélectionner un univers">
+        {% assign universe_blocks = section.blocks | where: 'type', 'universe' %}
+        {% for block in universe_blocks %}
+          <button
+            type="button"
+            class="hero-tab {% if forloop.first %}is-active{% endif %}"
+            data-index="{{ forloop.index0 }}"
+            data-cta-label="{{ block.settings.cta_label | escape }}"
+            data-cta-link="{{ block.settings.cta_link }}"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-controls="hero-slide-{{ section.id }}-{{ forloop.index0 }}"
+            id="hero-tab-{{ section.id }}-{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.icon != blank %}
+              <div class="hero-pillar-icon">{{ block.settings.icon }}</div>
             {% endif %}
-          {% endfor %}
-        </div>
+            <div class="hero-pillar-content">
+              {% if block.settings.tab_label != blank %}
+                <div class="hero-pillar-title">{{ block.settings.tab_label }}</div>
+              {% elsif block.settings.title != blank %}
+                <div class="hero-pillar-title">{{ block.settings.title }}</div>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="hero-pillar-text milaura-text">{{ block.settings.text }}</div>
+              {% endif %}
+            </div>
+          </button>
+        {% endfor %}
 
         <div class="hero-cta-row">
           <a
-            href="#"
-            class="button button--primary milaura-gold-sheen"
             id="hero-main-cta-{{ section.id }}"
+            class="button button--primary milaura-gold-sheen hero-main-cta"
+            href="#"
+            style="display:none;"
           >
             Découvrir
           </a>
@@ -537,9 +516,9 @@
       <div class="hero-carousel-wrapper">
         <div class="hero-carousel-frame">
           <div class="hero-carousel" id="hero-carousel-{{ section.id }}">
-            {% if has_universe %}
-              {% for block in section.blocks %}
-                {% if block.type == 'universe' or block.type == 'slide' %}
+            {% if universe_blocks.size > 0 %}
+              {% for block in universe_blocks %}
+                {% if block.settings.image != blank %}
                   <div
                     class="hero-slide {% if forloop.first %}is-active{% endif %}"
                     id="hero-slide-{{ section.id }}-{{ forloop.index0 }}"
@@ -549,15 +528,13 @@
                     aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
                     {{ block.shopify_attributes }}
                   >
-                    {% if block.settings.image != blank %}
-                      {{
-                        block.settings.image
-                        | image_url: width: 1400
-                        | image_tag: loading: 'eager', alt: block.settings.image.alt
-                      }}
-                    {% else %}
-                      {{ 'image' | placeholder_svg_tag: 'hero-placeholder' }}
-                    {% endif %}
+                    {{
+                      block.settings.image
+                      | image_url: width: 1400
+                      | image_tag: loading: 'eager', alt: block.settings.image.alt
+                      | default: block.settings.title
+                      | default: 'Milaura'
+                    }}
                   </div>
                 {% endif %}
               {% endfor %}
@@ -583,63 +560,52 @@
     const slides = sectionElement.querySelectorAll('.hero-slide[data-index]');
     const pillars = sectionElement.querySelector('.hero-pillars');
     const carousel = sectionElement.querySelector('.hero-carousel');
-    const mainCta = sectionElement.querySelector('#hero-main-cta-' + sectionId);
+    const mainCta = document.getElementById('hero-main-cta-' + sectionId);
 
     if (tabs.length === 0 || slides.length === 0) return;
 
     let currentIndex = 0;
     let autoplayInterval = null;
-    let resumeTimeout = null;
     const autoplayDuration = 3000;
-    const resumeDelay = 8000;
 
-    function applyCtaFromIndex(index) {
+    function updateMainCta(index) {
       if (!mainCta) return;
 
       const tab = tabs[index];
-      if (!tab) return;
-
       const label = (tab.getAttribute('data-cta-label') || '').trim();
       const link = (tab.getAttribute('data-cta-link') || '').trim();
 
       if (!label || !link || link === '#') {
         mainCta.style.display = 'none';
+        mainCta.setAttribute('href', '#');
+        mainCta.textContent = 'Découvrir';
         return;
       }
 
-      mainCta.style.display = '';
-      mainCta.textContent = label;
+      mainCta.style.display = 'inline-flex';
       mainCta.setAttribute('href', link);
+      mainCta.textContent = label;
     }
 
     function setActive(index) {
       slides.forEach((slide, i) => {
-        if (i === index) {
-          slide.classList.add('is-active');
-          slide.setAttribute('aria-hidden', 'false');
-        } else {
-          slide.classList.remove('is-active');
-          slide.setAttribute('aria-hidden', 'true');
-        }
+        const active = i === index;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', active ? 'false' : 'true');
       });
 
       tabs.forEach((tab, i) => {
-        if (i === index) {
-          tab.classList.add('is-active');
-          tab.setAttribute('aria-selected', 'true');
-        } else {
-          tab.classList.remove('is-active');
-          tab.setAttribute('aria-selected', 'false');
-        }
+        const active = i === index;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
       });
 
       currentIndex = index;
-      applyCtaFromIndex(index);
+      updateMainCta(index);
     }
 
     function nextSlide() {
-      const nextIndex = (currentIndex + 1) % slides.length;
-      setActive(nextIndex);
+      setActive((currentIndex + 1) % slides.length);
     }
 
     function startAutoplay() {
@@ -654,76 +620,29 @@
       }
     }
 
-    function scheduleResume() {
-      if (resumeTimeout) clearTimeout(resumeTimeout);
-      resumeTimeout = setTimeout(() => {
-        startAutoplay();
-      }, resumeDelay);
-    }
-
     tabs.forEach((tab) => {
       tab.addEventListener('click', function (e) {
         e.preventDefault();
         stopAutoplay();
         const indexToShow = parseInt(this.getAttribute('data-index'), 10);
-        if (!isNaN(indexToShow) && indexToShow >= 0 && indexToShow < slides.length) {
-          setActive(indexToShow);
-        }
-        scheduleResume();
-      });
-
-      tab.addEventListener('keydown', function (e) {
-        let newIndex = currentIndex;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          newIndex = (currentIndex + 1) % tabs.length;
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-        } else if (e.key === 'Home') {
-          e.preventDefault();
-          newIndex = 0;
-        } else if (e.key === 'End') {
-          e.preventDefault();
-          newIndex = tabs.length - 1;
-        }
-
-        if (newIndex !== currentIndex) {
-          stopAutoplay();
-          setActive(newIndex);
-          tabs[newIndex].focus();
-          scheduleResume();
-        }
+        if (!isNaN(indexToShow)) setActive(indexToShow);
+        startAutoplay();
       });
 
       tab.addEventListener('focus', function () {
         stopAutoplay();
-        scheduleResume();
       });
     });
 
     if (pillars) {
-      pillars.addEventListener('mouseenter', function () {
-        stopAutoplay();
-      });
-      pillars.addEventListener('mouseleave', function () {
-        startAutoplay();
-      });
+      pillars.addEventListener('mouseenter', stopAutoplay);
+      pillars.addEventListener('mouseleave', startAutoplay);
     }
 
     if (carousel) {
-      carousel.addEventListener('mouseenter', function () {
-        stopAutoplay();
-      });
-      carousel.addEventListener('mouseleave', function () {
-        startAutoplay();
-      });
+      carousel.addEventListener('mouseenter', stopAutoplay);
+      carousel.addEventListener('mouseleave', startAutoplay);
     }
-
-    sectionElement.addEventListener('focusin', function () {
-      stopAutoplay();
-      scheduleResume();
-    });
 
     setActive(0);
     startAutoplay();
@@ -745,7 +664,6 @@
       "id": "showcase_logo",
       "label": "Logo du showcase (optionnel, sinon logo du thème)"
     },
-
     { "type": "header", "content": "Header" },
     {
       "type": "text",
@@ -777,41 +695,33 @@
           "type": "text",
           "id": "tab_label",
           "label": "Label de l'onglet",
-          "default": "Pierres & cristaux",
-          "info": "Texte affiché sur le bouton onglet à gauche"
+          "default": "Pierres & cristaux"
         },
         {
           "type": "text",
           "id": "icon",
           "label": "Icône (Emoji)",
-          "default": "💎",
-          "info": "Emoji ou icône affiché dans l'onglet"
+          "default": "💎"
         },
-
         { "type": "header", "content": "Contenu" },
         {
           "type": "text",
           "id": "title",
           "label": "Titre court",
-          "default": "Pierres & cristaux",
-          "info": "Titre affiché dans l'onglet (utilisé si label vide)"
+          "default": "Pierres & cristaux"
         },
         {
           "type": "textarea",
           "id": "text",
           "label": "Texte descriptif",
-          "default": "Sélection de pierres naturelles de haute qualité, choisies à la main.",
-          "info": "Texte affiché sous le titre dans l'onglet"
+          "default": "Sélection de pierres naturelles de haute qualité, choisies à la main."
         },
-
         { "type": "header", "content": "Slide" },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image de la slide",
-          "info": "Image affichée dans la slide à droite"
+          "label": "Image de la slide"
         },
-
         { "type": "header", "content": "Bouton d'action" },
         {
           "type": "text",
@@ -824,43 +734,6 @@
           "id": "cta_link",
           "label": "Lien du bouton CTA"
         }
-      ]
-    },
-
-    {
-      "type": "slide",
-      "name": "Univers (legacy)",
-      "limit": 10,
-      "settings": [
-        { "type": "header", "content": "Onglet" },
-        {
-          "type": "text",
-          "id": "tab_label",
-          "label": "Label de l'onglet",
-          "default": "Pierres & cristaux"
-        },
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "Icône (Emoji)",
-          "default": "💎"
-        },
-
-        { "type": "header", "content": "Contenu" },
-        { "type": "text", "id": "title", "label": "Titre court", "default": "Pierres & cristaux" },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "Texte descriptif",
-          "default": "Sélection de pierres naturelles de haute qualité, choisies à la main."
-        },
-
-        { "type": "header", "content": "Slide" },
-        { "type": "image_picker", "id": "image", "label": "Image de la slide" },
-
-        { "type": "header", "content": "Bouton d'action" },
-        { "type": "text", "id": "cta_label", "label": "Texte du bouton CTA", "default": "Découvrir" },
-        { "type": "url", "id": "cta_link", "label": "Lien du bouton CTA" }
       ]
     }
   ],
