@@ -398,44 +398,6 @@
         z-index: 2;
       }
 
-      /* --- SCROLL REVEAL CINÉMATIQUE --- */
-      /* Par défaut : rien n'est caché */
-      /* Quand milaura-reveal-ready est activé : sections ciblées démarrent cachées */
-      body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3) {
-        opacity: 0;
-        transform: translateY(24px);
-        transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3).is-inview {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* Respecte prefers-reduced-motion */
-      @media (prefers-reduced-motion: reduce) {
-        body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3) {
-          opacity: 1;
-          transform: none;
-          transition: none;
-        }
-      }
-
-      /* Fallback : affiche les sections après un délai si elles n'ont pas reçu is-inview */
-      body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3) {
-        animation: fadeInFallback 0.6s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
-      }
-
-      body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3).is-inview {
-        animation: none;
-      }
-
-      @keyframes fadeInFallback {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
 
       /* --- HEADER MOBILE COMPACT HOMEPAGE --- */
       @media screen and (max-width: 768px) {
@@ -550,72 +512,6 @@
 
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
-
-    {%- if template.name == 'index' -%}
-      <script>
-        (function () {
-          'use strict';
-          /* Vérifie prefers-reduced-motion */
-          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
-          }
-
-          /* Attends que le DOM soit prêt */
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initReveal);
-          } else {
-            initReveal();
-          }
-
-          function initReveal() {
-            var main = document.getElementById('MainContent');
-            if (!main) return;
-
-            var sections = Array.from(main.querySelectorAll('div[id^="shopify-section-"]'));
-            if (sections.length < 3) return;
-
-            /* Skip les 2 premières sections */
-            var targetSections = sections.slice(2);
-
-            if (targetSections.length === 0) return;
-
-            /* Active le mode reveal */
-            document.body.classList.add('milaura-reveal-ready');
-
-            /* IntersectionObserver */
-            var observer = new IntersectionObserver(
-              function (entries) {
-                entries.forEach(function (entry) {
-                  if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
-                    entry.target.classList.add('is-inview');
-                    observer.unobserve(entry.target);
-                  }
-                });
-              },
-              {
-                threshold: 0.15,
-                rootMargin: '0px',
-              }
-            );
-
-            /* Observe les sections ciblées */
-            targetSections.forEach(function (section) {
-              observer.observe(section);
-
-              /* Vérifie si la section est déjà visible au chargement */
-              var rect = section.getBoundingClientRect();
-              var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-              if (isVisible) {
-                /* Ajoute un petit délai pour laisser le CSS s'appliquer */
-                setTimeout(function () {
-                  section.classList.add('is-inview');
-                }, 50);
-              }
-            });
-          }
-        })();
-      </script>
     {%- endif -%}
   </body>
 </html>
