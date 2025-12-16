@@ -377,6 +377,26 @@
     margin-top: var(--milaura-spacing-md);
   }
 
+  /* NEUTRALISATION des styles globaux qui pourraient écraser */
+  #MilauraQuiz-{{ section.id }} button.milaura-cta,
+  #MilauraQuiz-{{ section.id }} a.milaura-cta {
+    /* Neutralisation des styles de boutons/liens globaux */
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-decoration-thickness: 0 !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: inherit !important;
+    display: inline-flex !important;
+  }
+
+  /* Force le texte noir sur les CTA */
+  #MilauraQuiz-{{ section.id }} button.milaura-cta,
+  #MilauraQuiz-{{ section.id }} a.milaura-cta {
+    color: #000 !important;
+  }
+
   #MilauraQuiz-{{ section.id }} .quiz-mood-title {
     font-family: var(--milaura-font-heading);
     color: var(--milaura-gold);
@@ -540,7 +560,7 @@
         {% if section.settings.intro_button_label != blank %}
           <button
             type="button"
-            class="milaura-btn milaura-btn-primary"
+            class="milaura-cta"
             id="quiz-start-btn-{{ section.id }}"
           >
             {{ section.settings.intro_button_label }}
@@ -933,11 +953,11 @@
         let html = '';
         
         if (product.url) {
-          html += `<a href="${product.url}" class="milaura-btn milaura-btn-primary" style="text-align: center; text-decoration: none; display: block;">Découvrir ma bougie ✨</a>`;
+          html += `<a href="${product.url}" class="milaura-cta" style="text-align: center; text-decoration: none; display: block;">Découvrir ma bougie ✨</a>`;
         }
         
         if (product.variant_id) {
-          html += `<button type="button" class="milaura-btn" style="margin-top: 10px; width: 100%;" onclick="fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: ${product.variant_id}, quantity: 1 }) }).then(() => { window.location.href = '/cart'; });">Ajouter au panier</button>`;
+          html += `<button type="button" class="milaura-cta" style="margin-top: 10px; width: 100%;" onclick="fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: ${product.variant_id}, quantity: 1 }) }).then(() => { window.location.href = '/cart'; });">Ajouter au panier</button>`;
         }
         
         buttonsEl.innerHTML = html;
