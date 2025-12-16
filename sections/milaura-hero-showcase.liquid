@@ -367,29 +367,69 @@
     margin-top: 14px;
   }
 
-  /* Neutralisation des styles locaux pour utiliser .milaura-cta global */
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-main {
-    padding: 0;
-    border-radius: 0;
-    border: none;
-    background: none;
-    box-shadow: none;
-    font-weight: inherit;
-    letter-spacing: inherit;
-    font-size: inherit;
-    min-height: 0;
+  /* Preuve visuelle temporaire pour vérifier le ciblage */
+  #MilauraHeroShowcase-{{ section.id }} .milaura-cta {
+    outline: 2px solid red;
+  }
+
+  /* S'assurer que .milaura-cta écrase les styles locaux avec spécificité suffisante */
+  #MilauraHeroShowcase-{{ section.id }} .milaura-cta {
+    /* Les styles de base.css s'appliquent, on neutralise seulement les conflits locaux */
+    padding: 14px 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(214, 176, 96, 0.55);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 240, 200, 0.92) 0%,
+      rgba(214, 176, 96, 0.92) 18%,
+      rgba(255, 232, 172, 0.92) 42%,
+      rgba(176, 130, 48, 0.92) 70%,
+      rgba(255, 240, 200, 0.92) 100%
+    );
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    font-size: 1rem;
+    box-shadow:
+      0 12px 32px rgba(130, 90, 30, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+    transition: transform 180ms ease, box-shadow 220ms ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 48px;
+    min-width: 220px;
     width: auto;
     filter: none;
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-main::after {
-    content: none;
+  #MilauraHeroShowcase-{{ section.id }} .milaura-cta::after {
+    content: '';
+    position: absolute;
+    inset: -40% -60%;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.50) 35%,
+      transparent 70%
+    );
+    opacity: 0;
+    transform: translateX(-18%);
+    transition: opacity 260ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-cta-main:hover {
-    transform: none;
-    box-shadow: none;
-    filter: none;
+  #MilauraHeroShowcase-{{ section.id }} .milaura-cta:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 16px 40px rgba(130, 90, 30, 0.20),
+      0 0 0 1px rgba(255, 255, 255, 0.30) inset,
+      0 0 24px rgba(214, 176, 96, 0.28);
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .milaura-cta:hover::after {
+    opacity: 0.35;
+    transform: translateX(18%);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-cta-main.is-hidden {
@@ -525,11 +565,11 @@
       margin-top: var(--milaura-spacing-sm, 10px);
     }
 
-    /* Neutralisation des styles mobile pour utiliser .milaura-cta global */
-    #MilauraHeroShowcase-{{ section.id }} .hero-pillars .hero-cta-main {
-      width: auto;
-      padding: 0;
-      font-size: inherit;
+    /* Styles mobile pour .milaura-cta */
+    #MilauraHeroShowcase-{{ section.id }} .milaura-cta {
+      min-width: 180px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
     }
   }
 {% endstyle %}
