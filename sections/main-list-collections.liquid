@@ -1,407 +1,140 @@
-{% comment %}
-  MILAURA MASTERCLASS V8 - GOLD EDITION
-  - Titre : Cadre fin 1px, aéré, élégant.
-  - Hook : Fond Or Mat / Texte Noir.
-  - Mobile : Remonté à 100px.
-{% endcomment %}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
 
-{%- style -%}
-  /* --- 1. LAYOUT GLOBAL --- */
-  .milaura-product-section {
-    padding-top: {{ section.settings.padding_top | default: 180 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
-    background: linear-gradient(180deg, #fff 0%, #faf9f6 100%);
-  }
+<div class="page-width">
+  <h1 class="title title--primary inline-richtext{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {{ section.settings.title }}
+  </h1>
+  {%- liquid
+    case section.settings.sort
+      when 'products_high', 'products_low'
+        assign collections = collections | sort: 'all_products_count'
+      when 'date', 'date_reversed'
+        assign collections = collections | sort: 'published_at'
+    endcase
 
-  .milaura-product-wrapper {
-    max-width: 1400px; margin: 0 auto; padding: 0 30px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
-  }
+    if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
+      assign collections = collections | reverse
+    endif
 
-  /* --- TITRE LUXE (Cadre Fin) --- */
-  .global-title-wrapper { text-align: center; margin-bottom: 50px; }
-
-  .global-subtitle {
-    display: block; text-align: center; text-transform: uppercase;
-    letter-spacing: 3px; font-size: 0.9rem; color: #c0a062; font-weight: 700;
-    margin-bottom: 20px; /* Espace avant le cadre */
-  }
-
-  .global-product-title {
-    font-family: var(--milaura-font-heading, "Playfair Display", serif);
-    font-size: 3.5rem; line-height: 1.1; color: #1a1a1a;
-    display: inline-block; /* Le cadre colle au texte */
-    border: 1px solid #c0a062; /* BORDURE FINE OR MAT */
-    padding: 20px 60px; /* ESPACE AÉRÉ */
-    margin: 0;
-    background: rgba(255,255,255,0.5); /* Légère transparence */
-  }
-
-  /* --- 2. MEDIA (GAUCHE) & VARIANTES --- */
-  .product-left-col { position: sticky; top: 140px; }
-
-  .main-image-wrapper {
-    border-radius: 30px; overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    position: relative; aspect-ratio: 4 / 5; background: #f4f4f4; margin-bottom: 25px;
-  }
-  .main-product-image { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
-
-  .product-badge-sticker {
-    position: absolute; top: 20px; left: 20px; background: #c0a062; color: #fff;
-    padding: 8px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); z-index: 10;
-  }
-
-  /* VARIANTES SOUS PHOTO */
-  .variants-under-photo {
-    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
-  }
-  .variant-pill {
-    display: flex; align-items: center; gap: 8px;
-    border: 1px solid #ddd; border-radius: 8px; padding: 8px 15px;
-    cursor: pointer; background: #fff; transition: all 0.2s;
-  }
-  .variant-pill:hover { border-color: #c0a062; }
-  .variant-pill.active { border: 1px solid #c0a062; background: #fffaf0; box-shadow: 0 2px 10px rgba(192, 160, 98, 0.2); }
-  .variant-thumb { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: #eee; }
-  .variant-name { font-size: 0.9rem; font-weight: 600; color: #333; }
-
-  /* --- 3. COLONNE DROITE --- */
-  .product-info-wrapper { color: #333; font-size: 1.1rem; }
-
-  /* --- 4. METAFIELDS COTE A COTE --- */
-  .split-layout-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 25px; margin: 0 0 30px 0; align-items: start; }
-  .identity-card-compact { background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-  .id-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #ddd; padding-bottom: 5px; }
-  .id-row:last-child { border: none; padding: 0; }
-  .id-label { font-size: 0.85rem; color: #888; text-transform: uppercase; }
-  .id-val { font-weight: 700; color: #1a1a1a; font-size: 1rem; }
-  .benefits-compact h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 10px 0; font-family: var(--milaura-font-heading, serif); }
-  .benefits-item { display: flex; gap: 10px; margin-bottom: 8px; font-size: 1.1rem; line-height: 1.4; color: #444; }
-  .check-icon { color: #c0a062; flex-shrink: 0; }
-
-  /* --- 5. URGENCE (BLEU) --- */
-  .urgency-container { margin: 30px 0; }
-  .stock-status { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-weight: 700; font-size: 1.1rem; }
-  .stock-text { color: #1e3a8a; display: flex; align-items: center; gap: 8px; }
-  .sales-text { color: #666; font-size: 1rem; font-style: italic; }
-  .progress-bar-bg { width: 100%; height: 4px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: #c0a062; transition: width 1.5s ease-out; }
-
-  /* --- 6. AVIS TÉMOINS --- */
-  .reviews-preview-block { margin: 30px 0; padding: 20px; background: #fff; border-radius: 20px; border: 1px solid #f0f0f0; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
-  .global-rating-header { text-align: center; margin-bottom: 15px; font-weight: 700; color: #c0a062; font-size: 1.1rem; }
-  .review-item { display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-  .review-item:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
-  .reviewer-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #c0a062; flex-shrink: 0; }
-  .review-content strong { display: block; font-size: 1rem; color: #1a1a1a; margin-bottom: 2px;}
-  .review-content p { font-size: 1rem; margin: 0; color: #555; font-style: italic; line-height: 1.4; }
-  .stars-gold { color: #c0a062; }
-
-  /* --- 7. ZONE CONVERSION --- */
-  .conversion-area { margin-top: 30px; background: #fff; padding: 25px; border-radius: 20px; border: 1px solid #e8e0c9; box-shadow: 0 10px 40px rgba(212, 175, 55, 0.1); }
-
-  .price-offer-split { display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; align-items: center; margin-bottom: 25px; }
-  .price-box-final { background: #fdfbf7; border: 1px solid #e8e0c9; padding: 15px; border-radius: 12px; text-align: center; }
-  .final-price { font-size: 2rem; font-weight: 700; color: #000; display:block; line-height:1; font-family: var(--milaura-font-heading, serif);}
-
-  /* HOOK : FOND OR MAT - TEXTE NOIR */
-  .offer-hook-container { text-align: center; }
-  .offer-hook-badge {
-    background: #c0a062; /* OR MAT */
-    color: #000000; /* NOIR */
-    font-weight: 800; font-size: 0.9rem;
-    padding: 10px 20px; border-radius: 8px;
-    display: inline-block;
-    text-transform: uppercase; letter-spacing: 1px;
-    box-shadow: 0 4px 10px rgba(192, 160, 98, 0.3);
-  }
-
-  /* BUNDLES */
-  .bundle-selector-v6 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-  .bundle-option-v6 {
-    border: 2px solid #eee; border-radius: 12px; padding: 15px; cursor: pointer; transition: all 0.3s; background: #fff; position: relative; overflow: hidden;
-  }
-  .bundle-option-v6.active { border-color: #c0a062; background: #fffaf0; box-shadow: 0 5px 15px rgba(192, 160, 98, 0.2); }
-  .bundle-title-v6 { font-weight: 800; font-size: 1.1rem; color: #1a1a1a; display: block; margin-bottom: 5px; }
-  .bundle-gifts-v6 { font-size: 0.95rem; color: #555; line-height: 1.4; }
-  .gift-highlight { color: #d32f2f; font-weight: 700; }
-  .bundle-badge { position: absolute; top: 0; right: 0; background: #c0a062; color: #fff; font-size: 0.7rem; padding: 3px 8px; border-bottom-left-radius: 10px; font-weight: 700;}
-
-  /* BOUTON */
-  .add-to-cart-btn {
-    width: 100%; background: linear-gradient(135deg, #d4af37 0%, #c5a059 100%); color: #fff; font-size: 1.3rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 22px; border: none; border-radius: 100px; cursor: pointer; box-shadow: 0 10px 30px rgba(197, 160, 89, 0.4); transition: all 0.3s;
-  }
-  .add-to-cart-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(197, 160, 89, 0.5); }
-
-  /* --- 8. ACCORDEONS --- */
-  .accordion-group { margin-top: 50px; border-top: 1px solid #eee; }
-  .accordion-header { padding: 25px 0; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center; background: none; border: none; border-bottom: 1px solid #eee; width: 100%; cursor: pointer; text-align: left; font-family: var(--milaura-font-heading, serif); }
-  .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s; opacity: 0; padding: 0; font-size: 1.1rem; line-height: 1.7; }
-  .accordion-content.open { opacity: 1; padding-bottom: 25px; }
-
-  /* --- MOBILE --- */
-  @media screen and (max-width: 990px) {
-    .milaura-product-section { padding-top: 100px; } /* REMONTÉE DRASTIQUE */
-    .global-product-title { font-size: 2.2rem; padding: 15px 30px; border-width: 1px; } /* Cadre adapté mobile */
-    .milaura-product-wrapper { grid-template-columns: 1fr; gap: 30px; }
-    .split-layout-container { grid-template-columns: 1fr; gap: 20px; }
-    .price-offer-split { grid-template-columns: 1fr; text-align: center; gap: 15px;}
-    .bundle-selector-v6 { grid-template-columns: 1fr; }
-    .add-to-cart-btn {
-      position: sticky; bottom: 20px; z-index: 999; width: calc(100% - 40px); left: 20px; margin: 0 auto; box-shadow: 0 5px 25px rgba(0,0,0,0.3); padding: 18px;
-    }
-  }
-{%- endstyle -%}
-
-{% assign random_sales = 'now' | date: '%S' | modulo: 15 | plus: 18 %}
-{% assign inventory_qty = product.selected_or_first_available_variant.inventory_quantity %}
-{% if inventory_qty <= 0 %}{% assign inventory_qty = 7 %}{% endif %}
-{% assign progress_width = inventory_qty | times: 100 | divided_by: 20 %}
-{% if progress_width > 100 %}{% assign progress_width = 100 %}{% endif %}
-
-<section class="milaura-product-section" id="MainProduct-{{ section.id }}">
-  <div class="page-width global-title-wrapper">
-    {% if product.metafields.custom.subtitle %}
-      <span class="global-subtitle">{{ product.metafields.custom.subtitle }}</span>
-    {% endif %}
-    <h1 class="global-product-title">{{ product.title }}</h1>
-  </div>
-
-  <div class="milaura-product-wrapper">
-    <div class="product-left-col">
-      <div class="main-image-wrapper">
-        {% if section.settings.sticker_text != blank %}
-          <div class="product-badge-sticker">{{ section.settings.sticker_text }}</div>
-        {% endif %}
-        <img
-          id="MainImg-{{ section.id }}"
-          src="{{ product.featured_media | image_url: width: 1000 }}"
-          alt="{{ product.title }}"
-          class="main-product-image"
-          loading="eager"
+    assign moduloResult = 28 | modulo: section.settings.columns_desktop
+    assign paginate_by = 30
+    if moduloResult == 0
+      assign paginate_by = 28
+    endif
+  -%}
+  {%- paginate collections by paginate_by -%}
+    <ul
+      class="collection-list grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+      role="list"
+    >
+      {%- for collection in collections -%}
+        <li
+          class="collection-list__item grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          {% if settings.animations_reveal_on_scroll %}
+            data-cascade
+            style="--animation-order: {{ forloop.index }};"
+          {% endif %}
         >
-      </div>
-
-      {% unless product.has_only_default_variant %}
-        <div class="variants-under-photo">
-          {% for variant in product.variants %}
-            <div
-              class="variant-pill {% if forloop.first %}active{% endif %}"
-              onclick="selectVariant('{{ variant.id }}', '{{ variant.price | money }}', '{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}', '{{ variant.featured_media | image_url: width: 800 }}', this)"
-            >
-              {% if variant.featured_media %}
-                <img
-                  src="{{ variant.featured_media | image_url: width: 60 }}"
-                  class="variant-thumb"
-                  alt="{{ variant.title }}"
-                >
-              {% endif %}
-              <span class="variant-name">{{ variant.title }}</span>
-            </div>
-          {% endfor %}
-        </div>
-      {% endunless %}
-    </div>
-
-    <div class="product-info-wrapper">
-      <div class="split-layout-container">
-        {% if product.metafields.custom.stone %}
-          <div class="identity-card-compact">
-            <div class="id-row">
-              <span class="id-label">Pierre</span> <span class="id-val">{{ product.metafields.custom.stone }}</span>
-            </div>
-            <div class="id-row">
-              <span class="id-label">Qualité</span>
-              <span class="id-val">{{ product.metafields.custom.quality | default: 'AA+' }}</span>
-            </div>
-            <div class="id-row">
-              <span class="id-label">Origine</span>
-              <span class="id-val">{{ product.metafields.custom.origin | default: 'Monde' }}</span>
-            </div>
-          </div>
-        {% endif %}
-        {% if product.metafields.custom.benefits %}
-          <div class="benefits-compact">
-            <h3>{{ section.settings.benefits_title }}</h3>
-            {% assign benefits = product.metafields.custom.benefits | split: '•' %}
-            {% for benefit in benefits %}
-              <div class="benefits-item"><span class="check-icon">✔</span> {{ benefit | strip }}</div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      </div>
-
-      <div class="urgency-container">
-        <div class="stock-status">
-          <span class="stock-text">🔵 Plus que {{ inventory_qty }} pièces en stock !</span>
-          <span class="sales-text">{{ random_sales }} ventes aujourd'hui</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" style="width: {{ progress_width }}%;"></div>
-        </div>
-      </div>
-
-      <div class="reviews-preview-block">
-        <div class="global-rating-header">Note globale : <span class="stars-gold">★★★★★</span> 4.9/5 (120+ avis)</div>
-        <div class="review-item">
-          <img src="https://i.pravatar.cc/150?img=32" alt="Sophie" class="reviewer-avatar">
-          <div class="review-content">
-            <strong>Sophie D. <span class="stars-gold">★★★★★</span></strong>
-            <p>"Cette bougie a changé l'énergie de mon salon. L'améthyste est magnifique !"</p>
-          </div>
-        </div>
-        <div class="review-item">
-          <img src="https://i.pravatar.cc/150?img=68" alt="Marc" class="reviewer-avatar">
-          <div class="review-content">
-            <strong>Marc L. <span class="stars-gold">★★★★★</span></strong>
-            <p>"Emballage soigné, odeur divine. Ma femme adore."</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="conversion-area">
-        {% form 'product', product %}
-          <input
-            type="hidden"
-            id="MainVariantId"
-            name="id"
-            value="{{ product.selected_or_first_available_variant.id }}"
-          >
-
-          <div class="price-offer-split">
-            <div class="price-box-final">
-              <span class="final-price" id="PriceDisplay">{{ product.price | money }}</span>
-            </div>
-            <div class="offer-hook-container">
-              <span class="offer-hook-badge">🔥 Boostez votre rituel & économisez</span>
-            </div>
-          </div>
-
-          <div class="bundle-selector-v6">
-            <div class="bundle-option-v6" onclick="selectBundle(2, this)">
-              <span class="bundle-badge">POPULAIRE</span>
-              <span class="bundle-title-v6">OFFRE DUO RITUEL (x2)</span>
-              <div class="bundle-gifts-v6">
-                🎁 Sauge OFFERTE<br>
-                🚚 <span class="gift-highlight">Livraison OFFERTE</span>
-              </div>
-            </div>
-            <div class="bundle-option-v6" onclick="selectBundle(3, this)">
-              <span class="bundle-badge">MEILLEURE OFFRE</span>
-              <span class="bundle-title-v6">OFFRE TRIO PRESTIGE (x3)</span>
-              <div class="bundle-gifts-v6">
-                🎁 Sauge + Livraison OFFERTES<br>
-                ✨ <span class="gift-highlight">-10% de REMISE IMMÉDIATE</span>
-              </div>
-            </div>
-          </div>
-          <input type="number" id="Quantity-{{ section.id }}" name="quantity" value="1" min="1" style="display:none;">
-
-          <button type="submit" name="add" class="add-to-cart-btn">Ajouter au panier</button>
-        {% endform %}
-      </div>
-
-      <div class="accordion-group">
-        <button class="accordion-header" onclick="toggleAcc(this)">Description & Histoire <span>+</span></button>
-        <div class="accordion-content open" style="max-height: 500px; opacity:1;">{{ product.description }}</div>
-        <button class="accordion-header" onclick="toggleAcc(this)">Détails techniques <span>+</span></button>
-        <div class="accordion-content">{{ section.settings.technical_details }}</div>
-        <button class="accordion-header" onclick="toggleAcc(this)">Livraison & Retours <span>+</span></button>
-        <div class="accordion-content">{{ section.settings.shipping_returns }}</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<script>
-  function toggleAcc(btn) {
-    btn.classList.toggle('active');
-    var panel = btn.nextElementSibling;
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-      panel.classList.remove('open');
-      btn.querySelector('span').innerText = '+';
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + 'px';
-      panel.classList.add('open');
-      btn.querySelector('span').innerText = '-';
-    }
-  }
-
-  function selectBundle(qty, element) {
-    var input = document.getElementById('Quantity-{{ section.id }}');
-    if (input) input.value = qty;
-    var options = document.querySelectorAll('.bundle-option-v6');
-    options.forEach(function (opt) {
-      opt.classList.remove('active');
-    });
-    element.classList.add('active');
-  }
-
-  function selectVariant(id, price, comparePrice, image, element) {
-    document.getElementById('MainVariantId').value = id;
-    document.getElementById('PriceDisplay').innerHTML = price;
-    if (image && image.length > 0 && image.indexOf('no-image') === -1) {
-      document.getElementById('MainImg-{{ section.id }}').src = image;
-    }
-    var pills = document.querySelectorAll('.variant-pill');
-    pills.forEach((p) => p.classList.remove('active'));
-    element.classList.add('active');
-  }
-</script>
-
+          {% render 'card-collection',
+            card_collection: collection,
+            media_aspect_ratio: section.settings.image_ratio,
+            columns: 3
+          %}
+        </li>
+      {%- endfor -%}
+    </ul>
+    {% render 'pagination', paginate: paginate %}
+  {%- endpaginate -%}
+</div>
 {% schema %}
 {
-  "name": "Milaura Masterclass V8",
+  "name": "t:sections.main-list-collections.name",
+  "class": "section",
   "settings": [
     {
-      "type": "text",
-      "id": "sticker_text",
-      "label": "Texte Badge Image",
-      "default": "Fait Main"
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:sections.main-list-collections.settings.title.label",
+      "default": "t:sections.main-list-collections.settings.title.default"
     },
     {
-      "type": "text",
-      "id": "benefits_title",
-      "label": "Titre Bénéfices",
-      "default": "Pourquoi elle est faite pour toi :"
+      "type": "select",
+      "id": "sort",
+      "options": [
+        {
+          "value": "alphabetical",
+          "label": "t:sections.main-list-collections.settings.sort.options__1.label"
+        },
+        {
+          "value": "alphabetical_reversed",
+          "label": "t:sections.main-list-collections.settings.sort.options__2.label"
+        },
+        {
+          "value": "date_reversed",
+          "label": "t:sections.main-list-collections.settings.sort.options__3.label"
+        },
+        {
+          "value": "date",
+          "label": "t:sections.main-list-collections.settings.sort.options__4.label"
+        },
+        {
+          "value": "products_high",
+          "label": "t:sections.main-list-collections.settings.sort.options__5.label"
+        },
+        {
+          "value": "products_low",
+          "label": "t:sections.main-list-collections.settings.sort.options__6.label"
+        }
+      ],
+      "default": "alphabetical",
+      "label": "t:sections.main-list-collections.settings.sort.label"
     },
     {
-      "type": "richtext",
-      "id": "technical_details",
-      "label": "Contenu Détails Techniques",
-      "default": "<p>Cire de soja 100% naturelle.</p>"
-    },
-    {
-      "type": "richtext",
-      "id": "shipping_returns",
-      "label": "Contenu Livraison",
-      "default": "<p>Livraison offerte dès 2 bougies.</p>"
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-list-collections.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-list-collections.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-list-collections.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-list-collections.settings.image_ratio.label"
     },
     {
       "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 300,
-      "step": 10,
-      "unit": "px",
-      "label": "Marge Haut",
-      "default": 180
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.main-list-collections.settings.columns_desktop.label"
     },
     {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Marge Bas",
-      "default": 60
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.main-list-collections.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.main-list-collections.settings.columns_mobile.options__2.label"
+        }
+      ],
+      "default": "2",
+      "label": "t:sections.main-list-collections.settings.columns_mobile.label"
     }
-  ],
-  "presets": [{ "name": "Milaura Masterclass V8" }]
+  ]
 }
 {% endschema %}
