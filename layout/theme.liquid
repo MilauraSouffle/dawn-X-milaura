@@ -333,71 +333,92 @@
         z-index: 2147483647 !important;
       }
 
-      /* --- HOMEPAGE FLOW PREMIUM - RITUEL CONTINU --- */
+      /* --- HOMEPAGE STACK PREMIUM - SÉPARATEURS PARFAITS --- */
       {% if template.name == 'index' %}
-      /* Réduction espacements sections homepage */
-      main#MainContent .shopify-section {
-        padding-top: 24px !important;
-        padding-bottom: 24px !important;
+      /* Cible les sections Shopify homepage */
+      main#MainContent > div[id^="shopify-section-"] {
         position: relative;
+        padding-top: 20px !important;
+        padding-bottom: 20px !important;
+        overflow: visible;
       }
 
       @media screen and (max-width: 768px) {
-        main#MainContent .shopify-section {
-          padding-top: 16px !important;
-          padding-bottom: 16px !important;
+        main#MainContent > div[id^="shopify-section-"] {
+          padding-top: 14px !important;
+          padding-bottom: 14px !important;
         }
       }
 
-      /* Séparateur fin doré entre sections (sauf première) */
-      main#MainContent .shopify-section:not(:first-child)::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 120px;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(214, 176, 96, 0.6), transparent);
+      /* Overlap contrôlé : sections suivantes remontent légèrement */
+      main#MainContent > div[id^="shopify-section-"]:not(:first-child) {
+        margin-top: -10px;
         z-index: 1;
       }
 
       @media screen and (max-width: 768px) {
-        main#MainContent .shopify-section:not(:first-child)::before {
-          width: 80px;
+        main#MainContent > div[id^="shopify-section-"]:not(:first-child) {
+          margin-top: -6px;
         }
       }
 
-      /* Overlap léger entre sections (effet de profondeur) */
-      main#MainContent .shopify-section:not(:last-child) {
-        margin-bottom: -12px;
+      /* Séparateur doré parfaitement ancré à la jonction */
+      main#MainContent > div[id^="shopify-section-"]:not(:first-child)::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(214, 176, 96, 0.55) 20%, rgba(214, 176, 96, 0.65) 50%, rgba(214, 176, 96, 0.55) 80%, transparent 100%);
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      @media screen and (max-width: 768px) {
+        main#MainContent > div[id^="shopify-section-"]:not(:first-child)::before {
+          top: -6px;
+          width: 100px;
+        }
+      }
+
+      /* Assure que le contenu reste au-dessus du séparateur */
+      main#MainContent > div[id^="shopify-section-"] > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Z-index alterné pour stack propre */
+      main#MainContent > div[id^="shopify-section-"]:nth-child(odd) {
+        z-index: 1;
+      }
+
+      main#MainContent > div[id^="shopify-section-"]:nth-child(even) {
         z-index: 2;
       }
 
-      @media screen and (max-width: 768px) {
-        main#MainContent .shopify-section:not(:last-child) {
-          margin-bottom: -8px;
+      /* --- SCROLL REVEAL CINÉMATIQUE --- */
+      /* Par défaut : rien n'est caché */
+      /* Quand milaura-reveal-ready est activé : sections ciblées démarrent cachées */
+      body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3) {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3).is-inview {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Respecte prefers-reduced-motion */
+      @media (prefers-reduced-motion: reduce) {
+        body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3) {
+          opacity: 1;
+          transform: none;
+          transition: none;
         }
-      }
-
-      /* Alternance subtile de fond pour rythme visuel */
-      main#MainContent .shopify-section:nth-child(even) {
-        position: relative;
-      }
-
-      main#MainContent .shopify-section:nth-child(even)::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse 800px 200px at 50% 0%, rgba(255, 248, 240, 0.3), transparent 60%);
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      /* Ajustement z-index pour contenu au-dessus des overlays */
-      main#MainContent .shopify-section > * {
-        position: relative;
-        z-index: 1;
       }
       {% endif %}
     </style>
@@ -476,6 +497,62 @@
 
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if template.name == 'index' -%}
+      <script>
+        (function () {
+          'use strict';
+          /* Vérifie prefers-reduced-motion */
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+          }
+
+          /* Attends que le DOM soit prêt */
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initReveal);
+          } else {
+            initReveal();
+          }
+
+          function initReveal() {
+            var main = document.getElementById('MainContent');
+            if (!main) return;
+
+            var sections = Array.from(main.querySelectorAll('div[id^="shopify-section-"]'));
+            if (sections.length < 3) return;
+
+            /* Skip les 2 premières sections */
+            var targetSections = sections.slice(2);
+
+            if (targetSections.length === 0) return;
+
+            /* Active le mode reveal */
+            document.body.classList.add('milaura-reveal-ready');
+
+            /* IntersectionObserver */
+            var observer = new IntersectionObserver(
+              function (entries) {
+                entries.forEach(function (entry) {
+                  if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
+                    entry.target.classList.add('is-inview');
+                    observer.unobserve(entry.target);
+                  }
+                });
+              },
+              {
+                threshold: 0.15,
+                rootMargin: '0px',
+              }
+            );
+
+            /* Observe les sections ciblées */
+            targetSections.forEach(function (section) {
+              observer.observe(section);
+            });
+          }
+        })();
+      </script>
     {%- endif -%}
   </body>
 </html>
