@@ -1,4 +1,72 @@
 {% style %}
+  /* Style global réutilisable pour tous les boutons CTA Milaura */
+  .milaura-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(214, 176, 96, 0.55);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 240, 200, 0.92) 0%,
+      rgba(214, 176, 96, 0.92) 18%,
+      rgba(255, 232, 172, 0.92) 42%,
+      rgba(176, 130, 48, 0.92) 70%,
+      rgba(255, 240, 200, 0.92) 100%
+    );
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    font-size: 1rem;
+    box-shadow:
+      0 12px 32px rgba(130, 90, 30, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+    transition: transform 180ms ease, box-shadow 220ms ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .milaura-cta::after {
+    content: '';
+    position: absolute;
+    inset: -40% -60%;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.50) 35%,
+      transparent 70%
+    );
+    opacity: 0;
+    transform: translateX(-18%);
+    transition: opacity 260ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .milaura-cta:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 16px 40px rgba(130, 90, 30, 0.20),
+      0 0 0 1px rgba(255, 255, 255, 0.30) inset,
+      0 0 24px rgba(214, 176, 96, 0.28);
+  }
+
+  .milaura-cta:hover::after {
+    opacity: 0.35;
+    transform: translateX(18%);
+  }
+
+  /* Responsive Mobile pour .milaura-cta */
+  @media screen and (max-width: 768px) {
+    .milaura-cta {
+      width: 100%;
+      max-width: 320px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+    }
+  }
+
   #MilauraHeroConversion-{{ section.id }} {
     width: 100%;
     padding-top: var(--milaura-spacing-md, 18px);
@@ -48,63 +116,6 @@
     flex-shrink: 0;
   }
 
-  #MilauraHeroConversion-{{ section.id }} .conversion-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 32px;
-    border-radius: 999px;
-    border: 1px solid rgba(214, 176, 96, 0.55);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 240, 200, 0.92) 0%,
-      rgba(214, 176, 96, 0.92) 18%,
-      rgba(255, 232, 172, 0.92) 42%,
-      rgba(176, 130, 48, 0.92) 70%,
-      rgba(255, 240, 200, 0.92) 100%
-    );
-    color: #fff;
-    text-decoration: none;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    font-size: 1rem;
-    box-shadow:
-      0 12px 32px rgba(130, 90, 30, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.25) inset;
-    transition: transform 180ms ease, box-shadow 220ms ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  #MilauraHeroConversion-{{ section.id }} .conversion-cta::after {
-    content: '';
-    position: absolute;
-    inset: -40% -60%;
-    background: linear-gradient(
-      120deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.50) 35%,
-      transparent 70%
-    );
-    opacity: 0;
-    transform: translateX(-18%);
-    transition: opacity 260ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
-    pointer-events: none;
-  }
-
-  #MilauraHeroConversion-{{ section.id }} .conversion-cta:hover {
-    transform: translateY(-1px);
-    box-shadow:
-      0 16px 40px rgba(130, 90, 30, 0.20),
-      0 0 0 1px rgba(255, 255, 255, 0.30) inset,
-      0 0 24px rgba(214, 176, 96, 0.28);
-  }
-
-  #MilauraHeroConversion-{{ section.id }} .conversion-cta:hover::after {
-    opacity: 0.35;
-    transform: translateX(18%);
-  }
-
   /* Responsive Mobile */
   @media screen and (max-width: 768px) {
     #MilauraHeroConversion-{{ section.id }} {
@@ -130,13 +141,6 @@
 
     #MilauraHeroConversion-{{ section.id }} .reassurance-icon {
       font-size: 1rem;
-    }
-
-    #MilauraHeroConversion-{{ section.id }} .conversion-cta {
-      width: 100%;
-      max-width: 320px;
-      padding: 12px 24px;
-      font-size: 0.95rem;
     }
   }
 {% endstyle %}
@@ -165,7 +169,7 @@
     {% endif %}
 
     {% if section.settings.primary_button_label != blank %}
-      <a href="{{ section.settings.primary_button_link | default: '#' }}" class="conversion-cta">
+      <a href="{{ section.settings.primary_button_link | default: '#' }}" class="milaura-cta conversion-cta">
         {{ section.settings.primary_button_label }}
       </a>
     {% endif %}
