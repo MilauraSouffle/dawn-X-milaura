@@ -421,6 +421,22 @@
         }
       }
 
+      /* Fallback : affiche les sections après un délai si elles n'ont pas reçu is-inview */
+      body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3) {
+        animation: fadeInFallback 0.6s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
+      }
+
+      body.milaura-reveal-ready main#MainContent > div[id^="shopify-section-"]:nth-child(n+3).is-inview {
+        animation: none;
+      }
+
+      @keyframes fadeInFallback {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
       /* --- HEADER MOBILE COMPACT HOMEPAGE --- */
       @media screen and (max-width: 768px) {
         /* Réduit la position top du header */
@@ -586,6 +602,16 @@
             /* Observe les sections ciblées */
             targetSections.forEach(function (section) {
               observer.observe(section);
+
+              /* Vérifie si la section est déjà visible au chargement */
+              var rect = section.getBoundingClientRect();
+              var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+              if (isVisible) {
+                /* Ajoute un petit délai pour laisser le CSS s'appliquer */
+                setTimeout(function () {
+                  section.classList.add('is-inview');
+                }, 50);
+              }
             });
           }
         })();
