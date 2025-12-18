@@ -1,420 +1,1477 @@
 {% comment %}
-  MILAURA MASTERCLASS V16 - PROD READY
-  - Design : V15 (Validé)
-  - Patch A (Associé) : Sécurisation des listes de bénéfices (ignorer lignes vides).
-  - Mobile : Titre au-dessus de l'image.
-  - Desktop : Layout optimisé.
+  MILAURA MASTERCLASS V17 - MOBILE-FIRST BUY BOX
+  - Buy Box optimisé mobile : tout au-dessus du fold (375px)
+  - Ordre : Titre > Rating > Prix > 3 Bénéfices > CTA > Reassurance
+  - Desktop : Layout 2 colonnes préservé
+  - Pas de sticky/fixed sur mobile
 {% endcomment %}
 
 {%- style -%}
-  /* --- 1. LAYOUT GLOBAL --- */
+  /* ============================================
+     1. VARIABLES & RESET
+  ============================================ */
+  :root {
+    --milaura-gold: #c0a062;
+    --milaura-gold-light: #e8e0c9;
+    --milaura-dark: #1a1a1a;
+    --milaura-gray: #666;
+    --milaura-bg: #faf9f6;
+    --milaura-radius: 12px;
+    --milaura-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  /* ============================================
+     2. SECTION CONTAINER
+  ============================================ */
   .milaura-product-section {
-    padding-top: {{ section.settings.padding_top | default: 60 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
-    background: linear-gradient(180deg, #fff 0%, #faf9f6 100%);
+    padding: 0;
+    background: var(--milaura-bg);
   }
 
   .milaura-product-wrapper {
-    max-width: 1400px; margin: 0 auto; padding: 0 30px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
   }
 
-  /* --- STYLE DU TITRE BULLE DORÉE - Application du design system milaura-pill --- */
-  /* NEUTRALISATION des styles locaux pour laisser le design system global s'appliquer */
-  .product-title-bubble.milaura-pill {
-    background: initial !important;
-    color: initial !important;
-    font-family: initial !important;
-    font-size: initial !important;
-    line-height: initial !important;
-    padding: initial !important;
-    border-radius: initial !important;
-    display: initial !important;
-    box-shadow: initial !important;
-    margin: 0 0 10px 0; /* Garde uniquement le margin-bottom */
+  /* ============================================
+     3. MOBILE-FIRST BUY BOX (Above the fold)
+  ============================================ */
+  .mobile-buybox {
+    display: block;
+    padding: 16px;
+    background: #fff;
   }
 
-  /* Ajustement spécifique pour le titre (taille de texte) */
-  .product-title-bubble.milaura-pill {
-    font-size: 2.2rem;
-    line-height: 1.2;
-  }
-  .product-subtitle {
-    text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;
-    color: #c0a062; font-weight: 700; margin-bottom: 5px; display: block;
-  }
-
-  /* GESTION AFFICHAGE MOBILE/DESKTOP */
-  .mobile-title-wrapper { display: none; } /* Caché sur PC */
-  .desktop-title-wrapper { display: block; } /* Visible sur PC */
-
-  /* --- 2. COLONNE GAUCHE (MEDIA) --- */
-  .product-left-col { position: sticky; top: 120px; }
-
-  .main-image-wrapper {
-    border-radius: 30px; overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    position: relative; aspect-ratio: 4 / 5; background: #f4f4f4; margin-bottom: 25px;
-  }
-  .main-product-image { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
-
-  /* NEUTRALISATION des styles locaux pour laisser le design system global s'appliquer */
-  .product-badge-sticker.milaura-pill {
-    position: absolute; top: 20px; left: 20px; z-index: 10; /* Garde uniquement le positionnement */
-    background: initial !important;
-    color: initial !important;
-    padding: initial !important;
-    border-radius: initial !important;
-    font-size: initial !important;
-    font-weight: initial !important;
-    text-transform: initial !important;
-    letter-spacing: initial !important;
-    box-shadow: initial !important;
-  }
-
-  /* Ajustement spécifique pour le sticker (taille plus petite) */
-  .product-badge-sticker.milaura-pill {
-    font-size: 0.8rem;
-    padding: 8px 16px;
-    min-width: auto;
-    min-height: auto;
-  }
-
-  /* VARIANTES SOUS PHOTO */
-  .variants-under-photo { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  .variant-pill {
-    display: flex; align-items: center; gap: 8px;
-    border: 1px solid #ddd; border-radius: 8px; padding: 8px 15px;
-    cursor: pointer; background: #fff; transition: all 0.2s;
-  }
-  .variant-pill:hover { border-color: #c0a062; }
-  .variant-pill.active { border: 1px solid #c0a062; background: #fffaf0; box-shadow: 0 2px 10px rgba(192, 160, 98, 0.2); }
-  .variant-thumb { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; background: #eee; }
-  .variant-name { font-size: 0.9rem; font-weight: 600; color: #333; }
-
-  /* --- 3. COLONNE DROITE (INFOS) --- */
-  .product-info-wrapper { color: #333; font-size: 1.1rem; display: flex; flex-direction: column; gap: 20px; }
-
-  /* --- 4. METAFIELDS COTE A COTE --- */
-  .split-layout-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 25px; align-items: start; }
-  .identity-card-compact { background: rgba(255, 255, 255, 0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
-  .id-row { display: flex; justify-content: space-between; border-bottom: 1px dashed #ddd; padding-bottom: 5px; }
-  .id-row:last-child { border: none; padding: 0; }
-  .id-label { font-size: 0.85rem; color: #888; text-transform: uppercase; }
-  .id-val { font-weight: 700; color: #1a1a1a; font-size: 1rem; }
-  .benefits-compact h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 10px 0; font-family: var(--milaura-font-heading, serif); }
-  .benefits-item { display: flex; gap: 10px; margin-bottom: 8px; font-size: 1.1rem; line-height: 1.4; color: #444; }
-  .check-icon { color: #c0a062; flex-shrink: 0; }
-
-  /* --- 5. URGENCE (BLEU) --- */
-  .urgency-container { margin: 10px 0; }
-  .stock-status { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-weight: 700; font-size: 1.1rem; }
-  .stock-text { color: #1e3a8a; display: flex; align-items: center; gap: 8px; }
-  .sales-text { color: #666; font-size: 1rem; font-style: italic; }
-  .progress-bar-bg { width: 100%; height: 4px; background: #e0e0e0; border-radius: 10px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: #c0a062; transition: width 1.5s ease-out; }
-
-  /* --- 6. AVIS TÉMOINS --- */
-  .reviews-preview-block { margin: 10px 0; padding: 20px; background: #fff; border-radius: 20px; border: 1px solid #f0f0f0; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
-  .global-rating-header { text-align: center; margin-bottom: 15px; font-weight: 700; color: #c0a062; font-size: 1.1rem; }
-  .review-item { display: flex; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-  .review-item:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
-  .reviewer-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #c0a062; flex-shrink: 0; }
-  .review-content strong { display: block; font-size: 1rem; color: #1a1a1a; margin-bottom: 2px;}
-  .review-content p { font-size: 1rem; margin: 0; color: #555; font-style: italic; line-height: 1.4; }
-  .stars-gold { color: #c0a062; }
-
-  /* --- 7. ZONE CONVERSION --- */
-  .conversion-area { margin-top: 10px; background: #fff; padding: 25px; border-radius: 20px; border: 1px solid #e8e0c9; box-shadow: 0 10px 40px rgba(212, 175, 55, 0.1); }
-
-  .price-offer-split { display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; align-items: center; margin-bottom: 25px; }
-  .price-box-final { background: #fdfbf7; border: 1px solid #e8e0c9; padding: 15px; border-radius: 12px; text-align: center; }
-  .final-price { font-size: 2rem; font-weight: 700; color: #000; display:block; line-height:1; font-family: var(--milaura-font-heading, serif);}
-
-  .offer-hook-container { text-align: center; }
-  /* NEUTRALISATION des styles locaux pour laisser le design system global s'appliquer */
-  .offer-hook-badge.milaura-pill {
-    background: initial !important;
-    color: initial !important;
-    font-weight: initial !important;
-    font-size: initial !important;
-    padding: initial !important;
-    border-radius: initial !important;
-    display: initial !important;
-    text-transform: initial !important;
-    letter-spacing: initial !important;
-    box-shadow: initial !important;
-  }
-
-  /* Ajustement spécifique pour le badge (taille et style) */
-  .offer-hook-badge.milaura-pill {
-    font-size: 0.9rem;
-    font-weight: 800;
+  /* 3.1 TITRE */
+  .mobile-buybox__subtitle {
+    display: block;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 10px 20px;
-    min-width: auto;
-    min-height: auto;
-  }
-
-  /* BUNDLES */
-  .bundle-selector-v6 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-  .bundle-option-v6 {
-    border: 2px solid #eee; border-radius: 12px; padding: 15px; cursor: pointer; transition: all 0.3s; background: #fff; position: relative; overflow: hidden;
-  }
-  .bundle-option-v6.active { border-color: #c0a062; background: #fffaf0; box-shadow: 0 5px 15px rgba(192, 160, 98, 0.2); }
-  .bundle-title-v6 { font-weight: 800; font-size: 1.1rem; color: #1a1a1a; display: block; margin-bottom: 5px; }
-  .bundle-gifts-v6 { font-size: 0.95rem; color: #555; line-height: 1.4; }
-  .gift-highlight { color: #d32f2f; font-weight: 700; }
-  /* NEUTRALISATION des styles locaux pour laisser le design system global s'appliquer */
-  .bundle-badge.milaura-pill {
-    position: absolute; top: 0; right: 0; border-bottom-left-radius: 10px; /* Garde uniquement le positionnement */
-    background: initial !important;
-    color: initial !important;
-    font-size: initial !important;
-    padding: initial !important;
-    font-weight: initial !important;
-    border-radius: initial !important;
-  }
-
-  /* Ajustement spécifique pour le badge bundle (taille très petite) */
-  .bundle-badge.milaura-pill {
+    letter-spacing: 1.5px;
     font-size: 0.7rem;
-    padding: 3px 8px;
-    min-width: auto;
-    min-height: auto;
-    border-radius: 0 0 0 10px; /* Garde le border-bottom-left-radius */
+    color: var(--milaura-gold);
+    font-weight: 700;
+    margin-bottom: 4px;
   }
 
-  /* BOUTON - Application du design system milaura-cta */
-  /* NEUTRALISATION des styles locaux pour laisser le design system global s'appliquer */
-  .add-to-cart-btn.milaura-cta {
-    width: 100%; /* Garde uniquement le width */
-    background: initial !important;
-    color: initial !important;
-    font-size: initial !important;
-    font-weight: initial !important;
-    text-transform: initial !important;
-    letter-spacing: initial !important;
-    padding: initial !important;
-    border: initial !important;
-    border-radius: initial !important;
-    cursor: initial !important;
-    box-shadow: initial !important;
-    transition: initial !important;
+  .mobile-buybox__title {
+    font-family: var(--milaura-font-heading, serif);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--milaura-dark);
+    margin: 0 0 8px 0;
   }
 
-  /* Force le texte noir sur le CTA */
-  .add-to-cart-btn.milaura-cta {
-    color: #000 !important;
+  /* 3.2 RATING CLIQUABLE */
+  .mobile-buybox__rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    text-decoration: none;
+    min-height: 48px;
+    padding: 8px 0;
   }
 
-  /* Ajustement spécifique pour le bouton (taille de texte plus grande) */
-  .add-to-cart-btn.milaura-cta {
-    font-size: 1.3rem;
-    font-weight: 800;
-    text-transform: uppercase;
+  .mobile-buybox__stars {
+    color: var(--milaura-gold);
+    font-size: 1rem;
     letter-spacing: 1px;
   }
 
-  /* --- 8. ACCORDEONS --- */
-  .accordion-group { margin-top: 20px; border-top: 1px solid #eee; }
-  .accordion-header { padding: 25px 0; font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center; background: none; border: none; border-bottom: 1px solid #eee; width: 100%; cursor: pointer; text-align: left; font-family: var(--milaura-font-heading, serif); }
-  .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s; opacity: 0; padding: 0; font-size: 1.1rem; line-height: 1.7; }
-  .accordion-content.open { opacity: 1; padding-bottom: 25px; }
+  .mobile-buybox__rating-text {
+    font-size: 0.85rem;
+    color: var(--milaura-gray);
+  }
 
-  /* --- MOBILE SPECIFIQUE --- */
+  .mobile-buybox__rating-text strong {
+    color: var(--milaura-dark);
+    font-weight: 700;
+  }
+
+  /* 3.3 PRIX + MICRO-BENEFICE */
+  .mobile-buybox__price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fdfbf7;
+    border-radius: var(--milaura-radius);
+    border: 1px solid var(--milaura-gold-light);
+  }
+
+  .mobile-buybox__price {
+    font-family: var(--milaura-font-heading, serif);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--milaura-dark);
+    line-height: 1;
+  }
+
+  .mobile-buybox__price-compare {
+    font-size: 1rem;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 8px;
+  }
+
+  .mobile-buybox__shipping-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: #2e7d32;
+    font-weight: 600;
+    background: #e8f5e9;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* 3.4 BENEFICES COMPACTS (3 max) */
+  .mobile-buybox__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .mobile-buybox__benefit {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: #444;
+  }
+
+  .mobile-buybox__benefit-icon {
+    color: var(--milaura-gold);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* 3.5 CTA PRINCIPAL */
+  .mobile-buybox__form {
+    margin-bottom: 12px;
+  }
+
+  .mobile-buybox__cta.milaura-cta {
+    width: 100%;
+    min-height: 52px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    border-radius: var(--milaura-radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* Fallback si design system absent */
+  .mobile-buybox__cta.milaura-cta {
+    background: linear-gradient(135deg, #d4af37 0%, #c0a062 50%, #d4af37 100%);
+    color: #000 !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .mobile-buybox__cta.milaura-cta:active {
+    transform: scale(0.98);
+  }
+
+  /* 3.6 REASSURANCE SOUS CTA */
+  .mobile-buybox__reassurance {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+  }
+
+  .mobile-buybox__reassurance-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    color: var(--milaura-gray);
+  }
+
+  .mobile-buybox__reassurance-icon {
+    font-size: 0.8rem;
+  }
+
+  /* ============================================
+     4. IMAGE PRODUIT MOBILE
+  ============================================ */
+  .mobile-image-container {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+
+  .mobile-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mobile-image__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, #d4af37 0%, #c0a062 100%);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  /* ============================================
+     5. VARIANTES MOBILE
+  ============================================ */
+  .mobile-variants {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    background: #fff;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .mobile-variant-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .mobile-variant-pill.active {
+    border-color: var(--milaura-gold);
+    background: #fffaf0;
+  }
+
+  .mobile-variant-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #eee;
+  }
+
+  .mobile-variant-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--milaura-dark);
+  }
+
+  /* ============================================
+     6. CONTENU SECONDAIRE MOBILE
+  ============================================ */
+  .mobile-secondary {
+    padding: 20px 16px;
+    background: #fff;
+    margin-top: 8px;
+  }
+
+  /* Identity Card */
+  .mobile-identity {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid var(--milaura-gold-light);
+    border-radius: var(--milaura-radius);
+  }
+
+  .mobile-identity__item {
+    text-align: center;
+  }
+
+  .mobile-identity__label {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--milaura-gray);
+    margin-bottom: 2px;
+  }
+
+  .mobile-identity__value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--milaura-dark);
+  }
+
+  /* Urgency */
+  .mobile-urgency {
+    margin-bottom: 16px;
+  }
+
+  .mobile-urgency__text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+
+  .mobile-urgency__stock {
+    color: #1e3a8a;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .mobile-urgency__sales {
+    color: var(--milaura-gray);
+    font-style: italic;
+  }
+
+  .mobile-urgency__bar {
+    width: 100%;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .mobile-urgency__fill {
+    height: 100%;
+    background: var(--milaura-gold);
+    transition: width 1.5s ease-out;
+  }
+
+  /* Reviews Preview */
+  .mobile-reviews {
+    background: #fdfbf7;
+    border-radius: var(--milaura-radius);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .mobile-reviews__header {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--milaura-gold);
+    margin-bottom: 12px;
+  }
+
+  .mobile-review-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .mobile-review-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .mobile-review-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--milaura-gold);
+    flex-shrink: 0;
+  }
+
+  .mobile-review-content strong {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--milaura-dark);
+    margin-bottom: 2px;
+  }
+
+  .mobile-review-content p {
+    font-size: 0.8rem;
+    margin: 0;
+    color: #555;
+    font-style: italic;
+    line-height: 1.3;
+  }
+
+  .stars-gold {
+    color: var(--milaura-gold);
+  }
+
+  /* Bundles */
+  .mobile-bundles {
+    margin-bottom: 16px;
+  }
+
+  .mobile-bundles__title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--milaura-dark);
+  }
+
+  .mobile-bundle-option {
+    border: 2px solid #eee;
+    border-radius: var(--milaura-radius);
+    padding: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background: #fff;
+    position: relative;
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .mobile-bundle-option.active {
+    border-color: var(--milaura-gold);
+    background: #fffaf0;
+  }
+
+  .mobile-bundle__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--milaura-gold);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 0 10px 0 8px;
+  }
+
+  .mobile-bundle__name {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--milaura-dark);
+    margin-bottom: 4px;
+  }
+
+  .mobile-bundle__gifts {
+    font-size: 0.8rem;
+    color: #555;
+    line-height: 1.4;
+  }
+
+  .mobile-bundle__gifts .gift-highlight {
+    color: #d32f2f;
+    font-weight: 700;
+  }
+
+  /* Accordions */
+  .mobile-accordions {
+    border-top: 1px solid #eee;
+  }
+
+  .mobile-accordion__header {
+    width: 100%;
+    padding: 18px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    font-family: var(--milaura-font-heading, serif);
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    text-align: left;
+    color: var(--milaura-dark);
+  }
+
+  .mobile-accordion__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    opacity: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  .mobile-accordion__content.open {
+    opacity: 1;
+    padding-bottom: 16px;
+  }
+
+  /* ============================================
+     7. DESKTOP LAYOUT
+  ============================================ */
+  @media screen and (min-width: 991px) {
+    /* Cacher le buy box mobile sur desktop */
+    .mobile-buybox,
+    .mobile-image-container,
+    .mobile-variants,
+    .mobile-secondary {
+      display: none;
+    }
+
+    .milaura-product-section {
+      padding: {{ section.settings.padding_top | default: 60 }}px 30px {{ section.settings.padding_bottom | default: 60 }}px;
+    }
+
+    .milaura-product-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* Desktop Left Column */
+    .desktop-left-col {
+      display: block;
+      position: sticky;
+      top: 120px;
+    }
+
+    .desktop-image-wrapper {
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      position: relative;
+      aspect-ratio: 4 / 5;
+      background: #f4f4f4;
+      margin-bottom: 25px;
+    }
+
+    .desktop-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .desktop-badge-sticker {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      background: linear-gradient(135deg, #d4af37 0%, #c0a062 100%);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .desktop-variants {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .desktop-variant-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 8px 15px;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.2s;
+    }
+
+    .desktop-variant-pill:hover {
+      border-color: var(--milaura-gold);
+    }
+
+    .desktop-variant-pill.active {
+      border: 1px solid var(--milaura-gold);
+      background: #fffaf0;
+      box-shadow: 0 2px 10px rgba(192, 160, 98, 0.2);
+    }
+
+    .desktop-variant-thumb {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .desktop-variant-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    /* Desktop Right Column */
+    .desktop-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .desktop-title-wrapper {
+      display: block;
+    }
+
+    .desktop-subtitle {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.9rem;
+      color: var(--milaura-gold);
+      font-weight: 700;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .desktop-title {
+      font-family: var(--milaura-font-heading, serif);
+      font-size: 2.2rem;
+      line-height: 1.2;
+      color: var(--milaura-dark);
+      margin: 0;
+      background: linear-gradient(135deg, #d4af37 0%, #c0a062 50%, #d4af37 100%);
+      padding: 12px 24px;
+      border-radius: 30px;
+      display: inline-block;
+    }
+
+    .desktop-rating-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      padding: 8px 0;
+    }
+
+    .desktop-rating-link:hover {
+      opacity: 0.8;
+    }
+
+    /* Split Layout */
+    .desktop-split-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    .desktop-identity-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 16px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .desktop-id-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #ddd;
+      padding-bottom: 5px;
+    }
+
+    .desktop-id-row:last-child {
+      border: none;
+      padding: 0;
+    }
+
+    .desktop-id-label {
+      font-size: 0.85rem;
+      color: #888;
+      text-transform: uppercase;
+    }
+
+    .desktop-id-val {
+      font-weight: 700;
+      color: var(--milaura-dark);
+      font-size: 1rem;
+    }
+
+    .desktop-benefits h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      font-family: var(--milaura-font-heading, serif);
+    }
+
+    .desktop-benefit-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+      line-height: 1.4;
+      color: #444;
+    }
+
+    .desktop-check-icon {
+      color: var(--milaura-gold);
+      flex-shrink: 0;
+    }
+
+    /* Urgency Desktop */
+    .desktop-urgency {
+      margin: 10px 0;
+    }
+
+    .desktop-stock-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .desktop-stock-text {
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .desktop-sales-text {
+      color: #666;
+      font-size: 1rem;
+      font-style: italic;
+    }
+
+    .desktop-progress-bar-bg {
+      width: 100%;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .desktop-progress-bar-fill {
+      height: 100%;
+      background: var(--milaura-gold);
+      transition: width 1.5s ease-out;
+    }
+
+    /* Reviews Desktop */
+    .desktop-reviews-block {
+      margin: 10px 0;
+      padding: 20px;
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid #f0f0f0;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+    }
+
+    .desktop-global-rating {
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 700;
+      color: var(--milaura-gold);
+      font-size: 1.1rem;
+    }
+
+    .desktop-review-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+
+    .desktop-review-item:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .desktop-reviewer-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--milaura-gold);
+      flex-shrink: 0;
+    }
+
+    .desktop-review-content strong {
+      display: block;
+      font-size: 1rem;
+      color: var(--milaura-dark);
+      margin-bottom: 2px;
+    }
+
+    .desktop-review-content p {
+      font-size: 1rem;
+      margin: 0;
+      color: #555;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    /* Conversion Area Desktop */
+    .desktop-conversion-area {
+      margin-top: 10px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 20px;
+      border: 1px solid var(--milaura-gold-light);
+      box-shadow: 0 10px 40px rgba(212, 175, 55, 0.1);
+    }
+
+    .desktop-price-offer-split {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .desktop-price-box {
+      background: #fdfbf7;
+      border: 1px solid var(--milaura-gold-light);
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .desktop-final-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #000;
+      display: block;
+      line-height: 1;
+      font-family: var(--milaura-font-heading, serif);
+    }
+
+    .desktop-offer-hook {
+      text-align: center;
+    }
+
+    .desktop-offer-badge {
+      background: linear-gradient(135deg, #d4af37 0%, #c0a062 100%);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 10px 20px;
+      border-radius: 20px;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .desktop-bundle-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .desktop-bundle-option {
+      border: 2px solid #eee;
+      border-radius: 12px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .desktop-bundle-option:hover {
+      border-color: var(--milaura-gold);
+    }
+
+    .desktop-bundle-option.active {
+      border-color: var(--milaura-gold);
+      background: #fffaf0;
+      box-shadow: 0 5px 15px rgba(192, 160, 98, 0.2);
+    }
+
+    .desktop-bundle-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--milaura-gold);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 0 10px 0 10px;
+    }
+
+    .desktop-bundle-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--milaura-dark);
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .desktop-bundle-gifts {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.4;
+    }
+
+    .desktop-add-btn.milaura-cta {
+      width: 100%;
+      min-height: 56px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: none;
+      border-radius: var(--milaura-radius);
+      cursor: pointer;
+      background: linear-gradient(135deg, #d4af37 0%, #c0a062 50%, #d4af37 100%);
+      color: #000 !important;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .desktop-add-btn.milaura-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.45);
+    }
+
+    /* Accordions Desktop */
+    .desktop-accordion-group {
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .desktop-accordion-header {
+      padding: 25px 0;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: none;
+      border: none;
+      border-bottom: 1px solid #eee;
+      width: 100%;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--milaura-font-heading, serif);
+      color: var(--milaura-dark);
+    }
+
+    .desktop-accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s;
+      opacity: 0;
+      padding: 0;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .desktop-accordion-content.open {
+      opacity: 1;
+      padding-bottom: 25px;
+    }
+  }
+
+  /* Masquer le desktop sur mobile */
   @media screen and (max-width: 990px) {
-    .milaura-product-wrapper { grid-template-columns: 1fr; gap: 30px; }
-
-    /* ASTUCE MOBILE : ON AFFICHE LE TITRE AU DESSUS */
-    .mobile-title-wrapper { display: block; text-align: center; margin-bottom: 20px; }
-    .desktop-title-wrapper { display: none; }
-
-    .product-title-bubble { font-size: 1.8rem; padding: 10px 20px; width: 100%; box-sizing: border-box; }
-
-    .split-layout-container { grid-template-columns: 1fr; gap: 20px; }
-    .price-offer-split { grid-template-columns: 1fr; text-align: center; gap: 15px;}
-    .bundle-selector-v6 { grid-template-columns: 1fr; }
-    .add-to-cart-btn {
-      position: sticky; bottom: 20px; z-index: 999; width: calc(100% - 40px); left: 20px; margin: 0 auto; box-shadow: 0 5px 25px rgba(0,0,0,0.3); padding: 18px;
+    .desktop-left-col,
+    .desktop-right-col {
+      display: none;
     }
   }
 {%- endstyle -%}
 
+{% comment %} Calculs stock/ventes {% endcomment %}
 {% assign random_sales = 'now' | date: '%S' | modulo: 15 | plus: 18 %}
 {% assign inventory_qty = product.selected_or_first_available_variant.inventory_quantity %}
 {% if inventory_qty <= 0 %}{% assign inventory_qty = 7 %}{% endif %}
 {% assign progress_width = inventory_qty | times: 100 | divided_by: 20 %}
 {% if progress_width > 100 %}{% assign progress_width = 100 %}{% endif %}
 
+{% comment %} Préparer les 3 premiers bénéfices {% endcomment %}
+{% assign benefits_list = product.metafields.custom.benefits | split: '•' %}
+{% assign benefit_count = 0 %}
+
 <section class="milaura-product-section" id="MainProduct-{{ section.id }}">
   <div class="milaura-product-wrapper">
-    <div class="mobile-title-wrapper">
+    {%- comment -%} ===== MOBILE BUY BOX (Above the fold) ===== {%- endcomment -%}
+    <div class="mobile-buybox">
+      {%- comment -%} 1. Titre {%- endcomment -%}
       {% if product.metafields.custom.subtitle %}
-        <span class="product-subtitle">{{ product.metafields.custom.subtitle }}</span>
+        <span class="mobile-buybox__subtitle">{{ product.metafields.custom.subtitle }}</span>
       {% endif %}
-      <h1 class="product-title-bubble milaura-pill">{{ product.title }}</h1>
-    </div>
+      <h1 class="mobile-buybox__title">{{ product.title }}</h1>
 
-    <div class="product-left-col">
-      <div class="main-image-wrapper">
-        {% if section.settings.sticker_text != blank %}
-          <div class="product-badge-sticker milaura-pill">{{ section.settings.sticker_text }}</div>
-        {% endif %}
-        <img
-          id="MainImg-{{ section.id }}"
-          src="{{ product.featured_media | image_url: width: 1000 }}"
-          alt="{{ product.title }}"
-          class="main-product-image"
-          loading="eager"
-        >
+      {%- comment -%} 2. Rating cliquable {%- endcomment -%}
+      <a href="#reviews-section" class="mobile-buybox__rating">
+        <span class="mobile-buybox__stars">★★★★★</span>
+        <span class="mobile-buybox__rating-text"><strong>4.9</strong>/5 · 120+ avis</span>
+      </a>
+
+      {%- comment -%} 3. Prix + micro-bénéfice livraison {%- endcomment -%}
+      <div class="mobile-buybox__price-row">
+        <div>
+          <span class="mobile-buybox__price" id="MobilePriceDisplay">{{ product.price | money }}</span>
+          {% if product.compare_at_price > product.price %}
+            <span class="mobile-buybox__price-compare">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+        <span class="mobile-buybox__shipping-badge">🚚 Livraison offerte dès 39€</span>
       </div>
 
-      {% unless product.has_only_default_variant %}
-        <div class="variants-under-photo">
-          {% for variant in product.variants %}
-            <div
-              class="variant-pill {% if forloop.first %}active{% endif %}"
-              onclick="selectVariant('{{ variant.id }}', '{{ variant.price | money }}', '{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}', '{{ variant.featured_media | image_url: width: 800 }}', this)"
-            >
-              {% if variant.featured_media %}
-                <img
-                  src="{{ variant.featured_media | image_url: width: 60 }}"
-                  class="variant-thumb"
-                  alt="{{ variant.title }}"
-                >
-              {% endif %}
-              <span class="variant-name">{{ variant.title }}</span>
-            </div>
+      {%- comment -%} 4. 3 bénéfices max {%- endcomment -%}
+      {% if product.metafields.custom.benefits %}
+        <div class="mobile-buybox__benefits">
+          {% for benefit in benefits_list %}
+            {% assign b_clean = benefit | strip %}
+            {% if b_clean != blank and benefit_count < 3 %}
+              <div class="mobile-buybox__benefit">
+                <span class="mobile-buybox__benefit-icon">✓</span>
+                <span>{{ b_clean }}</span>
+              </div>
+              {% assign benefit_count = benefit_count | plus: 1 %}
+            {% endif %}
           {% endfor %}
         </div>
-      {% endunless %}
+      {% endif %}
+
+      {%- comment -%} 5. CTA Principal {%- endcomment -%}
+      {% form 'product', product, class: 'mobile-buybox__form' %}
+        <input
+          type="hidden"
+          id="MobileVariantId"
+          name="id"
+          value="{{ product.selected_or_first_available_variant.id }}"
+        >
+        <input type="hidden" name="quantity" value="1" id="MobileQuantity">
+        <button type="submit" name="add" class="mobile-buybox__cta milaura-cta">🛒 Ajouter au panier</button>
+      {% endform %}
+
+      {%- comment -%} 6. Reassurance sous CTA {%- endcomment -%}
+      <div class="mobile-buybox__reassurance">
+        <span class="mobile-buybox__reassurance-item">
+          <span class="mobile-buybox__reassurance-icon">📦</span>
+          Expédié sous 24h
+        </span>
+        <span class="mobile-buybox__reassurance-item">
+          <span class="mobile-buybox__reassurance-icon">↩️</span>
+          Retour 14j
+        </span>
+        <span class="mobile-buybox__reassurance-item">
+          <span class="mobile-buybox__reassurance-icon">🔒</span>
+          Paiement sécurisé
+        </span>
+      </div>
     </div>
 
-    <div class="product-info-wrapper">
-      <div class="desktop-title-wrapper title-bubble-wrapper">
-        {% if product.metafields.custom.subtitle %}
-          <span class="product-subtitle">{{ product.metafields.custom.subtitle }}</span>
-        {% endif %}
-        <h1 class="product-title-bubble milaura-pill">{{ product.title }}</h1>
-      </div>
+    {%- comment -%} ===== IMAGE MOBILE ===== {%- endcomment -%}
+    <div class="mobile-image-container">
+      {% if section.settings.sticker_text != blank %}
+        <span class="mobile-image__badge">{{ section.settings.sticker_text }}</span>
+      {% endif %}
+      <img
+        id="MobileMainImg"
+        src="{{ product.featured_media | image_url: width: 800 }}"
+        alt="{{ product.title }}"
+        width="800"
+        height="800"
+        loading="eager"
+        fetchpriority="high"
+      >
+    </div>
 
-      <div class="split-layout-container">
-        {% if product.metafields.custom.stone %}
-          <div class="identity-card-compact">
-            <div class="id-row">
-              <span class="id-label">Pierre</span> <span class="id-val">{{ product.metafields.custom.stone }}</span>
-            </div>
-            <div class="id-row">
-              <span class="id-label">Qualité</span>
-              <span class="id-val">{{ product.metafields.custom.quality | default: 'AA+' }}</span>
-            </div>
-            <div class="id-row">
-              <span class="id-label">Origine</span>
-              <span class="id-val">{{ product.metafields.custom.origin | default: 'Monde' }}</span>
-            </div>
+    {%- comment -%} ===== VARIANTES MOBILE ===== {%- endcomment -%}
+    {% unless product.has_only_default_variant %}
+      <div class="mobile-variants">
+        {% for variant in product.variants %}
+          <div
+            class="mobile-variant-pill {% if forloop.first %}active{% endif %}"
+            data-variant-id="{{ variant.id }}"
+            data-variant-price="{{ variant.price | money }}"
+            data-variant-compare-price="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}"
+            data-variant-image="{{ variant.featured_media | image_url: width: 800 }}"
+            onclick="selectMobileVariant(this)"
+          >
+            {% if variant.featured_media %}
+              <img
+                src="{{ variant.featured_media | image_url: width: 60 }}"
+                class="mobile-variant-thumb"
+                alt="{{ variant.title }}"
+                width="60"
+                height="60"
+              >
+            {% endif %}
+            <span class="mobile-variant-name">{{ variant.title }}</span>
           </div>
-        {% endif %}
-        {% if product.metafields.custom.benefits %}
-          <div class="benefits-compact">
-            <h3>{{ section.settings.benefits_title }}</h3>
-            {% assign benefits = product.metafields.custom.benefits | split: '•' %}
-            {% for benefit in benefits %}
-              {% assign b_clean = benefit | strip %}
-              {% if b_clean != blank %}
-                <div class="benefits-item"><span class="check-icon">✔</span> {{ b_clean }}</div>
-              {% endif %}
-            {% endfor %}
+        {% endfor %}
+      </div>
+    {% endunless %}
+
+    {%- comment -%} ===== CONTENU SECONDAIRE MOBILE ===== {%- endcomment -%}
+    <div class="mobile-secondary">
+      {%- comment -%} Identity Card {%- endcomment -%}
+      {% if product.metafields.custom.stone %}
+        <div class="mobile-identity">
+          <div class="mobile-identity__item">
+            <span class="mobile-identity__label">Pierre</span>
+            <span class="mobile-identity__value">{{ product.metafields.custom.stone }}</span>
           </div>
-        {% endif %}
+          <div class="mobile-identity__item">
+            <span class="mobile-identity__label">Qualité</span>
+            <span class="mobile-identity__value">{{ product.metafields.custom.quality | default: 'AA+' }}</span>
+          </div>
+          <div class="mobile-identity__item">
+            <span class="mobile-identity__label">Origine</span>
+            <span class="mobile-identity__value">{{ product.metafields.custom.origin | default: 'Monde' }}</span>
+          </div>
+        </div>
+      {% endif %}
+
+      {%- comment -%} Urgency {%- endcomment -%}
+      <div class="mobile-urgency">
+        <div class="mobile-urgency__text">
+          <span class="mobile-urgency__stock">🔵 Plus que {{ inventory_qty }} en stock</span>
+          <span class="mobile-urgency__sales">{{ random_sales }} ventes aujourd'hui</span>
+        </div>
+        <div class="mobile-urgency__bar">
+          <div class="mobile-urgency__fill" style="width: {{ progress_width }}%;"></div>
+        </div>
       </div>
 
-      <div class="urgency-container">
-        <div class="stock-status">
-          <span class="stock-text">🔵 Plus que {{ inventory_qty }} pièces en stock !</span>
-          <span class="sales-text">{{ random_sales }} ventes aujourd'hui</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" style="width: {{ progress_width }}%;"></div>
-        </div>
-      </div>
-
-      <div class="reviews-preview-block">
-        <div class="global-rating-header">Note globale : <span class="stars-gold">★★★★★</span> 4.9/5 (120+ avis)</div>
-        <div class="review-item">
-          <img src="https://i.pravatar.cc/150?img=32" alt="Sophie" class="reviewer-avatar">
-          <div class="review-content">
+      {%- comment -%} Reviews {%- endcomment -%}
+      <div class="mobile-reviews" id="reviews-section">
+        <div class="mobile-reviews__header">★★★★★ 4.9/5 (120+ avis vérifiés)</div>
+        <div class="mobile-review-item">
+          <img src="https://i.pravatar.cc/150?img=32" alt="Sophie" class="mobile-review-avatar" width="40" height="40">
+          <div class="mobile-review-content">
             <strong>Sophie D. <span class="stars-gold">★★★★★</span></strong>
             <p>"Cette bougie a changé l'énergie de mon salon. L'améthyste est magnifique !"</p>
           </div>
         </div>
-        <div class="review-item">
-          <img src="https://i.pravatar.cc/150?img=68" alt="Marc" class="reviewer-avatar">
-          <div class="review-content">
+        <div class="mobile-review-item">
+          <img src="https://i.pravatar.cc/150?img=68" alt="Marc" class="mobile-review-avatar" width="40" height="40">
+          <div class="mobile-review-content">
             <strong>Marc L. <span class="stars-gold">★★★★★</span></strong>
             <p>"Emballage soigné, odeur divine. Ma femme adore."</p>
           </div>
         </div>
       </div>
 
-      <div class="conversion-area">
+      {%- comment -%} Bundles {%- endcomment -%}
+      <div class="mobile-bundles">
+        <div class="mobile-bundles__title">🔥 Boostez votre rituel & économisez</div>
+        <div class="mobile-bundle-option" data-qty="2" onclick="selectMobileBundle(2, this)">
+          <span class="mobile-bundle__badge">POPULAIRE</span>
+          <div class="mobile-bundle__name">OFFRE DUO RITUEL (x2)</div>
+          <div class="mobile-bundle__gifts">
+            🎁 Sauge OFFERTE · 🚚 <span class="gift-highlight">Livraison OFFERTE</span>
+          </div>
+        </div>
+        <div class="mobile-bundle-option" data-qty="3" onclick="selectMobileBundle(3, this)">
+          <span class="mobile-bundle__badge">MEILLEURE OFFRE</span>
+          <div class="mobile-bundle__name">OFFRE TRIO PRESTIGE (x3)</div>
+          <div class="mobile-bundle__gifts">
+            🎁 Sauge + Livraison · ✨ <span class="gift-highlight">-10% REMISE</span>
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} Accordions {%- endcomment -%}
+      <div class="mobile-accordions">
+        <button class="mobile-accordion__header" onclick="toggleMobileAcc(this)">
+          Description & Histoire <span>+</span>
+        </button>
+        <div class="mobile-accordion__content">{{ product.description }}</div>
+
+        <button class="mobile-accordion__header" onclick="toggleMobileAcc(this)">
+          Détails techniques <span>+</span>
+        </button>
+        <div class="mobile-accordion__content">{{ section.settings.technical_details }}</div>
+
+        <button class="mobile-accordion__header" onclick="toggleMobileAcc(this)">
+          Livraison & Retours <span>+</span>
+        </button>
+        <div class="mobile-accordion__content">{{ section.settings.shipping_returns }}</div>
+      </div>
+    </div>
+
+    {%- comment -%} ===== DESKTOP LEFT COLUMN ===== {%- endcomment -%}
+    <div class="desktop-left-col">
+      <div class="desktop-image-wrapper">
+        {% if section.settings.sticker_text != blank %}
+          <div class="desktop-badge-sticker">{{ section.settings.sticker_text }}</div>
+        {% endif %}
+        <img
+          id="DesktopMainImg"
+          src="{{ product.featured_media | image_url: width: 1000 }}"
+          alt="{{ product.title }}"
+          width="1000"
+          height="1250"
+          loading="eager"
+        >
+      </div>
+
+      {% unless product.has_only_default_variant %}
+        <div class="desktop-variants">
+          {% for variant in product.variants %}
+            <div
+              class="desktop-variant-pill {% if forloop.first %}active{% endif %}"
+              data-variant-id="{{ variant.id }}"
+              data-variant-price="{{ variant.price | money }}"
+              data-variant-compare-price="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}"
+              data-variant-image="{{ variant.featured_media | image_url: width: 1000 }}"
+              onclick="selectDesktopVariant(this)"
+            >
+              {% if variant.featured_media %}
+                <img
+                  src="{{ variant.featured_media | image_url: width: 60 }}"
+                  class="desktop-variant-thumb"
+                  alt="{{ variant.title }}"
+                  width="60"
+                  height="60"
+                >
+              {% endif %}
+              <span class="desktop-variant-name">{{ variant.title }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endunless %}
+    </div>
+
+    {%- comment -%} ===== DESKTOP RIGHT COLUMN ===== {%- endcomment -%}
+    <div class="desktop-right-col">
+      <div class="desktop-title-wrapper">
+        {% if product.metafields.custom.subtitle %}
+          <span class="desktop-subtitle">{{ product.metafields.custom.subtitle }}</span>
+        {% endif %}
+        <h1 class="desktop-title">{{ product.title }}</h1>
+      </div>
+
+      <a href="#desktop-reviews-section" class="desktop-rating-link">
+        <span class="stars-gold" style="font-size: 1.2rem;">★★★★★</span>
+        <span style="color: var(--milaura-gray); font-size: 1rem;"
+          ><strong style="color: var(--milaura-dark);">4.9</strong>/5 · 120+ avis</span
+        >
+      </a>
+
+      <div class="desktop-split-layout">
+        {% if product.metafields.custom.stone %}
+          <div class="desktop-identity-card">
+            <div class="desktop-id-row">
+              <span class="desktop-id-label">Pierre</span>
+              <span class="desktop-id-val">{{ product.metafields.custom.stone }}</span>
+            </div>
+            <div class="desktop-id-row">
+              <span class="desktop-id-label">Qualité</span>
+              <span class="desktop-id-val">{{ product.metafields.custom.quality | default: 'AA+' }}</span>
+            </div>
+            <div class="desktop-id-row">
+              <span class="desktop-id-label">Origine</span>
+              <span class="desktop-id-val">{{ product.metafields.custom.origin | default: 'Monde' }}</span>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if product.metafields.custom.benefits %}
+          <div class="desktop-benefits">
+            <h3>{{ section.settings.benefits_title }}</h3>
+            {% for benefit in benefits_list %}
+              {% assign b_clean = benefit | strip %}
+              {% if b_clean != blank %}
+                <div class="desktop-benefit-item"><span class="desktop-check-icon">✔</span> {{ b_clean }}</div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="desktop-urgency">
+        <div class="desktop-stock-status">
+          <span class="desktop-stock-text">🔵 Plus que {{ inventory_qty }} pièces en stock !</span>
+          <span class="desktop-sales-text">{{ random_sales }} ventes aujourd'hui</span>
+        </div>
+        <div class="desktop-progress-bar-bg">
+          <div class="desktop-progress-bar-fill" style="width: {{ progress_width }}%;"></div>
+        </div>
+      </div>
+
+      <div class="desktop-reviews-block" id="desktop-reviews-section">
+        <div class="desktop-global-rating">Note globale : <span class="stars-gold">★★★★★</span> 4.9/5 (120+ avis)</div>
+        <div class="desktop-review-item">
+          <img
+            src="https://i.pravatar.cc/150?img=32"
+            alt="Sophie"
+            class="desktop-reviewer-avatar"
+            width="50"
+            height="50"
+          >
+          <div class="desktop-review-content">
+            <strong>Sophie D. <span class="stars-gold">★★★★★</span></strong>
+            <p>"Cette bougie a changé l'énergie de mon salon. L'améthyste est magnifique !"</p>
+          </div>
+        </div>
+        <div class="desktop-review-item">
+          <img src="https://i.pravatar.cc/150?img=68" alt="Marc" class="desktop-reviewer-avatar" width="50" height="50">
+          <div class="desktop-review-content">
+            <strong>Marc L. <span class="stars-gold">★★★★★</span></strong>
+            <p>"Emballage soigné, odeur divine. Ma femme adore."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="desktop-conversion-area">
         {% form 'product', product %}
           <input
             type="hidden"
-            id="MainVariantId"
+            id="DesktopVariantId"
             name="id"
             value="{{ product.selected_or_first_available_variant.id }}"
           >
 
-          <div class="price-offer-split">
-            <div class="price-box-final">
-              <span class="final-price" id="PriceDisplay">{{ product.price | money }}</span>
+          <div class="desktop-price-offer-split">
+            <div class="desktop-price-box">
+              <span class="desktop-final-price" id="DesktopPriceDisplay">{{ product.price | money }}</span>
             </div>
-            <div class="offer-hook-container">
-              <span class="offer-hook-badge milaura-pill">🔥 Boostez votre rituel & économisez</span>
+            <div class="desktop-offer-hook">
+              <span class="desktop-offer-badge">🔥 Boostez votre rituel & économisez</span>
             </div>
           </div>
 
-          <div class="bundle-selector-v6">
-            <div class="bundle-option-v6" onclick="selectBundle(2, this)">
-              <span class="bundle-badge milaura-pill">POPULAIRE</span>
-              <span class="bundle-title-v6">OFFRE DUO RITUEL (x2)</span>
-              <div class="bundle-gifts-v6">
+          <div class="desktop-bundle-selector">
+            <div class="desktop-bundle-option" onclick="selectDesktopBundle(2, this)">
+              <span class="desktop-bundle-badge">POPULAIRE</span>
+              <span class="desktop-bundle-title">OFFRE DUO RITUEL (x2)</span>
+              <div class="desktop-bundle-gifts">
                 🎁 Sauge OFFERTE<br>
                 🚚 <span class="gift-highlight">Livraison OFFERTE</span>
               </div>
             </div>
-            <div class="bundle-option-v6" onclick="selectBundle(3, this)">
-              <span class="bundle-badge milaura-pill">MEILLEURE OFFRE</span>
-              <span class="bundle-title-v6">OFFRE TRIO PRESTIGE (x3)</span>
-              <div class="bundle-gifts-v6">
+            <div class="desktop-bundle-option" onclick="selectDesktopBundle(3, this)">
+              <span class="desktop-bundle-badge">MEILLEURE OFFRE</span>
+              <span class="desktop-bundle-title">OFFRE TRIO PRESTIGE (x3)</span>
+              <div class="desktop-bundle-gifts">
                 🎁 Sauge + Livraison OFFERTES<br>
                 ✨ <span class="gift-highlight">-10% de REMISE IMMÉDIATE</span>
               </div>
             </div>
           </div>
-          <input type="number" id="Quantity-{{ section.id }}" name="quantity" value="1" min="1" style="display:none;">
 
-          <button type="submit" name="add" class="add-to-cart-btn milaura-cta">Ajouter au panier</button>
+          <input type="number" id="DesktopQuantity" name="quantity" value="1" min="1" style="display:none;">
+          <button type="submit" name="add" class="desktop-add-btn milaura-cta">Ajouter au panier</button>
         {% endform %}
       </div>
 
-      <div class="accordion-group">
-        <button class="accordion-header" onclick="toggleAcc(this)">Description & Histoire <span>+</span></button>
-        <div class="accordion-content open" style="max-height: 500px; opacity:1;">{{ product.description }}</div>
-        <button class="accordion-header" onclick="toggleAcc(this)">Détails techniques <span>+</span></button>
-        <div class="accordion-content">{{ section.settings.technical_details }}</div>
-        <button class="accordion-header" onclick="toggleAcc(this)">Livraison & Retours <span>+</span></button>
-        <div class="accordion-content">{{ section.settings.shipping_returns }}</div>
+      <div class="desktop-accordion-group">
+        <button class="desktop-accordion-header" onclick="toggleDesktopAcc(this)">
+          Description & Histoire <span>+</span>
+        </button>
+        <div class="desktop-accordion-content open" style="max-height: 500px; opacity:1;">
+          {{ product.description }}
+        </div>
+
+        <button class="desktop-accordion-header" onclick="toggleDesktopAcc(this)">
+          Détails techniques <span>+</span>
+        </button>
+        <div class="desktop-accordion-content">{{ section.settings.technical_details }}</div>
+
+        <button class="desktop-accordion-header" onclick="toggleDesktopAcc(this)">
+          Livraison & Retours <span>+</span>
+        </button>
+        <div class="desktop-accordion-content">{{ section.settings.shipping_returns }}</div>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-  function toggleAcc(btn) {
+  /* ===== MOBILE FUNCTIONS ===== */
+  function selectMobileVariant(el) {
+    var id = el.dataset.variantId;
+    var price = el.dataset.variantPrice;
+    var image = el.dataset.variantImage;
+
+    document.getElementById('MobileVariantId').value = id;
+    document.getElementById('MobilePriceDisplay').innerHTML = price;
+
+    if (image && image.length > 0 && image.indexOf('no-image') === -1) {
+      document.getElementById('MobileMainImg').src = image;
+    }
+
+    document.querySelectorAll('.mobile-variant-pill').forEach(function (p) {
+      p.classList.remove('active');
+    });
+    el.classList.add('active');
+
+    // Sync with desktop
+    if (document.getElementById('DesktopVariantId')) {
+      document.getElementById('DesktopVariantId').value = id;
+      document.getElementById('DesktopPriceDisplay').innerHTML = price;
+      if (image && image.length > 0 && image.indexOf('no-image') === -1) {
+        document.getElementById('DesktopMainImg').src = image;
+      }
+      document.querySelectorAll('.desktop-variant-pill').forEach(function (p) {
+        p.classList.remove('active');
+        if (p.dataset.variantId === id) p.classList.add('active');
+      });
+    }
+  }
+
+  function selectMobileBundle(qty, el) {
+    document.getElementById('MobileQuantity').value = qty;
+    document.querySelectorAll('.mobile-bundle-option').forEach(function (opt) {
+      opt.classList.remove('active');
+    });
+    el.classList.add('active');
+
+    // Sync with desktop
+    if (document.getElementById('DesktopQuantity')) {
+      document.getElementById('DesktopQuantity').value = qty;
+      document.querySelectorAll('.desktop-bundle-option').forEach(function (opt) {
+        opt.classList.remove('active');
+      });
+      var desktopOptions = document.querySelectorAll('.desktop-bundle-option');
+      desktopOptions.forEach(function (opt, index) {
+        if ((qty === 2 && index === 0) || (qty === 3 && index === 1)) {
+          opt.classList.add('active');
+        }
+      });
+    }
+  }
+
+  function toggleMobileAcc(btn) {
     btn.classList.toggle('active');
     var panel = btn.nextElementSibling;
     if (panel.style.maxHeight) {
@@ -428,31 +1485,73 @@
     }
   }
 
-  function selectBundle(qty, element) {
-    var input = document.getElementById('Quantity-{{ section.id }}');
-    if (input) input.value = qty;
-    var options = document.querySelectorAll('.bundle-option-v6');
-    options.forEach(function (opt) {
-      opt.classList.remove('active');
+  /* ===== DESKTOP FUNCTIONS ===== */
+  function selectDesktopVariant(el) {
+    var id = el.dataset.variantId;
+    var price = el.dataset.variantPrice;
+    var image = el.dataset.variantImage;
+
+    document.getElementById('DesktopVariantId').value = id;
+    document.getElementById('DesktopPriceDisplay').innerHTML = price;
+
+    if (image && image.length > 0 && image.indexOf('no-image') === -1) {
+      document.getElementById('DesktopMainImg').src = image;
+    }
+
+    document.querySelectorAll('.desktop-variant-pill').forEach(function (p) {
+      p.classList.remove('active');
     });
-    element.classList.add('active');
+    el.classList.add('active');
+
+    // Sync with mobile
+    if (document.getElementById('MobileVariantId')) {
+      document.getElementById('MobileVariantId').value = id;
+      document.getElementById('MobilePriceDisplay').innerHTML = price;
+      if (image && image.length > 0 && image.indexOf('no-image') === -1) {
+        document.getElementById('MobileMainImg').src = image;
+      }
+      document.querySelectorAll('.mobile-variant-pill').forEach(function (p) {
+        p.classList.remove('active');
+        if (p.dataset.variantId === id) p.classList.add('active');
+      });
+    }
   }
 
-  function selectVariant(id, price, comparePrice, image, element) {
-    document.getElementById('MainVariantId').value = id;
-    document.getElementById('PriceDisplay').innerHTML = price;
-    if (image && image.length > 0 && image.indexOf('no-image') === -1) {
-      document.getElementById('MainImg-{{ section.id }}').src = image;
+  function selectDesktopBundle(qty, el) {
+    document.getElementById('DesktopQuantity').value = qty;
+    document.querySelectorAll('.desktop-bundle-option').forEach(function (opt) {
+      opt.classList.remove('active');
+    });
+    el.classList.add('active');
+
+    // Sync with mobile
+    if (document.getElementById('MobileQuantity')) {
+      document.getElementById('MobileQuantity').value = qty;
+      document.querySelectorAll('.mobile-bundle-option').forEach(function (opt) {
+        opt.classList.remove('active');
+        if (parseInt(opt.dataset.qty) === qty) opt.classList.add('active');
+      });
     }
-    var pills = document.querySelectorAll('.variant-pill');
-    pills.forEach((p) => p.classList.remove('active'));
-    element.classList.add('active');
+  }
+
+  function toggleDesktopAcc(btn) {
+    btn.classList.toggle('active');
+    var panel = btn.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+      panel.classList.remove('open');
+      btn.querySelector('span').innerText = '+';
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+      panel.classList.add('open');
+      btn.querySelector('span').innerText = '-';
+    }
   }
 </script>
 
 {% schema %}
 {
-  "name": "Milaura Masterclass V16",
+  "name": "Milaura Masterclass V17",
   "settings": [
     {
       "type": "text",
@@ -499,6 +1598,6 @@
       "default": 60
     }
   ],
-  "presets": [{ "name": "Milaura Masterclass V16" }]
+  "presets": [{ "name": "Milaura Masterclass V17" }]
 }
 {% endschema %}
