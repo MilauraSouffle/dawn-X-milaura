@@ -1,11 +1,10 @@
 {% style %}
   /* ============================================
-     MILAURA BENEFITS EXPLORER - V6 (FLUID MOBILE)
+     MILAURA BENEFITS EXPLORER - V8 (MOBILE UX ENHANCED)
      ============================================ */
 
   #MilauraBenefits-{{ section.id }} {
     width: 100%;
-    /* Padding vertical pour que l'image de fond respire */
     padding: var(--milaura-spacing-lg) 0;
     background: transparent;
     margin-top: var(--milaura-spacing-lg);
@@ -21,7 +20,6 @@
     overflow: hidden;
     position: relative;
     z-index: 2;
-    /* Style Halo Vision OS Desktop */
     border: 1px solid rgba(192, 160, 98, 0.4);
     box-shadow: 0 10px 40px rgba(192, 160, 98, 0.15);
     border-radius: 30px;
@@ -56,14 +54,16 @@
 
   #MilauraBenefits-{{ section.id }} .benefit-btn {
     background: rgba(255, 255, 255, 0.5);
-    border: 1px solid transparent;
+    border: 2px solid transparent;
     border-radius: 20px;
     padding: 20px;
     text-align: left;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
     position: relative;
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn:hover {
@@ -71,10 +71,16 @@
     transform: translateX(5px);
   }
 
+  #MilauraBenefits-{{ section.id }} .benefit-btn:focus-visible {
+    outline: 2px solid var(--milaura-gold);
+    outline-offset: 2px;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefit-btn[aria-pressed="true"],
   #MilauraBenefits-{{ section.id }} .benefit-btn.is-active {
     background: #ffffff;
     border-color: var(--milaura-gold);
-    box-shadow: 0 10px 25px rgba(192, 160, 98, 0.15);
+    box-shadow: 0 10px 25px rgba(192, 160, 98, 0.2);
     transform: scale(1.02);
   }
 
@@ -86,6 +92,7 @@
 
   #MilauraBenefits-{{ section.id }} .benefit-btn-icon {
     font-size: 1.8rem;
+    flex-shrink: 0;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn-name {
@@ -156,7 +163,16 @@
     padding: var(--milaura-spacing-md);
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid transparent;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    will-change: box-shadow, border-color;
+  }
+
+  /* Highlight animation */
+  #MilauraBenefits-{{ section.id }} .benefit-info-box.is-highlighted {
+    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.4), 0 0 0 3px var(--milaura-gold);
+    border-color: var(--milaura-gold);
+    transform: scale(1.01);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-info-title {
@@ -214,7 +230,6 @@
 
   /* NEUTRALISATION des styles globaux qui pourraient écraser */
   #MilauraBenefits-{{ section.id }} a.benefit-product-cta.milaura-cta.milaura-cta--small {
-    /* Neutralisation des styles de liens globaux */
     text-decoration: none !important;
     text-underline-offset: 0 !important;
     text-decoration-thickness: 0 !important;
@@ -227,15 +242,13 @@
 
   /* Application complète du design system avec spécificité maximale */
   #MilauraBenefits-{{ section.id }} a.benefit-product-cta.milaura-cta.milaura-cta--small {
-    /* Layout */
     flex-shrink: 0;
     white-space: nowrap;
     margin-left: auto;
-    /* Design system visuel - TOUTES les propriétés explicitement définies */
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    min-height: 40px;
+    min-height: 48px;
     min-width: 140px;
     padding: 10px 20px;
     font-size: 0.9rem;
@@ -263,6 +276,7 @@
     font-family: inherit;
     -webkit-appearance: none;
     appearance: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   #MilauraBenefits-{{ section.id }} a.benefit-product-cta.milaura-cta.milaura-cta--small::after {
@@ -325,7 +339,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(255, 255, 255, 0.35); /* Un peu plus opaque pour lisibilité */
+      background: rgba(255, 255, 255, 0.35);
       z-index: 1;
       pointer-events: none;
     }
@@ -356,22 +370,15 @@
     #MilauraBenefits-{{ section.id }} .benefits-nav {
       display: flex;
       flex-direction: row;
-      flex-wrap: nowrap; /* Force la ligne unique */
-      overflow-x: auto; /* Active le scroll */
-      -webkit-overflow-scrolling: touch; /* Scroll natif iOS */
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       scroll-behavior: smooth;
-
-      /* On retire scroll-snap strict qui bloque parfois le slide fluide */
-      scroll-snap-type: none;
-
-      /* Padding latéral pour que le premier élément ne soit pas collé */
+      scroll-snap-type: x mandatory;
       padding: 10px 20px 20px 20px;
-
       gap: 15px;
-      justify-content: flex-start; /* Important : aligne à gauche pour permettre le scroll */
+      justify-content: flex-start;
       width: 100%;
-
-      /* Cache la scrollbar */
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
@@ -381,31 +388,59 @@
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn {
-      min-width: 85%; /* Largeur confortable */
+      min-width: 85%;
       width: 85%;
-      flex-shrink: 0; /* Empêche l'écrasement */
+      flex-shrink: 0;
       background: rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(192, 160, 98, 0.3);
+      border: 2px solid rgba(192, 160, 98, 0.3);
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       margin: 0;
-      /* On s'assure que le clic marche */
       pointer-events: auto;
-      touch-action: pan-x; /* Dit au navigateur : "laisse le doigt scroller horizontalement" */
+      touch-action: manipulation;
+      min-height: 48px;
+      scroll-snap-align: center;
+      -webkit-tap-highlight-color: transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
+    #MilauraBenefits-{{ section.id }} .benefit-btn:active {
+      transform: scale(0.98);
+      background: rgba(255, 255, 255, 1);
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefit-btn[aria-pressed="true"],
     #MilauraBenefits-{{ section.id }} .benefit-btn.is-active {
       background: #ffffff;
       border-color: var(--milaura-gold);
       border-width: 2px;
       transform: none;
-      box-shadow: 0 8px 25px rgba(192, 160, 98, 0.2);
+      box-shadow: 0 8px 25px rgba(192, 160, 98, 0.25);
+    }
+
+    /* Indicateur visuel de sélection */
+    #MilauraBenefits-{{ section.id }} .benefit-btn[aria-pressed="true"]::after,
+    #MilauraBenefits-{{ section.id }} .benefit-btn.is-active::after {
+      content: '✓';
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      width: 24px;
+      height: 24px;
+      background: var(--milaura-gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: white;
+      font-weight: bold;
     }
 
     /* --- DOTS (CENTRAGE FORCÉ) --- */
     #MilauraBenefits-{{ section.id }} .benefits-dots {
       display: flex;
       width: 100%;
-      justify-content: center; /* Centre horizontalement */
+      justify-content: center;
       align-items: center;
       gap: 8px;
       margin-top: 5px;
@@ -414,20 +449,41 @@
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-dot {
-      width: 8px;
-      height: 8px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      background: rgba(192, 160, 98, 0.3);
+      background: transparent;
       border: none;
       padding: 0;
       cursor: pointer;
       transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-dot.is-active {
+    #MilauraBenefits-{{ section.id }} .benefit-dot::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(192, 160, 98, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefit-dot[aria-selected="true"]::before,
+    #MilauraBenefits-{{ section.id }} .benefit-dot.is-active::before {
       background: var(--milaura-gold);
       width: 24px;
       border-radius: 10px;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefit-dot:focus-visible {
+      outline: 2px solid var(--milaura-gold);
+      outline-offset: 2px;
     }
 
     /* --- CONTENU --- */
@@ -438,6 +494,7 @@
       background: transparent;
       box-shadow: none;
       overflow: visible;
+      scroll-margin-top: 20px;
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-card {
@@ -460,22 +517,30 @@
       width: 100%;
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(192, 160, 98, 0.2);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid rgba(192, 160, 98, 0.2);
       box-shadow: 0 10px 30px rgba(192, 160, 98, 0.1);
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      will-change: box-shadow, border-color, transform;
+    }
+
+    /* Highlight mobile - Plus visible */
+    #MilauraBenefits-{{ section.id }} .benefit-info-box.is-highlighted {
+      box-shadow: 0 12px 35px rgba(192, 160, 98, 0.45), 0 0 0 3px var(--milaura-gold);
+      border-color: var(--milaura-gold);
+      transform: scale(1.015);
     }
 
     /* Application complète du design system sur mobile avec spécificité maximale */
     #MilauraBenefits-{{ section.id }} a.benefit-product-cta.milaura-cta.milaura-cta--small {
-      /* Layout mobile */
       width: 100%;
       text-align: center;
       margin-top: 15px;
       margin-left: 0;
-      /* Design system visuel */
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 40px;
+      min-height: 48px;
       min-width: 140px;
       padding: 10px 20px;
       font-size: 0.9rem;
@@ -503,6 +568,8 @@
       font-family: inherit;
       -webkit-appearance: none;
       appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     #MilauraBenefits-{{ section.id }} a.benefit-product-cta.milaura-cta.milaura-cta--small::after {
@@ -548,7 +615,7 @@
     {% endif %}
 
     <div class="benefits-layout">
-      <nav class="benefits-nav" role="tablist" id="benefits-nav-{{ section.id }}">
+      <nav class="benefits-nav" role="tablist" id="benefits-nav-{{ section.id }}" aria-label="Sélecteur de besoins">
         {%- for block in section.blocks -%}
           <button
             type="button"
@@ -559,11 +626,12 @@
             data-bg="{{ block.settings.stone_image | image_url: width: 1200 }}"
             role="tab"
             aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
             aria-controls="benefit-{{ block.id }}"
             {{ block.shopify_attributes }}
           >
             <div class="benefit-btn-content">
-              <span class="benefit-btn-icon">{{ block.settings.icon }}</span>
+              <span class="benefit-btn-icon" aria-hidden="true">{{ block.settings.icon }}</span>
               <div>
                 <span class="benefit-btn-name">{{ block.settings.emotion }}</span>
                 <span class="benefit-btn-tagline">{{ block.settings.tagline }}</span>
@@ -573,27 +641,30 @@
         {%- endfor -%}
       </nav>
 
-      <div class="benefits-dots" id="benefits-dots-{{ section.id }}">
+      <div class="benefits-dots" id="benefits-dots-{{ section.id }}" role="tablist" aria-label="Navigation rapide">
         {%- for block in section.blocks -%}
           <button
             type="button"
             class="benefit-dot {% if forloop.first %}is-active{% endif %}"
             data-index="{{ forloop.index0 }}"
-            aria-label="Voir le besoin {{ forloop.index }}"
+            role="tab"
+            aria-label="Voir {{ block.settings.emotion }}"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
           ></button>
         {%- endfor -%}
       </div>
 
-      <div class="benefits-content">
+      <div class="benefits-content" id="benefits-content-{{ section.id }}">
         {%- for block in section.blocks -%}
           <div
             id="benefit-{{ block.id }}"
             class="benefit-card {% if forloop.first %}is-active{% endif %}"
             role="tabpanel"
             aria-labelledby="benefit-btn-{{ block.id }}"
+            tabindex="0"
             style="background-image: url('{{ block.settings.stone_image | image_url: width: 1400 }}');"
           >
-            <div class="benefit-info-box">
+            <div class="benefit-info-box" id="benefit-info-{{ block.id }}">
               <div class="benefit-info-subtitle">{{ block.settings.stone_subtitle }}</div>
               <h3 class="benefit-info-title">{{ block.settings.stone_name }}</h3>
               <div class="benefit-info-desc milaura-text">{{ block.settings.description }}</div>
@@ -602,7 +673,11 @@
                 {% assign prod = block.settings.product %}
                 <div class="benefit-product-mini">
                   {% if prod.featured_image %}
-                    {{ prod.featured_image | image_url: width: 140 | image_tag: class: 'benefit-product-thumb' }}
+                    {{
+                      prod.featured_image
+                      | image_url: width: 140
+                      | image_tag: class: 'benefit-product-thumb', alt: prod.title
+                    }}
                   {% endif %}
                   <div class="benefit-product-info">
                     <div class="benefit-product-title">{{ prod.title }}</div>
@@ -622,95 +697,254 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const sectionId = '{{ section.id }}';
-    const container = document.querySelector('#MilauraBenefits-' + sectionId);
-    const nav = document.querySelector('#benefits-nav-' + sectionId);
-    const btns = nav ? nav.querySelectorAll('.benefit-btn') : [];
-    const dots = container.querySelectorAll('.benefit-dot');
-    const cards = container.querySelectorAll('.benefit-card');
+  (function () {
+    'use strict';
 
-    if (!container || btns.length === 0) return;
+    var sectionId = '{{ section.id }}';
+    var container = document.getElementById('MilauraBenefits-' + sectionId);
+    if (!container) return;
 
-    // --- FONCTIONS ---
+    var nav = document.getElementById('benefits-nav-' + sectionId);
+    var btns = nav ? Array.prototype.slice.call(nav.querySelectorAll('.benefit-btn')) : [];
+    var dots = Array.prototype.slice.call(container.querySelectorAll('.benefit-dot'));
+    var cards = Array.prototype.slice.call(container.querySelectorAll('.benefit-card'));
+    var contentZone = document.getElementById('benefits-content-' + sectionId);
 
+    if (btns.length === 0) return;
+
+    var currentIndex = 0;
+    var isScrolling = false;
+
+    // --- DÉTECTION MOBILE ---
+    function isMobile() {
+      return window.innerWidth <= 990;
+    }
+
+    // --- MISE À JOUR BACKGROUND ---
     function updateBackground(url) {
-      if (window.innerWidth <= 990 && url) {
-        container.style.backgroundImage = `url('${url}')`;
+      if (isMobile() && url) {
+        container.style.backgroundImage = "url('" + url + "')";
       } else {
         container.style.backgroundImage = 'none';
       }
     }
 
-    function activateTab(index) {
-      if (index < 0 || index >= btns.length) return;
+    // --- HIGHLIGHT VISUEL DU BLOC RÉSULTAT ---
+    function highlightInfoBox(index) {
+      if (!cards[index]) return;
+      var infoBox = cards[index].querySelector('.benefit-info-box');
+      if (!infoBox) return;
 
-      btns.forEach((b) => {
-        b.classList.remove('is-active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      dots.forEach((d) => d.classList.remove('is-active'));
-      cards.forEach((c) => c.classList.remove('is-active'));
+      // Force reflow pour s'assurer que la transition se déclenche
+      infoBox.offsetHeight;
+      infoBox.classList.add('is-highlighted');
 
-      if (btns[index]) {
-        btns[index].classList.add('is-active');
-        btns[index].setAttribute('aria-selected', 'true');
-        updateBackground(btns[index].dataset.bg);
-      }
-      if (dots[index]) dots[index].classList.add('is-active');
-      if (cards[index]) cards[index].classList.add('is-active');
+      setTimeout(function () {
+        infoBox.classList.remove('is-highlighted');
+      }, 200);
     }
 
+    // --- SCROLL VERS LE CONTENU (MOBILE) ---
+    function scrollToContent(callback) {
+      if (!isMobile() || !contentZone || isScrolling) {
+        if (callback) callback();
+        return;
+      }
+
+      isScrolling = true;
+
+      // Utilise requestAnimationFrame pour s'assurer que le DOM est à jour
+      requestAnimationFrame(function () {
+        var rect = contentZone.getBoundingClientRect();
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var targetY = rect.top + scrollTop - 15;
+
+        // Scroll natif avec behavior smooth (compatible Safari iOS)
+        window.scrollTo({
+          top: targetY,
+          behavior: 'smooth',
+        });
+
+        // Callback après le scroll (estimation du temps de scroll)
+        setTimeout(function () {
+          isScrolling = false;
+          if (callback) callback();
+        }, 350);
+      });
+    }
+
+    // --- CENTRER LA NAV SUR L'ITEM ACTIF ---
     function centerNavOnItem(index) {
-      if (window.innerWidth > 990 || !nav || !btns[index]) return;
+      if (!isMobile() || !nav || !btns[index]) return;
 
-      const btn = btns[index];
-      const navWidth = nav.offsetWidth;
-      const btnWidth = btn.offsetWidth;
-      const btnLeft = btn.offsetLeft;
-
-      // Calcul propre pour centrer sans faire sauter la page
-      const scrollPos = btnLeft - navWidth / 2 + btnWidth / 2;
+      var btn = btns[index];
+      var navWidth = nav.offsetWidth;
+      var btnWidth = btn.offsetWidth;
+      var btnLeft = btn.offsetLeft;
+      var scrollPos = btnLeft - navWidth / 2 + btnWidth / 2;
 
       nav.scrollTo({
-        left: scrollPos,
+        left: Math.max(0, scrollPos),
         behavior: 'smooth',
       });
     }
 
-    // --- EVENTS ---
+    // --- ACTIVATION D'UN ONGLET ---
+    function activateTab(index, shouldScroll) {
+      if (index < 0 || index >= btns.length || (index === currentIndex && !shouldScroll)) return;
 
-    // 1. Clic sur Bouton (Nav)
-    btns.forEach((btn, i) => {
-      btn.addEventListener('click', () => {
-        activateTab(i);
-        centerNavOnItem(i);
+      var previousIndex = currentIndex;
+      currentIndex = index;
+
+      // Mise à jour des boutons
+      btns.forEach(function (btn, i) {
+        var isActive = i === index;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        btn.setAttribute('tabindex', isActive ? '0' : '-1');
       });
-    });
 
-    // 2. Clic sur Dot
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        activateTab(i);
-        centerNavOnItem(i);
+      // Mise à jour des dots
+      dots.forEach(function (dot, i) {
+        var isActive = i === index;
+        dot.classList.toggle('is-active', isActive);
+        dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
       });
-    });
 
-    // 3. Init
-    const activeBtn = nav.querySelector('.benefit-btn.is-active');
-    if (activeBtn) {
-      const index = parseInt(activeBtn.dataset.index);
-      updateBackground(activeBtn.dataset.bg);
-    } else {
-      activateTab(0);
+      // Mise à jour des cartes
+      cards.forEach(function (card, i) {
+        card.classList.toggle('is-active', i === index);
+      });
+
+      // Mise à jour du background
+      if (btns[index]) {
+        updateBackground(btns[index].dataset.bg);
+      }
+
+      // Mobile: scroll + highlight
+      if (shouldScroll && isMobile()) {
+        scrollToContent(function () {
+          highlightInfoBox(index);
+        });
+      }
     }
 
-    // 4. Resize Reset
-    window.addEventListener('resize', () => {
-      const active = nav.querySelector('.benefit-btn.is-active');
-      if (active) updateBackground(active.dataset.bg);
+    // --- ÉVÉNEMENTS : CLIC SUR BOUTON ---
+    btns.forEach(function (btn, i) {
+      btn.addEventListener(
+        'click',
+        function (e) {
+          e.preventDefault();
+          activateTab(i, true);
+          centerNavOnItem(i);
+        },
+        false
+      );
+
+      // Support tactile explicite pour Safari iOS
+      btn.addEventListener(
+        'touchend',
+        function (e) {
+          // Laisse le click handler gérer l'action
+        },
+        { passive: true }
+      );
     });
-  });
+
+    // --- ÉVÉNEMENTS : CLIC SUR DOT ---
+    dots.forEach(function (dot, i) {
+      dot.addEventListener(
+        'click',
+        function (e) {
+          e.preventDefault();
+          activateTab(i, true);
+          centerNavOnItem(i);
+        },
+        false
+      );
+    });
+
+    // --- ÉVÉNEMENTS : NAVIGATION CLAVIER ---
+    nav.addEventListener(
+      'keydown',
+      function (e) {
+        var newIndex = currentIndex;
+
+        switch (e.key) {
+          case 'ArrowRight':
+          case 'ArrowDown':
+            e.preventDefault();
+            newIndex = (currentIndex + 1) % btns.length;
+            break;
+          case 'ArrowLeft':
+          case 'ArrowUp':
+            e.preventDefault();
+            newIndex = (currentIndex - 1 + btns.length) % btns.length;
+            break;
+          case 'Home':
+            e.preventDefault();
+            newIndex = 0;
+            break;
+          case 'End':
+            e.preventDefault();
+            newIndex = btns.length - 1;
+            break;
+          default:
+            return;
+        }
+
+        if (newIndex !== currentIndex) {
+          activateTab(newIndex, true);
+          centerNavOnItem(newIndex);
+          btns[newIndex].focus();
+        }
+      },
+      false
+    );
+
+    // --- INITIALISATION ---
+    function init() {
+      // Trouve l'index actif initial
+      btns.forEach(function (btn, i) {
+        if (btn.classList.contains('is-active')) {
+          currentIndex = i;
+        }
+      });
+
+      // Configure les tabindex initiaux
+      btns.forEach(function (btn, i) {
+        btn.setAttribute('tabindex', i === currentIndex ? '0' : '-1');
+      });
+
+      // Met à jour le background
+      if (btns[currentIndex]) {
+        updateBackground(btns[currentIndex].dataset.bg);
+      }
+    }
+
+    // --- RESIZE ---
+    var resizeTimeout;
+    window.addEventListener(
+      'resize',
+      function () {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function () {
+          if (btns[currentIndex]) {
+            updateBackground(btns[currentIndex].dataset.bg);
+          }
+        }, 100);
+      },
+      { passive: true }
+    );
+
+    // Initialisation au chargement
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
 </script>
 
 {% schema %}
