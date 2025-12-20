@@ -1,10 +1,10 @@
 {% comment %}
-  MILAURA MASTERCLASS V21 - THE FINAL ONE
-  - Navbar: Fixed padding (No overlap)
-  - Fonts: Dancing Script 500 (Clean)
-  - Layout: Metafields Horizontal Row (No scroll)
-  - Style: Official Milaura Gold Gradient
-  - Desktop: Full Split Layout Sticky
+  MILAURA MASTERCLASS V22
+  - CTA above the fold desktop (scroll to offers)
+  - Smart mobile dock with IntersectionObserver
+  - Bundles can be real variants (UNITÉ / DUO / TRIO) OR fallback quantity
+  - More reassurance, less friction
+  - Description moved into clean accordions
 {% endcomment %}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,11 +15,7 @@
 >
 
 {%- style -%}
-  /* ============================================
-     1. VARIABLES & GLOBAL RESET
-  ============================================ */
   :root {
-    /* Le Vrai Doré Milaura (Extrait de ton base.css) */
     --gold-gradient: linear-gradient(
       135deg,
       rgba(255, 240, 200, 0.92) 0%,
@@ -31,14 +27,13 @@
     --gold-border: rgba(214, 176, 96, 0.55);
     --gold-solid: #d6b060;
     --black-ink: #000000;
-    --bg-color: #fffefa; /* Blanc chaud luxe */
+    --bg-color: #fffefa;
   }
 
   .milaura-section {
     background-color: var(--bg-color);
-    /* SÉCURITÉ NAVBAR : On pousse le contenu vers le bas */
     padding-top: 130px;
-    padding-bottom: 100px;
+    padding-bottom: 170px; /* important: laisse respirer sous le dock mobile */
     overflow-x: hidden;
   }
 
@@ -48,21 +43,16 @@
     padding: 0 20px;
   }
 
-  /* ============================================
-     2. TYPOGRAPHIE (CORRIGÉE)
-  ============================================ */
-  /* Titre Principal */
   h1.product-title {
     font-family: 'Dancing Script', cursive;
-    font-weight: 500; /* Pas de gras baveux */
-    font-size: 38px; /* Taille mobile maîtrisée */
+    font-weight: 500;
+    font-size: 38px;
     line-height: 1.1;
     color: var(--black-ink);
     margin: 10px 0;
     text-align: left;
   }
 
-  /* Sous-titres */
   .section-label {
     font-family: 'Playfair Display', serif;
     font-size: 1.1rem;
@@ -74,9 +64,6 @@
     padding-bottom: 2px;
   }
 
-  /* ============================================
-     3. IMAGE & BADGE
-  ============================================ */
   .gallery-wrapper {
     position: relative;
     margin-bottom: 25px;
@@ -84,7 +71,6 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
 
-  /* Liseré Doré Élégant (Pas double, juste propre) */
   .gallery-wrapper img {
     width: 100%;
     height: auto;
@@ -93,7 +79,6 @@
     display: block;
   }
 
-  /* Badge positionné SANS être caché */
   .photo-badge {
     position: absolute;
     top: 15px;
@@ -111,19 +96,16 @@
     z-index: 10;
   }
 
-  /* ============================================
-     4. METAFIELDS GRID (HORIZONTAL !)
-  ============================================ */
   .meta-grid-row {
     display: flex;
-    justify-content: space-between; /* Espace égal */
+    justify-content: space-between;
     gap: 10px;
-    margin: 20px 0;
+    margin: 18px 0 16px;
     width: 100%;
   }
 
   .meta-card {
-    flex: 1; /* Largeur égale pour les 3 */
+    flex: 1;
     background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 12px;
@@ -155,14 +137,34 @@
     line-height: 1.2;
   }
 
-  /* ============================================
-     5. WHY BLOCK (Pourquoi elle est faite pour vous)
-  ============================================ */
+  .reassurance-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px 0 18px;
+  }
+  .reassurance-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #333;
+  }
+  .reassurance-pill span {
+    color: var(--gold-solid);
+    font-weight: 800;
+  }
+
   .benefits-block {
     background: linear-gradient(to right, #fffbf0, #ffffff);
     border-radius: 16px;
     padding: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 18px;
     border: 1px solid rgba(214, 176, 96, 0.2);
   }
 
@@ -181,9 +183,6 @@
     min-width: 18px;
   }
 
-  /* ============================================
-     6. BUNDLES (STYLE MILAURA)
-  ============================================ */
   .bundle-card {
     border: 1px solid #e0e0e0;
     background: #fff;
@@ -196,7 +195,7 @@
   }
 
   .bundle-card.active {
-    border: 2px solid var(--gold-solid); /* Fallback */
+    border: 2px solid var(--gold-solid);
     border-image: var(--gold-gradient) 1;
     background: #fffdf5;
     box-shadow: 0 5px 15px rgba(214, 176, 96, 0.15);
@@ -216,58 +215,24 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
-  /* ============================================
-     7. DESKTOP LAYOUT (SPLIT SCREEN)
-  ============================================ */
-  @media screen and (min-width: 990px) {
-    .milaura-section {
-      padding-top: 160px;
-    } /* Plus d'espace desktop */
-
-    .product-grid-desktop {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr; /* Image plus large */
-      gap: 60px;
-      align-items: start;
-    }
-
-    .desktop-sticky-col {
-      position: sticky;
-      top: 160px; /* Colle sous la navbar */
-      padding-right: 20px;
-    }
-
-    h1.product-title {
-      font-size: 52px;
-    } /* Plus gros sur desktop */
-
-    /* On cache le dock mobile sur desktop */
-    .mobile-sticky-dock {
-      display: none !important;
-    }
+  .bundle-sub {
+    font-size: 0.85rem;
+    color: #666;
+    font-family: 'Lato', sans-serif;
+    margin-top: 2px;
   }
 
-  /* ============================================
-     8. MOBILE STICKY DOCK
-  ============================================ */
-  .mobile-sticky-dock {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 12px 20px;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
-    z-index: 999; /* Au dessus de tout */
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+  .bundle-micro {
+    font-size: 0.85rem;
+    font-family: 'Lato', sans-serif;
+    color: #333;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(214, 176, 96, 0.2);
+    background: rgba(255, 253, 245, 0.7);
   }
 
-  /* BOUTON MILAURA GRADIENT */
   .btn-milaura {
     background: var(--gold-gradient);
     color: #000;
@@ -290,7 +255,144 @@
   .btn-milaura:active {
     transform: scale(0.98);
   }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(214, 176, 96, 0.45);
+    color: #000;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    padding: 0 18px;
+    height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .desktop-only-btn {
+    display: block;
+  }
+  .mobile-sticky-dock {
+    display: flex;
+  }
+
+  .accordion-wrap {
+    margin-top: 18px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .m-accordion {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 12px 0;
+  }
+  .m-accordion summary {
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .m-accordion summary::-webkit-details-marker {
+    display: none;
+  }
+  .m-accordion summary:after {
+    content: '+';
+    font-family: 'Lato', sans-serif;
+    font-weight: 800;
+    color: var(--gold-solid);
+  }
+  .m-accordion[open] summary:after {
+    content: '–';
+  }
+  .m-accordion .acc-content {
+    margin-top: 10px;
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+    color: #444;
+    font-size: 0.95rem;
+  }
+
+  @media screen and (min-width: 990px) {
+    .milaura-section {
+      padding-top: 160px;
+      padding-bottom: 120px;
+    }
+
+    .product-grid-desktop {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .desktop-sticky-col {
+      position: sticky;
+      top: 160px;
+      padding-right: 20px;
+    }
+
+    h1.product-title {
+      font-size: 52px;
+    }
+
+    .mobile-sticky-dock {
+      display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .desktop-only-btn {
+      display: none !important;
+    }
+  }
+
+  .mobile-sticky-dock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 12px 20px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    z-index: 999;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+  }
 {%- endstyle -%}
+
+{%- comment -%}
+  Optional: detect bundle variants by title contains (UNIT / DUO / TRIO)
+  If you create 3 variants with correct prices, this section will switch variant ID and keep quantity=1.
+  If you keep only one variant, it falls back to quantity (and you should remove any fake discount claims).
+{%- endcomment -%}
+
+{% assign v_unit_id = blank %}
+{% assign v_duo_id = blank %}
+{% assign v_trio_id = blank %}
+
+{% for v in product.variants %}
+  {% assign t = v.title | upcase %}
+  {% if v_unit_id == blank and (t contains 'UNIT' or t contains 'UNITE' or t contains 'SINGLE') %}
+    {% assign v_unit_id = v.id %}
+  {% endif %}
+  {% if v_duo_id == blank and (t contains 'DUO' or t contains 'X2' or t contains '2') %}
+    {% assign v_duo_id = v.id %}
+  {% endif %}
+  {% if v_trio_id == blank and (t contains 'TRIO' or t contains 'X3' or t contains '3') %}
+    {% assign v_trio_id = v.id %}
+  {% endif %}
+{% endfor %}
 
 <section class="milaura-section" id="MainProduct-{{ section.id }}">
   <div class="milaura-container">
@@ -298,19 +400,37 @@
       <div class="visual-col">
         <div class="gallery-wrapper">
           <span class="photo-badge">{{ section.settings.sticker_text | default: 'Fait Main' }}</span>
-          <img src="{{ product.featured_media | image_url: width: 1200 }}" alt="{{ product.title }}" loading="eager">
+          <img
+            src="{{ product.featured_media | image_url: width: 1200 }}"
+            alt="{{ product.title | escape }}"
+            loading="eager"
+          >
         </div>
       </div>
 
       <div class="desktop-sticky-col">
         <h1 class="product-title">{{ product.title }}</h1>
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:15px;">
+
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
           <span style="color:var(--gold-solid); font-size:1.1rem;">★★★★★</span>
-          <span style="font-size:0.9rem; color:#666; font-family:'Lato';">4.9/5 (120 avis)</span>
+          <span style="font-size:0.9rem; color:#666; font-family:'Lato', sans-serif;">4.9/5 (120 avis)</span>
         </div>
 
-        <div style="font-family:'Playfair Display'; font-size:2rem; font-weight:700; color:#000; margin-bottom:20px;">
-          {{ product.price | money }}
+        <div
+          style="font-family:'Playfair Display', serif; font-size:2rem; font-weight:700; color:#000; margin-bottom:10px;"
+          id="PriceTop"
+        >
+          {{ product.selected_or_first_available_variant.price | money }}
+        </div>
+
+        <div class="reassurance-row">
+          <div class="reassurance-pill"><span>✓</span> paiement sécurisé</div>
+          <div class="reassurance-pill"><span>✓</span> fait main</div>
+          <div class="reassurance-pill"><span>✓</span> support réactif</div>
+        </div>
+
+        <div class="desktop-only-btn" style="margin-bottom:14px;">
+          <button class="btn-secondary" type="button" onclick="scrollToBundles()">voir les offres</button>
         </div>
 
         <div class="meta-grid-row">
@@ -351,45 +471,72 @@
 
         <div id="BundleSectionAnchor"></div>
 
-        <div class="section-label" style="margin-bottom:15px; display:block; text-align:center;">
-          Choisis ton Rituel
+        <div class="section-label" style="margin-bottom:12px; display:block; text-align:center;">
+          choisis ton rituel
         </div>
 
-        {% form 'product', product, id: 'ProductForm' %}
+        {% form 'product', product, id: 'ProductForm', novalidate: 'novalidate' %}
           <input
             type="hidden"
             name="id"
             id="VariantIdInput"
             value="{{ product.selected_or_first_available_variant.id }}"
+            data-unit-variant="{{ v_unit_id }}"
+            data-duo-variant="{{ v_duo_id }}"
+            data-trio-variant="{{ v_trio_id }}"
           >
           <input type="hidden" name="quantity" id="QuantityInput" value="1">
 
-          <div class="bundle-card" onclick="selectBundle(1, this)">
-            <div style="font-weight:700; font-family:'Lato';">UNITÉ</div>
-            <div style="font-size:0.85rem; color:#666;">Découverte simple</div>
+          <div class="bundle-card" data-bundle="unit" onclick="selectBundle('unit', 1, this)">
+            <div style="font-weight:700; font-family:'Lato', sans-serif;">unité</div>
+            <div class="bundle-sub">découverte simple</div>
           </div>
 
-          <div class="bundle-card active" id="DefaultBundle" onclick="selectBundle(2, this)">
-            <div class="bundle-pill">POPULAIRE</div>
-            <div style="font-weight:700; font-family:'Lato';">DUO (x2)</div>
-            <div style="font-size:0.85rem; color:#666;">Livraison & Sauge OFFERTES</div>
+          <div class="bundle-card active" id="DefaultBundle" data-bundle="duo" onclick="selectBundle('duo', 2, this)">
+            <div class="bundle-pill">populaire</div>
+            <div style="font-weight:700; font-family:'Lato', sans-serif;">duo (x2)</div>
+            <div class="bundle-sub">cadeaux + livraison selon offre</div>
           </div>
 
-          <div class="bundle-card" onclick="selectBundle(3, this)">
-            <div class="bundle-pill">BEST VALUE</div>
-            <div style="font-weight:700; font-family:'Lato';">TRIO (x3)</div>
-            <div style="font-size:0.85rem; color:#666;">-10% + Cadeaux + Livraison</div>
+          <div class="bundle-card" data-bundle="trio" onclick="selectBundle('trio', 3, this)">
+            <div class="bundle-pill">best value</div>
+            <div style="font-weight:700; font-family:'Lato', sans-serif;">trio (x3)</div>
+            <div class="bundle-sub">cadeaux + livraison selon offre</div>
           </div>
 
-          <div style="margin-top:20px;" class="desktop-only-btn">
-            <button type="submit" class="btn-milaura">AJOUTER AU PANIER</button>
+          <div class="bundle-micro" id="BundleMicro">tu as sélectionné: duo (x2)</div>
+
+          <div style="margin-top:14px;" class="desktop-only-btn">
+            <button type="submit" class="btn-milaura" id="DesktopCTA">ajouter au panier</button>
           </div>
 
           <button type="submit" id="RealSubmit" style="display:none;"></button>
         {% endform %}
 
-        <div style="margin-top:30px; font-family:'Lato'; line-height:1.6; color:#444; font-size:0.95rem;">
-          {{ product.description }}
+        <div class="accordion-wrap">
+          <details class="m-accordion" open>
+            <summary>description</summary>
+            <div class="acc-content">
+              {{ product.description }}
+            </div>
+          </details>
+
+          <details class="m-accordion">
+            <summary>livraison et retours</summary>
+            <div class="acc-content">
+              <p>
+                mets ici ta promesse réelle (délais, suivi, retours). Si tu veux, on la branche à des metafields pour
+                que ça soit propre et scalable.
+              </p>
+            </div>
+          </details>
+
+          <details class="m-accordion">
+            <summary>questions fréquentes</summary>
+            <div class="acc-content">
+              <p>ajoute 3 à 5 réponses ultra courtes: durée, utilisation, entretien, cadeau, effets.</p>
+            </div>
+          </details>
         </div>
       </div>
     </div>
@@ -397,60 +544,138 @@
 </section>
 
 <div class="mobile-sticky-dock">
-  <div style="display:flex; flex-direction:column;">
-    <span style="font-size:0.7rem; text-transform:uppercase; color:#666;">Total</span>
-    <span style="font-family:'Playfair Display'; font-weight:700; font-size:1.2rem;" id="DockPrice">
-      {{- product.price | money -}}
+  <div style="display:flex; flex-direction:column; min-width:84px;">
+    <span style="font-size:0.7rem; text-transform:uppercase; color:#666;">total</span>
+    <span style="font-family:'Playfair Display', serif; font-weight:700; font-size:1.2rem;" id="DockPrice">
+      {{- product.selected_or_first_available_variant.price | money -}}
     </span>
   </div>
-  <button class="btn-milaura" style="flex:1;" id="DockBtn" onclick="handleDockClick()">CHOISIR MON OFFRE</button>
+  <button class="btn-milaura" style="flex:1;" id="DockBtn" type="button" onclick="handleDockClick()">
+    choisir mon offre
+  </button>
 </div>
 
 <script>
-  // Logic
-  function handleDockClick() {
+  (function () {
+    const moneyFormat = {{ shop.money_format | json }};
+    const productData = {{ product | json }};
+
+    const form = document.getElementById('ProductForm');
     const anchor = document.getElementById('BundleSectionAnchor');
     const dockBtn = document.getElementById('DockBtn');
-    const rect = anchor.getBoundingClientRect();
+    const dockPrice = document.getElementById('DockPrice');
+    const priceTop = document.getElementById('PriceTop');
 
-    // Check visibility logic (simple version)
-    // Si l'ancre est trop bas (hors écran), on scroll
-    if (rect.top > window.innerHeight) {
-      anchor.scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => {
-        dockBtn.innerText = 'VALIDER LE RITUEL';
-      }, 600);
-    } else {
-      // Sinon on ajoute au panier
-      document.getElementById('RealSubmit').click();
+    const variantInput = document.getElementById('VariantIdInput');
+    const qtyInput = document.getElementById('QuantityInput');
+
+    const micro = document.getElementById('BundleMicro');
+    const desktopCTA = document.getElementById('DesktopCTA');
+
+    let currentQty = 2;
+    let currentBundleKey = 'duo';
+    let bundlesInView = false;
+
+    function formatMoney(cents) {
+      // simple money formatter, relies on Shopify money_format string
+      const value = (cents / 100).toFixed(2);
+      // most EU formats in Shopify will be fine with replace, keeps it simple
+      return moneyFormat.replace('{{amount}}', value).replace('{{ amount }}', value);
     }
-  }
 
-  function selectBundle(qty, el) {
-    // UI
-    document.querySelectorAll('.bundle-card').forEach((c) => c.classList.remove('active'));
-    el.classList.add('active');
+    function getVariantById(id) {
+      return productData.variants.find(v => String(v.id) === String(id));
+    }
 
-    // Data
-    document.getElementById('QuantityInput').value = qty;
+    function getBundleVariantId(bundleKey) {
+      const unit = variantInput.dataset.unitVariant;
+      const duo = variantInput.dataset.duoVariant;
+      const trio = variantInput.dataset.trioVariant;
+      if (bundleKey === 'unit' && unit) return unit;
+      if (bundleKey === 'duo' && duo) return duo;
+      if (bundleKey === 'trio' && trio) return trio;
+      return null;
+    }
 
-    // Feedback
-    document.getElementById('DockBtn').innerText = 'AJOUTER AU PANIER (' + qty + ')';
+    function updatePrices() {
+      const selectedVariantId = variantInput.value;
+      const v = getVariantById(selectedVariantId);
 
-    // Note: Price update logic requires Liquid variant mapping via JS, kept simple here for layout focus
-  }
+      if (v) {
+        const cents = v.price;
+        dockPrice.textContent = formatMoney(cents);
+        if (priceTop) priceTop.textContent = formatMoney(cents);
+      } else {
+        // fallback: base variant price * quantity
+        const base = productData.variants[0] ? productData.variants[0].price : 0;
+        const cents = base * Number(qtyInput.value || 1);
+        dockPrice.textContent = formatMoney(cents);
+        if (priceTop) priceTop.textContent = formatMoney(productData.variants[0].price || 0);
+      }
+    }
 
-  // Hide Desktop btn on mobile if dock is present (handled by CSS generally, but safe check)
-  if (window.innerWidth < 990) {
-    const dskBtn = document.querySelector('.desktop-only-btn');
-    if (dskBtn) dskBtn.style.display = 'none';
-  }
+    window.scrollToBundles = function () {
+      if (!anchor) return;
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    window.handleDockClick = function () {
+      if (!bundlesInView) {
+        window.scrollToBundles();
+        return;
+      }
+      if (form && form.requestSubmit) form.requestSubmit();
+      else document.getElementById('RealSubmit').click();
+    };
+
+    window.selectBundle = function (bundleKey, qty, el) {
+      currentQty = qty;
+      currentBundleKey = bundleKey;
+
+      document.querySelectorAll('.bundle-card').forEach(c => c.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const bundleVariantId = getBundleVariantId(bundleKey);
+
+      if (bundleVariantId) {
+        // real bundle variant pricing, keep quantity=1
+        variantInput.value = bundleVariantId;
+        qtyInput.value = 1;
+      } else {
+        // fallback: 1 variant only, quantity changes
+        qtyInput.value = qty;
+      }
+
+      const label = bundleKey === 'unit' ? 'unité' : (bundleKey === 'duo' ? 'duo (x2)' : 'trio (x3)');
+      if (micro) micro.textContent = 'tu as sélectionné: ' + label;
+
+      dockBtn.textContent = bundlesInView ? 'ajouter au panier' : 'choisir mon offre';
+      if (desktopCTA) desktopCTA.textContent = 'ajouter au panier';
+
+      updatePrices();
+    };
+
+    // IntersectionObserver: detect when offers are in view
+    if ('IntersectionObserver' in window && anchor) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          bundlesInView = e.isIntersecting;
+          dockBtn.textContent = bundlesInView ? 'ajouter au panier' : 'choisir mon offre';
+        });
+      }, { root: null, threshold: 0.15 });
+
+      obs.observe(anchor);
+    }
+
+    // init default selection
+    window.selectBundle('duo', 2, document.getElementById('DefaultBundle'));
+  })();
 </script>
 
 {% schema %}
 {
-  "name": "Milaura Master V21",
+  "name": "Milaura Master V22",
   "settings": [{ "type": "text", "id": "sticker_text", "label": "Badge Photo", "default": "Fait Main" }],
-  "presets": [{ "name": "Milaura Master V21" }]
+  "presets": [{ "name": "Milaura Master V22" }]
 }
 {% endschema %}
