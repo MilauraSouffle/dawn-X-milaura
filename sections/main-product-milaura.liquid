@@ -1,165 +1,226 @@
 {% comment %}
-  MILAURA MASTERCLASS V18 - GOD MODE
-  - Mobile First: Sticky Dock "Add to Cart"
-  - Font: Dancing Script 44px Black Fixed
-  - Color: All text Black (#000000) for max readability
-  - Logic: Default select Middle Bundle + Scroll to Bundle logic
+  MILAURA MASTERCLASS V19 - LUXE EDITION
+  - Fix: Layout overlapping Navbar
+  - Fix: Dancing Script Font rendering
+  - Fix: Gold Buttons (.milaura-cta style)
+  - Feature: Sticky Dock & Bundle Logic preserved
 {% endcomment %}
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 {%- style -%}
   /* ============================================
-     0. GOD MODE RESET (Force Black Text)
+     0. VARIABLES & RESET MILAURA
   ============================================ */
-  .milaura-product-section {
-    color: #000000 !important; /* Force le noir partout */
-    padding: 0;
-    background: #ffffff; /* Fond blanc propre */
-    padding-bottom: 80px; /* Espace pour le sticky dock mobile */
+  :root {
+    --milaura-gold: #c0a062;
+    --milaura-gold-light: #e6c88b;
+    --milaura-gold-gradient-start: #fff0c8;
+    --milaura-gold-gradient-end: #b08230;
+    --header-height-mobile: 70px; /* Ajuste selon ta vraie navbar */
   }
 
-  .milaura-product-section p,
-  .milaura-product-section span,
-  .milaura-product-section div,
-  .milaura-product-section li {
-    color: #1a1a1a; /* Noir doux pour le texte courant */
+  .milaura-product-section {
+    padding-top: calc(var(--header-height-mobile) + 20px); /* FIX: Dégage la navbar */
+    padding-bottom: 100px; /* Espace pour le dock */
+    background: radial-gradient(circle at top center, #fdfbf7 0%, #f2e8d5 60%); /* Ton fond beige luxe */
+    min-height: 100vh;
   }
 
   .milaura-product-wrapper {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 16px;
   }
 
   /* ============================================
-     1. TYPOGRAPHY FIXES
+     1. TYPOGRAPHY LUXE
   ============================================ */
-  /* Titre Mobile & Desktop */
+  /* Titre: Dancing Script, Noir, 44px */
   h1.milaura-title-fix {
     font-family: 'Dancing Script', cursive !important;
-    font-weight: 700 !important;
-    color: #000000 !important; /* Noir absolu */
+    font-weight: 700 !important; /* Testé: 700 sur Google Fonts passe bien si chargé */
+    color: #000000 !important;
+    font-size: 44px !important;
     line-height: 1.1 !important;
-    margin: 0 0 10px 0;
+    margin: 10px 0 15px 0;
     text-transform: none !important;
     letter-spacing: 0 !important;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: none !important; /* Enlève les ombres floues */
   }
 
-  /* Taille Mobile */
-  @media screen and (max-width: 990px) {
-    h1.milaura-title-fix {
-      font-size: 40px !important; /* Grand mais tient sur mobile */
-    }
-  }
-  /* Taille Desktop */
-  @media screen and (min-width: 991px) {
-    h1.milaura-title-fix {
-      font-size: 52px !important; /* Massif sur desktop */
-    }
+  .subtitle-badge {
+    display: inline-block;
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--milaura-gold);
+    font-weight: 700;
+    border: 1px solid var(--milaura-gold);
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
   }
 
   /* ============================================
      2. MOBILE LAYOUT
   ============================================ */
-  .mobile-buybox {
-    display: block;
-    padding: 16px;
-    padding-top: 16px;
-    background: #ffffff;
+  .mobile-image-container {
+    margin: -16px -16px 20px -16px; /* Bleed full width */
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.15); /* Ombre dorée douce */
   }
 
-  .mobile-buybox__subtitle {
+  .mobile-image-container img {
+    width: 100%;
+    height: auto;
     display: block;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-size: 0.7rem;
-    color: #666666; /* Gris foncé */
-    font-weight: 700;
-    margin-bottom: 4px;
   }
 
-  /* RATING */
   .mobile-buybox__rating {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-family: 'Lato', sans-serif;
   }
   .mobile-buybox__stars {
-    color: #d4af37; /* Or pour les étoiles seulement */
+    color: #d4af37;
+    font-size: 1.1rem;
   }
   .mobile-buybox__rating-text {
-    font-size: 0.85rem;
-    color: #000000;
-  }
-
-  /* PRICE */
-  .mobile-buybox__price-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    padding: 12px;
-    background: #f9f9f9;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-  }
-  .mobile-buybox__price {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #000000;
-  }
-  .mobile-buybox__price-compare {
-    font-size: 1rem;
-    color: #999;
-    text-decoration: line-through;
-    margin-left: 8px;
-  }
-  .mobile-buybox__shipping-badge {
-    background: #000000;
-    color: #fff;
-    font-size: 0.7rem;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
-  /* BENEFITS */
-  .mobile-buybox__benefit {
-    display: flex;
-    gap: 8px;
     font-size: 0.9rem;
-    margin-bottom: 6px;
-    color: #000000;
+    color: #333;
   }
-  .mobile-buybox__benefit-icon {
-    color: #d4af37;
-  } /* Checkmark doré */
+
+  /* Price Area */
+  .price-container {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .price-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #000;
+    font-weight: 700;
+  }
+  .price-compare {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 1.1rem;
+  }
 
   /* ============================================
-     3. MOBILE STICKY DOCK (LE DOCK)
+     3. BUNDLES (MILAURA STYLE)
+  ============================================ */
+  .mobile-bundles__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #000;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .mobile-bundle-option {
+    border: 1px solid rgba(192, 160, 98, 0.3); /* Bordure dorée subtile */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-bundle-option.active {
+    border: 2px solid var(--milaura-gold);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 25px rgba(192, 160, 98, 0.15);
+    transform: scale(1.01);
+  }
+
+  .bundle-pill {
+    position: absolute;
+    top: -10px;
+    right: 15px;
+    background: var(--milaura-gold);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* ============================================
+     4. BUTTONS (THE REAL MILAURA CTA)
+  ============================================ */
+  /* Copié de ton Design System */
+  .milaura-cta-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px; /* Un peu plus haut pour le mobile */
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1px solid rgba(214, 176, 96, 0.55);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 240, 200, 0.92) 0%,
+      rgba(214, 176, 96, 0.92) 18%,
+      rgba(255, 232, 172, 0.92) 42%,
+      rgba(176, 130, 48, 0.92) 70%,
+      rgba(255, 240, 200, 0.92) 100%
+    );
+    color: #000;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    box-shadow: 0 12px 32px rgba(130, 90, 30, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .milaura-cta-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(130, 90, 30, 0.25);
+  }
+
+  /* ============================================
+     5. STICKY DOCK (FIXED BOTTOM)
   ============================================ */
   .mobile-sticky-dock {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background: #ffffff;
-    padding: 12px 16px;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    padding: 12px 20px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom)); /* Safe area iPhone */
+    box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.08);
     z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    border-top: 1px solid #eee;
+    gap: 15px;
+    border-top: 1px solid rgba(192, 160, 98, 0.2);
   }
 
-  .dock-price-info {
+  .dock-info {
     display: flex;
     flex-direction: column;
   }
@@ -167,185 +228,74 @@
     font-size: 0.7rem;
     color: #666;
     text-transform: uppercase;
+    letter-spacing: 1px;
   }
   .dock-price {
-    font-weight: 800;
-    font-size: 1.1rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
     color: #000;
   }
 
-  .dock-cta {
-    background: #000000; /* Bouton Noir */
-    color: #ffffff;
-    flex: 1;
-    border: none;
-    border-radius: 50px;
-    height: 48px;
-    font-size: 1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  }
-
-  /* ============================================
-     4. BUNDLES & VARIANTS
-  ============================================ */
-  /* Images */
-  .mobile-image-container img {
-    width: 100%;
-    height: auto;
-    border-radius: 0 0 20px 20px;
-  }
-
-  /* Bundles Selector */
-  .mobile-bundles {
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  .mobile-bundles__title {
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 12px;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-  }
-
-  .mobile-bundle-option {
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    position: relative;
-    background: #fff;
-    transition: all 0.2s;
-  }
-
-  .mobile-bundle-option.active {
-    border-color: #d4af37; /* Bordure Or quand actif */
-    background: #fffdf5; /* Fond très léger or */
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
-  }
-
-  .mobile-bundle__badge {
-    position: absolute;
-    top: -10px;
-    right: 12px;
-    background: #d4af37;
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 12px;
-    text-transform: uppercase;
-  }
-
-  .mobile-bundle__name {
-    font-weight: 800;
-    font-size: 1rem;
-  }
-  .mobile-bundle__gifts {
-    font-size: 0.85rem;
-    color: #555;
-    margin-top: 4px;
-  }
-  .gift-highlight {
-    color: #d4af37;
-    font-weight: 700;
-  }
-
-  /* Desktop Styles (Keep layout, fix fonts) */
+  /* Desktop Fixes */
   @media screen and (min-width: 991px) {
-    .mobile-buybox,
+    .mobile-sticky-dock,
     .mobile-image-container,
-    .mobile-sticky-dock {
+    .mobile-buybox {
       display: none;
     }
     .milaura-product-wrapper {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      gap: 80px;
       padding-top: 40px;
     }
-    .desktop-right-col {
+    .desktop-col {
       display: block;
-    }
-    .desktop-left-col {
-      display: block;
-      position: sticky;
-      top: 100px;
-    }
-    .desktop-price-box {
-      font-size: 2rem;
-      font-weight: 800;
-    }
-    .desktop-add-btn {
-      background: #000;
-      color: #fff;
-      width: 100%;
-      height: 55px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      border: none;
-      margin-top: 20px;
     }
   }
   @media screen and (max-width: 990px) {
-    .desktop-left-col,
-    .desktop-right-col {
+    .desktop-col {
       display: none;
+    }
+    .mobile-buybox {
+      display: block;
     }
   }
 {%- endstyle -%}
 
-{%- assign inventory_qty = product.selected_or_first_available_variant.inventory_quantity -%}
-{%- if inventory_qty <= 0 %}{% assign inventory_qty = 5 %}{% endif -%}
-
 <section class="milaura-product-section" id="MainProduct-{{ section.id }}">
   <div class="milaura-product-wrapper">
     <div class="mobile-image-container">
-      <img id="MobileMainImg" src="{{ product.featured_media | image_url: width: 800 }}" alt="{{ product.title }}">
+      <img
+        id="MobileMainImg"
+        src="{{ product.featured_media | image_url: width: 800 }}"
+        alt="{{ product.title }}"
+        loading="eager"
+      >
     </div>
 
     <div class="mobile-buybox">
-      <span class="mobile-buybox__subtitle">{{ section.settings.sticker_text | default: 'BEST SELLER' }}</span>
+      <span class="subtitle-badge">{{ section.settings.sticker_text | default: 'Fait Main' }}</span>
+
       <h1 class="milaura-title-fix">{{ product.title }}</h1>
 
       <div class="mobile-buybox__rating">
         <span class="mobile-buybox__stars">★★★★★</span>
-        <span class="mobile-buybox__rating-text"><strong>4.9</strong>/5 (120+ avis vérifiés)</span>
+        <span class="mobile-buybox__rating-text">4.9/5 (120+ avis)</span>
       </div>
 
-      <div class="mobile-buybox__price-row">
-        <div>
-          <span class="mobile-buybox__price" id="MobilePriceDisplay">{{ product.price | money }}</span>
-          {% if product.compare_at_price > product.price %}
-            <span class="mobile-buybox__price-compare">{{ product.compare_at_price | money }}</span>
-          {% endif %}
-        </div>
-        <span class="mobile-buybox__shipping-badge">LIVRAISON OFFERTE</span>
-      </div>
-
-      <div class="mobile-buybox__benefits">
-        {% if product.metafields.custom.benefits %}
-          {% assign benefits = product.metafields.custom.benefits | split: '•' %}
-          {% for b in benefits limit: 3 %}
-            {% assign clean_b = b | strip %}
-            {% if clean_b != blank %}
-              <div class="mobile-buybox__benefit"><span class="mobile-buybox__benefit-icon">✔</span> {{ clean_b }}</div>
-            {% endif %}
-          {% endfor %}
+      <div class="price-container">
+        <span class="price-main">{{ product.price | money }}</span>
+        {% if product.compare_at_price > product.price %}
+          <span class="price-compare">{{ product.compare_at_price | money }}</span>
         {% endif %}
       </div>
 
-      <div class="mobile-bundles" id="MobileBundleAnchor">
-        <div class="mobile-bundles__title">CHOISIS TON OFFRE</div>
+      <div id="MobileBundleAnchor" style="scroll-margin-top: 100px;"></div>
+
+      <div class="mobile-bundles">
+        <div class="mobile-bundles__title">Choisissez votre rituel</div>
 
         {% form 'product', product, id: 'MobileBundleForm' %}
           <input
@@ -356,133 +306,100 @@
           >
           <input type="hidden" name="quantity" id="MobileQuantityInput" value="1">
 
-          <div class="mobile-bundle-option" data-qty="1" onclick="selectBundle(1, this)">
-            <div class="mobile-bundle__name">OFFRE DÉCOUVERTE (1 unité)</div>
-            <div class="mobile-bundle__gifts">Prix standard</div>
+          <div class="mobile-bundle-option" onclick="selectBundle(1, this)">
+            <div style="font-weight:700;">UNITÉ</div>
+            <div style="font-size:0.9rem; color:#666;">Découverte</div>
           </div>
 
-          <div class="mobile-bundle-option" data-qty="2" onclick="selectBundle(2, this)" id="DefaultBundleOption">
-            <span class="mobile-bundle__badge">POPULAIRE</span>
-            <div class="mobile-bundle__name">OFFRE DUO (Pack de 2)</div>
-            <div class="mobile-bundle__gifts">
-              <span class="gift-highlight">Sauge OFFERTE + Livraison OFFERTE</span>
-            </div>
+          <div class="mobile-bundle-option" onclick="selectBundle(2, this)" id="DefaultBundleOption">
+            <div class="bundle-pill">POPULAIRE</div>
+            <div style="font-weight:700;">DUO (x2)</div>
+            <div style="font-size:0.9rem; color:#666;">Sauge offerte + Livraison offerte</div>
           </div>
 
-          <div class="mobile-bundle-option" data-qty="3" onclick="selectBundle(3, this)">
-            <span class="mobile-bundle__badge">MEILLEURE OFFRE</span>
-            <div class="mobile-bundle__name">OFFRE TRIO (Pack de 3)</div>
-            <div class="mobile-bundle__gifts">
-              <span class="gift-highlight">-10% + Sauge + Livraison OFFERTES</span>
-            </div>
+          <div class="mobile-bundle-option" onclick="selectBundle(3, this)">
+            <div class="bundle-pill">BEST VALUE</div>
+            <div style="font-weight:700;">TRIO (x3)</div>
+            <div style="font-size:0.9rem; color:#666;">-10% + Sauge + Livraison</div>
           </div>
 
-          <button type="submit" name="add" class="dock-cta" style="width:100%; margin-top:10px; background:#1a1a1a;">
-            AJOUTER AU PANIER
-          </button>
+          <button type="submit" id="RealSubmitBtn" style="display:none;"></button>
         {% endform %}
       </div>
 
-      <div style="margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
-        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:10px;">Description</h3>
-        <div style="font-size:0.95rem; line-height:1.6; color:#333;">
-          {{ product.description }}
-        </div>
-      </div>
-    </div>
-    <div class="mobile-sticky-dock">
-      <div class="dock-price-info">
-        <span class="dock-label">Total</span>
-        <span class="dock-price" id="DockPrice">{{ product.price | money }}</span>
-      </div>
-      <button class="dock-cta" onclick="scrollToBundles()">CHOISIR MON OFFRE</button>
-    </div>
-
-    <div class="desktop-left-col">
-      <img src="{{ product.featured_media | image_url: width: 1000 }}" style="width:100%; border-radius:20px;">
-    </div>
-    <div class="desktop-right-col">
-      <h1 class="milaura-title-fix" style="font-size:52px;">{{ product.title }}</h1>
-      <div style="font-size:2rem; font-weight:800; margin:20px 0;">{{ product.price | money }}</div>
-
-      {% form 'product', product %}
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-        <button type="submit" class="desktop-add-btn">AJOUTER AU PANIER</button>
-      {% endform %}
-
-      <div style="margin-top:30px;">
+      <div style="margin-top:30px; font-family:'Lato'; color:#333; line-height:1.6;">
         {{ product.description }}
+      </div>
+    </div>
+    <div class="desktop-col">
+      <div style="display:flex; gap:40px;">
+        <div style="flex:1;">
+          <img src="{{ product.featured_media | image_url: width: 1000 }}" style="width:100%; border-radius:20px;">
+        </div>
+        <div style="flex:1;">
+          <h1 class="milaura-title-fix" style="font-size:55px !important;">{{ product.title }}</h1>
+          <button class="milaura-cta-gold">AJOUTER AU PANIER</button>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<div class="mobile-sticky-dock">
+  <div class="dock-info">
+    <span class="dock-label">Total</span>
+    <span class="dock-price" id="DockPrice">{{ product.price | money }}</span>
+  </div>
+
+  <button class="milaura-cta-gold" style="width:auto; flex:1;" id="DockBtn" onclick="handleDockClick()">
+    CHOISIR MON OFFRE
+  </button>
+</div>
+
 <script>
-  // === GOD MODE LOGIC ===
+  // === LOGIC ===
 
-  // 1. Scroll Smooth to Bundles when clicking Sticky Button
-  function scrollToBundles() {
+  function handleDockClick() {
     const bundleSection = document.getElementById('MobileBundleAnchor');
-    if (bundleSection) {
-      bundleSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const dockBtn = document.getElementById('DockBtn');
 
-      // Optional: Flash effect to show user where to click
-      bundleSection.style.transition = 'background 0.5s';
-      bundleSection.style.backgroundColor = '#fffdf5';
+    // Si on n'est pas encore aux bundles, on scroll
+    const rect = bundleSection.getBoundingClientRect();
+    if (rect.top > window.innerHeight || rect.bottom < 0) {
+      bundleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Le bouton change de texte
       setTimeout(() => {
-        bundleSection.style.backgroundColor = 'transparent';
-      }, 800);
+        dockBtn.innerText = 'VALIDER LE RITUEL';
+      }, 500);
+    } else {
+      // Si on y est déjà, on clique sur le vrai submit
+      document.getElementById('RealSubmitBtn').click();
     }
   }
 
-  // 2. Bundle Selection Logic
   function selectBundle(qty, element) {
-    // Visual Update
+    // UI Update
     document.querySelectorAll('.mobile-bundle-option').forEach((el) => el.classList.remove('active'));
     element.classList.add('active');
 
-    // Input Update
-    const qtyInput = document.getElementById('MobileQuantityInput');
-    if (qtyInput) qtyInput.value = qty;
+    // Logic Update
+    document.getElementById('MobileQuantityInput').value = qty;
 
-    // Price Update (Simulation - simple logic, assumes base price * qty roughly)
-    // For exact price sync, we'd need liquid variables per bundle, keeping it visual for now
-    // Or simpler: Just update the "Dock" text to say "Valider l'offre"
-    const btn = document.querySelector('.dock-cta');
-    if (btn) btn.innerText = 'VALIDER (' + qty + ')';
+    // Feedback Dock
+    document.getElementById('DockBtn').innerText = 'AJOUTER AU PANIER (' + qty + ')';
   }
 
-  // 3. Init: Select "Populaire" (Qty 2) by default on load
+  // Init
   document.addEventListener('DOMContentLoaded', function () {
-    const defaultOption = document.getElementById('DefaultBundleOption');
-    if (defaultOption) {
-      // Simulate click to set active state and inputs
-      selectBundle(2, defaultOption);
-    }
+    const defaultOpt = document.getElementById('DefaultBundleOption');
+    if (defaultOpt) selectBundle(2, defaultOpt);
   });
 </script>
 
 {% schema %}
 {
-  "name": "Milaura God Mode V18",
-  "settings": [
-    {
-      "type": "text",
-      "id": "sticker_text",
-      "label": "Badge Texte",
-      "default": "BEST SELLER"
-    },
-    {
-      "type": "richtext",
-      "id": "technical_details",
-      "label": "Détails Techniques"
-    },
-    {
-      "type": "richtext",
-      "id": "shipping_returns",
-      "label": "Livraison"
-    }
-  ],
-  "presets": [{ "name": "Milaura God Mode V18" }]
+  "name": "Milaura Luxe V19",
+  "settings": [{ "type": "text", "id": "sticker_text", "label": "Badge", "default": "Fait Main" }],
+  "presets": [{ "name": "Milaura Luxe V19" }]
 }
 {% endschema %}
