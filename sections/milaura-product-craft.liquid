@@ -1,0 +1,326 @@
+{% comment %}
+  MILAURA PRODUCT CRAFT
+  4 badges max, grille 2x2
+  Format: icône + 2 mots
+  Badges par type produit (bijou/bougie/sauge)
+  Texte 1-2 phrases factuel/chaleureux
+{% endcomment %}
+
+{%- liquid
+  assign product_type = product.type | downcase
+  case product_type
+    when 'bijou', 'bracelet', 'collier', 'bague'
+      assign template_type = 'bijou'
+    when 'bougie'
+      assign template_type = 'bougie'
+    when 'sauge', 'encens'
+      assign template_type = 'sauge'
+    when 'coffret', 'bundle'
+      assign template_type = 'coffret'
+    else
+      assign template_type = 'bijou'
+  endcase
+-%}
+
+<section
+  id="MilauraProductCraft-{{ section.id }}"
+  class="milaura-product-craft"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-craft__container">
+
+    {%- if section.settings.show_title -%}
+      <h2 class="milaura-product-craft__title">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+
+    {%- comment -%} Badges - d'abord depuis blocks si présents {%- endcomment -%}
+    <div class="milaura-product-craft__badges">
+
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks limit: 4 -%}
+          {%- if block.type == 'badge' -%}
+            <div class="milaura-product-craft__badge" {{ block.shopify_attributes }}>
+              {%- if block.settings.icon != blank -%}
+                <div class="milaura-product-craft__badge-icon">
+                  {{ block.settings.icon }}
+                </div>
+              {%- endif -%}
+              <div class="milaura-product-craft__badge-text">
+                {{ block.settings.text }}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+      {%- comment -%} Sinon badges par défaut selon type produit {%- endcomment -%}
+      {%- else -%}
+        {%- case template_type -%}
+
+          {%- when 'bijou' -%}
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🇫🇷</div>
+              <div class="milaura-product-craft__badge-text">Fabriqué en France</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">💎</div>
+              <div class="milaura-product-craft__badge-text">Pierre certifiée</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">✋</div>
+              <div class="milaura-product-craft__badge-text">Fait main</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">✨</div>
+              <div class="milaura-product-craft__badge-text">Or/Argent 925</div>
+            </div>
+
+          {%- when 'bougie' -%}
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🇫🇷</div>
+              <div class="milaura-product-craft__badge-text">Fabriqué en France</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🌱</div>
+              <div class="milaura-product-craft__badge-text">Cire végétale</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🏛️</div>
+              <div class="milaura-product-craft__badge-text">Maison Candella</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">💎</div>
+              <div class="milaura-product-craft__badge-text">Pierre incluse</div>
+            </div>
+
+          {%- when 'sauge' -%}
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🌿</div>
+              <div class="milaura-product-craft__badge-text">Origine contrôlée</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">☀️</div>
+              <div class="milaura-product-craft__badge-text">Séchage naturel</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🔮</div>
+              <div class="milaura-product-craft__badge-text">Rituel ancestral</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🌍</div>
+              <div class="milaura-product-craft__badge-text">Éco-responsable</div>
+            </div>
+
+          {%- when 'coffret' -%}
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🇫🇷</div>
+              <div class="milaura-product-craft__badge-text">Fabriqué en France</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">✋</div>
+              <div class="milaura-product-craft__badge-text">Assemblé à la main</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">💎</div>
+              <div class="milaura-product-craft__badge-text">Pierres naturelles</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🎁</div>
+              <div class="milaura-product-craft__badge-text">Packaging premium</div>
+            </div>
+
+        {%- endcase -%}
+      {%- endif -%}
+
+    </div>
+
+    {%- if section.settings.show_text and section.settings.text != blank -%}
+      <div class="milaura-product-craft__text">
+        {{ section.settings.text }}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  .milaura-product-craft {
+    padding: var(--milaura-spacing-xl, 48px) 0;
+    background: linear-gradient(
+      to bottom,
+      var(--milaura-beige, #FDFBF7) 0%,
+      #F2E8D5 100%
+    );
+  }
+
+  .milaura-product-craft__container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md, 24px);
+    text-align: center;
+  }
+
+  .milaura-product-craft__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 var(--milaura-spacing-lg, 36px) 0;
+  }
+
+  .milaura-product-craft__badges {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--milaura-spacing-md, 24px);
+    margin-bottom: var(--milaura-spacing-lg, 36px);
+  }
+
+  .milaura-product-craft__badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--milaura-spacing-sm, 12px);
+    padding: var(--milaura-spacing-md, 24px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: var(--milaura-border-radius, 20px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+  }
+
+  .milaura-product-craft__badge:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(192, 160, 98, 0.15);
+    border-color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-product-craft__badge-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .milaura-product-craft__badge-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .milaura-product-craft__text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--milaura-text, #000000);
+    opacity: 0.85;
+  }
+
+  .milaura-product-craft__text p {
+    margin: 0 0 1em 0;
+  }
+
+  .milaura-product-craft__text p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 768px) {
+    .milaura-product-craft__title {
+      font-size: 36px;
+    }
+
+    .milaura-product-craft__badges {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--milaura-spacing-lg, 36px);
+    }
+
+    .milaura-product-craft__badge-icon {
+      font-size: 40px;
+    }
+
+    .milaura-product-craft__badge-text {
+      font-size: 15px;
+    }
+
+    .milaura-product-craft__text {
+      font-size: 16px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-product-craft__badge {
+      transition: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Milaura Product Craft",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Titre"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Afficher le titre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Artisanat & Qualité"
+    },
+    {
+      "type": "header",
+      "content": "Texte descriptif"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text",
+      "label": "Afficher le texte",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Chaque création Milaura est fabriquée avec soin en France, dans le respect de standards éthiques et écologiques.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icône (emoji)",
+          "default": "✨",
+          "info": "Utilise un emoji simple"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte (2 mots max)",
+          "default": "Fait main"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product Craft"
+    }
+  ]
+}
+{% endschema %}

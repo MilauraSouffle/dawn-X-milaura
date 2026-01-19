@@ -1,0 +1,302 @@
+{% comment %}
+  MILAURA PRODUCT SCENT
+  Pyramide olfactive (Tête/Cœur/Fond) 3 colonnes
+  Description sensorielle 2-3 phrases
+  Logo partenaire Maison Candella discret
+  Conditionnel : uniquement pour bougies
+{% endcomment %}
+
+{%- liquid
+  assign product_type = product.type | downcase
+  assign is_candle = false
+
+  if product_type == 'bougie'
+    assign is_candle = true
+  endif
+
+  assign scent_name = product.metafields.milaura.scent_name | default: section.settings.default_scent_name
+  assign scent_description = product.metafields.milaura.scent_description | default: section.settings.default_description
+  assign scent_notes = product.metafields.milaura.scent_notes.value
+-%}
+
+{%- if is_candle -%}
+<section
+  id="MilauraProductScent-{{ section.id }}"
+  class="milaura-product-scent"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-scent__container">
+
+    {%- if section.settings.show_title -%}
+      <h2 class="milaura-product-scent__title">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+
+    {%- if scent_name != blank -%}
+      <p class="milaura-product-scent__name">
+        {{ scent_name }}
+      </p>
+    {%- endif -%}
+
+    {%- comment -%} Pyramide olfactive {%- endcomment -%}
+    {%- if scent_notes -%}
+      <div class="milaura-product-scent__pyramid">
+
+        {%- if scent_notes.top and scent_notes.top.size > 0 -%}
+          <div class="milaura-product-scent__note">
+            <div class="milaura-product-scent__note-label">Tête</div>
+            <div class="milaura-product-scent__note-values">
+              {%- for note in scent_notes.top -%}
+                <span class="milaura-product-scent__note-value">{{ note }}</span>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if scent_notes.heart and scent_notes.heart.size > 0 -%}
+          <div class="milaura-product-scent__note">
+            <div class="milaura-product-scent__note-label">Cœur</div>
+            <div class="milaura-product-scent__note-values">
+              {%- for note in scent_notes.heart -%}
+                <span class="milaura-product-scent__note-value">{{ note }}</span>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if scent_notes.base and scent_notes.base.size > 0 -%}
+          <div class="milaura-product-scent__note">
+            <div class="milaura-product-scent__note-label">Fond</div>
+            <div class="milaura-product-scent__note-values">
+              {%- for note in scent_notes.base -%}
+                <span class="milaura-product-scent__note-value">{{ note }}</span>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+      </div>
+    {%- endif -%}
+
+    {%- if scent_description != blank -%}
+      <div class="milaura-product-scent__description">
+        {{ scent_description }}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_partner -%}
+      <div class="milaura-product-scent__partner">
+        {%- if section.settings.partner_logo != blank -%}
+          {{
+            section.settings.partner_logo
+            | image_url: width: 200
+            | image_tag:
+              loading: 'lazy',
+              class: 'milaura-product-scent__partner-logo',
+              alt: section.settings.partner_text | escape
+          }}
+        {%- else -%}
+          <p class="milaura-product-scent__partner-text">
+            {{ section.settings.partner_text }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+{%- endif -%}
+
+<style>
+  .milaura-product-scent {
+    padding: var(--milaura-spacing-xl, 48px) 0;
+    background: var(--milaura-beige, #FDFBF7);
+  }
+
+  .milaura-product-scent__container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md, 24px);
+    text-align: center;
+  }
+
+  .milaura-product-scent__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
+  }
+
+  .milaura-product-scent__name {
+    font-size: 18px;
+    font-style: italic;
+    color: var(--milaura-gold, #C0A062);
+    margin: 0 0 var(--milaura-spacing-lg, 36px) 0;
+  }
+
+  .milaura-product-scent__pyramid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--milaura-spacing-md, 24px);
+    margin-bottom: var(--milaura-spacing-lg, 36px);
+  }
+
+  .milaura-product-scent__note {
+    padding: var(--milaura-spacing-md, 24px);
+    background: rgba(192, 160, 98, 0.08);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: var(--milaura-border-radius, 20px);
+  }
+
+  .milaura-product-scent__note-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--milaura-gold, #C0A062);
+    margin-bottom: var(--milaura-spacing-sm, 12px);
+  }
+
+  .milaura-product-scent__note-values {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .milaura-product-scent__note-value {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--milaura-text, #000000);
+  }
+
+  .milaura-product-scent__description {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--milaura-text, #000000);
+    opacity: 0.9;
+    font-style: italic;
+    margin-bottom: var(--milaura-spacing-lg, 36px);
+  }
+
+  .milaura-product-scent__description p {
+    margin: 0 0 1em 0;
+  }
+
+  .milaura-product-scent__description p:last-child {
+    margin-bottom: 0;
+  }
+
+  .milaura-product-scent__partner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.6;
+  }
+
+  .milaura-product-scent__partner-logo {
+    max-width: 120px;
+    height: auto;
+  }
+
+  .milaura-product-scent__partner-text {
+    font-size: 13px;
+    color: var(--milaura-text, #000000);
+    margin: 0;
+  }
+
+  /* Desktop: 3 colonnes */
+  @media screen and (min-width: 768px) {
+    .milaura-product-scent__pyramid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--milaura-spacing-lg, 36px);
+    }
+
+    .milaura-product-scent__title {
+      font-size: 36px;
+    }
+
+    .milaura-product-scent__name {
+      font-size: 20px;
+    }
+
+    .milaura-product-scent__note-value {
+      font-size: 18px;
+    }
+
+    .milaura-product-scent__description {
+      font-size: 18px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Milaura Product Scent",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Titre"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Afficher le titre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "La senteur"
+    },
+    {
+      "type": "header",
+      "content": "Contenu par défaut"
+    },
+    {
+      "type": "text",
+      "id": "default_scent_name",
+      "label": "Nom de senteur par défaut",
+      "info": "Utilisé si metafield milaura.scent_name est vide"
+    },
+    {
+      "type": "richtext",
+      "id": "default_description",
+      "label": "Description par défaut",
+      "default": "<p>Une fragrance enveloppante qui évolue au fil du temps, révélant ses notes avec subtilité.</p>",
+      "info": "Utilisé si metafield milaura.scent_description est vide"
+    },
+    {
+      "type": "header",
+      "content": "Partenaire"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_partner",
+      "label": "Afficher le partenaire",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "partner_logo",
+      "label": "Logo partenaire",
+      "info": "Optionnel - logo Maison Candella"
+    },
+    {
+      "type": "text",
+      "id": "partner_text",
+      "label": "Texte partenaire",
+      "default": "En partenariat avec Maison Candella",
+      "info": "Utilisé si pas de logo"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product Scent"
+    }
+  ]
+}
+{% endschema %}

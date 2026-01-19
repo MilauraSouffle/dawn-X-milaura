@@ -1,0 +1,130 @@
+{%- comment -%}
+  MILAURA PDP RECOS
+  Affichage recommandations sur page produit
+  À inclure après la section "Votre Rituel"
+{%- endcomment -%}
+
+{% render 'milaura-recos-engine',
+  current_product: product,
+  max_recos: 2
+%}
+
+{% if recommended_products.size > 0 %}
+  <div class="milaura-pdp-recos">
+    <div class="milaura-pdp-recos-container">
+      <h3 class="milaura-pdp-recos-title">Complétez votre intention</h3>
+
+      <div class="milaura-pdp-recos-grid">
+        {% for reco in recommended_products %}
+          <div class="milaura-pdp-reco-card">
+            <a href="{{ reco.url }}" class="milaura-pdp-reco-link">
+              <div class="milaura-pdp-reco-image">
+                {% if reco.featured_image %}
+                  <img src="{{ reco.featured_image | image_url: width: 400 }}" alt="{{ reco.title }}" loading="lazy">
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </div>
+
+              <div class="milaura-pdp-reco-info">
+                <h4 class="milaura-pdp-reco-title">{{ reco.title }}</h4>
+                <p class="milaura-pdp-reco-price">{{ reco.price | money }}</p>
+
+                {% if reco.metafields.milaura.baseline %}
+                  <p class="milaura-pdp-reco-baseline">{{ reco.metafields.milaura.baseline }}</p>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .milaura-pdp-recos {
+      padding: 3rem 0;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .milaura-pdp-recos-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .milaura-pdp-recos-title {
+      font-family: var(--font-heading-family, 'Playfair Display'), serif;
+      font-size: 1.75rem;
+      text-align: center;
+      margin: 0 0 2rem 0;
+      color: var(--milaura-text, #000000);
+    }
+
+    .milaura-pdp-recos-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media screen and (min-width: 768px) {
+      .milaura-pdp-recos-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .milaura-pdp-reco-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      border-radius: var(--milaura-border-radius, 20px);
+      padding: 1.5rem;
+      border: 1px solid rgba(192, 160, 98, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .milaura-pdp-reco-card:hover {
+      border-color: var(--milaura-gold, #C0A062);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(192, 160, 98, 0.2);
+    }
+
+    .milaura-pdp-reco-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .milaura-pdp-reco-image {
+      margin-bottom: 1rem;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .milaura-pdp-reco-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .milaura-pdp-reco-title {
+      font-family: var(--font-heading-family, 'Playfair Display'), serif;
+      font-size: 1.25rem;
+      margin: 0 0 0.5rem 0;
+      color: var(--milaura-text, #000000);
+    }
+
+    .milaura-pdp-reco-price {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--milaura-gold, #C0A062);
+      margin: 0 0 0.75rem 0;
+    }
+
+    .milaura-pdp-reco-baseline {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      margin: 0;
+      opacity: 0.8;
+    }
+  </style>
+{% endif %}

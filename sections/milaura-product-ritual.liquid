@@ -1,0 +1,458 @@
+{% comment %}
+  MILAURA PRODUCT RITUAL
+  4 étapes max (numéro + icône + texte)
+  Apparition séquentielle au scroll
+  Rituels différents par type produit (bijou/bougie/sauge/coffret)
+{% endcomment %}
+
+{%- liquid
+  assign product_type = product.type | downcase
+  case product_type
+    when 'bijou', 'bracelet', 'collier', 'bague'
+      assign template_type = 'bijou'
+    when 'bougie'
+      assign template_type = 'bougie'
+    when 'sauge', 'encens'
+      assign template_type = 'sauge'
+    when 'coffret', 'bundle'
+      assign template_type = 'coffret'
+    else
+      assign template_type = 'bijou'
+  endcase
+
+  assign ritual_steps = product.metafields.milaura.ritual_steps.value
+-%}
+
+<section
+  id="MilauraProductRitual-{{ section.id }}"
+  class="milaura-product-ritual"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-ritual__container">
+
+    {%- if section.settings.show_title -%}
+      <h2 class="milaura-product-ritual__title">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.show_subtitle and section.settings.subtitle != blank -%}
+      <p class="milaura-product-ritual__subtitle">
+        {{ section.settings.subtitle }}
+      </p>
+    {%- endif -%}
+
+    <div class="milaura-product-ritual__steps">
+
+      {%- comment -%} Si metafield ritual_steps existe (JSON) {%- endcomment -%}
+      {%- if ritual_steps and ritual_steps.size > 0 -%}
+        {%- for step in ritual_steps limit: 4 -%}
+          <div
+            class="milaura-product-ritual__step"
+            data-step-index="{{ forloop.index }}"
+          >
+            <div class="milaura-product-ritual__step-number">
+              {{ forloop.index }}
+            </div>
+            <div class="milaura-product-ritual__step-content">
+              {%- if step.icon != blank -%}
+                <div class="milaura-product-ritual__step-icon">
+                  {{ step.icon }}
+                </div>
+              {%- endif -%}
+              <p class="milaura-product-ritual__step-text">
+                {{ step.text }}
+              </p>
+            </div>
+          </div>
+        {%- endfor -%}
+
+      {%- comment -%} Sinon fallback sur blocks {%- endcomment -%}
+      {%- elsif section.blocks.size > 0 -%}
+        {%- for block in section.blocks limit: 4 -%}
+          {%- if block.type == 'step' -%}
+            <div
+              class="milaura-product-ritual__step"
+              data-step-index="{{ forloop.index }}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="milaura-product-ritual__step-number">
+                {{ forloop.index }}
+              </div>
+              <div class="milaura-product-ritual__step-content">
+                {%- if block.settings.icon != blank -%}
+                  <div class="milaura-product-ritual__step-icon">
+                    {{ block.settings.icon }}
+                  </div>
+                {%- endif -%}
+                <p class="milaura-product-ritual__step-text">
+                  {{ block.settings.text }}
+                </p>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+      {%- comment -%} Sinon rituels par défaut selon type {%- endcomment -%}
+      {%- else -%}
+        {%- case template_type -%}
+
+          {%- when 'bijou' -%}
+            <div class="milaura-product-ritual__step" data-step-index="1">
+              <div class="milaura-product-ritual__step-number">1</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🌅</div>
+                <p class="milaura-product-ritual__step-text">Choisis un moment calme, le matin ou avant de dormir</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="2">
+              <div class="milaura-product-ritual__step-number">2</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">💭</div>
+                <p class="milaura-product-ritual__step-text">Pose une intention claire : que souhaites-tu aujourd'hui ?</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="3">
+              <div class="milaura-product-ritual__step-number">3</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">💎</div>
+                <p class="milaura-product-ritual__step-text">Porte le bijou contre ta peau pour sentir son énergie</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="4">
+              <div class="milaura-product-ritual__step-number">4</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">✨</div>
+                <p class="milaura-product-ritual__step-text">Touche-le pour te reconnecter à ton intention</p>
+              </div>
+            </div>
+
+          {%- when 'bougie' -%}
+            <div class="milaura-product-ritual__step" data-step-index="1">
+              <div class="milaura-product-ritual__step-number">1</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🕯️</div>
+                <p class="milaura-product-ritual__step-text">Allume ta bougie dans un espace calme</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="2">
+              <div class="milaura-product-ritual__step-number">2</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🌬️</div>
+                <p class="milaura-product-ritual__step-text">Respire profondément, laisse le parfum t'envelopper</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="3">
+              <div class="milaura-product-ritual__step-number">3</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🌸</div>
+                <p class="milaura-product-ritual__step-text">Observe la flamme, sens la senteur évoluer</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="4">
+              <div class="milaura-product-ritual__step-number">4</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">💎</div>
+                <p class="milaura-product-ritual__step-text">Récupère la pierre talisman et garde-la près de toi</p>
+              </div>
+            </div>
+
+          {%- when 'sauge' -%}
+            <div class="milaura-product-ritual__step" data-step-index="1">
+              <div class="milaura-product-ritual__step-number">1</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🪟</div>
+                <p class="milaura-product-ritual__step-text">Ouvre une fenêtre pour laisser circuler l'énergie</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="2">
+              <div class="milaura-product-ritual__step-number">2</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🔥</div>
+                <p class="milaura-product-ritual__step-text">Allume la sauge et laisse-la se consumer légèrement</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="3">
+              <div class="milaura-product-ritual__step-number">3</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🌀</div>
+                <p class="milaura-product-ritual__step-text">Diffuse la fumée dans chaque pièce avec intention</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="4">
+              <div class="milaura-product-ritual__step-number">4</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">💭</div>
+                <p class="milaura-product-ritual__step-text">Visualise l'espace purifié, prêt pour un nouveau départ</p>
+              </div>
+            </div>
+
+          {%- when 'coffret' -%}
+            <div class="milaura-product-ritual__step" data-step-index="1">
+              <div class="milaura-product-ritual__step-number">1</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🎁</div>
+                <p class="milaura-product-ritual__step-text">Découvre chaque élément, prends le temps de les observer</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="2">
+              <div class="milaura-product-ritual__step-number">2</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">💎</div>
+                <p class="milaura-product-ritual__step-text">Ressens l'énergie de la pierre, laisse-la te guider</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="3">
+              <div class="milaura-product-ritual__step-number">3</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🕯️</div>
+                <p class="milaura-product-ritual__step-text">Compose ton rituel : bougie, bijou, moment sacré</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="4">
+              <div class="milaura-product-ritual__step-number">4</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🌙</div>
+                <p class="milaura-product-ritual__step-text">Alterne selon tes besoins : jour, soir, énergie, calme</p>
+              </div>
+            </div>
+
+        {%- endcase -%}
+      {%- endif -%}
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .milaura-product-ritual {
+    padding: var(--milaura-spacing-xl, 48px) 0;
+    background: var(--milaura-beige, #FDFBF7);
+  }
+
+  .milaura-product-ritual__container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-ritual__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
+  }
+
+  .milaura-product-ritual__subtitle {
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center;
+    color: var(--milaura-text, #000000);
+    opacity: 0.8;
+    margin: 0 0 var(--milaura-spacing-lg, 36px) 0;
+  }
+
+  .milaura-product-ritual__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-lg, 36px);
+  }
+
+  .milaura-product-ritual__step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--milaura-spacing-md, 24px);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .milaura-product-ritual__step.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .milaura-product-ritual__step-number {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.3);
+    flex-shrink: 0;
+  }
+
+  .milaura-product-ritual__step-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-xs, 6px);
+  }
+
+  .milaura-product-ritual__step-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+
+  .milaura-product-ritual__step-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--milaura-text, #000000);
+    margin: 0;
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1024px) {
+    .milaura-product-ritual__title {
+      font-size: 36px;
+    }
+
+    .milaura-product-ritual__subtitle {
+      font-size: 18px;
+    }
+
+    .milaura-product-ritual__steps {
+      gap: var(--milaura-spacing-xl, 48px);
+    }
+
+    .milaura-product-ritual__step {
+      grid-template-columns: 64px 1fr;
+      gap: var(--milaura-spacing-lg, 36px);
+    }
+
+    .milaura-product-ritual__step-number {
+      width: 64px;
+      height: 64px;
+      font-size: 24px;
+    }
+
+    .milaura-product-ritual__step-icon {
+      font-size: 40px;
+    }
+
+    .milaura-product-ritual__step-text {
+      font-size: 18px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-product-ritual__step {
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraProductRitual-' + sectionId);
+  if (!section) return;
+
+  const steps = section.querySelectorAll('.milaura-product-ritual__step');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reducedMotion) {
+    // Show all steps immediately if reduced motion
+    steps.forEach(function(step) {
+      step.classList.add('is-visible');
+    });
+    return;
+  }
+
+  // Apparition séquentielle au scroll
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        const stepIndex = parseInt(entry.target.getAttribute('data-step-index'));
+
+        // Delay based on step index (200ms between each)
+        setTimeout(function() {
+          entry.target.classList.add('is-visible');
+        }, (stepIndex - 1) * 200);
+
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.3
+  });
+
+  steps.forEach(function(step) {
+    observer.observe(step);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Product Ritual",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Titre"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Afficher le titre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Comment l'utiliser"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subtitle",
+      "label": "Afficher le sous-titre",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Un rituel simple pour intégrer cette création dans ton quotidien"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Étape",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icône (emoji)",
+          "default": "✨",
+          "info": "Utilise un emoji simple"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texte de l'étape",
+          "default": "Décris cette étape du rituel"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product Ritual"
+    }
+  ]
+}
+{% endschema %}

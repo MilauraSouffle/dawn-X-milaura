@@ -1,0 +1,163 @@
+{%- comment -%}
+  MILAURA DASHBOARD RECOS
+  Affichage recommandations personnalisées sur dashboard client
+  Basé sur last_profile_handle du customer
+{%- endcomment -%}
+
+{%- if customer -%}
+  {%- assign last_profile = customer.metafields.milaura.last_profile_handle -%}
+
+  {%- if last_profile -%}
+    {%- comment -%} Lookup profil émotionnel {%- endcomment -%}
+    {%- assign profile = shop.metaobjects.emotional_profile[last_profile] -%}
+
+    {%- if profile -%}
+      {%- assign quiz_candle = profile.candle_product.value -%}
+
+      {%- if quiz_candle -%}
+        {% render 'milaura-recos-engine',
+          current_product: quiz_candle,
+          max_recos: 2
+        %}
+
+        {% if recommended_products.size > 0 %}
+          <div class="milaura-dashboard-recos">
+            <div class="milaura-dashboard-recos-container">
+              <h3 class="milaura-dashboard-recos-title">Vos recommandations personnalisées</h3>
+              <p class="milaura-dashboard-recos-subtitle">Basées sur votre profil {{ profile.name.value }}</p>
+
+              <div class="milaura-dashboard-recos-grid">
+                {% for reco in recommended_products %}
+                  <div class="milaura-dashboard-reco-card">
+                    <a href="{{ reco.url }}" class="milaura-dashboard-reco-link">
+                      <div class="milaura-dashboard-reco-image">
+                        {% if reco.featured_image %}
+                          <img src="{{ reco.featured_image | image_url: width: 400 }}" alt="{{ reco.title }}" loading="lazy">
+                        {% else %}
+                          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {% endif %}
+                      </div>
+
+                      <div class="milaura-dashboard-reco-info">
+                        <h4 class="milaura-dashboard-reco-title">{{ reco.title }}</h4>
+                        <p class="milaura-dashboard-reco-price">{{ reco.price | money }}</p>
+
+                        {% if reco.metafields.milaura.baseline %}
+                          <p class="milaura-dashboard-reco-baseline">{{ reco.metafields.milaura.baseline }}</p>
+                        {% endif %}
+
+                        <span class="milaura-dashboard-reco-cta">Découvrir</span>
+                      </div>
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          <style>
+            .milaura-dashboard-recos {
+              padding: 2rem 0;
+            }
+
+            .milaura-dashboard-recos-container {
+              max-width: 1200px;
+              margin: 0 auto;
+              padding: 0 1.5rem;
+            }
+
+            .milaura-dashboard-recos-title {
+              font-family: var(--font-heading-family, 'Playfair Display'), serif;
+              font-size: 1.75rem;
+              text-align: center;
+              margin: 0 0 0.5rem 0;
+              color: var(--milaura-text, #000000);
+            }
+
+            .milaura-dashboard-recos-subtitle {
+              text-align: center;
+              font-size: 0.9375rem;
+              margin: 0 0 2rem 0;
+              color: var(--milaura-gold, #C0A062);
+              font-style: italic;
+            }
+
+            .milaura-dashboard-recos-grid {
+              display: grid;
+              grid-template-columns: 1fr;
+              gap: 1.5rem;
+            }
+
+            @media screen and (min-width: 768px) {
+              .milaura-dashboard-recos-grid {
+                grid-template-columns: 1fr 1fr;
+              }
+            }
+
+            .milaura-dashboard-reco-card {
+              background: rgba(255, 255, 255, 0.6);
+              backdrop-filter: blur(20px);
+              border-radius: var(--milaura-border-radius, 20px);
+              padding: 1.5rem;
+              border: 1px solid rgba(192, 160, 98, 0.2);
+              transition: all 0.3s ease;
+            }
+
+            .milaura-dashboard-reco-card:hover {
+              border-color: var(--milaura-gold, #C0A062);
+              transform: translateY(-4px);
+              box-shadow: 0 12px 30px rgba(192, 160, 98, 0.2);
+            }
+
+            .milaura-dashboard-reco-link {
+              text-decoration: none;
+              color: inherit;
+              display: block;
+            }
+
+            .milaura-dashboard-reco-image {
+              margin-bottom: 1rem;
+              border-radius: 12px;
+              overflow: hidden;
+            }
+
+            .milaura-dashboard-reco-image img {
+              width: 100%;
+              height: auto;
+              display: block;
+            }
+
+            .milaura-dashboard-reco-title {
+              font-family: var(--font-heading-family, 'Playfair Display'), serif;
+              font-size: 1.25rem;
+              margin: 0 0 0.5rem 0;
+              color: var(--milaura-text, #000000);
+            }
+
+            .milaura-dashboard-reco-price {
+              font-size: 1.125rem;
+              font-weight: 600;
+              color: var(--milaura-gold, #C0A062);
+              margin: 0 0 0.75rem 0;
+            }
+
+            .milaura-dashboard-reco-baseline {
+              font-size: 0.9375rem;
+              line-height: 1.5;
+              margin: 0 0 1rem 0;
+              opacity: 0.8;
+            }
+
+            .milaura-dashboard-reco-cta {
+              display: inline-block;
+              font-size: 0.875rem;
+              color: var(--milaura-gold, #C0A062);
+              font-weight: 600;
+              text-decoration: underline;
+            }
+          </style>
+        {% endif %}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

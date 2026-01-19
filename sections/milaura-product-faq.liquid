@@ -1,0 +1,434 @@
+{% comment %}
+  MILAURA PRODUCT FAQ
+  Accordéon
+  FAQ par type (bijou/bougie/sauge, 4 questions chacun)
+  SEO optimisé (schema.org FAQ)
+{% endcomment %}
+
+{%- liquid
+  assign product_type = product.type | downcase
+  case product_type
+    when 'bijou', 'bracelet', 'collier', 'bague'
+      assign template_type = 'bijou'
+    when 'bougie'
+      assign template_type = 'bougie'
+    when 'sauge', 'encens'
+      assign template_type = 'sauge'
+    when 'coffret', 'bundle'
+      assign template_type = 'coffret'
+    else
+      assign template_type = 'bijou'
+  endcase
+
+  assign faq_data = product.metafields.milaura.faq.value
+-%}
+
+<section
+  id="MilauraProductFaq-{{ section.id }}"
+  class="milaura-product-faq"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-faq__container">
+
+    {%- if section.settings.show_title -%}
+      <h2 class="milaura-product-faq__title">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+
+    <div class="milaura-product-faq__accordion">
+
+      {%- comment -%} Si metafield FAQ existe (JSON) {%- endcomment -%}
+      {%- if faq_data and faq_data.size > 0 -%}
+        {%- for item in faq_data limit: 8 -%}
+          <div class="milaura-product-faq__item">
+            <button
+              type="button"
+              class="milaura-product-faq__question"
+              data-faq-toggle="{{ forloop.index }}"
+              aria-expanded="false"
+              aria-controls="faq-answer-{{ section.id }}-{{ forloop.index }}"
+            >
+              <span>{{ item.question }}</span>
+              <svg class="milaura-product-faq__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div
+              id="faq-answer-{{ section.id }}-{{ forloop.index }}"
+              class="milaura-product-faq__answer"
+              data-faq-answer="{{ forloop.index }}"
+              hidden
+            >
+              <div class="milaura-product-faq__answer-inner">
+                {{ item.answer }}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+
+      {%- comment -%} Sinon depuis blocks {%- endcomment -%}
+      {%- elsif section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'question' -%}
+            <div class="milaura-product-faq__item" {{ block.shopify_attributes }}>
+              <button
+                type="button"
+                class="milaura-product-faq__question"
+                data-faq-toggle="{{ forloop.index }}"
+                aria-expanded="false"
+                aria-controls="faq-answer-{{ section.id }}-{{ forloop.index }}"
+              >
+                <span>{{ block.settings.question }}</span>
+                <svg class="milaura-product-faq__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <div
+                id="faq-answer-{{ section.id }}-{{ forloop.index }}"
+                class="milaura-product-faq__answer"
+                data-faq-answer="{{ forloop.index }}"
+                hidden
+              >
+                <div class="milaura-product-faq__answer-inner">
+                  {{ block.settings.answer }}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+      {%- comment -%} Sinon FAQ par défaut selon type {%- endcomment -%}
+      {%- else -%}
+        {%- case template_type -%}
+
+          {%- when 'bijou' -%}
+            {%- assign default_faqs = 'La pierre est-elle vraiment naturelle ?|Oui, chaque pierre est naturelle et sélectionnée à la main. Les variations de couleur sont normales.~~Comment entretenir mon bijou ?|Évite le contact avec l\'eau, les parfums et produits chimiques. Nettoie doucement avec un chiffon doux.~~Puis-je le porter tous les jours ?|Absolument. Le bijou est conçu pour t\'accompagner au quotidien. Retire-le la nuit pour préserver son éclat.~~Quelle est la taille du bracelet ?|Nos bracelets sont ajustables ou disponibles en plusieurs tailles. Consulte le guide des tailles.' | split: '~~' -%}
+
+          {%- when 'bougie' -%}
+            {%- assign default_faqs = 'Combien de temps brûle la bougie ?|Environ 40-50 heures selon l\'utilisation. Coupe la mèche avant chaque utilisation.~~La cire est-elle naturelle ?|Oui, 100% cire végétale (soja ou colza). Sans paraffine, sans toxines.~~Que faire de la pierre une fois la bougie terminée ?|Récupère-la ! Nettoie-la à l\'eau tiède et garde-la comme talisman.~~La senteur est-elle forte ?|Non, elle est subtile et évolue dans le temps. Idéale pour créer une ambiance douce.' | split: '~~' -%}
+
+          {%- when 'sauge' -%}
+            {%- assign default_faqs = 'Comment utiliser la sauge ?|Allume l\'extrémité, laisse brûler 10 secondes, souffle pour créer de la fumée. Diffuse dans les pièces.~~Combien de fois puis-je l\'utiliser ?|Environ 15-20 rituels selon la longueur du bâton et la durée d\'utilisation.~~C\'est dangereux ?|Non, si utilisé correctement : fenêtre ouverte, récipient résistant, jamais laissé sans surveillance.~~Ça sent fort ?|L\'odeur est herbacée et naturelle. Elle se dissipe rapidement une fois la fumée arrêtée.' | split: '~~' -%}
+
+          {%- when 'coffret' -%}
+            {%- assign default_faqs = 'Que contient le coffret ?|Tous les éléments sont détaillés dans la description produit. Varie selon le coffret choisi.~~Puis-je personnaliser le coffret ?|Certains coffrets sont personnalisables. Contacte-nous pour plus d\'infos.~~C\'est un bon cadeau ?|Absolument ! Packaging premium et carte message incluse.~~Les produits sont-ils full-size ?|Oui, tous les produits sont en taille réelle, pas des échantillons.' | split: '~~' -%}
+
+        {%- endcase -%}
+
+        {%- for faq in default_faqs -%}
+          {%- assign faq_parts = faq | split: '|' -%}
+          {%- if faq_parts.size == 2 -%}
+            <div class="milaura-product-faq__item">
+              <button
+                type="button"
+                class="milaura-product-faq__question"
+                data-faq-toggle="{{ forloop.index }}"
+                aria-expanded="false"
+                aria-controls="faq-answer-{{ section.id }}-{{ forloop.index }}"
+              >
+                <span>{{ faq_parts[0] }}</span>
+                <svg class="milaura-product-faq__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <div
+                id="faq-answer-{{ section.id }}-{{ forloop.index }}"
+                class="milaura-product-faq__answer"
+                data-faq-answer="{{ forloop.index }}"
+                hidden
+              >
+                <div class="milaura-product-faq__answer-inner">
+                  {{ faq_parts[1] }}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+      {%- endcase -%}
+    {%- endif -%}
+
+    </div>
+
+  </div>
+</section>
+
+{%- comment -%} Schema.org FAQ pour SEO {%- endcomment -%}
+{%- if section.settings.enable_schema -%}
+  {%- comment -%} Build default FAQs for schema if no metafield/blocks {%- endcomment -%}
+  {%- unless faq_data and faq_data.size > 0 -%}
+    {%- unless section.blocks.size > 0 -%}
+      {%- case template_type -%}
+        {%- when 'bijou' -%}
+          {%- assign schema_default_faqs = 'La pierre est-elle vraiment naturelle ?|Oui, chaque pierre est naturelle et sélectionnée à la main. Les variations de couleur sont normales.~~Comment entretenir mon bijou ?|Évite le contact avec l\'eau, les parfums et produits chimiques. Nettoie doucement avec un chiffon doux.~~Puis-je le porter tous les jours ?|Absolument. Le bijou est conçu pour t\'accompagner au quotidien. Retire-le la nuit pour préserver son éclat.~~Quelle est la taille du bracelet ?|Nos bracelets sont ajustables ou disponibles en plusieurs tailles. Consulte le guide des tailles.' | split: '~~' -%}
+        {%- when 'bougie' -%}
+          {%- assign schema_default_faqs = 'Combien de temps brûle la bougie ?|Environ 40-50 heures selon l\'utilisation. Coupe la mèche avant chaque utilisation.~~La cire est-elle naturelle ?|Oui, 100% cire végétale (soja ou colza). Sans paraffine, sans toxines.~~Que faire de la pierre une fois la bougie terminée ?|Récupère-la ! Nettoie-la à l\'eau tiède et garde-la comme talisman.~~La senteur est-elle forte ?|Non, elle est subtile et évolue dans le temps. Idéale pour créer une ambiance douce.' | split: '~~' -%}
+        {%- when 'sauge' -%}
+          {%- assign schema_default_faqs = 'Comment utiliser la sauge ?|Allume l\'extrémité, laisse brûler 10 secondes, souffle pour créer de la fumée. Diffuse dans les pièces.~~Combien de fois puis-je l\'utiliser ?|Environ 15-20 rituels selon la longueur du bâton et la durée d\'utilisation.~~C\'est dangereux ?|Non, si utilisé correctement : fenêtre ouverte, récipient résistant, jamais laissé sans surveillance.~~Ça sent fort ?|L\'odeur est herbacée et naturelle. Elle se dissipe rapidement une fois la fumée arrêtée.' | split: '~~' -%}
+        {%- when 'coffret' -%}
+          {%- assign schema_default_faqs = 'Que contient le coffret ?|Tous les éléments sont détaillés dans la description produit. Varie selon le coffret choisi.~~Puis-je personnaliser le coffret ?|Certains coffrets sont personnalisables. Contacte-nous pour plus d\'infos.~~C\'est un bon cadeau ?|Absolument ! Packaging premium et carte message incluse.~~Les produits sont-ils full-size ?|Oui, tous les produits sont en taille réelle, pas des échantillons.' | split: '~~' -%}
+      {%- endcase -%}
+    {%- endunless -%}
+  {%- endunless -%}
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- if faq_data and faq_data.size > 0 -%}
+        {%- for item in faq_data limit: 8 -%}
+          {
+            "@type": "Question",
+            "name": {{ item.question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ item.answer | json }}
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      {%- elsif section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'question' -%}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | json }}
+              }
+            }{% unless forloop.last %},{% endunless %}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- elsif schema_default_faqs -%}
+        {%- for faq in schema_default_faqs -%}
+          {%- assign faq_parts = faq | split: '|' -%}
+          {%- if faq_parts.size == 2 -%}
+            {
+              "@type": "Question",
+              "name": {{ faq_parts[0] | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ faq_parts[1] | json }}
+              }
+            }{% unless forloop.last %},{% endunless %}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    ]
+  }
+  </script>
+{%- endif -%}
+
+<style>
+  .milaura-product-faq {
+    padding: var(--milaura-spacing-xl, 48px) 0;
+    background: var(--milaura-beige, #FDFBF7);
+  }
+
+  .milaura-product-faq__container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-faq__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 var(--milaura-spacing-lg, 36px) 0;
+  }
+
+  .milaura-product-faq__accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm, 12px);
+  }
+
+  .milaura-product-faq__item {
+    background: #FFFFFF;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .milaura-product-faq__item:hover {
+    border-color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-product-faq__question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--milaura-spacing-md, 24px);
+    padding: var(--milaura-spacing-md, 24px);
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .milaura-product-faq__question:hover {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-product-faq__question[aria-expanded="true"] .milaura-product-faq__icon {
+    transform: rotate(180deg);
+  }
+
+  .milaura-product-faq__icon {
+    flex-shrink: 0;
+    color: var(--milaura-gold, #C0A062);
+    transition: transform 0.3s ease;
+  }
+
+  .milaura-product-faq__answer {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease;
+  }
+
+  .milaura-product-faq__answer:not([hidden]) {
+    max-height: 500px;
+  }
+
+  .milaura-product-faq__answer-inner {
+    padding: 0 var(--milaura-spacing-md, 24px) var(--milaura-spacing-md, 24px);
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--milaura-text, #000000);
+    opacity: 0.85;
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 768px) {
+    .milaura-product-faq__title {
+      font-size: 36px;
+    }
+
+    .milaura-product-faq__question {
+      font-size: 18px;
+      padding: var(--milaura-spacing-lg, 36px);
+    }
+
+    .milaura-product-faq__answer-inner {
+      padding: 0 var(--milaura-spacing-lg, 36px) var(--milaura-spacing-lg, 36px);
+      font-size: 16px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-product-faq__item,
+    .milaura-product-faq__question,
+    .milaura-product-faq__icon,
+    .milaura-product-faq__answer {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraProductFaq-' + sectionId);
+  if (!section) return;
+
+  const questions = section.querySelectorAll('[data-faq-toggle]');
+
+  questions.forEach(function(question) {
+    question.addEventListener('click', function() {
+      const index = this.getAttribute('data-faq-toggle');
+      const answer = section.querySelector('[data-faq-answer="' + index + '"]');
+
+      if (!answer) return;
+
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+      if (isExpanded) {
+        // Close
+        this.setAttribute('aria-expanded', 'false');
+        answer.setAttribute('hidden', '');
+      } else {
+        // Open
+        this.setAttribute('aria-expanded', 'true');
+        answer.removeAttribute('hidden');
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Product FAQ",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Titre"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Afficher le titre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Questions fréquentes"
+    },
+    {
+      "type": "header",
+      "content": "SEO"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_schema",
+      "label": "Activer le schema.org FAQ",
+      "default": true,
+      "info": "Améliore le référencement Google (rich snippets)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "La pierre est-elle vraiment naturelle ?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Réponse",
+          "default": "Oui, chaque pierre est naturelle et sélectionnée à la main."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product FAQ"
+    }
+  ]
+}
+{% endschema %}

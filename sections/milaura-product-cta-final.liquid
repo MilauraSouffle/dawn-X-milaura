@@ -1,0 +1,482 @@
+{% comment %}
+  MILAURA PRODUCT CTA FINAL
+  Recap: nom + prix + CTA
+  2-3 badges réassurance
+  Dernière chance conversion avant footer
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+
+  assign show_promo = false
+  if current_variant.compare_at_price > current_variant.price
+    assign show_promo = true
+  endif
+
+  assign stock_level = 'available'
+  if current_variant.inventory_quantity <= 0
+    assign stock_level = 'out_of_stock'
+  elsif current_variant.inventory_quantity <= 5
+    assign stock_level = 'low_stock'
+  endif
+-%}
+
+<section
+  id="MilauraProductCtaFinal-{{ section.id }}"
+  class="milaura-product-cta-final"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-cta-final__container">
+
+    <div class="milaura-product-cta-final__content">
+
+      {%- if section.settings.show_title -%}
+        <h2 class="milaura-product-cta-final__title">
+          {{ section.settings.title }}
+        </h2>
+      {%- endif -%}
+
+      {%- comment -%} Recap produit {%- endcomment -%}
+      <div class="milaura-product-cta-final__product">
+        {%- if product.featured_image -%}
+          <div class="milaura-product-cta-final__image">
+            {{
+              product.featured_image
+              | image_url: width: 200
+              | image_tag:
+                loading: 'lazy',
+                class: 'milaura-product-cta-final__img',
+                alt: product.title | escape
+            }}
+          </div>
+        {%- endif -%}
+
+        <div class="milaura-product-cta-final__details">
+          <h3 class="milaura-product-cta-final__product-title">
+            {{ product.title | escape }}
+          </h3>
+
+          <div class="milaura-product-cta-final__price-wrapper">
+            {%- if show_promo -%}
+              <span class="milaura-product-cta-final__price milaura-product-cta-final__price--sale">
+                {{ current_variant.price | money }}
+              </span>
+              <span class="milaura-product-cta-final__price milaura-product-cta-final__price--compare">
+                {{ current_variant.compare_at_price | money }}
+              </span>
+            {%- else -%}
+              <span class="milaura-product-cta-final__price">
+                {{ current_variant.price | money }}
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} CTA {%- endcomment -%}
+      {%- form 'product', product, id: 'MilauraCtaFinalForm-' | append: section.id, class: 'milaura-product-cta-final__form' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+
+        <button
+          type="submit"
+          name="add"
+          class="milaura-product-cta-final__cta"
+          {% if stock_level == 'out_of_stock' %}disabled{% endif %}
+          data-cta-final-add
+        >
+          {% if stock_level == 'out_of_stock' %}
+            {{ section.settings.button_text_sold_out | default: 'Rupture de stock' }}
+          {% else %}
+            {{ section.settings.button_text | default: 'Ajouter au panier' }}
+          {% endif %}
+        </button>
+      {%- endform -%}
+
+      {%- comment -%} Badges réassurance {%- endcomment -%}
+      {%- if section.settings.show_badges -%}
+        <div class="milaura-product-cta-final__badges">
+          {%- if section.settings.badge_1 != blank -%}
+            <div class="milaura-product-cta-final__badge">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {{ section.settings.badge_1 }}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.badge_2 != blank -%}
+            <div class="milaura-product-cta-final__badge">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {{ section.settings.badge_2 }}
+            </div>
+          {%- endif -%}
+          {%- if section.settings.badge_3 != blank -%}
+            <div class="milaura-product-cta-final__badge">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.5 4.5L6 12L2.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {{ section.settings.badge_3 }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .milaura-product-cta-final {
+    padding: var(--milaura-spacing-xl, 48px) 0;
+    background: linear-gradient(
+      135deg,
+      #F2E8D5 0%,
+      var(--milaura-beige, #FDFBF7) 50%,
+      #E6D8C0 100%
+    );
+    position: relative;
+    overflow: hidden;
+  }
+
+  .milaura-product-cta-final::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(192, 160, 98, 0.15) 0%,
+      transparent 70%
+    );
+    animation: milauraCTAGlow 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes milauraCTAGlow {
+    0%, 100% {
+      transform: translate(0, 0);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translate(20%, 20%);
+      opacity: 0.8;
+    }
+  }
+
+  .milaura-product-cta-final__container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md, 24px);
+    position: relative;
+    z-index: 1;
+  }
+
+  .milaura-product-cta-final__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-lg, 36px);
+    align-items: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: var(--milaura-border-radius, 20px);
+    padding: var(--milaura-spacing-xl, 48px) var(--milaura-spacing-lg, 36px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  }
+
+  .milaura-product-cta-final__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    margin: 0;
+  }
+
+  .milaura-product-cta-final__product {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-cta-final__image {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #F2E8D5;
+  }
+
+  .milaura-product-cta-final__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .milaura-product-cta-final__details {
+    flex: 1;
+    text-align: left;
+  }
+
+  .milaura-product-cta-final__product-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 var(--milaura-spacing-xs, 6px) 0;
+  }
+
+  .milaura-product-cta-final__price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-xs, 6px);
+  }
+
+  .milaura-product-cta-final__price {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+  }
+
+  .milaura-product-cta-final__price--sale {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-product-cta-final__price--compare {
+    font-size: 16px;
+    font-weight: 400;
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .milaura-product-cta-final__form {
+    width: 100%;
+  }
+
+  .milaura-product-cta-final__cta {
+    width: 100%;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #FFFFFF;
+    border: none;
+    border-radius: 16px;
+    padding: 18px 36px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(192, 160, 98, 0.3);
+  }
+
+  .milaura-product-cta-final__cta:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(192, 160, 98, 0.4);
+  }
+
+  .milaura-product-cta-final__cta:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .milaura-product-cta-final__badges {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-xs, 6px);
+    font-size: 14px;
+    color: var(--milaura-text, #000000);
+    opacity: 0.85;
+  }
+
+  .milaura-product-cta-final__badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .milaura-product-cta-final__badge svg {
+    flex-shrink: 0;
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 768px) {
+    .milaura-product-cta-final__title {
+      font-size: 36px;
+    }
+
+    .milaura-product-cta-final__image {
+      width: 100px;
+      height: 100px;
+    }
+
+    .milaura-product-cta-final__product-title {
+      font-size: 20px;
+    }
+
+    .milaura-product-cta-final__price {
+      font-size: 24px;
+    }
+
+    .milaura-product-cta-final__cta {
+      font-size: 20px;
+      padding: 20px 48px;
+    }
+
+    .milaura-product-cta-final__badges {
+      flex-direction: row;
+      justify-content: center;
+      gap: var(--milaura-spacing-lg, 36px);
+      font-size: 15px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-product-cta-final::before {
+      animation: none;
+    }
+
+    .milaura-product-cta-final__cta {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraProductCtaFinal-' + sectionId);
+  if (!section) return;
+
+  const form = section.querySelector('.milaura-product-cta-final__form');
+
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Trigger cart update event
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+
+        // Visual feedback
+        const submitBtn = form.querySelector('[data-cta-final-add]');
+        if (submitBtn) {
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = '✓ Ajouté au panier !';
+          submitBtn.style.background = '#4CAF50';
+
+          setTimeout(function() {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = '';
+          }, 3000);
+        }
+
+        // Scroll to top (optional)
+        if (window.scrollY > 500) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      })
+      .catch(error => {
+        console.error('Erreur ajout panier:', error);
+
+        const submitBtn = form.querySelector('[data-cta-final-add]');
+        if (submitBtn) {
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = 'Erreur, réessaye';
+          submitBtn.style.background = '#f44336';
+
+          setTimeout(function() {
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = '';
+          }, 3000);
+        }
+      });
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Product CTA Final",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Titre"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Afficher le titre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Prêt·e à commencer ton rituel ?"
+    },
+    {
+      "type": "header",
+      "content": "Bouton d'achat"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Ajouter au panier"
+    },
+    {
+      "type": "text",
+      "id": "button_text_sold_out",
+      "label": "Texte si rupture",
+      "default": "Rupture de stock"
+    },
+    {
+      "type": "header",
+      "content": "Badges de réassurance"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Afficher les badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_1",
+      "label": "Badge 1",
+      "default": "Livraison offerte dès 50€"
+    },
+    {
+      "type": "text",
+      "id": "badge_2",
+      "label": "Badge 2",
+      "default": "Paiement sécurisé"
+    },
+    {
+      "type": "text",
+      "id": "badge_3",
+      "label": "Badge 3",
+      "default": "Retour gratuit 30 jours"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product CTA Final"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,637 @@
+{% comment %}
+  MILAURA FOOTER
+  Footer custom avec style Vision OS glassmorphism
+{% endcomment %}
+
+<footer id="MilauraFooter-{{ section.id }}" class="milaura-footer">
+  <div class="milaura-footer-container">
+
+    {%- comment -%} Haut du footer - Logo + Newsletter {%- endcomment -%}
+    <div class="milaura-footer-top">
+      <div class="milaura-footer-brand">
+        {% if section.settings.logo != blank %}
+          <img src="{{ section.settings.logo | image_url: width: 200 }}" alt="{{ shop.name }}" class="milaura-footer-logo">
+        {% else %}
+          <h2 class="milaura-footer-logo-text">{{ shop.name }}</h2>
+        {% endif %}
+
+        {% if section.settings.tagline != blank %}
+          <p class="milaura-footer-tagline">{{ section.settings.tagline }}</p>
+        {% endif %}
+      </div>
+
+      {%- if section.settings.show_newsletter -%}
+        <div class="milaura-footer-newsletter">
+          <h3 class="milaura-footer-newsletter-title">{{ section.settings.newsletter_title }}</h3>
+          <p class="milaura-footer-newsletter-text">{{ section.settings.newsletter_text }}</p>
+
+          <form method="post" action="/contact#contact_form" accept-charset="UTF-8" class="milaura-newsletter-form">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[tags]" value="newsletter">
+
+            <div class="milaura-newsletter-input-wrapper">
+              <input
+                type="email"
+                name="contact[email]"
+                placeholder="{{ section.settings.newsletter_placeholder }}"
+                class="milaura-newsletter-input"
+                required
+              >
+              <button type="submit" class="milaura-newsletter-btn">
+                {{ section.settings.newsletter_button }}
+              </button>
+            </div>
+          </form>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Milieu du footer - Liens {%- endcomment -%}
+    <div class="milaura-footer-middle">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'link_list' -%}
+            <div class="milaura-footer-column" {{ block.shopify_attributes }}>
+              <h3 class="milaura-footer-column-title">{{ block.settings.heading }}</h3>
+
+              {%- if block.settings.menu != blank -%}
+                <ul class="milaura-footer-links">
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    <li>
+                      <a href="{{ link.url }}" class="milaura-footer-link">
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+
+          {%- when 'text' -%}
+            <div class="milaura-footer-column" {{ block.shopify_attributes }}>
+              <h3 class="milaura-footer-column-title">{{ block.settings.heading }}</h3>
+              <div class="milaura-footer-text">
+                {{ block.settings.text }}
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+
+      {%- comment -%} Réseaux sociaux {%- endcomment -%}
+      {%- if section.settings.show_social -%}
+        <div class="milaura-footer-column">
+          <h3 class="milaura-footer-column-title">{{ section.settings.social_title }}</h3>
+          <div class="milaura-footer-social">
+            {%- if settings.social_instagram_link != blank -%}
+              <a href="{{ settings.social_instagram_link }}" class="milaura-social-link" target="_blank" rel="noopener">
+                <span class="milaura-social-icon">📸</span>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_facebook_link != blank -%}
+              <a href="{{ settings.social_facebook_link }}" class="milaura-social-link" target="_blank" rel="noopener">
+                <span class="milaura-social-icon">👥</span>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_tiktok_link != blank -%}
+              <a href="{{ settings.social_tiktok_link }}" class="milaura-social-link" target="_blank" rel="noopener">
+                <span class="milaura-social-icon">🎵</span>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_pinterest_link != blank -%}
+              <a href="{{ settings.social_pinterest_link }}" class="milaura-social-link" target="_blank" rel="noopener">
+                <span class="milaura-social-icon">📌</span>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Bas du footer - Légal + Paiements {%- endcomment -%}
+    <div class="milaura-footer-bottom">
+      <div class="milaura-footer-legal">
+        <p class="milaura-footer-copyright">
+          © {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.copyright_text }}
+        </p>
+
+        {%- if section.settings.show_policy_links -%}
+          <ul class="milaura-footer-policies">
+            {%- if shop.privacy_policy -%}
+              <li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a></li>
+            {%- endif -%}
+            {%- if shop.terms_of_service -%}
+              <li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a></li>
+            {%- endif -%}
+            {%- if shop.refund_policy -%}
+              <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a></li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_payment_icons -%}
+        <div class="milaura-footer-payment">
+          <span class="milaura-footer-payment-text">Paiement sécurisé</span>
+          {%- unless shop.enabled_payment_types == empty -%}
+            <ul class="milaura-payment-icons">
+              {%- for type in shop.enabled_payment_types -%}
+                <li class="milaura-payment-icon">{{ type | payment_type_svg_tag }}</li>
+              {%- endfor -%}
+            </ul>
+          {%- endunless -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  /* --- FOOTER MILAURA VISION OS --- */
+  .milaura-footer {
+    background: linear-gradient(
+      135deg,
+      rgba(253, 251, 247, 0.95) 0%,
+      rgba(242, 232, 213, 0.95) 100%
+    );
+    border-top: 1px solid rgba(192, 160, 98, 0.2);
+    padding: 4rem 0 2rem 0;
+    margin-top: 4rem;
+  }
+
+  .milaura-footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* --- TOP : Logo + Newsletter --- */
+  .milaura-footer-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
+    margin-bottom: 3rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-top {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .milaura-footer-brand {
+    text-align: left;
+  }
+
+  .milaura-footer-logo {
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  .milaura-footer-logo-text {
+    font-family: var(--font-heading-family, 'Playfair Display'), serif;
+    font-size: 2rem;
+    color: var(--milaura-gold, #C0A062);
+    margin: 0 0 1rem 0;
+  }
+
+  .milaura-footer-tagline {
+    font-size: 0.9375rem;
+    color: rgba(0, 0, 0, 0.7);
+    margin: 0;
+    line-height: 1.6;
+    max-width: 400px;
+  }
+
+  /* Newsletter */
+  .milaura-footer-newsletter {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  .milaura-footer-newsletter-title {
+    font-family: var(--font-heading-family, 'Playfair Display'), serif;
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--milaura-text, #000000);
+  }
+
+  .milaura-footer-newsletter-text {
+    font-size: 0.9375rem;
+    margin: 0 0 1.5rem 0;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .milaura-newsletter-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .milaura-newsletter-input {
+    flex: 1;
+    padding: 0.875rem 1.25rem;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.9375rem;
+    transition: all 0.3s ease;
+  }
+
+  .milaura-newsletter-input:focus {
+    outline: none;
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 0 0 3px rgba(192, 160, 98, 0.1);
+  }
+
+  .milaura-newsletter-btn {
+    padding: 0.875rem 1.75rem;
+    background: var(--milaura-gold, #C0A062);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .milaura-newsletter-btn:hover {
+    background: var(--milaura-gold-dark, #8F723A);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(192, 160, 98, 0.3);
+  }
+
+  /* --- MIDDLE : Colonnes de liens --- */
+  .milaura-footer-middle {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
+    margin-bottom: 2rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-middle {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  .milaura-footer-column-title {
+    font-family: var(--font-heading-family, 'Playfair Display'), serif;
+    font-size: 1.125rem;
+    margin: 0 0 1rem 0;
+    color: var(--milaura-text, #000000);
+  }
+
+  .milaura-footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .milaura-footer-links li {
+    margin-bottom: 0.75rem;
+  }
+
+  .milaura-footer-link {
+    color: rgba(0, 0, 0, 0.7);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: color 0.3s ease;
+  }
+
+  .milaura-footer-link:hover {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-footer-text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  /* Réseaux sociaux */
+  .milaura-footer-social {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .milaura-social-link {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .milaura-social-link:hover {
+    background: var(--milaura-gold, #C0A062);
+    border-color: var(--milaura-gold, #C0A062);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(192, 160, 98, 0.3);
+  }
+
+  .milaura-social-icon {
+    font-size: 1.25rem;
+  }
+
+  /* --- BOTTOM : Légal + Paiements --- */
+  .milaura-footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+
+  .milaura-footer-legal {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-legal {
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
+
+  .milaura-footer-copyright {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+  }
+
+  .milaura-footer-policies {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-policies {
+      justify-content: flex-start;
+    }
+  }
+
+  .milaura-footer-policies a {
+    color: rgba(0, 0, 0, 0.6);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.3s ease;
+  }
+
+  .milaura-footer-policies a:hover {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  /* Icônes de paiement */
+  .milaura-footer-payment {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-payment {
+      justify-content: flex-end;
+    }
+  }
+
+  .milaura-footer-payment-text {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .milaura-payment-icons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .milaura-payment-icon {
+    width: 40px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .milaura-payment-icon svg {
+    width: 100%;
+    height: auto;
+    opacity: 0.7;
+  }
+
+  /* Mobile adjustments */
+  @media screen and (max-width: 767px) {
+    .milaura-footer {
+      padding: 3rem 0 1.5rem 0;
+    }
+
+    .milaura-newsletter-input-wrapper {
+      flex-direction: column;
+    }
+
+    .milaura-newsletter-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Milaura Footer",
+  "tag": "footer",
+  "class": "milaura-footer-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo & Branding"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Bougies et pierres naturelles pour créer des rituels émotionnels authentiques."
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "Tous droits réservés."
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Afficher newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Titre newsletter",
+      "default": "Rejoins notre communauté"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Texte newsletter",
+      "default": "Reçois en avant-première nos nouvelles créations et rituels exclusifs."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Placeholder email",
+      "default": "ton@email.com"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Bouton newsletter",
+      "default": "S'inscrire"
+    },
+    {
+      "type": "header",
+      "content": "Réseaux sociaux"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Afficher réseaux sociaux",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "social_title",
+      "label": "Titre réseaux",
+      "default": "Suis-nous"
+    },
+    {
+      "type": "header",
+      "content": "Liens légaux & Paiements"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policy_links",
+      "label": "Afficher liens légaux",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Afficher icônes de paiement",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Liens rapides"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Texte",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "À propos"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Contenu",
+          "default": "<p>Milaura crée des bougies émotionnelles et des bijoux en pierres naturelles pour accompagner tes rituels quotidiens.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Footer",
+      "blocks": [
+        {
+          "type": "link_list",
+          "settings": {
+            "heading": "Collections",
+            "menu": "footer"
+          }
+        },
+        {
+          "type": "link_list",
+          "settings": {
+            "heading": "Aide",
+            "menu": "footer"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "heading": "À propos",
+            "text": "<p>Milaura crée des bougies émotionnelles et des bijoux en pierres naturelles pour accompagner tes rituels quotidiens.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

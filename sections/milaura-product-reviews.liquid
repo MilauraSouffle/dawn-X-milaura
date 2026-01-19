@@ -1,0 +1,588 @@
+{% comment %}
+  MILAURA PRODUCT REVIEWS
+  Note stars + chiffre + nombre avis
+  3-5 témoignages carrousel
+  Format: citation + prénom + profil quiz (si lié)
+  Lien vers page/modal avis complets
+{% endcomment %}
+
+<section
+  id="MilauraProductReviews-{{ section.id }}"
+  class="milaura-product-reviews"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-reviews__container">
+
+    {%- if section.settings.show_title -%}
+      <h2 class="milaura-product-reviews__title">
+        {{ section.settings.title }}
+      </h2>
+    {%- endif -%}
+
+    {%- comment -%} Note globale {%- endcomment -%}
+    {%- if section.settings.show_rating -%}
+      <div class="milaura-product-reviews__rating-wrapper">
+        <div class="milaura-product-reviews__stars">
+          {%- assign rating_decimal = section.settings.average_rating | times: 1.0 -%}
+          {%- assign full_stars = rating_decimal | floor -%}
+          {%- assign has_half = rating_decimal | minus: full_stars | times: 100 | at_least: 50 -%}
+
+          {%- for i in (1..5) -%}
+            {%- if i <= full_stars -%}
+              <span class="milaura-product-reviews__star milaura-product-reviews__star--full">★</span>
+            {%- elsif i == full_stars | plus: 1 and has_half >= 50 -%}
+              <span class="milaura-product-reviews__star milaura-product-reviews__star--half">★</span>
+            {%- else -%}
+              <span class="milaura-product-reviews__star milaura-product-reviews__star--empty">★</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <div class="milaura-product-reviews__rating-text">
+          <span class="milaura-product-reviews__rating-value">
+            {{ section.settings.average_rating }}
+          </span>
+          {%- if section.settings.show_review_count -%}
+            <span class="milaura-product-reviews__rating-count">
+              ({{ section.settings.review_count }} avis)
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Carrousel témoignages {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="milaura-product-reviews__carousel">
+        <div class="milaura-product-reviews__track" data-reviews-track>
+
+          {%- for block in section.blocks limit: 5 -%}
+            {%- if block.type == 'review' -%}
+              <div
+                class="milaura-product-reviews__card"
+                data-review-index="{{ forloop.index0 }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.rating > 0 -%}
+                  <div class="milaura-product-reviews__card-stars">
+                    {%- for i in (1..5) -%}
+                      {%- if i <= block.settings.rating -%}
+                        <span class="milaura-product-reviews__star milaura-product-reviews__star--full">★</span>
+                      {%- else -%}
+                        <span class="milaura-product-reviews__star milaura-product-reviews__star--empty">★</span>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.text != blank -%}
+                  <blockquote class="milaura-product-reviews__card-text">
+                    "{{ block.settings.text }}"
+                  </blockquote>
+                {%- endif -%}
+
+                <div class="milaura-product-reviews__card-author">
+                  {%- if block.settings.name != blank -%}
+                    <p class="milaura-product-reviews__card-name">
+                      {{ block.settings.name }}
+                    </p>
+                  {%- endif -%}
+
+                  {%- if block.settings.quiz_profile != blank -%}
+                    <p class="milaura-product-reviews__card-profile">
+                      Profil : {{ block.settings.quiz_profile }}
+                    </p>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+
+        </div>
+
+        {%- if section.blocks.size > 1 -%}
+          <div class="milaura-product-reviews__dots">
+            {%- for block in section.blocks limit: 5 -%}
+              <button
+                type="button"
+                class="milaura-product-reviews__dot {% if forloop.first %}is-active{% endif %}"
+                data-dot-index="{{ forloop.index0 }}"
+                aria-label="Avis {{ forloop.index }}"
+              ></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      <p class="milaura-product-reviews__empty">
+        {{ section.settings.empty_message | default: 'Pas encore d\'avis. Sois le premier à partager ton expérience !' }}
+      </p>
+    {%- endif -%}
+
+    {%- if section.settings.show_all_link and section.settings.all_reviews_url != blank -%}
+      <div class="milaura-product-reviews__link-wrapper">
+        <a
+          href="{{ section.settings.all_reviews_url }}"
+          class="milaura-product-reviews__link"
+        >
+          {{ section.settings.all_reviews_text | default: 'Voir tous les avis' }}
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  .milaura-product-reviews {
+    padding: var(--milaura-spacing-xl, 48px) 0;
+    background: linear-gradient(
+      to bottom,
+      #F2E8D5 0%,
+      var(--milaura-beige, #FDFBF7) 100%
+    );
+  }
+
+  .milaura-product-reviews__container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-reviews__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 var(--milaura-spacing-lg, 36px) 0;
+  }
+
+  /* Rating global */
+  .milaura-product-reviews__rating-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--milaura-spacing-sm, 12px);
+    margin-bottom: var(--milaura-spacing-lg, 36px);
+  }
+
+  .milaura-product-reviews__stars {
+    display: flex;
+    gap: 4px;
+  }
+
+  .milaura-product-reviews__star {
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .milaura-product-reviews__star--full {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-product-reviews__star--half {
+    background: linear-gradient(90deg, var(--milaura-gold, #C0A062) 50%, rgba(192, 160, 98, 0.2) 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .milaura-product-reviews__star--empty {
+    color: rgba(192, 160, 98, 0.2);
+  }
+
+  .milaura-product-reviews__rating-text {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-xs, 6px);
+    font-size: 16px;
+  }
+
+  .milaura-product-reviews__rating-value {
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+  }
+
+  .milaura-product-reviews__rating-count {
+    color: var(--milaura-text, #000000);
+    opacity: 0.7;
+  }
+
+  /* Carrousel */
+  .milaura-product-reviews__carousel {
+    position: relative;
+    margin-bottom: var(--milaura-spacing-lg, 36px);
+  }
+
+  .milaura-product-reviews__track {
+    display: flex;
+    gap: var(--milaura-spacing-md, 24px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--milaura-spacing-sm, 12px);
+  }
+
+  .milaura-product-reviews__track::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .milaura-product-reviews__track::-webkit-scrollbar-track {
+    background: rgba(192, 160, 98, 0.1);
+    border-radius: 2px;
+  }
+
+  .milaura-product-reviews__track::-webkit-scrollbar-thumb {
+    background: var(--milaura-gold, #C0A062);
+    border-radius: 2px;
+  }
+
+  .milaura-product-reviews__card {
+    flex: 0 0 90%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-md, 24px);
+    padding: var(--milaura-spacing-lg, 36px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: var(--milaura-border-radius, 20px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    scroll-snap-align: start;
+  }
+
+  .milaura-product-reviews__card-stars {
+    display: flex;
+    gap: 4px;
+  }
+
+  .milaura-product-reviews__card-text {
+    font-size: 16px;
+    line-height: 1.7;
+    font-style: italic;
+    color: var(--milaura-text, #000000);
+    margin: 0;
+  }
+
+  .milaura-product-reviews__card-author {
+    margin-top: auto;
+  }
+
+  .milaura-product-reviews__card-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 4px 0;
+  }
+
+  .milaura-product-reviews__card-profile {
+    font-size: 13px;
+    color: var(--milaura-gold, #C0A062);
+    margin: 0;
+  }
+
+  /* Dots */
+  .milaura-product-reviews__dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--milaura-spacing-xs, 6px);
+    margin-top: var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-reviews__dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(192, 160, 98, 0.3);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .milaura-product-reviews__dot.is-active {
+    background: var(--milaura-gold, #C0A062);
+    transform: scale(1.3);
+  }
+
+  /* Empty state */
+  .milaura-product-reviews__empty {
+    text-align: center;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--milaura-text, #000000);
+    opacity: 0.7;
+    padding: var(--milaura-spacing-xl, 48px) 0;
+  }
+
+  /* Link */
+  .milaura-product-reviews__link-wrapper {
+    text-align: center;
+  }
+
+  .milaura-product-reviews__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--milaura-spacing-xs, 6px);
+    padding: 12px 24px;
+    background: rgba(192, 160, 98, 0.1);
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 12px;
+    color: var(--milaura-gold-dark, #8F723A);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .milaura-product-reviews__link:hover {
+    background: rgba(192, 160, 98, 0.2);
+    border-color: var(--milaura-gold, #C0A062);
+    transform: translateY(-2px);
+  }
+
+  .milaura-product-reviews__link svg {
+    transition: transform 0.3s ease;
+  }
+
+  .milaura-product-reviews__link:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 768px) {
+    .milaura-product-reviews__title {
+      font-size: 36px;
+    }
+
+    .milaura-product-reviews__card {
+      flex: 0 0 calc(50% - 12px);
+    }
+
+    .milaura-product-reviews__card-text {
+      font-size: 18px;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .milaura-product-reviews__card {
+      flex: 0 0 calc(33.333% - 16px);
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-product-reviews__track {
+      scroll-behavior: auto;
+    }
+
+    .milaura-product-reviews__dot,
+    .milaura-product-reviews__link {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraProductReviews-' + sectionId);
+  if (!section) return;
+
+  const track = section.querySelector('[data-reviews-track]');
+  const cards = section.querySelectorAll('.milaura-product-reviews__card');
+  const dots = section.querySelectorAll('.milaura-product-reviews__dot');
+
+  if (!track || cards.length === 0) return;
+
+  // Dot click
+  dots.forEach(function(dot, index) {
+    dot.addEventListener('click', function() {
+      scrollToCard(index);
+    });
+  });
+
+  function scrollToCard(index) {
+    const card = cards[index];
+    if (!card) return;
+
+    // Scroll to card
+    const scrollLeft = card.offsetLeft - track.offsetLeft;
+    track.scrollTo({
+      left: scrollLeft,
+      behavior: 'smooth'
+    });
+
+    // Update active dot
+    updateActiveDot(index);
+  }
+
+  function updateActiveDot(index) {
+    dots.forEach(function(dot, i) {
+      if (i === index) {
+        dot.classList.add('is-active');
+      } else {
+        dot.classList.remove('is-active');
+      }
+    });
+  }
+
+  // Update active dot on scroll - using actual card positions for accuracy
+  let scrollTimeout;
+  track.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      const trackRect = track.getBoundingClientRect();
+      const trackCenter = trackRect.left + trackRect.width / 2;
+
+      // Find which card is closest to center of track
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      cards.forEach(function(card, index) {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(cardCenter - trackCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      updateActiveDot(closestIndex);
+    }, 100);
+  }, { passive: true });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Product Reviews",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Titre"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Afficher le titre",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Ce qu'ils en disent"
+    },
+    {
+      "type": "header",
+      "content": "Note globale"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Afficher la note globale",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "average_rating",
+      "label": "Note moyenne",
+      "default": "4.8",
+      "info": "Ex: 4.8"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_review_count",
+      "label": "Afficher le nombre d'avis",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Nombre d'avis",
+      "default": "127"
+    },
+    {
+      "type": "header",
+      "content": "Lien vers tous les avis"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_link",
+      "label": "Afficher le lien",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "all_reviews_url",
+      "label": "URL",
+      "info": "Lien vers page d'avis ou modal"
+    },
+    {
+      "type": "text",
+      "id": "all_reviews_text",
+      "label": "Texte du lien",
+      "default": "Voir tous les avis"
+    },
+    {
+      "type": "header",
+      "content": "État vide"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Message si aucun avis",
+      "default": "Pas encore d'avis. Sois le premier à partager ton expérience !"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Avis",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Note",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Témoignage",
+          "default": "Ce bracelet m'accompagne tous les jours. Il me rappelle de prendre du temps pour moi."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Prénom",
+          "default": "Sarah"
+        },
+        {
+          "type": "text",
+          "id": "quiz_profile",
+          "label": "Profil quiz (optionnel)",
+          "info": "Ex: Apaisement"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product Reviews"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,624 @@
+{% comment %}
+  MILAURA PRODUCT STONE ★ PILIER
+  Section pierre avec HOTSPOTS INTERACTIFS
+  Photo macro 1:1 + 2-3 hotspots cliquables/hover
+  3 bénéfices + texte style Aesop
+  Adaptation par type produit (bijou/bougie/sauge/coffret)
+{% endcomment %}
+
+{%- liquid
+  assign product_type = product.type | downcase
+  case product_type
+    when 'bijou', 'bracelet', 'collier', 'bague'
+      assign template_type = 'bijou'
+    when 'bougie'
+      assign template_type = 'bougie'
+    when 'sauge', 'encens'
+      assign template_type = 'sauge'
+    when 'coffret', 'bundle'
+      assign template_type = 'coffret'
+    else
+      assign template_type = 'bijou'
+  endcase
+
+  assign stone_name = product.metafields.milaura.stone_name | default: section.settings.default_stone_name
+  assign stone_image = product.metafields.milaura.stone_image | default: product.featured_image
+  assign stone_description = product.metafields.milaura.stone_description | default: section.settings.default_description
+  assign stone_benefits = product.metafields.milaura.stone_benefits.value | default: section.settings.default_benefits | split: ','
+-%}
+
+<section
+  id="MilauraProductStone-{{ section.id }}"
+  class="milaura-product-stone"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-stone__container">
+
+    <div class="milaura-product-stone__grid">
+
+      {%- comment -%} Image avec hotspots {%- endcomment -%}
+      <div class="milaura-product-stone__image-wrapper">
+        {%- if stone_image -%}
+          {{
+            stone_image
+            | image_url: width: 1200
+            | image_tag:
+              loading: 'lazy',
+              class: 'milaura-product-stone__image',
+              widths: '375, 550, 750, 1100',
+              sizes: '(min-width: 1024px) 50vw, 100vw',
+              alt: stone_name | escape
+          }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'milaura-product-stone__placeholder' }}
+        {%- endif -%}
+
+        {%- comment -%} Hotspots interactifs {%- endcomment -%}
+        <div class="milaura-product-stone__hotspots">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'hotspot' -%}
+              <button
+                type="button"
+                class="milaura-product-stone__hotspot"
+                style="left: {{ block.settings.x_position }}%; top: {{ block.settings.y_position }}%;"
+                data-hotspot-index="{{ forloop.index }}"
+                aria-label="{{ block.settings.tooltip_text }}"
+                {{ block.shopify_attributes }}
+              >
+                <span class="milaura-product-stone__hotspot-dot"></span>
+                <span class="milaura-product-stone__hotspot-pulse"></span>
+              </button>
+
+              <div
+                class="milaura-product-stone__tooltip"
+                data-tooltip-index="{{ forloop.index }}"
+                role="tooltip"
+              >
+                {{ block.settings.tooltip_text | escape }}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment -%} Contenu texte {%- endcomment -%}
+      <div class="milaura-product-stone__content">
+
+        {%- if stone_name != blank -%}
+          <h2 class="milaura-product-stone__title">
+            {{ stone_name }}
+          </h2>
+        {%- endif -%}
+
+        {%- if stone_description != blank -%}
+          <div class="milaura-product-stone__description">
+            {{ stone_description }}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Bénéfices {%- endcomment -%}
+        {%- if stone_benefits.size > 0 -%}
+          <div class="milaura-product-stone__benefits">
+            {%- for benefit in stone_benefits limit: 3 -%}
+              {%- assign benefit_text = benefit | strip -%}
+              {%- if benefit_text != blank -%}
+                <div class="milaura-product-stone__benefit">
+                  <svg class="milaura-product-stone__benefit-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2L12.5 7.5L18 8.5L14 13L15 18.5L10 15.5L5 18.5L6 13L2 8.5L7.5 7.5L10 2Z" fill="currentColor"/>
+                  </svg>
+                  <span class="milaura-product-stone__benefit-text">
+                    {{ benefit_text }}
+                  </span>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .milaura-product-stone {
+    padding: var(--milaura-spacing-xl, 48px) 0;
+    background: var(--milaura-beige, #FDFBF7);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .milaura-product-stone.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .milaura-product-stone__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-stone__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--milaura-spacing-lg, 36px);
+    align-items: center;
+  }
+
+  /* Image avec hotspots */
+  .milaura-product-stone__image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--milaura-border-radius, 20px);
+    overflow: hidden;
+    box-shadow: var(--milaura-shadow-md, 0 15px 40px rgba(192, 160, 98, 0.25));
+  }
+
+  .milaura-product-stone__image,
+  .milaura-product-stone__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Hotspots */
+  .milaura-product-stone__hotspots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .milaura-product-stone__hotspot {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    pointer-events: all;
+    z-index: 10;
+  }
+
+  .milaura-product-stone__hotspot-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: var(--milaura-gold, #C0A062);
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .milaura-product-stone__hotspot:hover .milaura-product-stone__hotspot-dot {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  .milaura-product-stone__hotspot-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: var(--milaura-gold, #C0A062);
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: milauraHotspotPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes milauraHotspotPulse {
+    0%, 100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(2);
+      opacity: 0;
+    }
+  }
+
+  /* Tooltips */
+  .milaura-product-stone__tooltip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -120%);
+    min-width: 200px;
+    max-width: 280px;
+    padding: var(--milaura-spacing-sm, 12px) var(--milaura-spacing-md, 24px);
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    color: #FFFFFF;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 20;
+    text-align: center;
+  }
+
+  .milaura-product-stone__tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgba(0, 0, 0, 0.9);
+  }
+
+  .milaura-product-stone__tooltip.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -130%);
+  }
+
+  /* Contenu texte */
+  .milaura-product-stone__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-stone__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    margin: 0;
+  }
+
+  .milaura-product-stone__description {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--milaura-text, #000000);
+    opacity: 0.9;
+  }
+
+  .milaura-product-stone__description p {
+    margin: 0 0 1em 0;
+  }
+
+  .milaura-product-stone__description p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Bénéfices */
+  .milaura-product-stone__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm, 12px);
+  }
+
+  .milaura-product-stone__benefit {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-sm, 12px);
+    padding: var(--milaura-spacing-sm, 12px);
+    background: rgba(192, 160, 98, 0.08);
+    border-radius: 12px;
+    transition: background 0.3s ease;
+  }
+
+  .milaura-product-stone__benefit:hover {
+    background: rgba(192, 160, 98, 0.15);
+  }
+
+  .milaura-product-stone__benefit-icon {
+    flex-shrink: 0;
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-product-stone__benefit-text {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--milaura-text, #000000);
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1024px) {
+    .milaura-product-stone__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--milaura-spacing-xl, 48px);
+    }
+
+    .milaura-product-stone__title {
+      font-size: 32px;
+    }
+
+    .milaura-product-stone__description {
+      font-size: 18px;
+    }
+
+    .milaura-product-stone__benefits {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--milaura-spacing-md, 24px);
+    }
+
+    /* Image sticky sur desktop */
+    .milaura-product-stone__image-wrapper {
+      position: sticky;
+      top: calc(var(--header-height-offset, 96px) + 24px);
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-product-stone {
+      transition: none;
+    }
+
+    .milaura-product-stone__hotspot-pulse {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraProductStone-' + sectionId);
+  if (!section) return;
+
+  const hotspots = section.querySelectorAll('.milaura-product-stone__hotspot');
+  const tooltips = section.querySelectorAll('.milaura-product-stone__tooltip');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Intersection Observer pour fade-in au scroll
+  if (!reducedMotion) {
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15
+    });
+
+    observer.observe(section);
+  } else {
+    section.classList.add('is-visible');
+  }
+
+  // Hotspots interactions - with dynamic mobile detection
+  const mobileMediaQuery = window.matchMedia('(max-width: 1023px)');
+  let activeTooltip = null;
+  let autoHideTimeout = null;
+
+  // Check if currently mobile (called on each interaction for accurate detection)
+  function isMobileNow() {
+    return mobileMediaQuery.matches;
+  }
+
+  // Position tooltip dynamically to stay in viewport - called when showing
+  function positionTooltip(hotspot, tooltip) {
+    // Reset any previous positioning
+    tooltip.style.left = '';
+    tooltip.style.right = '';
+    tooltip.style.transform = '';
+
+    // Wait for next frame so tooltip is rendered
+    requestAnimationFrame(function() {
+      const imageWrapper = section.querySelector('.milaura-product-stone__image-wrapper');
+      if (!imageWrapper) return;
+
+      const wrapperRect = imageWrapper.getBoundingClientRect();
+      const hotspotX = parseFloat(hotspot.style.left);
+      const tooltipWidth = 240; // approximate max-width
+
+      // Calculate if tooltip would overflow
+      const hotspotCenterX = wrapperRect.left + (wrapperRect.width * hotspotX / 100);
+      const spaceLeft = hotspotCenterX;
+      const spaceRight = window.innerWidth - hotspotCenterX;
+
+      // Adjust horizontal position if needed
+      if (spaceLeft < tooltipWidth / 2 + 10) {
+        // Near left edge - shift tooltip right
+        const offset = (tooltipWidth / 2) - spaceLeft + 20;
+        tooltip.style.transform = 'translate(calc(-50% + ' + offset + 'px), -130%)';
+      } else if (spaceRight < tooltipWidth / 2 + 10) {
+        // Near right edge - shift tooltip left
+        const offset = (tooltipWidth / 2) - spaceRight + 20;
+        tooltip.style.transform = 'translate(calc(-50% - ' + offset + 'px), -130%)';
+      }
+    });
+  }
+
+  // Show tooltip
+  function showTooltip(hotspot, tooltip) {
+    // Close any active tooltip first
+    if (activeTooltip && activeTooltip !== tooltip) {
+      activeTooltip.classList.remove('is-active');
+    }
+
+    // Clear any pending auto-hide
+    if (autoHideTimeout) {
+      clearTimeout(autoHideTimeout);
+      autoHideTimeout = null;
+    }
+
+    // Position and show
+    positionTooltip(hotspot, tooltip);
+    tooltip.classList.add('is-active');
+    activeTooltip = tooltip;
+
+    // Auto-hide on mobile after 3s
+    if (isMobileNow()) {
+      autoHideTimeout = setTimeout(function() {
+        tooltip.classList.remove('is-active');
+        if (activeTooltip === tooltip) activeTooltip = null;
+      }, 3000);
+    }
+  }
+
+  // Hide tooltip
+  function hideTooltip(tooltip) {
+    tooltip.classList.remove('is-active');
+    if (activeTooltip === tooltip) activeTooltip = null;
+    if (autoHideTimeout) {
+      clearTimeout(autoHideTimeout);
+      autoHideTimeout = null;
+    }
+  }
+
+  // Attach event handlers to each hotspot
+  hotspots.forEach(function(hotspot, index) {
+    const tooltip = tooltips[index];
+    if (!tooltip) return;
+
+    // Touch/click handler (works on both mobile and desktop)
+    hotspot.addEventListener('click', function(e) {
+      e.stopPropagation();
+
+      const isActive = tooltip.classList.contains('is-active');
+      if (isActive) {
+        hideTooltip(tooltip);
+      } else {
+        showTooltip(hotspot, tooltip);
+      }
+    });
+
+    // Desktop hover handlers
+    hotspot.addEventListener('mouseenter', function() {
+      if (!isMobileNow()) {
+        showTooltip(hotspot, tooltip);
+      }
+    });
+
+    hotspot.addEventListener('mouseleave', function() {
+      if (!isMobileNow()) {
+        hideTooltip(tooltip);
+      }
+    });
+  });
+
+  // Close tooltips on outside click
+  document.addEventListener('click', function(e) {
+    if (!section.contains(e.target) && activeTooltip) {
+      hideTooltip(activeTooltip);
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Product Stone",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenu par défaut"
+    },
+    {
+      "type": "text",
+      "id": "default_stone_name",
+      "label": "Nom de la pierre par défaut",
+      "default": "Pierre Naturelle",
+      "info": "Utilisé si metafield milaura.stone_name est vide"
+    },
+    {
+      "type": "richtext",
+      "id": "default_description",
+      "label": "Description par défaut",
+      "default": "<p>Une pierre sélectionnée avec soin pour ses propriétés énergétiques et sa beauté naturelle.</p>",
+      "info": "Utilisé si metafield milaura.stone_description est vide"
+    },
+    {
+      "type": "text",
+      "id": "default_benefits",
+      "label": "Bénéfices par défaut (séparés par virgules)",
+      "default": "Énergie apaisante, Reconnexion à soi, Équilibre émotionnel",
+      "info": "Utilisé si metafield milaura.stone_benefits est vide"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Hotspot",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "range",
+          "id": "x_position",
+          "label": "Position horizontale (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "y_position",
+          "label": "Position verticale (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        },
+        {
+          "type": "textarea",
+          "id": "tooltip_text",
+          "label": "Texte du tooltip",
+          "default": "Pierre naturelle, sélectionnée à la main"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product Stone",
+      "blocks": [
+        {
+          "type": "hotspot",
+          "settings": {
+            "x_position": 50,
+            "y_position": 40,
+            "tooltip_text": "Pierre naturelle, sélectionnée à la main"
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "x_position": 30,
+            "y_position": 65,
+            "tooltip_text": "Énergie apaisante et reconnexion"
+          }
+        },
+        {
+          "type": "hotspot",
+          "settings": {
+            "x_position": 70,
+            "y_position": 30,
+            "tooltip_text": "Chaque teinte est unique"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

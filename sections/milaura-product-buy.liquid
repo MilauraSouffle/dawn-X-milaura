@@ -1,0 +1,806 @@
+{% comment %}
+  MILAURA PRODUCT BUY
+  Mobile: Fixed bottom dock (compact → expand on tap)
+  Desktop: Sticky sidebar droite
+  Prix + variantes + quantité + CTA + badges réassurance
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_image = current_variant.featured_image | default: product.featured_image
+
+  assign show_promo = false
+  if current_variant.compare_at_price > current_variant.price
+    assign show_promo = true
+  endif
+
+  assign stock_level = 'available'
+  if current_variant.available == false
+    assign stock_level = 'out_of_stock'
+  elsif current_variant.inventory_management != blank and current_variant.inventory_policy == 'deny'
+    if current_variant.inventory_quantity <= 0
+      assign stock_level = 'out_of_stock'
+    elsif current_variant.inventory_quantity <= 5
+      assign stock_level = 'low_stock'
+    endif
+  endif
+-%}
+
+<div
+  id="MilauraProductBuy-{{ section.id }}"
+  class="milaura-product-buy"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-buy__container">
+    <div class="milaura-product-buy__inner">
+
+      {%- comment -%} Prix toujours visible {%- endcomment -%}
+      <div class="milaura-product-buy__price-row">
+        <div class="milaura-product-buy__price-wrapper">
+          {%- if show_promo -%}
+            <span class="milaura-product-buy__price milaura-product-buy__price--sale">
+              {{ current_variant.price | money }}
+            </span>
+            <span class="milaura-product-buy__price milaura-product-buy__price--compare">
+              {{ current_variant.compare_at_price | money }}
+            </span>
+          {%- else -%}
+            <span class="milaura-product-buy__price">
+              {{ current_variant.price | money }}
+            </span>
+          {%- endif -%}
+
+          {%- comment -%} Mini-rating stars (Quick Win UX) {%- endcomment -%}
+          {%- if section.settings.show_mini_rating -%}
+            <a href="#MilauraProductReviews" class="milaura-product-buy__mini-rating">
+              <span class="milaura-product-buy__mini-stars">
+                {%- assign rating = section.settings.rating_value | times: 1.0 -%}
+                {%- for i in (1..5) -%}
+                  {%- if i <= rating -%}
+                    <span class="milaura-product-buy__star milaura-product-buy__star--full">★</span>
+                  {%- else -%}
+                    <span class="milaura-product-buy__star milaura-product-buy__star--empty">★</span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </span>
+              <span class="milaura-product-buy__rating-text">
+                {{ section.settings.rating_value }} ({{ section.settings.rating_count }} avis)
+              </span>
+            </a>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} CTA mobile compact {%- endcomment -%}
+        <button
+          type="button"
+          class="milaura-product-buy__cta-compact"
+          data-milaura-buy-expand
+        >
+          {% if stock_level == 'out_of_stock' %}
+            {{ section.settings.button_text_sold_out | default: 'Rupture' }}
+          {% else %}
+            {{ section.settings.button_text | default: 'Ajouter' }}
+          {% endif %}
+        </button>
+      </div>
+
+      {%- comment -%} Contenu expandable (mobile) / toujours visible (desktop) {%- endcomment -%}
+      <div class="milaura-product-buy__expandable" data-milaura-buy-content>
+
+        {%- comment -%} Form Shopify {%- endcomment -%}
+        {%- form 'product', product, id: 'MilauraProductForm-' | append: section.id, class: 'milaura-product-buy__form' -%}
+
+          {%- comment -%} Variantes {%- endcomment -%}
+          {%- unless product.has_only_default_variant -%}
+            <div class="milaura-product-buy__variants">
+              {%- for option in product.options_with_values -%}
+                <div class="milaura-product-buy__option">
+                  <label class="milaura-product-buy__option-label">
+                    {{ option.name }}
+                  </label>
+                  <div class="milaura-product-buy__option-values">
+                    {%- for value in option.values -%}
+                      <input
+                        type="radio"
+                        id="Option-{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                        name="options[{{ option.name | escape }}]"
+                        value="{{ value | escape }}"
+                        {% if option.selected_value == value %}checked{% endif %}
+                        class="milaura-product-buy__option-input"
+                      >
+                      <label
+                        for="Option-{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                        class="milaura-product-buy__option-button"
+                      >
+                        {{ value }}
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endunless -%}
+
+          {%- comment -%} Quantité {%- endcomment -%}
+          {%- if section.settings.show_quantity -%}
+            <div class="milaura-product-buy__quantity">
+              <label for="Quantity-{{ section.id }}" class="milaura-product-buy__quantity-label">
+                Quantité
+              </label>
+              <div class="milaura-product-buy__quantity-controls">
+                <button
+                  type="button"
+                  class="milaura-product-buy__quantity-btn"
+                  data-quantity-minus
+                  aria-label="Diminuer"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="Quantity-{{ section.id }}"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  class="milaura-product-buy__quantity-input"
+                  aria-label="Quantité"
+                >
+                <button
+                  type="button"
+                  class="milaura-product-buy__quantity-btn"
+                  data-quantity-plus
+                  aria-label="Augmenter"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} CTA principal {%- endcomment -%}
+          <button
+            type="submit"
+            name="add"
+            class="milaura-product-buy__cta"
+            {% if stock_level == 'out_of_stock' %}disabled{% endif %}
+            data-milaura-add-to-cart
+          >
+            {% if stock_level == 'out_of_stock' %}
+              {{ section.settings.button_text_sold_out | default: 'Rupture de stock' }}
+            {% elsif stock_level == 'low_stock' %}
+              {{ section.settings.button_text | default: 'Ajouter au panier' }} • Stock limité
+            {% else %}
+              {{ section.settings.button_text | default: 'Ajouter au panier' }}
+            {% endif %}
+          </button>
+
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {%- endform -%}
+
+        {%- comment -%} Badges réassurance {%- endcomment -%}
+        {%- if section.settings.show_trust_badges -%}
+          <div class="milaura-product-buy__trust-badges">
+            {%- if section.settings.badge_1 != blank -%}
+              <div class="milaura-product-buy__badge">
+                {{ section.settings.badge_1 }}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.badge_2 != blank -%}
+              <div class="milaura-product-buy__badge">
+                {{ section.settings.badge_2 }}
+              </div>
+            {%- endif -%}
+            {%- if section.settings.badge_3 != blank -%}
+              <div class="milaura-product-buy__badge">
+                {{ section.settings.badge_3 }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Mobile: Fixed bottom dock */
+  .milaura-product-buy {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(253, 251, 247, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(192, 160, 98, 0.2);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+  }
+
+  .milaura-product-buy__container {
+    max-width: 100%;
+    padding: var(--milaura-spacing-sm, 12px) var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-buy__inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .milaura-product-buy__price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--milaura-spacing-sm, 12px);
+  }
+
+  .milaura-product-buy__price {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+  }
+
+  .milaura-product-buy__price--sale {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-product-buy__price--compare {
+    font-size: 16px;
+    font-weight: 400;
+    text-decoration: line-through;
+    opacity: 0.6;
+    margin-left: var(--milaura-spacing-xs, 6px);
+  }
+
+  /* Mini-rating stars */
+  .milaura-product-buy__mini-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .milaura-product-buy__mini-rating:hover {
+    opacity: 0.8;
+  }
+
+  .milaura-product-buy__mini-stars {
+    display: flex;
+    gap: 1px;
+  }
+
+  .milaura-product-buy__star {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .milaura-product-buy__star--full {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-product-buy__star--empty {
+    color: rgba(192, 160, 98, 0.3);
+  }
+
+  .milaura-product-buy__rating-text {
+    font-size: 13px;
+    color: var(--milaura-text, #000000);
+    opacity: 0.7;
+  }
+
+  .milaura-product-buy__cta-compact {
+    background: var(--milaura-gold, #C0A062);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .milaura-product-buy__cta-compact:hover {
+    background: var(--milaura-gold-dark, #8F723A);
+    transform: translateY(-1px);
+  }
+
+  /* Expandable content (fermé par défaut mobile) */
+  .milaura-product-buy__expandable {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+  }
+
+  .milaura-product-buy__expandable.is-expanded {
+    max-height: 600px;
+    opacity: 1;
+    margin-top: var(--milaura-spacing-md, 24px);
+  }
+
+  .milaura-product-buy__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-md, 24px);
+  }
+
+  /* Variantes */
+  .milaura-product-buy__option {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-xs, 6px);
+  }
+
+  .milaura-product-buy__option-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+  }
+
+  .milaura-product-buy__option-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--milaura-spacing-xs, 6px);
+  }
+
+  .milaura-product-buy__option-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .milaura-product-buy__option-button {
+    padding: 8px 16px;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 8px;
+    background: #FFFFFF;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .milaura-product-buy__option-input:checked + .milaura-product-buy__option-button {
+    border-color: var(--milaura-gold, #C0A062);
+    background: var(--milaura-gold, #C0A062);
+    color: #FFFFFF;
+  }
+
+  /* Quantité */
+  .milaura-product-buy__quantity {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-sm, 12px);
+  }
+
+  .milaura-product-buy__quantity-label {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .milaura-product-buy__quantity-controls {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #FFFFFF;
+  }
+
+  .milaura-product-buy__quantity-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s ease;
+  }
+
+  .milaura-product-buy__quantity-btn:hover {
+    background: rgba(192, 160, 98, 0.1);
+  }
+
+  .milaura-product-buy__quantity-input {
+    width: 48px;
+    height: 36px;
+    border: none;
+    border-left: 1px solid rgba(192, 160, 98, 0.3);
+    border-right: 1px solid rgba(192, 160, 98, 0.3);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .milaura-product-buy__quantity-input::-webkit-inner-spin-button,
+  .milaura-product-buy__quantity-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* CTA principal */
+  .milaura-product-buy__cta {
+    width: 100%;
+    background: var(--milaura-gold, #C0A062);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .milaura-product-buy__cta:hover:not(:disabled) {
+    background: var(--milaura-gold-dark, #8F723A);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.3);
+  }
+
+  .milaura-product-buy__cta:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Trust badges */
+  .milaura-product-buy__trust-badges {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-xs, 6px);
+    font-size: 13px;
+    color: var(--milaura-text, #000000);
+    opacity: 0.8;
+  }
+
+  .milaura-product-buy__badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .milaura-product-buy__badge::before {
+    content: '✓';
+    color: var(--milaura-gold, #C0A062);
+    font-weight: 600;
+  }
+
+  /* Desktop: Sticky sidebar */
+  @media screen and (min-width: 1024px) {
+    .milaura-product-buy {
+      position: sticky;
+      top: calc(var(--header-height-offset, 96px) + 24px);
+      bottom: auto;
+      max-width: 400px;
+      border: 1px solid rgba(192, 160, 98, 0.2);
+      border-radius: var(--milaura-border-radius, 20px);
+      box-shadow: var(--milaura-shadow-md, 0 15px 40px rgba(192, 160, 98, 0.25));
+    }
+
+    .milaura-product-buy__container {
+      padding: var(--milaura-spacing-lg, 36px);
+    }
+
+    .milaura-product-buy__cta-compact {
+      display: none;
+    }
+
+    .milaura-product-buy__expandable {
+      max-height: none;
+      opacity: 1;
+      margin-top: var(--milaura-spacing-md, 24px);
+    }
+
+    .milaura-product-buy__price-row {
+      padding-bottom: var(--milaura-spacing-md, 24px);
+      border-bottom: 1px solid rgba(192, 160, 98, 0.2);
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-product-buy,
+    .milaura-product-buy__expandable,
+    .milaura-product-buy__cta,
+    .milaura-product-buy__cta-compact {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const buySection = document.getElementById('MilauraProductBuy-' + sectionId);
+  if (!buySection) return;
+
+  const expandButton = buySection.querySelector('[data-milaura-buy-expand]');
+  const expandableContent = buySection.querySelector('[data-milaura-buy-content]');
+  const quantityInput = buySection.querySelector('.milaura-product-buy__quantity-input');
+  const minusBtn = buySection.querySelector('[data-quantity-minus]');
+  const plusBtn = buySection.querySelector('[data-quantity-plus]');
+  const form = buySection.querySelector('.milaura-product-buy__form');
+
+  // Product variants data (from Shopify)
+  const productVariants = {{ product.variants | json }};
+  const variantIdInput = buySection.querySelector('input[name="id"]');
+  const priceElement = buySection.querySelector('.milaura-product-buy__price:not(.milaura-product-buy__price--compare)');
+  const comparePriceElement = buySection.querySelector('.milaura-product-buy__price--compare');
+  const submitBtn = buySection.querySelector('[data-milaura-add-to-cart]');
+  const compactBtn = buySection.querySelector('[data-milaura-buy-expand]');
+
+  // Store original button text
+  const originalButtonText = submitBtn ? submitBtn.textContent.trim() : 'Ajouter au panier';
+  const soldOutText = '{{ section.settings.button_text_sold_out | default: "Rupture de stock" }}';
+
+  // Mobile: Expand/collapse
+  if (expandButton && expandableContent) {
+    expandButton.addEventListener('click', function() {
+      const isExpanded = expandableContent.classList.contains('is-expanded');
+
+      if (isExpanded) {
+        expandableContent.classList.remove('is-expanded');
+      } else {
+        expandableContent.classList.add('is-expanded');
+      }
+    });
+  }
+
+  // Quantity controls
+  if (quantityInput && minusBtn && plusBtn) {
+    minusBtn.addEventListener('click', function() {
+      const currentValue = parseInt(quantityInput.value) || 1;
+      if (currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+      }
+    });
+
+    plusBtn.addEventListener('click', function() {
+      const currentValue = parseInt(quantityInput.value) || 1;
+      quantityInput.value = currentValue + 1;
+    });
+  }
+
+  // Form submission with proper error handling
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      // Disable button during request
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Ajout en cours...';
+      }
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+      .then(function(response) {
+        return response.json().then(function(data) {
+          return { ok: response.ok, data: data };
+        });
+      })
+      .then(function(result) {
+        if (!result.ok || (result.data.status && result.data.status !== 200)) {
+          // Shopify returned an error
+          throw new Error(result.data.description || 'Erreur lors de l\'ajout au panier');
+        }
+
+        // Success - Trigger cart update event
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+
+        // Success feedback
+        if (submitBtn) {
+          submitBtn.textContent = '✓ Ajouté !';
+          submitBtn.style.background = '#4CAF50';
+          submitBtn.disabled = false;
+
+          setTimeout(function() {
+            submitBtn.textContent = originalButtonText;
+            submitBtn.style.background = '';
+          }, 2000);
+        }
+      })
+      .catch(function(error) {
+        // Error feedback
+        if (submitBtn) {
+          submitBtn.textContent = error.message || 'Erreur';
+          submitBtn.style.background = '#f44336';
+          submitBtn.disabled = false;
+
+          setTimeout(function() {
+            submitBtn.textContent = originalButtonText;
+            submitBtn.style.background = '';
+          }, 3000);
+        }
+      });
+    });
+  }
+
+  // Variant selection - COMPLETE LOGIC
+  const variantInputs = buySection.querySelectorAll('.milaura-product-buy__option-input');
+
+  if (variantInputs.length > 0 && productVariants && productVariants.length > 0) {
+    variantInputs.forEach(function(input) {
+      input.addEventListener('change', function() {
+        // Get all selected options
+        const selectedOptions = [];
+        buySection.querySelectorAll('.milaura-product-buy__option').forEach(function(optionGroup) {
+          const checkedInput = optionGroup.querySelector('.milaura-product-buy__option-input:checked');
+          if (checkedInput) {
+            selectedOptions.push(checkedInput.value);
+          }
+        });
+
+        // Find matching variant
+        const matchedVariant = productVariants.find(function(variant) {
+          return variant.options.every(function(option, index) {
+            return option === selectedOptions[index];
+          });
+        });
+
+        if (matchedVariant) {
+          // Update hidden variant ID input
+          if (variantIdInput) {
+            variantIdInput.value = matchedVariant.id;
+          }
+
+          // Update price display
+          if (priceElement) {
+            priceElement.textContent = formatMoney(matchedVariant.price);
+
+            // Handle compare at price
+            if (matchedVariant.compare_at_price && matchedVariant.compare_at_price > matchedVariant.price) {
+              priceElement.classList.add('milaura-product-buy__price--sale');
+              if (comparePriceElement) {
+                comparePriceElement.textContent = formatMoney(matchedVariant.compare_at_price);
+                comparePriceElement.style.display = '';
+              }
+            } else {
+              priceElement.classList.remove('milaura-product-buy__price--sale');
+              if (comparePriceElement) {
+                comparePriceElement.style.display = 'none';
+              }
+            }
+          }
+
+          // Update button state based on availability
+          if (submitBtn) {
+            if (matchedVariant.available) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = originalButtonText;
+            } else {
+              submitBtn.disabled = true;
+              submitBtn.textContent = soldOutText;
+            }
+          }
+
+          // Update compact button (mobile)
+          if (compactBtn) {
+            if (matchedVariant.available) {
+              compactBtn.textContent = '{{ section.settings.button_text | default: "Ajouter" }}';
+            } else {
+              compactBtn.textContent = '{{ section.settings.button_text_sold_out | default: "Rupture" }}';
+            }
+          }
+
+          // Update URL with variant ID (for sharing)
+          if (history.replaceState) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('variant', matchedVariant.id);
+            history.replaceState(null, '', url.toString());
+          }
+        }
+      });
+    });
+  }
+
+  // Helper function to format money (basic - uses Shopify's money format if available)
+  function formatMoney(cents) {
+    if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+      return Shopify.formatMoney(cents);
+    }
+    // Fallback: assume EUR with cents
+    const amount = (cents / 100).toFixed(2).replace('.', ',');
+    return amount + ' €';
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Product Buy",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Bouton d'achat"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Ajouter au panier"
+    },
+    {
+      "type": "text",
+      "id": "button_text_sold_out",
+      "label": "Texte si rupture",
+      "default": "Rupture de stock"
+    },
+    {
+      "type": "header",
+      "content": "Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Afficher sélecteur de quantité",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mini-rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mini_rating",
+      "label": "Afficher le mini-rating",
+      "default": true,
+      "info": "Affiche les étoiles et le nombre d'avis sous le prix"
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Note moyenne",
+      "default": "4.8"
+    },
+    {
+      "type": "text",
+      "id": "rating_count",
+      "label": "Nombre d'avis",
+      "default": "127"
+    },
+    {
+      "type": "header",
+      "content": "Badges de réassurance"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Afficher les badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_1",
+      "label": "Badge 1",
+      "default": "Livraison offerte dès 50€"
+    },
+    {
+      "type": "text",
+      "id": "badge_2",
+      "label": "Badge 2",
+      "default": "Pierres naturelles certifiées"
+    },
+    {
+      "type": "text",
+      "id": "badge_3",
+      "label": "Badge 3",
+      "default": "Retour 30 jours satisfait ou remboursé"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product Buy"
+    }
+  ]
+}
+{% endschema %}

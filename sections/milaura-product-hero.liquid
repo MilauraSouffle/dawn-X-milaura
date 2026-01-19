@@ -1,0 +1,376 @@
+{% comment %}
+  MILAURA PRODUCT HERO
+  Hero immersif 100vh mobile, 80vh desktop avec parallax léger
+  Image plein cadre + overlay dégradé + scroll cue animé
+{% endcomment %}
+
+{%- liquid
+  assign product_type = product.type | downcase
+  case product_type
+    when 'bijou', 'bracelet', 'collier', 'bague'
+      assign template_type = 'bijou'
+    when 'bougie'
+      assign template_type = 'bougie'
+    when 'sauge', 'encens'
+      assign template_type = 'sauge'
+    when 'coffret', 'bundle'
+      assign template_type = 'coffret'
+    else
+      assign template_type = 'bijou'
+  endcase
+
+  assign baseline = product.metafields.milaura.baseline | default: section.settings.default_baseline
+  assign stone_name = product.metafields.milaura.stone_name
+
+  assign hero_image = product.featured_image
+  if section.settings.custom_image != blank
+    assign hero_image = section.settings.custom_image
+  endif
+-%}
+
+<section
+  id="MilauraProductHero-{{ section.id }}"
+  class="milaura-product-hero"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-product-hero__container">
+    {%- if hero_image -%}
+      <div class="milaura-product-hero__image-wrapper">
+        {{
+          hero_image
+          | image_url: width: 2000
+          | image_tag:
+            loading: 'eager',
+            class: 'milaura-product-hero__image',
+            widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000',
+            sizes: '100vw',
+            alt: hero_image.alt | escape
+        }}
+        <div class="milaura-product-hero__overlay"></div>
+      </div>
+    {%- else -%}
+      <div class="milaura-product-hero__image-wrapper">
+        {{ 'hero-apparel-1' | placeholder_svg_tag: 'milaura-product-hero__placeholder' }}
+        <div class="milaura-product-hero__overlay"></div>
+      </div>
+    {%- endif -%}
+
+    <div class="milaura-product-hero__content">
+      <div class="milaura-product-hero__text-wrapper">
+        {%- if section.settings.show_vendor and product.vendor != blank -%}
+          <p class="milaura-product-hero__vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="milaura-product-hero__title">
+          {{ product.title | escape }}
+        </h1>
+
+        {%- if baseline != blank -%}
+          <p class="milaura-product-hero__baseline">
+            {{ baseline }}
+          </p>
+        {%- endif -%}
+
+        <div class="milaura-product-hero__meta">
+          {%- if stone_name != blank -%}
+            <span class="milaura-product-hero__meta-item">{{ stone_name }}</span>
+            <span class="milaura-product-hero__meta-divider">•</span>
+          {%- endif -%}
+          <span class="milaura-product-hero__meta-item">{{ product.type }}</span>
+        </div>
+      </div>
+
+      {%- if section.settings.show_scroll_cue -%}
+        <button
+          type="button"
+          class="milaura-product-hero__scroll-cue"
+          aria-label="Défiler vers le bas"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .milaura-product-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--milaura-beige, #FDFBF7);
+  }
+
+  .milaura-product-hero__container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .milaura-product-hero__image-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .milaura-product-hero__image,
+  .milaura-product-hero__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .milaura-product-hero__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.3) 40%,
+      transparent 100%
+    );
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .milaura-product-hero__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    padding: var(--milaura-spacing-lg, 36px) var(--milaura-spacing-md, 24px);
+    color: #FFFFFF;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .milaura-product-hero__text-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .milaura-product-hero__vendor {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
+    color: var(--milaura-gold-light, #E6C88B);
+  }
+
+  .milaura-product-hero__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .milaura-product-hero__baseline {
+    font-size: 18px;
+    line-height: 1.5;
+    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
+    font-style: italic;
+    opacity: 0.95;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .milaura-product-hero__meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--milaura-spacing-xs, 6px);
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: var(--milaura-spacing-sm, 12px);
+    opacity: 0.9;
+  }
+
+  .milaura-product-hero__meta-divider {
+    opacity: 0.6;
+  }
+
+  .milaura-product-hero__scroll-cue {
+    margin-top: var(--milaura-spacing-lg, 36px);
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: var(--milaura-spacing-sm, 12px);
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    animation: milauraHeroScrollBounce 2s ease-in-out infinite;
+  }
+
+  .milaura-product-hero__scroll-cue:hover {
+    opacity: 1;
+    transform: translateY(4px);
+  }
+
+  @keyframes milauraHeroScrollBounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1024px) {
+    .milaura-product-hero {
+      height: 80vh;
+    }
+
+    .milaura-product-hero__title {
+      font-size: 48px;
+    }
+
+    .milaura-product-hero__baseline {
+      font-size: 24px;
+    }
+
+    .milaura-product-hero__content {
+      padding: var(--milaura-spacing-xl, 48px);
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-product-hero__scroll-cue {
+      animation: none;
+    }
+
+    .milaura-product-hero__image {
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const hero = document.getElementById('MilauraProductHero-' + sectionId);
+  if (!hero) return;
+
+  const imageWrapper = hero.querySelector('.milaura-product-hero__image-wrapper');
+  const scrollCue = hero.querySelector('.milaura-product-hero__scroll-cue');
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Parallax léger sur l'image
+  if (!reducedMotion && imageWrapper) {
+    let ticking = false;
+
+    function updateParallax() {
+      const scrolled = window.pageYOffset;
+      const heroHeight = hero.offsetHeight;
+
+      if (scrolled < heroHeight) {
+        const parallaxAmount = scrolled * 0.3;
+        imageWrapper.style.transform = 'translateY(' + parallaxAmount + 'px)';
+      }
+
+      ticking = false;
+    }
+
+    function requestTick() {
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', requestTick, { passive: true });
+  }
+
+  // Scroll cue click
+  if (scrollCue) {
+    scrollCue.addEventListener('click', function() {
+      const nextSection = hero.nextElementSibling;
+      if (nextSection) {
+        nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: hero.offsetHeight, behavior: 'smooth' });
+      }
+    });
+
+    // Masquer le scroll cue après le premier scroll
+    let hasScrolled = false;
+    function hideScrollCue() {
+      if (!hasScrolled && window.pageYOffset > 100) {
+        hasScrolled = true;
+        scrollCue.style.opacity = '0';
+        scrollCue.style.pointerEvents = 'none';
+      }
+    }
+    window.addEventListener('scroll', hideScrollCue, { passive: true });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Product Hero",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Image custom (optionnel)",
+      "info": "Par défaut utilise l'image principale du produit"
+    },
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Afficher le vendeur",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "default_baseline",
+      "label": "Baseline par défaut",
+      "info": "Utilisé si le metafield milaura.baseline est vide",
+      "default": "Reconnecte-toi à ton essence"
+    },
+    {
+      "type": "header",
+      "content": "Scroll cue"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_cue",
+      "label": "Afficher l'indicateur de scroll",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product Hero"
+    }
+  ]
+}
+{% endschema %}
