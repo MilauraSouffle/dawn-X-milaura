@@ -25,12 +25,13 @@
         <div class="milaura-product-reviews__stars">
           {%- assign rating_decimal = section.settings.average_rating | times: 1.0 -%}
           {%- assign full_stars = rating_decimal | floor -%}
-          {%- assign has_half = rating_decimal | minus: full_stars | times: 100 | at_least: 50 -%}
+          {%- assign half_star_pos = full_stars | plus: 1 -%}
+          {%- assign has_half = rating_decimal | minus: full_stars | times: 100 -%}
 
           {%- for i in (1..5) -%}
             {%- if i <= full_stars -%}
               <span class="milaura-product-reviews__star milaura-product-reviews__star--full">★</span>
-            {%- elsif i == full_stars | plus: 1 and has_half >= 50 -%}
+            {%- elsif i == half_star_pos and has_half >= 50 -%}
               <span class="milaura-product-reviews__star milaura-product-reviews__star--half">★</span>
             {%- else -%}
               <span class="milaura-product-reviews__star milaura-product-reviews__star--empty">★</span>
