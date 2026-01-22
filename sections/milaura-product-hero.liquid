@@ -1,375 +1,408 @@
-{% comment %}
-  MILAURA PRODUCT HERO
-  Hero immersif 100vh mobile, 80vh desktop avec parallax léger
-  Image plein cadre + overlay dégradé + scroll cue animé
-{% endcomment %}
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-model.css' | asset_url | stylesheet_tag }}
 
-{%- liquid
-  assign product_type = product.type | downcase
-  case product_type
-    when 'bijou', 'bracelet', 'collier', 'bague'
-      assign template_type = 'bijou'
-    when 'bougie'
-      assign template_type = 'bougie'
-    when 'sauge', 'encens'
-      assign template_type = 'sauge'
-    when 'coffret', 'bundle'
-      assign template_type = 'coffret'
-    else
-      assign template_type = 'bijou'
-  endcase
-
-  assign baseline = product.metafields.milaura.baseline | default: section.settings.default_baseline
-  assign stone_name = product.metafields.milaura.stone_name
-
-  assign hero_image = product.featured_image
-  if section.settings.custom_image != blank
-    assign hero_image = section.settings.custom_image
-  endif
--%}
-
-<section
-  id="MilauraProductHero-{{ section.id }}"
-  class="milaura-product-hero"
-  data-section-id="{{ section.id }}"
->
-  <div class="milaura-product-hero__container">
-    {%- if hero_image -%}
-      <div class="milaura-product-hero__image-wrapper">
-        {{
-          hero_image
-          | image_url: width: 2000
-          | image_tag:
-            loading: 'eager',
-            class: 'milaura-product-hero__image',
-            widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000',
-            sizes: '100vw',
-            alt: hero_image.alt | escape
-        }}
-        <div class="milaura-product-hero__overlay"></div>
-      </div>
-    {%- else -%}
-      <div class="milaura-product-hero__image-wrapper">
-        {{ 'hero-apparel-1' | placeholder_svg_tag: 'milaura-product-hero__placeholder' }}
-        <div class="milaura-product-hero__overlay"></div>
-      </div>
-    {%- endif -%}
-
-    <div class="milaura-product-hero__content">
-      <div class="milaura-product-hero__text-wrapper">
-        {%- if section.settings.show_vendor and product.vendor != blank -%}
-          <p class="milaura-product-hero__vendor">{{ product.vendor }}</p>
-        {%- endif -%}
-
-        <h1 class="milaura-product-hero__title">
-          {{ product.title | escape }}
-        </h1>
-
-        {%- if baseline != blank -%}
-          <p class="milaura-product-hero__baseline">
-            {{ baseline }}
-          </p>
-        {%- endif -%}
-
-        <div class="milaura-product-hero__meta">
-          {%- if stone_name != blank -%}
-            <span class="milaura-product-hero__meta-item">{{ stone_name }}</span>
-            <span class="milaura-product-hero__meta-divider">•</span>
-          {%- endif -%}
-          <span class="milaura-product-hero__meta-item">{{ product.type }}</span>
-        </div>
-      </div>
-
-      {%- if section.settings.show_scroll_cue -%}
-        <button
-          type="button"
-          class="milaura-product-hero__scroll-cue"
-          aria-label="Défiler vers le bas"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      {%- endif -%}
-    </div>
-  </div>
-</section>
-
-<style>
-  .milaura-product-hero {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    background: var(--milaura-beige, #FDFBF7);
+{% style %}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
-  .milaura-product-hero__container {
-    position: relative;
-    width: 100%;
-    height: 100%;
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
   }
 
-  .milaura-product-hero__image-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
+  /* Layout Grid */
+  .milaura-hero-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--milaura-spacing-md);
   }
 
-  .milaura-product-hero__image,
-  .milaura-product-hero__placeholder {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+  @media screen and (min-width: 990px) {
+    .milaura-hero-wrapper {
+      grid-template-columns: 1.5fr 1fr;
+      gap: var(--milaura-spacing-xl);
+      align-items: start;
+    }
+
+    .milaura-hero-info-column {
+      position: sticky;
+      top: calc(var(--header-height-offset, 96px) + 24px);
+      background: rgba(255,255,255,0.5); /* Subtle glass for contrast if needed */
+      border-radius: var(--milaura-border-radius);
+      padding: var(--milaura-spacing-md);
+    }
   }
 
-  .milaura-product-hero__overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.6) 0%,
-      rgba(0, 0, 0, 0.3) 40%,
-      transparent 100%
-    );
-    z-index: 2;
-    pointer-events: none;
+  /* Info Column Styling */
+  .milaura-product__title {
+    font-family: var(--milaura-font-heading);
+    font-size: 3.2rem;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
   }
 
-  .milaura-product-hero__content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 3;
-    padding: var(--milaura-spacing-lg, 36px) var(--milaura-spacing-md, 24px);
-    color: #FFFFFF;
+  .milaura-product__price {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--milaura-gold);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Variant Tiles (Nutrimuscle Style) */
+  .product-form__input input[type='radio'] + label {
+    border-radius: 8px !important;
+    padding: 1rem 1.5rem !important;
+    font-weight: 600 !important;
+    border: 1px solid rgba(0,0,0,0.1) !important;
+    transition: all 0.2s ease;
+    background: #fff;
+    min-width: 60px;
     text-align: center;
+  }
+
+  .product-form__input input[type='radio']:checked + label {
+    background-color: var(--milaura-gold) !important;
+    color: #fff !important;
+    border-color: var(--milaura-gold) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.2);
+  }
+
+  /* Quantity & Add Button Row */
+  .milaura-buy-row {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    align-items: center;
+  }
+
+  .milaura-add-btn {
+    flex: 1;
+    background: var(--milaura-gold);
+    color: white;
+    font-weight: 700;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.6rem;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .milaura-add-btn:hover {
+    background: var(--milaura-gold-dark);
+    transform: scale(1.02);
+  }
+
+  .milaura-add-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* Trust Badges Inline */
+  .milaura-trust-badges {
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  .milaura-product-hero__text-wrapper {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .milaura-product-hero__vendor {
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
-    color: var(--milaura-gold-light, #E6C88B);
-  }
-
-  .milaura-product-hero__title {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    font-weight: 600;
-    line-height: 1.2;
-    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  .milaura-product-hero__baseline {
-    font-size: 18px;
-    line-height: 1.5;
-    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
-    font-style: italic;
-    opacity: 0.95;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
-  }
-
-  .milaura-product-hero__meta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--milaura-spacing-xs, 6px);
-    font-size: 14px;
-    font-weight: 500;
-    margin-top: var(--milaura-spacing-sm, 12px);
+    gap: 0.8rem;
+    font-size: 1.4rem;
     opacity: 0.9;
   }
-
-  .milaura-product-hero__meta-divider {
-    opacity: 0.6;
+  .milaura-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .milaura-trust-icon {
+    color: var(--milaura-gold);
+    font-size: 1.6rem;
   }
 
-  .milaura-product-hero__scroll-cue {
-    margin-top: var(--milaura-spacing-lg, 36px);
-    background: none;
+  /* Sticky Bar Mobile */
+  .milaura-sticky-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 1.5rem;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    border-top: 1px solid var(--milaura-gold-light);
+  }
+
+  .milaura-sticky-bar.is-visible {
+    transform: translateY(0);
+  }
+  
+  .sticky-info h4 { margin: 0; font-size: 1.4rem; }
+  .sticky-info span { color: var(--milaura-gold); font-weight: bold; }
+
+  .sticky-btn {
+    background: var(--milaura-gold);
+    color: white;
     border: none;
-    color: #FFFFFF;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
-    padding: var(--milaura-spacing-sm, 12px);
-    opacity: 0.8;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    animation: milauraHeroScrollBounce 2s ease-in-out infinite;
   }
+{% endstyle %}
 
-  .milaura-product-hero__scroll-cue:hover {
-    opacity: 1;
-    transform: translateY(4px);
-  }
+<script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
-  @keyframes milauraHeroScrollBounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
+<div class="page-width section-{{ section.id }}-padding">
+  <div class="milaura-hero-wrapper">
+    
+    <!-- LEFT: Gallery -->
+    <div class="milaura-hero-gallery-column">
+      {% render 'product-media-gallery', 
+        product: product, 
+        variant_images: section.settings.variant_images, 
+        is_duplicate: false,
+        gallery_layout: section.settings.gallery_layout 
+      %}
+    </div>
 
-  /* Desktop */
-  @media screen and (min-width: 1024px) {
-    .milaura-product-hero {
-      height: 80vh;
-    }
+    <!-- RIGHT: Info & Buy -->
+    <div class="milaura-hero-info-column">
+      <product-info id="ProductInfo-{{ section.id }}" data-section="{{ section.id }}" data-url="{{ product.url }}">
+        
+        <!-- Vendor / Breadcrumb -->
+        {%- if section.settings.show_vendor -%}
+          <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
+        {%- endif -%}
 
-    .milaura-product-hero__title {
-      font-size: 48px;
-    }
+        <!-- Title -->
+        <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
 
-    .milaura-product-hero__baseline {
-      font-size: 24px;
-    }
+        <!-- Reviews Badge -->
+        <a href="#Reviews" class="rating-badge" style="display:inline-flex; align-items:center; gap:5px; margin-bottom:1rem; text-decoration:none; color:inherit;">
+          <span style="color:var(--milaura-gold)">★★★★★</span>
+          <span style="font-size:1.4rem; opacity:0.7;">(4.9/5)</span>
+        </a>
 
-    .milaura-product-hero__content {
-      padding: var(--milaura-spacing-xl, 48px);
-    }
-  }
+        <!-- Price -->
+        <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+          {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'milaura-product__price' -%}
+        </div>
 
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .milaura-product-hero__scroll-cue {
-      animation: none;
-    }
+        <!-- Variant Picker (Dawn Standard for logic, Nutrimuscle style for CSS) -->
+        {%- unless product.has_only_default_variant -%}
+          <variant-radios class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}" data-update-url="false">
+            {%- for option in product.options_with_values -%}
+              <fieldset class="js product-form__input">
+                <legend class="form__label" style="font-weight:bold; margin-bottom:0.5rem;">{{ option.name }}</legend>
+                <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                  {% render 'product-variant-options', product: product, option: option, block: block, picker_type: 'button' %}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+            <script type="application/json">
+              {{ product.variants | json }}
+            </script>
+          </variant-radios>
+        {%- endunless -%}
 
-    .milaura-product-hero__image {
-      transform: none !important;
-    }
-  }
-</style>
+        <!-- Buy Buttons -->
+        <div class="milaura-buy-row">
+          <!-- Quantity (Optional) -->
+          {%- if section.settings.show_quantity -%}
+            <div class="product-form__input product-form__quantity" style="width:100px;">
+              <quantity-input class="quantity">
+                <button class="quantity__button no-js-hidden" name="minus" type="button"><span class="visually-hidden">-</span>-</button>
+                <input class="quantity__input" type="number" name="quantity" id="Quantity-{{ section.id }}" min="1" value="1" form="{{ 'product-form-' | append: section.id }}">
+                <button class="quantity__button no-js-hidden" name="plus" type="button"><span class="visually-hidden">+</span>+</button>
+              </quantity-input>
+            </div>
+          {%- endif -%}
 
+          <!-- Add Button -->
+          <product-form class="product-form" style="flex:1;">
+            {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" disabled>
+              <button
+                type="submit"
+                name="add"
+                class="milaura-add-btn"
+                {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+              >
+                <span>
+                  {%- if product.selected_or_first_available_variant.available -%}
+                    Ajouter au panier
+                  {%- else -%}
+                    Rupture de stock
+                  {%- endif -%}
+                </span>
+              </button>
+            {%- endform -%}
+          </product-form>
+        </div>
+
+        <!-- Trust Badges (Reassurance) -->
+        <div class="milaura-trust-badges">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'trust_badge' -%}
+              <div class="milaura-trust-item">
+                <span class="milaura-trust-icon">{{ block.settings.icon }}</span>
+                <span>{{ block.settings.text }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <!-- Description Extract (Optional) -->
+        {%- if section.settings.show_description -%}
+          <div class="product__description rte quick-add-hidden" style="margin-top:2rem;">
+            {{ product.description | strip_html | truncatewords: 30 }}
+            <a href="#ProductTabs" style="text-decoration:underline; color:var(--milaura-gold);">Lire la suite</a>
+          </div>
+        {%- endif -%}
+
+      </product-info>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky Bottom Bar (Hidden by default) -->
+<div id="MilauraStickyBar" class="milaura-sticky-bar">
+  <div class="sticky-info">
+    <h4>{{ product.title }}</h4>
+    <span id="StickyPrice">
+      {{ product.selected_or_first_available_variant.price | money }}
+    </span>
+  </div>
+  <button class="sticky-btn" onclick="document.querySelector('.milaura-add-btn').click()">
+    Ajouter
+  </button>
+</div>
+
+<!-- Sticky Logic -->
 <script>
-(function() {
-  const sectionId = '{{ section.id }}';
-  const hero = document.getElementById('MilauraProductHero-' + sectionId);
-  if (!hero) return;
-
-  const imageWrapper = hero.querySelector('.milaura-product-hero__image-wrapper');
-  const scrollCue = hero.querySelector('.milaura-product-hero__scroll-cue');
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // Parallax léger sur l'image
-  if (!reducedMotion && imageWrapper) {
-    let ticking = false;
-
-    function updateParallax() {
-      const scrolled = window.pageYOffset;
-      const heroHeight = hero.offsetHeight;
-
-      if (scrolled < heroHeight) {
-        const parallaxAmount = scrolled * 0.3;
-        imageWrapper.style.transform = 'translateY(' + parallaxAmount + 'px)';
-      }
-
-      ticking = false;
+  document.addEventListener('DOMContentLoaded', function() {
+    const stickyBar = document.getElementById('MilauraStickyBar');
+    const mainButton = document.querySelector('.milaura-add-btn');
+    const stickyPrice = document.getElementById('StickyPrice');
+    
+    // Show sticky bar when main button scrolls out of view
+    if(stickyBar && mainButton) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) {
+            stickyBar.classList.add('is-visible');
+          } else {
+            stickyBar.classList.remove('is-visible');
+          }
+        });
+      }, { threshold: 0 });
+      
+      observer.observe(mainButton);
     }
-
-    function requestTick() {
-      if (!ticking) {
-        window.requestAnimationFrame(updateParallax);
-        ticking = true;
-      }
+    
+    // Update sticky price when main price changes (Variant change)
+    // We listen to the price update event from Dawn or simple mutation observer
+    const priceNode = document.querySelector('.milaura-product__price');
+    if(priceNode && stickyPrice) {
+      const observer = new MutationObserver(() => {
+        stickyPrice.innerHTML = priceNode.innerHTML;
+      });
+      observer.observe(priceNode, { childList: true, subtree: true, characterData: true });
     }
-
-    window.addEventListener('scroll', requestTick, { passive: true });
-  }
-
-  // Scroll cue click
-  if (scrollCue) {
-    scrollCue.addEventListener('click', function() {
-      const nextSection = hero.nextElementSibling;
-      if (nextSection) {
-        nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        window.scrollTo({ top: hero.offsetHeight, behavior: 'smooth' });
-      }
-    });
-
-    // Masquer le scroll cue après le premier scroll
-    let hasScrolled = false;
-    function hideScrollCue() {
-      if (!hasScrolled && window.pageYOffset > 100) {
-        hasScrolled = true;
-        scrollCue.style.opacity = '0';
-        scrollCue.style.pointerEvents = 'none';
-      }
-    }
-    window.addEventListener('scroll', hideScrollCue, { passive: true });
-  }
-})();
+  });
 </script>
 
 {% schema %}
 {
-  "name": "Milaura Product Hero",
-  "class": "milaura-section",
+  "name": "Milaura Hero Premium",
+  "tag": "section",
+  "class": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Image"
-    },
-    {
-      "type": "image_picker",
-      "id": "custom_image",
-      "label": "Image custom (optionnel)",
-      "info": "Par défaut utilise l'image principale du produit"
-    },
-    {
-      "type": "header",
-      "content": "Contenu"
-    },
     {
       "type": "checkbox",
       "id": "show_vendor",
-      "label": "Afficher le vendeur",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "default_baseline",
-      "label": "Baseline par défaut",
-      "info": "Utilisé si le metafield milaura.baseline est vide",
-      "default": "Reconnecte-toi à ton essence"
-    },
-    {
-      "type": "header",
-      "content": "Scroll cue"
+      "default": false,
+      "label": "Afficher vendeur"
     },
     {
       "type": "checkbox",
-      "id": "show_scroll_cue",
-      "label": "Afficher l'indicateur de scroll",
-      "default": true
+      "id": "show_quantity",
+      "default": true,
+      "label": "Sélecteur quantité"
+    },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "options": [
+        { "value": "stacked", "label": "Empilé" },
+        { "value": "columns", "label": "Colonnes" },
+        { "value": "thumbnail", "label": "Thumbnails" },
+        { "value": "thumbnail_slider", "label": "Thumbnail Slider" }
+      ],
+      "default": "thumbnail",
+      "label": "Layout Galerie"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_badge",
+      "name": "Badge Réassurance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji/Icône",
+          "default": "🚚"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Livraison offerte"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Milaura Product Hero"
+      "name": "Milaura Hero Premium",
+      "blocks": [
+        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison offerte dès 50€" } },
+        { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } }
+      ]
     }
   ]
 }
