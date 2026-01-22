@@ -33,9 +33,16 @@
     .milaura-hero-info-column {
       position: sticky;
       top: calc(var(--header-height-offset, 96px) + 24px);
-      background: rgba(255,255,255,0.5); /* Subtle glass for contrast if needed */
+      /* Vision OS Glassmorphism - cohérent avec hero-showcase */
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(192, 160, 98, 0.18);
       border-radius: var(--milaura-border-radius);
       padding: var(--milaura-spacing-md);
+      box-shadow:
+        0 20px 50px rgba(0,0,0,0.06),
+        0 0 0 1px rgba(255,255,255,0.5) inset;
     }
   }
 
@@ -161,7 +168,7 @@
     cursor: pointer;
   }
 
-  /* Volume Offer Cards */
+  /* Volume Offer Cards - Milaura Gold Luxury Style */
   .milaura-volume-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -172,62 +179,120 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 0.1rem solid rgba(var(--color-foreground), 0.2);
-    border-radius: var(--variant-pills-radius, 40px);
+    border: 2px solid rgba(192, 160, 98, 0.25);
+    border-radius: 16px;
     padding: 1.5rem;
     cursor: pointer;
     position: relative;
-    background: rgb(var(--color-background));
-    transition: all 0.2s;
+    background: #fff;
+    transition: all 0.3s ease;
   }
-  .volume-card:hover { border-color: rgb(var(--color-foreground)); }
+  .volume-card:hover {
+    border-color: var(--milaura-gold);
+    box-shadow: 0 8px 24px rgba(192, 160, 98, 0.15);
+  }
   .volume-card.is-selected {
-    border: 0.2rem solid rgb(var(--color-button));
-    background: rgba(var(--color-button), 0.05);
+    border: 2px solid var(--milaura-gold);
+    background: linear-gradient(135deg, rgba(255, 248, 230, 0.95) 0%, rgba(255, 252, 245, 0.95) 100%);
     transform: scale(1.02);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 32px rgba(192, 160, 98, 0.25);
   }
   .volume-card-badge {
     position: absolute;
     top: -12px;
     right: 20px;
-    background: rgb(var(--color-button));
-    color: rgb(var(--color-button-text));
+    background: linear-gradient(135deg, #C0A062 0%, #E6C88B 50%, #C0A062 100%);
+    color: #fff;
     font-size: 1.1rem;
     padding: 4px 12px;
     border-radius: 20px;
     font-weight: bold;
     text-transform: uppercase;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.4);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
   }
   .volume-left { display: flex; align-items: center; }
   .volume-check {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
-    border: 0.1rem solid rgba(var(--color-foreground), 0.5);
+    border: 2px solid rgba(192, 160, 98, 0.4);
     margin-right: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: all 0.2s ease;
   }
   .volume-card.is-selected .volume-check {
-    border-color: rgb(var(--color-button));
-    background: rgb(var(--color-button));
+    border-color: var(--milaura-gold);
+    background: linear-gradient(135deg, #C0A062 0%, #E6C88B 100%);
+    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.3);
   }
   .volume-check::after {
     content: '';
     width: 8px;
     height: 8px;
-    background: rgb(var(--color-button-text));
+    background: #fff;
     border-radius: 50%;
     display: none;
   }
   .volume-card.is-selected .volume-check::after { display: block; }
-  .volume-text h5 { margin: 0; font-size: 1.6rem; font-weight: 700; color: rgb(var(--color-foreground)); }
-  .volume-text p { margin: 0; font-size: 1.3rem; color: rgba(var(--color-foreground), 0.75); }
-  .volume-price { font-weight: 700; font-size: 1.6rem; text-align: right; color: rgb(var(--color-foreground)); }
+  .volume-text h5 { margin: 0; font-size: 1.6rem; font-weight: 700; color: #1a1a1a; }
+  .volume-text p { margin: 0; font-size: 1.3rem; color: #666; }
+  .volume-price { font-weight: 700; font-size: 1.6rem; text-align: right; color: var(--milaura-gold); }
+
+  /* Volume Section Title */
+  .volume-section-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 1.8rem;
+    color: var(--milaura-gold);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  /* Selection Pulse Animation */
+  .volume-card.is-selected {
+    animation: selectPulse 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes selectPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.035); }
+    100% { transform: scale(1.02); }
+  }
+
+  /* Focus visible for accessibility */
+  .volume-card:focus-visible {
+    outline: 2px solid var(--milaura-gold);
+    outline-offset: 3px;
+  }
+
+  /* Mobile Responsive Fixes */
+  @media screen and (max-width: 768px) {
+    .milaura-product__title {
+      font-size: 2.4rem;
+    }
+    .volume-card {
+      padding: 1rem 1.2rem;
+    }
+    .volume-text h5 { font-size: 1.4rem; }
+    .volume-text p { font-size: 1.1rem; }
+    .volume-price { font-size: 1.4rem; }
+    .volume-check {
+      width: 18px;
+      height: 18px;
+      margin-right: 1rem;
+    }
+    .volume-check::after {
+      width: 6px;
+      height: 6px;
+    }
+    .milaura-add-btn {
+      font-size: 1.4rem;
+      padding: 1.2rem;
+    }
+  }
 {% endstyle %}
 
 <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -289,9 +354,17 @@
         <!-- Volume Offer Block -->
         {%- for block in section.blocks -%}
           {%- if block.type == 'volume_offer' -%}
-            <div class="milaura-volume-grid" {{ block.shopify_attributes }}>
+            {% if block.settings.title != blank %}
+              <h3 class="volume-section-title">{{ block.settings.title }}</h3>
+            {% endif %}
+            <div class="milaura-volume-grid" role="radiogroup" aria-label="Choisir une offre volume" {{ block.shopify_attributes }}>
               <!-- Option 1 -->
-              <div class="volume-card is-selected" onclick="selectVolume(1, this)">
+              <div class="volume-card is-selected"
+                   role="radio"
+                   aria-checked="true"
+                   tabindex="0"
+                   onclick="selectVolume(1, this)"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(1, this);}">
                 <div class="volume-left">
                   <div class="volume-check"></div>
                   <div class="volume-text">
@@ -305,7 +378,12 @@
               </div>
 
               <!-- Option 2 -->
-              <div class="volume-card" onclick="selectVolume(2, this)">
+              <div class="volume-card"
+                   role="radio"
+                   aria-checked="false"
+                   tabindex="0"
+                   onclick="selectVolume(2, this)"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(2, this);}">
                 {% if block.settings.opt2_badge != blank %}
                   <div class="volume-card-badge">{{ block.settings.opt2_badge }}</div>
                 {% endif %}
@@ -323,7 +401,12 @@
               </div>
 
               <!-- Option 3 -->
-              <div class="volume-card" onclick="selectVolume(3, this)">
+              <div class="volume-card"
+                   role="radio"
+                   aria-checked="false"
+                   tabindex="0"
+                   onclick="selectVolume(3, this)"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(3, this);}">
                 {% if block.settings.opt3_badge != blank %}
                   <div class="volume-card-badge">{{ block.settings.opt3_badge }}</div>
                 {% endif %}
@@ -343,10 +426,14 @@
             
             <script>
               function selectVolume(qty, card) {
-                // 1. Visual Update
-                document.querySelectorAll('.volume-card').forEach(c => c.classList.remove('is-selected'));
+                // 1. Visual + ARIA Update
+                document.querySelectorAll('.volume-card').forEach(c => {
+                  c.classList.remove('is-selected');
+                  c.setAttribute('aria-checked', 'false');
+                });
                 card.classList.add('is-selected');
-                
+                card.setAttribute('aria-checked', 'true');
+
                 // 2. Update Hidden Quantity Input
                 const qtyInput = document.getElementById('Quantity-{{ section.id }}');
                 if(qtyInput) {
