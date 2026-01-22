@@ -48,20 +48,13 @@ Les recommandations bijoux (pierre complémentaire) existent ailleurs :
 - ✅ Dashboard client
 - ❌ **PAS** sur la page résultat quiz
 
-### Évolution V2 (si activité fonctionne)
+### V1 : Bougie artisanale Maison Candella
 
-Le quiz passera de **bougie** à **diffuseur passif**.
-- Même logique : 1 diffuseur recommandé
-- Même pierre + même intention
-- Pas de montée en "20+ pierres" comme objectif principal
-- Focus = changer le type de produit recommandé (bougie → diffuseur)
+- Le quiz recommande **1 bougie artisanale** (pierre intégrée, senteur unique)
+- **C'est tout**. Pas de plan diffuseur en V1.
+- Les bougies restent **vendables ET recommandées par le quiz** en V1.
 
-### Data model : extensible sans refonte
-
-Le metaobject `emotional_profile` (Phase 0) doit permettre de changer le produit recommandé **sans refonte** :
-- V1 : `recommended_product` = bougie
-- V2 : `recommended_product` = diffuseur passif
-- Champ produit flexible (product_reference), pas figé sur "candle"
+> Note : Évolution possible V2 (diffuseurs) documentée en Annexe, sans impact sur conception V1.
 
 ---
 
@@ -131,34 +124,50 @@ PHASE 4 : Polish (Tests, Perf, Launch)
 
 #### 2.2.1 Metaobjects (Shopify Admin)
 
-- [ ] **Créer metaobject `stone`**
-  - 17 champs (cf. contenu-editorial-spec.md §8.3)
-  - Validation : handle, name, short_essentiel, benefits_bullets obligatoires
+⚠️ **Principe V1** : Minimal data model basé sur écrans définis. Éviter metaobject_reference sauf besoin écran V1.
 
-- [ ] **Créer metaobject `profile`**
-  - 10 champs (cf. contenu-editorial-spec.md §8.3)
-  - Validation : tous champs obligatoires sauf quotes et complementary_profile
+- [ ] **Créer metaobject `stone`**
+  - **Usage V1** : Alimenter section Pierre PDP + textes recos
+  - Structure minimale V1 (pas les 17 champs, uniquement ce qui sert aux écrans) :
+    - `handle` (ex: "calcedoine")
+    - `name` (ex: "Calcédoine bleue")
+    - `color` (ex: "Bleu doux")
+    - `short_essentiel` (80-120 mots pour PDP)
+    - `benefits_bullets` (list, 3 max pour hotspots PDP)
+    - `ritual_steps` (list, 3-5 pour section Rituel PDP)
+    - `care` (entretien court)
+  - **Si besoin plus tard** : Ajouter champs supplémentaires en V1.5
 
 - [ ] **Créer metaobject `scent`**
-  - 7 champs (cf. contenu-editorial-spec.md §8.3)
-  - Validation : tous champs obligatoires sauf notes pyramide
+  - **Usage V1** : Section Senteur PDP bougies uniquement
+  - Structure minimale V1 :
+    - `handle` (ex: "neroli")
+    - `name` (ex: "Néroli")
+    - `description_short` (40-70 mots)
+    - `notes_top`, `notes_heart`, `notes_base` (optionnels, pyramide)
+    - `mood` (1 phrase ambiance)
 
 - [ ] **Créer metaobject `emotional_profile` (quiz)**
   - **CRITIQUE : Objet central UNIQUE du projet**
   - ⚠️ **C'EST LE SEUL objet "profil" du projet** (pas d'autre objet `profile` en parallèle)
+  - **Nature** : **Référentiel** (data fixe, 5 profils max en V1)
   - Utilisé pour : Quiz, Dashboard, Narration, Emails
-  - **CRITIQUE : Data model extensible bougie → diffuseur**
-  - Structure :
-    - `handle` (ex: "reconfort")
-    - `name` (ex: "Réconfort")
-    - `primary_stone` (metaobject_reference → `stone`)
-    - `primary_scent` (metaobject_reference → `scent`)
-    - `recommended_product` (product_reference) ← **FLEXIBLE, pas "candle_product"**
-    - `product_type_v1` (single_line: "bougie") ← pour traçabilité
-    - `hero_copy`, `needs_bullets`, `ritual_morning_steps`, `ritual_evening_steps`
-  - **Règle V1** : `recommended_product` pointe vers la bougie du profil
-  - **Règle V2** : `recommended_product` pointera vers le diffuseur (changement admin, zéro refonte code)
+  - **Structure minimale V1** :
+    - `handle` (single_line_text_field, ex: "reconfort") ← **Stable, utilisé partout comme clé**
+    - `name` (single_line_text_field, ex: "Réconfort")
+    - `candle_product` (product_reference) ← **La bougie du profil (Maison Candella)**
+    - `candle_variant_id` (single_line_text_field) ← **Si variant unique = vide, sinon ID variant**
+    - `stone_handle` (single_line_text_field, ex: "calcedoine") ← **Handle pierre, pas reference**
+    - `scent_handle` (single_line_text_field, ex: "neroli") ← **Handle senteur, pas reference**
+    - `hero_copy` (multi_line_text_field)
+    - `needs_bullets` (list.single_line_text_field, 3 max)
+    - `ritual_morning_steps` (list.single_line_text_field, 3 max)
+    - `ritual_evening_steps` (list.single_line_text_field, 3 max)
+  - **Règle V1** : `candle_product` pointe vers la bougie artisanale Maison Candella
+  - **Variants** : Si bougie = 1 variant unique → `candle_variant_id` vide. Sinon, spécifier ID variant.
   - **Règle anti-duplication** : Aucun autre metaobject "profile" ne doit être créé
+  - **Basé sur** : Écrans déjà définis dans quiz-emotionnel-spec.md
+  - ⚠️ **Note** : `emotional_profile` = référentiel fixe. Historique utilisateur = customer metafields (voir §2.2.7)
 
 - [ ] **Créer metaobject `quiz_question`**
   - 3 champs (cf. quiz-emotionnel-spec.md §7.2)
@@ -196,25 +205,30 @@ PHASE 4 : Polish (Tests, Perf, Launch)
 
 Pour chaque pierre (Calcédoine, Obsidienne, Améthyste, Quartz rose, Aventurine) :
 
-- [ ] Remplir metaobject `stone` complet
+- [ ] Remplir metaobject `stone` (champs minimaux V1 uniquement)
   - Rédaction validée par PM (conformité ton + zéro claim médical)
   - Photos macro haute qualité uploadées
+  - **Basé sur** : Écrans PDP section Pierre + recos
 
 #### 2.2.4 Contenu des 5 profils
 
 Pour chaque profil (Réconfort, Protection, Sérénité, Élégance, Joie de vivre) :
 
-- [ ] Remplir metaobject `profile` complet
-  - Lier à `stone` et `scent` correspondants
+- [ ] Remplir metaobject `emotional_profile` (structure minimale V1)
+  - `candle_product` : référence vers bougie Maison Candella
+  - `candle_variant_id` : vide si variant unique, sinon ID variant spécifique
+  - `stone_handle` et `scent_handle` : handles texte (pas references)
   - Validation copy PM
+  - **Basé sur** : Écrans quiz résultat + dashboard
 
 #### 2.2.5 Contenu des 5 senteurs
 
 Pour chaque senteur (Néroli, Bois d'oud, Thé blanc, Ambre gris, Fleur d'oranger) :
 
-- [ ] Remplir metaobject `scent` complet
-  - Notes pyramide
+- [ ] Remplir metaobject `scent` (structure minimale V1)
+  - Notes pyramide (optionnelles si pas sur PDP V1)
   - Description courte validée
+  - **Basé sur** : Écran PDP bougie section Senteur
 
 #### 2.2.6 Mapping Produits Existants
 
@@ -237,15 +251,16 @@ Pour chaque senteur (Néroli, Bois d'oud, Thé blanc, Ambre gris, Fleur d'orange
 
 ### 2.3 Critères d'acceptation Phase 0
 
-- [ ] 5 metaobjects `stone` remplis et validés
-- [ ] 5 metaobjects `profile` remplis et validés
-- [ ] 5 metaobjects `scent` remplis et validés
+- [ ] 5 metaobjects `stone` remplis (champs minimaux V1, basés sur écrans PDP)
+- [ ] 5 metaobjects `emotional_profile` remplis (structure minimale, handles pas references)
+- [ ] 5 metaobjects `scent` remplis (champs minimaux V1, basés sur écran PDP bougie)
 - [ ] 5 metaobjects `reco_index` remplis (1 par pierre)
 - [ ] 6 metaobjects `quiz_question` créés avec scoring
 - [ ] Tous metafields produits définis dans Shopify
 - [ ] 10+ produits mappés avec leurs metafields
 - [ ] Validation PM sur conformité éditoriale (zéro claim médical)
 - [ ] Test de requête metaobject fonctionnel dans le thème
+- [ ] **Distinction claire** : emotional_profile = référentiel, customer metafields = historique
 
 ### 2.4 Bloquants
 
@@ -516,10 +531,14 @@ Pour chaque senteur (Néroli, Bois d'oud, Thé blanc, Ambre gris, Fleur d'orange
   - ✅ **Liste d'attente = sauve les leads** sans tuer one choice
 
 - [ ] **Sauvegarde résultat client** (si connecté)
-  - Customer metafield `milaura.quiz_result` (handle profil)
-  - Customer metafield `milaura.quiz_date`
-  - Customer metafield `milaura.quiz_product_id` (ID bougie recommandée)
-  - Historique JSON `milaura.quiz_history`
+  - ⚠️ **Note** : Ces metafields = **historique utilisateur daté**, pas référentiel
+  - Customer metafield `milaura.quiz_result` (single_line: handle profil, ex: "reconfort")
+  - Customer metafield `milaura.quiz_date` (date)
+  - Customer metafield `milaura.quiz_product_id` (single_line: ID bougie recommandée)
+  - Customer metafield `milaura.quiz_history` (json: historique complet)
+  - **Distinction claire** :
+    - `emotional_profile` metaobject = référentiel fixe (5 profils)
+    - Customer metafields = historique utilisateur daté (dashboard, évolution)
 
 #### 4.2.3 Cart Drawer avec Recos
 
@@ -920,25 +939,13 @@ Pour chaque senteur (Néroli, Bois d'oud, Thé blanc, Ambre gris, Fleur d'orange
 
 ### 9.2 V2 (si l'activité fonctionne)
 
-**Objectif principal** : **Quiz recommande diffuseur passif au lieu de bougie**
-- Changement admin simple : `emotional_profile.recommended_product` pointe vers diffuseur
-- Même pierre, même intention, nouveau format
-- Zéro refonte code (data model extensible prévu Phase 0)
-
-**Important** : **Les 5 bougies V1 restent vendables**
-- ✅ Bougies accessibles via catalogue, collections, PDP classiques
-- ✅ Bougies peuvent être recommandées sur PDP bijoux (crosssell)
-- ✅ Bougies peuvent être recommandées dans cart drawer
-- ❌ Bougies ne sont plus recommandées par le quiz (remplacées par diffuseurs)
-- **Cohérence** : Quiz = produit d'appel (diffuseur V2), Catalogue = monétisation complète
-
-**Secondaire** :
 - Page confirmation post-achat avec recos
 - Complémentarité émotionnelle avancée (profils croisés)
 - A/B testing recos
 - Programme fidélité
 - Dashboard insights émotionnels (graphiques évolution profils)
 - API Search & Recommendation Shopify
+- Emails automatisés J+7/J+30 avancés
 
 **PAS l'objectif V2** :
 - ❌ Montée en "20+ pierres" (pas prioritaire)
@@ -1015,6 +1022,28 @@ Pour chaque senteur (Néroli, Bois d'oud, Thé blanc, Ambre gris, Fleur d'orange
 - [ ] Analyse taux clic recos
 - [ ] Feedback utilisateurs (email, support)
 - [ ] Hotfixes si bugs critiques
+
+---
+
+## Annexe D : Évolution V2+ (Hors scope V1)
+
+### Option diffuseurs passifs (si activité fonctionne)
+
+**Contexte** : Remplacer la bougie recommandée par le quiz par un diffuseur passif.
+
+**Approche possible** :
+- Ajouter champ `diffuser_product` à `emotional_profile`
+- Logique quiz : Si diffuseur existe, recommander diffuseur, sinon bougie
+- Bougies restent vendables via catalogue/PDP/cart drawer
+
+**Impact** :
+- Changement admin simple (référence produit)
+- Modification template résultat quiz (afficher diffuseur au lieu de bougie)
+- Aucune refonte data model
+
+**Décision** : À évaluer post-V1 selon activité bougies réelles.
+
+> Note : Cette évolution n'impacte PAS la conception V1. Le quiz V1 recommande une bougie artisanale Maison Candella, point final.
 
 ---
 
