@@ -160,6 +160,74 @@
     font-weight: bold;
     cursor: pointer;
   }
+
+  /* Volume Offer Cards */
+  .milaura-volume-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .volume-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    background: #fff;
+    transition: all 0.2s;
+  }
+  .volume-card:hover { border-color: var(--milaura-gold); }
+  .volume-card.is-selected {
+    border: 2px solid var(--milaura-gold);
+    background: rgba(192, 160, 98, 0.05);
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(192, 160, 98, 0.15);
+  }
+  .volume-card-badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: var(--milaura-gold);
+    color: white;
+    font-size: 1.1rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .volume-left { display: flex; align-items: center; }
+  .volume-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin-right: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .volume-card.is-selected .volume-check {
+    border-color: var(--milaura-gold);
+    background: var(--milaura-gold);
+  }
+  .volume-check::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    display: none;
+  }
+  .volume-card.is-selected .volume-check::after { display: block; }
+  .volume-text h5 { margin: 0; font-size: 1.6rem; font-weight: 700; }
+  .volume-text p { margin: 0; font-size: 1.3rem; color: var(--milaura-text-light); }
+  .volume-price { font-weight: 700; font-size: 1.6rem; text-align: right; }
 {% endstyle %}
 
 <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -217,6 +285,79 @@
             </script>
           </variant-radios>
         {%- endunless -%}
+
+        <!-- Volume Offer Block -->
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'volume_offer' -%}
+            <div class="milaura-volume-grid" {{ block.shopify_attributes }}>
+              <!-- Option 1 -->
+              <div class="volume-card is-selected" onclick="selectVolume(1, this)">
+                <div class="volume-left">
+                  <div class="volume-check"></div>
+                  <div class="volume-text">
+                    <h5>{{ block.settings.opt1_label }}</h5>
+                    <p>{{ block.settings.opt1_sub }}</p>
+                  </div>
+                </div>
+                <div class="volume-price">
+                  {{ product.price | money }}
+                </div>
+              </div>
+
+              <!-- Option 2 -->
+              <div class="volume-card" onclick="selectVolume(2, this)">
+                {% if block.settings.opt2_badge != blank %}
+                  <div class="volume-card-badge">{{ block.settings.opt2_badge }}</div>
+                {% endif %}
+                <div class="volume-left">
+                  <div class="volume-check"></div>
+                  <div class="volume-text">
+                    <h5>{{ block.settings.opt2_label }}</h5>
+                    <p>{{ block.settings.opt2_sub }}</p>
+                  </div>
+                </div>
+                <div class="volume-price">
+                  {% assign price2 = product.price | times: 2 | times: 0.9 %}
+                  {{ price2 | money }}
+                </div>
+              </div>
+
+              <!-- Option 3 -->
+              <div class="volume-card" onclick="selectVolume(3, this)">
+                {% if block.settings.opt3_badge != blank %}
+                  <div class="volume-card-badge">{{ block.settings.opt3_badge }}</div>
+                {% endif %}
+                <div class="volume-left">
+                  <div class="volume-check"></div>
+                  <div class="volume-text">
+                    <h5>{{ block.settings.opt3_label }}</h5>
+                    <p>{{ block.settings.opt3_sub }}</p>
+                  </div>
+                </div>
+                <div class="volume-price">
+                  {% assign price3 = product.price | times: 3 | times: 0.8 %}
+                  {{ price3 | money }}
+                </div>
+              </div>
+            </div>
+            
+            <script>
+              function selectVolume(qty, card) {
+                // 1. Visual Update
+                document.querySelectorAll('.volume-card').forEach(c => c.classList.remove('is-selected'));
+                card.classList.add('is-selected');
+                
+                // 2. Update Hidden Quantity Input
+                const qtyInput = document.getElementById('Quantity-{{ section.id }}');
+                if(qtyInput) {
+                  qtyInput.value = qty;
+                  // Trigger change event if needed by other scripts
+                  qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+              }
+            </script>
+          {%- endif -%}
+        {%- endfor -%}
 
         <!-- Buy Buttons -->
         <div class="milaura-buy-row">
@@ -394,6 +535,83 @@
           "default": "Livraison offerte"
         }
       ]
+    },
+    {
+      "type": "volume_offer",
+      "name": "Offre Volume (Bundle)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Affiche 3 cartes pour inciter à l'achat en volume. Les remises doivent être configurées dans Shopify (Réductions automatiques)."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre Section",
+          "default": "Choisir mon offre"
+        },
+        {
+          "type": "header",
+          "content": "Option 1 (1 Unité)"
+        },
+        {
+          "type": "text",
+          "id": "opt1_label",
+          "label": "Label",
+          "default": "Découverte"
+        },
+        {
+          "type": "text",
+          "id": "opt1_sub",
+          "label": "Sous-texte",
+          "default": "Standard"
+        },
+        {
+          "type": "header",
+          "content": "Option 2 (2 Unités)"
+        },
+        {
+          "type": "text",
+          "id": "opt2_label",
+          "label": "Label",
+          "default": "Duo"
+        },
+        {
+          "type": "text",
+          "id": "opt2_sub",
+          "label": "Sous-texte",
+          "default": "Économisez 10%"
+        },
+        {
+          "type": "text",
+          "id": "opt2_badge",
+          "label": "Badge",
+          "default": "POPULAIRE"
+        },
+        {
+          "type": "header",
+          "content": "Option 3 (3 Unités)"
+        },
+        {
+          "type": "text",
+          "id": "opt3_label",
+          "label": "Label",
+          "default": "Cure Complète"
+        },
+        {
+          "type": "text",
+          "id": "opt3_sub",
+          "label": "Sous-texte",
+          "default": "Économisez 20%"
+        },
+        {
+          "type": "text",
+          "id": "opt3_badge",
+          "label": "Badge",
+          "default": "MEILLEURE OFFRE"
+        }
+      ]
     }
   ],
   "presets": [
@@ -401,7 +619,8 @@
       "name": "Milaura Hero Premium",
       "blocks": [
         { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison offerte dès 50€" } },
-        { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } }
+        { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
+        { "type": "volume_offer" }
       ]
     }
   ]
