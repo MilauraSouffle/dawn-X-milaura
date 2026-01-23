@@ -16,49 +16,205 @@
     }
   }
 
-  /* Layout Grid */
+  /* ===========================================
+     MOBILE-FIRST LAYOUT (< 750px)
+     Ordre: Titre/Prix → Photo → Actions
+     =========================================== */
   .milaura-hero-wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--milaura-spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
+  /* --- GROUPE 1: Header (Titre + Avis + Prix) --- */
+  .milaura-hero-header-group {
+    order: 1;
+    text-align: center;
+  }
+
+  /* --- GROUPE 2: Galerie Photo --- */
+  .milaura-hero-gallery-column {
+    order: 2;
+    width: 85vw;
+    max-width: 400px;
+    margin: 8px auto 16px;
+  }
+
+  .milaura-hero-gallery-column .product__media-item {
+    width: 100% !important;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .milaura-hero-gallery-column .product__media-item img,
+  .milaura-hero-gallery-column .product__media-item .media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Masquer les thumbnails sur mobile */
+  .milaura-hero-gallery-column .thumbnail-list {
+    display: none;
+  }
+
+  /* --- GROUPE 3: Actions (Variants + Volume + Bouton) --- */
+  .milaura-hero-actions-group {
+    order: 3;
+  }
+
+  /* ===========================================
+     TITRE MOBILE - Spécifications exactes
+     =========================================== */
+  .milaura-product__title {
+    font-family: var(--milaura-font-heading);
+    font-size: 28px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--milaura-text);
+  }
+
+  /* Rating Badge */
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    text-decoration: none;
+    color: inherit;
+    font-size: 14px;
+  }
+
+  .rating-badge .stars {
+    color: var(--milaura-gold);
+    font-size: 16px;
+    letter-spacing: -1px;
+  }
+
+  .rating-badge .rating-text {
+    opacity: 0.7;
+    font-size: 13px;
+  }
+
+  /* Prix */
+  .milaura-product__price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--milaura-gold);
+    margin-bottom: 0;
+  }
+
+  /* ===========================================
+     VARIANTS MOBILE - Compact et clair
+     =========================================== */
+  .milaura-hero-actions-group .product-form__input {
+    margin-bottom: 16px;
+    border: none;
+    padding: 0;
+  }
+
+  .milaura-hero-actions-group .form__label {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+    color: var(--milaura-text);
+  }
+
+  .variant-options-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Description link */
+  .read-more-link {
+    text-decoration: underline;
+    color: var(--milaura-gold);
+    font-weight: 500;
+  }
+
+  /* ===========================================
+     DESKTOP LAYOUT (≥ 990px)
+     Grille 2 colonnes: Galerie | Infos
+     =========================================== */
   @media screen and (min-width: 990px) {
     .milaura-hero-wrapper {
-      grid-template-columns: 1.5fr 1fr;
-      gap: var(--milaura-spacing-xl);
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "gallery header"
+        "gallery actions";
+      gap: var(--milaura-spacing-lg);
       align-items: start;
     }
 
-    .milaura-hero-info-column {
-      position: sticky;
-      top: calc(var(--header-height-offset, 96px) + 24px);
-      /* Vision OS Glassmorphism - cohérent avec hero-showcase */
+    .milaura-hero-header-group {
+      grid-area: header;
+      text-align: left;
+      /* Glassmorphism card - top part */
       background: rgba(255, 255, 255, 0.78);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(192, 160, 98, 0.18);
+      border-radius: var(--milaura-border-radius) var(--milaura-border-radius) 0 0;
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-md) var(--milaura-spacing-sm);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    }
+
+    .milaura-hero-gallery-column {
+      grid-area: gallery;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+    }
+
+    .milaura-hero-gallery-column .thumbnail-list {
+      display: flex;
+    }
+
+    .milaura-hero-gallery-column .product__media-item {
+      aspect-ratio: auto;
       border-radius: var(--milaura-border-radius);
-      padding: var(--milaura-spacing-md);
+    }
+
+    .milaura-hero-actions-group {
+      grid-area: actions;
+      /* Glassmorphism card - bottom part */
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(192, 160, 98, 0.18);
+      border-top: none;
+      border-radius: 0 0 var(--milaura-border-radius) var(--milaura-border-radius);
+      padding: var(--milaura-spacing-sm) var(--milaura-spacing-md) var(--milaura-spacing-md);
       box-shadow:
         0 20px 50px rgba(0,0,0,0.06),
         0 0 0 1px rgba(255,255,255,0.5) inset;
     }
+
+    /* Desktop title size */
+    .milaura-product__title {
+      font-size: 3rem;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .milaura-product__price {
+      font-size: 2rem;
+    }
   }
 
-  /* Info Column Styling */
-  .milaura-product__title {
-    font-family: var(--milaura-font-heading);
-    font-size: 3.2rem;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-  }
-
-  .milaura-product__price {
-    font-size: 2.2rem;
-    font-weight: 600;
-    color: var(--milaura-gold);
-    margin-bottom: 1.5rem;
+  /* Sticky info column on desktop */
+  @media screen and (min-width: 990px) {
+    .milaura-hero-header-group,
+    .milaura-hero-actions-group {
+      position: sticky;
+      top: calc(var(--header-height-offset, 96px) + 24px);
+    }
   }
 
   /* Variant Tiles (Nutrimuscle Style) */
@@ -268,29 +424,113 @@
     outline-offset: 3px;
   }
 
-  /* Mobile Responsive Fixes */
-  @media screen and (max-width: 768px) {
+  /* ===========================================
+     MOBILE RESPONSIVE (< 750px)
+     Optimisations conversion mobile
+     =========================================== */
+  @media screen and (max-width: 749px) {
+    /* Titre mobile - specs exactes */
     .milaura-product__title {
-      font-size: 2.4rem;
+      font-size: 28px !important;
+      line-height: 1.2 !important;
+      margin-bottom: 8px !important;
     }
+
+    /* Volume cards compactes */
+    .milaura-volume-grid {
+      gap: 10px;
+      margin: 16px 0;
+    }
+
     .volume-card {
-      padding: 1rem 1.2rem;
+      padding: 12px 14px;
+      border-radius: 12px;
     }
-    .volume-text h5 { font-size: 1.4rem; }
-    .volume-text p { font-size: 1.1rem; }
-    .volume-price { font-size: 1.4rem; }
+
+    .volume-card.is-selected {
+      transform: none; /* Pas de scale sur mobile */
+    }
+
+    .volume-text h5 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .volume-text p {
+      font-size: 12px;
+    }
+    .volume-price {
+      font-size: 15px;
+    }
     .volume-check {
       width: 18px;
       height: 18px;
-      margin-right: 1rem;
+      margin-right: 10px;
     }
     .volume-check::after {
       width: 6px;
       height: 6px;
     }
+    .volume-card-badge {
+      font-size: 9px;
+      padding: 3px 8px;
+      top: -10px;
+      right: 12px;
+    }
+    .volume-section-title {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    /* Bouton CTA mobile - full width, bien visible */
+    .milaura-buy-row {
+      margin-top: 16px;
+      gap: 10px;
+    }
+
     .milaura-add-btn {
-      font-size: 1.4rem;
-      padding: 1.2rem;
+      font-size: 16px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Quantité plus compacte */
+    .product-form__quantity {
+      width: 80px !important;
+    }
+
+    /* Trust badges en ligne */
+    .milaura-trust-badges {
+      margin-top: 16px;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px 16px;
+      font-size: 12px;
+    }
+
+    .milaura-trust-item {
+      gap: 6px;
+    }
+
+    .milaura-trust-icon {
+      font-size: 14px;
+    }
+
+    /* Sticky bar plus compact */
+    .milaura-sticky-bar {
+      padding: 12px 16px;
+    }
+
+    .sticky-info h4 {
+      font-size: 13px;
+    }
+
+    .sticky-btn {
+      padding: 10px 16px;
+      font-size: 14px;
     }
   }
 {% endstyle %}
@@ -299,59 +539,67 @@
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
 <div class="page-width section-{{ section.id }}-padding">
+  <product-info id="ProductInfo-{{ section.id }}" data-section="{{ section.id }}" data-url="{{ product.url }}">
   <div class="milaura-hero-wrapper">
-    
-    <!-- LEFT: Gallery -->
+
+    <!-- ============================================
+         GROUPE 1: HEADER (Titre + Avis + Prix)
+         Mobile: order 1 (en haut)
+         ============================================ -->
+    <div class="milaura-hero-header-group">
+      {%- if section.settings.show_vendor -%}
+        <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
+      {%- endif -%}
+
+      <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
+
+      <a href="#Reviews" class="rating-badge">
+        <span class="stars">★★★★★</span>
+        <span class="rating-text">(4.9/5 · 127 avis)</span>
+      </a>
+
+      <div class="no-js-hidden" id="price-{{ section.id }}" role="status">
+        {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'milaura-product__price' -%}
+      </div>
+    </div>
+
+    <!-- ============================================
+         GROUPE 2: GALERIE PHOTO
+         Mobile: order 2 (au milieu, GRANDE)
+         ============================================ -->
     <div class="milaura-hero-gallery-column">
-      {% render 'product-media-gallery', 
-        product: product, 
-        variant_images: section.settings.variant_images, 
+      {% render 'product-media-gallery',
+        product: product,
+        variant_images: section.settings.variant_images,
         is_duplicate: false,
-        gallery_layout: section.settings.gallery_layout 
+        gallery_layout: section.settings.gallery_layout
       %}
     </div>
 
-    <!-- RIGHT: Info & Buy -->
-    <div class="milaura-hero-info-column">
-      <product-info id="ProductInfo-{{ section.id }}" data-section="{{ section.id }}" data-url="{{ product.url }}">
-        
-        <!-- Vendor / Breadcrumb -->
-        {%- if section.settings.show_vendor -%}
-          <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
-        {%- endif -%}
+    <!-- ============================================
+         GROUPE 3: ACTIONS (Variants + Volume + CTA)
+         Mobile: order 3 (en bas)
+         ============================================ -->
+    <div class="milaura-hero-actions-group">
 
-        <!-- Title -->
-        <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
+      <!-- Variant Picker -->
+      {%- unless product.has_only_default_variant -%}
+        <variant-radios class="no-js-hidden milaura-variant-picker" data-section="{{ section.id }}" data-url="{{ product.url }}" data-update-url="false">
+          {%- for option in product.options_with_values -%}
+            <fieldset class="js product-form__input">
+              <legend class="form__label">{{ option.name }}</legend>
+              <div class="variant-options-row">
+                {% render 'product-variant-options', product: product, option: option, block: block, picker_type: 'button' %}
+              </div>
+            </fieldset>
+          {%- endfor -%}
+          <script type="application/json">
+            {{ product.variants | json }}
+          </script>
+        </variant-radios>
+      {%- endunless -%}
 
-        <!-- Reviews Badge -->
-        <a href="#Reviews" class="rating-badge" style="display:inline-flex; align-items:center; gap:5px; margin-bottom:1rem; text-decoration:none; color:inherit;">
-          <span style="color:var(--milaura-gold)">★★★★★</span>
-          <span style="font-size:1.4rem; opacity:0.7;">(4.9/5)</span>
-        </a>
-
-        <!-- Price -->
-        <div class="no-js-hidden" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
-          {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'milaura-product__price' -%}
-        </div>
-
-        <!-- Variant Picker (Dawn Standard for logic, Nutrimuscle style for CSS) -->
-        {%- unless product.has_only_default_variant -%}
-          <variant-radios class="no-js-hidden" data-section="{{ section.id }}" data-url="{{ product.url }}" data-update-url="false">
-            {%- for option in product.options_with_values -%}
-              <fieldset class="js product-form__input">
-                <legend class="form__label" style="font-weight:bold; margin-bottom:0.5rem;">{{ option.name }}</legend>
-                <div style="display:flex; flex-wrap:wrap; gap:10px;">
-                  {% render 'product-variant-options', product: product, option: option, block: block, picker_type: 'button' %}
-                </div>
-              </fieldset>
-            {%- endfor -%}
-            <script type="application/json">
-              {{ product.variants | json }}
-            </script>
-          </variant-radios>
-        {%- endunless -%}
-
-        <!-- Volume Offer Block -->
+      <!-- Volume Offer Block -->
         {%- for block in section.blocks -%}
           {%- if block.type == 'volume_offer' -%}
             {% if block.settings.title != blank %}
@@ -494,16 +742,19 @@
         </div>
 
         <!-- Description Extract (Optional) -->
-        {%- if section.settings.show_description -%}
-          <div class="product__description rte quick-add-hidden" style="margin-top:2rem;">
-            {{ product.description | strip_html | truncatewords: 30 }}
-            <a href="#ProductTabs" style="text-decoration:underline; color:var(--milaura-gold);">Lire la suite</a>
-          </div>
-        {%- endif -%}
+      {%- if section.settings.show_description -%}
+        <div class="product__description rte quick-add-hidden">
+          {{ product.description | strip_html | truncatewords: 30 }}
+          <a href="#ProductTabs" class="read-more-link">Lire la suite</a>
+        </div>
+      {%- endif -%}
 
-      </product-info>
     </div>
+    <!-- Fin GROUPE 3: Actions -->
+
   </div>
+  <!-- Fin milaura-hero-wrapper -->
+  </product-info>
 </div>
 
 <!-- Sticky Bottom Bar (Hidden by default) -->
@@ -568,8 +819,14 @@
     {
       "type": "checkbox",
       "id": "show_quantity",
-      "default": true,
+      "default": false,
       "label": "Sélecteur quantité"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": false,
+      "label": "Afficher extrait description"
     },
     {
       "type": "select",
