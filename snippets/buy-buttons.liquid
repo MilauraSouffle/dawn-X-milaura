@@ -60,7 +60,35 @@
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
 
-        <div class="product-form__buttons">
+        <div class="product-form__buttons milaura-buy-block">
+          
+          {%- comment -%} MILAURA LUXE QUANTITY SELECTOR {%- endcomment -%}
+          <div class="milaura-quantity-capsule">
+             <quantity-input class="quantity quantity--milaura" data-url="{{ product.url }}" data-section="{{ section.id }}">
+              <button class="quantity__button no-js-hidden" name="minus" type="button">
+                <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: product.title | escape }}</span>
+                <span class="svg-wrapper">
+                  <svg width="12" height="2" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1H12" stroke="currentColor" stroke-width="1.5"/></svg>
+                </span>
+              </button>
+              <input
+                class="quantity__input"
+                type="number"
+                name="quantity"
+                id="Quantity-{{ section.id }}"
+                min="1"
+                value="1"
+                form="{{ product_form_id }}"
+              >
+              <button class="quantity__button no-js-hidden" name="plus" type="button">
+                <span class="visually-hidden">{{ 'products.product.quantity.increase' | t: product: product.title | escape }}</span>
+                <span class="svg-wrapper">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 0V12M0 6H12" stroke="currentColor" stroke-width="1.5"/></svg>
+                </span>
+              </button>
+            </quantity-input>
+          </div>
+
           {%- liquid
             assign check_against_inventory = true
             if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
@@ -97,6 +125,102 @@
             {{ form | payment_button }}
           {%- endif -%}
         </div>
+
+        <style>
+          .milaura-buy-block {
+            display: flex !important;
+            gap: 12px;
+            align-items: stretch;
+            width: 100%;
+          }
+          
+          .milaura-quantity-capsule {
+            flex: 0 0 auto;
+            width: 100px; /* Taille fixe compacte */
+          }
+
+          .quantity--milaura {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%; /* S'adapte à la hauteur du bouton */
+            min-height: 46px; /* Hauteur minimale standard */
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 50px; /* Forme pilule */
+            background: #ffffff;
+            padding: 0 4px;
+            position: relative;
+            transition: all 0.2s ease;
+          }
+          
+          .quantity--milaura:hover {
+            border-color: #C0A062;
+            box-shadow: 0 2px 8px rgba(192, 160, 98, 0.15);
+          }
+
+          /* Input number clean */
+          .quantity--milaura .quantity__input {
+            width: 30px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            font-size: 15px;
+            font-weight: 500;
+            color: #121212;
+            -moz-appearance: textfield;
+            height: 100%;
+            flex-grow: 1;
+            opacity: 1;
+          }
+          .quantity--milaura .quantity__input:focus {
+             outline: none;
+             box-shadow: none;
+          }
+          .quantity--milaura .quantity__input::-webkit-outer-spin-button,
+          .quantity--milaura .quantity__input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          /* Buttons +/- */
+          .quantity--milaura .quantity__button {
+            width: 32px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #555;
+            padding: 0;
+            transition: color 0.2s;
+          }
+          .quantity--milaura .quantity__button:hover {
+            color: #C0A062; /* Or au survol */
+            background: transparent;
+          }
+          .quantity--milaura .quantity__button svg {
+            width: 10px;
+            height: 10px;
+          }
+          
+          /* Remove Dawn's default "After" ring */
+          .quantity--milaura:after {
+            content: none !important;
+            display: none !important;
+          }
+
+          /* Ensure Add to Cart takes remaining space */
+          .product-form__submit {
+            flex: 1;
+            border-radius: 50px !important; /* Force pill shape on button too */
+            margin-bottom: 0 !important; /* Remove Dawn spacing */
+          }
+        </style>
       {%- endform -%}
     </product-form>
   {%- else -%}
