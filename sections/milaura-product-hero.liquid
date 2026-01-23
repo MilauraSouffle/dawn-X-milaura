@@ -776,53 +776,6 @@
   </product-info>
 </div>
 
-<!-- Sticky Bottom Bar (Hidden by default) -->
-<div id="MilauraStickyBar" class="milaura-sticky-bar">
-  <div class="sticky-info">
-    <h4>{{ product.title }}</h4>
-    <span id="StickyPrice">
-      {{ product.selected_or_first_available_variant.price | money }}
-    </span>
-  </div>
-  <button class="sticky-btn" onclick="document.querySelector('.milaura-add-btn').click()">
-    Ajouter
-  </button>
-</div>
-
-<!-- Sticky Logic -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const stickyBar = document.getElementById('MilauraStickyBar');
-    const mainButton = document.querySelector('.milaura-add-btn');
-    const stickyPrice = document.getElementById('StickyPrice');
-    
-    // Show sticky bar when main button scrolls out of view
-    if(stickyBar && mainButton) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) {
-            stickyBar.classList.add('is-visible');
-          } else {
-            stickyBar.classList.remove('is-visible');
-          }
-        });
-      }, { threshold: 0 });
-      
-      observer.observe(mainButton);
-    }
-    
-    // Update sticky price when main price changes (Variant change)
-    // We listen to the price update event from Dawn or simple mutation observer
-    const priceNode = document.querySelector('.milaura-product__price');
-    if(priceNode && stickyPrice) {
-      const observer = new MutationObserver(() => {
-        stickyPrice.innerHTML = priceNode.innerHTML;
-      });
-      observer.observe(priceNode, { childList: true, subtree: true, characterData: true });
-    }
-  });
-</script>
-
 {% schema %}
 {
   "name": "Milaura Hero Premium",

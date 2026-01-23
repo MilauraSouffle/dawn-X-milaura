@@ -1,0 +1,324 @@
+{% comment %}
+  MILAURA STICKY BAR
+  Barre d'ajout au panier flottante.
+  S'affiche uniquement quand le bouton principal n'est plus visible (scroll vers le bas).
+  Inclut un espace marketing pour la conversion.
+{% endcomment %}
+
+{%- if section.settings.enable_sticky_bar -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --sticky-bg: {{ section.settings.bg_color }};
+      --sticky-text: {{ section.settings.text_color }};
+      --sticky-gold: var(--milaura-gold, #C0A062);
+      z-index: 999;
+      position: relative;
+    }
+
+    .milaura-sticky-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--sticky-bg);
+      padding: 12px 24px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      
+      /* État initial : caché vers le bas */
+      transform: translateY(101%);
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      border-top: 1px solid rgba(192, 160, 98, 0.2);
+    }
+
+    .milaura-sticky-bar.is-visible {
+      transform: translateY(0);
+    }
+
+    /* --- GAUCHE : INFOS PRODUIT --- */
+    .sticky-product-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .sticky-title {
+      font-family: var(--milaura-font-heading, serif);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--sticky-text);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .sticky-price {
+      font-size: 15px;
+      color: var(--sticky-gold);
+      font-weight: 700;
+    }
+
+    /* --- CENTRE : MARKETING TEXT (L'espace vide comblé) --- */
+    .sticky-marketing {
+      flex: 1;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--sticky-text);
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    
+    .sticky-marketing span {
+      background: rgba(192, 160, 98, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      color: #9A7B4F;
+    }
+
+    /* --- DROITE : BOUTON --- */
+    .sticky-btn-wrapper {
+      flex-shrink: 0;
+    }
+
+    .sticky-btn {
+      background: var(--sticky-gold);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px rgba(192, 160, 98, 0.25);
+    }
+
+    .sticky-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(192, 160, 98, 0.35);
+      background: #b08d4b;
+    }
+
+    /* --- MOBILE RESPONSIVE --- */
+    @media screen and (max-width: 768px) {
+      .milaura-sticky-bar {
+        padding: 10px 16px;
+        gap: 12px;
+        flex-wrap: wrap; 
+      }
+
+      /* Sur mobile, on cache le titre du produit pour gagner de la place, 
+         ou on le garde très petit. Ici je choisis de prioriser le marketing + prix */
+      .sticky-title {
+        display: none;
+      }
+
+      .sticky-marketing {
+        width: 100%;
+        order: -1; /* Mettre le marketing tout en haut */
+        font-size: 12px;
+        margin-bottom: 4px;
+        display: none; /* Par défaut caché sur mobile sauf si option cochée */
+      }
+      
+      {% if section.settings.show_marketing_mobile %}
+      .sticky-marketing {
+        display: flex;
+      }
+      {% endif %}
+
+      .sticky-product-info {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      .sticky-price {
+        font-size: 16px;
+      }
+
+      .sticky-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+        flex: 1; /* Le bouton prend la place restante */
+      }
+      
+      .sticky-btn-wrapper {
+        flex: 1;
+        display: flex;
+      }
+      
+      .sticky-btn {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <div id="MilauraStickyBarSection" class="milaura-sticky-bar">
+    
+    <!-- Info Gauche -->
+    <div class="sticky-product-info">
+      <h4 class="sticky-title">{{ product.title | truncate: 25 }}</h4>
+      <div id="StickyBarPrice" class="sticky-price">
+        {{ product.selected_or_first_available_variant.price | money }}
+      </div>
+    </div>
+
+    <!-- Marketing Centre -->
+    {% if section.settings.marketing_text != blank %}
+      <div class="sticky-marketing">
+        <span>{{ section.settings.marketing_text }}</span>
+      </div>
+    {% endif %}
+
+    <!-- Bouton Droite -->
+    <div class="sticky-btn-wrapper">
+      <button class="sticky-btn" id="TriggerMainAtc">
+        {{ section.settings.button_text }}
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const stickyBar = document.getElementById('MilauraStickyBarSection');
+      const triggerBtn = document.getElementById('TriggerMainAtc');
+      
+      // Sélecteurs pour trouver le bouton principal dans la page
+      // On cherche large pour être sûr de le trouver (Hero, Product Form standard, etc.)
+      const mainButtonSelectors = [
+        '.milaura-add-btn',
+        'button[name="add"]',
+        '.product-form__submit',
+        '[data-add-to-cart]'
+      ];
+
+      let mainButton = null;
+      for (const sel of mainButtonSelectors) {
+        const found = document.querySelector(sel);
+        // On vérifie qu'il est visible et fait partie du contenu principal
+        if (found && found.offsetParent !== null) {
+          mainButton = found;
+          break;
+        }
+      }
+
+      // 1. Logique d'affichage (Scroll)
+      if (stickyBar && mainButton) {
+        const handleScroll = () => {
+          const rect = mainButton.getBoundingClientRect();
+          // Le bouton est-il passé au-dessus de l'écran ? (top < 0)
+          // On ajoute une marge de sécurité (ex: -50px) pour être sûr qu'il est bien sorti
+          if (rect.top < -50) {
+            stickyBar.classList.add('is-visible');
+          } else {
+            stickyBar.classList.remove('is-visible');
+          }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Check initial
+        handleScroll();
+      } else {
+        // Fallback si pas de bouton trouvé (ex: page bizarre), on affiche après un certain scroll
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 800) stickyBar.classList.add('is-visible');
+          else stickyBar.classList.remove('is-visible');
+        }, { passive: true });
+      }
+
+      // 2. Logique de clic
+      if (triggerBtn && mainButton) {
+        triggerBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          mainButton.click();
+          // Petit feedback visuel
+          const originalText = triggerBtn.textContent;
+          triggerBtn.textContent = 'Ajout...';
+          setTimeout(() => { triggerBtn.textContent = originalText; }, 1000);
+        });
+      }
+
+      // 3. Mise à jour du prix (si variant change)
+      const stickyPrice = document.getElementById('StickyBarPrice');
+      const mainPrice = document.querySelector('.price-item--regular') || document.querySelector('.milaura-product__price');
+      
+      if (stickyPrice && mainPrice) {
+        const observer = new MutationObserver(() => {
+           // On nettoie un peu le HTML pour éviter les duplications
+           stickyPrice.innerHTML = mainPrice.innerText; 
+        });
+        observer.observe(mainPrice, { childList: true, subtree: true, characterData: true });
+      }
+    });
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Milaura Sticky Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_bar",
+      "label": "Activer la Sticky Bar",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Ajouter au panier"
+    },
+    {
+      "type": "text",
+      "id": "marketing_text",
+      "label": "Texte Marketing (Centre)",
+      "default": "🔥 Plus que quelques pièces !",
+      "info": "Apparaît entre le prix et le bouton sur Desktop."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_marketing_mobile",
+      "label": "Afficher le marketing sur mobile",
+      "default": false,
+      "info": "Peut prendre de la place verticalement."
+    },
+    {
+      "type": "header",
+      "content": "Apparence"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#1a1a1a"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Sticky Bar"
+    }
+  ]
+}
+{% endschema %}
