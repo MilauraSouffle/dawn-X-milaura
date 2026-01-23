@@ -118,7 +118,7 @@
     width: 100%;
   }
 
-  /* DESKTOP MEDIA GRID */
+  /* DESKTOP MEDIA GRID (≥ 990px) */
   @media screen and (min-width: 990px) {
     .milaura-hero-wrapper {
       display: grid;
@@ -131,28 +131,28 @@
       overflow: visible;
     }
 
+    /* FIX 1: Header (Titre) - Plus de Sticky, plus de bloc autonome */
     .milaura-hero-header-group {
       grid-area: header;
       text-align: left;
-      position: sticky;
-      top: 120px;
-      z-index: 2;
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(192, 160, 98, 0.18);
-      border-radius: var(--milaura-border-radius) var(--milaura-border-radius) 0 0;
-      padding: 24px;
+      position: static !important; /* Reste en place */
+      background: transparent !important;
+      border: none !important;
+      padding: 0 0 20px 0 !important;
+      margin-bottom: 0;
     }
 
     .milaura-hero-actions-group {
       grid-area: actions;
+      /* On garde les actions sticky si voulu, ou on enlève aussi. 
+         Ici je garde sticky pour les actions car c'est pratique, 
+         mais je nettoie le style bloc */
       position: sticky;
-      top: auto; /* Géré par le flux */
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(192, 160, 98, 0.18);
-      border-top: none;
-      border-radius: 0 0 var(--milaura-border-radius) var(--milaura-border-radius);
+      top: calc(var(--header-height-offset, 90px) + 20px);
+      background: rgba(255, 255, 255, 0.6); /* Plus subtil */
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(192, 160, 98, 0.1);
+      border-radius: 20px;
       padding: 24px;
     }
 
@@ -164,30 +164,51 @@
 
     .product__media-list {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+      grid-template-columns: repeat(2, 1fr);
       gap: 16px;
       overflow: visible;
       scroll-snap-type: none;
       padding: 0;
     }
 
-    /* Premier média en grand (Hero) */
     .product__media-item:first-child {
       grid-column: span 2;
     }
 
     .product-media-container {
-      padding-top: 100%; /* Ratio carré pour uniformité */
+      padding-top: 100%;
       border-radius: 16px;
       border: 1px solid rgba(0,0,0,0.05);
     }
     
     .slider-buttons {
-      display: none; /* Pas de pagination en desktop */
+      display: none;
     }
   }
 
-  /* TYPOGRAPHIE & ELEMENTS (Style existant préservé) */
+  /* FIX 2: AVIS (Suppression du bleu) */
+  .rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    text-decoration: none !important;
+    color: var(--milaura-text) !important; /* Force le noir/texte */
+  }
+
+  .rating-badge .stars {
+    color: var(--milaura-gold) !important; /* Force le doré */
+    font-size: 16px;
+    letter-spacing: -1px;
+  }
+
+  .rating-badge .rating-text {
+    opacity: 0.7;
+    font-size: 13px;
+    color: inherit;
+  }
+
+  /* TYPOGRAPHIE & ELEMENTS */
   .milaura-product__title {
     font-family: var(--milaura-font-heading);
     font-size: 28px;
@@ -203,6 +224,67 @@
     font-size: 24px;
     font-weight: 700;
     color: var(--milaura-gold);
+  }
+
+  /* FIX 4: VARIANTES BULLES (Glassmorphism compact) */
+  .milaura-hero-actions-group .product-form__input {
+    margin-bottom: 12px;
+    border: none;
+    padding: 0;
+  }
+
+  .milaura-hero-actions-group .form__label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    opacity: 0.8;
+    display: block;
+    color: var(--milaura-text);
+  }
+
+  .variant-options-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Espace serré */
+  }
+
+  /* Reset radical du style radio */
+  .product-form__input input[type='radio'] {
+    clip: rect(0, 0, 0, 0);
+    overflow: hidden;
+    position: absolute;
+    height: 1px;
+    width: 1px;
+  }
+
+  /* La Bulle */
+  .product-form__input input[type='radio'] + label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(5px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    border-radius: 20px !important; /* Forme pilule */
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: var(--milaura-text) !important;
+    margin: 0 !important;
+    min-width: auto !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  }
+
+  /* État sélectionné */
+  .product-form__input input[type='radio']:checked + label {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: var(--milaura-gold) !important;
+    color: var(--milaura-gold) !important; /* Texte doré */
+    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.2);
+    font-weight: 700 !important;
   }
 
   /* Volume Cards */
@@ -225,11 +307,32 @@
     border-color: var(--milaura-gold); background: var(--milaura-gold);
   }
 
-  /* Bouton d'achat */
-  .milaura-buy-row { display: flex; gap: 10px; margin-top: 20px; }
+  /* FIX 3: BOUTON & QUANTITÉ (Overflow) */
+  .milaura-buy-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap; /* Autorise le passage à la ligne si trop petit */
+  }
+
+  /* Sélecteur quantité compact */
+  .product-form__quantity {
+    width: 90px !important; /* Largeur fixe réduite */
+    flex-shrink: 0;
+  }
+  
+  .product-form__quantity .quantity {
+    width: 100%;
+    min-height: 48px; /* Hauteur standard CTA */
+  }
+
+  /* Bouton qui prend le reste */
   .milaura-add-btn {
-    flex: 1; border: none; cursor: pointer; width: 100%;
-    box-sizing: border-box; /* Style géré par .milaura-btn-gold global */
+    flex: 1;
+    min-width: 180px; /* Largeur min pour ne pas être écrasé */
+    border: none;
+    cursor: pointer;
+    /* Style géré par .milaura-btn-gold global */
   }
   .milaura-add-btn:disabled { background: #ccc !important; cursor: not-allowed; box-shadow: none !important; }
 
