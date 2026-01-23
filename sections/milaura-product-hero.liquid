@@ -2,6 +2,7 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
 {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
 {% style %}
   .section-{{ section.id }}-padding {
@@ -17,8 +18,7 @@
   }
 
   /* ===========================================
-     MOBILE-FIRST LAYOUT (< 750px)
-     Ordre: Titre/Prix → Photo → Actions
+     LAYOUT GENERAL
      =========================================== */
   .milaura-hero-wrapper {
     display: flex;
@@ -26,132 +26,99 @@
     gap: 16px;
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    padding: 0 16px; /* Global mobile padding for content */
+    overflow-x: hidden;
+    padding: 0 16px;
     box-sizing: border-box;
   }
 
-  /* --- GROUPE 1: Header (Titre + Avis + Prix) --- */
+  /* --- GROUPE 1: Header --- */
   .milaura-hero-header-group {
     order: 1;
     text-align: center;
     width: 100%;
-    box-sizing: border-box;
   }
 
-  /* --- GROUPE 2: Galerie Photo --- */
+  /* --- GROUPE 2: Media Gallery (MODERNE) --- */
   .milaura-hero-gallery-column {
     order: 2;
-    width: 100%; /* Use full width of parent (which has padding) */
-    max-width: 400px;
-    margin: 8px auto 16px;
+    width: 100%;
+    margin-bottom: 16px;
   }
 
-  .milaura-hero-gallery-column .product__media-item {
-    width: 100% !important;
-    aspect-ratio: 1 / 1;
+  /* Slider Mobile */
+  .product__media-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+    margin: 0;
+    list-style: none;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .product__media-list::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+
+  .product__media-item {
+    flex: 0 0 100%; /* 1 par vue sur mobile */
+    scroll-snap-align: center;
+    width: 100%;
+    max-width: 100%;
     border-radius: 12px;
     overflow: hidden;
+    position: relative;
   }
 
-  .milaura-hero-gallery-column .product__media-item img,
-  .milaura-hero-gallery-column .product__media-item .media img {
+  .product-media-container {
+    position: relative;
+    width: 100%;
+    padding-top: 100%; /* Carré par défaut */
+  }
+
+  .product-media-container img,
+  .product-media-container video,
+  .product-media-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  /* Masquer les thumbnails sur mobile */
-  .milaura-hero-gallery-column .thumbnail-list {
-    display: none;
+  /* Pagination Mobile (Dots) */
+  .slider-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: -10px;
   }
 
-  /* --- GROUPE 3: Actions (Variants + Volume + Bouton) --- */
+  .slider-counter__link--dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    transition: all 0.3s;
+    display: block;
+  }
+
+  .slider-counter__link--active .dot {
+    background: var(--milaura-gold);
+    transform: scale(1.2);
+  }
+
+  /* --- GROUPE 3: Actions --- */
   .milaura-hero-actions-group {
     order: 3;
     width: 100%;
-    box-sizing: border-box;
   }
 
-  /* ===========================================
-     TITRE MOBILE - Spécifications exactes
-     =========================================== */
-  .milaura-product__title {
-    font-family: var(--milaura-font-heading);
-    font-size: 28px;
-    line-height: 1.2;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: var(--milaura-text);
-  }
-
-  /* Rating Badge */
-  .rating-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 12px;
-    text-decoration: none;
-    color: inherit;
-    font-size: 14px;
-  }
-
-  .rating-badge .stars {
-    color: var(--milaura-gold);
-    font-size: 16px;
-    letter-spacing: -1px;
-  }
-
-  .rating-badge .rating-text {
-    opacity: 0.7;
-    font-size: 13px;
-  }
-
-  /* Prix */
-  .milaura-product__price {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--milaura-gold);
-    margin-bottom: 0;
-  }
-
-  /* ===========================================
-     VARIANTS MOBILE - Compact et clair
-     =========================================== */
-  .milaura-hero-actions-group .product-form__input {
-    margin-bottom: 16px;
-    border: none;
-    padding: 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .milaura-hero-actions-group .form__label {
-    font-weight: 700;
-    font-size: 14px;
-    margin-bottom: 8px;
-    display: block;
-    color: var(--milaura-text);
-  }
-
-  .variant-options-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-  }
-
-  /* Description link */
-  .read-more-link {
-    text-decoration: underline;
-    color: var(--milaura-gold);
-    font-weight: 500;
-  }
-
-  /* ===========================================
-     DESKTOP LAYOUT (≥ 990px)
-     Grille 2 colonnes: Galerie | Infos
-     =========================================== */
+  /* DESKTOP MEDIA GRID */
   @media screen and (min-width: 990px) {
     .milaura-hero-wrapper {
       display: grid;
@@ -160,386 +127,112 @@
         "gallery header"
         "gallery actions";
       gap: var(--milaura-spacing-lg);
-      align-items: start;
-      padding: 0; /* Reset mobile padding */
+      padding: 0;
       overflow: visible;
     }
 
     .milaura-hero-header-group {
       grid-area: header;
       text-align: left;
-      /* Glassmorphism card - top part */
+      position: sticky;
+      top: 120px;
+      z-index: 2;
       background: rgba(255, 255, 255, 0.78);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(192, 160, 98, 0.18);
       border-radius: var(--milaura-border-radius) var(--milaura-border-radius) 0 0;
-      padding: var(--milaura-spacing-md) var(--milaura-spacing-md) var(--milaura-spacing-sm);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-    }
-
-    .milaura-hero-gallery-column {
-      grid-area: gallery;
-      width: 100%;
-      max-width: none;
-      margin: 0;
-    }
-
-    .milaura-hero-gallery-column .thumbnail-list {
-      display: flex;
-    }
-
-    .milaura-hero-gallery-column .product__media-item {
-      aspect-ratio: auto;
-      border-radius: var(--milaura-border-radius);
+      padding: 24px;
     }
 
     .milaura-hero-actions-group {
       grid-area: actions;
-      /* Glassmorphism card - bottom part */
+      position: sticky;
+      top: auto; /* Géré par le flux */
       background: rgba(255, 255, 255, 0.78);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(192, 160, 98, 0.18);
       border-top: none;
       border-radius: 0 0 var(--milaura-border-radius) var(--milaura-border-radius);
-      padding: var(--milaura-spacing-sm) var(--milaura-spacing-md) var(--milaura-spacing-md);
-      box-shadow:
-        0 20px 50px rgba(0,0,0,0.06),
-        0 0 0 1px rgba(255,255,255,0.5) inset;
+      padding: 24px;
     }
 
-    /* Desktop title size */
-    .milaura-product__title {
-      font-size: 3rem;
-      line-height: 1.1;
-      margin-bottom: 12px;
+    /* Grille Media Desktop */
+    .milaura-hero-gallery-column {
+      grid-area: gallery;
+      margin: 0;
     }
 
-    .milaura-product__price {
-      font-size: 2rem;
+    .product__media-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+      gap: 16px;
+      overflow: visible;
+      scroll-snap-type: none;
+      padding: 0;
+    }
+
+    /* Premier média en grand (Hero) */
+    .product__media-item:first-child {
+      grid-column: span 2;
+    }
+
+    .product-media-container {
+      padding-top: 100%; /* Ratio carré pour uniformité */
+      border-radius: 16px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .slider-buttons {
+      display: none; /* Pas de pagination en desktop */
     }
   }
 
-  /* Sticky info column on desktop */
+  /* TYPOGRAPHIE & ELEMENTS (Style existant préservé) */
+  .milaura-product__title {
+    font-family: var(--milaura-font-heading);
+    font-size: 28px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--milaura-text);
+  }
   @media screen and (min-width: 990px) {
-    .milaura-hero-header-group,
-    .milaura-hero-actions-group {
-      position: sticky;
-      top: calc(var(--header-height-offset, 96px) + 24px);
-    }
+    .milaura-product__title { font-size: 3rem; }
   }
 
-  /* Variant Tiles (Nutrimuscle Style) */
-  .product-form__input input[type='radio'] + label {
-    border-radius: 8px !important;
-    padding: 1rem 1.5rem !important;
-    font-weight: 600 !important;
-    border: 1px solid rgba(0,0,0,0.1) !important;
-    transition: all 0.2s ease;
-    background: #fff;
-    min-width: 60px;
-    text-align: center;
-  }
-
-  .product-form__input input[type='radio']:checked + label {
-    background-color: var(--milaura-gold) !important;
-    color: #fff !important;
-    border-color: var(--milaura-gold) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.2);
-  }
-
-  /* Quantity & Add Button Row - FIX OVERFLOW */
-  .milaura-buy-row {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    align-items: center;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  .milaura-add-btn {
-    flex: 1;
-    /* On laisse .milaura-btn-gold gérer le style */
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box; /* CRITIQUE pour éviter l'overflow */
-  }
-
-  .milaura-add-btn:disabled {
-    background: #ccc !important; /* Force le gris si désactivé */
-    cursor: not-allowed;
-    box-shadow: none !important;
-  }
-
-  /* Trust Badges Inline */
-  .milaura-trust-badges {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    font-size: 1.4rem;
-    opacity: 0.9;
-  }
-  .milaura-trust-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .milaura-trust-icon {
+  .milaura-product__price {
+    font-size: 24px;
+    font-weight: 700;
     color: var(--milaura-gold);
-    font-size: 1.6rem;
   }
 
-  /* Sticky Bar Mobile */
-  .milaura-sticky-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: white;
-    padding: 1.5rem;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transform: translateY(100%);
-    transition: transform 0.3s ease-out;
-    border-top: 1px solid var(--milaura-gold-light);
-  }
-
-  .milaura-sticky-bar.is-visible {
-    transform: translateY(0);
-  }
-  
-  .sticky-info h4 { margin: 0; font-size: 1.4rem; }
-  .sticky-info span { color: var(--milaura-gold); font-weight: bold; }
-
-  .sticky-btn {
-    background: var(--milaura-gold);
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  /* Volume Offer Cards - Milaura Gold Luxury Style */
-  .milaura-volume-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin: 2rem 0;
-  }
+  /* Volume Cards */
+  .milaura-volume-grid { display: grid; gap: 10px; margin: 20px 0; }
   .volume-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; justify-content: space-between; align-items: center;
     border: 2px solid rgba(192, 160, 98, 0.25);
-    border-radius: 16px;
-    padding: 1.5rem;
-    cursor: pointer;
-    position: relative;
-    background: #fff;
-    transition: all 0.3s ease;
-  }
-  .volume-card:hover {
-    border-color: var(--milaura-gold);
-    box-shadow: 0 8px 24px rgba(192, 160, 98, 0.15);
+    border-radius: 12px; padding: 12px; cursor: pointer;
+    background: #fff; position: relative; transition: all 0.2s;
   }
   .volume-card.is-selected {
-    border: 2px solid var(--milaura-gold);
-    background: linear-gradient(135deg, rgba(255, 248, 230, 0.95) 0%, rgba(255, 252, 245, 0.95) 100%);
-    transform: scale(1.02);
-    box-shadow: 0 12px 32px rgba(192, 160, 98, 0.25);
+    border-color: var(--milaura-gold);
+    background: linear-gradient(135deg, rgba(255, 248, 230, 0.95), rgba(255, 252, 245, 0.95));
   }
-  .volume-card-badge {
-    position: absolute;
-    top: -12px;
-    right: 20px;
-    background: linear-gradient(135deg, #C0A062 0%, #E6C88B 50%, #C0A062 100%);
-    color: #fff;
-    font-size: 1.1rem;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.4);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  }
-  .volume-left { display: flex; align-items: center; }
   .volume-check {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 2px solid rgba(192, 160, 98, 0.4);
-    margin-right: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.2s ease;
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid rgba(192, 160, 98, 0.4); margin-right: 12px;
   }
   .volume-card.is-selected .volume-check {
-    border-color: var(--milaura-gold);
-    background: linear-gradient(135deg, #C0A062 0%, #E6C88B 100%);
-    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.3);
-  }
-  .volume-check::after {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: #fff;
-    border-radius: 50%;
-    display: none;
-  }
-  .volume-card.is-selected .volume-check::after { display: block; }
-  .volume-text h5 { margin: 0; font-size: 1.6rem; font-weight: 700; color: #1a1a1a; }
-  .volume-text p { margin: 0; font-size: 1.3rem; color: #666; }
-  .volume-price { font-weight: 700; font-size: 1.6rem; text-align: right; color: var(--milaura-gold); }
-
-  /* Volume Section Title */
-  .volume-section-title {
-    font-family: var(--milaura-font-heading);
-    font-size: 1.8rem;
-    color: var(--milaura-gold);
-    margin-bottom: 1rem;
-    text-align: center;
+    border-color: var(--milaura-gold); background: var(--milaura-gold);
   }
 
-  /* Selection Pulse Animation */
-  .volume-card.is-selected {
-    animation: selectPulse 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Bouton d'achat */
+  .milaura-buy-row { display: flex; gap: 10px; margin-top: 20px; }
+  .milaura-add-btn {
+    flex: 1; border: none; cursor: pointer; width: 100%;
+    box-sizing: border-box; /* Style géré par .milaura-btn-gold global */
   }
+  .milaura-add-btn:disabled { background: #ccc !important; cursor: not-allowed; box-shadow: none !important; }
 
-  @keyframes selectPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.035); }
-    100% { transform: scale(1.02); }
-  }
-
-  /* Focus visible for accessibility */
-  .volume-card:focus-visible {
-    outline: 2px solid var(--milaura-gold);
-    outline-offset: 3px;
-  }
-
-  /* ===========================================
-     MOBILE RESPONSIVE (< 750px)
-     Optimisations conversion mobile
-     =========================================== */
-  @media screen and (max-width: 749px) {
-    /* Titre mobile - specs exactes */
-    .milaura-product__title {
-      font-size: 28px !important;
-      line-height: 1.2 !important;
-      margin-bottom: 8px !important;
-    }
-
-    /* Volume cards compactes */
-    .milaura-volume-grid {
-      gap: 10px;
-      margin: 16px 0;
-    }
-
-    .volume-card {
-      padding: 12px 14px;
-      border-radius: 12px;
-    }
-
-    .volume-card.is-selected {
-      transform: none; /* Pas de scale sur mobile */
-    }
-
-    .volume-text h5 {
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .volume-text p {
-      font-size: 12px;
-    }
-    .volume-price {
-      font-size: 15px;
-    }
-    .volume-check {
-      width: 18px;
-      height: 18px;
-      margin-right: 10px;
-    }
-    .volume-check::after {
-      width: 6px;
-      height: 6px;
-    }
-    .volume-card-badge {
-      font-size: 9px;
-      padding: 3px 8px;
-      top: -10px;
-      right: 12px;
-    }
-    .volume-section-title {
-      font-size: 16px;
-      margin-bottom: 12px;
-    }
-
-    /* Bouton CTA mobile - full width, bien visible */
-    .milaura-buy-row {
-      margin-top: 16px;
-      gap: 10px;
-    }
-
-    .milaura-add-btn {
-      font-size: 16px;
-      padding: 16px 20px;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-
-    /* Quantité plus compacte */
-    .product-form__quantity {
-      width: 80px !important;
-    }
-
-    /* Trust badges en ligne */
-    .milaura-trust-badges {
-      margin-top: 16px;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px 16px;
-      font-size: 12px;
-    }
-
-    .milaura-trust-item {
-      gap: 6px;
-    }
-
-    .milaura-trust-icon {
-      font-size: 14px;
-    }
-
-    /* Sticky bar plus compact */
-    .milaura-sticky-bar {
-      padding: 12px 16px;
-    }
-
-    .sticky-info h4 {
-      font-size: 13px;
-    }
-
-    .sticky-btn {
-      padding: 10px 16px;
-      font-size: 14px;
-    }
-  }
 {% endstyle %}
 
 <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -550,8 +243,7 @@
   <div class="milaura-hero-wrapper">
 
     <!-- ============================================
-         GROUPE 1: HEADER (Titre + Avis + Prix)
-         Mobile: order 1 (en haut)
+         GROUPE 1: HEADER
          ============================================ -->
     <div class="milaura-hero-header-group">
       {%- if section.settings.show_vendor -%}
@@ -571,21 +263,55 @@
     </div>
 
     <!-- ============================================
-         GROUPE 2: GALERIE PHOTO
-         Mobile: order 2 (au milieu, GRANDE)
+         GROUPE 2: GALERIE MEDIA (MODERNE)
          ============================================ -->
     <div class="milaura-hero-gallery-column">
-      {% render 'product-media-gallery',
-        product: product,
-        variant_images: section.settings.variant_images,
-        is_duplicate: false,
-        gallery_layout: section.settings.gallery_layout
-      %}
+      <slider-component class="slider-mobile-gutter">
+        <ul class="product__media-list list-unstyled slider slider--mobile" role="list">
+          {%- if product.media.size == 0 -%}
+             <li class="product__media-item slider__slide">
+               <div class="product-media-container">
+                 {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+               </div>
+             </li>
+          {%- endif -%}
+
+          {%- for media in product.media -%}
+            <li class="product__media-item slider__slide{% if media.media_type != 'image' %} product__media-item--video{% endif %}" data-media-id="{{ section.id }}-{{ media.id }}">
+              <div class="product-media-container">
+                {% case media.media_type %}
+                  {% when 'image' %}
+                    {{ media | image_url: width: 1200 | image_tag: loading: 'eager', class: 'image-magnify-hover', sizes: '(min-width: 1200px) 600px, 100vw' }}
+                  
+                  {% when 'external_video' %}
+                    {% assign video_class = 'js-youtube' %}
+                    {% if media.host == 'vimeo' %}{% assign video_class = 'js-vimeo' %}{% endif %}
+                    {{ media | external_video_url: autoplay: true, loop: true, playlist: media.external_id | external_video_tag: class: video_class, loading: "lazy" }}
+                  
+                  {% when 'video' %}
+                    {{ media | video_tag: image_size: "1200x", autoplay: true, loop: true, controls: true, preload: "none" }}
+                  
+                  {% when 'model' %}
+                    {{ media | model_viewer_tag }}
+                {% endcase %}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <!-- Pagination Mobile -->
+        <div class="slider-buttons no-js-hidden{% if product.media.size < 2 %} hidden{% endif %}">
+          {%- for media in product.media -%}
+            <button class="slider-counter__link slider-counter__link--dots link" aria-label="Slide {{ forloop.index }}" aria-controls="Slide-{{ section.id }}-{{ forloop.index }}">
+              <span class="dot"></span>
+            </button>
+          {%- endfor -%}
+        </div>
+      </slider-component>
     </div>
 
     <!-- ============================================
-         GROUPE 3: ACTIONS (Variants + Volume + CTA)
-         Mobile: order 3 (en bas)
+         GROUPE 3: ACTIONS
          ============================================ -->
     <div class="milaura-hero-actions-group">
 
@@ -787,18 +513,6 @@
       "id": "show_description",
       "default": false,
       "label": "Afficher extrait description"
-    },
-    {
-      "type": "select",
-      "id": "gallery_layout",
-      "options": [
-        { "value": "stacked", "label": "Empilé" },
-        { "value": "columns", "label": "Colonnes" },
-        { "value": "thumbnail", "label": "Thumbnails" },
-        { "value": "thumbnail_slider", "label": "Thumbnail Slider" }
-      ],
-      "default": "thumbnail",
-      "label": "Layout Galerie"
     },
     {
       "type": "range",
