@@ -42,7 +42,13 @@
   endif
 
   assign scent_notes = product.metafields.milaura.scent_notes.value
+  assign stone_benefits = product.metafields.milaura.stone_benefits.value | default: '' | split: ','
+  
   assign all_notes = '' | split: ''
+  
+  comment
+    -- Aggregate Scent Notes --
+  endcomment
   if scent_notes.top
     assign all_notes = all_notes | concat: scent_notes.top
   endif
@@ -52,6 +58,15 @@
   if scent_notes.base
     assign all_notes = all_notes | concat: scent_notes.base
   endif
+
+  comment
+    -- Aggregate Stone Benefits (clean whitespace) --
+  endcomment
+  for benefit in stone_benefits
+    assign clean_benefit = benefit | strip | split: '###'
+    assign all_notes = all_notes | concat: clean_benefit
+  endfor
+
   assign all_notes = all_notes | uniq
 -%}
 
