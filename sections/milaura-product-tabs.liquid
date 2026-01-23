@@ -1,9 +1,12 @@
 {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
+  /* ===========================================
+     SECTION PADDING - Mobile optimisé
+     =========================================== */
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
   }
 
   @media screen and (min-width: 750px) {
@@ -13,13 +16,15 @@
     }
   }
 
-  /* Desktop Tabs */
+  /* ===========================================
+     DESKTOP TABS
+     =========================================== */
   .milaura-tabs-nav {
     display: none;
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     justify-content: center;
-    gap: 3rem;
+    gap: 2rem;
   }
 
   @media screen and (min-width: 750px) {
@@ -31,9 +36,9 @@
   .milaura-tab-btn {
     background: none;
     border: none;
-    padding: 1rem 0;
+    padding: 0.75rem 0;
     font-family: var(--milaura-font-heading);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     color: var(--milaura-text-light);
     cursor: pointer;
     position: relative;
@@ -55,52 +60,133 @@
     bottom: -1px;
     left: 0;
     width: 100%;
-    height: 3px;
+    height: 2px;
     background: var(--milaura-gold);
   }
 
   .milaura-tab-panel {
     display: none;
-    animation: fadeIn 0.4s ease;
+    animation: fadeIn 0.3s ease;
   }
 
   .milaura-tab-panel[aria-hidden="false"] {
     display: block;
   }
-  
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Specs List */
+  /* ===========================================
+     SPECS LIST - Compact
+     =========================================== */
   .specs-list {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 8px;
   }
+
   @media screen and (min-width: 750px) {
     .specs-list {
       grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
   }
+
   .spec-item {
     display: flex;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 10px 12px;
     background: rgba(0,0,0,0.02);
-    border-radius: 8px;
+    border-radius: 6px;
+    font-size: 14px;
   }
-  .spec-label { font-weight: 600; }
 
-  /* Mobile Accordions */
-  .milaura-accordion-group {
-    display: block;
+  .spec-label {
+    font-weight: 600;
+    color: var(--milaura-text);
   }
+
+  .spec-value {
+    color: var(--milaura-text-light);
+  }
+
+  /* ===========================================
+     MOBILE ACCORDIONS - Compact
+     =========================================== */
+  .milaura-accordion-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   @media screen and (min-width: 750px) {
     .milaura-accordion-group {
       display: none;
     }
+  }
+
+  .milaura-accordion-group .accordion {
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .milaura-accordion-group .accordion summary {
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .milaura-accordion-group .accordion summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .milaura-accordion-group .accordion summary .summary__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .milaura-accordion-group .accordion .accordion__title {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--milaura-text);
+  }
+
+  .milaura-accordion-group .accordion .icon-caret {
+    transition: transform 0.2s ease;
+    color: var(--milaura-gold);
+  }
+
+  .milaura-accordion-group .accordion[open] .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  .milaura-accordion-group .accordion__content {
+    padding: 0 14px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--milaura-text-light);
+  }
+
+  .milaura-accordion-group .accordion__content p {
+    margin: 0 0 10px;
+  }
+
+  .milaura-accordion-group .accordion__content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Hide icon-accordion on mobile if not needed */
+  .milaura-accordion-group .icon-accordion {
+    display: none;
   }
 {%- endstyle -%}
 
@@ -236,21 +322,21 @@
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 100,
+      "max": 60,
       "step": 4,
       "unit": "px",
       "label": "Padding Top",
-      "default": 36
+      "default": 20
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
-      "max": 100,
+      "max": 60,
       "step": 4,
       "unit": "px",
       "label": "Padding Bottom",
-      "default": 36
+      "default": 20
     }
   ],
   "blocks": [
