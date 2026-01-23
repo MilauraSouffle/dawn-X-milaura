@@ -43,6 +43,7 @@
     order: 2;
     width: 100%;
     margin-bottom: 16px;
+    position: relative; /* Pour l'overlay des variantes */
   }
 
   /* Slider Mobile */
@@ -51,7 +52,7 @@
     gap: 10px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding-bottom: 20px;
+    padding-bottom: 0; /* Réduit pour laisser place à l'overlay */
     margin: 0;
     list-style: none;
     -webkit-overflow-scrolling: touch;
@@ -95,7 +96,8 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
-    margin-top: -10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   .slider-counter__link--dots .dot {
@@ -110,6 +112,75 @@
   .slider-counter__link--active .dot {
     background: var(--milaura-gold);
     transform: scale(1.2);
+  }
+
+  /* --- OVERLAY VARIANTES (Badges sur photo) --- */
+  .hero-variant-overlay {
+    position: absolute;
+    bottom: 20px; /* Mord sur la photo */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    pointer-events: none; /* Laisse passer le clic autour */
+  }
+
+  .hero-variant-overlay variant-radios {
+    pointer-events: auto; /* Réactive le clic sur les boutons */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .hero-variant-overlay .product-form__input {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .hero-variant-overlay .form__label {
+    display: none; /* On cache les titres "Taille", "Parfum" pour épuré */
+  }
+
+  /* Reset radical du style radio */
+  .hero-variant-overlay input[type='radio'] {
+    clip: rect(0, 0, 0, 0);
+    overflow: hidden;
+    position: absolute;
+    height: 1px;
+    width: 1px;
+  }
+
+  /* La Bulle Glassmorphism */
+  .hero-variant-overlay input[type='radio'] + label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.65) !important; /* Plus opaque pour lisibilité sur photo */
+    backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 30px !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: var(--milaura-text) !important;
+    margin: 0 !important;
+    min-width: auto !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  /* État sélectionné */
+  .hero-variant-overlay input[type='radio']:checked + label {
+    background: #fff !important;
+    border-color: var(--milaura-gold) !important;
+    color: var(--milaura-gold) !important;
+    box-shadow: 0 4px 15px rgba(192, 160, 98, 0.3);
+    transform: translateY(-2px);
   }
 
   /* --- GROUPE 3: Actions --- */
@@ -131,11 +202,10 @@
       overflow: visible;
     }
 
-    /* FIX 1: Header (Titre) - Plus de Sticky, plus de bloc autonome */
     .milaura-hero-header-group {
       grid-area: header;
       text-align: left;
-      position: static !important; /* Reste en place */
+      position: static !important;
       background: transparent !important;
       border: none !important;
       padding: 0 0 20px 0 !important;
@@ -144,12 +214,9 @@
 
     .milaura-hero-actions-group {
       grid-area: actions;
-      /* On garde les actions sticky si voulu, ou on enlève aussi. 
-         Ici je garde sticky pour les actions car c'est pratique, 
-         mais je nettoie le style bloc */
       position: sticky;
       top: calc(var(--header-height-offset, 90px) + 20px);
-      background: rgba(255, 255, 255, 0.6); /* Plus subtil */
+      background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(192, 160, 98, 0.1);
       border-radius: 20px;
@@ -184,20 +251,32 @@
     .slider-buttons {
       display: none;
     }
+
+    /* Sur Desktop, l'overlay variantes se place en bas de l'image principale */
+    .hero-variant-overlay {
+      position: absolute;
+      top: auto;
+      bottom: 24px; /* Un peu plus haut que mobile */
+      left: 24px; /* Aligné gauche sur desktop ? ou centré ? Centré c'est bien */
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      max-width: 90%;
+    }
   }
 
-  /* FIX 2: AVIS (Suppression du bleu) */
+  /* AVIS */
   .rating-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     margin-bottom: 12px;
     text-decoration: none !important;
-    color: var(--milaura-text) !important; /* Force le noir/texte */
+    color: var(--milaura-text) !important;
   }
 
   .rating-badge .stars {
-    color: var(--milaura-gold) !important; /* Force le doré */
+    color: var(--milaura-gold) !important;
     font-size: 16px;
     letter-spacing: -1px;
   }
@@ -208,7 +287,7 @@
     color: inherit;
   }
 
-  /* TYPOGRAPHIE & ELEMENTS */
+  /* TYPOGRAPHIE */
   .milaura-product__title {
     font-family: var(--milaura-font-heading);
     font-size: 28px;
@@ -224,67 +303,6 @@
     font-size: 24px;
     font-weight: 700;
     color: var(--milaura-gold);
-  }
-
-  /* FIX 4: VARIANTES BULLES (Glassmorphism compact) */
-  .milaura-hero-actions-group .product-form__input {
-    margin-bottom: 12px;
-    border: none;
-    padding: 0;
-  }
-
-  .milaura-hero-actions-group .form__label {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-    opacity: 0.8;
-    display: block;
-    color: var(--milaura-text);
-  }
-
-  .variant-options-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px; /* Espace serré */
-  }
-
-  /* Reset radical du style radio */
-  .product-form__input input[type='radio'] {
-    clip: rect(0, 0, 0, 0);
-    overflow: hidden;
-    position: absolute;
-    height: 1px;
-    width: 1px;
-  }
-
-  /* La Bulle */
-  .product-form__input input[type='radio'] + label {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.4) !important;
-    backdrop-filter: blur(5px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.6) !important;
-    border-radius: 20px !important; /* Forme pilule */
-    padding: 6px 14px !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    color: var(--milaura-text) !important;
-    margin: 0 !important;
-    min-width: auto !important;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-  }
-
-  /* État sélectionné */
-  .product-form__input input[type='radio']:checked + label {
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-color: var(--milaura-gold) !important;
-    color: var(--milaura-gold) !important; /* Texte doré */
-    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.2);
-    font-weight: 700 !important;
   }
 
   /* Volume Cards */
@@ -307,36 +325,467 @@
     border-color: var(--milaura-gold); background: var(--milaura-gold);
   }
 
-  /* FIX 3: BOUTON & QUANTITÉ (Overflow) */
+  /* --- FIX BUY ROW (Quantité + Bouton) --- */
   .milaura-buy-row {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-top: 20px;
-    flex-wrap: wrap; /* Autorise le passage à la ligne si trop petit */
+    align-items: center;
+    flex-wrap: nowrap !important; /* FORCE 1 LIGNE */
   }
 
-  /* Sélecteur quantité compact */
+  /* Sélecteur quantité COMPACT */
   .product-form__quantity {
-    width: 90px !important; /* Largeur fixe réduite */
+    width: 70px !important; /* Très petit */
+    min-width: 70px !important;
     flex-shrink: 0;
+    margin: 0 !important;
   }
   
   .product-form__quantity .quantity {
     width: 100%;
-    min-height: 48px; /* Hauteur standard CTA */
+    min-height: 48px;
+    padding: 0;
+  }
+  
+  .product-form__quantity .quantity__input {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0;
+  }
+  
+  .product-form__quantity .quantity__button {
+    width: 24px;
+    padding: 0;
   }
 
-  /* Bouton qui prend le reste */
+  /* Bouton PRIORITAIRE */
   .milaura-add-btn {
-    flex: 1;
-    min-width: 180px; /* Largeur min pour ne pas être écrasé */
+    flex: 1; /* Prend tout le reste */
     border: none;
     cursor: pointer;
+    white-space: nowrap !important; /* PAS DE RETOUR LIGNE */
+    overflow: hidden;
+    text-overflow: ellipsis;
     /* Style géré par .milaura-btn-gold global */
   }
   .milaura-add-btn:disabled { background: #ccc !important; cursor: not-allowed; box-shadow: none !important; }
 
 {% endstyle %}
+
+<script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+<div class="page-width section-{{ section.id }}-padding">
+  <product-info id="ProductInfo-{{ section.id }}" data-section="{{ section.id }}" data-url="{{ product.url }}">
+  <div class="milaura-hero-wrapper">
+
+    <!-- ============================================
+         GROUPE 1: HEADER
+         ============================================ -->
+    <div class="milaura-hero-header-group">
+      {%- if section.settings.show_vendor -%}
+        <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
+      {%- endif -%}
+
+      <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
+
+      <a href="#Reviews" class="rating-badge">
+        <span class="stars">★★★★★</span>
+        <span class="rating-text">(4.9/5 · 127 avis)</span>
+      </a>
+
+      <div class="no-js-hidden" id="price-{{ section.id }}" role="status">
+        {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'milaura-product__price' -%}
+      </div>
+    </div>
+
+    <!-- ============================================
+         GROUPE 2: GALERIE MEDIA (MODERNE)
+         ============================================ -->
+    <div class="milaura-hero-gallery-column">
+      <slider-component class="slider-mobile-gutter">
+        <ul class="product__media-list list-unstyled slider slider--mobile" role="list">
+          {%- if product.media.size == 0 -%}
+             <li class="product__media-item slider__slide">
+               <div class="product-media-container">
+                 {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+               </div>
+             </li>
+          {%- endif -%}
+
+          {%- for media in product.media -%}
+            <li class="product__media-item slider__slide{% if media.media_type != 'image' %} product__media-item--video{% endif %}" data-media-id="{{ section.id }}-{{ media.id }}">
+              <div class="product-media-container">
+                {% case media.media_type %}
+                  {% when 'image' %}
+                    {{ media | image_url: width: 1200 | image_tag: loading: 'eager', class: 'image-magnify-hover', sizes: '(min-width: 1200px) 600px, 100vw' }}
+                  
+                  {% when 'external_video' %}
+                    {% assign video_class = 'js-youtube' %}
+                    {% if media.host == 'vimeo' %}{% assign video_class = 'js-vimeo' %}{% endif %}
+                    {{ media | external_video_url: autoplay: true, loop: true, playlist: media.external_id | external_video_tag: class: video_class, loading: "lazy" }}
+                  
+                  {% when 'video' %}
+                    {{ media | video_tag: image_size: "1200x", autoplay: true, loop: true, controls: true, preload: "none" }}
+                  
+                  {% when 'model' %}
+                    {{ media | model_viewer_tag }}
+                {% endcase %}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <!-- Pagination Mobile -->
+        <div class="slider-buttons no-js-hidden{% if product.media.size < 2 %} hidden{% endif %}">
+          {%- for media in product.media -%}
+            <button class="slider-counter__link slider-counter__link--dots link" aria-label="Slide {{ forloop.index }}" aria-controls="Slide-{{ section.id }}-{{ forloop.index }}">
+              <span class="dot"></span>
+            </button>
+          {%- endfor -%}
+        </div>
+      </slider-component>
+
+      <!-- OVERLAY VARIANTES (Déménagé ici) -->
+      {%- unless product.has_only_default_variant -%}
+        <div class="hero-variant-overlay">
+          <variant-radios class="no-js-hidden milaura-variant-picker" data-section="{{ section.id }}" data-url="{{ product.url }}" data-update-url="false">
+            {%- for option in product.options_with_values -%}
+              <fieldset class="js product-form__input">
+                <legend class="form__label">{{ option.name }}</legend>
+                <div class="variant-options-row">
+                  {% render 'product-variant-options', product: product, option: option, block: block, picker_type: 'button' %}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+            <script type="application/json">
+              {{ product.variants | json }}
+            </script>
+          </variant-radios>
+        </div>
+      {%- endunless -%}
+    </div>
+
+    <!-- ============================================
+         GROUPE 3: ACTIONS
+         ============================================ -->
+    <div class="milaura-hero-actions-group">
+
+      <!-- Note: Variant Picker was here, moved to gallery above -->
+
+      <!-- Volume Offer Block -->
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'volume_offer' -%}
+            {% if block.settings.title != blank %}
+              <h3 class="volume-section-title">{{ block.settings.title }}</h3>
+            {% endif %}
+            <div class="milaura-volume-grid" role="radiogroup" aria-label="Choisir une offre volume" {{ block.shopify_attributes }}>
+              <!-- Option 1 -->
+              <div class="volume-card is-selected"
+                   role="radio"
+                   aria-checked="true"
+                   tabindex="0"
+                   onclick="selectVolume(1, this)"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(1, this);}">
+                <div class="volume-left">
+                  <div class="volume-check"></div>
+                  <div class="volume-text">
+                    <h5>{{ block.settings.opt1_label }}</h5>
+                    <p>{{ block.settings.opt1_sub }}</p>
+                  </div>
+                </div>
+                <div class="volume-price">
+                  {{ product.price | money }}
+                </div>
+              </div>
+
+              <!-- Option 2 -->
+              <div class="volume-card"
+                   role="radio"
+                   aria-checked="false"
+                   tabindex="0"
+                   onclick="selectVolume(2, this)"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(2, this);}">
+                {% if block.settings.opt2_badge != blank %}
+                  <div class="volume-card-badge">{{ block.settings.opt2_badge }}</div>
+                {% endif %}
+                <div class="volume-left">
+                  <div class="volume-check"></div>
+                  <div class="volume-text">
+                    <h5>{{ block.settings.opt2_label }}</h5>
+                    <p>{{ block.settings.opt2_sub }}</p>
+                  </div>
+                </div>
+                <div class="volume-price">
+                  {% assign price2 = product.price | times: 2 | times: 0.9 %}
+                  {{ price2 | money }}
+                </div>
+              </div>
+
+              <!-- Option 3 -->
+              <div class="volume-card"
+                   role="radio"
+                   aria-checked="false"
+                   tabindex="0"
+                   onclick="selectVolume(3, this)"
+                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(3, this);}">
+                {% if block.settings.opt3_badge != blank %}
+                  <div class="volume-card-badge">{{ block.settings.opt3_badge }}</div>
+                {% endif %}
+                <div class="volume-left">
+                  <div class="volume-check"></div>
+                  <div class="volume-text">
+                    <h5>{{ block.settings.opt3_label }}</h5>
+                    <p>{{ block.settings.opt3_sub }}</p>
+                  </div>
+                </div>
+                <div class="volume-price">
+                  {% assign price3 = product.price | times: 3 | times: 0.8 %}
+                  {{ price3 | money }}
+                </div>
+              </div>
+            </div>
+            
+            <script>
+              function selectVolume(qty, card) {
+                // 1. Visual + ARIA Update
+                document.querySelectorAll('.volume-card').forEach(c => {
+                  c.classList.remove('is-selected');
+                  c.setAttribute('aria-checked', 'false');
+                });
+                card.classList.add('is-selected');
+                card.setAttribute('aria-checked', 'true');
+
+                // 2. Update Hidden Quantity Input
+                const qtyInput = document.getElementById('Quantity-{{ section.id }}');
+                if(qtyInput) {
+                  qtyInput.value = qty;
+                  // Trigger change event if needed by other scripts
+                  qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+              }
+            </script>
+          {%- endif -%}
+        {%- endfor -%}
+
+        <!-- Buy Buttons -->
+        <div class="milaura-buy-row">
+          <!-- Quantity (Optional) -->
+          {%- if section.settings.show_quantity -%}
+            <div class="product-form__input product-form__quantity" style="width:100px;">
+              <quantity-input class="quantity">
+                <button class="quantity__button no-js-hidden" name="minus" type="button"><span class="visually-hidden">-</span>-</button>
+                <input class="quantity__input" type="number" name="quantity" id="Quantity-{{ section.id }}" min="1" value="1" form="{{ 'product-form-' | append: section.id }}">
+                <button class="quantity__button no-js-hidden" name="plus" type="button"><span class="visually-hidden">+</span>+</button>
+              </quantity-input>
+            </div>
+          {%- endif -%}
+
+          <!-- Add Button -->
+          <product-form class="product-form" style="flex:1;">
+            {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <button
+                type="submit"
+                name="add"
+                class="milaura-add-btn milaura-btn-gold"
+                {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+              >
+                <span>
+                  {%- if product.selected_or_first_available_variant.available -%}
+                    Ajouter au panier
+                  {%- else -%}
+                    Rupture de stock
+                  {%- endif -%}
+                </span>
+              </button>
+            {%- endform -%}
+          </product-form>
+        </div>
+
+        <!-- Trust Badges (Reassurance) -->
+        <div class="milaura-trust-badges">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'trust_badge' -%}
+              <div class="milaura-trust-item">
+                <span class="milaura-trust-icon">{{ block.settings.icon }}</span>
+                <span>{{ block.settings.text }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <!-- Description Extract (Optional) -->
+      {%- if section.settings.show_description -%}
+        <div class="product__description rte quick-add-hidden">
+          {{ product.description | strip_html | truncatewords: 30 }}
+          <a href="#ProductTabs" class="read-more-link">Lire la suite</a>
+        </div>
+      {%- endif -%}
+
+    </div>
+    <!-- Fin GROUPE 3: Actions -->
+
+  </div>
+  <!-- Fin milaura-hero-wrapper -->
+  </product-info>
+</div>
+
+{% schema %}
+{
+  "name": "Milaura Hero Premium",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Afficher vendeur"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "default": false,
+      "label": "Sélecteur quantité"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "default": false,
+      "label": "Afficher extrait description"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_badge",
+      "name": "Badge Réassurance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji/Icône",
+          "default": "🚚"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Livraison offerte"
+        }
+      ]
+    },
+    {
+      "type": "volume_offer",
+      "name": "Offre Volume (Bundle)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Affiche 3 cartes pour inciter à l'achat en volume. Les remises doivent être configurées dans Shopify (Réductions automatiques)."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre Section",
+          "default": "Choisir mon offre"
+        },
+        {
+          "type": "header",
+          "content": "Option 1 (1 Unité)"
+        },
+        {
+          "type": "text",
+          "id": "opt1_label",
+          "label": "Label",
+          "default": "Découverte"
+        },
+        {
+          "type": "text",
+          "id": "opt1_sub",
+          "label": "Sous-texte",
+          "default": "Standard"
+        },
+        {
+          "type": "header",
+          "content": "Option 2 (2 Unités)"
+        },
+        {
+          "type": "text",
+          "id": "opt2_label",
+          "label": "Label",
+          "default": "Duo"
+        },
+        {
+          "type": "text",
+          "id": "opt2_sub",
+          "label": "Sous-texte",
+          "default": "Économisez 10%"
+        },
+        {
+          "type": "text",
+          "id": "opt2_badge",
+          "label": "Badge",
+          "default": "POPULAIRE"
+        },
+        {
+          "type": "header",
+          "content": "Option 3 (3 Unités)"
+        },
+        {
+          "type": "text",
+          "id": "opt3_label",
+          "label": "Label",
+          "default": "Cure Complète"
+        },
+        {
+          "type": "text",
+          "id": "opt3_sub",
+          "label": "Sous-texte",
+          "default": "Économisez 20%"
+        },
+        {
+          "type": "text",
+          "id": "opt3_badge",
+          "label": "Badge",
+          "default": "MEILLEURE OFFRE"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Hero Premium",
+      "blocks": [
+        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison offerte dès 50€" } },
+        { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
+        { "type": "volume_offer" }
+      ]
+    }
+  ]
+}
+{% endschema %}
 
 <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
