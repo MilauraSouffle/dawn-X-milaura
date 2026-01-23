@@ -624,29 +624,96 @@ section[id*="hero"]:first-of-type {
 }
 
 /* ============================================
-   RÉDUCTION GLOBALE DES ESPACEMENTS MOBILE
-   Pour toutes les sections produit et autres
+   BOUTON DORÉ BIJOU (GLOBAL)
+   Pour Sticky Bar, CTA, etc.
    ============================================ */
-@media screen and (max-width: 768px) {
-  /* Cible générique pour réduire les paddings verticaux */
-  .section-padding, 
-  [class*="section-"][class*="-padding"] {
-    padding-top: 24px !important;
-    padding-bottom: 24px !important;
-  }
 
-  /* Exception pour le Hero (déjà géré) et les sections collées */
-  .shopify-section + .shopify-section {
-    margin-top: 0 !important;
-  }
+:root {
+  /* Le dégradé complexe pour l'effet relief */
+  --milaura-gold-grad-global: linear-gradient(
+    135deg,
+    rgba(255, 240, 200, 1) 0%,
+    rgba(214, 176, 96, 1) 18%,
+    rgba(255, 232, 172, 1) 42%,
+    rgba(176, 130, 48, 1) 70%,
+    rgba(255, 240, 200, 1) 100%
+  );
   
-  /* Réduire les marges des titres */
-  h2, .h2, .milaura-section-title {
-    margin-bottom: 16px !important;
-  }
+  /* Le reflet blanc pour l'animation */
+  --milaura-gold-sheen-global: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.50) 35%,
+    transparent 70%
+  );
+}
+
+.milaura-btn-gold {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
   
-  /* Réduire l'espace sous le breadcrumb */
-  .product__vendor {
-    margin-bottom: 8px !important;
-  }
+  /* Fond Bijou */
+  background: var(--milaura-gold-grad-global);
+  background-size: 200% 200%; /* Permet d'animer le fond si voulu */
+  
+  /* Texte Noir Impératif */
+  color: #000000 !important; 
+  font-family: var(--milaura-font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  
+  /* Forme */
+  border-radius: 50px; /* Pilule bijou */
+  border: 1px solid rgba(255, 255, 255, 0.4); /* Petit liseré interne */
+  
+  /* Ombres portées sophistiquées */
+  box-shadow: 
+    0 4px 12px rgba(176, 130, 48, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  
+  overflow: hidden; /* Pour contenir le reflet */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Le Reflet Argenté (Sheen) */
+.milaura-btn-gold::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: var(--milaura-gold-sheen-global);
+  transform: translateX(-100%) skewX(-20deg);
+  transition: transform 0.6s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* État Hover */
+.milaura-btn-gold:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 8px 20px rgba(176, 130, 48, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.milaura-btn-gold:hover::after {
+  transform: translateX(50%) skewX(-20deg); /* Le reflet traverse le bouton */
+}
+
+/* État Active (Clic) */
+.milaura-btn-gold:active {
+  transform: translateY(1px);
+  box-shadow: 
+    0 2px 6px rgba(176, 130, 48, 0.3),
+    inset 0 2px 4px rgba(0,0,0,0.1);
 }
