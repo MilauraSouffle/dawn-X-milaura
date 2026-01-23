@@ -40,7 +40,89 @@
   elsif section.settings.media_size == 'small'
     assign media_width = 0.45
   endif
+
+  assign scent_notes = product.metafields.milaura.scent_notes.value
+  assign all_notes = '' | split: ''
+  if scent_notes.top
+    assign all_notes = all_notes | concat: scent_notes.top
+  endif
+  if scent_notes.heart
+    assign all_notes = all_notes | concat: scent_notes.heart
+  endif
+  if scent_notes.base
+    assign all_notes = all_notes | concat: scent_notes.base
+  endif
+  assign all_notes = all_notes | uniq
 -%}
+
+<style>
+  .product-media-badges-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    pointer-events: none;
+    padding: 0 16px;
+    opacity: 0;
+    animation: fadeInBadges 0.8s ease-out 0.5s forwards;
+  }
+
+  @keyframes fadeInBadges {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .product-media-badges-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    pointer-events: auto;
+    padding-bottom: 4px;
+    margin-bottom: -4px;
+  }
+
+  .product-media-badges-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-media-badge {
+    background: rgba(255, 255, 255, 0.9);
+    color: #121212;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+  }
+  
+  .product-media-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  @media screen and (min-width: 750px) {
+    .product-media-badges-overlay {
+      bottom: 30px;
+      padding: 0 24px;
+    }
+    .product-media-badge {
+      font-size: 14px;
+      padding: 8px 18px;
+    }
+  }
+</style>
 
 <media-gallery
   id="MediaGallery-{{ section.id }}"
@@ -328,5 +410,15 @@
         </span>
       </button>
     </slider-component>
+  {%- endif -%}
+
+  {%- if all_notes.size > 0 -%}
+    <div class="product-media-badges-overlay">
+      <div class="product-media-badges-scroll">
+        {%- for note in all_notes -%}
+          <span class="product-media-badge">{{ note }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
   {%- endif -%}
 </media-gallery>
