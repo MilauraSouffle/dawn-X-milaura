@@ -4,6 +4,30 @@
 {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign scent_notes = product.metafields.milaura.scent_notes.value
+  assign stone_benefits = product.metafields.milaura.stone_benefits.value | default: '' | split: ','
+  
+  assign all_badges = '' | split: ''
+  
+  if scent_notes.top
+    assign all_badges = all_badges | concat: scent_notes.top
+  endif
+  if scent_notes.heart
+    assign all_badges = all_badges | concat: scent_notes.heart
+  endif
+  if scent_notes.base
+    assign all_badges = all_badges | concat: scent_notes.base
+  endif
+
+  for benefit in stone_benefits
+    assign clean_benefit = benefit | strip | split: '###'
+    assign all_badges = all_badges | concat: clean_benefit
+  endfor
+
+  assign all_badges = all_badges | uniq
+-%}
+
 {% style %}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -408,6 +432,114 @@
   }
   .milaura-add-btn:disabled { background: #ccc !important; cursor: not-allowed; box-shadow: none !important; }
 
+  /* --- BADGES SCROLLABLES (SENTEUR/PIERRE) --- */
+  .milaura-hero-badges-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+    pointer-events: none;
+    padding: 0 16px;
+    opacity: 0;
+    animation: fadeInBadges 0.8s ease-out 0.5s forwards;
+  }
+
+  @keyframes fadeInBadges {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .milaura-hero-badges-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    pointer-events: auto;
+    padding-bottom: 4px;
+    justify-content: flex-start; /* Aligné gauche sur mobile */
+  }
+
+  .milaura-hero-badges-scroll::-webkit-scrollbar { display: none; }
+
+  .milaura-hero-badge {
+    background: rgba(255, 255, 255, 0.9);
+    color: #121212;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    flex-shrink: 0;
+    cursor: default;
+  }
+
+  /* --- LUXE QUANTITY CAPSULE --- */
+  .milaura-quantity-capsule {
+    flex: 0 0 110px; /* Fixe et compact */
+    height: 50px;
+    background: #FFFFFF;
+    border: 1px solid #E5E5E5;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
+    transition: all 0.3s ease;
+  }
+  
+  .milaura-quantity-capsule:hover {
+    border-color: #C0A062;
+    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.1);
+  }
+
+  .milaura-quantity-btn {
+    width: 32px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
+    transition: color 0.2s;
+  }
+  
+  .milaura-quantity-btn:hover { color: #C0A062; }
+  
+  .milaura-quantity-input {
+    width: 30px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    padding: 0;
+    -moz-appearance: textfield;
+  }
+  .milaura-quantity-input::-webkit-outer-spin-button,
+  .milaura-quantity-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .milaura-quantity-input:focus { outline: none; }
+
+  /* Desktop Adjustments */
+  @media screen and (min-width: 990px) {
+    .milaura-hero-badges-overlay {
+      bottom: 30px;
+      padding: 0 24px;
+    }
+    .milaura-hero-badges-scroll {
+      justify-content: center; /* Centré sur desktop comme demandé */
+    }
+  }
+
 {% endstyle %}
 
 <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -502,6 +634,16 @@
           </variant-radios>
         </div>
       {%- endunless -%}
+
+      {%- if all_badges.size > 0 -%}
+        <div class="milaura-hero-badges-overlay">
+          <div class="milaura-hero-badges-scroll">
+            {%- for badge in all_badges -%}
+              <span class="milaura-hero-badge">{{ badge }}</span>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
     </div>
 
     <!-- ============================================
@@ -606,17 +748,25 @@
           {%- endif -%}
         {%- endfor -%}
 
-        <!-- Buy Buttons -->
+        <!-- Buy Buttons (NEW LUXE LAYOUT) -->
         <div class="milaura-buy-row">
-          <!-- Quantity (Optional) -->
+          
           {%- if section.settings.show_quantity -%}
-            <div class="product-form__input product-form__quantity">
-              <quantity-input class="quantity">
-                <button class="quantity__button no-js-hidden" name="minus" type="button"><span class="visually-hidden">-</span>-</button>
-                <input class="quantity__input" type="number" name="quantity" id="Quantity-{{ section.id }}" min="1" value="1" form="{{ 'product-form-' | append: section.id }}">
-                <button class="quantity__button no-js-hidden" name="plus" type="button"><span class="visually-hidden">+</span>+</button>
-              </quantity-input>
-            </div>
+            <quantity-input class="milaura-quantity-capsule">
+              <button class="milaura-quantity-btn" name="minus" type="button">
+                <svg width="12" height="2" viewBox="0 0 12 2" fill="none"><path d="M0 1H12" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+              <input class="milaura-quantity-input" 
+                     type="number" 
+                     name="quantity" 
+                     id="Quantity-{{ section.id }}" 
+                     min="1" 
+                     value="1" 
+                     form="{{ 'product-form-' | append: section.id }}">
+              <button class="milaura-quantity-btn" name="plus" type="button">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 0V12M0 6H12" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+            </quantity-input>
           {%- endif -%}
 
           <!-- Add Button -->
