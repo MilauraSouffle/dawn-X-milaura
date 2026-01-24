@@ -9,19 +9,73 @@
 
 {%- liquid
   assign crosssell_products = product.metafields.milaura.crosssell_products.value
+  assign final_crosssell = null
 
   comment
-    Fallback to related products by tag if no metafield
-    Note: recommendations.products requires JavaScript/AJAX fetch, not directly available
-    We use tag-based matching as a server-side alternative
+    Fallback to related products by collection if no metafield
+    We filter out the current product and ensure we get different products
   endcomment
-  if crosssell_products == blank or crosssell_products.size == 0
-    assign crosssell_products = null
-    assign related_products = product.collections.first.products | where: 'available' | limit: 4
-    if related_products.size > 0
-      assign crosssell_products = related_products | where_exp: 'item', 'item.id != product.id' | slice: 0, 2
+
+  if crosssell_products != blank and crosssell_products.size > 0
+    comment Filter out current product from metafield results endcomment
+    assign filtered_meta = crosssell_products | where_exp: 'item', 'item.id != product.id'
+    if filtered_meta.size > 0
+      assign final_crosssell = filtered_meta | slice: 0, 2
     endif
   endif
+
+  if final_crosssell == blank or final_crosssell.size == 0
+    comment Try all collections the product belongs to endcomment
+    assign all_related = ''
+    for col in product.collections
+      if col.handle != 'all' and col.products.size > 1
+        for item in col.products limit: 6
+          if item.id != product.id and item.available
+            if all_related == ''
+              assign all_related = item.id | append: ''
+            else
+              unless all_related contains item.id
+                assign all_related = all_related | append: ',' | append: item.id
+              endunless
+            endif
+          endif
+        endfor
+      endif
+    endfor
+
+    comment Build final product list from IDs endcomment
+    if all_related != ''
+      assign related_ids = all_related | split: ','
+      assign temp_products = ''
+      assign count = 0
+      for col in product.collections
+        if count < 2
+          for item in col.products
+            if count < 2 and item.id != product.id and item.available
+              assign id_str = item.id | append: ''
+              if related_ids contains id_str
+                if temp_products == ''
+                  assign temp_products = item
+                  assign final_crosssell = temp_products | compact
+                endif
+                assign count = count | plus: 1
+              endif
+            endif
+          endfor
+        endif
+      endfor
+    endif
+  endif
+
+  comment Final fallback: use all products collection if exists endcomment
+  if final_crosssell == blank or final_crosssell.size == 0
+    assign all_col = collections['all']
+    if all_col and all_col.products.size > 1
+      assign final_crosssell = all_col.products | where_exp: 'item', 'item.id != product.id' | where: 'available' | slice: 0, 2
+    endif
+  endif
+
+  assign crosssell_products = final_crosssell
 -%}
 
 <section

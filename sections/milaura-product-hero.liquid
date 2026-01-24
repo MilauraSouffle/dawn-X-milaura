@@ -4,29 +4,11 @@
 {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
-{%- liquid
-  assign scent_notes = product.metafields.milaura.scent_notes.value
-  assign stone_benefits = product.metafields.milaura.stone_benefits.value | default: '' | split: ','
-  
-  assign all_badges = '' | split: ''
-  
-  if scent_notes.top
-    assign all_badges = all_badges | concat: scent_notes.top
-  endif
-  if scent_notes.heart
-    assign all_badges = all_badges | concat: scent_notes.heart
-  endif
-  if scent_notes.base
-    assign all_badges = all_badges | concat: scent_notes.base
-  endif
-
-  for benefit in stone_benefits
-    assign clean_benefit = benefit | strip | split: '###'
-    assign all_badges = all_badges | concat: clean_benefit
-  endfor
-
-  assign all_badges = all_badges | uniq
--%}
+{%- comment %}
+  Metafield badges removed - keeping only variant bubbles
+  Original metafields (scent_notes, stone_benefits) can still be used
+  for recommendations/classification elsewhere
+{% endcomment -%}
 
 {% style %}
   .section-{{ section.id }}-padding {
@@ -67,7 +49,11 @@
     order: 2;
     width: 100%;
     margin-bottom: 16px;
-    position: relative; /* Pour l'overlay des variantes */
+  }
+
+  /* Container pour positionner l'overlay sur l'image principale */
+  .milaura-hero-gallery-column slider-component {
+    position: relative;
   }
 
   /* Slider Mobile */
@@ -182,6 +168,22 @@
     display: none; /* On cache les titres "Taille", "Parfum" pour épuré */
   }
 
+  /* S'assurer que tous les groupes d'options sont visibles */
+  .hero-variant-overlay fieldset {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 6px;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .hero-variant-overlay .variant-options-row {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
   /* Reset radical du style radio */
   .hero-variant-overlay input[type='radio'] {
     clip: rect(0, 0, 0, 0);
@@ -293,12 +295,31 @@
     .hero-variant-overlay {
       position: absolute;
       top: auto;
-      bottom: 24px; /* Un peu plus haut que mobile */
-      left: 24px; /* Aligné gauche sur desktop ? ou centré ? Centré c'est bien */
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       width: auto;
-      max-width: 90%;
+      max-width: 80%;
+    }
+
+    /* Toutes les options de variantes en ligne */
+    .hero-variant-overlay variant-radios {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .hero-variant-overlay .product-form__input {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .hero-variant-overlay .variant-options-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
   }
 
@@ -313,9 +334,10 @@
   }
 
   .rating-badge .stars {
-    color: var(--milaura-gold) !important;
+    color: #D4A843 !important; /* Doré plus foncé pour meilleur contraste */
     font-size: 16px;
     letter-spacing: -1px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); /* Ombre légère pour lisibilité */
   }
 
   .rating-badge .rating-text {
@@ -342,24 +364,163 @@
     color: var(--milaura-gold);
   }
 
-  /* Volume Cards */
-  .milaura-volume-grid { display: grid; gap: 10px; margin: 20px 0; }
-  .volume-card {
-    display: flex; justify-content: space-between; align-items: center;
-    border: 2px solid rgba(192, 160, 98, 0.25);
-    border-radius: 12px; padding: 12px; cursor: pointer;
-    background: #fff; position: relative; transition: all 0.2s;
+  /* ===========================================
+     VOLUME BUNDLE - Design Premium 2026
+     Pills compacts avec badges flottants
+     =========================================== */
+
+  .volume-section-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--milaura-text);
+    margin: 0 0 14px 0;
+    text-align: center;
   }
+
+  .milaura-volume-grid {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 16px 0;
+  }
+
+  .volume-card {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 8px 12px;
+    border: 1.5px solid #E8E4DE;
+    border-radius: 12px;
+    background: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .volume-card:hover {
+    border-color: rgba(192, 160, 98, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.12);
+  }
+
   .volume-card.is-selected {
     border-color: var(--milaura-gold);
-    background: linear-gradient(135deg, rgba(255, 248, 230, 0.95), rgba(255, 252, 245, 0.95));
+    background: linear-gradient(165deg, #FFFDF8 0%, #FFF9EE 100%);
+    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.18);
   }
+
+  /* Badge flottant premium */
+  .volume-card-badge {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #C0A062 0%, #D4B678 100%);
+    color: #FFFFFF;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.35);
+  }
+
+  /* Structure interne simplifiée */
+  .volume-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    width: 100%;
+  }
+
   .volume-check {
-    width: 20px; height: 20px; border-radius: 50%;
-    border: 2px solid rgba(192, 160, 98, 0.4); margin-right: 12px;
+    display: none; /* On cache le radio circle, le style de carte suffit */
   }
-  .volume-card.is-selected .volume-check {
-    border-color: var(--milaura-gold); background: var(--milaura-gold);
+
+  .volume-text {
+    text-align: center;
+  }
+
+  .volume-text h5 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--milaura-text);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .volume-text p {
+    font-size: 11px;
+    color: #888;
+    margin: 2px 0 0 0;
+    font-weight: 500;
+  }
+
+  .volume-card.is-selected .volume-text p {
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  .volume-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--milaura-text);
+    margin-top: 6px;
+  }
+
+  .volume-card.is-selected .volume-price {
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  /* Mobile: légèrement plus compact */
+  @media screen and (max-width: 480px) {
+    .milaura-volume-grid {
+      gap: 6px;
+    }
+
+    .volume-card {
+      padding: 12px 6px 10px;
+      border-radius: 10px;
+    }
+
+    .volume-card-badge {
+      font-size: 8px;
+      padding: 2px 8px;
+      top: -8px;
+    }
+
+    .volume-text h5 {
+      font-size: 12px;
+    }
+
+    .volume-text p {
+      font-size: 10px;
+    }
+
+    .volume-price {
+      font-size: 14px;
+    }
+  }
+
+  /* Animation sélection */
+  .volume-card.is-selected::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), transparent);
+    pointer-events: none;
+    opacity: 0;
+    animation: selectPulse 0.4s ease-out forwards;
+  }
+
+  @keyframes selectPulse {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.05); }
   }
 
   /* --- FIX BUY ROW (Quantité + Bouton) --- */
@@ -368,7 +529,25 @@
     gap: 12px;
     margin-top: 20px;
     align-items: center;
-    flex-wrap: nowrap !important;
+    flex-wrap: wrap;
+  }
+
+  /* Mobile: stack vertically to prevent button cutoff */
+  @media screen and (max-width: 480px) {
+    .milaura-buy-row {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .milaura-buy-row .milaura-quantity-capsule {
+      width: 100%;
+      max-width: 140px;
+    }
+    .milaura-buy-row .product-form {
+      width: 100%;
+    }
+    .milaura-buy-row .milaura-add-btn {
+      width: 100%;
+    }
   }
 
   /* Sélecteur quantité BUBBLE (Petit & Discret) */
@@ -432,54 +611,6 @@
   }
   .milaura-add-btn:disabled { background: #ccc !important; cursor: not-allowed; box-shadow: none !important; }
 
-  /* --- BADGES SCROLLABLES (SENTEUR/PIERRE) --- */
-  .milaura-hero-badges-overlay {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    z-index: 20;
-    pointer-events: none;
-    padding: 0 16px;
-    opacity: 0;
-    animation: fadeInBadges 0.8s ease-out 0.5s forwards;
-  }
-
-  @keyframes fadeInBadges {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .milaura-hero-badges-scroll {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    pointer-events: auto;
-    padding-bottom: 4px;
-    justify-content: flex-start; /* Aligné gauche sur mobile */
-  }
-
-  .milaura-hero-badges-scroll::-webkit-scrollbar { display: none; }
-
-  .milaura-hero-badge {
-    background: rgba(255, 255, 255, 0.9);
-    color: #121212;
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    flex-shrink: 0;
-    cursor: default;
-  }
-
   /* --- LUXE QUANTITY CAPSULE --- */
   .milaura-quantity-capsule {
     flex: 0 0 110px; /* Fixe et compact */
@@ -529,14 +660,77 @@
   .milaura-quantity-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   .milaura-quantity-input:focus { outline: none; }
 
-  /* Desktop Adjustments */
+  /* ===========================================
+     TRUST BADGES - Design Premium 2026
+     =========================================== */
+  .milaura-trust-badges {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(192, 160, 98, 0.15);
+  }
+
+  .milaura-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 13px;
+    color: #555;
+    letter-spacing: 0.01em;
+  }
+
+  .milaura-trust-item:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  }
+
+  .milaura-trust-icon {
+    font-size: 15px;
+    opacity: 0.85;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+  }
+
+  .milaura-trust-item span:last-child {
+    font-weight: 500;
+  }
+
+  /* Desktop: horizontal layout */
   @media screen and (min-width: 990px) {
-    .milaura-hero-badges-overlay {
-      bottom: 30px;
-      padding: 0 24px;
+    .milaura-trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 24px;
+      padding-top: 18px;
     }
-    .milaura-hero-badges-scroll {
-      justify-content: center; /* Centré sur desktop comme demandé */
+
+    .milaura-trust-item {
+      padding: 0;
+      gap: 8px;
+    }
+
+    .milaura-trust-item:not(:last-child) {
+      border-bottom: none;
+      padding-right: 24px;
+      border-right: 1px solid rgba(192, 160, 98, 0.2);
+    }
+
+    .milaura-trust-icon {
+      font-size: 14px;
+    }
+  }
+
+  /* Mobile: plus compact */
+  @media screen and (max-width: 480px) {
+    .milaura-trust-badges {
+      margin-top: 20px;
+      padding-top: 16px;
+    }
+
+    .milaura-trust-item {
+      font-size: 12px;
+      padding: 6px 0;
     }
   }
 
@@ -614,36 +808,27 @@
             </button>
           {%- endfor -%}
         </div>
+
+        <!-- OVERLAY VARIANTES (Dans le slider pour positionnement correct) -->
+        {%- unless product.has_only_default_variant -%}
+          <div class="hero-variant-overlay">
+            <variant-radios class="no-js-hidden milaura-variant-picker" data-section="{{ section.id }}" data-url="{{ product.url }}" data-update-url="false">
+              {%- for option in product.options_with_values -%}
+                <fieldset class="js product-form__input">
+                  <legend class="form__label">{{ option.name }}</legend>
+                  <div class="variant-options-row">
+                    {% render 'product-variant-options', product: product, option: option, block: block, picker_type: 'button' %}
+                  </div>
+                </fieldset>
+              {%- endfor -%}
+              <script type="application/json">
+                {{ product.variants | json }}
+              </script>
+            </variant-radios>
+          </div>
+        {%- endunless -%}
       </slider-component>
 
-      <!-- OVERLAY VARIANTES (Déménagé ici) -->
-      {%- unless product.has_only_default_variant -%}
-        <div class="hero-variant-overlay">
-          <variant-radios class="no-js-hidden milaura-variant-picker" data-section="{{ section.id }}" data-url="{{ product.url }}" data-update-url="false">
-            {%- for option in product.options_with_values -%}
-              <fieldset class="js product-form__input">
-                <legend class="form__label">{{ option.name }}</legend>
-                <div class="variant-options-row">
-                  {% render 'product-variant-options', product: product, option: option, block: block, picker_type: 'button' %}
-                </div>
-              </fieldset>
-            {%- endfor -%}
-            <script type="application/json">
-              {{ product.variants | json }}
-            </script>
-          </variant-radios>
-        </div>
-      {%- endunless -%}
-
-      {%- if all_badges.size > 0 -%}
-        <div class="milaura-hero-badges-overlay">
-          <div class="milaura-hero-badges-scroll">
-            {%- for badge in all_badges -%}
-              <span class="milaura-hero-badge">{{ badge }}</span>
-            {%- endfor -%}
-          </div>
-        </div>
-      {%- endif -%}
     </div>
 
     <!-- ============================================
@@ -660,26 +845,27 @@
               <h3 class="volume-section-title">{{ block.settings.title }}</h3>
             {% endif %}
             <div class="milaura-volume-grid" role="radiogroup" aria-label="Choisir une offre volume" {{ block.shopify_attributes }}>
-              <!-- Option 1 -->
+
+              <!-- Option 1: Standard -->
               <div class="volume-card is-selected"
                    role="radio"
                    aria-checked="true"
                    tabindex="0"
                    onclick="selectVolume(1, this)"
                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(1, this);}">
+                {% if block.settings.opt1_badge != blank %}
+                  <span class="volume-card-badge">{{ block.settings.opt1_badge }}</span>
+                {% endif %}
                 <div class="volume-left">
-                  <div class="volume-check"></div>
                   <div class="volume-text">
-                    <h5>{{ block.settings.opt1_label }}</h5>
-                    <p>{{ block.settings.opt1_sub }}</p>
+                    <h5>{{ block.settings.opt1_label | default: '1×' }}</h5>
+                    <p>{{ block.settings.opt1_sub | default: 'Standard' }}</p>
                   </div>
                 </div>
-                <div class="volume-price">
-                  {{ product.price | money }}
-                </div>
+                <div class="volume-price">{{ product.price | money }}</div>
               </div>
 
-              <!-- Option 2 -->
+              <!-- Option 2: Populaire -->
               <div class="volume-card"
                    role="radio"
                    aria-checked="false"
@@ -687,22 +873,21 @@
                    onclick="selectVolume(2, this)"
                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(2, this);}">
                 {% if block.settings.opt2_badge != blank %}
-                  <div class="volume-card-badge">{{ block.settings.opt2_badge }}</div>
+                  <span class="volume-card-badge">{{ block.settings.opt2_badge }}</span>
                 {% endif %}
                 <div class="volume-left">
-                  <div class="volume-check"></div>
                   <div class="volume-text">
-                    <h5>{{ block.settings.opt2_label }}</h5>
-                    <p>{{ block.settings.opt2_sub }}</p>
+                    <h5>{{ block.settings.opt2_label | default: '2×' }}</h5>
+                    <p>{{ block.settings.opt2_sub | default: '-10%' }}</p>
                   </div>
                 </div>
                 <div class="volume-price">
-                  {% assign price2 = product.price | times: 2 | times: 0.9 %}
+                  {%- assign price2 = product.price | times: 2 | times: 0.9 -%}
                   {{ price2 | money }}
                 </div>
               </div>
 
-              <!-- Option 3 -->
+              <!-- Option 3: Meilleure offre -->
               <div class="volume-card"
                    role="radio"
                    aria-checked="false"
@@ -710,20 +895,20 @@
                    onclick="selectVolume(3, this)"
                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(3, this);}">
                 {% if block.settings.opt3_badge != blank %}
-                  <div class="volume-card-badge">{{ block.settings.opt3_badge }}</div>
+                  <span class="volume-card-badge">{{ block.settings.opt3_badge }}</span>
                 {% endif %}
                 <div class="volume-left">
-                  <div class="volume-check"></div>
                   <div class="volume-text">
-                    <h5>{{ block.settings.opt3_label }}</h5>
-                    <p>{{ block.settings.opt3_sub }}</p>
+                    <h5>{{ block.settings.opt3_label | default: '3×' }}</h5>
+                    <p>{{ block.settings.opt3_sub | default: '-20%' }}</p>
                   </div>
                 </div>
                 <div class="volume-price">
-                  {% assign price3 = product.price | times: 3 | times: 0.8 %}
+                  {%- assign price3 = product.price | times: 3 | times: 0.8 -%}
                   {{ price3 | money }}
                 </div>
               </div>
+
             </div>
             
             <script>
@@ -900,62 +1085,68 @@
         },
         {
           "type": "header",
-          "content": "Option 1 (1 Unité)"
+          "content": "── Option 1 (1 Unité) ──"
         },
         {
           "type": "text",
           "id": "opt1_label",
-          "label": "Label",
-          "default": "Découverte"
+          "label": "Titre",
+          "default": "1×"
         },
         {
           "type": "text",
           "id": "opt1_sub",
-          "label": "Sous-texte",
+          "label": "Sous-titre",
           "default": "Standard"
         },
         {
+          "type": "text",
+          "id": "opt1_badge",
+          "label": "Badge (laisser vide pour masquer)",
+          "default": ""
+        },
+        {
           "type": "header",
-          "content": "Option 2 (2 Unités)"
+          "content": "── Option 2 (2 Unités) ──"
         },
         {
           "type": "text",
           "id": "opt2_label",
-          "label": "Label",
-          "default": "Duo"
+          "label": "Titre",
+          "default": "2×"
         },
         {
           "type": "text",
           "id": "opt2_sub",
-          "label": "Sous-texte",
-          "default": "Économisez 10%"
+          "label": "Sous-titre",
+          "default": "-10%"
         },
         {
           "type": "text",
           "id": "opt2_badge",
-          "label": "Badge",
+          "label": "Badge (laisser vide pour masquer)",
           "default": "POPULAIRE"
         },
         {
           "type": "header",
-          "content": "Option 3 (3 Unités)"
+          "content": "── Option 3 (3 Unités) ──"
         },
         {
           "type": "text",
           "id": "opt3_label",
-          "label": "Label",
-          "default": "Cure Complète"
+          "label": "Titre",
+          "default": "3×"
         },
         {
           "type": "text",
           "id": "opt3_sub",
-          "label": "Sous-texte",
-          "default": "Économisez 20%"
+          "label": "Sous-titre",
+          "default": "-20%"
         },
         {
           "type": "text",
           "id": "opt3_badge",
-          "label": "Badge",
+          "label": "Badge (laisser vide pour masquer)",
           "default": "MEILLEURE OFFRE"
         }
       ]
