@@ -11,13 +11,11 @@
   assign crosssell_products = product.metafields.milaura.crosssell_products.value
   assign final_crosssell = null
 
-  {% comment %}
-    Fallback to related products by collection if no metafield
-    We filter out the current product and ensure we get different products
-  {% endcomment %}
+  # Fallback to related products by collection if no metafield
+  # We filter out the current product and ensure we get different products
 
   if crosssell_products != blank and crosssell_products.size > 0
-    {% comment %} Filter out current product from metafield results {% endcomment %}
+    # Filter out current product from metafield results
     assign filtered_meta = crosssell_products | where_exp: 'item', 'item.id != product.id'
     if filtered_meta.size > 0
       assign final_crosssell = filtered_meta | slice: 0, 2
@@ -25,7 +23,7 @@
   endif
 
   if final_crosssell == blank or final_crosssell.size == 0
-    {% comment %} Try all collections the product belongs to {% endcomment %}
+    # Try all collections the product belongs to
     assign all_related = ''
     for col in product.collections
       if col.handle != 'all' and col.products.size > 1
@@ -43,7 +41,7 @@
       endif
     endfor
 
-    {% comment %} Build final product list from IDs {% endcomment %}
+    # Build final product list from IDs
     if all_related != ''
       assign related_ids = all_related | split: ','
       assign temp_products = ''
@@ -67,7 +65,7 @@
     endif
   endif
 
-  {% comment %} Final fallback: use all products collection if exists {% endcomment %}
+  # Final fallback: use all products collection if exists
   if final_crosssell == blank or final_crosssell.size == 0
     assign all_col = collections['all']
     if all_col and all_col.products.size > 1
