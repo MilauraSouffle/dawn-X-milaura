@@ -46,10 +46,6 @@ dawn-X-milaura/
 │
 ├── assets/                          # CSS et JS
 │   ├── milaura.css                  # Styles globaux Milaura
-│   ├── milaura-quiz.css             # Styles du quiz
-│   ├── milaura-quiz.js              # Logique quiz (navigation, scoring)
-│   ├── milaura-quiz-config.js       # Questions et reponses du quiz
-│   ├── milaura-quiz-result.css      # Styles page resultat
 │   └── [fichiers Dawn...]           # Ne pas modifier
 │
 ├── sections/                        # Sections Liquid
@@ -222,18 +218,11 @@ Pour activer les recos dans le cart drawer :
 --milaura-border-radius: 20px;  /* Coins arrondis */
 ```
 
-### milaura-quiz.js
-**Role** : Logique du quiz emotionnel
-- Gestion navigation entre questions
-- Calcul du scoring
-- Affichage des resultats
-- Stockage sessionStorage
-
-### milaura-quiz-config.js
-**Role** : Configuration des questions du quiz
-- 7 questions avec 4 reponses chacune
-- Mapping reponse -> profil emotionnel
-- Contenu des profils (description, produit, mantra)
+### Quiz
+Le quiz est entierement gere par la section `milaura-quiz.liquid` qui contient :
+- Styles CSS inline (dans bloc {% style %})
+- Logique JS inline (calcul scoring, navigation, resultats)
+- Configuration via le customizer (blocs "question" + settings profils)
 
 ---
 
@@ -343,10 +332,10 @@ Pour chaque produit :
 1. Produit > Theme template
 2. Selectionner "product.milaura"
 
-### Etape 7 : Creer la page quiz (optionnel)
-Si quiz sur page separee :
+### Etape 7 : Ajouter le quiz sur une page (optionnel)
+Si quiz sur page separee (en plus de la homepage) :
 1. Pages > Add page
-2. Template : page.quiz (si existe)
+2. Customizer > ajouter section "Milaura Quiz"
 3. Handle : "quiz-emotionnel"
 
 ---
@@ -359,9 +348,9 @@ Si quiz sur page separee :
 3. Verifier que le snippet est inclus au bon endroit
 
 ### Le quiz ne fonctionne pas
-1. Verifier que milaura-quiz.js est charge
-2. Verifier la console pour erreurs JS
-3. Verifier que les blocs "question" sont configures
+1. Verifier la console pour erreurs JS
+2. Verifier que les blocs "question" sont configures dans le customizer
+3. Verifier que les produits sont assignes aux profils dans les settings
 
 ### Les metaobjects ne s'affichent pas
 1. Verifier les handles (lowercase, pas d'accents)
