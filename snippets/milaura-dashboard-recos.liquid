@@ -1,163 +1,594 @@
 {%- comment -%}
-  MILAURA DASHBOARD RECOS
-  Affichage recommandations personnalisées sur dashboard client
-  Basé sur last_profile_handle du customer
+  MILAURA DASHBOARD - PROFIL ÉMOTIONNEL
+  Affichage du profil quiz + recommandations personnalisées
+  Lit depuis localStorage (milauraLastResult)
 {%- endcomment -%}
 
 {%- if customer -%}
-  {%- assign last_profile = customer.metafields.milaura.last_profile_handle -%}
+<div class="milaura-dashboard-profile" id="milaura-dashboard-profile">
+  <!-- État: Chargement -->
+  <div class="dashboard-loading" id="dashboard-loading">
+    <div class="dashboard-loading-spinner"></div>
+    <p>Chargement de votre profil...</p>
+  </div>
 
-  {%- if last_profile -%}
-    {%- comment -%} Lookup profil émotionnel {%- endcomment -%}
-    {%- assign profile = shop.metaobjects.emotional_profile[last_profile] -%}
+  <!-- État: Pas de profil -->
+  <div class="dashboard-no-profile" id="dashboard-no-profile" style="display: none;">
+    <div class="dashboard-no-profile-icon">✨</div>
+    <h3 class="dashboard-no-profile-title">Découvrez votre bougie idéale</h3>
+    <p class="dashboard-no-profile-text">
+      Répondez à notre diagnostic émotionnel pour recevoir des recommandations personnalisées
+      basées sur vos besoins du moment.
+    </p>
+    <a href="/pages/quiz" class="dashboard-cta-quiz">
+      <span>Faire le diagnostic</span>
+      <span class="cta-arrow">→</span>
+    </a>
+  </div>
 
-    {%- if profile -%}
-      {%- assign quiz_candle = profile.candle_product.value -%}
+  <!-- État: Profil trouvé -->
+  <div class="dashboard-has-profile" id="dashboard-has-profile" style="display: none;">
+    <!-- En-tête profil -->
+    <div class="dashboard-profile-header">
+      <div class="dashboard-profile-badge">
+        <span class="profile-icon" id="profile-icon">🤍</span>
+      </div>
+      <div class="dashboard-profile-info">
+        <p class="dashboard-profile-label">Votre profil émotionnel</p>
+        <h3 class="dashboard-profile-name" id="profile-name">-</h3>
+      </div>
+      <div class="dashboard-profile-date">
+        <span id="profile-date">-</span>
+      </div>
+    </div>
 
-      {%- if quiz_candle -%}
-        {% render 'milaura-recos-engine',
-          current_product: quiz_candle,
-          max_recos: 2
-        %}
+    <!-- Duo pierre + senteur -->
+    <div class="dashboard-profile-duo">
+      <div class="dashboard-duo-item">
+        <span class="duo-icon">💎</span>
+        <span class="duo-label">Pierre</span>
+        <span class="duo-value" id="profile-stone">-</span>
+      </div>
+      <div class="dashboard-duo-item">
+        <span class="duo-icon">🌸</span>
+        <span class="duo-label">Senteur</span>
+        <span class="duo-value" id="profile-scent">-</span>
+      </div>
+    </div>
 
-        {% if recommended_products.size > 0 %}
-          <div class="milaura-dashboard-recos">
-            <div class="milaura-dashboard-recos-container">
-              <h3 class="milaura-dashboard-recos-title">Vos recommandations personnalisées</h3>
-              <p class="milaura-dashboard-recos-subtitle">Basées sur votre profil {{ profile.name.value }}</p>
+    <!-- Bougie recommandée -->
+    <div class="dashboard-candle-card" id="dashboard-candle-card" style="display: none;">
+      <div class="dashboard-candle-image" id="candle-image-container">
+        <div class="candle-placeholder">🕯️</div>
+      </div>
+      <div class="dashboard-candle-info">
+        <h4 class="dashboard-candle-title" id="candle-title">-</h4>
+        <p class="dashboard-candle-baseline">Votre bougie du moment</p>
+        <a href="#" class="dashboard-candle-link" id="candle-link">Voir le produit →</a>
+      </div>
+    </div>
 
-              <div class="milaura-dashboard-recos-grid">
-                {% for reco in recommended_products %}
-                  <div class="milaura-dashboard-reco-card">
-                    <a href="{{ reco.url }}" class="milaura-dashboard-reco-link">
-                      <div class="milaura-dashboard-reco-image">
-                        {% if reco.featured_image %}
-                          <img src="{{ reco.featured_image | image_url: width: 400 }}" alt="{{ reco.title }}" loading="lazy">
-                        {% else %}
-                          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                        {% endif %}
-                      </div>
+    <!-- Météo émotionnelle résumée -->
+    <div class="dashboard-mood-summary">
+      <h4 class="dashboard-mood-title">Votre météo émotionnelle</h4>
+      <div class="dashboard-mood-bars" id="dashboard-mood-bars">
+        <!-- Rempli par JS -->
+      </div>
+    </div>
 
-                      <div class="milaura-dashboard-reco-info">
-                        <h4 class="milaura-dashboard-reco-title">{{ reco.title }}</h4>
-                        <p class="milaura-dashboard-reco-price">{{ reco.price | money }}</p>
+    <!-- Actions -->
+    <div class="dashboard-actions">
+      <button type="button" class="dashboard-btn-restart" id="dashboard-restart-quiz">
+        <span>🔄</span>
+        <span>Refaire le diagnostic</span>
+      </button>
+    </div>
+  </div>
+</div>
 
-                        {% if reco.metafields.milaura.baseline %}
-                          <p class="milaura-dashboard-reco-baseline">{{ reco.metafields.milaura.baseline }}</p>
-                        {% endif %}
+<style>
+  .milaura-dashboard-profile {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--milaura-border-radius, 20px);
+    padding: var(--milaura-spacing-lg, 36px);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    margin-bottom: var(--milaura-spacing-lg, 36px);
+  }
 
-                        <span class="milaura-dashboard-reco-cta">Découvrir</span>
-                      </div>
-                    </a>
-                  </div>
-                {% endfor %}
-              </div>
+  /* Loading state */
+  .dashboard-loading {
+    text-align: center;
+    padding: var(--milaura-spacing-xl, 48px) 0;
+  }
+
+  .dashboard-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(192, 160, 98, 0.2);
+    border-top-color: var(--milaura-gold, #C0A062);
+    border-radius: 50%;
+    margin: 0 auto var(--milaura-spacing-md, 24px);
+    animation: dashboardSpin 1s linear infinite;
+  }
+
+  @keyframes dashboardSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  .dashboard-loading p {
+    color: var(--milaura-text-light, #666);
+    font-size: 0.95rem;
+  }
+
+  /* No profile state */
+  .dashboard-no-profile {
+    text-align: center;
+    padding: var(--milaura-spacing-lg, 36px) 0;
+  }
+
+  .dashboard-no-profile-icon {
+    font-size: 3rem;
+    margin-bottom: var(--milaura-spacing-md, 24px);
+  }
+
+  .dashboard-no-profile-title {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: 1.5rem;
+    color: var(--milaura-text, #000);
+    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
+  }
+
+  .dashboard-no-profile-text {
+    color: var(--milaura-text-light, #666);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto var(--milaura-spacing-lg, 36px);
+  }
+
+  .dashboard-cta-quiz {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062) 0%, var(--milaura-gold-light, #E6C88B) 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .dashboard-cta-quiz:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(192, 160, 98, 0.35);
+  }
+
+  .cta-arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .dashboard-cta-quiz:hover .cta-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Profile header */
+  .dashboard-profile-header {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-md, 24px);
+    padding-bottom: var(--milaura-spacing-md, 24px);
+    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
+    margin-bottom: var(--milaura-spacing-md, 24px);
+  }
+
+  .dashboard-profile-badge {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062) 0%, var(--milaura-gold-light, #E6C88B) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .profile-icon {
+    font-size: 1.75rem;
+  }
+
+  .dashboard-profile-info {
+    flex: 1;
+  }
+
+  .dashboard-profile-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--milaura-gold, #C0A062);
+    margin: 0 0 4px 0;
+  }
+
+  .dashboard-profile-name {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: 1.5rem;
+    color: var(--milaura-text, #000);
+    margin: 0;
+  }
+
+  .dashboard-profile-date {
+    font-size: 0.85rem;
+    color: var(--milaura-text-light, #666);
+  }
+
+  /* Duo pierre + senteur */
+  .dashboard-profile-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--milaura-spacing-md, 24px);
+    margin-bottom: var(--milaura-spacing-md, 24px);
+  }
+
+  .dashboard-duo-item {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: var(--milaura-border-radius-sm, 12px);
+    padding: var(--milaura-spacing-md, 24px);
+    text-align: center;
+    border: 1px solid rgba(192, 160, 98, 0.1);
+  }
+
+  .duo-icon {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .duo-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--milaura-gold, #C0A062);
+    margin-bottom: 4px;
+  }
+
+  .duo-value {
+    display: block;
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: 1.1rem;
+    color: var(--milaura-text, #000);
+    font-weight: 600;
+  }
+
+  /* Candle card */
+  .dashboard-candle-card {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-md, 24px);
+    background: rgba(253, 251, 247, 0.8);
+    border-radius: var(--milaura-border-radius-sm, 12px);
+    padding: var(--milaura-spacing-md, 24px);
+    margin-bottom: var(--milaura-spacing-md, 24px);
+    border: 1px solid rgba(192, 160, 98, 0.15);
+  }
+
+  .dashboard-candle-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--milaura-beige, #FDFBF7), #f5f0e8);
+  }
+
+  .dashboard-candle-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .candle-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+  }
+
+  .dashboard-candle-info {
+    flex: 1;
+  }
+
+  .dashboard-candle-title {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: 1.1rem;
+    color: var(--milaura-text, #000);
+    margin: 0 0 4px 0;
+  }
+
+  .dashboard-candle-baseline {
+    font-size: 0.85rem;
+    color: var(--milaura-text-light, #666);
+    margin: 0 0 8px 0;
+  }
+
+  .dashboard-candle-link {
+    font-size: 0.9rem;
+    color: var(--milaura-gold, #C0A062);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .dashboard-candle-link:hover {
+    color: var(--milaura-gold-dark, #8F723A);
+    text-decoration: underline;
+  }
+
+  /* Mood summary */
+  .dashboard-mood-summary {
+    margin-bottom: var(--milaura-spacing-md, 24px);
+  }
+
+  .dashboard-mood-title {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: 1rem;
+    color: var(--milaura-text, #000);
+    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
+  }
+
+  .dashboard-mood-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dashboard-mood-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mood-bar-label {
+    width: 100px;
+    font-size: 0.8rem;
+    color: var(--milaura-text-light, #666);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mood-bar-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(192, 160, 98, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .mood-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--milaura-gold, #C0A062) 0%, var(--milaura-gold-light, #E6C88B) 100%);
+    border-radius: 6px;
+    transition: width 0.8s ease;
+  }
+
+  .mood-bar-fill.is-secondary {
+    background: linear-gradient(90deg, rgba(192, 160, 98, 0.4) 0%, rgba(192, 160, 98, 0.2) 100%);
+  }
+
+  .mood-bar-percent {
+    width: 35px;
+    font-size: 0.75rem;
+    color: var(--milaura-text-light, #666);
+    text-align: right;
+  }
+
+  /* Actions */
+  .dashboard-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--milaura-spacing-md, 24px);
+    border-top: 1px solid rgba(192, 160, 98, 0.15);
+  }
+
+  .dashboard-btn-restart {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--milaura-gold, #C0A062);
+    color: var(--milaura-gold, #C0A062);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dashboard-btn-restart:hover {
+    background: rgba(192, 160, 98, 0.1);
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 600px) {
+    .milaura-dashboard-profile {
+      padding: var(--milaura-spacing-md, 24px);
+    }
+
+    .dashboard-profile-header {
+      flex-wrap: wrap;
+    }
+
+    .dashboard-profile-date {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .dashboard-profile-duo {
+      grid-template-columns: 1fr;
+    }
+
+    .dashboard-candle-card {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .mood-bar-label {
+      width: 80px;
+      font-size: 0.75rem;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const profileIcons = {
+    reconfort: '🤍',
+    protection: '🖤',
+    serenite: '💜',
+    elegance: '💗',
+    joie: '💚'
+  };
+
+  const profileDisplayNames = {
+    reconfort: 'Réconfort',
+    protection: 'Protection',
+    serenite: 'Sérénité',
+    elegance: 'Élégance',
+    joie: 'Joie de vivre'
+  };
+
+  function init() {
+    const loadingEl = document.getElementById('dashboard-loading');
+    const noProfileEl = document.getElementById('dashboard-no-profile');
+    const hasProfileEl = document.getElementById('dashboard-has-profile');
+
+    // Lire depuis localStorage
+    const lastResultRaw = localStorage.getItem('milauraLastResult');
+
+    // Masquer loading
+    if (loadingEl) loadingEl.style.display = 'none';
+
+    if (!lastResultRaw) {
+      // Pas de profil
+      if (noProfileEl) noProfileEl.style.display = 'block';
+      return;
+    }
+
+    try {
+      const data = JSON.parse(lastResultRaw);
+
+      // Afficher le profil
+      if (hasProfileEl) hasProfileEl.style.display = 'block';
+
+      // Icon
+      const iconEl = document.getElementById('profile-icon');
+      if (iconEl && data.profileId) {
+        iconEl.textContent = profileIcons[data.profileId] || '✨';
+      }
+
+      // Nom
+      const nameEl = document.getElementById('profile-name');
+      if (nameEl) {
+        nameEl.textContent = data.profileName || profileDisplayNames[data.profileId] || 'Votre profil';
+      }
+
+      // Date
+      const dateEl = document.getElementById('profile-date');
+      if (dateEl && data.timestamp) {
+        const date = new Date(data.timestamp);
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        dateEl.textContent = date.toLocaleDateString('fr-FR', options);
+      }
+
+      // Pierre
+      const stoneEl = document.getElementById('profile-stone');
+      if (stoneEl && data.stone) {
+        stoneEl.textContent = data.stone;
+      }
+
+      // Senteur
+      const scentEl = document.getElementById('profile-scent');
+      if (scentEl && data.scent) {
+        scentEl.textContent = data.scent;
+      }
+
+      // Bougie (si produit handle existe)
+      if (data.productHandle || data.productTitle) {
+        const candleCardEl = document.getElementById('dashboard-candle-card');
+        if (candleCardEl) candleCardEl.style.display = 'flex';
+
+        const candleTitleEl = document.getElementById('candle-title');
+        if (candleTitleEl) {
+          candleTitleEl.textContent = data.productTitle || 'Votre bougie';
+        }
+
+        const candleLinkEl = document.getElementById('candle-link');
+        if (candleLinkEl && data.productHandle) {
+          candleLinkEl.href = '/products/' + data.productHandle;
+        }
+      }
+
+      // Météo émotionnelle
+      const moodBarsEl = document.getElementById('dashboard-mood-bars');
+      if (moodBarsEl && data.percentages) {
+        moodBarsEl.innerHTML = '';
+
+        // Trier par pourcentage
+        const sorted = Object.entries(data.percentages)
+          .sort((a, b) => b[1] - a[1]);
+
+        sorted.forEach(([profileId, percent], index) => {
+          const bar = document.createElement('div');
+          bar.className = 'dashboard-mood-bar';
+
+          const isWinner = index === 0;
+          bar.innerHTML = `
+            <span class="mood-bar-label">
+              <span>${profileIcons[profileId] || '○'}</span>
+              ${profileDisplayNames[profileId] || profileId}
+            </span>
+            <div class="mood-bar-track">
+              <div class="mood-bar-fill ${isWinner ? '' : 'is-secondary'}" style="width: 0%"></div>
             </div>
-          </div>
+            <span class="mood-bar-percent">${percent}%</span>
+          `;
 
-          <style>
-            .milaura-dashboard-recos {
-              padding: 2rem 0;
-            }
+          moodBarsEl.appendChild(bar);
 
-            .milaura-dashboard-recos-container {
-              max-width: 1200px;
-              margin: 0 auto;
-              padding: 0 1.5rem;
-            }
+          // Animer
+          setTimeout(() => {
+            const fill = bar.querySelector('.mood-bar-fill');
+            if (fill) fill.style.width = percent + '%';
+          }, 100 + (index * 100));
+        });
+      }
 
-            .milaura-dashboard-recos-title {
-              font-family: var(--font-heading-family, 'Playfair Display'), serif;
-              font-size: 1.75rem;
-              text-align: center;
-              margin: 0 0 0.5rem 0;
-              color: var(--milaura-text, #000000);
-            }
+    } catch (e) {
+      console.error('Erreur parsing profil:', e);
+      if (noProfileEl) noProfileEl.style.display = 'block';
+    }
+  }
 
-            .milaura-dashboard-recos-subtitle {
-              text-align: center;
-              font-size: 0.9375rem;
-              margin: 0 0 2rem 0;
-              color: var(--milaura-gold, #C0A062);
-              font-style: italic;
-            }
+  // Bouton refaire le quiz
+  document.addEventListener('DOMContentLoaded', function() {
+    init();
 
-            .milaura-dashboard-recos-grid {
-              display: grid;
-              grid-template-columns: 1fr;
-              gap: 1.5rem;
-            }
-
-            @media screen and (min-width: 768px) {
-              .milaura-dashboard-recos-grid {
-                grid-template-columns: 1fr 1fr;
-              }
-            }
-
-            .milaura-dashboard-reco-card {
-              background: rgba(255, 255, 255, 0.6);
-              backdrop-filter: blur(20px);
-              border-radius: var(--milaura-border-radius, 20px);
-              padding: 1.5rem;
-              border: 1px solid rgba(192, 160, 98, 0.2);
-              transition: all 0.3s ease;
-            }
-
-            .milaura-dashboard-reco-card:hover {
-              border-color: var(--milaura-gold, #C0A062);
-              transform: translateY(-4px);
-              box-shadow: 0 12px 30px rgba(192, 160, 98, 0.2);
-            }
-
-            .milaura-dashboard-reco-link {
-              text-decoration: none;
-              color: inherit;
-              display: block;
-            }
-
-            .milaura-dashboard-reco-image {
-              margin-bottom: 1rem;
-              border-radius: 12px;
-              overflow: hidden;
-            }
-
-            .milaura-dashboard-reco-image img {
-              width: 100%;
-              height: auto;
-              display: block;
-            }
-
-            .milaura-dashboard-reco-title {
-              font-family: var(--font-heading-family, 'Playfair Display'), serif;
-              font-size: 1.25rem;
-              margin: 0 0 0.5rem 0;
-              color: var(--milaura-text, #000000);
-            }
-
-            .milaura-dashboard-reco-price {
-              font-size: 1.125rem;
-              font-weight: 600;
-              color: var(--milaura-gold, #C0A062);
-              margin: 0 0 0.75rem 0;
-            }
-
-            .milaura-dashboard-reco-baseline {
-              font-size: 0.9375rem;
-              line-height: 1.5;
-              margin: 0 0 1rem 0;
-              opacity: 0.8;
-            }
-
-            .milaura-dashboard-reco-cta {
-              display: inline-block;
-              font-size: 0.875rem;
-              color: var(--milaura-gold, #C0A062);
-              font-weight: 600;
-              text-decoration: underline;
-            }
-          </style>
-        {% endif %}
-      {%- endif -%}
-    {%- endif -%}
-  {%- endif -%}
+    const restartBtn = document.getElementById('dashboard-restart-quiz');
+    if (restartBtn) {
+      restartBtn.addEventListener('click', function() {
+        // Option: clear localStorage et redirect
+        // localStorage.removeItem('milauraLastResult');
+        window.location.href = '/pages/quiz';
+      });
+    }
+  });
+})();
+</script>
 {%- endif -%}
