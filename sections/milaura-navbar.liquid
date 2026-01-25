@@ -1,33 +1,36 @@
 {% style %}
-  /* --- TYPO & BASE --- */
-  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600&display=swap');
+  /* ============================================
+     MILAURA NAVBAR - VERSION CORRIGÉE
+     ============================================ */
 
-  /* Le Conteneur Flottant */
+  /* --- CONTENEUR PRINCIPAL --- */
   #MilauraNav-{{ section.id }} {
     position: fixed;
-    top: 38px; /* Positionné juste en dessous de l'annonce dorée (38px) */
+    top: 38px;
     left: 0;
     width: 100%;
-    z-index: 1000000; /* En dessous de l'annonce (1000001) */
+    z-index: 1000000;
     display: flex;
     justify-content: center;
-    padding: 0 40px;
+    padding: 0 24px;
     pointer-events: none;
     transition: top 0.3s ease;
+    box-sizing: border-box;
   }
 
-  /* --- LE SNAKE CONTAINER --- */
+  /* --- WRAPPER SNAKE (contient l'ombre) --- */
   #MilauraNav-{{ section.id }} .nav-snake-wrapper {
     position: relative;
-    padding: 2px; /* Bordure un peu plus épaisse */
+    padding: 2px;
     border-radius: 100px;
-    overflow: hidden;
     pointer-events: auto;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-    animation: slideDown 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+    animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    max-width: 1200px;
+    width: 100%;
   }
 
-  /* Voile noir subtil qui traverse de gauche à droite */
+  /* Animation de balayage subtile */
   #MilauraNav-{{ section.id }} .nav-snake-wrapper::before {
     content: '';
     position: absolute;
@@ -38,174 +41,194 @@
     background: linear-gradient(
       to right,
       transparent 0%,
-      rgba(0, 0, 0, 0.15) 50%,
+      rgba(192, 160, 98, 0.1) 50%,
       transparent 100%
     );
-    animation: breathSweep 4s ease-in-out infinite;
+    animation: breathSweep 5s ease-in-out infinite;
     z-index: 0;
     pointer-events: none;
+    border-radius: 100px;
   }
 
-  /* --- L'INTERIEUR DU MENU (Vision OS GLASS) --- */
+  /* --- INTÉRIEUR GLASSMORPHISM --- */
   #MilauraNav-{{ section.id }} .nav-inner {
     position: relative;
     z-index: 1;
-    background: rgba(255, 255, 255, 0.15); /* Encore plus transparent */
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
-
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-radius: 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    /* --- TAILLES AUGMENTÉES (VERSION XL) --- */
-    padding: -0px 10px; /* Plus d'espace interne */
-    gap: 0px;
-    min-width: 1000px; /* Barrière très large */
-
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    padding: 8px 24px;
+    gap: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
   }
 
-  /* LOGO IMAGE */
+  /* --- LOGO --- */
   #MilauraNav-{{ section.id }} .nav-logo-link {
     display: flex;
     align-items: center;
     text-decoration: none;
+    flex-shrink: 0;
   }
 
   #MilauraNav-{{ section.id }} .nav-logo-img {
-    height: 90px; /* Hauteur du logo augmentée */
+    height: 56px;
     width: auto;
     object-fit: contain;
     display: block;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    transition: height 0.3s ease;
   }
 
-  /* Fallback texte si pas de logo */
   #MilauraNav-{{ section.id }} .nav-logo-text {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--milaura-text); /* Noir pur */
+    font-size: 1.5rem;
+    color: var(--milaura-text);
     font-weight: 600;
   }
 
-  /* LIENS DU MENU */
+  /* --- LIENS DU MENU --- */
   #MilauraNav-{{ section.id }} .nav-links {
     display: flex;
-    gap: 45px; /* Liens plus espacés */
+    gap: 28px;
     list-style: none;
     margin: 0;
     padding: 0;
+    align-items: center;
   }
 
   #MilauraNav-{{ section.id }} .nav-link {
     font-family: 'Lato', sans-serif;
-    font-size: 1.05rem; /* Texte plus grand (16-17px) */
-    color: var(--milaura-text); /* Noir pur pour contraste max */
+    font-size: 0.9rem;
+    color: var(--milaura-text);
     text-decoration: none;
-    font-weight: 600; /* Plus gras */
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
     position: relative;
+    white-space: nowrap;
   }
 
-  /* Soulignement violet élégant animé */
   #MilauraNav-{{ section.id }} .nav-link::after {
     content: '';
     position: absolute;
     width: 0;
-    height: 2px; /* Trait fin et élégant */
-    bottom: -6px;
+    height: 2px;
+    bottom: -4px;
     left: 50%;
-    background-color: #8B5CF6; /* Violet élégant (couleur du logo) */
+    background: linear-gradient(90deg, var(--milaura-gold), var(--milaura-gold-light));
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateX(-50%);
+    border-radius: 2px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-link:hover {
+    color: var(--milaura-gold-dark);
   }
 
   #MilauraNav-{{ section.id }} .nav-link:hover::after {
     width: 100%;
   }
 
-  /* ICONES */
+  /* --- BADGE QUIZ (STAR ELEMENT) --- */
+  #MilauraNav-{{ section.id }} .nav-quiz-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 50%, var(--milaura-gold) 100%);
+    background-size: 200% 200%;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 16px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(192, 160, 98, 0.4);
+    transition: all 0.3s ease;
+    animation: badgeShimmer 3s ease-in-out infinite;
+    white-space: nowrap;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-quiz-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.5);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-quiz-badge .badge-icon {
+    font-size: 1rem;
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes badgeShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  /* --- ICÔNES --- */
   #MilauraNav-{{ section.id }} .nav-icons {
     display: flex;
-    gap: 30px;
+    gap: 20px;
     align-items: center;
+    flex-shrink: 0;
   }
 
   #MilauraNav-{{ section.id }} .nav-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
-    line-height: 1;
-    color: var(--milaura-text); /* Noir pur */
+    color: var(--milaura-text);
     transition: transform 0.3s ease, color 0.3s ease;
     text-decoration: none;
   }
 
   #MilauraNav-{{ section.id }} .nav-icon:hover {
-    color: #8B5CF6;
-    transform: scale(1.15);
+    color: var(--milaura-gold);
+    transform: scale(1.1);
   }
 
   #MilauraNav-{{ section.id }} .nav-icon svg {
-    width: 26px;
-    height: 26px;
-    color: inherit;
-    transition: inherit;
+    width: 22px;
+    height: 22px;
   }
 
-  @keyframes breathSweep {
-    0% {
-      left: -100%;
-      opacity: 0;
-    }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      left: 150%;
-      opacity: 0;
-    }
-  }
-
-  @keyframes slideDown {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  /* MENU BURGER - Style cristal/pierre */
+  /* --- MENU BURGER --- */
   #MilauraNav-{{ section.id }} .nav-burger {
     display: none;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
     cursor: pointer;
-    padding: 6px;
-    z-index: 10;
+    padding: 8px;
     background: transparent;
     border: none;
-    align-items: center;
-    justify-content: center;
+    z-index: 10;
   }
 
   #MilauraNav-{{ section.id }} .nav-burger span {
-    width: 22px;
+    width: 24px;
     height: 2px;
-    background-color: #1A1A1A;
+    background-color: var(--milaura-text);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 3px;
+    border-radius: 2px;
     display: block;
   }
 
   #MilauraNav-{{ section.id }} .nav-burger:hover span {
-    background-color: #8B5CF6;
+    background-color: var(--milaura-gold);
   }
 
   #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(8px, 8px);
+    transform: rotate(45deg) translate(5px, 5px);
   }
 
   #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(2) {
@@ -213,24 +236,27 @@
   }
 
   #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
+    transform: rotate(-45deg) translate(5px, -5px);
   }
 
-  /* MENU MOBILE DÉROULANT */
+  /* --- MENU MOBILE --- */
   #MilauraNav-{{ section.id }} .nav-mobile-menu {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(255, 255, 255, 0.98);
+    height: 100dvh;
+    background: rgba(253, 251, 247, 0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     z-index: 999999;
     transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: var(--milaura-spacing-xl) var(--milaura-spacing-md) var(--milaura-spacing-md); /* Réduit de 100px à xl (48px) */
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 100px 24px 40px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-menu.active {
@@ -243,74 +269,216 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 0;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-link {
     font-family: 'Lato', sans-serif;
-    font-size: 1.5rem;
-    color: var(--milaura-text); /* Noir pur */
+    font-size: 1.2rem;
+    color: var(--milaura-text);
     text-decoration: none;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    transition: color 0.3s ease;
+    letter-spacing: 1.5px;
     display: block;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
+    transition: color 0.3s ease, padding-left 0.3s ease;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-link:hover {
-    color: #8B5CF6;
+    color: var(--milaura-gold);
+    padding-left: 10px;
   }
 
-  /* RESPONSIVE TABLETTE/MOBILE */
-  /* Ajustement mobile : l'annonce fait 40px de haut sur mobile */
-  @media screen and (max-width: 768px) {
-    #MilauraNav-{{ section.id }} {
-      top: 40px; /* Positionné juste en dessous de l'annonce mobile (40px) */
-    }
+  /* Badge Quiz Mobile */
+  #MilauraNav-{{ section.id }} .nav-mobile-quiz {
+    margin-top: 32px;
   }
 
+  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 18px 24px;
+    border-radius: 60px;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(192, 160, 98, 0.35);
+    transition: all 0.3s ease;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.45);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-icon {
+    font-size: 1.3rem;
+  }
+
+  /* Close button mobile */
+  #MilauraNav-{{ section.id }} .nav-mobile-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-close:hover {
+    background: var(--milaura-gold);
+    border-color: var(--milaura-gold);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-close:hover svg {
+    color: #fff;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-close svg {
+    width: 20px;
+    height: 20px;
+    color: var(--milaura-text);
+    transition: color 0.3s ease;
+  }
+
+  /* --- ANIMATIONS --- */
+  @keyframes breathSweep {
+    0% { left: -100%; opacity: 0; }
+    50% { opacity: 1; }
+    100% { left: 150%; opacity: 0; }
+  }
+
+  @keyframes slideDown {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* --- RESPONSIVE TABLETTE --- */
   @media screen and (max-width: 1100px) {
-    #MilauraNav-{{ section.id }} .nav-inner {
-      min-width: auto;
-      width: 95%;
-      padding: 10px 20px;
-      gap: 12px;
-      justify-content: space-between;
+    #MilauraNav-{{ section.id }} {
+      padding: 0 16px;
     }
+
+    #MilauraNav-{{ section.id }} .nav-inner {
+      padding: 8px 20px;
+      gap: 20px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-links {
+      gap: 20px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-link {
+      font-size: 0.8rem;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-quiz-badge {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-logo-img {
+      height: 48px;
+    }
+  }
+
+  /* --- RESPONSIVE MOBILE --- */
+  @media screen and (max-width: 900px) {
     #MilauraNav-{{ section.id }} .nav-links {
       display: none;
     }
+
     #MilauraNav-{{ section.id }} .nav-burger {
       display: flex;
-      flex-shrink: 0;
+      order: -1;
     }
+
+    #MilauraNav-{{ section.id }} .nav-inner {
+      padding: 10px 16px;
+      gap: 12px;
+    }
+
     #MilauraNav-{{ section.id }} .nav-logo-img {
-      height: 40px;
-      flex-shrink: 0;
+      height: 42px;
     }
-    #MilauraNav-{{ section.id }} .nav-logo-link {
-      flex-shrink: 0;
-    }
+
     #MilauraNav-{{ section.id }} .nav-icons {
-      gap: 18px;
-      flex-shrink: 0;
+      gap: 16px;
     }
-    #MilauraNav-{{ section.id }} .nav-icon {
-      font-size: 20px;
-    }
+
     #MilauraNav-{{ section.id }} .nav-icon svg {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    #MilauraNav-{{ section.id }} {
+      top: 40px;
+      padding: 0 12px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-snake-wrapper {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    #MilauraNav-{{ section.id }} .nav-inner {
+      padding: 8px 14px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-logo-img {
+      height: 38px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icons {
+      gap: 14px;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    #MilauraNav-{{ section.id }} .nav-logo-img {
+      height: 34px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icons {
+      gap: 12px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon svg {
+      width: 18px;
+      height: 18px;
     }
   }
 {% endstyle %}
 
 <div id="MilauraNav-{{ section.id }}">
   <div class="nav-snake-wrapper">
-    <div class="nav-inner milaura-glass">
+    <div class="nav-inner">
+
+      <!-- Burger (mobile) -->
+      <button class="nav-burger" aria-label="Menu" id="burger-{{ section.id }}">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Logo -->
       <a href="{{ routes.root_url }}" class="nav-logo-link">
         {% if section.settings.logo != blank %}
           {{ section.settings.logo | image_url: height: 120 | image_tag: class: 'nav-logo-img', loading: 'eager' }}
@@ -319,132 +487,177 @@
         {% endif %}
       </a>
 
+      <!-- Liens Desktop -->
       <ul class="nav-links">
         {%- for link in linklists[section.settings.menu].links -%}
-          {%- unless link.title == 'ACCUEIL' or link.title == 'Accueil' or link.title == 'accueil' -%}
+          {%- assign link_lower = link.title | downcase -%}
+          {%- unless link_lower == 'accueil' or link_lower == 'bougie émotionnelle' or link_lower == 'bougie emotionnelle' or link_lower == 'bougies émotionnelles' or link_lower == 'bougies emotionnelles' -%}
             <li>
               <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
             </li>
           {%- endunless -%}
         {%- endfor -%}
+
+        <!-- Badge Quiz -->
+        <li>
+          <a href="{{ section.settings.quiz_link | default: '/pages/decouvrir-ma-bougie' }}" class="nav-quiz-badge">
+            <span class="badge-icon">✨</span>
+            <span>{{ section.settings.quiz_label | default: 'Mon Quiz' }}</span>
+          </a>
+        </li>
       </ul>
 
-      <!-- Menu Burger -->
-      <button class="nav-burger" aria-label="Menu" id="burger-{{ section.id }}">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
+      <!-- Icônes -->
       <div class="nav-icons">
         <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Recherche">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="11" cy="11" r="7" opacity="0.3"/>
-            <path d="m20 20-4.35-4.35"/>
-            <circle cx="11" cy="11" r="1.5" fill="currentColor"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
           </svg>
         </a>
         <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Compte">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
         </a>
         <a href="{{ routes.cart_url }}" class="nav-icon" aria-label="Panier">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
             <line x1="3" y1="6" x2="21" y2="6"/>
             <path d="M16 10a4 4 0 0 1-8 0"/>
           </svg>
         </a>
       </div>
+
     </div>
   </div>
 
-  <!-- Menu Mobile Déroulant -->
+  <!-- Menu Mobile -->
   <div class="nav-mobile-menu" id="mobile-menu-{{ section.id }}">
+
+    <!-- Bouton fermer -->
+    <button class="nav-mobile-close" id="close-menu-{{ section.id }}" aria-label="Fermer le menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Liens -->
     <ul class="nav-mobile-links">
       {%- for link in linklists[section.settings.menu].links -%}
-        {%- unless link.title == 'ACCUEIL' or link.title == 'Accueil' or link.title == 'accueil' -%}
+        {%- assign link_lower = link.title | downcase -%}
+        {%- unless link_lower == 'accueil' or link_lower == 'bougie émotionnelle' or link_lower == 'bougie emotionnelle' or link_lower == 'bougies émotionnelles' or link_lower == 'bougies emotionnelles' -%}
           <li>
-            <a
-              href="{{ link.url }}"
-              class="nav-mobile-link"
-              onclick="document.getElementById('mobile-menu-{{ section.id }}').classList.remove('active'); document.getElementById('burger-{{ section.id }}').classList.remove('active');"
-            >
-              {{- link.title -}}
+            <a href="{{ link.url }}" class="nav-mobile-link" data-close-menu>
+              {{ link.title }}
             </a>
           </li>
         {%- endunless -%}
       {%- endfor -%}
     </ul>
+
+    <!-- Badge Quiz Mobile -->
+    <div class="nav-mobile-quiz">
+      <a href="{{ section.settings.quiz_link | default: '/pages/decouvrir-ma-bougie' }}" class="nav-mobile-quiz-badge" data-close-menu>
+        <span class="badge-icon">✨</span>
+        <span>{{ section.settings.quiz_label | default: 'Faire mon diagnostic émotionnel' }}</span>
+      </a>
+    </div>
+
   </div>
 </div>
 
 <script>
-  (function () {
-    const burger = document.getElementById('burger-{{ section.id }}');
-    const mobileMenu = document.getElementById('mobile-menu-{{ section.id }}');
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const burger = document.getElementById('burger-' + sectionId);
+    const closeBtn = document.getElementById('close-menu-' + sectionId);
+    const mobileMenu = document.getElementById('mobile-menu-' + sectionId);
 
-    if (burger && mobileMenu) {
-      burger.addEventListener('click', function () {
-        burger.classList.toggle('active');
-        mobileMenu.classList.toggle('active');
-        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-      });
+    function openMenu() {
+      burger.classList.add('active');
+      mobileMenu.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
 
-      // Fermer le menu en cliquant en dehors
-      mobileMenu.addEventListener('click', function (e) {
-        if (e.target === mobileMenu) {
-          burger.classList.remove('active');
-          mobileMenu.classList.remove('active');
-          document.body.style.overflow = '';
+    function closeMenu() {
+      burger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (burger) {
+      burger.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('active')) {
+          closeMenu();
+        } else {
+          openMenu();
         }
       });
     }
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeMenu);
+    }
+
+    // Fermer au clic sur les liens
+    const closeLinks = mobileMenu.querySelectorAll('[data-close-menu]');
+    closeLinks.forEach(function(link) {
+      link.addEventListener('click', closeMenu);
+    });
+
+    // Fermer au clic en dehors
+    mobileMenu.addEventListener('click', function(e) {
+      if (e.target === mobileMenu) {
+        closeMenu();
+      }
+    });
+
+    // Fermer avec Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        closeMenu();
+      }
+    });
   })();
 </script>
 
 {% schema %}
 {
-  "name": "Milaura Nav Vision V3",
+  "name": "Milaura Navbar",
   "settings": [
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo (PNG Transparent conseillé)"
+      "label": "Logo"
     },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu à afficher",
+      "label": "Menu",
       "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Badge Quiz"
+    },
+    {
+      "type": "text",
+      "id": "quiz_label",
+      "label": "Texte du badge",
+      "default": "Mon Quiz"
+    },
+    {
+      "type": "url",
+      "id": "quiz_link",
+      "label": "Lien du quiz"
     }
   ],
   "presets": [
     {
-      "name": "Milaura Nav Vision V3"
+      "name": "Milaura Navbar"
     }
   ]
 }
