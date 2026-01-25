@@ -1,6 +1,7 @@
 {% style %}
   /* ============================================
      MILAURA NAVBAR - VERSION CTA & CRO
+     Badge Quiz visible sur TOUS les écrans
      ============================================ */
 
   /* --- CONTENEUR PRINCIPAL --- */
@@ -26,7 +27,7 @@
     pointer-events: auto;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
     animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    max-width: 1280px; /* Un peu plus large pour le gros bouton */
+    max-width: 1280px;
     width: 100%;
   }
 
@@ -61,8 +62,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 24px; /* Un peu moins de padding vertical */
-    gap: 24px;
+    padding: 6px 12px 6px 24px;
+    gap: 16px;
     border: 1px solid rgba(255, 255, 255, 0.6);
   }
 
@@ -89,7 +90,7 @@
     font-weight: 600;
   }
 
-  /* --- LIENS DU MENU --- */
+  /* --- LIENS DU MENU (Desktop uniquement) --- */
   #MilauraNav-{{ section.id }} .nav-links {
     display: flex;
     gap: 24px;
@@ -97,6 +98,8 @@
     margin: 0;
     padding: 0;
     align-items: center;
+    flex: 1;
+    justify-content: center;
   }
 
   #MilauraNav-{{ section.id }} .nav-link {
@@ -133,78 +136,115 @@
     width: 100%;
   }
 
-  /* --- SUPER CTA BADGE (Le Cœur du Funnel) --- */
+  /* ============================================
+     SUPER CTA BADGE QUIZ - LE CŒUR DU FUNNEL
+     Visible sur TOUS les écrans avec halo pulsant
+     ============================================ */
   #MilauraNav-{{ section.id }} .nav-quiz-badge {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    background: linear-gradient(135deg, var(--milaura-gold) 0%, #D4B678 100%);
+    gap: 12px;
+    background: linear-gradient(135deg, var(--milaura-gold) 0%, #D4B678 50%, var(--milaura-gold-light) 100%);
+    background-size: 200% 200%;
     color: #fff;
-    padding: 8px 20px;
+    padding: 12px 24px;
     border-radius: 50px;
     text-decoration: none;
-    box-shadow: 0 4px 15px rgba(192, 160, 98, 0.4);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(192, 160, 98, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     white-space: nowrap;
     position: relative;
-    /* Animation HALO */
-    animation: haloPulse 2s infinite;
+    flex-shrink: 0;
+    animation: badgeShimmer 3s ease-in-out infinite;
+  }
+
+  /* HALO PULSANT - via pseudo-element pour ne pas interférer avec hover */
+  #MilauraNav-{{ section.id }} .nav-quiz-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50px;
+    box-shadow: 0 0 0 0 rgba(192, 160, 98, 0.6);
+    animation: haloPulse 2s ease-out infinite;
+    pointer-events: none;
   }
 
   @keyframes haloPulse {
     0% {
-      box-shadow: 0 0 0 0 rgba(192, 160, 98, 0.7);
+      box-shadow: 0 0 0 0 rgba(192, 160, 98, 0.6);
     }
-    70% {
-      box-shadow: 0 0 0 10px rgba(192, 160, 98, 0);
+    50% {
+      box-shadow: 0 0 0 12px rgba(192, 160, 98, 0);
     }
     100% {
       box-shadow: 0 0 0 0 rgba(192, 160, 98, 0);
     }
   }
 
+  @keyframes badgeShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
   #MilauraNav-{{ section.id }} .nav-quiz-badge:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(135deg, #D4B678 0%, var(--milaura-gold) 100%);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(192, 160, 98, 0.6);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-quiz-badge:hover::before {
+    animation: none;
   }
 
   #MilauraNav-{{ section.id }} .badge-icon {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     animation: iconBounce 2s ease-in-out infinite;
+    flex-shrink: 0;
   }
 
   @keyframes iconBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-2px) scale(1.1); }
   }
 
   #MilauraNav-{{ section.id }} .badge-content {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    line-height: 1.1;
+    line-height: 1.2;
   }
 
   #MilauraNav-{{ section.id }} .badge-title {
     font-family: 'Lato', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 
   #MilauraNav-{{ section.id }} .badge-subtitle {
     font-family: 'Lato', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 400;
-    opacity: 0.9;
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.95;
     font-style: italic;
+  }
+
+  /* --- ZONE DROITE (badge + icônes) --- */
+  #MilauraNav-{{ section.id }} .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
   }
 
   /* --- ICÔNES --- */
   #MilauraNav-{{ section.id }} .nav-icons {
     display: flex;
-    gap: 18px;
+    gap: 14px;
     align-items: center;
     flex-shrink: 0;
   }
@@ -317,7 +357,7 @@
     padding-left: 10px;
   }
 
-  /* Badge Quiz Mobile */
+  /* Badge Quiz Mobile (dans le menu hamburger) */
   #MilauraNav-{{ section.id }} .nav-mobile-quiz {
     margin-top: 32px;
   }
@@ -326,19 +366,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
     color: #fff;
-    padding: 16px 20px;
+    padding: 18px 28px;
     border-radius: 60px;
     text-decoration: none;
     box-shadow: 0 8px 25px rgba(192, 160, 98, 0.35);
     transition: all 0.3s ease;
-    animation: haloPulse 2s infinite;
+    position: relative;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 60px;
+    box-shadow: 0 0 0 0 rgba(192, 160, 98, 0.6);
+    animation: haloPulse 2s ease-out infinite;
+    pointer-events: none;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge:hover {
     transform: scale(1.02);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-title {
+    font-size: 1.1rem;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-subtitle {
+    font-size: 0.85rem;
   }
 
   /* Close button mobile */
@@ -386,19 +447,166 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
-  /* --- RESPONSIVE TABLETTE --- */
-  @media screen and (max-width: 1200px) {
+  /* ============================================
+     RESPONSIVE - Badge TOUJOURS visible
+     ============================================ */
+
+  /* DESKTOP LARGE (> 1100px) : Tout visible */
+  @media screen and (min-width: 1101px) {
+    #MilauraNav-{{ section.id }} .nav-burger {
+      display: none;
+    }
+  }
+
+  /* TABLETTE (768px - 1100px) : Menu burger, badge visible */
+  @media screen and (max-width: 1100px) {
     #MilauraNav-{{ section.id }} .nav-links {
-      display: none; /* Passage en burger plus tôt vu la taille du CTA */
+      display: none;
     }
 
     #MilauraNav-{{ section.id }} .nav-burger {
       display: flex;
-      order: -1;
     }
-    
+
+    #MilauraNav-{{ section.id }} .nav-inner {
+      padding: 6px 12px 6px 16px;
+      gap: 12px;
+    }
+
     #MilauraNav-{{ section.id }} .nav-logo-img {
       height: 46px;
+    }
+
+    /* Badge plus compact sur tablette */
+    #MilauraNav-{{ section.id }} .nav-quiz-badge {
+      padding: 10px 18px;
+      gap: 10px;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-title {
+      font-size: 0.85rem;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-subtitle {
+      font-size: 0.7rem;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  /* MOBILE LARGE (481px - 767px) : Badge simplifié */
+  @media screen and (max-width: 767px) {
+    #MilauraNav-{{ section.id }} {
+      padding: 0 16px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-inner {
+      padding: 6px 10px 6px 14px;
+      gap: 10px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-logo-img {
+      height: 40px;
+    }
+
+    /* Badge sans subtitle sur mobile */
+    #MilauraNav-{{ section.id }} .nav-quiz-badge {
+      padding: 10px 16px;
+      gap: 8px;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-subtitle {
+      display: none;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-title {
+      font-size: 0.8rem;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-icon {
+      font-size: 1.1rem;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icons {
+      gap: 10px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  /* MOBILE PETIT (< 480px) : Badge icône uniquement */
+  @media screen and (max-width: 480px) {
+    #MilauraNav-{{ section.id }} {
+      padding: 0 10px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-inner {
+      padding: 5px 8px 5px 12px;
+      gap: 8px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-logo-img {
+      height: 36px;
+    }
+
+    /* Badge ultra compact - icône + texte court */
+    #MilauraNav-{{ section.id }} .nav-quiz-badge {
+      padding: 8px 14px;
+      gap: 6px;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-content {
+      display: flex;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-title {
+      font-size: 0.7rem;
+      letter-spacing: 0;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-icon {
+      font-size: 1rem;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icons {
+      gap: 8px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-burger {
+      padding: 6px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-burger span {
+      width: 20px;
+    }
+  }
+
+  /* TRÈS PETIT ÉCRAN (< 360px) : Ajustements extrêmes */
+  @media screen and (max-width: 360px) {
+    #MilauraNav-{{ section.id }} .nav-logo-img {
+      height: 32px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-quiz-badge {
+      padding: 7px 12px;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-title {
+      font-size: 0.65rem;
+    }
+
+    #MilauraNav-{{ section.id }} .badge-icon {
+      font-size: 0.9rem;
     }
   }
 
@@ -424,7 +632,7 @@
         {% endif %}
       </a>
 
-      <!-- Liens Desktop -->
+      <!-- Liens Desktop (cachés sur mobile/tablette) -->
       <ul class="nav-links">
         {%- for link in linklists[section.settings.menu].links -%}
           {%- assign link_lower = link.title | downcase -%}
@@ -435,21 +643,21 @@
             </li>
           {%- endunless -%}
         {%- endfor -%}
-
-        <!-- Badge Quiz Super CTA -->
-        <li>
-          <a href="{{ section.settings.quiz_link | default: '/pages/decouvrir-ma-bougie' }}" class="nav-quiz-badge">
-            <span class="badge-icon">✨</span>
-            <div class="badge-content">
-              <span class="badge-title">{{ section.settings.quiz_label | default: 'Faire mon diagnostic' }}</span>
-              <span class="badge-subtitle">et découvrez votre pierre du moment</span>
-            </div>
-          </a>
-        </li>
       </ul>
 
-      <!-- Icônes -->
-      <div class="nav-icons">
+      <!-- Zone Droite : Badge Quiz + Icônes (TOUJOURS visible) -->
+      <div class="nav-right">
+        <!-- Badge Quiz Super CTA - Visible sur TOUS les écrans -->
+        <a href="{{ section.settings.quiz_link | default: '/pages/decouvrir-ma-bougie' }}" class="nav-quiz-badge">
+          <span class="badge-icon">✨</span>
+          <div class="badge-content">
+            <span class="badge-title">{{ section.settings.quiz_label | default: 'Mon diagnostic' }}</span>
+            <span class="badge-subtitle">{{ section.settings.quiz_subtitle | default: 'Découvrir ma pierre' }}</span>
+          </div>
+        </a>
+
+        <!-- Icônes -->
+        <div class="nav-icons">
         <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Recherche">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"/>
@@ -469,7 +677,8 @@
             <path d="M16 10a4 4 0 0 1-8 0"/>
           </svg>
         </a>
-      </div>
+        </div>
+      </div><!-- fin nav-right -->
 
     </div>
   </div>
@@ -499,13 +708,13 @@
       {%- endfor -%}
     </ul>
 
-    <!-- Badge Quiz Mobile -->
+    <!-- Badge Quiz Mobile (dans le menu hamburger) -->
     <div class="nav-mobile-quiz">
       <a href="{{ section.settings.quiz_link | default: '/pages/decouvrir-ma-bougie' }}" class="nav-mobile-quiz-badge" data-close-menu>
         <span class="badge-icon">✨</span>
         <div class="badge-content">
-          <span class="badge-title">{{ section.settings.quiz_label | default: 'Faire mon diagnostic' }}</span>
-          <span class="badge-subtitle">et découvrez votre pierre du moment</span>
+          <span class="badge-title">{{ section.settings.quiz_label | default: 'Mon diagnostic' }}</span>
+          <span class="badge-subtitle">{{ section.settings.quiz_subtitle | default: 'Découvrir ma pierre' }}</span>
         </div>
       </a>
     </div>
@@ -606,13 +815,19 @@
     },
     {
       "type": "header",
-      "content": "Badge Quiz"
+      "content": "Badge Quiz (CTA Principal)"
     },
     {
       "type": "text",
       "id": "quiz_label",
-      "label": "Texte du badge",
-      "default": "Faire mon diagnostic"
+      "label": "Titre du badge",
+      "default": "Mon diagnostic"
+    },
+    {
+      "type": "text",
+      "id": "quiz_subtitle",
+      "label": "Sous-titre (caché sur mobile)",
+      "default": "Découvrir ma pierre"
     },
     {
       "type": "url",
