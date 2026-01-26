@@ -373,7 +373,70 @@
     color: #000 !important;
   }
 
-  /* --- MOBILE --- */
+  /* --- INDICATEURS DE SLIDE (DOTS) --- */
+  #MilauraHeroShowcase-{{ section.id }} .hero-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(192, 160, 98, 0.3);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-dot:hover {
+    background: rgba(192, 160, 98, 0.5);
+    transform: scale(1.2);
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-dot.is-active {
+    background: var(--milaura-gold, #C0A062);
+    transform: scale(1.3);
+  }
+
+  /* --- TABLETTE (769px - 1024px) --- */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    #MilauraHeroShowcase-{{ section.id }} .hero-main-grid {
+      grid-template-columns: 35% 65%;
+      gap: var(--milaura-spacing-md, 18px);
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-tab {
+      padding: 10px 14px;
+      gap: 10px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-title {
+      font-size: 1.05rem;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-icon {
+      font-size: 1.7rem;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
+      font-size: clamp(2.2rem, 4vw, {{ section.settings.title_size | divided_by: 10.0 }}rem);
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-banner {
+      padding: 16px 24px;
+    }
+  }
+
+  /* --- MOBILE (max 768px) --- */
   @media screen and (max-width: 768px) {
     #MilauraHeroShowcase-{{ section.id }} {
       padding-top: var(--header-height-offset, 20px);
@@ -388,7 +451,7 @@
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-banner {
-      padding: 10px 14px;
+      padding: 12px 16px;
       border-radius: 20px;
       margin-bottom: var(--milaura-spacing-md, 18px);
       gap: 6px;
@@ -405,20 +468,21 @@
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       letter-spacing: 1.5px;
       margin-bottom: 4px;
     }
 
+    /* Titre responsive basé sur le setting */
     #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
-      font-size: 1.8rem;
+      font-size: clamp(1.6rem, 6vw, 2.4rem);
       line-height: 1.1;
       margin: 0;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
-      font-size: 0.85rem;
-      line-height: 1.5;
+      font-size: 0.82rem;
+      line-height: 1.45;
       margin-top: 6px;
     }
 
@@ -442,13 +506,13 @@
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
       transform: none;
       margin: 0;
-      padding: 8px;
-      border-radius: 18px;
+      padding: 6px;
+      border-radius: 16px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-carousel {
       aspect-ratio: 4 / 5;
-      min-height: 300px;
+      min-height: 280px;
       width: 100%;
       display: block;
     }
@@ -471,35 +535,79 @@
       display: none;
     }
 
-    /* Piliers en dessous du carousel */
+    /* Dots visibles sur mobile */
+    #MilauraHeroShowcase-{{ section.id }} .hero-dots {
+      margin-top: 10px;
+    }
+
+    /* Piliers COMPACTS en dessous du carousel */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillars {
       order: 2;
       width: 100%;
-      gap: var(--milaura-spacing-sm, 10px);
+      gap: 8px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-tab {
-      padding: 10px 14px;
-      gap: 12px;
+      padding: 10px 12px;
+      gap: 10px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-icon {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-title {
-      font-size: 1.1rem;
-      margin-bottom: 3px;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
     }
 
+    /* Description cachée sur mobile pour compacter (option) */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
-      font-size: 0.9rem;
-      line-height: 1.4;
+      font-size: 0.8rem;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
+
+    {% if section.settings.hide_tab_text_mobile %}
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
+      display: none;
+    }
+    {% endif %}
 
     /* CTA dans les piliers - optimisé mobile (layout uniquement) */
     #MilauraHeroShowcase-{{ section.id }} .hero-pillars .hero-cta-row {
-      margin-top: var(--milaura-spacing-sm, 10px);
+      margin-top: var(--milaura-spacing-sm, 8px);
+    }
+  }
+
+  /* --- TRÈS PETIT MOBILE (max 380px) --- */
+  @media screen and (max-width: 380px) {
+    #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
+      font-size: 1.5rem;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
+      font-size: 0.75rem;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-tab {
+      padding: 8px 10px;
+      gap: 8px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-icon {
+      font-size: 1.2rem;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-title {
+      font-size: 0.88rem;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-text {
+      display: none;
     }
   }
 {% endstyle %}
@@ -610,6 +718,22 @@
               </div>
             {% endif %}
           </div>
+
+          <!-- Indicateurs de slide (dots) -->
+          {% if universe_blocks.size > 1 %}
+            <div class="hero-dots" aria-label="Navigation slides">
+              {% for i in (0..universe_blocks.size) %}
+                {% if i < universe_blocks.size %}
+                  <button
+                    type="button"
+                    class="hero-dot {% if i == 0 %}is-active{% endif %}"
+                    data-dot-index="{{ i }}"
+                    aria-label="Aller à la slide {{ i | plus: 1 }}"
+                  ></button>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -624,6 +748,7 @@
 
     const tabs = Array.from(root.querySelectorAll('.hero-tab[data-index]'));
     const slides = Array.from(root.querySelectorAll('.hero-slide[data-index]'));
+    const dots = Array.from(root.querySelectorAll('.hero-dot[data-dot-index]'));
     const pillars = root.querySelector('.hero-pillars');
     const carousel = root.querySelector('.hero-carousel');
     const cta = root.querySelector('[data-hero-cta]');
@@ -661,6 +786,16 @@
       cta.textContent = label;
     }
 
+    function updateDots(index) {
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.classList.add('is-active');
+        } else {
+          dot.classList.remove('is-active');
+        }
+      });
+    }
+
     function setActive(nextIndex) {
       if (nextIndex === currentIndex) return;
       if (nextIndex < 0 || nextIndex >= max) return;
@@ -690,6 +825,7 @@
 
       currentIndex = nextIndex;
       updateCTA(currentIndex);
+      updateDots(currentIndex);
     }
 
     function goto(index) {
@@ -722,6 +858,7 @@
       resumeTimeout = setTimeout(startAutoplay, resumeDelay);
     }
 
+    // Event listeners for tabs
     tabs.slice(0, max).forEach((tab) => {
       tab.addEventListener('click', function (e) {
         e.preventDefault();
@@ -753,6 +890,17 @@
       });
     });
 
+    // Event listeners for dots
+    dots.forEach((dot) => {
+      dot.addEventListener('click', function (e) {
+        e.preventDefault();
+        stopAutoplay();
+        const idx = parseInt(this.getAttribute('data-dot-index'), 10);
+        if (!isNaN(idx)) goto(idx);
+        scheduleResume();
+      });
+    });
+
     if (pillars) {
       pillars.addEventListener('mouseenter', stopAutoplay);
       pillars.addEventListener('mouseleave', startAutoplay);
@@ -769,6 +917,7 @@
 
     // init
     updateCTA(0);
+    updateDots(0);
     if (!reducedMotion) startAutoplay();
   })();
 </script>
@@ -846,6 +995,15 @@
       "default": "#666666"
     },
 
+    { "type": "header", "content": "📱 Options Mobile" },
+    {
+      "type": "checkbox",
+      "id": "hide_tab_text_mobile",
+      "label": "Cacher descriptions onglets sur mobile",
+      "default": false,
+      "info": "Recommandé avec 4+ onglets pour réduire la hauteur"
+    },
+
     { "type": "header", "content": "🖼️ Logo" },
     {
       "type": "image_picker",
@@ -919,30 +1077,40 @@
         {
           "type": "universe",
           "settings": {
-            "tab_label": "Pierres & cristaux",
+            "tab_label": "Pierres & minéraux",
             "icon": "💎",
-            "title": "Pierres & cristaux",
-            "text": "Sélection de pierres naturelles de haute qualité, choisies à la main.",
+            "title": "Pierres & minéraux",
+            "text": "Sélection de pierres naturelles certifiées, choisies pour leurs vertus énergétiques.",
             "cta_label": "Découvrir"
           }
         },
         {
           "type": "universe",
           "settings": {
-            "tab_label": "Bijoux artisanaux",
+            "tab_label": "Bijoux & créations",
             "icon": "✨",
-            "title": "Bijoux artisanaux",
-            "text": "Créations artisanales uniques, chargées d'intention et d'énergie.",
+            "title": "Bijoux & créations",
+            "text": "Créations artisanales uniques, chargées d'intention et d'énergie positive.",
             "cta_label": "Découvrir"
           }
         },
         {
           "type": "universe",
           "settings": {
-            "tab_label": "Rituels & bougies",
+            "tab_label": "Bougies & senteurs",
             "icon": "🕯️",
-            "title": "Rituels & bougies",
-            "text": "Expériences énergétiques pour transformer votre espace et votre bien-être.",
+            "title": "Bougies & senteurs",
+            "text": "Bougies artisanales aux huiles essentielles pour créer votre atmosphère.",
+            "cta_label": "Découvrir"
+          }
+        },
+        {
+          "type": "universe",
+          "settings": {
+            "tab_label": "Rituels & bien-être",
+            "icon": "🧘",
+            "title": "Rituels & bien-être",
+            "text": "Guides et accessoires pour vos rituels de reconnexion et de self-care.",
             "cta_label": "Découvrir"
           }
         }
