@@ -1318,11 +1318,12 @@
         let html = '';
 
         if (product.variant_id) {
-          html += `<button type="button" class="quiz-result-cta-primary" onclick="addToCartAndRedirect(${product.variant_id})">Adopter ce rituel ✨</button>`;
+          html += `<button type="button" class="quiz-result-cta-primary" id="quiz-add-to-cart-btn-${sectionId}" onclick="addToCartWithFeedback(${product.variant_id}, this)">Ajouter au panier</button>`;
         }
 
-        if (product.url) {
-          html += `<a href="${product.url}" class="quiz-result-cta-secondary">Voir les détails</a>`;
+        if (product.handle) {
+          // Force le template milaura avec ?view=milaura
+          html += `<a href="/products/${product.handle}?view=milaura" class="quiz-result-cta-secondary">Découvrir mon rituel →</a>`;
         }
 
         ctaEl.innerHTML = html;
@@ -1429,8 +1430,12 @@
       localStorage.setItem('milauraLastResult', JSON.stringify(storageData));
     }
 
-    // Fonction globale pour ajouter au panier
-    window.addToCartAndRedirect = function(variantId) {
+    // Fonction globale pour ajouter au panier avec feedback visuel
+    window.addToCartWithFeedback = function(variantId, buttonEl) {
+      const originalText = buttonEl.textContent;
+      buttonEl.textContent = 'Ajout en cours...';
+      buttonEl.disabled = true;
+
       fetch('/cart/add.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1438,11 +1443,31 @@
       })
       .then(response => response.json())
       .then(() => {
-        window.location.href = '/cart';
+        buttonEl.textContent = '✓ Ajouté au panier';
+        buttonEl.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
+
+        // Remettre le bouton normal après 2s
+        setTimeout(() => {
+          buttonEl.textContent = originalText;
+          buttonEl.style.background = '';
+          buttonEl.disabled = false;
+        }, 2000);
+
+        // Mettre à jour le compteur du panier si présent
+        if (typeof window.updateCartCount === 'function') {
+          window.updateCartCount();
+        }
       })
       .catch(error => {
         console.error('Erreur ajout panier:', error);
-        alert('Une erreur est survenue. Veuillez réessayer.');
+        buttonEl.textContent = 'Erreur - Réessayer';
+        buttonEl.style.background = 'linear-gradient(135deg, #f44336, #e57373)';
+        buttonEl.disabled = false;
+
+        setTimeout(() => {
+          buttonEl.textContent = originalText;
+          buttonEl.style.background = '';
+        }, 2000);
       });
     };
 
