@@ -1135,7 +1135,9 @@
     // ============================================
     // FONCTIONS DE NAVIGATION
     // ============================================
-    function goToState(state) {
+    let hasUserInteracted = false; // Flag pour éviter le scroll au chargement initial
+
+    function goToState(state, shouldScroll = true) {
       const states = container.querySelectorAll('.quiz-state');
       states.forEach(s => {
         s.classList.remove('is-active');
@@ -1152,11 +1154,13 @@
 
       currentState = state;
 
-      // Scroll vers le haut de la section quiz après changement d'état
-      // Petit délai pour laisser le DOM se mettre à jour
-      setTimeout(() => {
-        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 50);
+      // Scroll vers le haut de la section quiz SEULEMENT après interaction utilisateur
+      // et pas pour l'état initial (intro)
+      if (shouldScroll && hasUserInteracted && state !== QuizState.INTRO) {
+        setTimeout(() => {
+          container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
     }
 
     function goToIntro() {
@@ -1486,6 +1490,7 @@
           if (showLinkEl) {
             showLinkEl.addEventListener('click', (e) => {
               e.preventDefault();
+              hasUserInteracted = true; // Activer le scroll
               // Recharger les résultats depuis localStorage
               const storedData = JSON.parse(localStorage.getItem('milauraLastResult'));
               scores = storedData.scores;
@@ -1506,7 +1511,10 @@
       // Bouton start
       const startBtn = container.querySelector('#quiz-start-btn-' + sectionId);
       if (startBtn) {
-        startBtn.addEventListener('click', goToQuestions);
+        startBtn.addEventListener('click', () => {
+          hasUserInteracted = true; // Activer le scroll après la première interaction
+          goToQuestions();
+        });
       }
 
       // Bouton restart
