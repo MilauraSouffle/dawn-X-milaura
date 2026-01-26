@@ -87,6 +87,7 @@
     position: relative;
     width: 100%;
     padding-top: 100%; /* Carré par défaut */
+    background: var(--milaura-beige, #FDFBF7);
   }
 
   .product-media-container img,
@@ -98,6 +99,25 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
+  }
+
+  /* Mobile: ratio légèrement portrait pour mieux voir les produits */
+  @media screen and (max-width: 768px) {
+    .product-media-container {
+      padding-top: 110%; /* Ratio 10:11 (légèrement portrait) */
+    }
+
+    .product-media-container img {
+      object-position: center top; /* Privilégie le haut de l'image (souvent le produit) */
+    }
+  }
+
+  /* Petit mobile: ratio encore plus adapté */
+  @media screen and (max-width: 480px) {
+    .product-media-container {
+      padding-top: 115%; /* Plus de hauteur visible */
+    }
   }
 
   /* Pagination Mobile (Dots) */
@@ -611,54 +631,126 @@
   }
   .milaura-add-btn:disabled { background: #ccc !important; cursor: not-allowed; box-shadow: none !important; }
 
-  /* --- LUXE QUANTITY CAPSULE --- */
-  .milaura-quantity-capsule {
-    flex: 0 0 110px; /* Fixe et compact */
-    height: 50px;
-    background: #FFFFFF;
-    border: 1px solid #E5E5E5;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 4px;
+  /* --- LUXE QUANTITY CAPSULE (Milaura Custom) --- */
+  /* Reset complet des styles Dawn pour le sélecteur quantité */
+  .milaura-quantity-capsule,
+  .milaura-quantity-capsule.quantity-input {
+    flex: 0 0 100px !important;
+    width: 100px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E5E5E5 !important;
+    border-radius: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 6px !important;
     transition: all 0.3s ease;
+    box-sizing: border-box !important;
   }
-  
+
   .milaura-quantity-capsule:hover {
-    border-color: #C0A062;
+    border-color: #C0A062 !important;
     box-shadow: 0 4px 12px rgba(192, 160, 98, 0.1);
   }
 
-  .milaura-quantity-btn {
-    width: 32px;
-    height: 100%;
-    border: none;
-    background: transparent;
+  /* Reset before/after pseudo-elements de Dawn */
+  .milaura-quantity-capsule::before,
+  .milaura-quantity-capsule::after,
+  .milaura-quantity-capsule .quantity::before,
+  .milaura-quantity-capsule .quantity::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .milaura-quantity-btn,
+  .milaura-quantity-capsule button {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    max-width: 28px !important;
+    border: none !important;
+    background: transparent !important;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1a1a1a;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #1a1a1a !important;
     transition: color 0.2s;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    flex-shrink: 0 !important;
   }
-  
-  .milaura-quantity-btn:hover { color: #C0A062; }
-  
-  .milaura-quantity-input {
-    width: 30px;
-    border: none;
-    background: transparent;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 600;
-    color: #1a1a1a;
-    padding: 0;
-    -moz-appearance: textfield;
+
+  .milaura-quantity-btn:hover,
+  .milaura-quantity-capsule button:hover {
+    color: #C0A062 !important;
+    background: transparent !important;
   }
+
+  .milaura-quantity-input,
+  .milaura-quantity-capsule input {
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #1a1a1a !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -moz-appearance: textfield !important;
+    box-shadow: none !important;
+  }
+
   .milaura-quantity-input::-webkit-outer-spin-button,
-  .milaura-quantity-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .milaura-quantity-input:focus { outline: none; }
+  .milaura-quantity-input::-webkit-inner-spin-button,
+  .milaura-quantity-capsule input::-webkit-outer-spin-button,
+  .milaura-quantity-capsule input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+  }
+
+  .milaura-quantity-input:focus,
+  .milaura-quantity-capsule input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  /* Mobile: encore plus compact */
+  @media screen and (max-width: 480px) {
+    .milaura-quantity-capsule,
+    .milaura-quantity-capsule.quantity-input {
+      flex: 0 0 90px !important;
+      width: 90px !important;
+      min-width: 90px !important;
+      max-width: 90px !important;
+      height: 40px !important;
+      min-height: 40px !important;
+    }
+
+    .milaura-quantity-btn,
+    .milaura-quantity-capsule button {
+      width: 24px !important;
+      height: 24px !important;
+      min-width: 24px !important;
+    }
+
+    .milaura-quantity-input,
+    .milaura-quantity-capsule input {
+      width: 28px !important;
+      min-width: 28px !important;
+      font-size: 13px !important;
+    }
+  }
 
   /* ===========================================
      TRUST BADGES - Design Premium 2026
