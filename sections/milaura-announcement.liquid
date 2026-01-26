@@ -1,25 +1,25 @@
 {% style %}
   /* --- LE CONTENEUR PRINCIPAL (OR) --- */
   #MilauraAnnouncement-{{ section.id }} {
-    position: fixed; /* Fixé en haut du site */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 38px; /* Hauteur fine et élégante */
+    height: {{ section.settings.bar_height }}px;
     overflow: hidden;
-    background: linear-gradient(90deg, var(--milaura-gold), var(--milaura-gold-light), var(--milaura-gold));
-    z-index: 1000001; /* Au-dessus de la navbar (qui est à 1000000) */
+    background: linear-gradient(90deg, {{ section.settings.bg_color_start }}, {{ section.settings.bg_color_end }}, {{ section.settings.bg_color_start }});
+    z-index: 1000001;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
   
-  /* Compensation pour le body : ajouter un padding-top égal à la hauteur de l'annonce */
+  /* Compensation pour le body */
   body {
-    padding-top: 38px;
+    padding-top: {{ section.settings.bar_height }}px;
   }
-  
+
   @media screen and (max-width: 768px) {
     body {
-      padding-top: 40px; /* Hauteur mobile de l'annonce */
+      padding-top: {{ section.settings.bar_height | plus: 2 }}px;
     }
   }
 
@@ -56,8 +56,8 @@
     display: flex;
     align-items: center;
     white-space: nowrap;
-    animation: scrollText 20s linear infinite; /* Vitesse du défilement */
-    gap: 4rem; /* Espace entre la fin et le début de la boucle */
+    animation: scrollText {{ section.settings.scroll_speed }}s linear infinite;
+    gap: 4rem;
     padding-left: 4rem;
   }
   
@@ -70,17 +70,17 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: #FFFFFF; /* Texte Blanc pour le contraste sur l'or */
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    text-transform: uppercase;
+    color: {{ section.settings.text_color }};
+    font-family: {{ section.settings.font_family }};
+    font-weight: {{ section.settings.font_weight }};
+    font-size: {{ section.settings.font_size }}rem;
+    text-transform: {{ section.settings.text_transform }};
     letter-spacing: 1px;
     text-shadow: 0 1px 2px rgba(0,0,0,0.1);
   }
 
   .announcement-icon {
-    font-size: 1.1rem;
+    font-size: {{ section.settings.font_size | plus: 0.2 }}rem;
   }
 
   /* --- ANIMATIONS --- */
@@ -94,16 +94,16 @@
     100% { transform: translateX(-50%); } /* On déplace de 50% car on a dupliqué le contenu */
   }
 
-  /* Mobile : on accélère un peu car l'écran est plus petit */
+  /* Mobile */
   @media screen and (max-width: 768px) {
     .marquee-track {
-      animation-duration: 15s;
+      animation-duration: {{ section.settings.scroll_speed | minus: 5 }}s;
     }
     #MilauraAnnouncement-{{ section.id }} {
-      height: 40px;
+      height: {{ section.settings.bar_height | plus: 2 }}px;
     }
     .announcement-item {
-      font-size: 0.8rem;
+      font-size: {{ section.settings.font_size | minus: 0.1 }}rem;
     }
   }
 {% endstyle %}
@@ -139,7 +139,103 @@
 {% schema %}
 {
   "name": "Milaura Announce Gold",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "🎨 Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_start",
+      "label": "Couleur fond (début)",
+      "default": "#C0A062"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_end",
+      "label": "Couleur fond (fin)",
+      "default": "#E6C88B"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Typographie"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Police",
+      "options": [
+        { "value": "'Lato', sans-serif", "label": "Lato (moderne)" },
+        { "value": "'Playfair Display', serif", "label": "Playfair Display (élégant)" },
+        { "value": "'Dancing Script', cursive", "label": "Dancing Script (cursif)" }
+      ],
+      "default": "'Lato', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Taille du texte",
+      "min": 0.7,
+      "max": 1.2,
+      "step": 0.05,
+      "unit": "rem",
+      "default": 0.9
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Épaisseur",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "600", "label": "Semi-gras" },
+        { "value": "700", "label": "Gras" },
+        { "value": "800", "label": "Extra-gras" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Style du texte",
+      "options": [
+        { "value": "uppercase", "label": "MAJUSCULES" },
+        { "value": "capitalize", "label": "Première Lettre" },
+        { "value": "none", "label": "Normal" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "⚙️ Paramètres"
+    },
+    {
+      "type": "range",
+      "id": "bar_height",
+      "label": "Hauteur de la barre",
+      "min": 30,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Vitesse de défilement",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "s",
+      "default": 20,
+      "info": "Plus petit = plus rapide"
+    }
+  ],
   "blocks": [
     {
       "type": "announcement",
