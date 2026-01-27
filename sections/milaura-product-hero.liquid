@@ -147,102 +147,60 @@
     transform: scale(1.2);
   }
 
-  /* --- OVERLAY VARIANTES (Badges sur photo) --- */
-  .hero-variant-overlay {
-    position: absolute;
-    bottom: 20px; /* Mord sur la photo */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    z-index: 10;
+  /* --- BADGES METAFIELDS PRODUIT --- */
+  .milaura-meta-badges {
     display: flex;
-    justify-content: center;
-    pointer-events: none; /* Laisse passer le clic autour */
-  }
-
-  .hero-variant-overlay variant-radios {
-    pointer-events: auto;
-    display: flex;
-    flex-wrap: nowrap !important; /* FORCE LIGNE UNIQUE */
-    justify-content: center;
+    flex-wrap: wrap;
     gap: 8px;
-    overflow-x: auto; /* Scroll si ça dépasse */
-    -webkit-overflow-scrolling: touch;
-    max-width: 100%;
-    padding: 4px; /* Espace pour l'ombre */
-    
-    /* Masquer scrollbar */
-    scrollbar-width: none; 
-    -ms-overflow-style: none;
-  }
-  
-  .hero-variant-overlay variant-radios::-webkit-scrollbar {
-    display: none;
+    padding: 12px 0 0;
   }
 
-  .hero-variant-overlay .product-form__input {
-    border: none;
-    padding: 0;
-    margin: 0;
-    flex-shrink: 0; /* Empêche l'écrasement des bulles */
-  }
-
-  .hero-variant-overlay .form__label {
-    display: none; /* On cache les titres "Taille", "Parfum" pour épuré */
-  }
-
-  /* S'assurer que tous les groupes d'options sont visibles */
-  .hero-variant-overlay fieldset {
-    display: flex !important;
-    flex-wrap: wrap;
-    gap: 6px;
-    border: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .hero-variant-overlay .variant-options-row {
-    display: flex !important;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  /* Reset radical du style radio */
-  .hero-variant-overlay input[type='radio'] {
-    clip: rect(0, 0, 0, 0);
-    overflow: hidden;
-    position: absolute;
-    height: 1px;
-    width: 1px;
-  }
-
-  /* La Bulle Glassmorphism */
-  .hero-variant-overlay input[type='radio'] + label {
+  .milaura-meta-badge {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.65) !important; /* Plus opaque pour lisibilité sur photo */
-    backdrop-filter: blur(8px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.8) !important;
-    border-radius: 30px !important;
-    padding: 6px 12px !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    color: var(--milaura-text) !important;
-    margin: 0 !important;
-    min-width: auto !important;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 30px;
+    padding: 6px 14px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--milaura-text);
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    white-space: nowrap;
   }
 
-  /* État sélectionné */
-  .hero-variant-overlay input[type='radio']:checked + label {
-    background: #fff !important;
-    border-color: var(--milaura-gold) !important;
-    color: var(--milaura-gold) !important;
-    box-shadow: 0 4px 15px rgba(192, 160, 98, 0.3);
-    transform: translateY(-2px);
+  .milaura-meta-badge svg {
+    flex-shrink: 0;
+    color: var(--milaura-gold);
+  }
+
+  .milaura-meta-badge--gold {
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(230, 200, 139, 0.15));
+    border-color: rgba(192, 160, 98, 0.35);
+    color: var(--milaura-gold-dark);
+  }
+
+  .milaura-meta-badge--gold svg {
+    color: var(--milaura-gold);
+  }
+
+  @media screen and (max-width: 480px) {
+    .milaura-meta-badges {
+      gap: 6px;
+    }
+    .milaura-meta-badge {
+      padding: 5px 10px;
+      font-size: 0.72rem;
+    }
+    .milaura-meta-badge svg {
+      width: 12px;
+      height: 12px;
+    }
   }
 
   /* --- GROUPE 3: Actions --- */
@@ -314,36 +272,6 @@
       display: none;
     }
 
-    /* Sur Desktop, l'overlay variantes se place en bas de l'image principale */
-    .hero-variant-overlay {
-      position: absolute;
-      top: auto;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: auto;
-      max-width: 80%;
-    }
-
-    /* Toutes les options de variantes en ligne */
-    .hero-variant-overlay variant-radios {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .hero-variant-overlay .product-form__input {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .hero-variant-overlay .variant-options-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
   }
 
   /* AVIS */
@@ -895,6 +823,45 @@
 
         {%- comment -%} Overlay variantes supprimé — les variantes sont gérées dans la zone d'achat {%- endcomment -%}
       </slider-component>
+
+      {%- comment -%} Badges metafields produit {%- endcomment -%}
+      {%- assign badge_energy = product.metafields.custom.handle_energie | default: product.metafields.milaura.energy_handle -%}
+      {%- assign badge_stone = product.metafields.custom.handle_pierre | default: product.metafields.milaura.stone_handle -%}
+      {%- assign badge_vertus = product.metafields.custom.vertus -%}
+      {%- assign badge_quality = product.metafields.custom.qualite | default: product.metafields.custom.qualité -%}
+      {%- assign has_badges = false -%}
+      {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank -%}
+        {%- assign has_badges = true -%}
+      {%- endif -%}
+
+      {%- if has_badges -%}
+        <div class="milaura-meta-badges">
+          {%- if badge_stone != blank -%}
+            <span class="milaura-meta-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              {{ badge_stone }}
+            </span>
+          {%- endif -%}
+          {%- if badge_energy != blank -%}
+            <span class="milaura-meta-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              {{ badge_energy }}
+            </span>
+          {%- endif -%}
+          {%- if badge_vertus != blank -%}
+            <span class="milaura-meta-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              {{ badge_vertus }}
+            </span>
+          {%- endif -%}
+          {%- if badge_quality != blank -%}
+            <span class="milaura-meta-badge milaura-meta-badge--gold">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              {{ badge_quality }}
+            </span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
 
     </div>
 
