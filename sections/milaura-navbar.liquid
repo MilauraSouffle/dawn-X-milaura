@@ -136,6 +136,88 @@
     width: 100%;
   }
 
+  /* --- DROPDOWN DESKTOP --- */
+  #MilauraNav-{{ section.id }} .nav-item {
+    position: relative;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-item-has-children > .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-link-chevron {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-item-has-children:hover .nav-link-chevron {
+    transform: rotate(180deg);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-dropdown {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    border-radius: 16px;
+    padding: 12px 8px;
+    min-width: 220px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    list-style: none;
+    margin: 0;
+    z-index: 100;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-item-has-children:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Zone invisible pour maintenir le hover entre le lien et le dropdown */
+  #MilauraNav-{{ section.id }} .nav-item-has-children::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 16px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-dropdown li {
+    margin: 0;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-dropdown-link {
+    display: block;
+    padding: 10px 16px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: var(--milaura-text);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius: 10px;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-dropdown-link:hover {
+    background: rgba(192, 160, 98, 0.1);
+    color: var(--milaura-gold-dark);
+  }
+
   /* ============================================
      SUPER CTA BADGE QUIZ - LE CŒUR DU FUNNEL
      Visible sur TOUS les écrans avec halo pulsant
@@ -355,6 +437,69 @@
   #MilauraNav-{{ section.id }} .nav-mobile-link:hover {
     color: var(--milaura-gold);
     padding-left: 10px;
+  }
+
+  /* --- SOUS-MENU MOBILE (Accordéon) --- */
+  #MilauraNav-{{ section.id }} .nav-mobile-parent {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-parent .nav-link-chevron {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    color: var(--milaura-gold);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-parent.open .nav-link-chevron {
+    transform: rotate(180deg);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-submenu.open {
+    max-height: 400px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-sublink {
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    color: var(--milaura-text-light, #333);
+    text-decoration: none;
+    padding: 14px 0 14px 20px;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.08);
+    transition: color 0.3s ease, padding-left 0.3s ease;
+    position: relative;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-sublink::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--milaura-gold);
+    opacity: 0.4;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-sublink:hover {
+    color: var(--milaura-gold);
+    padding-left: 28px;
   }
 
   /* Badge Quiz Mobile (dans le menu hamburger) */
@@ -642,13 +787,23 @@
       <!-- Liens Desktop (cachés sur mobile/tablette) -->
       <ul class="nav-links">
         {%- for link in linklists[section.settings.menu].links -%}
-          {%- assign link_lower = link.title | downcase -%}
-          {%- comment -%} HARD FILTERING: Remove unwanted links {%- endcomment -%}
-          {%- unless link_lower == 'accueil' or link_lower contains 'bougie' -%}
-            <li>
+          {%- if link.links.size > 0 -%}
+            <li class="nav-item nav-item-has-children">
+              <a href="{{ link.url }}" class="nav-link">
+                {{ link.title }}
+                <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </a>
+              <ul class="nav-dropdown">
+                {%- for child in link.links -%}
+                  <li><a href="{{ child.url }}" class="nav-dropdown-link">{{ child.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </li>
+          {%- else -%}
+            <li class="nav-item">
               <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
             </li>
-          {%- endunless -%}
+          {%- endif -%}
         {%- endfor -%}
       </ul>
 
@@ -704,14 +859,25 @@
     <!-- Liens -->
     <ul class="nav-mobile-links">
       {%- for link in linklists[section.settings.menu].links -%}
-        {%- assign link_lower = link.title | downcase -%}
-        {%- unless link_lower == 'accueil' or link_lower contains 'bougie' -%}
+        {%- if link.links.size > 0 -%}
+          <li>
+            <div class="nav-mobile-link nav-mobile-parent" data-toggle-submenu>
+              {{ link.title }}
+              <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <ul class="nav-mobile-submenu">
+              {%- for child in link.links -%}
+                <li><a href="{{ child.url }}" class="nav-mobile-sublink" data-close-menu>{{ child.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </li>
+        {%- else -%}
           <li>
             <a href="{{ link.url }}" class="nav-mobile-link" data-close-menu>
               {{ link.title }}
             </a>
           </li>
-        {%- endunless -%}
+        {%- endif -%}
       {%- endfor -%}
     </ul>
 
@@ -780,6 +946,25 @@
       if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
         closeMenu();
       }
+    });
+
+    // Accordéon sous-menus mobile
+    var parentItems = mobileMenu.querySelectorAll('[data-toggle-submenu]');
+    parentItems.forEach(function(item) {
+      item.addEventListener('click', function() {
+        var submenu = item.nextElementSibling;
+        var isOpen = item.classList.contains('open');
+        // Fermer tous les autres
+        parentItems.forEach(function(other) {
+          other.classList.remove('open');
+          if (other.nextElementSibling) other.nextElementSibling.classList.remove('open');
+        });
+        // Toggle celui-ci
+        if (!isOpen) {
+          item.classList.add('open');
+          if (submenu) submenu.classList.add('open');
+        }
+      });
     });
 
     // --- LOGO SCROLL TO TOP ---
