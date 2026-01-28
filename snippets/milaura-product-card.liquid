@@ -49,29 +49,51 @@
   {%- endif -%}
 
   {%- comment -%} Image {%- endcomment -%}
+  {%- assign loading_attr = 'lazy' -%}
+  {%- unless lazy_load -%}
+    {%- assign loading_attr = 'eager' -%}
+  {%- endunless -%}
   <a href="{{ product.url }}" class="milaura-product-card__image-link milaura-product-card__image-link--{{ image_ratio }}">
     {%- if product.featured_image -%}
-      {{
-        product.featured_image
-        | image_url: width: 600
-        | image_tag:
-          class: 'milaura-product-card__image',
-          loading: lazy_load | ternary: 'lazy', 'eager',
-          widths: '165, 360, 533, 600',
-          sizes: '(min-width: 1024px) 25vw, 50vw',
-          alt: product.title | escape
-      }}
-      {%- if product.images.size > 1 -%}
+      <picture>
+        <source
+          type="image/webp"
+          srcset="{{ product.featured_image | image_url: width: 165, format: 'webp' }} 165w,
+                  {{ product.featured_image | image_url: width: 360, format: 'webp' }} 360w,
+                  {{ product.featured_image | image_url: width: 533, format: 'webp' }} 533w,
+                  {{ product.featured_image | image_url: width: 600, format: 'webp' }} 600w"
+          sizes="(min-width: 1024px) 25vw, 50vw"
+        >
         {{
-          product.images[1]
+          product.featured_image
           | image_url: width: 600
           | image_tag:
-            class: 'milaura-product-card__image milaura-product-card__image--hover',
-            loading: 'lazy',
+            class: 'milaura-product-card__image',
+            loading: loading_attr,
             widths: '165, 360, 533, 600',
             sizes: '(min-width: 1024px) 25vw, 50vw',
             alt: product.title | escape
-          }}
+        }}
+      </picture>
+      {%- if product.images.size > 1 -%}
+        <picture class="milaura-product-card__image-hover-wrap">
+          <source
+            type="image/webp"
+            srcset="{{ product.images[1] | image_url: width: 360, format: 'webp' }} 360w,
+                    {{ product.images[1] | image_url: width: 600, format: 'webp' }} 600w"
+            sizes="(min-width: 1024px) 25vw, 50vw"
+          >
+          {{
+            product.images[1]
+            | image_url: width: 600
+            | image_tag:
+              class: 'milaura-product-card__image milaura-product-card__image--hover',
+              loading: 'lazy',
+              widths: '360, 600',
+              sizes: '(min-width: 1024px) 25vw, 50vw',
+              alt: product.title | escape
+            }}
+        </picture>
       {%- endif -%}
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag: 'milaura-product-card__image' }}

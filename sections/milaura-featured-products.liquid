@@ -150,14 +150,14 @@
     background: #1A1A1A; /* Devient noir au survol souris */
   }
 
-  /* MOBILE */
+  /* TABLET */
   @media screen and (max-width: 1024px) {
     .prod-grid {
-      grid-template-columns: repeat(2, 1fr); /* 2 produits par ligne */
-      gap: 15px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
     }
     .quick-add-btn {
-      opacity: 1; /* Toujours visible sur mobile */
+      opacity: 1;
       transform: translateY(0);
     }
     .prod-card {
@@ -165,17 +165,72 @@
     }
   }
 
-  /* Carrousel mobile */
+  /* MOBILE */
   @media screen and (max-width: 768px) {
-    .prod-grid {
-      display: flex !important;
-      grid-template-columns: none !important;
+    #MilauraProd-{{ section.id }} {
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-sm);
     }
-    
+    .prod-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .prod-name {
+      font-size: 0.95rem;
+      height: auto;
+      min-height: 2.4em;
+    }
+    .prod-price {
+      font-size: 1rem;
+    }
+    .quick-add-btn {
+      padding: 10px;
+      font-size: 0.8rem;
+    }
+  }
+
+  /* PETIT MOBILE (iPhone SE, etc.) */
+  @media screen and (max-width: 380px) {
+    .prod-grid {
+      gap: 8px;
+    }
     .prod-card {
-      width: 70% !important;
-      min-width: 70% !important;
-      flex-shrink: 0;
+      padding: 8px;
+    }
+    .prod-img-container {
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+    .prod-name {
+      font-size: 0.85rem;
+      -webkit-line-clamp: 2;
+    }
+    .prod-price {
+      font-size: 0.9rem;
+    }
+    .quick-add-btn {
+      padding: 8px;
+      font-size: 0.75rem;
+      margin-top: 10px;
+    }
+  }
+
+  /* Desactiver animations hover sur mobile (performance) */
+  @media (hover: none) {
+    .prod-card:hover {
+      transform: none;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+    .prod-card:hover .prod-img {
+      transform: none;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .prod-card,
+    .prod-img,
+    .quick-add-btn {
+      transition: none;
     }
   }
 {% endstyle %}
@@ -191,9 +246,15 @@
 
     {% if collection != blank %}
       {% for product in collection.products limit: section.settings.products_to_show %}
+        {%- comment -%} First 4 products load eagerly (LCP optimization) {%- endcomment -%}
+        {%- if forloop.index <= 4 -%}
+          {%- assign img_loading = 'eager' -%}
+        {%- else -%}
+          {%- assign img_loading = 'lazy' -%}
+        {%- endif -%}
         <a href="{{ product.url }}" class="prod-card milaura-card">
           <div class="prod-img-container">
-            {{ product.featured_image | image_url: width: 600 | image_tag: class: 'prod-img', loading: 'lazy' }}
+            {{ product.featured_image | image_url: width: 600 | image_tag: class: 'prod-img', loading: img_loading, widths: '165, 360, 533, 600', sizes: '(min-width: 1024px) 25vw, 50vw' }}
           </div>
 
           <div class="prod-info">

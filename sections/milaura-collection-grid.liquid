@@ -155,16 +155,30 @@
         {%- comment -%} Products grid using snippet {%- endcomment -%}
         <div class="milaura-grid__products" id="MilauraProductGrid-{{ section.id }}">
           {%- for product in collection.products -%}
-            {%-
-              render 'milaura-product-card',
-              product: product,
-              show_vendor: section.settings.show_vendor,
-              show_badges: section.settings.show_badges,
-              show_rating: section.settings.show_rating,
-              show_quick_add: section.settings.enable_quick_add,
-              image_ratio: 'square',
-              lazy_load: true
-            -%}
+            {%- comment -%} First 4 products load eagerly (above the fold), rest lazy {%- endcomment -%}
+            {%- if forloop.index <= 4 -%}
+              {%-
+                render 'milaura-product-card',
+                product: product,
+                show_vendor: section.settings.show_vendor,
+                show_badges: section.settings.show_badges,
+                show_rating: section.settings.show_rating,
+                show_quick_add: section.settings.enable_quick_add,
+                image_ratio: 'square',
+                lazy_load: false
+              -%}
+            {%- else -%}
+              {%-
+                render 'milaura-product-card',
+                product: product,
+                show_vendor: section.settings.show_vendor,
+                show_badges: section.settings.show_badges,
+                show_rating: section.settings.show_rating,
+                show_quick_add: section.settings.enable_quick_add,
+                image_ratio: 'square',
+                lazy_load: true
+              -%}
+            {%- endif -%}
           {%- endfor -%}
         </div>
 

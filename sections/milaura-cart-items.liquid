@@ -65,6 +65,36 @@
     margin: 0 0 var(--milaura-spacing-lg) 0;
   }
 
+  #MilauraCartItems-{{ section.id }} .milaura-cart__empty-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm);
+    align-items: center;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__empty-actions .milaura-btn-secondary {
+    background: transparent;
+    border: 2px solid var(--milaura-gold, #C0A062);
+    color: var(--milaura-gold, #C0A062);
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__empty-actions .milaura-btn-secondary:hover {
+    background: var(--milaura-gold, #C0A062);
+    color: #ffffff;
+  }
+
+  @media screen and (min-width: 750px) {
+    #MilauraCartItems-{{ section.id }} .milaura-cart__empty-actions {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
   /* Table header - Desktop */
   #MilauraCartItems-{{ section.id }} .milaura-cart__table-header {
     display: none;
@@ -393,14 +423,21 @@
     </div>
 
     {%- if cart == empty -%}
-      {%- comment -%} Empty state {%- endcomment -%}
+      {%- comment -%} Empty state with engaging CTAs {%- endcomment -%}
       <div class="milaura-cart__empty">
         <div class="milaura-cart__empty-icon">🛒</div>
         <h2 class="milaura-cart__empty-title">{{ section.settings.empty_title }}</h2>
         <p class="milaura-cart__empty-text">{{ section.settings.empty_text }}</p>
-        <a href="{{ routes.all_products_collection_url }}" class="milaura-btn-gold">
-          Decouvrir nos creations
-        </a>
+        <div class="milaura-cart__empty-actions">
+          {%- if section.settings.quiz_url != blank -%}
+            <a href="{{ section.settings.quiz_url }}" class="milaura-btn-gold">
+              {{ section.settings.quiz_button_text | default: 'Trouve ta creation ideale' }}
+            </a>
+          {%- endif -%}
+          <a href="{{ routes.all_products_collection_url }}" class="milaura-btn{% if section.settings.quiz_url != blank %}-secondary{% else %}-gold{% endif %}">
+            Decouvrir nos creations
+          </a>
+        </div>
       </div>
 
     {%- else -%}
@@ -638,6 +675,18 @@
       "id": "empty_text",
       "label": "Texte panier vide",
       "default": "Decouvre nos creations et trouve celle qui te correspond."
+    },
+    {
+      "type": "url",
+      "id": "quiz_url",
+      "label": "Lien vers le quiz",
+      "info": "Laisse vide pour masquer le bouton quiz"
+    },
+    {
+      "type": "text",
+      "id": "quiz_button_text",
+      "label": "Texte bouton quiz",
+      "default": "Trouve ta creation ideale"
     },
     {
       "type": "header",

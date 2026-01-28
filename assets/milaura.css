@@ -282,14 +282,15 @@ section[id*="hero"]:first-of-type {
     width: 1.5rem !important;
   }
 
-  /* Réduction de la hauteur du sticky header de 15% */
-  .shopify-section-header-sticky {
-    transform: scaleY(0.85);
-    transform-origin: top;
-  }
-
+  /* Réduction du sticky header mobile (sans scaleY qui déforme) */
   .shopify-section-header-sticky .header {
     min-height: auto !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .shopify-section-header-sticky .header__heading-logo {
+    max-height: 32px !important;
   }
 
   .milaura-btn {
@@ -400,9 +401,33 @@ section[id*="hero"]:first-of-type {
     /* Border-radius réduit de 25-30% (20px * 0.7 = 14px) */
     border-radius: 14px;
     /* Box-shadow spread réduit */
-    box-shadow: 0 14px 35px rgba(192, 160, 98, 0.12); /* Spread réduit */
+    box-shadow: 0 14px 35px rgba(192, 160, 98, 0.12);
     /* S'assurer qu'aucun contenu ne dépasse */
     overflow-x: hidden;
+    /* Performance: réduire le blur sur mobile */
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+  }
+}
+
+/* Responsive pour TRES PETIT MOBILE (iPhone SE, Galaxy A10, etc.) */
+@media screen and (max-width: 380px) {
+  .milaura-section-card {
+    width: calc(100% - 16px); /* Marges de 8px de chaque côté */
+    padding: 20px 16px; /* Padding compact mais lisible */
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(192, 160, 98, 0.10);
+    /* Performance: blur encore réduit sur très petit écran */
+    backdrop-filter: blur(8px) saturate(140%);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+  }
+
+  /* Réduire aussi le halo global sur très petit mobile */
+  #MainContent section:not(.shopify-section-group-header-group):not(.shopify-section-group-footer-group) .page-width {
+    padding: 20px 16px;
+    border-radius: 16px;
+    backdrop-filter: blur(8px) saturate(140%);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
   }
 }
 
@@ -750,5 +775,71 @@ section[id*="hero"]:first-of-type {
   }
   h2, .milaura-section-card h3 {
     font-size: 1.25rem;
+  }
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* Will-change hints pour elements animes (GPU acceleration) */
+.milaura-card,
+.milaura-btn,
+.milaura-btn-gold,
+.prod-card,
+.prod-img,
+.hero-slide,
+.hero-tab {
+  will-change: transform, opacity;
+}
+
+/* Desactiver will-change apres animation (cleanup) */
+.milaura-card:not(:hover),
+.prod-card:not(:hover) {
+  will-change: auto;
+}
+
+/* Desactiver hover animations sur appareils tactiles (performance mobile) */
+@media (hover: none) and (pointer: coarse) {
+  .milaura-card:hover,
+  .prod-card:hover {
+    transform: none !important;
+    box-shadow: var(--milaura-shadow-sm) !important;
+  }
+
+  .milaura-card:hover .prod-img,
+  .prod-card:hover .prod-img {
+    transform: none !important;
+  }
+
+  .milaura-btn:hover,
+  .milaura-btn-gold:hover {
+    transform: none !important;
+  }
+
+  /* Boutons quick-add toujours visibles sur mobile */
+  .quick-add-btn,
+  .milaura-product-card__quick-add {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+}
+
+/* Skeleton loading placeholder pour images */
+.milaura-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milaura-skeleton {
+    animation: none;
+    background: #f0f0f0;
   }
 }
