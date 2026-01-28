@@ -1,0 +1,373 @@
+{%- comment -%}
+  MILAURA COLLECTION GRID
+  Grille produits avec pagination
+  Quick add AJAX, badges, etoiles
+  Utilise les snippets milaura-badge, milaura-price, milaura-product-card
+{%- endcomment -%}
+
+{{ 'milaura-collection.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #MilauraCollectionGrid-{{ section.id }} {
+    padding: var(--milaura-spacing-md) 0 var(--milaura-spacing-xl) 0;
+  }
+
+  /* Empty state */
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__empty {
+    text-align: center;
+    padding: var(--milaura-spacing-xl) var(--milaura-spacing-md);
+  }
+
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__empty-icon {
+    font-size: 48px;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__empty-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 24px;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 var(--milaura-spacing-sm) 0;
+  }
+
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__empty-text {
+    font-size: 16px;
+    color: var(--milaura-text-light, #666666);
+    margin: 0 0 var(--milaura-spacing-md) 0;
+  }
+
+  /* Products grid */
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__products {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+    gap: 30px;
+    margin-bottom: var(--milaura-spacing-xl);
+  }
+
+  /* Override product card title size/color from settings */
+  #MilauraCollectionGrid-{{ section.id }} .milaura-product-card__title {
+    font-size: {{ section.settings.title_size | divided_by: 10.0 }}rem;
+    color: {{ section.settings.title_color }};
+  }
+
+  #MilauraCollectionGrid-{{ section.id }} .milaura-price__regular,
+  #MilauraCollectionGrid-{{ section.id }} .milaura-price__sale {
+    color: {{ section.settings.price_color }};
+  }
+
+  /* Pagination */
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__pagination-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--milaura-text, #000000);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__pagination-item:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__pagination-item.is-current {
+    background: var(--milaura-gold, #C0A062);
+    border-color: var(--milaura-gold, #C0A062);
+    color: #ffffff;
+  }
+
+  #MilauraCollectionGrid-{{ section.id }} .milaura-grid__pagination-item svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Tablet */
+  @media screen and (max-width: 1024px) {
+    #MilauraCollectionGrid-{{ section.id }} .milaura-grid__products {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraCollectionGrid-{{ section.id }} .milaura-grid__products {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    #MilauraCollectionGrid-{{ section.id }} .milaura-product-card__title {
+      font-size: 1rem;
+    }
+
+    #MilauraCollectionGrid-{{ section.id }} .milaura-grid__pagination-item {
+      min-width: 36px;
+      height: 36px;
+      font-size: 13px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraCollectionGrid-{{ section.id }} .milaura-grid__pagination-item {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="MilauraCollectionGrid-{{ section.id }}"
+  class="milaura-collection-grid"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+
+      {%- if collection.products.size == 0 -%}
+        {%- comment -%} Empty state {%- endcomment -%}
+        <div class="milaura-grid__empty">
+          <div class="milaura-grid__empty-icon">🔍</div>
+          <h2 class="milaura-grid__empty-title">Aucun produit trouve</h2>
+          <p class="milaura-grid__empty-text">
+            Essayez de modifier vos filtres ou explorez nos autres collections.
+          </p>
+          <a href="{{ routes.all_products_collection_url }}" class="milaura-btn-gold">
+            Voir tous les produits
+          </a>
+        </div>
+
+      {%- else -%}
+        {%- comment -%} Products grid using snippet {%- endcomment -%}
+        <div class="milaura-grid__products" id="MilauraProductGrid-{{ section.id }}">
+          {%- for product in collection.products -%}
+            {%-
+              render 'milaura-product-card',
+              product: product,
+              show_vendor: section.settings.show_vendor,
+              show_badges: section.settings.show_badges,
+              show_rating: section.settings.show_rating,
+              show_quick_add: section.settings.enable_quick_add,
+              image_ratio: 'square',
+              lazy_load: true
+            -%}
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} Pagination {%- endcomment -%}
+        {%- if paginate.pages > 1 -%}
+          <nav class="milaura-grid__pagination" aria-label="Pagination">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" class="milaura-grid__pagination-item" aria-label="Page precedente">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </a>
+            {%- endif -%}
+
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="milaura-grid__pagination-item">
+                  {{ part.title }}
+                </a>
+              {%- elsif part.title == paginate.current_page -%}
+                <span class="milaura-grid__pagination-item is-current" aria-current="page">
+                  {{ part.title }}
+                </span>
+              {%- else -%}
+                <span class="milaura-grid__pagination-item">
+                  {{ part.title }}
+                </span>
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" class="milaura-grid__pagination-item" aria-label="Page suivante">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraCollectionGrid-' + sectionId);
+  if (!section) return;
+
+  const quickAddBtns = section.querySelectorAll('[data-quick-add]');
+
+  quickAddBtns.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      const variantId = btn.dataset.variantId;
+      if (!variantId) return;
+
+      // Loading state
+      btn.classList.add('is-loading');
+      btn.disabled = true;
+
+      const formData = {
+        items: [{
+          id: parseInt(variantId, 10),
+          quantity: 1
+        }]
+      };
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+      })
+      .then(data => {
+        // Success state
+        btn.classList.remove('is-loading');
+        btn.classList.add('is-success');
+        const originalText = btn.textContent;
+        btn.textContent = 'Ajoute !';
+
+        // Trigger cart update event
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+
+        // Reset after 2 seconds
+        setTimeout(function() {
+          btn.classList.remove('is-success');
+          btn.textContent = originalText;
+          btn.disabled = false;
+        }, 2000);
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+        btn.classList.remove('is-loading');
+        btn.textContent = 'Erreur';
+        btn.disabled = false;
+
+        setTimeout(function() {
+          btn.textContent = 'Ajouter au panier';
+        }, 2000);
+      });
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Collection Grid",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📝 Affichage"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Produits par page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Colonnes (desktop)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "⚙️ Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "label": "Activer Quick Add",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Afficher le vendeur",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Afficher les badges (Nouveau, Promo, Rupture)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Afficher les etoiles",
+      "default": false,
+      "info": "Necessite un metafield reviews.rating ou une app avis"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Produits"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre",
+      "min": 9,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "default": 11,
+      "info": "Valeur en dixiemes de rem (11 = 1.1rem)"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Couleur du prix",
+      "default": "#C0A062"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Collection Grid"
+    }
+  ]
+}
+{% endschema %}

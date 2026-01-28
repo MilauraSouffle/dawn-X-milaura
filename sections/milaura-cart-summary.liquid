@@ -1,0 +1,441 @@
+{%- comment -%}
+  MILAURA CART SUMMARY
+  Recapitulatif avec code promo et checkout
+  Badges confiance + icones paiement
+{%- endcomment -%}
+
+{%- liquid
+  assign free_shipping_threshold = section.settings.free_shipping_threshold | times: 100
+  assign is_free_shipping = false
+  if cart.total_price >= free_shipping_threshold
+    assign is_free_shipping = true
+  endif
+-%}
+
+{%- style -%}
+  #MilauraCartSummary-{{ section.id }} {
+    padding: var(--milaura-spacing-lg) 0 var(--milaura-spacing-xl) 0;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__card {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* Summary lines */
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm);
+    padding-bottom: var(--milaura-spacing-md);
+    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    color: var(--milaura-text, #000000);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__line--shipping {
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__line--shipping.is-free {
+    color: #4CAF50;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__line--total {
+    font-size: 18px;
+    font-weight: 700;
+    padding-top: var(--milaura-spacing-sm);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__line--total .milaura-summary__value {
+    font-size: 22px;
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  /* Discount code */
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount {
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-form {
+    display: flex;
+    gap: 8px;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 10px;
+    font-size: 14px;
+    background: #ffffff;
+    transition: border-color 0.3s ease;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-input:focus {
+    outline: none;
+    border-color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-input::placeholder {
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-btn {
+    padding: 12px 20px;
+    background: transparent;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-btn:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  /* Checkout button */
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__checkout {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  /* Trust badges */
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__badges {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--milaura-spacing-md);
+    margin-bottom: var(--milaura-spacing-md);
+    padding: var(--milaura-spacing-sm) 0;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__badge-icon {
+    font-size: 16px;
+  }
+
+  /* Payment icons */
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--milaura-spacing-sm);
+    padding-top: var(--milaura-spacing-sm);
+    border-top: 1px solid rgba(192, 160, 98, 0.1);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payments-label {
+    font-size: 12px;
+    color: var(--milaura-text-light, #666666);
+    margin-right: 4px;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payment-icon {
+    height: 24px;
+    width: auto;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payment-icon:hover {
+    opacity: 1;
+  }
+
+  /* Payment icons as text fallback */
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payment-text {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--milaura-text-light, #666666);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Cart discounts display */
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discounts {
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #4CAF50;
+    margin-bottom: 4px;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-item svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-form {
+      flex-direction: column;
+    }
+
+    #MilauraCartSummary-{{ section.id }} .milaura-summary__badges {
+      gap: var(--milaura-spacing-sm);
+    }
+
+    #MilauraCartSummary-{{ section.id }} .milaura-summary__badge {
+      font-size: 12px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-input,
+    #MilauraCartSummary-{{ section.id }} .milaura-summary__discount-btn,
+    #MilauraCartSummary-{{ section.id }} .milaura-summary__payment-icon {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+{%- if cart.item_count > 0 -%}
+  <section
+    id="MilauraCartSummary-{{ section.id }}"
+    class="milaura-cart-summary"
+    data-section-id="{{ section.id }}"
+  >
+    <div class="page-width">
+      <div class="milaura-summary__card milaura-section-card">
+
+        {%- comment -%} Cart level discounts {%- endcomment -%}
+        {%- if cart.cart_level_discount_applications.size > 0 -%}
+          <div class="milaura-summary__discounts">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div class="milaura-summary__discount-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                {{ discount.title | escape }} (-{{ discount.total_allocated_amount | money }})
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Summary lines {%- endcomment -%}
+        <div class="milaura-summary__lines">
+          <div class="milaura-summary__line">
+            <span class="milaura-summary__label">Sous-total</span>
+            <span class="milaura-summary__value">{{ cart.original_total_price | money }}</span>
+          </div>
+
+          {%- if cart.total_discount > 0 -%}
+            <div class="milaura-summary__line" style="color: #4CAF50;">
+              <span class="milaura-summary__label">Remise</span>
+              <span class="milaura-summary__value">-{{ cart.total_discount | money }}</span>
+            </div>
+          {%- endif -%}
+
+          <div class="milaura-summary__line milaura-summary__line--shipping {% if is_free_shipping %}is-free{% endif %}">
+            <span class="milaura-summary__label">Livraison</span>
+            <span class="milaura-summary__value">
+              {%- if is_free_shipping -%}
+                Gratuite
+              {%- else -%}
+                Calculee a la prochaine etape
+              {%- endif -%}
+            </span>
+          </div>
+
+          <div class="milaura-summary__line milaura-summary__line--total">
+            <span class="milaura-summary__label">Total</span>
+            <span class="milaura-summary__value">{{ cart.total_price | money_with_currency }}</span>
+          </div>
+        </div>
+
+        {%- comment -%} Discount code input {%- endcomment -%}
+        <div class="milaura-summary__discount">
+          <label class="milaura-summary__discount-label" for="discount-code-{{ section.id }}">
+            Code promo
+          </label>
+          <div class="milaura-summary__discount-form">
+            <input
+              type="text"
+              id="discount-code-{{ section.id }}"
+              class="milaura-summary__discount-input"
+              placeholder="Entrer votre code"
+              data-discount-input
+            >
+            <button
+              type="button"
+              class="milaura-summary__discount-btn"
+              data-discount-apply
+            >
+              Appliquer
+            </button>
+          </div>
+        </div>
+
+        {%- comment -%} Checkout button {%- endcomment -%}
+        <button
+          type="submit"
+          name="checkout"
+          class="milaura-summary__checkout milaura-btn-gold"
+          form="milaura-cart-form"
+        >
+          {{ section.settings.checkout_text | default: 'Passer commande' }}
+        </button>
+
+        {%- comment -%} Trust badges {%- endcomment -%}
+        {%- if section.blocks.size > 0 -%}
+          <div class="milaura-summary__badges">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'trust_badge' -%}
+                <div class="milaura-summary__badge" {{ block.shopify_attributes }}>
+                  <span class="milaura-summary__badge-icon">{{ block.settings.icon }}</span>
+                  <span>{{ block.settings.text }}</span>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Payment icons {%- endcomment -%}
+        <div class="milaura-summary__payments">
+          <span class="milaura-summary__payments-label">Paiements acceptes :</span>
+          <span class="milaura-summary__payment-text">Visa</span>
+          <span class="milaura-summary__payment-text">Mastercard</span>
+          <span class="milaura-summary__payment-text">PayPal</span>
+          <span class="milaura-summary__payment-text">Apple Pay</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraCartSummary-' + sectionId);
+  if (!section) return;
+
+  const discountInput = section.querySelector('[data-discount-input]');
+  const discountBtn = section.querySelector('[data-discount-apply]');
+
+  if (discountInput && discountBtn) {
+    discountBtn.addEventListener('click', function() {
+      const code = discountInput.value.trim();
+      if (code) {
+        // Redirect to checkout with discount code pre-applied
+        window.location.href = '/checkout?discount=' + encodeURIComponent(code);
+      }
+    });
+
+    // Allow Enter key to submit
+    discountInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        discountBtn.click();
+      }
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Cart Summary",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📝 Contenu"
+    },
+    {
+      "type": "text",
+      "id": "checkout_text",
+      "label": "Texte bouton checkout",
+      "default": "Passer commande"
+    },
+    {
+      "type": "header",
+      "content": "⚙️ Configuration"
+    },
+    {
+      "type": "range",
+      "id": "free_shipping_threshold",
+      "label": "Seuil livraison gratuite",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "€",
+      "default": 50,
+      "info": "Mettre 0 pour desactiver"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_badge",
+      "name": "Badge confiance",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icone (emoji)",
+          "default": "🚚"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Livraison rapide"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Cart Summary",
+      "blocks": [
+        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison rapide" } },
+        { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Paiement securise" } },
+        { "type": "trust_badge", "settings": { "icon": "💝", "text": "Garantie 30 jours" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

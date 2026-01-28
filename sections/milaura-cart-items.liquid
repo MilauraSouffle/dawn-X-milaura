@@ -1,0 +1,659 @@
+{%- comment -%}
+  MILAURA CART ITEMS
+  Liste articles avec quantite AJAX
+  Utilise le pattern Dawn cart.js
+{%- endcomment -%}
+
+{{ 'component-cart.css' | asset_url | stylesheet_tag }}
+{{ 'milaura-cart.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #MilauraCartItems-{{ section.id }} {
+    padding: var(--milaura-spacing-md) 0;
+  }
+
+  /* Header */
+  #MilauraCartItems-{{ section.id }} .milaura-cart__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--milaura-spacing-lg);
+    padding-bottom: var(--milaura-spacing-md);
+    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__title {
+    font-family: var(--milaura-font-heading);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--milaura-gold, #C0A062);
+    margin: 0;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__continue {
+    font-size: 14px;
+    color: var(--milaura-text-light, #666666);
+    text-decoration: underline;
+    transition: color 0.3s ease;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__continue:hover {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  /* Empty state */
+  #MilauraCartItems-{{ section.id }} .milaura-cart__empty {
+    text-align: center;
+    padding: var(--milaura-spacing-xl) var(--milaura-spacing-md);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__empty-icon {
+    font-size: 64px;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__empty-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 28px;
+    color: var(--milaura-text, #000000);
+    margin: 0 0 var(--milaura-spacing-sm) 0;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__empty-text {
+    font-size: 16px;
+    color: var(--milaura-text-light, #666666);
+    margin: 0 0 var(--milaura-spacing-lg) 0;
+  }
+
+  /* Table header - Desktop */
+  #MilauraCartItems-{{ section.id }} .milaura-cart__table-header {
+    display: none;
+    grid-template-columns: 3fr 1fr 1fr;
+    gap: var(--milaura-spacing-md);
+    padding: var(--milaura-spacing-sm) 0;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart__table-header span:last-child {
+    text-align: right;
+  }
+
+  /* Cart items list */
+  #MilauraCartItems-{{ section.id }} .milaura-cart__items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-md);
+  }
+
+  /* Single item */
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: var(--milaura-spacing-md);
+    padding: var(--milaura-spacing-md);
+    background: #ffffff;
+    border-radius: var(--milaura-border-radius, 20px);
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    position: relative;
+    transition: border-color 0.3s ease;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item:hover {
+    border-color: rgba(192, 160, 98, 0.3);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item.is-loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  /* Item image */
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__image-link {
+    display: block;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f9f9f9;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Item content */
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__vendor {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    text-decoration: none;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__title:hover {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__variant {
+    font-size: 13px;
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__price-unit {
+    font-size: 14px;
+    color: var(--milaura-text-light, #666666);
+  }
+
+  /* Quantity + Total row */
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: var(--milaura-spacing-sm);
+  }
+
+  /* Quantity capsule */
+  #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule {
+    display: inline-flex;
+    align-items: center;
+    background: #f5f5f5;
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--milaura-text, #000000);
+    transition: background 0.2s ease;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule__btn:hover {
+    background: rgba(192, 160, 98, 0.2);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule__btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule__btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule__input {
+    width: 40px;
+    height: 32px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    -moz-appearance: textfield;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule__input::-webkit-outer-spin-button,
+  #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Line total */
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__total {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--milaura-text, #000000);
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__total-compare {
+    font-size: 13px;
+    color: var(--milaura-text-light, #666666);
+    text-decoration: line-through;
+    margin-right: 6px;
+    font-weight: 400;
+  }
+
+  /* Remove button */
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__remove {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--milaura-text-light, #666666);
+    transition: all 0.2s ease;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__remove:hover {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__remove svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Volume discount indicator */
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__discount {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* Loading spinner overlay */
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item.is-loading .milaura-cart-item__spinner {
+    display: block;
+  }
+
+  #MilauraCartItems-{{ section.id }} .milaura-cart-item__spinner::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(192, 160, 98, 0.3);
+    border-top-color: var(--milaura-gold, #C0A062);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 750px) {
+    #MilauraCartItems-{{ section.id }} .milaura-cart__table-header {
+      display: grid;
+    }
+
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item {
+      grid-template-columns: 120px 1fr auto auto;
+      align-items: center;
+      gap: var(--milaura-spacing-lg);
+    }
+
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item__bottom {
+      display: contents;
+    }
+
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item__total {
+      text-align: right;
+      min-width: 100px;
+    }
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 749px) {
+    #MilauraCartItems-{{ section.id }} .milaura-cart__title {
+      font-size: 24px;
+    }
+
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item {
+      grid-template-columns: 80px 1fr;
+      gap: var(--milaura-spacing-sm);
+      padding: var(--milaura-spacing-sm);
+    }
+
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item__title {
+      font-size: 14px;
+    }
+
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item__remove {
+      top: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item,
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item__title,
+    #MilauraCartItems-{{ section.id }} .milaura-quantity-capsule__btn,
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item__remove {
+      transition: none;
+    }
+
+    #MilauraCartItems-{{ section.id }} .milaura-cart-item__spinner::after {
+      animation: none;
+    }
+  }
+{%- endstyle -%}
+
+{%- unless settings.cart_type == 'drawer' -%}
+  <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+<section
+  id="MilauraCartItems-{{ section.id }}"
+  class="milaura-cart-items"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width">
+    {%- comment -%} Header {%- endcomment -%}
+    <div class="milaura-cart__header">
+      <h1 class="milaura-cart__title">Mon panier</h1>
+      <a href="{{ routes.all_products_collection_url }}" class="milaura-cart__continue">
+        Continuer mes achats
+      </a>
+    </div>
+
+    {%- if cart == empty -%}
+      {%- comment -%} Empty state {%- endcomment -%}
+      <div class="milaura-cart__empty">
+        <div class="milaura-cart__empty-icon">🛒</div>
+        <h2 class="milaura-cart__empty-title">{{ section.settings.empty_title }}</h2>
+        <p class="milaura-cart__empty-text">{{ section.settings.empty_text }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="milaura-btn-gold">
+          Decouvrir nos creations
+        </a>
+      </div>
+
+    {%- else -%}
+      {%- comment -%} Table header - Desktop {%- endcomment -%}
+      <div class="milaura-cart__table-header">
+        <span>Produit</span>
+        <span>Quantite</span>
+        <span>Total</span>
+      </div>
+
+      {%- comment -%} Cart items {%- endcomment -%}
+      <form action="{{ routes.cart_url }}" method="post" id="milaura-cart-form">
+        <div class="milaura-cart__items" id="milaura-cart-items">
+          {%- for item in cart.items -%}
+            <div
+              class="milaura-cart-item"
+              data-cart-item
+              data-item-key="{{ item.key }}"
+              data-item-index="{{ forloop.index }}"
+            >
+              {%- comment -%} Image {%- endcomment -%}
+              <a href="{{ item.url }}" class="milaura-cart-item__image-link">
+                {%- if item.image -%}
+                  <img
+                    src="{{ item.image | image_url: width: 240 }}"
+                    alt="{{ item.image.alt | escape }}"
+                    class="milaura-cart-item__image"
+                    loading="lazy"
+                    width="120"
+                    height="120"
+                  >
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'milaura-cart-item__image' }}
+                {%- endif -%}
+              </a>
+
+              {%- comment -%} Content {%- endcomment -%}
+              <div class="milaura-cart-item__content">
+                {%- if section.settings.show_vendor and item.product.vendor != blank -%}
+                  <span class="milaura-cart-item__vendor">{{ item.product.vendor }}</span>
+                {%- endif -%}
+
+                <a href="{{ item.url }}" class="milaura-cart-item__title">
+                  {{ item.product.title | escape }}
+                </a>
+
+                {%- if item.product.has_only_default_variant == false -%}
+                  <span class="milaura-cart-item__variant">
+                    {%- for option in item.options_with_values -%}
+                      {{ option.name }}: {{ option.value }}{% unless forloop.last %}, {% endunless %}
+                    {%- endfor -%}
+                  </span>
+                {%- endif -%}
+
+                <span class="milaura-cart-item__price-unit">
+                  {{ item.original_price | money }} / unite
+                </span>
+
+                {%- if item.original_line_price != item.final_line_price -%}
+                  <span class="milaura-cart-item__discount">
+                    Remise appliquee
+                  </span>
+                {%- endif -%}
+
+                {%- comment -%} Quantity + Total - Mobile positioned {%- endcomment -%}
+                <div class="milaura-cart-item__bottom">
+                  {%- comment -%} Quantity capsule {%- endcomment -%}
+                  <div class="milaura-quantity-capsule">
+                    <button
+                      type="button"
+                      class="milaura-quantity-capsule__btn"
+                      name="minus"
+                      data-quantity-minus
+                      aria-label="Diminuer la quantite"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                      </svg>
+                    </button>
+                    <input
+                      type="number"
+                      class="milaura-quantity-capsule__input"
+                      name="updates[]"
+                      value="{{ item.quantity }}"
+                      min="0"
+                      data-quantity-input
+                      data-item-key="{{ item.key }}"
+                      aria-label="Quantite"
+                    >
+                    <button
+                      type="button"
+                      class="milaura-quantity-capsule__btn"
+                      name="plus"
+                      data-quantity-plus
+                      aria-label="Augmenter la quantite"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                      </svg>
+                    </button>
+                  </div>
+
+                  {%- comment -%} Line total {%- endcomment -%}
+                  <div class="milaura-cart-item__total">
+                    {%- if item.original_line_price != item.final_line_price -%}
+                      <span class="milaura-cart-item__total-compare">
+                        {{ item.original_line_price | money }}
+                      </span>
+                    {%- endif -%}
+                    <span data-line-total>{{ item.final_line_price | money }}</span>
+                  </div>
+                </div>
+              </div>
+
+              {%- comment -%} Remove button {%- endcomment -%}
+              <button
+                type="button"
+                class="milaura-cart-item__remove"
+                data-remove-item
+                data-item-key="{{ item.key }}"
+                aria-label="Supprimer {{ item.product.title | escape }}"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+
+              {%- comment -%} Loading spinner {%- endcomment -%}
+              <div class="milaura-cart-item__spinner"></div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraCartItems-' + sectionId);
+  if (!section) return;
+
+  let debounceTimer;
+
+  // Quantity buttons
+  section.addEventListener('click', function(e) {
+    const minusBtn = e.target.closest('[data-quantity-minus]');
+    const plusBtn = e.target.closest('[data-quantity-plus]');
+    const removeBtn = e.target.closest('[data-remove-item]');
+
+    if (minusBtn) {
+      const input = minusBtn.closest('.milaura-quantity-capsule').querySelector('[data-quantity-input]');
+      const newVal = Math.max(0, parseInt(input.value, 10) - 1);
+      input.value = newVal;
+      debouncedUpdate(input.dataset.itemKey, newVal);
+    }
+
+    if (plusBtn) {
+      const input = plusBtn.closest('.milaura-quantity-capsule').querySelector('[data-quantity-input]');
+      const newVal = parseInt(input.value, 10) + 1;
+      input.value = newVal;
+      debouncedUpdate(input.dataset.itemKey, newVal);
+    }
+
+    if (removeBtn) {
+      updateCart(removeBtn.dataset.itemKey, 0);
+    }
+  });
+
+  // Direct input change
+  section.addEventListener('change', function(e) {
+    const input = e.target.closest('[data-quantity-input]');
+    if (input) {
+      const newVal = Math.max(0, parseInt(input.value, 10) || 0);
+      input.value = newVal;
+      debouncedUpdate(input.dataset.itemKey, newVal);
+    }
+  });
+
+  function debouncedUpdate(itemKey, quantity) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function() {
+      updateCart(itemKey, quantity);
+    }, 300);
+  }
+
+  function updateCart(itemKey, quantity) {
+    const item = section.querySelector('[data-item-key="' + itemKey + '"]');
+    if (item) item.classList.add('is-loading');
+
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: itemKey,
+        quantity: quantity
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Reload page to reflect changes (simpler than partial DOM update)
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error updating cart:', error);
+      if (item) item.classList.remove('is-loading');
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Cart Items",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📝 Etat vide"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Titre panier vide",
+      "default": "Ton panier est vide"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_text",
+      "label": "Texte panier vide",
+      "default": "Decouvre nos creations et trouve celle qui te correspond."
+    },
+    {
+      "type": "header",
+      "content": "⚙️ Options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Afficher le vendeur",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Cart Items"
+    }
+  ]
+}
+{% endschema %}

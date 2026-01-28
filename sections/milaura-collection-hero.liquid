@@ -1,0 +1,302 @@
+{%- comment -%}
+  MILAURA COLLECTION HERO
+  Banniere hero avec image collection, titre stylise, breadcrumb
+{%- endcomment -%}
+
+{%- style -%}
+  #MilauraCollectionHero-{{ section.id }} {
+    position: relative;
+    padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: var(--milaura-spacing-md);
+    font-size: 14px;
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__breadcrumb a {
+    color: var(--milaura-text-light, #666666);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__breadcrumb a:hover {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__breadcrumb svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--milaura-border-radius, 20px);
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--milaura-spacing-xl) var(--milaura-spacing-lg);
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    z-index: 1;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__title {
+    font-family: {{ section.settings.title_font }};
+    font-size: {{ section.settings.title_size }}px;
+    color: {{ section.settings.title_color }};
+    font-weight: 600;
+    margin: 0 0 var(--milaura-spacing-sm) 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__description {
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 1.6;
+    margin: 0 0 var(--milaura-spacing-md) 0;
+    opacity: 0.9;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1024px) {
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__card {
+      min-height: 350px;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__title {
+      font-size: {{ section.settings.title_size }}px;
+    }
+  }
+
+  /* Tablet */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__title {
+      font-size: {{ section.settings.title_size | times: 0.85 | round: 0 }}px;
+    }
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraCollectionHero-{{ section.id }} {
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-sm);
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__breadcrumb {
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__card {
+      min-height: 220px;
+      padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__title {
+      font-size: 28px;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__description {
+      font-size: 14px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-hero__breadcrumb a {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="MilauraCollectionHero-{{ section.id }}"
+  class="milaura-collection-hero"
+  aria-label="{{ collection.title | escape }}"
+>
+  <div class="page-width">
+    {%- comment -%} Breadcrumb {%- endcomment -%}
+    <nav class="milaura-collection-hero__breadcrumb" aria-label="Fil d'Ariane">
+      <a href="{{ routes.root_url }}">Accueil</a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+      <span aria-current="page">{{ collection.title }}</span>
+    </nav>
+
+    {%- comment -%} Hero Card {%- endcomment -%}
+    <div class="milaura-collection-hero__card milaura-section-card">
+      {%- if collection.image != blank -%}
+        {{
+          collection.image
+          | image_url: width: 1600
+          | image_tag:
+            class: 'milaura-collection-hero__bg',
+            loading: 'eager',
+            fetchpriority: 'high',
+            widths: '375, 750, 1100, 1500',
+            sizes: '100vw',
+            alt: collection.title | escape
+        }}
+        <div class="milaura-collection-hero__overlay"></div>
+      {%- elsif section.settings.fallback_image != blank -%}
+        {{
+          section.settings.fallback_image
+          | image_url: width: 1600
+          | image_tag:
+            class: 'milaura-collection-hero__bg',
+            loading: 'eager',
+            fetchpriority: 'high',
+            widths: '375, 750, 1100, 1500',
+            sizes: '100vw',
+            alt: collection.title | escape
+        }}
+        <div class="milaura-collection-hero__overlay"></div>
+      {%- endif -%}
+
+      <div class="milaura-collection-hero__content">
+        <h1 class="milaura-collection-hero__title">
+          {{ collection.title }}
+        </h1>
+
+        {%- if section.settings.show_description and collection.description != blank -%}
+          <div class="milaura-collection-hero__description rte">
+            {{ collection.description }}
+          </div>
+        {%- endif -%}
+
+        <span class="milaura-collection-hero__badge">
+          <span>{{ collection.products_count }}</span>
+          <span>{{ collection.products_count | pluralize: 'produit', 'produits' }}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Milaura Collection Hero",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📝 Contenu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Afficher la description",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Image par defaut",
+      "info": "Utilisee si la collection n'a pas d'image"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Titre"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Police du titre",
+      "options": [
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" },
+        { "value": "'Dancing Script', cursive", "label": "Dancing Script" }
+      ],
+      "default": "'Dancing Script', cursive"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre",
+      "min": 28,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#C0A062"
+    },
+    {
+      "type": "header",
+      "content": "🎨 Couleurs Badge"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Fond du badge",
+      "default": "#C0A062"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Texte du badge",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Collection Hero"
+    }
+  ]
+}
+{% endschema %}

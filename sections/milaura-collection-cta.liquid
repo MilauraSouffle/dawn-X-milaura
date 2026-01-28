@@ -1,0 +1,300 @@
+{%- comment -%}
+  MILAURA COLLECTION CTA
+  CTA final avec message emotionnel
+{%- endcomment -%}
+
+{%- style -%}
+  #MilauraCollectionCta-{{ section.id }} {
+    padding: var(--milaura-spacing-xl) var(--milaura-spacing-md);
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--milaura-border-radius, 20px);
+    padding: var(--milaura-spacing-xl) var(--milaura-spacing-lg);
+    text-align: center;
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(253, 251, 247, 0.85) 0%,
+      rgba(242, 232, 213, 0.9) 100%
+    );
+    z-index: 1;
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__title {
+    font-family: var(--milaura-font-heading);
+    font-size: {{ section.settings.title_size }}px;
+    color: {{ section.settings.title_color }};
+    font-weight: 600;
+    margin: 0 0 var(--milaura-spacing-sm) 0;
+    line-height: 1.3;
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__text {
+    font-size: {{ section.settings.text_size }}px;
+    color: {{ section.settings.text_color }};
+    line-height: 1.7;
+    margin: 0 0 var(--milaura-spacing-lg) 0;
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--milaura-spacing-sm);
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__btn-secondary {
+    display: inline-block;
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--milaura-text, #000000);
+    font-family: var(--milaura-font-body);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50px;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraCollectionCta-{{ section.id }} .milaura-cta__btn-secondary:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1024px) {
+    #MilauraCollectionCta-{{ section.id }} .milaura-cta__card {
+      padding: var(--milaura-spacing-xl) 80px;
+    }
+  }
+
+  /* Tablet */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    #MilauraCollectionCta-{{ section.id }} .milaura-cta__title {
+      font-size: {{ section.settings.title_size | times: 0.9 | round: 0 }}px;
+    }
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraCollectionCta-{{ section.id }} {
+      padding: var(--milaura-spacing-lg) var(--milaura-spacing-sm);
+    }
+
+    #MilauraCollectionCta-{{ section.id }} .milaura-cta__card {
+      padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
+    }
+
+    #MilauraCollectionCta-{{ section.id }} .milaura-cta__title {
+      font-size: 24px;
+    }
+
+    #MilauraCollectionCta-{{ section.id }} .milaura-cta__text {
+      font-size: 15px;
+    }
+
+    #MilauraCollectionCta-{{ section.id }} .milaura-cta__buttons {
+      flex-direction: column;
+    }
+
+    #MilauraCollectionCta-{{ section.id }} .milaura-cta__btn-secondary,
+    #MilauraCollectionCta-{{ section.id }} .milaura-btn-gold {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraCollectionCta-{{ section.id }} .milaura-cta__btn-secondary {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="MilauraCollectionCta-{{ section.id }}"
+  class="milaura-collection-cta"
+>
+  <div class="page-width">
+    <div class="milaura-cta__card milaura-section-card">
+      {%- if section.settings.background_image != blank -%}
+        {{
+          section.settings.background_image
+          | image_url: width: 1600
+          | image_tag:
+            class: 'milaura-cta__bg',
+            loading: 'lazy',
+            widths: '375, 750, 1100, 1500',
+            sizes: '100vw',
+            alt: ''
+        }}
+        <div class="milaura-cta__overlay"></div>
+      {%- endif -%}
+
+      <div class="milaura-cta__content">
+        {%- if section.settings.title != blank -%}
+          <h2 class="milaura-cta__title">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <p class="milaura-cta__text">
+            {{ section.settings.text }}
+          </p>
+        {%- endif -%}
+
+        <div class="milaura-cta__buttons">
+          {%- if section.settings.primary_button_label != blank -%}
+            <a
+              href="{{ section.settings.primary_button_link }}"
+              class="milaura-btn-gold"
+            >
+              {{ section.settings.primary_button_label }}
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.secondary_button_label != blank -%}
+            <a
+              href="{{ section.settings.secondary_button_link }}"
+              class="milaura-cta__btn-secondary"
+            >
+              {{ section.settings.secondary_button_label }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Milaura Collection CTA",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📝 Contenu"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Tu n'as pas trouve ce que tu cherchais ?"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texte",
+      "default": "Decouvre notre quiz emotionnel pour trouver la creation qui te correspond vraiment."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image de fond (optionnel)"
+    },
+    {
+      "type": "header",
+      "content": "🔘 Bouton principal"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "Texte du bouton",
+      "default": "Faire le quiz"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "header",
+      "content": "🔘 Bouton secondaire"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Texte du bouton",
+      "default": "Voir toutes les collections"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre",
+      "min": 24,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Taille du texte",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#666666"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Collection CTA"
+    }
+  ]
+}
+{% endschema %}

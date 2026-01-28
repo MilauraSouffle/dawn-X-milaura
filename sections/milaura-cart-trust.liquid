@@ -1,0 +1,440 @@
+{%- comment -%}
+  MILAURA CART TRUST
+  Section badges de confiance panier
+  Methodes de paiement acceptees
+{%- endcomment -%}
+
+{%- style -%}
+  #MilauraCartTrust-{{ section.id }} {
+    padding: var(--milaura-spacing-md) 0 var(--milaura-spacing-lg) 0;
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* Trust badges */
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__badges {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--milaura-spacing-lg);
+    margin-bottom: var(--milaura-spacing-lg);
+    padding: var(--milaura-spacing-md);
+    background: rgba(192, 160, 98, 0.05);
+    border-radius: var(--milaura-border-radius, 20px);
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 100px;
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__badge-icon {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__badge-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__badge-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__badge-subtext {
+    font-size: 11px;
+    color: var(--milaura-text-light, #666666);
+    margin-top: 2px;
+  }
+
+  /* Payment methods */
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__payments {
+    padding-top: var(--milaura-spacing-md);
+    border-top: 1px solid rgba(192, 160, 98, 0.15);
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__payments-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--milaura-text-light, #666666);
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__payments-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__payment {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    background: #ffffff;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    transition: all 0.3s ease;
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__payment:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.15);
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__payment svg {
+    width: 24px;
+    height: 16px;
+    margin-right: 6px;
+  }
+
+  /* Security message */
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: var(--milaura-spacing-md);
+    font-size: 13px;
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCartTrust-{{ section.id }} .milaura-trust__security svg {
+    width: 16px;
+    height: 16px;
+    color: #4CAF50;
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraCartTrust-{{ section.id }} .milaura-trust__badges {
+      gap: var(--milaura-spacing-md);
+      padding: var(--milaura-spacing-sm);
+    }
+
+    #MilauraCartTrust-{{ section.id }} .milaura-trust__badge {
+      min-width: 80px;
+    }
+
+    #MilauraCartTrust-{{ section.id }} .milaura-trust__badge-icon {
+      font-size: 24px;
+    }
+
+    #MilauraCartTrust-{{ section.id }} .milaura-trust__badge-text {
+      font-size: 12px;
+    }
+
+    #MilauraCartTrust-{{ section.id }} .milaura-trust__payment {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraCartTrust-{{ section.id }} .milaura-trust__payment {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+{%- if cart.item_count > 0 -%}
+  <section
+    id="MilauraCartTrust-{{ section.id }}"
+    class="milaura-cart-trust"
+  >
+    <div class="page-width">
+      <div class="milaura-trust__container">
+
+        {%- comment -%} Trust badges {%- endcomment -%}
+        {%- if section.blocks.size > 0 -%}
+          <div class="milaura-trust__badges">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'badge' -%}
+                <div class="milaura-trust__badge" {{ block.shopify_attributes }}>
+                  {%- if block.settings.icon_type == 'emoji' -%}
+                    <span class="milaura-trust__badge-icon">{{ block.settings.icon_emoji }}</span>
+                  {%- else -%}
+                    <span class="milaura-trust__badge-icon">
+                      {%- case block.settings.icon_svg -%}
+                        {%- when 'truck' -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                          </svg>
+                        {%- when 'shield' -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <polyline points="9 12 11 14 15 10"></polyline>
+                          </svg>
+                        {%- when 'refresh' -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                          </svg>
+                        {%- when 'heart' -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                          </svg>
+                        {%- when 'star' -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                          </svg>
+                        {%- else -%}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                      {%- endcase -%}
+                    </span>
+                  {%- endif -%}
+                  <div>
+                    <span class="milaura-trust__badge-text">{{ block.settings.title }}</span>
+                    {%- if block.settings.subtext != blank -%}
+                      <span class="milaura-trust__badge-subtext">{{ block.settings.subtext }}</span>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Payment methods {%- endcomment -%}
+        {%- if section.settings.show_payments -%}
+          <div class="milaura-trust__payments">
+            <p class="milaura-trust__payments-title">{{ section.settings.payments_title }}</p>
+            <div class="milaura-trust__payments-icons">
+              {%- if section.settings.show_visa -%}
+                <span class="milaura-trust__payment">
+                  <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path fill="#1434CB" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"/>
+                    <path fill="#fff" d="M15 18.5l1.5-9h2.4l-1.5 9H15zm9.8-8.8c-.5-.2-1.2-.4-2.2-.4-2.4 0-4.1 1.3-4.1 3.1 0 1.3 1.2 2.1 2.1 2.5.9.4 1.2.7 1.2 1.1 0 .6-.7.9-1.4.9-1 0-1.5-.1-2.3-.5l-.3-.2-.3 2c.6.3 1.6.5 2.7.5 2.5 0 4.2-1.3 4.2-3.2 0-1.1-.6-1.9-2-2.5-.8-.4-1.3-.7-1.3-1.1 0-.4.4-.8 1.3-.8.8 0 1.3.2 1.8.4l.2.1.4-1.9zm6.1-.1h-1.9c-.6 0-1 .2-1.3.8l-3.6 8.6h2.5s.4-1.1.5-1.4h3.1c.1.3.3 1.4.3 1.4h2.2l-1.8-9.4zm-3 6c.2-.5 1-2.5 1-2.5l.3-.8.2.7s.5 2.4.6 2.6h-2.1zM13 9.7l-2.4 6.2-.3-1.3c-.5-1.6-2-3.4-3.6-4.2l2.1 8h2.6l3.9-8.7H13z"/>
+                  </svg>
+                  Visa
+                </span>
+              {%- endif -%}
+              {%- if section.settings.show_mastercard -%}
+                <span class="milaura-trust__payment">
+                  <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path fill="#000" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"/>
+                    <circle fill="#EB001B" cx="15" cy="12" r="7"/>
+                    <circle fill="#F79E1B" cx="23" cy="12" r="7"/>
+                    <path fill="#FF5F00" d="M19 5c1.7 1.3 2.7 3.3 2.7 5.5S20.7 14.2 19 15.5c-1.7-1.3-2.7-3.3-2.7-5.5S17.3 6.3 19 5z"/>
+                  </svg>
+                  Mastercard
+                </span>
+              {%- endif -%}
+              {%- if section.settings.show_paypal -%}
+                <span class="milaura-trust__payment">
+                  <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path fill="#003087" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"/>
+                    <path fill="#009cde" d="M23.9 8.3c.2-1.2 0-2-.8-2.7-.8-.8-2.3-1.2-4.2-1.2h-5.5c-.4 0-.7.3-.8.7L10 18.8c0 .3.2.5.5.5h3.6l.9-5.7v.2c.1-.4.4-.7.8-.7h1.7c3.3 0 5.9-1.3 6.6-5.2v-.3c-.1.1-.1 0 0 0 .2-.8.2-1.6-.2-2.3z"/>
+                    <path fill="#012169" d="M23.7 10.6c-.7 3.9-3.3 5.2-6.6 5.2h-1.7c-.4 0-.7.3-.8.7l-1.1 6.8c0 .2.1.4.4.4h2.8c.3 0 .6-.2.7-.6l.6-3.9c.1-.3.4-.6.7-.6h.4c2.9 0 5.1-1.2 5.8-4.5.3-1.4.1-2.5-.6-3.3-.2-.1-.4-.2-.6-.2z"/>
+                  </svg>
+                  PayPal
+                </span>
+              {%- endif -%}
+              {%- if section.settings.show_applepay -%}
+                <span class="milaura-trust__payment">
+                  <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path fill="#000" d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z"/>
+                    <path fill="#fff" d="M13.8 8c-.3.4-.8.6-1.2.6-.1-.5.2-.9.4-1.2.3-.4.8-.6 1.1-.6.1.4-.1.9-.3 1.2zm.4.9c-.7 0-1.2.4-1.6.4-.4 0-.9-.4-1.5-.4-.8 0-1.5.5-1.9 1.2-.8 1.4-.2 3.5.6 4.6.4.6.9 1.2 1.5 1.2.6 0 .8-.4 1.5-.4s.9.4 1.5.4c.7 0 1.1-.6 1.5-1.2.5-.7.7-1.3.7-1.4-.8-.3-1-1.5-.2-2.3-.2-.4-.7-.7-1.2-.7-.6.1-1.2.5-1.4.6zm9.4 1.5h-2.2l-.5 1.7h-1.1l2.1-5.9h1.2l2.1 5.9h-1.1l-.5-1.7zm-1.9-.9h1.6l-.8-2.4-.8 2.4zm7.5 2.7c-.7 0-1.3-.4-1.6-.9v3h-1v-6.3h1v.8c.3-.6.9-.9 1.6-.9 1.2 0 2 .9 2 2.2s-.9 2.1-2 2.1zm-.3-3.4c-.7 0-1.2.6-1.2 1.3 0 .7.5 1.3 1.2 1.3.7 0 1.2-.6 1.2-1.3 0-.8-.5-1.3-1.2-1.3z"/>
+                  </svg>
+                  Apple Pay
+                </span>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Security message {%- endcomment -%}
+        {%- if section.settings.security_message != blank -%}
+          <div class="milaura-trust__security">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <span>{{ section.settings.security_message }}</span>
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Milaura Cart Trust",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "💳 Moyens de paiement"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payments",
+      "label": "Afficher les moyens de paiement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "payments_title",
+      "label": "Titre section paiements",
+      "default": "Paiements acceptes"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visa",
+      "label": "Visa",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mastercard",
+      "label": "Mastercard",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_paypal",
+      "label": "PayPal",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_applepay",
+      "label": "Apple Pay",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "🔒 Securite"
+    },
+    {
+      "type": "text",
+      "id": "security_message",
+      "label": "Message securite",
+      "default": "Paiement 100% securise"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge confiance",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Type d'icone",
+          "options": [
+            { "value": "emoji", "label": "Emoji" },
+            { "value": "svg", "label": "Icone SVG" }
+          ],
+          "default": "emoji"
+        },
+        {
+          "type": "text",
+          "id": "icon_emoji",
+          "label": "Emoji",
+          "default": "🚚"
+        },
+        {
+          "type": "select",
+          "id": "icon_svg",
+          "label": "Icone SVG",
+          "options": [
+            { "value": "truck", "label": "Camion" },
+            { "value": "shield", "label": "Bouclier" },
+            { "value": "refresh", "label": "Retour" },
+            { "value": "heart", "label": "Coeur" },
+            { "value": "star", "label": "Etoile" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Livraison rapide"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Sous-texte (optionnel)",
+          "default": "Expedition sous 24h"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Cart Trust",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "icon_type": "emoji",
+            "icon_emoji": "🚚",
+            "title": "Livraison rapide",
+            "subtext": "Expedition sous 24h"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon_type": "emoji",
+            "icon_emoji": "🛡️",
+            "title": "Paiement securise",
+            "subtext": "SSL 256 bits"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon_type": "emoji",
+            "icon_emoji": "↩️",
+            "title": "Retour gratuit",
+            "subtext": "30 jours"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "icon_type": "emoji",
+            "icon_emoji": "💝",
+            "title": "Satisfait ou rembourse",
+            "subtext": "Garantie qualite"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

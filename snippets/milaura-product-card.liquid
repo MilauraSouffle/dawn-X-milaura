@@ -1,0 +1,148 @@
+{%- comment -%}
+  MILAURA PRODUCT CARD
+  Snippet reutilisable pour carte produit
+
+  Params:
+  - product: objet produit (requis)
+  - show_vendor: afficher vendeur (default: false)
+  - show_badges: afficher badges (default: true)
+  - show_rating: afficher note etoiles (default: false)
+  - show_quick_add: afficher bouton quick add (default: true)
+  - image_ratio: ratio image 'square' | 'portrait' | 'landscape' (default: 'square')
+  - lazy_load: lazy loading image (default: true)
+  - card_class: classes CSS additionnelles
+{%- endcomment -%}
+
+{%- liquid
+  assign show_vendor = show_vendor | default: false
+  assign show_badges = show_badges | default: true
+  assign show_rating = show_rating | default: false
+  assign show_quick_add = show_quick_add | default: true
+  assign image_ratio = image_ratio | default: 'square'
+  assign lazy_load = lazy_load | default: true
+  assign card_class = card_class | default: ''
+
+  assign first_variant = product.selected_or_first_available_variant
+  assign has_discount = false
+  if first_variant.compare_at_price > first_variant.price
+    assign has_discount = true
+  endif
+
+  # Rating from metafield (if exists)
+  assign rating_value = product.metafields.reviews.rating.value | default: 0
+  assign rating_count = product.metafields.reviews.rating_count.value | default: 0
+-%}
+
+<div class="milaura-product-card {{ card_class }}">
+  {%- comment -%} Badges {%- endcomment -%}
+  {%- if show_badges -%}
+    <div class="milaura-product-card__badges">
+      {%- unless product.available -%}
+        {%- render 'milaura-badge', type: 'soldout', product: product -%}
+      {%- else -%}
+        {%- if has_discount -%}
+          {%- render 'milaura-badge', type: 'sale', product: product -%}
+        {%- endif -%}
+        {%- render 'milaura-badge', type: 'new', product: product, days_new: 30 -%}
+      {%- endunless -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Image {%- endcomment -%}
+  <a href="{{ product.url }}" class="milaura-product-card__image-link milaura-product-card__image-link--{{ image_ratio }}">
+    {%- if product.featured_image -%}
+      {{
+        product.featured_image
+        | image_url: width: 600
+        | image_tag:
+          class: 'milaura-product-card__image',
+          loading: lazy_load | ternary: 'lazy', 'eager',
+          widths: '165, 360, 533, 600',
+          sizes: '(min-width: 1024px) 25vw, 50vw',
+          alt: product.title | escape
+      }}
+      {%- if product.images.size > 1 -%}
+        {{
+          product.images[1]
+          | image_url: width: 600
+          | image_tag:
+            class: 'milaura-product-card__image milaura-product-card__image--hover',
+            loading: 'lazy',
+            widths: '165, 360, 533, 600',
+            sizes: '(min-width: 1024px) 25vw, 50vw',
+            alt: product.title | escape
+          }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'milaura-product-card__image' }}
+    {%- endif -%}
+  </a>
+
+  {%- comment -%} Info {%- endcomment -%}
+  <div class="milaura-product-card__info">
+    {%- if show_vendor and product.vendor != blank -%}
+      <span class="milaura-product-card__vendor">{{ product.vendor }}</span>
+    {%- endif -%}
+
+    <h3 class="milaura-product-card__title">
+      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+    </h3>
+
+    {%- comment -%} Rating {%- endcomment -%}
+    {%- if show_rating -%}
+      <div class="milaura-product-card__rating">
+        {%- if rating_value > 0 -%}
+          <div class="milaura-product-card__stars" style="--rating: {{ rating_value }};" aria-label="{{ rating_value }} sur 5 etoiles">
+            {%- for i in (1..5) -%}
+              {%- if i <= rating_value -%}
+                <span class="milaura-product-card__star milaura-product-card__star--filled">★</span>
+              {%- elsif i <= rating_value | plus: 0.5 -%}
+                <span class="milaura-product-card__star milaura-product-card__star--half">★</span>
+              {%- else -%}
+                <span class="milaura-product-card__star">★</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- if rating_count > 0 -%}
+            <span class="milaura-product-card__rating-count">({{ rating_count }})</span>
+          {%- endif -%}
+        {%- else -%}
+          <div class="milaura-product-card__stars milaura-product-card__stars--empty">
+            <span class="milaura-product-card__star">★</span>
+            <span class="milaura-product-card__star">★</span>
+            <span class="milaura-product-card__star">★</span>
+            <span class="milaura-product-card__star">★</span>
+            <span class="milaura-product-card__star">★</span>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} Price {%- endcomment -%}
+    {%- render 'milaura-price', product: product, variant: first_variant, size: 'md' -%}
+  </div>
+
+  {%- comment -%} Quick Add {%- endcomment -%}
+  {%- if show_quick_add -%}
+    {%- if product.available and product.has_only_default_variant -%}
+      <button
+        type="button"
+        class="milaura-product-card__quick-add"
+        data-quick-add
+        data-variant-id="{{ first_variant.id }}"
+        data-product-title="{{ product.title | escape }}"
+        aria-label="Ajouter {{ product.title | escape }} au panier"
+      >
+        Ajouter au panier
+      </button>
+    {%- elsif product.available -%}
+      <a href="{{ product.url }}" class="milaura-product-card__quick-add">
+        Voir les options
+      </a>
+    {%- else -%}
+      <button type="button" class="milaura-product-card__quick-add" disabled>
+        Rupture de stock
+      </button>
+    {%- endif -%}
+  {%- endif -%}
+</div>

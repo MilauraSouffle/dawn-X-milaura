@@ -1,0 +1,199 @@
+{%- comment -%}
+  MILAURA CART PROGRESS
+  Barre progression livraison gratuite
+{%- endcomment -%}
+
+{%- liquid
+  assign threshold = section.settings.threshold | times: 100
+  assign cart_total = cart.total_price
+  assign remaining = threshold | minus: cart_total
+  assign progress = cart_total | times: 100 | divided_by: threshold
+  if progress > 100
+    assign progress = 100
+  endif
+  assign is_reached = false
+  if cart_total >= threshold
+    assign is_reached = true
+  endif
+-%}
+
+{%- style -%}
+  #MilauraCartProgress-{{ section.id }} {
+    padding: var(--milaura-spacing-md) 0;
+  }
+
+  #MilauraCartProgress-{{ section.id }} .milaura-progress__container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md);
+  }
+
+  #MilauraCartProgress-{{ section.id }} .milaura-progress__message {
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-sm);
+    color: var(--milaura-text, #000000);
+  }
+
+  #MilauraCartProgress-{{ section.id }} .milaura-progress__message.is-reached {
+    color: {{ section.settings.reached_color }};
+  }
+
+  #MilauraCartProgress-{{ section.id }} .milaura-progress__bar {
+    position: relative;
+    height: 10px;
+    background: rgba(192, 160, 98, 0.2);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  #MilauraCartProgress-{{ section.id }} .milaura-progress__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      {{ section.settings.bar_color }} 0%,
+      {{ section.settings.bar_color | color_lighten: 15 }} 100%
+    );
+    border-radius: 50px;
+    transition: width 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  #MilauraCartProgress-{{ section.id }} .milaura-progress__fill.is-reached {
+    background: linear-gradient(
+      90deg,
+      {{ section.settings.reached_color }} 0%,
+      {{ section.settings.reached_color | color_lighten: 15 }} 100%
+    );
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  #MilauraCartProgress-{{ section.id }} .milaura-progress__icon {
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraCartProgress-{{ section.id }} .milaura-progress__message {
+      font-size: 14px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraCartProgress-{{ section.id }} .milaura-progress__fill {
+      transition: none;
+    }
+
+    #MilauraCartProgress-{{ section.id }} .milaura-progress__fill.is-reached {
+      animation: none;
+    }
+  }
+{%- endstyle -%}
+
+{%- if cart.item_count > 0 -%}
+  <section
+    id="MilauraCartProgress-{{ section.id }}"
+    class="milaura-cart-progress"
+    data-section-id="{{ section.id }}"
+    data-threshold="{{ threshold }}"
+  >
+    <div class="page-width">
+      <div class="milaura-progress__container">
+        <p class="milaura-progress__message {% if is_reached %}is-reached{% endif %}" data-progress-message>
+          {%- if is_reached -%}
+            <span class="milaura-progress__icon">🎉</span>
+            {{ section.settings.reached_message }}
+          {%- else -%}
+            <span class="milaura-progress__icon">🚚</span>
+            {%- assign remaining_formatted = remaining | money_without_trailing_zeros -%}
+            {{ section.settings.progress_message | replace: '{amount}', remaining_formatted }}
+          {%- endif -%}
+        </p>
+
+        <div class="milaura-progress__bar" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+          <div
+            class="milaura-progress__fill {% if is_reached %}is-reached{% endif %}"
+            style="width: {{ progress }}%;"
+            data-progress-fill
+          ></div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Milaura Cart Progress",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "⚙️ Configuration"
+    },
+    {
+      "type": "range",
+      "id": "threshold",
+      "label": "Seuil livraison gratuite",
+      "min": 30,
+      "max": 150,
+      "step": 5,
+      "unit": "€",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "📝 Messages"
+    },
+    {
+      "type": "text",
+      "id": "progress_message",
+      "label": "Message en cours",
+      "default": "Plus que {amount} pour la livraison gratuite !",
+      "info": "Utilisez {amount} pour afficher le montant restant"
+    },
+    {
+      "type": "text",
+      "id": "reached_message",
+      "label": "Message seuil atteint",
+      "default": "Felicitations ! Livraison gratuite debloquee !"
+    },
+    {
+      "type": "header",
+      "content": "🎨 Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bar_color",
+      "label": "Couleur de la barre",
+      "default": "#C0A062"
+    },
+    {
+      "type": "color",
+      "id": "reached_color",
+      "label": "Couleur seuil atteint",
+      "default": "#4CAF50"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Cart Progress"
+    }
+  ]
+}
+{% endschema %}
