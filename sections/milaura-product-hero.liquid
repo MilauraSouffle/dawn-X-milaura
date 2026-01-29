@@ -26,9 +26,16 @@
   /* TABLETTE (750px - 989px) : Ajustements header + espacements */
   @media screen and (min-width: 750px) and (max-width: 989px) {
     .section-{{ section.id }}-padding {
-      margin-top: 60px; /* Descendre sous le header fixe */
+      margin-top: calc(var(--header-height-offset, 80px) + 16px); /* FIX: Descendre sous le header fixe avec marge */
       padding-top: 12px; /* Espace interne réduit */
       padding-bottom: 20px;
+    }
+  }
+
+  /* DESKTOP (≥990px) : Offset header sticky */
+  @media screen and (min-width: 990px) {
+    .section-{{ section.id }}-padding {
+      margin-top: calc(var(--header-height-offset, 96px) + 16px); /* FIX: Descendre sous le header fixe */
     }
   }
 
@@ -41,16 +48,17 @@
     gap: 16px;
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: visible; /* FIX: permettre au cadre doré d'être visible */
     padding: 0 16px;
     box-sizing: border-box;
   }
 
-  /* TABLETTE : Resserrer les espacements */
+  /* TABLETTE : Resserrer les espacements + fix cadre */
   @media screen and (min-width: 750px) and (max-width: 989px) {
     .milaura-hero-wrapper {
       gap: 6px; /* Écart minimal entre les groupes */
-      padding: 0 12px;
+      padding: 0 20px; /* FIX: padding augmenté pour que le cadre respire */
+      overflow: visible; /* FIX: cadre visible */
     }
 
     .milaura-hero-header-group {
@@ -240,8 +248,8 @@
       grid-template-areas:
         "gallery header"
         "gallery actions";
-      gap: var(--milaura-spacing-lg);
-      padding: 0;
+      gap: var(--milaura-spacing-md); /* FIX: réduit de lg à md pour compacité */
+      padding: 0 16px; /* FIX: padding pour que le cadre respire sur les côtés */
       overflow: visible;
     }
 
@@ -258,12 +266,12 @@
     .milaura-hero-actions-group {
       grid-area: actions;
       position: sticky;
-      top: calc(var(--header-height-offset, 90px) + 20px);
+      top: calc(var(--header-height-offset, 96px) + 20px);
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(192, 160, 98, 0.1);
       border-radius: 20px;
-      padding: 24px;
+      padding: 20px; /* FIX: réduit de 24px à 20px pour compacité */
     }
 
     /* Grille Media Desktop */
@@ -348,14 +356,14 @@
     font-size: 15px;
     font-weight: 600;
     color: var(--milaura-text);
-    margin: 0 0 14px 0;
+    margin: 0 0 10px 0; /* FIX: resserré */
     text-align: center;
   }
 
   .milaura-volume-grid {
     display: flex;
     gap: 8px;
-    margin: 0 0 16px 0;
+    margin: 0 0 12px 0; /* FIX: resserré de 16px à 12px */
   }
 
   .volume-card {
@@ -501,9 +509,33 @@
   .milaura-buy-row {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 14px; /* FIX: réduit de 20px à 14px */
     align-items: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap; /* FIX: permettre le wrap sur mobile si nécessaire */
+  }
+
+  /* DESKTOP: Buy row compact */
+  @media screen and (min-width: 990px) {
+    .milaura-buy-row {
+      margin-top: 12px; /* FIX: encore plus compact sur desktop */
+    }
+  }
+
+  /* MOBILE: ATC sur toute la largeur si wrap */
+  @media screen and (max-width: 480px) {
+    .milaura-buy-row {
+      gap: 12px;
+    }
+    .milaura-buy-row .milaura-quantity-capsule {
+      flex: 0 0 auto !important;
+    }
+    .milaura-buy-row .product-form {
+      flex: 1 1 100% !important; /* FIX: bouton prend toute la largeur */
+      min-width: 0;
+    }
+    .milaura-buy-row .milaura-add-btn {
+      width: 100% !important;
+    }
   }
 
   /* Sélecteur quantité BUBBLE (Petit & Discret) */
@@ -692,17 +724,17 @@
      TRUST BADGES - Design Premium 2026
      =========================================== */
   .milaura-trust-badges {
-    margin-top: 28px;
-    padding-top: 20px;
+    margin-top: 16px; /* FIX: réduit de 28px à 16px */
+    padding-top: 14px; /* FIX: réduit de 20px à 14px */
     border-top: 1px solid rgba(192, 160, 98, 0.15);
   }
 
   .milaura-trust-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    font-size: 13px;
+    gap: 8px; /* FIX: réduit de 10px à 8px */
+    padding: 6px 0; /* FIX: réduit de 8px à 6px */
+    font-size: 12px; /* FIX: réduit de 13px à 12px */
     color: #555;
     letter-spacing: 0.01em;
   }
@@ -712,10 +744,10 @@
   }
 
   .milaura-trust-icon {
-    font-size: 15px;
+    font-size: 14px; /* FIX: réduit de 15px à 14px */
     opacity: 0.85;
     flex-shrink: 0;
-    width: 20px;
+    width: 18px; /* FIX: réduit de 20px à 18px */
     text-align: center;
   }
 
@@ -723,29 +755,31 @@
     font-weight: 500;
   }
 
-  /* Desktop: horizontal layout */
+  /* Desktop: horizontal layout compact */
   @media screen and (min-width: 990px) {
     .milaura-trust-badges {
       display: flex;
       justify-content: center;
-      gap: 24px;
-      margin-top: 24px;
-      padding-top: 18px;
+      flex-wrap: wrap; /* FIX: permettre wrap si besoin */
+      gap: 12px 16px; /* FIX: réduit de 24px à 16px horizontal, 12px vertical */
+      margin-top: 16px; /* FIX: réduit de 24px à 16px */
+      padding-top: 14px; /* FIX: réduit de 18px à 14px */
     }
 
     .milaura-trust-item {
       padding: 0;
-      gap: 8px;
+      gap: 6px; /* FIX: réduit de 8px à 6px */
+      font-size: 11px; /* FIX: plus compact sur desktop */
     }
 
     .milaura-trust-item:not(:last-child) {
       border-bottom: none;
-      padding-right: 24px;
+      padding-right: 16px; /* FIX: réduit de 24px à 16px */
       border-right: 1px solid rgba(192, 160, 98, 0.2);
     }
 
     .milaura-trust-icon {
-      font-size: 14px;
+      font-size: 13px; /* FIX: réduit de 14px à 13px */
     }
   }
 
