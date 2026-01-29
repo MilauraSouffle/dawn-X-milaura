@@ -1,0 +1,1249 @@
+{% comment %}
+  MILAURA PRODUCT SPOTLIGHT ★ PILIER
+  Remplacement de product-stone avec:
+  - Auto-play des bénéfices (cycle automatique)
+  - Hotspots pulsants qui s'illuminent séquentiellement
+  - Lignes de connexion SVG animées (desktop)
+  - Support image/vidéo personnalisée
+  - Mobile-first (80% du trafic)
+{% endcomment %}
+
+{%- liquid
+  assign stone_name = product.metafields.milaura.stone_name | default: section.settings.default_title
+  assign stone_image = section.settings.image | default: product.metafields.milaura.stone_image | default: product.featured_image
+  assign has_video = false
+  if section.settings.video != blank or section.settings.video_url != blank
+    assign has_video = true
+  endif
+  assign benefit_blocks = section.blocks | where: 'type', 'benefit'
+  assign autoplay_speed = section.settings.autoplay_speed | default: 4500
+-%}
+
+<section
+  id="MilauraProductSpotlight-{{ section.id }}"
+  class="milaura-spotlight"
+  data-section-id="{{ section.id }}"
+  data-autoplay-speed="{{ autoplay_speed }}"
+  aria-label="{{ section.settings.aria_label | default: 'Découvrez les bénéfices' }}"
+>
+  <div class="spotlight-container">
+
+    {%- comment -%} Media (Image/Vidéo + Hotspots + SVG Lines) {%- endcomment -%}
+    <div class="spotlight-media{% if section.settings.enable_float %} spotlight-media--float{% endif %}">
+
+      {%- comment -%} Image ou Vidéo {%- endcomment -%}
+      <div class="spotlight-media__inner">
+        {%- if has_video -%}
+          {%- if section.settings.video != blank -%}
+            {{ section.settings.video | video_tag:
+              autoplay: true,
+              loop: true,
+              muted: true,
+              playsinline: true,
+              class: 'spotlight-media__video',
+              loading: 'lazy'
+            }}
+          {%- elsif section.settings.video_url != blank -%}
+            {%- if section.settings.video_url contains 'youtube' or section.settings.video_url contains 'youtu.be' -%}
+              {%- assign youtube_id = section.settings.video_url | split: 'v=' | last | split: '&' | first -%}
+              {%- if section.settings.video_url contains 'youtu.be' -%}
+                {%- assign youtube_id = section.settings.video_url | split: 'youtu.be/' | last | split: '?' | first -%}
+              {%- endif -%}
+              <iframe
+                class="spotlight-media__iframe"
+                src="https://www.youtube.com/embed/{{ youtube_id }}?autoplay=1&mute=1&loop=1&playlist={{ youtube_id }}&playsinline=1&controls=0"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            {%- else -%}
+              <video
+                class="spotlight-media__video"
+                autoplay
+                loop
+                muted
+                playsinline
+                loading="lazy"
+              >
+                <source src="{{ section.settings.video_url }}" type="video/mp4">
+              </video>
+            {%- endif -%}
+          {%- endif -%}
+        {%- elsif stone_image -%}
+          {{ stone_image
+            | image_url: width: 1200
+            | image_tag:
+              loading: 'lazy',
+              class: 'spotlight-media__image',
+              widths: '375, 550, 750, 1100',
+              sizes: '(min-width: 1024px) 50vw, 100vw',
+              alt: stone_name | escape
+          }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'spotlight-media__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Hotspots {%- endcomment -%}
+      {%- if benefit_blocks.size > 0 -%}
+        <div class="spotlight-hotspots" aria-hidden="true">
+          {%- for block in benefit_blocks -%}
+            <button
+              type="button"
+              class="spotlight-hotspot"
+              style="left: {{ block.settings.hotspot_x }}%; top: {{ block.settings.hotspot_y }}%;"
+              data-hotspot-index="{{ forloop.index0 }}"
+              aria-label="Voir {{ block.settings.title }}"
+              {{ block.shopify_attributes }}
+            >
+              <span class="spotlight-hotspot__dot" style="background: {{ section.settings.hotspot_color }};"></span>
+              <span class="spotlight-hotspot__pulse" style="background: {{ section.settings.hotspot_color }};"></span>
+              <span class="spotlight-hotspot__ring" style="border-color: {{ section.settings.hotspot_active_color }};"></span>
+            </button>
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} SVG Connection Lines (Desktop only) {%- endcomment -%}
+        {%- if section.settings.show_connection_lines -%}
+          <svg class="spotlight-lines" aria-hidden="true">
+            {%- for block in benefit_blocks -%}
+              <line
+                class="spotlight-line"
+                data-line-index="{{ forloop.index0 }}"
+                x1="{{ block.settings.hotspot_x }}%"
+                y1="{{ block.settings.hotspot_y }}%"
+                x2="100%"
+                y2="{{ forloop.index0 | times: 33 | plus: 16 }}%"
+                stroke="{{ section.settings.hotspot_color }}"
+                stroke-width="2"
+                stroke-dasharray="8,4"
+              />
+            {%- endfor -%}
+          </svg>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Benefits Cards {%- endcomment -%}
+    <div class="spotlight-benefits" role="tablist" aria-label="Bénéfices du produit">
+
+      {%- if stone_name != blank -%}
+        <h2 class="spotlight-title" style="font-size: {{ section.settings.title_size }}px; color: {{ section.settings.title_color }};">
+          {{ stone_name }}
+        </h2>
+      {%- endif -%}
+
+      {%- comment -%} Benefits Carousel {%- endcomment -%}
+      <div class="spotlight-carousel">
+        {%- for block in benefit_blocks -%}
+          <div
+            class="spotlight-benefit{% if forloop.first %} is-active{% endif %}"
+            role="tabpanel"
+            id="spotlight-panel-{{ section.id }}-{{ forloop.index0 }}"
+            aria-labelledby="spotlight-tab-{{ section.id }}-{{ forloop.index0 }}"
+            {% unless forloop.first %}aria-hidden="true"{% endunless %}
+            data-benefit-index="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.icon != blank -%}
+              <span class="spotlight-benefit__icon">{{ block.settings.icon }}</span>
+            {%- endif -%}
+
+            {%- if block.settings.title != blank -%}
+              <h3 class="spotlight-benefit__title" style="font-size: {{ section.settings.benefit_title_size }}px; color: {{ section.settings.benefit_title_color }};">
+                {{ block.settings.title }}
+              </h3>
+            {%- endif -%}
+
+            {%- if block.settings.description != blank -%}
+              <div class="spotlight-benefit__description" style="font-size: {{ section.settings.description_size }}px; color: {{ section.settings.description_color }};">
+                {{ block.settings.description }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Navigation Dots with Progress {%- endcomment -%}
+      {%- if benefit_blocks.size > 1 -%}
+        <div class="spotlight-dots" role="tablist">
+          {%- for block in benefit_blocks -%}
+            <button
+              type="button"
+              class="spotlight-dot{% if forloop.first %} is-active{% endif %}"
+              role="tab"
+              id="spotlight-tab-{{ section.id }}-{{ forloop.index0 }}"
+              aria-controls="spotlight-panel-{{ section.id }}-{{ forloop.index0 }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              data-dot-index="{{ forloop.index0 }}"
+              aria-label="Bénéfice {{ forloop.index }} sur {{ benefit_blocks.size }}"
+            >
+              <span class="spotlight-dot__fill"></span>
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* ============================================
+     SPOTLIGHT - Variables & Base
+     ============================================ */
+  .milaura-spotlight {
+    --spotlight-transition: 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    --spotlight-hotspot-size: 48px;
+    --spotlight-dot-size: 8px;
+    --spotlight-dot-active: 24px;
+
+    padding: var(--milaura-spacing-xl, 48px) 0;
+    background: transparent;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .milaura-spotlight.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .spotlight-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-md, 24px);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--milaura-spacing-lg, 36px);
+    align-items: center;
+  }
+
+  /* ============================================
+     MEDIA (Image/Video + Hotspots)
+     ============================================ */
+  .spotlight-media {
+    position: relative;
+    width: 100%;
+    max-height: 60vh;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--milaura-border-radius, 20px);
+    overflow: visible;
+    box-shadow: var(--milaura-shadow-md, 0 15px 40px rgba(192, 160, 98, 0.25));
+  }
+
+  .spotlight-media__inner {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
+  .spotlight-media__image,
+  .spotlight-media__video,
+  .spotlight-media__iframe,
+  .spotlight-media__placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .spotlight-media__iframe {
+    border: none;
+  }
+
+  /* Float Animation */
+  .spotlight-media--float {
+    animation: spotlightFloat 6s ease-in-out infinite;
+  }
+
+  @keyframes spotlightFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* ============================================
+     HOTSPOTS
+     ============================================ */
+  .spotlight-hotspots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .spotlight-hotspot {
+    position: absolute;
+    width: var(--spotlight-hotspot-size);
+    height: var(--spotlight-hotspot-size);
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    pointer-events: all;
+    padding: 0;
+    z-index: 10;
+  }
+
+  .spotlight-hotspot__dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: var(--milaura-gold, #C0A062);
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 3;
+  }
+
+  .spotlight-hotspot__pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background: var(--milaura-gold, #C0A062);
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: spotlightPulse 2s ease-in-out infinite;
+    z-index: 1;
+  }
+
+  .spotlight-hotspot__ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--milaura-gold, #C0A062);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 2;
+  }
+
+  /* Active Hotspot */
+  .spotlight-hotspot.is-active .spotlight-hotspot__dot {
+    transform: translate(-50%, -50%) scale(1.3);
+    box-shadow: 0 0 20px rgba(192, 160, 98, 0.6);
+  }
+
+  .spotlight-hotspot.is-active .spotlight-hotspot__ring {
+    opacity: 1;
+    animation: spotlightRingExpand 1.5s ease-out infinite;
+  }
+
+  @keyframes spotlightPulse {
+    0%, 100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes spotlightRingExpand {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(2);
+      opacity: 0;
+    }
+  }
+
+  /* Hover state */
+  .spotlight-hotspot:hover .spotlight-hotspot__dot,
+  .spotlight-hotspot:focus-visible .spotlight-hotspot__dot {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  /* ============================================
+     SVG CONNECTION LINES (Desktop)
+     ============================================ */
+  .spotlight-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: visible;
+  }
+
+  .spotlight-line {
+    stroke-dashoffset: 100;
+    opacity: 0;
+    transition: stroke-dashoffset 0.8s ease, opacity 0.5s ease;
+  }
+
+  .spotlight-line.is-active {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  /* Hide lines on mobile */
+  @media (max-width: 479px) {
+    .spotlight-lines {
+      display: none;
+    }
+  }
+
+  /* ============================================
+     BENEFITS CARDS
+     ============================================ */
+  .spotlight-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-md, 24px);
+  }
+
+  .spotlight-title {
+    font-family: var(--milaura-font-heading);
+    font-weight: 600;
+    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
+  }
+
+  .spotlight-carousel {
+    position: relative;
+    min-height: 150px;
+    overflow: hidden;
+  }
+
+  .spotlight-benefit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity var(--spotlight-transition), transform var(--spotlight-transition);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm, 12px);
+    padding: var(--milaura-spacing-md, 24px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: var(--milaura-border-radius-sm, 12px);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  .spotlight-benefit.is-active {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .spotlight-benefit.is-exiting {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  .spotlight-benefit__icon {
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  .spotlight-benefit__title {
+    font-family: var(--milaura-font-heading);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .spotlight-benefit__description {
+    line-height: 1.7;
+    opacity: 0.9;
+  }
+
+  .spotlight-benefit__description p {
+    margin: 0 0 0.5em 0;
+  }
+
+  .spotlight-benefit__description p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ============================================
+     NAVIGATION DOTS
+     ============================================ */
+  .spotlight-dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--milaura-spacing-sm, 12px);
+    padding: var(--milaura-spacing-sm, 12px) 0;
+  }
+
+  .spotlight-dot {
+    position: relative;
+    width: var(--spotlight-dot-size);
+    height: var(--spotlight-dot-size);
+    background: rgba(192, 160, 98, 0.3);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+    transition: width 0.3s ease, background 0.3s ease;
+    overflow: hidden;
+  }
+
+  .spotlight-dot.is-active {
+    width: var(--spotlight-dot-active);
+    background: rgba(192, 160, 98, 0.5);
+  }
+
+  .spotlight-dot__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background: var(--milaura-gold, #C0A062);
+    border-radius: inherit;
+    transition: width linear;
+  }
+
+  .spotlight-dot.is-active .spotlight-dot__fill {
+    animation: spotlightDotFill var(--autoplay-speed, 4500ms) linear forwards;
+  }
+
+  .spotlight-dot.is-paused .spotlight-dot__fill {
+    animation-play-state: paused;
+  }
+
+  @keyframes spotlightDotFill {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  /* Focus visible */
+  .spotlight-dot:focus-visible,
+  .spotlight-hotspot:focus-visible {
+    outline: 2px solid var(--milaura-gold, #C0A062);
+    outline-offset: 2px;
+  }
+
+  /* ============================================
+     DESKTOP LAYOUT
+     ============================================ */
+  @media screen and (min-width: 1024px) {
+    .spotlight-container {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--milaura-spacing-xl, 48px);
+    }
+
+    .spotlight-media {
+      max-height: none;
+      position: sticky;
+      top: calc(var(--header-height-offset, 96px) + 24px);
+    }
+
+    .spotlight-title {
+      font-size: 32px !important;
+    }
+
+    .spotlight-carousel {
+      min-height: 180px;
+    }
+
+    .spotlight-benefit {
+      padding: var(--milaura-spacing-lg, 36px);
+    }
+  }
+
+  /* ============================================
+     TABLET LAYOUT
+     ============================================ */
+  @media screen and (min-width: 769px) and (max-width: 1023px) {
+    .spotlight-container {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--milaura-spacing-md, 24px);
+    }
+
+    .spotlight-media {
+      max-height: none;
+    }
+  }
+
+  /* ============================================
+     MOBILE OPTIMIZATIONS
+     ============================================ */
+  @media screen and (max-width: 768px) {
+    .milaura-spotlight {
+      padding: var(--milaura-spacing-lg, 36px) 0;
+    }
+
+    .spotlight-container {
+      gap: var(--milaura-spacing-md, 24px);
+    }
+
+    .spotlight-media {
+      max-height: 50vh;
+    }
+
+    .spotlight-carousel {
+      min-height: 130px;
+      /* Enable swipe */
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .spotlight-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .spotlight-benefit {
+      position: relative;
+      flex-shrink: 0;
+      width: 100%;
+      scroll-snap-align: start;
+      padding: var(--milaura-spacing-md, 24px);
+    }
+
+    /* On mobile, show all benefits in a row for swipe */
+    .spotlight-carousel {
+      display: flex;
+      gap: var(--milaura-spacing-sm, 12px);
+    }
+
+    .spotlight-benefit {
+      opacity: 1;
+      transform: none;
+      pointer-events: all;
+      min-width: 85%;
+    }
+
+    .spotlight-benefit.is-active {
+      position: relative;
+    }
+
+    .spotlight-dots {
+      gap: var(--milaura-spacing-xs, 6px);
+    }
+  }
+
+  /* Very small mobile */
+  @media screen and (max-width: 379px) {
+    .spotlight-benefit {
+      padding: var(--milaura-spacing-sm, 12px);
+      min-width: 90%;
+    }
+
+    .spotlight-benefit__icon {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* ============================================
+     REDUCED MOTION
+     ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-spotlight {
+      transition: opacity 0.3s ease;
+      transform: none;
+    }
+
+    .spotlight-media--float {
+      animation: none;
+    }
+
+    .spotlight-hotspot__pulse {
+      animation: none;
+    }
+
+    .spotlight-hotspot.is-active .spotlight-hotspot__ring {
+      animation: none;
+      opacity: 1;
+    }
+
+    .spotlight-benefit {
+      transition: opacity 0.3s ease;
+      transform: none !important;
+    }
+
+    .spotlight-dot__fill {
+      transition: width 0.3s ease;
+    }
+
+    .spotlight-dot.is-active .spotlight-dot__fill {
+      animation: none;
+      width: 100%;
+    }
+
+    .spotlight-line {
+      transition: opacity 0.3s ease;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* ============================================
+     STATES
+     ============================================ */
+  .milaura-spotlight.is-paused .spotlight-hotspot__pulse {
+    animation-play-state: paused;
+  }
+
+  .milaura-spotlight.is-paused .spotlight-dot.is-active .spotlight-dot__fill {
+    animation-play-state: paused;
+  }
+</style>
+
+<script>
+(function() {
+  'use strict';
+
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraProductSpotlight-' + sectionId);
+  if (!section) return;
+
+  const autoplaySpeed = parseInt(section.dataset.autoplaySpeed) || 4500;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobileQuery = window.matchMedia('(max-width: 768px)');
+
+  // Elements
+  const hotspots = section.querySelectorAll('.spotlight-hotspot');
+  const benefits = section.querySelectorAll('.spotlight-benefit');
+  const dots = section.querySelectorAll('.spotlight-dot');
+  const lines = section.querySelectorAll('.spotlight-line');
+  const carousel = section.querySelector('.spotlight-carousel');
+
+  // State
+  let state = 'PLAYING'; // PLAYING, PAUSED, MANUAL
+  let currentIndex = 0;
+  let autoplayTimer = null;
+  let resumeTimer = null;
+  let isInViewport = false;
+
+  // Update CSS variable for dot animation
+  section.style.setProperty('--autoplay-speed', autoplaySpeed + 'ms');
+
+  // ============================================
+  // INTERSECTION OBSERVER - Visibility
+  // ============================================
+  const visibilityObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        isInViewport = true;
+        if (state === 'PLAYING') startAutoplay();
+      } else {
+        isInViewport = false;
+        stopAutoplay();
+      }
+    });
+  }, {
+    threshold: 0.15
+  });
+
+  visibilityObserver.observe(section);
+
+  // ============================================
+  // NAVIGATION FUNCTIONS
+  // ============================================
+  function goTo(index, animate) {
+    if (index === currentIndex && animate !== false) return;
+
+    const prevIndex = currentIndex;
+    currentIndex = index;
+
+    // Update benefits
+    benefits.forEach(function(benefit, i) {
+      benefit.classList.remove('is-active', 'is-exiting');
+      benefit.setAttribute('aria-hidden', 'true');
+
+      if (i === prevIndex && animate !== false) {
+        benefit.classList.add('is-exiting');
+      }
+      if (i === currentIndex) {
+        benefit.classList.add('is-active');
+        benefit.removeAttribute('aria-hidden');
+      }
+    });
+
+    // Update hotspots
+    hotspots.forEach(function(hotspot, i) {
+      hotspot.classList.toggle('is-active', i === currentIndex);
+    });
+
+    // Update dots
+    dots.forEach(function(dot, i) {
+      const isActive = i === currentIndex;
+      dot.classList.toggle('is-active', isActive);
+      dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+
+      // Reset fill animation
+      const fill = dot.querySelector('.spotlight-dot__fill');
+      if (fill) {
+        fill.style.animation = 'none';
+        if (isActive && state === 'PLAYING') {
+          // Force reflow
+          void fill.offsetWidth;
+          fill.style.animation = '';
+        }
+      }
+    });
+
+    // Update lines (desktop)
+    lines.forEach(function(line, i) {
+      line.classList.toggle('is-active', i === currentIndex);
+    });
+
+    // Mobile: scroll carousel to active benefit
+    if (isMobileQuery.matches && carousel) {
+      const activeBenefit = benefits[currentIndex];
+      if (activeBenefit) {
+        carousel.scrollTo({
+          left: activeBenefit.offsetLeft - 16,
+          behavior: reducedMotion ? 'auto' : 'smooth'
+        });
+      }
+    }
+  }
+
+  function next() {
+    const nextIndex = (currentIndex + 1) % benefits.length;
+    goTo(nextIndex, true);
+  }
+
+  function prev() {
+    const prevIndex = (currentIndex - 1 + benefits.length) % benefits.length;
+    goTo(prevIndex, true);
+  }
+
+  // ============================================
+  // AUTOPLAY FUNCTIONS
+  // ============================================
+  function startAutoplay() {
+    if (!isInViewport || state !== 'PLAYING' || benefits.length <= 1) return;
+
+    stopAutoplay();
+    autoplayTimer = setInterval(next, autoplaySpeed);
+    section.classList.remove('is-paused');
+
+    // Restart dot fill animation
+    dots.forEach(function(dot) {
+      dot.classList.remove('is-paused');
+    });
+  }
+
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+    section.classList.add('is-paused');
+
+    // Pause dot fill animation
+    dots.forEach(function(dot) {
+      dot.classList.add('is-paused');
+    });
+  }
+
+  function pause() {
+    if (state === 'PLAYING') {
+      state = 'PAUSED';
+      stopAutoplay();
+      scheduleResume();
+    }
+  }
+
+  function scheduleResume() {
+    if (resumeTimer) clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(function() {
+      if (state === 'PAUSED') {
+        state = 'PLAYING';
+        startAutoplay();
+      }
+    }, 5000); // Resume after 5s of inactivity
+  }
+
+  // ============================================
+  // EVENT HANDLERS
+  // ============================================
+
+  // Hotspot clicks
+  hotspots.forEach(function(hotspot, index) {
+    hotspot.addEventListener('click', function(e) {
+      e.preventDefault();
+      pause();
+      goTo(index, true);
+    });
+  });
+
+  // Dot clicks
+  dots.forEach(function(dot, index) {
+    dot.addEventListener('click', function(e) {
+      e.preventDefault();
+      pause();
+      goTo(index, true);
+    });
+  });
+
+  // Keyboard navigation
+  section.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      pause();
+      prev();
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      pause();
+      next();
+    }
+  });
+
+  // Touch/swipe handling for mobile carousel
+  if (carousel) {
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    carousel.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+      pause();
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > 50) { // Min swipe distance
+        if (diff > 0) {
+          next();
+        } else {
+          prev();
+        }
+      }
+    }, { passive: true });
+
+    // Scroll-based detection for mobile
+    let scrollTimeout;
+    carousel.addEventListener('scroll', function() {
+      pause();
+
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function() {
+        // Detect which benefit is most visible
+        const scrollLeft = carousel.scrollLeft;
+        let closestIndex = 0;
+        let closestDistance = Infinity;
+
+        benefits.forEach(function(benefit, i) {
+          const distance = Math.abs(benefit.offsetLeft - scrollLeft - 16);
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = i;
+          }
+        });
+
+        if (closestIndex !== currentIndex) {
+          goTo(closestIndex, false);
+        }
+      }, 100);
+    }, { passive: true });
+  }
+
+  // Hover pause (desktop only)
+  if (!isMobileQuery.matches) {
+    section.addEventListener('mouseenter', pause);
+    section.addEventListener('mouseleave', function() {
+      if (state === 'PAUSED') {
+        state = 'PLAYING';
+        startAutoplay();
+      }
+    });
+  }
+
+  // ============================================
+  // INITIALIZATION
+  // ============================================
+
+  // Set initial state
+  goTo(0, false);
+
+  // Start autoplay if visible and not reduced motion
+  if (!reducedMotion && benefits.length > 1) {
+    // Autoplay will start when section enters viewport via IntersectionObserver
+  } else if (reducedMotion) {
+    state = 'MANUAL';
+    section.classList.add('is-paused');
+  }
+
+  // Handle resize
+  let resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      // Re-sync carousel position on resize
+      if (carousel && benefits[currentIndex]) {
+        carousel.scrollTo({
+          left: benefits[currentIndex].offsetLeft - 16,
+          behavior: 'auto'
+        });
+      }
+    }, 200);
+  });
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Product Spotlight",
+  "class": "milaura-section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📸 Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image personnalisée",
+      "info": "Remplace l'image du produit par défaut"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Vidéo Shopify",
+      "info": "Upload une vidéo dans l'admin Shopify"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "URL vidéo externe",
+      "info": "YouTube ou lien MP4 direct"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_float",
+      "label": "Animation de lévitation",
+      "default": false,
+      "info": "L'image flotte légèrement"
+    },
+    {
+      "type": "header",
+      "content": "⏱️ Auto-play"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Vitesse du cycle (ms)",
+      "min": 3000,
+      "max": 8000,
+      "step": 500,
+      "default": 4500,
+      "unit": "ms",
+      "info": "Temps entre chaque bénéfice"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_connection_lines",
+      "label": "Lignes de connexion SVG",
+      "default": true,
+      "info": "Lignes animées reliant hotspots aux bénéfices (desktop uniquement)"
+    },
+    {
+      "type": "header",
+      "content": "📝 Contenu"
+    },
+    {
+      "type": "text",
+      "id": "default_title",
+      "label": "Titre par défaut",
+      "default": "Pierre Naturelle",
+      "info": "Utilisé si metafield milaura.stone_name est vide"
+    },
+    {
+      "type": "text",
+      "id": "aria_label",
+      "label": "Label accessibilité",
+      "default": "Découvrez les bénéfices",
+      "info": "Pour les lecteurs d'écran"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Titre"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre",
+      "min": 20,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Bénéfices"
+    },
+    {
+      "type": "range",
+      "id": "benefit_title_size",
+      "label": "Taille titre bénéfice",
+      "min": 16,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "benefit_title_color",
+      "label": "Couleur titre bénéfice",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Taille description",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Couleur description",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "🎯 Style Hotspots"
+    },
+    {
+      "type": "color",
+      "id": "hotspot_color",
+      "label": "Couleur hotspot",
+      "default": "#C0A062"
+    },
+    {
+      "type": "color",
+      "id": "hotspot_active_color",
+      "label": "Couleur hotspot actif",
+      "default": "#C0A062"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Bénéfice",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "header",
+          "content": "📍 Position Hotspot"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x",
+          "label": "Position horizontale (%)",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y",
+          "label": "Position verticale (%)",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "default": 50
+        },
+        {
+          "type": "header",
+          "content": "📝 Contenu"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icône/Emoji",
+          "default": "✨",
+          "info": "Emoji ou icône texte"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Énergie apaisante"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Cette pierre naturelle diffuse une énergie douce et apaisante, parfaite pour retrouver calme et sérénité au quotidien.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Product Spotlight",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "hotspot_x": 30,
+            "hotspot_y": 35,
+            "icon": "✨",
+            "title": "Énergie apaisante",
+            "description": "<p>Cette pierre naturelle diffuse une énergie douce et apaisante, parfaite pour retrouver calme et sérénité au quotidien.</p>"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "hotspot_x": 65,
+            "hotspot_y": 50,
+            "icon": "💫",
+            "title": "Reconnexion à soi",
+            "description": "<p>Favorise l'introspection et la reconnexion avec son moi intérieur, idéale pour les moments de méditation.</p>"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "hotspot_x": 45,
+            "hotspot_y": 70,
+            "icon": "🌙",
+            "title": "Équilibre émotionnel",
+            "description": "<p>Aide à harmoniser les émotions et à maintenir un état d'équilibre intérieur tout au long de la journée.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
