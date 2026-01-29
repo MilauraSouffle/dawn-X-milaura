@@ -67,21 +67,30 @@
       padding-bottom: 4px;
     }
 
-    /* Volume Bundle - badges flottants */
+    /* Volume Bundle - en-têtes intégrés */
     .volume-section-title {
-      margin: -6px 0 0 0; /* Titre remonté */
+      margin: 0 0 10px 0;
     }
 
     .milaura-volume-grid {
-      margin-top: 26px;
+      margin-top: 8px; /* Plus besoin d'espace pour badges flottants */
     }
 
     .volume-card {
-      padding: 12px 8px 10px;
+      padding: 0; /* Géré par les sous-éléments */
     }
 
     .volume-card-badge {
-      top: -24px;
+      font-size: 9px;
+      padding: 5px 8px;
+    }
+
+    .volume-left {
+      padding: 12px 8px 3px;
+    }
+
+    .volume-price {
+      padding: 3px 8px 12px;
     }
   }
 
@@ -366,7 +375,7 @@
 
   /* ===========================================
      VOLUME BUNDLE - Design Premium 2026
-     Pills compacts avec badges flottants
+     Cartes avec en-têtes colorés intégrés
      =========================================== */
 
   .volume-section-title {
@@ -374,14 +383,14 @@
     font-size: 15px;
     font-weight: 600;
     color: var(--milaura-text);
-    margin: -4px 0 0 0; /* Titre remonté */
+    margin: 0 0 12px 0;
     text-align: center;
   }
 
   .milaura-volume-grid {
     display: flex;
     gap: 8px;
-    margin: 28px 0 12px 0; /* Plus de marge top pour badges flottants + titre remonté */
+    margin: 0 0 12px 0;
   }
 
   .volume-card {
@@ -390,13 +399,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 12px 8px 10px; /* Padding équilibré, badge flotte au-dessus */
+    padding: 0; /* En-tête intégré - padding géré par sous-éléments */
     border: 1.5px solid #E8E4DE;
     border-radius: 12px;
     background: #FFFFFF;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden; /* Important pour l'en-tête intégré */
   }
 
   .volume-card:hover {
@@ -411,52 +420,48 @@
     box-shadow: 0 4px 16px rgba(192, 160, 98, 0.18);
   }
 
-  /* Badge flottant premium - Design moderne 2025 */
-  /* Le badge flotte AU-DESSUS de la carte, sans chevaucher le contenu */
-  /* TOUS les badges sont violets */
+  /* EN-TÊTE INTÉGRÉ - Design 2026 */
+  /* Le badge est maintenant un header intégré en haut de la carte */
   .volume-card-badge {
-    position: absolute;
-    top: -26px; /* Flotte bien au-dessus de la carte */
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #8B5CF6 100%);
-    background-size: 200% 200%;
+    display: block;
+    width: 100%;
+    background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
     color: #FFFFFF;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 5px 14px;
-    border-radius: 20px;
-    white-space: nowrap;
-    box-shadow:
-      0 4px 12px rgba(139, 92, 246, 0.4),
-      0 2px 4px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    animation: badgeShimmer 3s ease-in-out infinite;
-    z-index: 2;
+    text-align: center;
+    padding: 6px 8px;
+    margin: 0;
+    border-radius: 0; /* Intégré dans la carte */
   }
 
-  /* Animation subtile du badge */
-  @keyframes badgeShimmer {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .volume-card-badge {
-      animation: none;
-    }
-  }
-
-  /* Structure interne simplifiée */
+  /* Contenu de la carte */
   .volume-left {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2px;
     width: 100%;
+    padding: 12px 8px 4px;
+  }
+
+  /* Carte SANS badge : ajouter du padding-top */
+  .volume-card:not(:has(.volume-card-badge)) .volume-left {
+    padding-top: 16px;
+  }
+
+  /* Prix en bas de carte */
+  .volume-price {
+    padding: 4px 8px 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--milaura-text);
+  }
+
+  .volume-card.is-selected .volume-price {
+    color: var(--milaura-gold-dark, #8F723A);
   }
 
   .volume-check {
@@ -486,17 +491,6 @@
     color: var(--milaura-gold-dark, #8F723A);
   }
 
-  .volume-price {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--milaura-text);
-    margin-top: 6px;
-  }
-
-  .volume-card.is-selected .volume-price {
-    color: var(--milaura-gold-dark, #8F723A);
-  }
-
   /* Mobile: légèrement plus compact */
   @media screen and (max-width: 480px) {
     .milaura-volume-grid {
@@ -504,14 +498,22 @@
     }
 
     .volume-card {
-      padding: 12px 6px 10px;
+      padding: 0; /* Géré par les sous-éléments - en-tête intégré */
       border-radius: 10px;
     }
 
     .volume-card-badge {
-      font-size: 9px;
-      padding: 4px 10px;
-      top: -22px; /* Flotte bien au-dessus */
+      font-size: 8px;
+      padding: 4px 6px;
+    }
+
+    .volume-left {
+      padding: 10px 6px 2px;
+    }
+
+    .volume-price {
+      padding: 2px 6px 10px;
+      font-size: 14px;
     }
 
     .volume-text h5 {
@@ -520,10 +522,6 @@
 
     .volume-text p {
       font-size: 10px;
-    }
-
-    .volume-price {
-      font-size: 14px;
     }
   }
 
@@ -561,28 +559,31 @@
       margin-bottom: 0;
     }
 
-    /* Volume Bundle - badges flottants au-dessus */
+    /* Volume Bundle - en-têtes intégrés Desktop */
     .volume-section-title {
-      margin: -6px 0 0 0; /* Titre remonté */
+      margin: 0 0 10px 0;
       font-size: 14px;
       font-weight: 500;
     }
 
     .milaura-volume-grid {
       gap: 10px;
-      margin-top: 28px; /* Espace pour les badges flottants + titre remonté */
+      margin-top: 8px; /* Plus besoin d'espace pour badges flottants */
       margin-bottom: 0;
     }
 
     .volume-card {
-      padding: 14px 10px 12px;
+      padding: 0; /* Géré par les sous-éléments */
       border-radius: 12px;
     }
 
     .volume-card-badge {
       font-size: 10px;
-      padding: 5px 12px;
-      top: -26px; /* Flotte bien au-dessus */
+      padding: 6px 12px;
+    }
+
+    .volume-left {
+      padding: 14px 10px 4px;
     }
 
     .volume-text h5 {
@@ -598,7 +599,7 @@
 
     .volume-price {
       font-size: 16px;
-      margin-top: 8px;
+      padding: 4px 10px 14px;
       font-weight: 700;
     }
 
