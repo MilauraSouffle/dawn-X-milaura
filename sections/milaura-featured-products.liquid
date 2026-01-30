@@ -1,17 +1,24 @@
 {% style %}
   /* --- LAYOUT GLOBAL --- */
   #MilauraProd-{{ section.id }} {
-    padding: var(--milaura-spacing-lg) var(--milaura-spacing-sm);
-    background: transparent; /* IMPORTANT : Laisse voir ton fond Aura */
+    padding: var(--milaura-spacing-lg) 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-sm);
   }
 
   /* Header de section */
-  .prod-header {
+  #MilauraProd-{{ section.id }} .prod-header {
     text-align: center;
-    margin-bottom: var(--milaura-spacing-md); /* Remplace 50px */
+    margin-bottom: var(--milaura-spacing-md);
   }
 
-  .prod-title {
+  #MilauraProd-{{ section.id }} .prod-title {
     font-family: var(--milaura-font-heading);
     font-size: {{ section.settings.title_size }}rem;
     color: {{ section.settings.title_color }};
@@ -19,7 +26,7 @@
     text-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
 
-  .prod-subtitle {
+  #MilauraProd-{{ section.id }} .prod-subtitle {
     font-family: 'Lato', sans-serif;
     color: {{ section.settings.subtitle_color }};
     font-size: {{ section.settings.subtitle_size }}rem;
@@ -27,102 +34,126 @@
     text-transform: uppercase;
   }
 
-  /* --- GRID PRODUITS --- */
-  .prod-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 produits par ligne */
-    gap: 30px;
-    max-width: 1400px;
-    margin: 0 auto;
+  /* --- CAROUSEL HORIZONTAL --- */
+  #MilauraProd-{{ section.id }} .prod-carousel-wrapper {
+    position: relative;
+    margin: 0 -var(--milaura-spacing-sm);
+    padding: 0 var(--milaura-spacing-sm);
   }
 
-  /* --- LA CARTE PRODUIT (VISION OS) --- */
-  .prod-card {
-    background: #ffffff; /* Fond blanc pur pour mettre en valeur le produit */
+  #MilauraProd-{{ section.id }} .prod-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 10px 0 20px 0;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* --- LA CARTE PRODUIT --- */
+  #MilauraProd-{{ section.id }} .prod-card {
+    flex: 0 0 auto;
+    width: 260px;
+    background: #ffffff;
     border-radius: 20px;
-    padding: 12px; /* Réduit de 15px */
+    padding: 12px;
     text-align: center;
     text-decoration: none;
     position: relative;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-    /* LE LISERÉ DORÉ (Invisible par défaut) */
     border: 2px solid transparent;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Ombre légère */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    scroll-snap-align: start;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-card:first-child {
+    margin-left: var(--milaura-spacing-sm);
+  }
+
+  #MilauraProd-{{ section.id }} .prod-card:last-child {
+    margin-right: var(--milaura-spacing-sm);
   }
 
   /* --- INTERACTION SURVOL --- */
-  .prod-card:hover {
+  #MilauraProd-{{ section.id }} .prod-card:hover {
     border-color: var(--milaura-gold);
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(192, 160, 98, 0.2);
   }
 
   /* IMAGE */
-  .prod-img-container {
+  #MilauraProd-{{ section.id }} .prod-img-container {
     width: 100%;
-    aspect-ratio: 1 / 1; /* Carré parfait */
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: 15px;
     margin-bottom: 15px;
     position: relative;
-    background: #f9f9f9; /* Gris très léger pendant le chargement */
+    background: #f9f9f9;
   }
 
-  .prod-img {
+  #MilauraProd-{{ section.id }} .prod-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Remplit bien le carré */
+    object-fit: cover;
     transition: transform 0.6s ease;
   }
 
-  /* Zoom image au survol */
-  .prod-card:hover .prod-img {
+  #MilauraProd-{{ section.id }} .prod-card:hover .prod-img {
     transform: scale(1.08);
   }
 
   /* INFO PRODUIT */
-  .prod-info {
+  #MilauraProd-{{ section.id }} .prod-info {
     padding: 10px 5px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  .prod-vendor {
+  #MilauraProd-{{ section.id }} .prod-vendor {
     font-size: 0.7rem;
     text-transform: uppercase;
-    color: var(--milaura-text-light); /* Utilise la variable CSS */
+    color: var(--milaura-text-light);
     letter-spacing: 1.5px;
     margin-bottom: 5px;
     display: block;
   }
 
-  .prod-name {
+  #MilauraProd-{{ section.id }} .prod-name {
     font-family: 'Playfair Display', serif;
     font-size: {{ section.settings.product_name_size }}rem;
     color: {{ section.settings.product_name_color }};
     font-weight: 700;
     margin-bottom: 10px;
     line-height: 1.3;
-    /* Coupe proprement si trop long */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 2.8rem;
+    min-height: 2.6em;
   }
 
-  .prod-price {
+  #MilauraProd-{{ section.id }} .prod-price {
     font-family: 'Lato', sans-serif;
     color: {{ section.settings.price_color }};
     font-weight: 700;
     font-size: {{ section.settings.price_size }}rem;
+    margin-top: auto;
   }
 
-  /* BOUTON D'ACTION (Apparaît au survol) */
-  .quick-add-btn {
+  /* BOUTON VOIR PRODUIT */
+  #MilauraProd-{{ section.id }} .quick-add-btn {
     margin-top: 15px;
     width: 100%;
     padding: 12px;
@@ -134,163 +165,274 @@
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
-
-    /* Animation d'apparition */
     opacity: 0;
     transform: translateY(20px);
     transition: all 0.3s ease;
   }
 
-  .prod-card:hover .quick-add-btn {
+  #MilauraProd-{{ section.id }} .prod-card:hover .quick-add-btn {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .quick-add-btn:hover {
-    background: #1A1A1A; /* Devient noir au survol souris */
+  #MilauraProd-{{ section.id }} .quick-add-btn:hover {
+    background: #1A1A1A;
   }
 
-  /* TABLET */
-  @media screen and (max-width: 1024px) {
-    .prod-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+  /* --- BOUTON CTA VOIR TOUT --- */
+  #MilauraProd-{{ section.id }} .prod-cta-wrapper {
+    text-align: center;
+    margin-top: var(--milaura-spacing-lg);
+    padding: 0 var(--milaura-spacing-sm);
+  }
+
+  #MilauraProd-{{ section.id }} .prod-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--milaura-gold);
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 14px 32px;
+    border: 2px solid var(--milaura-gold);
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-cta:hover {
+    background: var(--milaura-gold);
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.3);
+  }
+
+  #MilauraProd-{{ section.id }} .prod-cta-arrow {
+    transition: transform 0.3s ease;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-cta:hover .prod-cta-arrow {
+    transform: translateX(5px);
+  }
+
+  /* --- INDICATEUR DE SCROLL (Mobile) --- */
+  #MilauraProd-{{ section.id }} .prod-scroll-hint {
+    display: none;
+    text-align: center;
+    margin-top: var(--milaura-spacing-sm);
+    color: var(--milaura-text-light);
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+
+  /* --- RESPONSIVE DESKTOP --- */
+  @media screen and (min-width: 1200px) {
+    #MilauraProd-{{ section.id }} .prod-carousel {
+      justify-content: center;
+      overflow-x: visible;
     }
-    .quick-add-btn {
+
+    #MilauraProd-{{ section.id }} .prod-card:first-child {
+      margin-left: 0;
+    }
+
+    #MilauraProd-{{ section.id }} .prod-card:last-child {
+      margin-right: 0;
+    }
+  }
+
+  /* --- RESPONSIVE TABLETTE --- */
+  @media screen and (max-width: 1024px) {
+    #MilauraProd-{{ section.id }} .prod-card {
+      width: 220px;
+    }
+
+    #MilauraProd-{{ section.id }} .quick-add-btn {
       opacity: 1;
       transform: translateY(0);
     }
-    .prod-card {
-      padding: 10px;
+
+    #MilauraProd-{{ section.id }} .prod-scroll-hint {
+      display: block;
     }
   }
 
-  /* MOBILE */
+  /* --- RESPONSIVE MOBILE --- */
   @media screen and (max-width: 768px) {
     #MilauraProd-{{ section.id }} {
-      padding: var(--milaura-spacing-md) var(--milaura-spacing-sm);
+      padding: var(--milaura-spacing-md) 0;
     }
-    .prod-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+
+    #MilauraProd-{{ section.id }} .prod-title {
+      font-size: {{ section.settings.title_size | times: 0.7 }}rem;
     }
-    .prod-name {
+
+    #MilauraProd-{{ section.id }} .prod-carousel {
+      gap: 15px;
+      padding-bottom: 15px;
+    }
+
+    #MilauraProd-{{ section.id }} .prod-card {
+      width: 180px;
+      padding: 10px;
+    }
+
+    #MilauraProd-{{ section.id }} .prod-name {
       font-size: 0.95rem;
-      height: auto;
       min-height: 2.4em;
     }
-    .prod-price {
+
+    #MilauraProd-{{ section.id }} .prod-price {
       font-size: 1rem;
     }
-    .quick-add-btn {
+
+    #MilauraProd-{{ section.id }} .quick-add-btn {
       padding: 10px;
       font-size: 0.8rem;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #MilauraProd-{{ section.id }} .prod-cta {
+      width: 100%;
+      max-width: 300px;
+      justify-content: center;
+      font-size: 0.9rem;
+      padding: 12px 24px;
     }
   }
 
-  /* PETIT MOBILE (iPhone SE, etc.) */
+  /* --- PETIT MOBILE --- */
   @media screen and (max-width: 380px) {
-    .prod-grid {
-      gap: 8px;
+    #MilauraProd-{{ section.id }} .prod-carousel {
+      gap: 12px;
     }
-    .prod-card {
+
+    #MilauraProd-{{ section.id }} .prod-card {
+      width: 160px;
       padding: 8px;
     }
-    .prod-img-container {
+
+    #MilauraProd-{{ section.id }} .prod-img-container {
       border-radius: 12px;
       margin-bottom: 10px;
     }
-    .prod-name {
+
+    #MilauraProd-{{ section.id }} .prod-name {
       font-size: 0.85rem;
-      -webkit-line-clamp: 2;
     }
-    .prod-price {
+
+    #MilauraProd-{{ section.id }} .prod-price {
       font-size: 0.9rem;
     }
-    .quick-add-btn {
+
+    #MilauraProd-{{ section.id }} .quick-add-btn {
       padding: 8px;
       font-size: 0.75rem;
       margin-top: 10px;
     }
   }
 
-  /* Desactiver animations hover sur mobile (performance) */
+  /* Désactiver animations hover sur tactile */
   @media (hover: none) {
-    .prod-card:hover {
+    #MilauraProd-{{ section.id }} .prod-card:hover {
       transform: none;
       box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
-    .prod-card:hover .prod-img {
+
+    #MilauraProd-{{ section.id }} .prod-card:hover .prod-img {
       transform: none;
     }
   }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .prod-card,
-    .prod-img,
-    .quick-add-btn {
+    #MilauraProd-{{ section.id }} .prod-card,
+    #MilauraProd-{{ section.id }} .prod-img,
+    #MilauraProd-{{ section.id }} .quick-add-btn,
+    #MilauraProd-{{ section.id }} .prod-cta {
       transition: none;
     }
   }
 {% endstyle %}
 
-<div id="MilauraProd-{{ section.id }}">
-  <div class="prod-header">
-    <h2 class="prod-title">{{ section.settings.title }}</h2>
-    <p class="prod-subtitle">{{ section.settings.subtitle }}</p>
+<section id="MilauraProd-{{ section.id }}" aria-label="{{ section.settings.title }}">
+  <div class="prod-container">
+    <header class="prod-header">
+      <h2 class="prod-title">{{ section.settings.title }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <p class="prod-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </header>
   </div>
 
-  <div class="prod-grid milaura-mobile-carousel">
-    {% assign collection = collections[section.settings.collection] %}
+  <div class="prod-carousel-wrapper">
+    <div class="prod-carousel">
+      {% assign collection = collections[section.settings.collection] %}
 
-    {% if collection != blank %}
-      {% for product in collection.products limit: section.settings.products_to_show %}
-        {%- comment -%} First 4 products load eagerly (LCP optimization) {%- endcomment -%}
-        {%- if forloop.index <= 4 -%}
-          {%- assign img_loading = 'eager' -%}
-        {%- else -%}
-          {%- assign img_loading = 'lazy' -%}
-        {%- endif -%}
-        <a href="{{ product.url }}" class="prod-card milaura-card">
-          <div class="prod-img-container">
-            {{ product.featured_image | image_url: width: 600 | image_tag: class: 'prod-img', loading: img_loading, widths: '165, 360, 533, 600', sizes: '(min-width: 1024px) 25vw, 50vw' }}
-          </div>
+      {% if collection != blank %}
+        {% for product in collection.products limit: section.settings.products_to_show %}
+          {%- if forloop.index <= 3 -%}
+            {%- assign img_loading = 'eager' -%}
+          {%- else -%}
+            {%- assign img_loading = 'lazy' -%}
+          {%- endif -%}
 
-          <div class="prod-info">
-            <span class="prod-vendor">{{ product.vendor }}</span>
-            <h3 class="prod-name">{{ product.title }}</h3>
-            <div class="prod-price">{{ product.price | money }}</div>
-          </div>
+          <a href="{{ product.url }}" class="prod-card milaura-card">
+            <div class="prod-img-container">
+              {{ product.featured_image | image_url: width: 600 | image_tag: class: 'prod-img', loading: img_loading, widths: '165, 360, 533, 600', sizes: '(min-width: 1024px) 260px, 180px' }}
+            </div>
 
-          <button class="quick-add-btn">Voir le produit</button>
-        </a>
-      {% endfor %}
-    {% else %}
-      {% for i in (1..4) %}
-        <div class="prod-card milaura-card">
-          <div class="prod-img-container">
-            {{ 'product-' | append: i | placeholder_svg_tag: 'prod-img' }}
+            <div class="prod-info">
+              <span class="prod-vendor">{{ product.vendor }}</span>
+              <h3 class="prod-name">{{ product.title }}</h3>
+              <div class="prod-price">{{ product.price | money }}</div>
+            </div>
+
+            <span class="quick-add-btn">Voir le produit</span>
+          </a>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..5) %}
+          <div class="prod-card milaura-card">
+            <div class="prod-img-container">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'prod-img' }}
+            </div>
+            <div class="prod-info">
+              <span class="prod-vendor">Collection</span>
+              <h3 class="prod-name">Produit Exemple {{ i }}</h3>
+              <div class="prod-price">29,90 €</div>
+            </div>
+            <span class="quick-add-btn">Voir le produit</span>
           </div>
-          <div class="prod-info">
-            <span class="prod-vendor">Collection</span>
-            <h3 class="prod-name">Produit Exemple {{ i }}</h3>
-            <div class="prod-price">29,90 €</div>
-          </div>
-          <button class="quick-add-btn">Voir le produit</button>
-        </div>
-      {% endfor %}
-    {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
   </div>
-</div>
+
+  <p class="prod-scroll-hint">← Glisse pour voir plus →</p>
+
+  {% if section.settings.cta_label != blank %}
+    <div class="prod-cta-wrapper">
+      <a href="{{ section.settings.cta_link | default: collection.url }}" class="prod-cta">
+        <span>{{ section.settings.cta_label }}</span>
+        <span class="prod-cta-arrow">→</span>
+      </a>
+    </div>
+  {% endif %}
+</section>
 
 {% schema %}
 {
-  "name": "Milaura Produits V2",
+  "name": "Milaura Produits Carousel",
   "settings": [
     {
       "type": "header",
-      "content": "📝 Contenu"
+      "content": "Contenu"
     },
     {
       "type": "text",
@@ -312,15 +454,31 @@
     {
       "type": "range",
       "id": "products_to_show",
-      "min": 4,
-      "max": 12,
-      "step": 4,
-      "default": 4,
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "default": 5,
       "label": "Nombre de produits"
     },
     {
       "type": "header",
-      "content": "✏️ Style Titre Section"
+      "content": "Bouton CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texte du bouton",
+      "default": "Voir toute la collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Lien du bouton (optionnel)",
+      "info": "Si vide, redirige vers la collection"
+    },
+    {
+      "type": "header",
+      "content": "Style Titre"
     },
     {
       "type": "range",
@@ -356,7 +514,7 @@
     },
     {
       "type": "header",
-      "content": "✏️ Style Produits"
+      "content": "Style Produits"
     },
     {
       "type": "range",
@@ -393,7 +551,7 @@
   ],
   "presets": [
     {
-      "name": "Milaura Produits V2"
+      "name": "Milaura Produits Carousel"
     }
   ]
 }
