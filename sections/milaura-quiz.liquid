@@ -597,6 +597,12 @@
     font-size: 1rem;
   }
 
+  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-label .emotion-sublabel {
+    font-weight: 400;
+    color: var(--milaura-text-light, #666);
+    font-size: 0.8rem;
+  }
+
   #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-bar {
     width: 100%;
     height: 10px;
@@ -1021,13 +1027,14 @@
     const profileData = {
       reconfort: {
         label: {{ section.settings.profile_comfort_label | json }},
-        displayName: "Réconfort",
+        displayName: {{ section.settings.profile_comfort_label | json }},
+        moodLabel: "Trop plein émotionnel",
         description: {{ section.settings.profile_comfort_description | json }},
         bullets: {{ section.settings.profile_comfort_bullets | json }},
         mantra: {{ section.settings.profile_comfort_mantra | json }},
         stone: "Calcédoine bleue",
         scent: "Néroli",
-        icon: "🤍",
+        icon: "💙",
         product: {% if section.settings.profile_comfort_product %}{
           title: {{ section.settings.profile_comfort_product.title | json }},
           url: {{ section.settings.profile_comfort_product.url | json }},
@@ -1039,13 +1046,14 @@
       },
       protection: {
         label: {{ section.settings.profile_protection_label | json }},
-        displayName: "Protection",
+        displayName: {{ section.settings.profile_protection_label | json }},
+        moodLabel: "Limites et bouclier",
         description: {{ section.settings.profile_protection_description | json }},
         bullets: {{ section.settings.profile_protection_bullets | json }},
         mantra: {{ section.settings.profile_protection_mantra | json }},
         stone: "Obsidienne noire",
-        scent: "Bois d'Oud",
-        icon: "🛡️",
+        scent: "Bois d'oud",
+        icon: "🖤",
         product: {% if section.settings.profile_protection_product %}{
           title: {{ section.settings.profile_protection_product.title | json }},
           url: {{ section.settings.profile_protection_product.url | json }},
@@ -1057,13 +1065,14 @@
       },
       serenite: {
         label: {{ section.settings.profile_serenity_label | json }},
-        displayName: "Sérénité",
+        displayName: {{ section.settings.profile_serenity_label | json }},
+        moodLabel: "Brouillard mental",
         description: {{ section.settings.profile_serenity_description | json }},
         bullets: {{ section.settings.profile_serenity_bullets | json }},
         mantra: {{ section.settings.profile_serenity_mantra | json }},
         stone: "Améthyste",
         scent: "Thé blanc",
-        icon: "🧘",
+        icon: "💜",
         product: {% if section.settings.profile_serenity_product %}{
           title: {{ section.settings.profile_serenity_product.title | json }},
           url: {{ section.settings.profile_serenity_product.url | json }},
@@ -1075,13 +1084,14 @@
       },
       elegance: {
         label: {{ section.settings.profile_elegance_label | json }},
-        displayName: "Élégance",
+        displayName: {{ section.settings.profile_elegance_label | json }},
+        moodLabel: "Besoin de douceur",
         description: {{ section.settings.profile_elegance_description | json }},
         bullets: {{ section.settings.profile_elegance_bullets | json }},
         mantra: {{ section.settings.profile_elegance_mantra | json }},
         stone: "Quartz rose",
         scent: "Ambre gris",
-        icon: "✨",
+        icon: "💗",
         product: {% if section.settings.profile_elegance_product %}{
           title: {{ section.settings.profile_elegance_product.title | json }},
           url: {{ section.settings.profile_elegance_product.url | json }},
@@ -1093,13 +1103,14 @@
       },
       joie: {
         label: {{ section.settings.profile_joy_label | json }},
-        displayName: "Joie de vivre",
+        displayName: {{ section.settings.profile_joy_label | json }},
+        moodLabel: "Envie d'un signe",
         description: {{ section.settings.profile_joy_description | json }},
         bullets: {{ section.settings.profile_joy_bullets | json }},
         mantra: {{ section.settings.profile_joy_mantra | json }},
         stone: "Aventurine verte",
         scent: "Fleur d'oranger",
-        icon: "☀️",
+        icon: "💚",
         product: {% if section.settings.profile_joy_product %}{
           title: {{ section.settings.profile_joy_product.title | json }},
           url: {{ section.settings.profile_joy_product.url | json }},
@@ -1392,7 +1403,7 @@
           label.innerHTML = `
             <span class="emotion-name">
               <span class="emotion-icon">${profileInfo.icon || '○'}</span>
-              ${profileInfo.displayName || profileId}
+              ${profileInfo.displayName || profileId}${profileInfo.moodLabel ? ` <span class="emotion-sublabel">· ${profileInfo.moodLabel}</span>` : ''}
             </span>
             <span>${percentage}%</span>
           `;
