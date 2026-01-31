@@ -24,14 +24,22 @@
   #MilauraQuiz-{{ section.id }} .quiz-state {
     display: none;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateX(40px);
+    transition:
+      opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Exit animation (slide left) */
+  #MilauraQuiz-{{ section.id }} .quiz-state.is-exiting {
+    transform: translateX(-40px);
+    opacity: 0;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-state.is-active {
     display: block;
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-intro-card {
@@ -62,7 +70,11 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-expert-block {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(192, 160, 98, 0.35);
+    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.15);
     border-radius: var(--milaura-border-radius-sm);
     padding: var(--milaura-spacing-md);
     margin: var(--milaura-spacing-lg) 0;
@@ -70,6 +82,12 @@
     align-items: center;
     gap: var(--milaura-spacing-md);
     text-align: left;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-expert-block:hover {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 12px 35px rgba(192, 160, 98, 0.2);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-expert-image {
@@ -144,6 +162,31 @@
     border-radius: 10px;
     transition: width 0.4s ease;
     box-shadow: 0 2px 10px rgba(192, 160, 98, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Shimmer effect on progress bar */
+  #MilauraQuiz-{{ section.id }} .quiz-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.6) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: quiz-shimmer 2.5s ease-in-out infinite;
+  }
+
+  @keyframes quiz-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-question-card {
@@ -173,7 +216,9 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-answer-btn {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px) saturate(160%);
+    -webkit-backdrop-filter: blur(15px) saturate(160%);
     border: 2px solid rgba(192, 160, 98, 0.4);
     border-radius: var(--milaura-border-radius-sm);
     padding: var(--milaura-spacing-md);
@@ -182,23 +227,62 @@
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
     text-align: center;
     min-height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 8px 24px rgba(192, 160, 98, 0.1);
+    /* Staggered entrance animation */
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 260ms ease,
+      box-shadow 260ms ease,
+      background 260ms ease;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-answer-btn.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-answer-btn:hover {
-    background: rgba(255, 255, 255, 1);
-    border-color: var(--milaura-gold);
-    transform: translateY(-3px);
-    box-shadow: var(--milaura-shadow-md);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(192, 160, 98, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(192, 160, 98, 0.2);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-answer-btn:active {
     transform: translateY(0);
+  }
+
+  /* Pulse + gold border on click */
+  #MilauraQuiz-{{ section.id }} .quiz-answer-btn.is-selected {
+    animation: quiz-answer-pulse 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-color: var(--milaura-gold);
+    background: rgba(255, 248, 225, 0.9);
+    box-shadow:
+      0 0 0 4px rgba(192, 160, 98, 0.3),
+      var(--milaura-shadow-md);
+  }
+
+  @keyframes quiz-answer-pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(192, 160, 98, 0);
+    }
+    40% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 8px rgba(192, 160, 98, 0.4);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 4px rgba(192, 160, 98, 0.3);
+    }
   }
 
   /* --- ÉTAT : TRANSITION --- */
@@ -254,26 +338,37 @@
     height: 12px;
     background: var(--milaura-gold);
     border-radius: 50%;
-    animation: pulse 1.4s ease-in-out infinite;
+    animation: quiz-loader-float 1.6s ease-in-out infinite;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-loader-dot:nth-child(2) {
-    animation-delay: 0.2s;
+    animation-delay: 0.3s;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-loader-dot:nth-child(3) {
-    animation-delay: 0.4s;
+    animation-delay: 0.6s;
   }
 
-  @keyframes pulse {
+  @keyframes quiz-loader-float {
     0%, 100% {
-      opacity: 0.3;
-      transform: scale(1);
+      opacity: 0.4;
+      transform: translateY(0) scale(1);
     }
     50% {
       opacity: 1;
-      transform: scale(1.2);
+      transform: translateY(-12px) scale(1.3);
     }
+  }
+
+  /* Fade text during loading */
+  #MilauraQuiz-{{ section.id }} .quiz-transition-body,
+  #MilauraQuiz-{{ section.id }} .quiz-transition-subtitle {
+    animation: quiz-text-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes quiz-text-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
   }
 
   /* --- ÉTAT : RESULT - DASHBOARD PREMIUM --- */
@@ -320,14 +415,28 @@
 
   /* Carte produit (colonne gauche) */
   #MilauraQuiz-{{ section.id }} .quiz-result-product-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(192, 160, 98, 0.25);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px) saturate(170%);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+    border: 1px solid rgba(192, 160, 98, 0.3);
     border-radius: var(--milaura-border-radius);
     padding: var(--milaura-spacing-md);
-    box-shadow: 0 10px 40px rgba(192, 160, 98, 0.15);
+    box-shadow:
+      0 12px 40px rgba(192, 160, 98, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
     position: relative;
     overflow: hidden;
+    /* Staggered reveal animation */
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-result-product-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-result-product-card::before {
@@ -430,11 +539,25 @@
 
   /* Carte description (colonne centrale) */
   #MilauraQuiz-{{ section.id }} .quiz-result-desc-card {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(192, 160, 98, 0.15);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px) saturate(170%);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+    border: 1px solid rgba(192, 160, 98, 0.2);
     border-radius: var(--milaura-border-radius);
     padding: var(--milaura-spacing-lg);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    /* Staggered reveal animation */
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 120ms;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-result-desc-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-result-profile-intro {
@@ -539,13 +662,53 @@
     border-left: 3px solid var(--milaura-gold);
   }
 
+  /* Rituel */
+  #MilauraQuiz-{{ section.id }} .quiz-result-ritual-section {
+    margin-top: var(--milaura-spacing-lg);
+    padding-top: var(--milaura-spacing-md);
+    border-top: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-result-ritual-title {
+    font-family: var(--milaura-font-heading);
+    color: var(--milaura-gold);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-result-ritual {
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    white-space: pre-line;
+    padding: var(--milaura-spacing-sm);
+    background: rgba(192, 160, 98, 0.05);
+    border-radius: var(--milaura-border-radius-sm);
+  }
+
   /* Carte météo (colonne droite) */
   #MilauraQuiz-{{ section.id }} .quiz-result-mood-card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(192, 160, 98, 0.15);
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px) saturate(170%);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+    border: 1px solid rgba(192, 160, 98, 0.2);
     border-radius: var(--milaura-border-radius);
     padding: var(--milaura-spacing-lg);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    /* Staggered reveal animation */
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 240ms;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-result-mood-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-mood-header {
@@ -810,10 +973,52 @@
     }
   }
 
+  /* ============================================
+     PERFORMANCE OPTIMIZATIONS
+     ============================================ */
+
+  /* GPU acceleration hints for animated elements */
+  #MilauraQuiz-{{ section.id }} .quiz-state,
+  #MilauraQuiz-{{ section.id }} .quiz-answer-btn,
+  #MilauraQuiz-{{ section.id }} .quiz-result-product-card,
+  #MilauraQuiz-{{ section.id }} .quiz-result-desc-card,
+  #MilauraQuiz-{{ section.id }} .quiz-result-mood-card,
+  #MilauraQuiz-{{ section.id }} .quiz-progress-fill {
+    will-change: transform, opacity;
+  }
+
+  /* Cleanup will-change after animation completes */
+  #MilauraQuiz-{{ section.id }} .quiz-state.is-active,
+  #MilauraQuiz-{{ section.id }} .quiz-answer-btn.is-visible,
+  #MilauraQuiz-{{ section.id }} .quiz-result-product-card.is-visible,
+  #MilauraQuiz-{{ section.id }} .quiz-result-desc-card.is-visible,
+  #MilauraQuiz-{{ section.id }} .quiz-result-mood-card.is-visible {
+    will-change: auto;
+  }
+
+  /* ============================================
+     ACCESSIBILITY - REDUCED MOTION
+     ============================================ */
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      transition: none !important;
-      animation: none !important;
+    #MilauraQuiz-{{ section.id }} *,
+    #MilauraQuiz-{{ section.id }} *::before,
+    #MilauraQuiz-{{ section.id }} *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Fallback for browsers without backdrop-filter support */
+  @supports not (backdrop-filter: blur(1px)) {
+    #MilauraQuiz-{{ section.id }} .quiz-expert-block,
+    #MilauraQuiz-{{ section.id }} .quiz-answer-btn,
+    #MilauraQuiz-{{ section.id }} .quiz-result-product-card,
+    #MilauraQuiz-{{ section.id }} .quiz-result-desc-card,
+    #MilauraQuiz-{{ section.id }} .quiz-result-mood-card {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background: rgba(255, 255, 255, 0.95) !important;
     }
   }
 {% endstyle %}
@@ -963,6 +1168,14 @@
           <div class="quiz-result-mantra" id="quiz-result-mantra-{{ section.id }}">
             <!-- Injecté par JS -->
           </div>
+
+          <!-- Rituel -->
+          <div class="quiz-result-ritual-section">
+            <div class="quiz-result-ritual-title">Ton rituel du soir</div>
+            <div class="quiz-result-ritual" id="quiz-result-ritual-{{ section.id }}">
+              <!-- Injecté par JS -->
+            </div>
+          </div>
         </div>
 
         <!-- Colonne droite : Météo émotionnelle -->
@@ -1013,44 +1226,49 @@
     let currentState = QuizState.INTRO;
     let currentQuestionIndex = 0;
     let scores = {
-      reconfort: 0,
+      apaisement: 0,
       protection: 0,
       serenite: 0,
-      elegance: 0,
-      joie: 0
+      amour: 0,
+      chance: 0
     };
 
-    // Profils disponibles (fixes dans le JS)
-    const profiles = ['reconfort', 'protection', 'serenite', 'elegance', 'joie'];
+    // Profils disponibles (5 profils finaux)
+    const profiles = ['apaisement', 'protection', 'serenite', 'amour', 'chance'];
 
-    // Données des profils depuis Liquid avec pierre et senteur
+    // Stockage de la réponse à la question 7 pour règle anti-égalité
+    let question7Answer = null;
+
+    // Données des profils avec textes "lecture à froid"
     const profileData = {
-      reconfort: {
-        label: {{ section.settings.profile_comfort_label | json }},
-        displayName: {{ section.settings.profile_comfort_label | json }},
+      apaisement: {
+        label: "Apaisement",
+        displayName: "Apaisement",
         moodLabel: "Trop plein émotionnel",
-        description: {{ section.settings.profile_comfort_description | json }},
-        bullets: {{ section.settings.profile_comfort_bullets | json }},
-        mantra: {{ section.settings.profile_comfort_mantra | json }},
+        dashboardTitle: "En ce moment, ton besoin numéro 1, c'est de te retrouver",
+        description: "Tu tiens, tu avances, tu gères, mais à l'intérieur ça ne se pose pas vraiment. Tu peux sourire et pourtant sentir la pression monter d'un coup, souvent le soir, parfois pour « rien ». Ce que tu cherches, c'est une descente immédiate, une sensation de douceur qui te remet dans ton corps.",
+        bullets: "<ul><li>Apaisement immédiat</li><li>Douceur émotionnelle</li><li>Sensation de cocon</li></ul>",
+        ritual: "1. Allume, puis inspire lentement 3 fois.\n2. Relâche la mâchoire, les épaules, la langue.\n3. Dis-toi : « Je peux ralentir maintenant. »",
         stone: "Calcédoine bleue",
         scent: "Néroli",
         icon: "💙",
-        product: {% if section.settings.profile_comfort_product %}{
-          title: {{ section.settings.profile_comfort_product.title | json }},
-          url: {{ section.settings.profile_comfort_product.url | json }},
-          price: {{ section.settings.profile_comfort_product.price | money | json }},
-          featured_image: {% if section.settings.profile_comfort_product.featured_image %}{{ section.settings.profile_comfort_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
-          handle: {{ section.settings.profile_comfort_product.handle | json }},
-          variant_id: {% if section.settings.profile_comfort_product.selected_or_first_available_variant %}{{ section.settings.profile_comfort_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        product: {% if section.settings.profile_apaisement_product %}{
+          title: {{ section.settings.profile_apaisement_product.title | json }},
+          url: {{ section.settings.profile_apaisement_product.url | json }},
+          price: {{ section.settings.profile_apaisement_product.price | money | json }},
+          featured_image: {% if section.settings.profile_apaisement_product.featured_image %}{{ section.settings.profile_apaisement_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_apaisement_product.handle | json }},
+          variant_id: {% if section.settings.profile_apaisement_product.selected_or_first_available_variant %}{{ section.settings.profile_apaisement_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       },
       protection: {
-        label: {{ section.settings.profile_protection_label | json }},
-        displayName: {{ section.settings.profile_protection_label | json }},
+        label: "Protection",
+        displayName: "Protection",
         moodLabel: "Limites et bouclier",
-        description: {{ section.settings.profile_protection_description | json }},
-        bullets: {{ section.settings.profile_protection_bullets | json }},
-        mantra: {{ section.settings.profile_protection_mantra | json }},
+        dashboardTitle: "Ton énergie est en mode protection, tu as besoin de limites nettes",
+        description: "En ce moment tu ressens vite quand quelque chose te prend de l'énergie. Tu peux être très fort(e), mais tu sais aussi que si tu laisses tout entrer, tu vas te disperser. Ce dont tu as besoin, c'est de frontières claires, et d'une ambiance qui coupe le bruit extérieur.",
+        bullets: "<ul><li>Sensation de bouclier</li><li>Ancrage et stabilité</li><li>Recentrage immédiat</li></ul>",
+        ritual: "1. Allume, puis fais un mini geste de reprise de territoire : ranger un objet, éteindre une notif.\n2. Imagine une bulle autour de toi.\n3. Dis-toi : « Je protège mon énergie. »",
         stone: "Obsidienne noire",
         scent: "Bois d'oud",
         icon: "🖤",
@@ -1064,60 +1282,63 @@
         }{% else %}null{% endif %}
       },
       serenite: {
-        label: {{ section.settings.profile_serenity_label | json }},
-        displayName: {{ section.settings.profile_serenity_label | json }},
+        label: "Sérénité",
+        displayName: "Sérénité",
         moodLabel: "Brouillard mental",
-        description: {{ section.settings.profile_serenity_description | json }},
-        bullets: {{ section.settings.profile_serenity_bullets | json }},
-        mantra: {{ section.settings.profile_serenity_mantra | json }},
+        dashboardTitle: "Ton mental est trop plein, tu as besoin de clarté et de silence",
+        description: "Ton problème n'est pas le manque d'envie, c'est le trop plein. Trop d'infos, trop de micro décisions, trop de pensées qui reviennent. Tu as besoin de silence mental, pas de motivation. Cette bougie est là pour créer une pièce « calme », à l'intérieur comme autour de toi.",
+        bullets: "<ul><li>Calme mental</li><li>Impression de clarté</li><li>Ambiance zen et pure</li></ul>",
+        ritual: "1. Allume et coupe l'écran 10 minutes.\n2. Inspire 4 secondes, expire 6 secondes, 5 fois.\n3. Dis-toi : « Je reviens à l'essentiel. »",
         stone: "Améthyste",
         scent: "Thé blanc",
         icon: "💜",
-        product: {% if section.settings.profile_serenity_product %}{
-          title: {{ section.settings.profile_serenity_product.title | json }},
-          url: {{ section.settings.profile_serenity_product.url | json }},
-          price: {{ section.settings.profile_serenity_product.price | money | json }},
-          featured_image: {% if section.settings.profile_serenity_product.featured_image %}{{ section.settings.profile_serenity_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
-          handle: {{ section.settings.profile_serenity_product.handle | json }},
-          variant_id: {% if section.settings.profile_serenity_product.selected_or_first_available_variant %}{{ section.settings.profile_serenity_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        product: {% if section.settings.profile_serenite_product %}{
+          title: {{ section.settings.profile_serenite_product.title | json }},
+          url: {{ section.settings.profile_serenite_product.url | json }},
+          price: {{ section.settings.profile_serenite_product.price | money | json }},
+          featured_image: {% if section.settings.profile_serenite_product.featured_image %}{{ section.settings.profile_serenite_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_serenite_product.handle | json }},
+          variant_id: {% if section.settings.profile_serenite_product.selected_or_first_available_variant %}{{ section.settings.profile_serenite_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       },
-      elegance: {
-        label: {{ section.settings.profile_elegance_label | json }},
-        displayName: {{ section.settings.profile_elegance_label | json }},
+      amour: {
+        label: "Amour",
+        displayName: "Amour",
         moodLabel: "Besoin de douceur",
-        description: {{ section.settings.profile_elegance_description | json }},
-        bullets: {{ section.settings.profile_elegance_bullets | json }},
-        mantra: {{ section.settings.profile_elegance_mantra | json }},
+        dashboardTitle: "Tu as besoin de douceur, pas de performance",
+        description: "Tu es dur(e) avec toi, parfois sans t'en rendre compte. Tu peux donner de la douceur aux autres, mais t'oublier au passage. Ce que tu cherches là, c'est un moment qui répare le cœur, pas avec de grands mots, juste avec une sensation de chaleur et de bienveillance.",
+        bullets: "<ul><li>Douceur du cœur</li><li>Compassion, amour de soi</li><li>Ambiance enveloppante et précieuse</li></ul>",
+        ritual: "1. Allume et pose une main sur le cœur.\n2. Pense à une chose que tu as bien faite aujourd'hui.\n3. Dis-toi : « Je me parle avec douceur. »",
         stone: "Quartz rose",
         scent: "Ambre gris",
         icon: "💗",
-        product: {% if section.settings.profile_elegance_product %}{
-          title: {{ section.settings.profile_elegance_product.title | json }},
-          url: {{ section.settings.profile_elegance_product.url | json }},
-          price: {{ section.settings.profile_elegance_product.price | money | json }},
-          featured_image: {% if section.settings.profile_elegance_product.featured_image %}{{ section.settings.profile_elegance_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
-          handle: {{ section.settings.profile_elegance_product.handle | json }},
-          variant_id: {% if section.settings.profile_elegance_product.selected_or_first_available_variant %}{{ section.settings.profile_elegance_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        product: {% if section.settings.profile_amour_product %}{
+          title: {{ section.settings.profile_amour_product.title | json }},
+          url: {{ section.settings.profile_amour_product.url | json }},
+          price: {{ section.settings.profile_amour_product.price | money | json }},
+          featured_image: {% if section.settings.profile_amour_product.featured_image %}{{ section.settings.profile_amour_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_amour_product.handle | json }},
+          variant_id: {% if section.settings.profile_amour_product.selected_or_first_available_variant %}{{ section.settings.profile_amour_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       },
-      joie: {
-        label: {{ section.settings.profile_joy_label | json }},
-        displayName: {{ section.settings.profile_joy_label | json }},
-        moodLabel: "Envie d'un signe",
-        description: {{ section.settings.profile_joy_description | json }},
-        bullets: {{ section.settings.profile_joy_bullets | json }},
-        mantra: {{ section.settings.profile_joy_mantra | json }},
+      chance: {
+        label: "Chance",
+        displayName: "Chance",
+        moodLabel: "Envie d'un signe ou de nouveauté",
+        dashboardTitle: "Tu as besoin d'un signe, d'un élan, d'un petit « oui » à la vie",
+        description: "Tu sens que tu pourrais repartir, mais il manque une étincelle. Pas un grand changement, juste une impulsion qui remet le mouvement. Cette bougie est faite pour ouvrir le champ, remettre de l'optimisme, et te donner envie de faire ce premier petit pas.",
+        bullets: "<ul><li>Optimisme et légèreté</li><li>Énergie de renouveau</li><li>Envie d'avancer</li></ul>",
+        ritual: "1. Allume et ouvre une fenêtre 30 secondes si tu peux.\n2. Choisis une micro action de 2 minutes : un message, une note, un rangement.\n3. Dis-toi : « Je crée ma chance, un petit pas suffit. »",
         stone: "Aventurine verte",
         scent: "Fleur d'oranger",
         icon: "💚",
-        product: {% if section.settings.profile_joy_product %}{
-          title: {{ section.settings.profile_joy_product.title | json }},
-          url: {{ section.settings.profile_joy_product.url | json }},
-          price: {{ section.settings.profile_joy_product.price | money | json }},
-          featured_image: {% if section.settings.profile_joy_product.featured_image %}{{ section.settings.profile_joy_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
-          handle: {{ section.settings.profile_joy_product.handle | json }},
-          variant_id: {% if section.settings.profile_joy_product.selected_or_first_available_variant %}{{ section.settings.profile_joy_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        product: {% if section.settings.profile_chance_product %}{
+          title: {{ section.settings.profile_chance_product.title | json }},
+          url: {{ section.settings.profile_chance_product.url | json }},
+          price: {{ section.settings.profile_chance_product.price | money | json }},
+          featured_image: {% if section.settings.profile_chance_product.featured_image %}{{ section.settings.profile_chance_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_chance_product.handle | json }},
+          variant_id: {% if section.settings.profile_chance_product.selected_or_first_available_variant %}{{ section.settings.profile_chance_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       }
     };
@@ -1154,31 +1375,53 @@
     // FONCTIONS DE NAVIGATION
     // ============================================
     let hasUserInteracted = false; // Flag pour éviter le scroll au chargement initial
+    let stateTransitionTimeout = null; // Track pending state transitions
 
     function goToState(state, shouldScroll = true) {
+      // Cancel any pending transition to prevent race conditions
+      if (stateTransitionTimeout) {
+        clearTimeout(stateTransitionTimeout);
+        stateTransitionTimeout = null;
+      }
+
       const states = container.querySelectorAll('.quiz-state');
-      states.forEach(s => {
-        s.classList.remove('is-active');
-        s.style.display = 'none';
-      });
+      const currentActiveState = container.querySelector('.quiz-state.is-active');
 
-      const targetState = container.querySelector(`.quiz-state-${state}`);
-      if (targetState) {
-        targetState.style.display = 'block';
-        setTimeout(() => {
-          targetState.classList.add('is-active');
-        }, 10);
+      // Exit animation for current state
+      if (currentActiveState) {
+        currentActiveState.classList.add('is-exiting');
+        currentActiveState.classList.remove('is-active');
       }
 
-      currentState = state;
+      // Wait for exit animation, then switch states
+      stateTransitionTimeout = setTimeout(() => {
+        states.forEach(s => {
+          s.classList.remove('is-active', 'is-exiting');
+          s.style.display = 'none';
+        });
 
-      // Scroll vers le haut de la section quiz SEULEMENT après interaction utilisateur
-      // et pas pour l'état initial (intro)
-      if (shouldScroll && hasUserInteracted && state !== QuizState.INTRO) {
-        setTimeout(() => {
-          container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
-      }
+        const targetState = container.querySelector(`.quiz-state-${state}`);
+        if (targetState) {
+          targetState.style.display = 'block';
+          // Force reflow for animation
+          targetState.offsetHeight;
+          setTimeout(() => {
+            targetState.classList.add('is-active');
+          }, 10);
+        }
+
+        currentState = state;
+
+        // Scroll vers le haut de la section quiz SEULEMENT après interaction utilisateur
+        // et pas pour l'état initial (intro)
+        if (shouldScroll && hasUserInteracted && state !== QuizState.INTRO) {
+          setTimeout(() => {
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 50);
+        }
+
+        stateTransitionTimeout = null; // Clear reference after completion
+      }, currentActiveState ? 650 : 0); // Wait for exit animation (650ms) or instant if no current state
     }
 
     function goToIntro() {
@@ -1188,12 +1431,13 @@
     function goToQuestions() {
       currentQuestionIndex = 0;
       scores = {
-        reconfort: 0,
+        apaisement: 0,
         protection: 0,
         serenite: 0,
-        elegance: 0,
-        joie: 0
+        amour: 0,
+        chance: 0
       };
+      question7Answer = null; // Reset tiebreaker
       goToState(QuizState.QUESTIONS);
       displayQuestion(0);
     }
@@ -1247,14 +1491,47 @@
           btn.type = 'button';
           btn.className = 'quiz-answer-btn';
           btn.textContent = answer.label;
-          btn.addEventListener('click', () => {
-            handleAnswer(answer.profile);
+          // Apply stagger delay for entrance animation
+          btn.style.transitionDelay = `${i * 80}ms`;
+          btn.addEventListener('click', (e) => {
+            handleAnswerClick(btn, answer.profile);
           });
           answersEl.appendChild(btn);
         });
+
+        // Trigger staggered entrance animation
+        setTimeout(() => {
+          const btns = answersEl.querySelectorAll('.quiz-answer-btn');
+          btns.forEach(btn => btn.classList.add('is-visible'));
+        }, 50);
       }
     }
 
+    // Handle answer click with pulse animation
+    function handleAnswerClick(buttonEl, profile) {
+      // Disable all buttons during animation
+      const allBtns = container.querySelectorAll('.quiz-answer-btn');
+      allBtns.forEach(b => b.style.pointerEvents = 'none');
+
+      // Apply pulse animation
+      buttonEl.classList.add('is-selected');
+
+      // Capture question 7 answer BEFORE incrementing (for tiebreaker rule)
+      if (currentQuestionIndex === 6) { // Question 7 (0-indexed)
+        question7Answer = profile;
+      }
+
+      // Wait for pulse animation (600ms), then advance
+      setTimeout(() => {
+        if (profiles.includes(profile)) {
+          scores[profile] = (scores[profile] || 0) + 1;
+        }
+        currentQuestionIndex++;
+        displayQuestion(currentQuestionIndex);
+      }, 600);
+    }
+
+    // Legacy function for compatibility
     function handleAnswer(profile) {
       if (profiles.includes(profile)) {
         scores[profile] = (scores[profile] || 0) + 1;
@@ -1270,17 +1547,26 @@
     function calculateResults() {
       const totalScore = Object.values(scores).reduce((sum, val) => sum + val, 0);
       const percentages = {};
-      let winnerProfile = null;
       let maxScore = -1;
+      let tiedProfiles = [];
 
+      // First pass: find max score and collect tied profiles
       profiles.forEach(profile => {
         const score = scores[profile] || 0;
         percentages[profile] = totalScore > 0 ? Math.round((score / totalScore) * 100) : 0;
         if (score > maxScore) {
           maxScore = score;
-          winnerProfile = profile;
+          tiedProfiles = [profile];
+        } else if (score === maxScore) {
+          tiedProfiles.push(profile);
         }
       });
+
+      // Apply tiebreaker rule: if there's a tie, use question 7 answer
+      let winnerProfile = tiedProfiles[0];
+      if (tiedProfiles.length > 1 && question7Answer && tiedProfiles.includes(question7Answer)) {
+        winnerProfile = question7Answer;
+      }
 
       return {
         winnerProfile: winnerProfile,
@@ -1303,8 +1589,8 @@
       // === HEADER ===
       const mainTitleEl = container.querySelector('#quiz-result-main-title-' + sectionId);
       if (mainTitleEl) {
-        const mainTitle = {{ section.settings.result_main_title | json }};
-        mainTitleEl.textContent = mainTitle || 'Ta bougie du moment';
+        // Use personalized dashboardTitle from profile if available
+        mainTitleEl.textContent = profile.dashboardTitle || 'Ta bougie du moment';
       }
 
       const profileNameEl = container.querySelector('#quiz-result-profile-name-' + sectionId);
@@ -1380,6 +1666,12 @@
         mantraEl.textContent = `« ${profile.mantra} »`;
       }
 
+      // === RITUEL ===
+      const ritualEl = container.querySelector('#quiz-result-ritual-' + sectionId);
+      if (ritualEl && profile.ritual) {
+        ritualEl.textContent = profile.ritual;
+      }
+
       // === MÉTÉO ÉMOTIONNELLE ===
       const gaugesEl = container.querySelector('#quiz-mood-gauges-' + sectionId);
       if (gaugesEl) {
@@ -1450,6 +1742,18 @@
         timestamp: Date.now()
       };
       localStorage.setItem('milauraLastResult', JSON.stringify(storageData));
+
+      // === STAGGERED REVEAL FOR RESULT CARDS ===
+      setTimeout(() => {
+        const productCard = container.querySelector('.quiz-result-product-card');
+        const descCard = container.querySelector('.quiz-result-desc-card');
+        const moodCard = container.querySelector('.quiz-result-mood-card');
+
+        // Staggered reveal: 0ms, 120ms, 240ms (defined in CSS transition-delay)
+        if (productCard) productCard.classList.add('is-visible');
+        if (descCard) descCard.classList.add('is-visible');
+        if (moodCard) moodCard.classList.add('is-visible');
+      }, 100); // Small delay after state transition
     }
 
     // Fonction globale pour ajouter au panier avec feedback visuel
@@ -1539,15 +1843,21 @@
       const restartBtn = container.querySelector('#quiz-restart-btn-' + sectionId);
       if (restartBtn) {
         restartBtn.addEventListener('click', () => {
-          // Reset les scores
+          // Reset les scores avec les nouveaux profils
           scores = {
-            reconfort: 0,
+            apaisement: 0,
             protection: 0,
             serenite: 0,
-            elegance: 0,
-            joie: 0
+            amour: 0,
+            chance: 0
           };
           currentQuestionIndex = 0;
+          question7Answer = null; // Reset tiebreaker
+
+          // Reset result cards visibility for next reveal animation
+          const resultCards = container.querySelectorAll('.quiz-result-product-card, .quiz-result-desc-card, .quiz-result-mood-card');
+          resultCards.forEach(card => card.classList.remove('is-visible'));
+
           goToQuestions();
         });
       }
@@ -1676,36 +1986,36 @@
     },
     {
       "type": "header",
-      "content": "Profil : Réconfort"
+      "content": "Profil : Apaisement"
     },
     {
       "type": "text",
-      "id": "profile_comfort_label",
+      "id": "profile_apaisement_label",
       "label": "Label",
-      "default": "Réconfort"
+      "default": "Apaisement"
     },
     {
       "type": "richtext",
-      "id": "profile_comfort_description",
+      "id": "profile_apaisement_description",
       "label": "Description",
-      "default": "<p>Tu cherches l'apaisement et la douceur. Cette bougie t'apportera le réconfort dont tu as besoin.</p>"
+      "default": "<p>Tu tiens, tu avances, tu gères, mais à l'intérieur ça ne se pose pas vraiment. Ce que tu cherches, c'est une descente immédiate, une sensation de douceur qui te remet dans ton corps.</p>"
     },
     {
       "type": "product",
-      "id": "profile_comfort_product",
+      "id": "profile_apaisement_product",
       "label": "Produit associé"
     },
     {
       "type": "richtext",
-      "id": "profile_comfort_bullets",
+      "id": "profile_apaisement_bullets",
       "label": "Bénéfices (liste)",
-      "default": "<ul><li>Apaisement immédiat</li><li>Réconfort émotionnel</li><li>Moment de douceur</li></ul>"
+      "default": "<ul><li>Apaisement immédiat</li><li>Douceur émotionnelle</li><li>Sensation de cocon</li></ul>"
     },
     {
       "type": "text",
-      "id": "profile_comfort_mantra",
+      "id": "profile_apaisement_mantra",
       "label": "Mantra",
-      "default": "Je m'offre le réconfort que je mérite"
+      "default": "Je peux ralentir maintenant"
     },
     {
       "type": "header",
@@ -1746,98 +2056,98 @@
     },
     {
       "type": "text",
-      "id": "profile_serenity_label",
+      "id": "profile_serenite_label",
       "label": "Label",
       "default": "Sérénité"
     },
     {
       "type": "richtext",
-      "id": "profile_serenity_description",
+      "id": "profile_serenite_description",
       "label": "Description",
-      "default": "<p>Tu recherches la paix intérieure et la tranquillité. Cette bougie t'aidera à trouver ton équilibre.</p>"
+      "default": "<p>Ton problème n'est pas le manque d'envie, c'est le trop plein. Tu as besoin de silence mental, pas de motivation.</p>"
     },
     {
       "type": "product",
-      "id": "profile_serenity_product",
+      "id": "profile_serenite_product",
       "label": "Produit associé"
     },
     {
       "type": "richtext",
-      "id": "profile_serenity_bullets",
+      "id": "profile_serenite_bullets",
       "label": "Bénéfices (liste)",
-      "default": "<ul><li>Paix intérieure</li><li>Équilibre émotionnel</li><li>Tranquillité d'esprit</li></ul>"
+      "default": "<ul><li>Calme mental</li><li>Impression de clarté</li><li>Ambiance zen et pure</li></ul>"
     },
     {
       "type": "text",
-      "id": "profile_serenity_mantra",
+      "id": "profile_serenite_mantra",
       "label": "Mantra",
-      "default": "Je trouve la paix en moi"
+      "default": "Je reviens à l'essentiel"
     },
     {
       "type": "header",
-      "content": "Profil : Élégance"
+      "content": "Profil : Amour"
     },
     {
       "type": "text",
-      "id": "profile_elegance_label",
+      "id": "profile_amour_label",
       "label": "Label",
-      "default": "Élégance"
+      "default": "Amour"
     },
     {
       "type": "richtext",
-      "id": "profile_elegance_description",
+      "id": "profile_amour_description",
       "label": "Description",
-      "default": "<p>Tu apprécies la beauté et la sophistication. Cette bougie reflète ton raffinement.</p>"
+      "default": "<p>Tu es dur(e) avec toi, parfois sans t'en rendre compte. Ce que tu cherches là, c'est un moment qui répare le cœur, pas avec de grands mots, juste avec une sensation de chaleur et de bienveillance.</p>"
     },
     {
       "type": "product",
-      "id": "profile_elegance_product",
+      "id": "profile_amour_product",
       "label": "Produit associé"
     },
     {
       "type": "richtext",
-      "id": "profile_elegance_bullets",
+      "id": "profile_amour_bullets",
       "label": "Bénéfices (liste)",
-      "default": "<ul><li>Raffinement</li><li>Beauté intérieure</li><li>Sophistication</li></ul>"
+      "default": "<ul><li>Douceur du cœur</li><li>Compassion, amour de soi</li><li>Ambiance enveloppante et précieuse</li></ul>"
     },
     {
       "type": "text",
-      "id": "profile_elegance_mantra",
+      "id": "profile_amour_mantra",
       "label": "Mantra",
-      "default": "Je rayonne d'élégance"
+      "default": "Je me parle avec douceur"
     },
     {
       "type": "header",
-      "content": "Profil : Joie"
+      "content": "Profil : Chance"
     },
     {
       "type": "text",
-      "id": "profile_joy_label",
+      "id": "profile_chance_label",
       "label": "Label",
-      "default": "Joie"
+      "default": "Chance"
     },
     {
       "type": "richtext",
-      "id": "profile_joy_description",
+      "id": "profile_chance_description",
       "label": "Description",
-      "default": "<p>Tu cherches la légèreté et la joie de vivre. Cette bougie apportera de la lumière dans ta vie.</p>"
+      "default": "<p>Tu sens que tu pourrais repartir, mais il manque une étincelle. Cette bougie est faite pour ouvrir le champ, remettre de l'optimisme, et te donner envie de faire ce premier petit pas.</p>"
     },
     {
       "type": "product",
-      "id": "profile_joy_product",
+      "id": "profile_chance_product",
       "label": "Produit associé"
     },
     {
       "type": "richtext",
-      "id": "profile_joy_bullets",
+      "id": "profile_chance_bullets",
       "label": "Bénéfices (liste)",
-      "default": "<ul><li>Légèreté</li><li>Joie de vivre</li><li>Énergie positive</li></ul>"
+      "default": "<ul><li>Optimisme et légèreté</li><li>Énergie de renouveau</li><li>Envie d'avancer</li></ul>"
     },
     {
       "type": "text",
-      "id": "profile_joy_mantra",
+      "id": "profile_chance_mantra",
       "label": "Mantra",
-      "default": "Je choisis la joie chaque jour"
+      "default": "Je crée ma chance, un petit pas suffit"
     }
   ],
   "blocks": [
@@ -1863,8 +2173,8 @@
           "label": "Profil réponse 1",
           "options": [
             {
-              "value": "reconfort",
-              "label": "Réconfort"
+              "value": "apaisement",
+              "label": "Apaisement"
             },
             {
               "value": "protection",
@@ -1875,15 +2185,15 @@
               "label": "Sérénité"
             },
             {
-              "value": "elegance",
-              "label": "Élégance"
+              "value": "amour",
+              "label": "Amour"
             },
             {
-              "value": "joie",
-              "label": "Joie"
+              "value": "chance",
+              "label": "Chance"
             }
           ],
-          "default": "reconfort"
+          "default": "apaisement"
         },
         {
           "type": "text",
@@ -1897,8 +2207,8 @@
           "label": "Profil réponse 2",
           "options": [
             {
-              "value": "reconfort",
-              "label": "Réconfort"
+              "value": "apaisement",
+              "label": "Apaisement"
             },
             {
               "value": "protection",
@@ -1909,12 +2219,12 @@
               "label": "Sérénité"
             },
             {
-              "value": "elegance",
-              "label": "Élégance"
+              "value": "amour",
+              "label": "Amour"
             },
             {
-              "value": "joie",
-              "label": "Joie"
+              "value": "chance",
+              "label": "Chance"
             }
           ],
           "default": "protection"
@@ -1930,8 +2240,8 @@
           "label": "Profil réponse 3",
           "options": [
             {
-              "value": "reconfort",
-              "label": "Réconfort"
+              "value": "apaisement",
+              "label": "Apaisement"
             },
             {
               "value": "protection",
@@ -1942,12 +2252,12 @@
               "label": "Sérénité"
             },
             {
-              "value": "elegance",
-              "label": "Élégance"
+              "value": "amour",
+              "label": "Amour"
             },
             {
-              "value": "joie",
-              "label": "Joie"
+              "value": "chance",
+              "label": "Chance"
             }
           ],
           "default": "serenite"
@@ -1963,8 +2273,8 @@
           "label": "Profil réponse 4",
           "options": [
             {
-              "value": "reconfort",
-              "label": "Réconfort"
+              "value": "apaisement",
+              "label": "Apaisement"
             },
             {
               "value": "protection",
@@ -1975,15 +2285,15 @@
               "label": "Sérénité"
             },
             {
-              "value": "elegance",
-              "label": "Élégance"
+              "value": "amour",
+              "label": "Amour"
             },
             {
-              "value": "joie",
-              "label": "Joie"
+              "value": "chance",
+              "label": "Chance"
             }
           ],
-          "default": "elegance"
+          "default": "amour"
         }
       ]
     }
@@ -1995,20 +2305,99 @@
         {
           "type": "question",
           "settings": {
-            "question_label": "Comment te sens-tu en ce moment ?",
-            "answer_1_label": "J'ai besoin de réconfort",
-            "answer_2_label": "Je me sens vulnérable",
-            "answer_3_label": "Je cherche la paix",
-            "answer_4_label": "Je veux de l'élégance"
+            "question_label": "En ce moment, quelle phrase te parle le plus ?",
+            "answer_1_label": "J'ai besoin de me poser, vraiment.",
+            "answer_1_profile": "apaisement",
+            "answer_2_label": "Je sens que je dois me protéger de quelque chose.",
+            "answer_2_profile": "protection",
+            "answer_3_label": "J'ai la tête pleine, j'aimerais du silence.",
+            "answer_3_profile": "serenite",
+            "answer_4_label": "J'ai besoin d'être doux(ce) avec moi-même.",
+            "answer_4_profile": "amour"
           }
         },
         {
           "type": "question",
           "settings": {
-            "question_label": "Quel est ton besoin principal aujourd'hui ?",
-            "answer_1_label": "Réconfort",
-            "answer_2_label": "Protection",
-            "answer_3_label": "Sérénité"
+            "question_label": "Quand tu penses aux prochains jours, tu espères surtout...",
+            "answer_1_label": "Moins de pression, plus de douceur.",
+            "answer_1_profile": "apaisement",
+            "answer_2_label": "Me sentir en sécurité, à l'abri.",
+            "answer_2_profile": "protection",
+            "answer_3_label": "Un peu de clarté dans ma tête.",
+            "answer_3_profile": "serenite",
+            "answer_4_label": "Retrouver de l'élan, de l'optimisme.",
+            "answer_4_profile": "chance"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question_label": "Là, tout de suite, tu aurais plutôt besoin de...",
+            "answer_1_label": "Un cocon qui me rassure.",
+            "answer_1_profile": "apaisement",
+            "answer_2_label": "Une bulle qui me protège.",
+            "answer_2_profile": "protection",
+            "answer_3_label": "Un moment de calme total.",
+            "answer_3_profile": "serenite",
+            "answer_4_label": "Un geste tendre envers moi.",
+            "answer_4_profile": "amour"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question_label": "Ce qui te pèse le plus en ce moment, c'est...",
+            "answer_1_label": "Cette tension que je n'arrive pas à relâcher.",
+            "answer_1_profile": "apaisement",
+            "answer_2_label": "L'énergie des autres qui m'envahit.",
+            "answer_2_profile": "protection",
+            "answer_3_label": "Ce brouillard mental constant.",
+            "answer_3_profile": "serenite",
+            "answer_4_label": "Cette exigence que j'ai envers moi-même.",
+            "answer_4_profile": "amour"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question_label": "Si tu devais choisir une sensation à retrouver, ce serait...",
+            "answer_1_label": "Me sentir apaisé(e), enfin.",
+            "answer_1_profile": "apaisement",
+            "answer_2_label": "Me sentir ancré(e), solide.",
+            "answer_2_profile": "protection",
+            "answer_3_label": "Me sentir léger(ère) d'esprit.",
+            "answer_3_profile": "serenite",
+            "answer_4_label": "Une bouffée d'espoir, d'envie.",
+            "answer_4_profile": "chance"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question_label": "En fin de journée, tu as souvent tendance à...",
+            "answer_1_label": "Sentir tout le stress de la journée remonter.",
+            "answer_1_profile": "apaisement",
+            "answer_2_label": "Te sentir vidé(e) par les autres.",
+            "answer_2_profile": "protection",
+            "answer_3_label": "Avoir du mal à couper le mental.",
+            "answer_3_profile": "serenite",
+            "answer_4_label": "Te reprocher de n'avoir pas assez fait.",
+            "answer_4_profile": "amour"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question_label": "Le mot qui résonne le plus en toi là maintenant ?",
+            "answer_1_label": "Douceur",
+            "answer_1_profile": "apaisement",
+            "answer_2_label": "Bouclier",
+            "answer_2_profile": "protection",
+            "answer_3_label": "Tendresse",
+            "answer_3_profile": "amour",
+            "answer_4_label": "Espoir",
+            "answer_4_profile": "chance"
           }
         }
       ]
