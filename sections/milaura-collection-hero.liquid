@@ -390,34 +390,37 @@
     </nav>
 
     {%- comment -%} Hero Card {%- endcomment -%}
+    {%- assign parallax_id = 'ParallaxBg-' | append: section.id -%}
     <div class="milaura-collection-hero__card milaura-section-card">
       {%- if collection.image != blank -%}
-        {{
-          collection.image
-          | image_url: width: 1600
-          | image_tag:
-            class: 'milaura-collection-hero__bg',
-            loading: 'eager',
-            fetchpriority: 'high',
-            widths: '375, 750, 1100, 1500',
-            sizes: '100vw',
-            alt: collection.title | escape,
-            id: 'ParallaxBg-' | append: section.id
-        }}
+        <img
+          id="{{ parallax_id }}"
+          class="milaura-collection-hero__bg"
+          src="{{ collection.image | image_url: width: 1600 }}"
+          srcset="{{ collection.image | image_url: width: 375 }} 375w,
+                  {{ collection.image | image_url: width: 750 }} 750w,
+                  {{ collection.image | image_url: width: 1100 }} 1100w,
+                  {{ collection.image | image_url: width: 1500 }} 1500w"
+          sizes="100vw"
+          alt="{{ collection.title | escape }}"
+          loading="eager"
+          fetchpriority="high"
+        >
         <div class="milaura-collection-hero__overlay"></div>
       {%- elsif section.settings.fallback_image != blank -%}
-        {{
-          section.settings.fallback_image
-          | image_url: width: 1600
-          | image_tag:
-            class: 'milaura-collection-hero__bg',
-            loading: 'eager',
-            fetchpriority: 'high',
-            widths: '375, 750, 1100, 1500',
-            sizes: '100vw',
-            alt: collection.title | escape,
-            id: 'ParallaxBg-' | append: section.id
-        }}
+        <img
+          id="{{ parallax_id }}"
+          class="milaura-collection-hero__bg"
+          src="{{ section.settings.fallback_image | image_url: width: 1600 }}"
+          srcset="{{ section.settings.fallback_image | image_url: width: 375 }} 375w,
+                  {{ section.settings.fallback_image | image_url: width: 750 }} 750w,
+                  {{ section.settings.fallback_image | image_url: width: 1100 }} 1100w,
+                  {{ section.settings.fallback_image | image_url: width: 1500 }} 1500w"
+          sizes="100vw"
+          alt="{{ collection.title | escape }}"
+          loading="eager"
+          fetchpriority="high"
+        >
         <div class="milaura-collection-hero__overlay"></div>
       {%- endif -%}
 
