@@ -22,7 +22,11 @@
   --milaura-spacing-xl: 48px;
   
   /* --- HEADER HEIGHT OFFSET --- */
-  --header-height-offset: 96px;
+  /* Hauteur header (logo + padding + position top) pour compenser le fixed header */
+  --header-height-desktop: 130px;  /* ~52px logo + 38px top + padding */
+  --header-height-tablet: 120px;   /* ~46px logo + padding compact */
+  --header-height-mobile: 110px;   /* ~40px logo + 20px top + padding */
+  --header-height-offset: 96px;    /* Legacy, garder pour compatibilité */
   
   /* --- BORDURES & OMBRES --- */
   --milaura-border-radius: 20px;
@@ -31,6 +35,42 @@
   --milaura-shadow-sm: 0 10px 30px rgba(0,0,0,0.08); /* Ombre plus marquée */
   --milaura-shadow-md: 0 15px 40px rgba(192, 160, 98, 0.25);
   --milaura-shadow-lg: 0 25px 60px rgba(192, 160, 98, 0.35);
+}
+
+/* ============================================
+   COMPENSATION HEADER FIXE - RÈGLE UNIVERSELLE
+   Corrige l'affichage de toutes les pages/sections
+   ============================================ */
+
+/* Scroll vers ancres : compense le header fixe */
+html {
+  scroll-padding-top: var(--header-height-desktop);
+  scroll-behavior: smooth;
+}
+
+/* Contenu principal : espace pour le header fixe */
+main#MainContent {
+  padding-top: var(--header-height-desktop);
+}
+
+/* Tablette */
+@media screen and (max-width: 1100px) {
+  html {
+    scroll-padding-top: var(--header-height-tablet);
+  }
+  main#MainContent {
+    padding-top: var(--header-height-tablet);
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 767px) {
+  html {
+    scroll-padding-top: var(--header-height-mobile);
+  }
+  main#MainContent {
+    padding-top: var(--header-height-mobile);
+  }
 }
 
 /* --- FORCE GLOBALE TAILLE TEXTE (19px Desktop) --- */
