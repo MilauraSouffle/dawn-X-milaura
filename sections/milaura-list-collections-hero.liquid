@@ -1,0 +1,396 @@
+{%- comment -%}
+  MILAURA LIST COLLECTIONS HERO
+  Hero section pour la page toutes collections
+  Design: Bandeau elegant avec intro emotionnelle
+  @version 1.0.0
+{%- endcomment -%}
+
+{%- style -%}
+  #MilauraListCollectionsHero-{{ section.id }} {
+    position: relative;
+    padding: var(--milaura-spacing-xl) var(--milaura-spacing-md) var(--milaura-spacing-lg);
+    overflow: hidden;
+  }
+
+  /* Background avec motif subtil */
+  #MilauraListCollectionsHero-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(192, 160, 98, 0.15), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(192, 160, 98, 0.1), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Breadcrumb */
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__breadcrumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: var(--milaura-spacing-md);
+    font-size: 14px;
+    color: var(--milaura-text-light, #666666);
+    position: relative;
+    z-index: 1;
+  }
+
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__breadcrumb a {
+    color: var(--milaura-text-light, #666666);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__breadcrumb a:hover {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__breadcrumb svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+  }
+
+  /* Card hero glassmorphism */
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__card {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--milaura-spacing-xl) var(--milaura-spacing-lg);
+    border-radius: var(--milaura-border-radius, 20px);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    box-shadow:
+      0 25px 50px rgba(192, 160, 98, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  }
+
+  /* Halo dore derriere la card */
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(ellipse at center, rgba(192, 160, 98, 0.2) 0%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* Decorative element - ligne doree */
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__decor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__decor-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--milaura-gold, #C0A062), transparent);
+  }
+
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__decor-icon {
+    font-size: 24px;
+  }
+
+  /* Title */
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__title {
+    font-family: {{ section.settings.title_font }};
+    font-size: {{ section.settings.title_size }}px;
+    color: {{ section.settings.title_color }};
+    font-weight: 600;
+    margin: 0 0 var(--milaura-spacing-sm) 0;
+    line-height: 1.2;
+    animation: milauraFadeInUp 0.8s ease-out forwards;
+  }
+
+  /* Subtitle */
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__subtitle {
+    font-family: {{ section.settings.subtitle_font }};
+    font-size: {{ section.settings.subtitle_size }}px;
+    color: {{ section.settings.subtitle_color }};
+    font-weight: 400;
+    margin: 0 0 var(--milaura-spacing-md) 0;
+    line-height: 1.7;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: milauraFadeInUp 0.8s ease-out 0.15s forwards;
+    opacity: 0;
+  }
+
+  /* Stats row */
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--milaura-spacing-lg);
+    margin-top: var(--milaura-spacing-md);
+    animation: milauraFadeInUp 0.8s ease-out 0.3s forwards;
+    opacity: 0;
+  }
+
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__stat {
+    text-align: center;
+  }
+
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__stat-value {
+    font-family: 'Dancing Script', cursive;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--milaura-gold, #C0A062);
+    display: block;
+    line-height: 1;
+  }
+
+  #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__stat-label {
+    font-size: 13px;
+    color: var(--milaura-text-light, #666666);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* Animation */
+  @keyframes milauraFadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1024px) {
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__card {
+      padding: var(--milaura-spacing-xl) 80px;
+    }
+  }
+
+  /* Tablet */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__title {
+      font-size: {{ section.settings.title_size | times: 0.85 | round: 0 }}px;
+    }
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraListCollectionsHero-{{ section.id }} {
+      padding: var(--milaura-spacing-lg) var(--milaura-spacing-sm);
+    }
+
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__card {
+      padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
+    }
+
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__title {
+      font-size: 32px;
+    }
+
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__subtitle {
+      font-size: 15px;
+    }
+
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__stats {
+      gap: var(--milaura-spacing-md);
+    }
+
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__stat-value {
+      font-size: 28px;
+    }
+
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__stat-label {
+      font-size: 11px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__title,
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__subtitle,
+    #MilauraListCollectionsHero-{{ section.id }} .milaura-lc-hero__stats {
+      animation: none;
+      opacity: 1;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="MilauraListCollectionsHero-{{ section.id }}"
+  class="milaura-list-collections-hero"
+  aria-label="{{ section.settings.title | default: 'Nos Collections' | escape }}"
+>
+  <div class="page-width">
+    {%- comment -%} Breadcrumb {%- endcomment -%}
+    <nav class="milaura-lc-hero__breadcrumb" aria-label="Fil d'Ariane">
+      <a href="{{ routes.root_url }}">Accueil</a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+      <span aria-current="page">{{ section.settings.title | default: 'Collections' }}</span>
+    </nav>
+
+    {%- comment -%} Hero Card {%- endcomment -%}
+    <div class="milaura-lc-hero__card">
+      {%- comment -%} Decorative element {%- endcomment -%}
+      <div class="milaura-lc-hero__decor">
+        <span class="milaura-lc-hero__decor-line"></span>
+        <span class="milaura-lc-hero__decor-icon">{{ section.settings.icon | default: '✨' }}</span>
+        <span class="milaura-lc-hero__decor-line"></span>
+      </div>
+
+      {%- comment -%} Title {%- endcomment -%}
+      <h1 class="milaura-lc-hero__title">
+        {{ section.settings.title | default: 'Nos Univers' }}
+      </h1>
+
+      {%- comment -%} Subtitle {%- endcomment -%}
+      {%- if section.settings.subtitle != blank -%}
+        <p class="milaura-lc-hero__subtitle">
+          {{ section.settings.subtitle }}
+        </p>
+      {%- endif -%}
+
+      {%- comment -%} Stats {%- endcomment -%}
+      {%- if section.settings.show_stats -%}
+        {%- assign total_collections = collections | size -%}
+        {%- assign total_products = 0 -%}
+        {%- for collection in collections -%}
+          {%- assign total_products = total_products | plus: collection.products_count -%}
+        {%- endfor -%}
+
+        <div class="milaura-lc-hero__stats">
+          <div class="milaura-lc-hero__stat">
+            <span class="milaura-lc-hero__stat-value">{{ total_collections }}</span>
+            <span class="milaura-lc-hero__stat-label">{{ total_collections | pluralize: 'univers', 'univers' }}</span>
+          </div>
+          <div class="milaura-lc-hero__stat">
+            <span class="milaura-lc-hero__stat-value">{{ total_products }}</span>
+            <span class="milaura-lc-hero__stat-label">{{ total_products | pluralize: 'creation', 'creations' }}</span>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Milaura Collections Hero",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📝 Contenu"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Nos Univers"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Chaque collection est une invitation a explorer une facette de votre bien-etre. Pierres precieuses, bougies emotionnelles ou rituels de reconnexion... trouvez celle qui vous appelle."
+    },
+    {
+      "type": "text",
+      "id": "icon",
+      "label": "Icone decorative (emoji)",
+      "default": "✨"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Afficher les statistiques",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Titre"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Police du titre",
+      "options": [
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" },
+        { "value": "'Dancing Script', cursive", "label": "Dancing Script" }
+      ],
+      "default": "'Dancing Script', cursive"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre",
+      "min": 32,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#C0A062"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Sous-titre"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_font",
+      "label": "Police du sous-titre",
+      "options": [
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" }
+      ],
+      "default": "'Lato', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Taille du sous-titre",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Couleur du sous-titre",
+      "default": "#333333"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Collections Hero"
+    }
+  ]
+}
+{% endschema %}

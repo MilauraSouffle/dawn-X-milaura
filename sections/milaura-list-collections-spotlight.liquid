@@ -1,0 +1,540 @@
+{%- comment -%}
+  MILAURA LIST COLLECTIONS SPOTLIGHT
+  Section pour mettre en avant une collection vedette
+  Design: Grande carte avec effet parallaxe et CTA prominent
+  @version 1.0.0
+{%- endcomment -%}
+
+{%- style -%}
+  #MilauraListCollectionsSpotlight-{{ section.id }} {
+    padding: var(--milaura-spacing-lg) 0 var(--milaura-spacing-xl);
+  }
+
+  /* Header */
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__header {
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-lg);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.05));
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--milaura-gold, #C0A062);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__heading {
+    font-family: {{ section.settings.heading_font }};
+    font-size: {{ section.settings.heading_size }}px;
+    color: {{ section.settings.heading_color }};
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  /* Spotlight Card */
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: var(--milaura-border-radius, 20px);
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow:
+      0 20px 60px rgba(192, 160, 98, 0.2),
+      0 0 0 1px rgba(192, 160, 98, 0.15);
+    min-height: 450px;
+  }
+
+  /* Image side */
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__image-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__card:hover .milaura-spotlight__image {
+    transform: scale(1.05);
+  }
+
+  /* Decorative frame */
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__image-wrap::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    pointer-events: none;
+  }
+
+  /* Content side */
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--milaura-spacing-xl);
+    background: linear-gradient(135deg, #FDFBF7 0%, #F2E8D5 100%);
+    position: relative;
+  }
+
+  /* Decorative pattern */
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(192, 160, 98, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__icon {
+    font-size: 48px;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__title {
+    font-family: {{ section.settings.title_font }};
+    font-size: {{ section.settings.title_size }}px;
+    color: {{ section.settings.title_color }};
+    font-weight: 600;
+    margin: 0 0 var(--milaura-spacing-sm) 0;
+    line-height: 1.2;
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__description {
+    font-size: 16px;
+    color: var(--milaura-text-light, #666666);
+    line-height: 1.7;
+    margin: 0 0 var(--milaura-spacing-md) 0;
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-md);
+    margin-bottom: var(--milaura-spacing-lg);
+    padding-bottom: var(--milaura-spacing-md);
+    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__meta-item svg {
+    width: 18px;
+    height: 18px;
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    background: var(--milaura-gold, #C0A062);
+    color: #ffffff;
+    font-family: var(--milaura-font-body);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(192, 160, 98, 0.35);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__cta:hover {
+    background: var(--milaura-text, #000000);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__cta svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Placeholder */
+  #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8e0d4 0%, #d9cfc0 100%);
+    font-size: 64px;
+  }
+
+  /* Tablet */
+  @media screen and (max-width: 1024px) {
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__card {
+      min-height: 400px;
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__content {
+      padding: var(--milaura-spacing-lg);
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__title {
+      font-size: {{ section.settings.title_size | times: 0.85 | round: 0 }}px;
+    }
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    #MilauraListCollectionsSpotlight-{{ section.id }} {
+      padding: var(--milaura-spacing-md) 0 var(--milaura-spacing-lg);
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__card {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__image-wrap {
+      height: 250px;
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__content {
+      padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__icon {
+      font-size: 36px;
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__title {
+      font-size: 28px;
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__description {
+      font-size: 15px;
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__meta {
+      flex-wrap: wrap;
+      gap: var(--milaura-spacing-sm);
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__cta {
+      width: 100%;
+      justify-content: center;
+    }
+
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__heading {
+      font-size: 28px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__image,
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__cta,
+    #MilauraListCollectionsSpotlight-{{ section.id }} .milaura-spotlight__cta svg {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign spotlight_collection = collections[section.settings.collection]
+-%}
+
+{%- if spotlight_collection != blank -%}
+  <section
+    id="MilauraListCollectionsSpotlight-{{ section.id }}"
+    class="milaura-list-collections-spotlight"
+  >
+    <div class="page-width">
+      {%- comment -%} Header {%- endcomment -%}
+      {%- if section.settings.show_header -%}
+        <div class="milaura-spotlight__header">
+          <span class="milaura-spotlight__label">
+            {{ section.settings.label_icon | default: '⭐' }}
+            {{ section.settings.label_text | default: 'Coup de coeur' }}
+          </span>
+          {%- if section.settings.heading != blank -%}
+            <h2 class="milaura-spotlight__heading">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Spotlight Card {%- endcomment -%}
+      <div class="milaura-spotlight__card">
+        {%- comment -%} Image {%- endcomment -%}
+        <div class="milaura-spotlight__image-wrap">
+          {%- if spotlight_collection.image != blank -%}
+            {{
+              spotlight_collection.image
+              | image_url: width: 1000
+              | image_tag:
+                class: 'milaura-spotlight__image',
+                loading: 'lazy',
+                widths: '400, 600, 800, 1000',
+                sizes: '(min-width: 768px) 50vw, 100vw',
+                alt: spotlight_collection.title | escape
+            }}
+          {%- elsif section.settings.custom_image != blank -%}
+            {{
+              section.settings.custom_image
+              | image_url: width: 1000
+              | image_tag:
+                class: 'milaura-spotlight__image',
+                loading: 'lazy',
+                widths: '400, 600, 800, 1000',
+                sizes: '(min-width: 768px) 50vw, 100vw',
+                alt: spotlight_collection.title | escape
+            }}
+          {%- elsif spotlight_collection.products.first.featured_image != blank -%}
+            {{
+              spotlight_collection.products.first.featured_image
+              | image_url: width: 1000
+              | image_tag:
+                class: 'milaura-spotlight__image',
+                loading: 'lazy',
+                widths: '400, 600, 800, 1000',
+                sizes: '(min-width: 768px) 50vw, 100vw',
+                alt: spotlight_collection.title | escape
+            }}
+          {%- else -%}
+            <div class="milaura-spotlight__placeholder">✨</div>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Content {%- endcomment -%}
+        <div class="milaura-spotlight__content">
+          {%- if section.settings.icon != blank -%}
+            <div class="milaura-spotlight__icon">{{ section.settings.icon }}</div>
+          {%- endif -%}
+
+          <h3 class="milaura-spotlight__title">
+            {{ section.settings.custom_title | default: spotlight_collection.title }}
+          </h3>
+
+          {%- if section.settings.custom_description != blank -%}
+            <p class="milaura-spotlight__description">{{ section.settings.custom_description }}</p>
+          {%- elsif spotlight_collection.description != blank -%}
+            <p class="milaura-spotlight__description">{{ spotlight_collection.description | strip_html | truncate: 200 }}</p>
+          {%- endif -%}
+
+          <div class="milaura-spotlight__meta">
+            <span class="milaura-spotlight__meta-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              {{ spotlight_collection.products_count }} {{ spotlight_collection.products_count | pluralize: 'creation', 'creations' }}
+            </span>
+            {%- if section.settings.show_shipping_badge -%}
+              <span class="milaura-spotlight__meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="1" y="3" width="15" height="13"></rect>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+                Livraison offerte
+              </span>
+            {%- endif -%}
+          </div>
+
+          <a href="{{ spotlight_collection.url }}" class="milaura-spotlight__cta">
+            {{ section.settings.cta_text | default: 'Explorer la collection' }}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Milaura Collection Vedette",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📌 Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection a mettre en avant"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Image personnalisee (optionnel)",
+      "info": "Remplace l'image de la collection"
+    },
+    {
+      "type": "header",
+      "content": "📝 Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Afficher le header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_icon",
+      "label": "Icone du label",
+      "default": "⭐"
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Texte du label",
+      "default": "Coup de coeur"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre du header",
+      "default": "Notre selection du moment"
+    },
+    {
+      "type": "header",
+      "content": "📝 Contenu carte"
+    },
+    {
+      "type": "text",
+      "id": "icon",
+      "label": "Icone (emoji)",
+      "default": "🕯️"
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Titre personnalise (optionnel)",
+      "info": "Laissez vide pour utiliser le titre de la collection"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_description",
+      "label": "Description personnalisee (optionnel)",
+      "info": "Laissez vide pour utiliser la description de la collection"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texte du bouton",
+      "default": "Explorer la collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_badge",
+      "label": "Afficher badge livraison",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Header"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Police du heading",
+      "options": [
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" },
+        { "value": "'Dancing Script', cursive", "label": "Dancing Script" }
+      ],
+      "default": "'Playfair Display', serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Taille du heading",
+      "min": 24,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Couleur du heading",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Titre carte"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Police du titre",
+      "options": [
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" },
+        { "value": "'Dancing Script', cursive", "label": "Dancing Script" }
+      ],
+      "default": "'Dancing Script', cursive"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre",
+      "min": 28,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#C0A062"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Collection Vedette"
+    }
+  ]
+}
+{% endschema %}
