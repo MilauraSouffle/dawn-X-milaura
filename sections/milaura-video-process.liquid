@@ -128,6 +128,15 @@
     text-align: center;
   }
 
+  /* Desktop/Tablette : CTA sous la vidéo visible, CTA sous produits caché */
+  #MilauraVideoProcess-{{ section.id }} .collection-button.desktop-only {
+    display: block;
+  }
+
+  #MilauraVideoProcess-{{ section.id }} .collection-button.mobile-only {
+    display: none;
+  }
+
   /* Responsive Mobile */
   @media screen and (max-width: 768px) {
     #MilauraVideoProcess-{{ section.id }} {
@@ -151,6 +160,15 @@
     #MilauraVideoProcess-{{ section.id }} .product-image {
       width: 150px;
       height: 150px;
+    }
+
+    /* Mobile : CTA sous la vidéo caché, CTA sous produits visible */
+    #MilauraVideoProcess-{{ section.id }} .collection-button.desktop-only {
+      display: none;
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .collection-button.mobile-only {
+      display: block;
     }
   }
 {% endstyle %}
@@ -212,6 +230,16 @@
           </div>
         {% endif %}
       </div>
+
+      <!-- CTA sous la vidéo (desktop/tablette) -->
+      {% assign selected_collection_for_btn = collections[section.settings.collection] %}
+      {% if section.settings.button_label != blank and selected_collection_for_btn != blank %}
+        <div class="collection-button desktop-only">
+          <a href="{{ selected_collection_for_btn.url }}" class="milaura-btn milaura-btn-primary">
+            {{ section.settings.button_label }}
+          </a>
+        </div>
+      {% endif %}
     </div>
 
     <!-- Colonne droite : Produits -->
@@ -238,8 +266,9 @@
           {% endfor %}
         </div>
 
+        <!-- CTA mobile uniquement (caché sur desktop/tablette) -->
         {% if section.settings.button_label != blank %}
-          <div class="collection-button">
+          <div class="collection-button mobile-only">
             <a href="{{ selected_collection.url }}" class="milaura-btn milaura-btn-primary">
               {{ section.settings.button_label }}
             </a>
