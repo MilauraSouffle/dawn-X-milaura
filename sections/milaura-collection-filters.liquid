@@ -1,652 +1,593 @@
 {%- comment -%}
   MILAURA COLLECTION FILTERS
-  Barre filtres/tri avec drawer mobile
-  Utilise Shopify Facets API pattern Dawn
-  @version 1.0.1 - 2026-01-29
+  Barre de filtres ultra-fine style chips
+  Optimisée bijoux & bougies
+  @version 2.0.0
 {%- endcomment -%}
 
 {%- style -%}
-  #MilauraCollectionFilters-{{ section.id }} {
-    padding: var(--milaura-spacing-sm) 0;
+  #MilauraFilters-{{ section.id }} {
+    padding: 0;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
+    background: rgba(253, 251, 247, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--milaura-spacing-sm);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__left {
-    display: flex;
-    align-items: center;
-    gap: var(--milaura-spacing-sm);
-    flex-wrap: wrap;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__right {
+  #MilauraFilters-{{ section.id }} .filters__bar {
     display: flex;
     align-items: center;
-    gap: var(--milaura-spacing-sm);
+    gap: 12px;
+    padding: 10px 0;
+    min-height: 44px;
   }
 
-  /* Filter Button (Mobile) */
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__toggle {
-    display: none;
+  /* Compteur à gauche */
+  #MilauraFilters-{{ section.id }} .filters__count {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--milaura-text-light, #888);
+    white-space: nowrap;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__count strong {
+    color: var(--milaura-gold, #C0A062);
+    font-weight: 700;
+  }
+
+  /* Séparateur */
+  #MilauraFilters-{{ section.id }} .filters__sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(192, 160, 98, 0.25);
+    flex-shrink: 0;
+  }
+
+  /* Container scrollable des chips */
+  #MilauraFilters-{{ section.id }} .filters__chips {
+    display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 16px;
-    background: {{ section.settings.filter_bg }};
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--milaura-text, #000000);
-    cursor: pointer;
-    transition: all 0.3s ease;
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 2px 0;
+    margin: -2px 0;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__toggle:hover {
-    border-color: {{ section.settings.filter_accent }};
+  #MilauraFilters-{{ section.id }} .filters__chips::-webkit-scrollbar {
+    display: none;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__toggle svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* Sort Select */
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__sort {
+  /* Chip de filtre (dropdown) */
+  #MilauraFilters-{{ section.id }} .filters__chip {
     position: relative;
+    flex-shrink: 0;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__sort-select {
-    appearance: none;
-    padding: 10px 40px 10px 16px;
-    background: {{ section.settings.filter_bg }};
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--milaura-text, #000000);
-    cursor: pointer;
-    min-width: 180px;
-    transition: all 0.3s ease;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__sort-select:hover,
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__sort-select:focus {
-    border-color: {{ section.settings.filter_accent }};
-    outline: none;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__sort-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    pointer-events: none;
-    color: var(--milaura-text-light, #666666);
-  }
-
-  /* Count */
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__count {
-    font-size: 14px;
-    color: var(--milaura-text-light, #666666);
-  }
-
-  /* Desktop Filters */
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__desktop {
-    display: flex;
+  #MilauraFilters-{{ section.id }} .filters__chip-btn {
+    display: inline-flex;
     align-items: center;
-    gap: var(--milaura-spacing-sm);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__group {
-    position: relative;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__group-toggle {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px;
-    background: {{ section.settings.filter_bg }};
+    gap: 5px;
+    padding: 6px 12px;
+    background: #ffffff;
     border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: 10px;
-    font-size: 14px;
+    border-radius: 50px;
+    font-size: 12px;
     font-weight: 500;
-    color: var(--milaura-text, #000000);
+    color: var(--milaura-text, #333);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    white-space: nowrap;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__group-toggle:hover,
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__group-toggle[aria-expanded="true"] {
-    border-color: {{ section.settings.filter_accent }};
+  #MilauraFilters-{{ section.id }} .filters__chip-btn:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.15);
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__group-toggle svg {
-    width: 14px;
-    height: 14px;
-    transition: transform 0.3s ease;
+  #MilauraFilters-{{ section.id }} .filters__chip-btn.is-active {
+    background: var(--milaura-gold, #C0A062);
+    border-color: var(--milaura-gold, #C0A062);
+    color: #ffffff;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__group-toggle[aria-expanded="true"] svg {
+  #MilauraFilters-{{ section.id }} .filters__chip-btn svg {
+    width: 10px;
+    height: 10px;
+    transition: transform 0.2s ease;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__chip.is-open .filters__chip-btn svg {
     transform: rotate(180deg);
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__dropdown {
+  #MilauraFilters-{{ section.id }} .filters__chip-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    background: var(--milaura-gold, #C0A062);
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__chip-btn.is-active .filters__chip-count {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Dropdown */
+  #MilauraFilters-{{ section.id }} .filters__dropdown {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 6px);
     left: 0;
-    margin-top: 8px;
-    min-width: 200px;
+    min-width: 180px;
+    max-height: 280px;
+    overflow-y: auto;
     background: #ffffff;
-    border: 1px solid rgba(192, 160, 98, 0.3);
+    border: 1px solid rgba(192, 160, 98, 0.2);
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    padding: var(--milaura-spacing-sm);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    padding: 6px;
     z-index: 100;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transform: translateY(-8px);
+    transition: all 0.2s ease;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__group[open] .milaura-filters__dropdown {
+  #MilauraFilters-{{ section.id }} .filters__chip.is-open .filters__dropdown {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__option {
+  #MilauraFilters-{{ section.id }} .filters__option {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
+    gap: 8px;
+    padding: 8px 10px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: background 0.15s ease;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__option:hover {
-    background: rgba(192, 160, 98, 0.1);
+  #MilauraFilters-{{ section.id }} .filters__option:hover {
+    background: rgba(192, 160, 98, 0.08);
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__option input {
-    width: 18px;
-    height: 18px;
-    accent-color: {{ section.settings.filter_accent }};
+  #MilauraFilters-{{ section.id }} .filters__option input {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--milaura-gold, #C0A062);
     cursor: pointer;
+    flex-shrink: 0;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__option label {
-    font-size: 14px;
-    color: var(--milaura-text, #000000);
-    cursor: pointer;
+  #MilauraFilters-{{ section.id }} .filters__option-label {
+    font-size: 13px;
+    color: var(--milaura-text, #333);
     flex: 1;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__option-count {
-    font-size: 12px;
-    color: var(--milaura-text-light, #666666);
+  #MilauraFilters-{{ section.id }} .filters__option-num {
+    font-size: 11px;
+    color: var(--milaura-text-light, #999);
   }
 
-  /* Active Filters Pills */
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__active {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: var(--milaura-spacing-sm);
+  #MilauraFilters-{{ section.id }} .filters__option.is-disabled {
+    opacity: 0.4;
+    pointer-events: none;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__pill {
+  /* Filtres actifs (pills) */
+  #MilauraFilters-{{ section.id }} .filters__active-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    background: {{ section.settings.filter_accent }};
-    color: #ffffff;
+    gap: 4px;
+    padding: 5px 8px 5px 10px;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
+    border: 1px solid rgba(192, 160, 98, 0.3);
     border-radius: 50px;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 500;
+    color: var(--milaura-text, #333);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__pill-remove {
+  #MilauraFilters-{{ section.id }} .filters__active-pill-remove {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
-    background: rgba(255, 255, 255, 0.3);
+    width: 14px;
+    height: 14px;
+    background: rgba(192, 160, 98, 0.2);
     border: none;
     border-radius: 50%;
     cursor: pointer;
     padding: 0;
-    transition: background 0.2s ease;
+    transition: background 0.15s ease;
+    color: var(--milaura-text, #333);
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__pill-remove:hover {
-    background: rgba(255, 255, 255, 0.5);
+  #MilauraFilters-{{ section.id }} .filters__active-pill-remove:hover {
+    background: var(--milaura-gold, #C0A062);
+    color: #ffffff;
   }
 
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__pill-remove svg {
+  #MilauraFilters-{{ section.id }} .filters__active-pill-remove svg {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Clear all */
+  #MilauraFilters-{{ section.id }} .filters__clear {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    background: none;
+    border: none;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--milaura-text-light, #888);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__clear:hover {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  /* Sort (à droite) */
+  #MilauraFilters-{{ section.id }} .filters__sort {
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__sort-select {
+    appearance: none;
+    padding: 6px 28px 6px 10px;
+    background: transparent;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--milaura-text, #333);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__sort-select:hover,
+  #MilauraFilters-{{ section.id }} .filters__sort-select:focus {
+    border-color: var(--milaura-gold, #C0A062);
+    outline: none;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__sort-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 10px;
     height: 10px;
-    color: #ffffff;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__clear-all {
-    font-size: 13px;
-    color: var(--milaura-text-light, #666666);
-    text-decoration: underline;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    transition: color 0.2s ease;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__clear-all:hover {
-    color: {{ section.settings.filter_accent }};
-  }
-
-  /* Mobile Drawer */
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #ffffff;
-    z-index: 9999;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer.is-open {
-    transform: translateX(0);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--milaura-spacing-md);
-    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--milaura-text, #000000);
-    margin: 0;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-close svg {
-    width: 24px;
-    height: 24px;
-    color: var(--milaura-text, #000000);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--milaura-spacing-md);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-section {
-    margin-bottom: var(--milaura-spacing-lg);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-section-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--milaura-text, #000000);
-    margin: 0 0 var(--milaura-spacing-sm) 0;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-footer {
-    padding: var(--milaura-spacing-md);
-    border-top: 1px solid rgba(192, 160, 98, 0.2);
-    display: flex;
-    gap: var(--milaura-spacing-sm);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-btn--reset {
-    background: transparent;
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    color: var(--milaura-text, #000000);
-  }
-
-  #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer-btn--apply {
-    background: {{ section.settings.filter_accent }};
-    border: none;
-    color: #ffffff;
+    pointer-events: none;
+    color: var(--milaura-text-light, #888);
   }
 
   /* Mobile */
   @media screen and (max-width: 768px) {
-    #MilauraCollectionFilters-{{ section.id }} .milaura-filters__toggle {
-      display: flex;
+    #MilauraFilters-{{ section.id }} {
+      position: relative;
+      top: auto;
     }
 
-    #MilauraCollectionFilters-{{ section.id }} .milaura-filters__desktop {
+    #MilauraFilters-{{ section.id }} .filters__bar {
+      padding: 8px 0;
+      gap: 8px;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__count {
       display: none;
     }
 
-    #MilauraCollectionFilters-{{ section.id }} .milaura-filters__sort-select {
-      min-width: 150px;
-      padding: 8px 35px 8px 12px;
-      font-size: 13px;
+    #MilauraFilters-{{ section.id }} .filters__sep:first-of-type {
+      display: none;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__chips {
+      gap: 6px;
+      padding-right: 8px;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__chip-btn {
+      padding: 5px 10px;
+      font-size: 11px;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__dropdown {
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 50vh;
+      border-radius: 16px 16px 0 0;
+      transform: translateY(100%);
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__chip.is-open .filters__dropdown {
+      transform: translateY(0);
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 99;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__chip.is-open ~ .filters__overlay {
+      display: block;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__sort-select {
+      padding: 5px 24px 5px 8px;
+      font-size: 11px;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__active-pill {
+      font-size: 10px;
+      padding: 4px 6px 4px 8px;
     }
   }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    #MilauraCollectionFilters-{{ section.id }} .milaura-filters__drawer,
-    #MilauraCollectionFilters-{{ section.id }} .milaura-filters__dropdown,
-    #MilauraCollectionFilters-{{ section.id }} .milaura-filters__group-toggle svg {
+    #MilauraFilters-{{ section.id }} .filters__dropdown,
+    #MilauraFilters-{{ section.id }} .filters__chip-btn,
+    #MilauraFilters-{{ section.id }} .filters__chip-btn svg {
       transition: none;
     }
   }
 {%- endstyle -%}
 
 <section
-  id="MilauraCollectionFilters-{{ section.id }}"
-  class="milaura-collection-filters"
+  id="MilauraFilters-{{ section.id }}"
+  class="milaura-filters"
   data-section-id="{{ section.id }}"
 >
   <div class="page-width">
-    <div class="milaura-filters__container">
+    <div class="filters__bar">
 
-      {%- comment -%} Left: Filter toggle + Desktop filters + Count {%- endcomment -%}
-      <div class="milaura-filters__left">
-        {%- if section.settings.enable_filtering -%}
-          {%- comment -%} Mobile filter toggle {%- endcomment -%}
-          <button
-            type="button"
-            class="milaura-filters__toggle"
-            aria-controls="MilauraFiltersDrawer-{{ section.id }}"
-            aria-expanded="false"
-            data-filters-toggle
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="4" y1="21" x2="4" y2="14"></line>
-              <line x1="4" y1="10" x2="4" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="12"></line>
-              <line x1="12" y1="8" x2="12" y2="3"></line>
-              <line x1="20" y1="21" x2="20" y2="16"></line>
-              <line x1="20" y1="12" x2="20" y2="3"></line>
-              <line x1="1" y1="14" x2="7" y2="14"></line>
-              <line x1="9" y1="8" x2="15" y2="8"></line>
-              <line x1="17" y1="16" x2="23" y2="16"></line>
-            </svg>
-            <span>Filtrer</span>
-            {%- if collection.filters.size > 0 -%}
-              {%- assign active_values_count = 0 -%}
-              {%- for filter in collection.filters -%}
-                {%- assign active_values_count = active_values_count | plus: filter.active_values.size -%}
-              {%- endfor -%}
-              {%- if active_values_count > 0 -%}
-                <span class="milaura-filters__badge-count">({{ active_values_count }})</span>
-              {%- endif -%}
-            {%- endif -%}
-          </button>
+      {%- comment -%} Compteur {%- endcomment -%}
+      <span class="filters__count">
+        <strong>{{ collection.products_count }}</strong> {{ collection.products_count | pluralize: 'création', 'créations' }}
+      </span>
 
-          {%- comment -%} Desktop filters {%- endcomment -%}
-          <div class="milaura-filters__desktop">
-            {%- for filter in collection.filters -%}
-              {%- if filter.type == 'list' -%}
-                <details class="milaura-filters__group" data-filter-group>
-                  <summary class="milaura-filters__group-toggle" aria-expanded="false">
-                    <span>{{ filter.label }}</span>
-                    {%- if filter.active_values.size > 0 -%}
-                      <span>({{ filter.active_values.size }})</span>
-                    {%- endif -%}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </summary>
-                  <div class="milaura-filters__dropdown">
-                    {%- for value in filter.values -%}
-                      <div class="milaura-filters__option">
-                        <input
-                          type="checkbox"
-                          id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
-                          name="{{ filter.param_name }}"
-                          value="{{ value.value }}"
-                          {% if value.active %}checked{% endif %}
-                          {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                          data-filter-input
-                        >
-                        <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
-                          {{ value.label }}
-                        </label>
-                        <span class="milaura-filters__option-count">({{ value.count }})</span>
-                      </div>
-                    {%- endfor -%}
-                  </div>
-                </details>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
+      <span class="filters__sep"></span>
 
-        {%- comment -%} Results count {%- endcomment -%}
-        <span class="milaura-filters__count" data-products-count>
-          {{ collection.products_count }} {{ collection.products_count | pluralize: 'produit', 'produits' }}
-        </span>
-      </div>
+      {%- comment -%} Chips scrollables {%- endcomment -%}
+      <div class="filters__chips">
 
-      {%- comment -%} Right: Sort {%- endcomment -%}
-      {%- if section.settings.enable_sorting -%}
-        <div class="milaura-filters__right">
-          <div class="milaura-filters__sort">
-            <select
-              class="milaura-filters__sort-select"
-              name="sort_by"
-              aria-label="Trier par"
-              data-sort-select
-            >
-              {%- for option in collection.sort_options -%}
-                <option
-                  value="{{ option.value }}"
-                  {% if collection.sort_by == option.value %}selected{% endif %}
-                >
-                  {{ option.name }}
-                </option>
-              {%- endfor -%}
-            </select>
-            <svg class="milaura-filters__sort-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </div>
-        </div>
-      {%- endif -%}
-    </div>
-
-    {%- comment -%} Active filters pills {%- endcomment -%}
-    {%- assign has_active_filters = false -%}
-    {%- for filter in collection.filters -%}
-      {%- if filter.active_values.size > 0 -%}
-        {%- assign has_active_filters = true -%}
-        {%- break -%}
-      {%- endif -%}
-    {%- endfor -%}
-
-    {%- if has_active_filters -%}
-      <div class="milaura-filters__active">
+        {%- comment -%} Filtres actifs d'abord {%- endcomment -%}
         {%- for filter in collection.filters -%}
           {%- for value in filter.active_values -%}
-            <span class="milaura-filters__pill">
+            <a href="{{ value.url_to_remove }}" class="filters__active-pill">
               {{ value.label }}
-              <a
-                href="{{ value.url_to_remove }}"
-                class="milaura-filters__pill-remove"
-                aria-label="Supprimer le filtre {{ value.label }}"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <span class="filters__active-pill-remove" aria-label="Supprimer {{ value.label }}">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
-              </a>
-            </span>
+              </span>
+            </a>
           {%- endfor -%}
         {%- endfor -%}
 
-        <a href="{{ collection.url }}" class="milaura-filters__clear-all">
-          Tout effacer
-        </a>
-      </div>
-    {%- endif -%}
-
-    {%- comment -%} Mobile Drawer {%- endcomment -%}
-    {%- if section.settings.enable_filtering -%}
-      <div
-        id="MilauraFiltersDrawer-{{ section.id }}"
-        class="milaura-filters__drawer"
-        aria-hidden="true"
-        data-filters-drawer
-      >
-        <div class="milaura-filters__drawer-header">
-          <h2 class="milaura-filters__drawer-title">Filtrer</h2>
-          <button
-            type="button"
-            class="milaura-filters__drawer-close"
-            aria-label="Fermer les filtres"
-            data-filters-close
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-
-        <div class="milaura-filters__drawer-content">
+        {%- comment -%} Chips de filtres {%- endcomment -%}
+        {%- if section.settings.enable_filtering -%}
           {%- for filter in collection.filters -%}
-            {%- if filter.type == 'list' -%}
-              <div class="milaura-filters__drawer-section">
-                <h3 class="milaura-filters__drawer-section-title">{{ filter.label }}</h3>
-                {%- for value in filter.values -%}
-                  <div class="milaura-filters__option">
-                    <input
-                      type="checkbox"
-                      id="MobileFilter-{{ filter.param_name }}-{{ forloop.index }}"
-                      name="{{ filter.param_name }}"
-                      value="{{ value.value }}"
-                      {% if value.active %}checked{% endif %}
-                      {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                      data-mobile-filter-input
-                    >
-                    <label for="MobileFilter-{{ filter.param_name }}-{{ forloop.index }}">
-                      {{ value.label }}
+            {%- if filter.type == 'list' and filter.values.size > 0 -%}
+              <div class="filters__chip" data-filter-chip>
+                <button
+                  type="button"
+                  class="filters__chip-btn{% if filter.active_values.size > 0 %} is-active{% endif %}"
+                  aria-expanded="false"
+                  data-chip-toggle
+                >
+                  <span>{{ filter.label }}</span>
+                  {%- if filter.active_values.size > 0 -%}
+                    <span class="filters__chip-count">{{ filter.active_values.size }}</span>
+                  {%- endif -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+
+                <div class="filters__dropdown">
+                  {%- for value in filter.values -%}
+                    <label class="filters__option{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                      <input
+                        type="checkbox"
+                        name="{{ filter.param_name }}"
+                        value="{{ value.value }}"
+                        {% if value.active %}checked{% endif %}
+                        {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                        data-filter-input
+                      >
+                      <span class="filters__option-label">{{ value.label }}</span>
+                      <span class="filters__option-num">{{ value.count }}</span>
                     </label>
-                    <span class="milaura-filters__option-count">({{ value.count }})</span>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- comment -%} Price range filter {%- endcomment -%}
+            {%- if filter.type == 'price_range' -%}
+              <div class="filters__chip" data-filter-chip>
+                <button
+                  type="button"
+                  class="filters__chip-btn{% if filter.min_value.value != nil or filter.max_value.value != nil %} is-active{% endif %}"
+                  aria-expanded="false"
+                  data-chip-toggle
+                >
+                  <span>Prix</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+
+                <div class="filters__dropdown" style="min-width: 200px; padding: 12px;">
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    <input
+                      type="number"
+                      name="{{ filter.min_value.param_name }}"
+                      value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                      placeholder="{{ filter.range_min | money_without_currency }}"
+                      min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
+                      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      style="flex: 1; padding: 8px; border: 1px solid rgba(192,160,98,0.3); border-radius: 8px; font-size: 13px; width: 70px;"
+                      data-price-input
+                    >
+                    <span style="color: #999; font-size: 12px;">à</span>
+                    <input
+                      type="number"
+                      name="{{ filter.max_value.param_name }}"
+                      value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                      placeholder="{{ filter.range_max | money_without_currency }}"
+                      min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
+                      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      style="flex: 1; padding: 8px; border: 1px solid rgba(192,160,98,0.3); border-radius: 8px; font-size: 13px; width: 70px;"
+                      data-price-input
+                    >
+                    <span style="color: #999; font-size: 12px;">€</span>
                   </div>
-                {%- endfor -%}
+                  <button
+                    type="button"
+                    data-apply-price
+                    style="width: 100%; margin-top: 10px; padding: 8px; background: var(--milaura-gold, #C0A062); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;"
+                  >
+                    Appliquer
+                  </button>
+                </div>
               </div>
             {%- endif -%}
           {%- endfor -%}
-        </div>
+        {%- endif -%}
 
-        <div class="milaura-filters__drawer-footer">
-          <a href="{{ collection.url }}" class="milaura-filters__drawer-btn milaura-filters__drawer-btn--reset">
-            Reinitialiser
-          </a>
-          <button
-            type="button"
-            class="milaura-filters__drawer-btn milaura-filters__drawer-btn--apply"
-            data-filters-apply
-          >
-            Appliquer
-          </button>
-        </div>
+        {%- comment -%} Clear all {%- endcomment -%}
+        {%- assign has_active = false -%}
+        {%- for filter in collection.filters -%}
+          {%- if filter.active_values.size > 0 or filter.min_value.value != nil or filter.max_value.value != nil -%}
+            {%- assign has_active = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if has_active -%}
+          <a href="{{ collection.url }}" class="filters__clear">Effacer tout</a>
+        {%- endif -%}
+
       </div>
-    {%- endif -%}
+
+      <span class="filters__sep"></span>
+
+      {%- comment -%} Tri {%- endcomment -%}
+      {%- if section.settings.enable_sorting -%}
+        <div class="filters__sort">
+          <select
+            class="filters__sort-select"
+            name="sort_by"
+            aria-label="Trier"
+            data-sort-select
+          >
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}" {% if collection.sort_by == option.value %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+          <svg class="filters__sort-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      {%- endif -%}
+
+    </div>
+
+    {%- comment -%} Overlay mobile {%- endcomment -%}
+    <div class="filters__overlay" data-filters-overlay></div>
+
   </div>
 </section>
 
 <script>
 (function() {
-  const sectionId = '{{ section.id }}';
-  const section = document.getElementById('MilauraCollectionFilters-' + sectionId);
+  const section = document.getElementById('MilauraFilters-{{ section.id }}');
   if (!section) return;
 
-  // Mobile drawer toggle
-  const toggleBtn = section.querySelector('[data-filters-toggle]');
-  const drawer = section.querySelector('[data-filters-drawer]');
-  const closeBtn = section.querySelector('[data-filters-close]');
-  const applyBtn = section.querySelector('[data-filters-apply]');
+  // Chip toggles
+  const chips = section.querySelectorAll('[data-filter-chip]');
+  const overlay = section.querySelector('[data-filters-overlay]');
 
-  if (toggleBtn && drawer) {
-    toggleBtn.addEventListener('click', function() {
-      drawer.classList.add('is-open');
-      drawer.setAttribute('aria-hidden', 'false');
-      toggleBtn.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-      // Trap focus
-      drawer.querySelector('button, input')?.focus();
+  chips.forEach(chip => {
+    const btn = chip.querySelector('[data-chip-toggle]');
+    if (!btn) return;
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = chip.classList.contains('is-open');
+
+      // Close all
+      chips.forEach(c => {
+        c.classList.remove('is-open');
+        c.querySelector('[data-chip-toggle]')?.setAttribute('aria-expanded', 'false');
+      });
+
+      // Open this one if it was closed
+      if (!isOpen) {
+        chip.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
     });
-  }
+  });
 
-  if (closeBtn && drawer) {
-    closeBtn.addEventListener('click', closeDrawer);
-  }
-
-  if (applyBtn && drawer) {
-    applyBtn.addEventListener('click', function() {
-      applyMobileFilters();
-      closeDrawer();
-    });
-  }
-
-  function closeDrawer() {
-    if (!drawer) return;
-    drawer.classList.remove('is-open');
-    drawer.setAttribute('aria-hidden', 'true');
-    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-    toggleBtn?.focus();
-  }
-
-  // Close drawer on ESC
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && drawer?.classList.contains('is-open')) {
-      closeDrawer();
+  // Close on click outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-filter-chip]')) {
+      chips.forEach(chip => {
+        chip.classList.remove('is-open');
+        chip.querySelector('[data-chip-toggle]')?.setAttribute('aria-expanded', 'false');
+      });
     }
   });
 
-  // Sort select change
+  // Close on overlay click (mobile)
+  if (overlay) {
+    overlay.addEventListener('click', () => {
+      chips.forEach(chip => {
+        chip.classList.remove('is-open');
+        chip.querySelector('[data-chip-toggle]')?.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Sort select
   const sortSelect = section.querySelector('[data-sort-select]');
   if (sortSelect) {
     sortSelect.addEventListener('change', function() {
@@ -656,15 +597,19 @@
     });
   }
 
-  // Desktop filter inputs
+  // Filter checkboxes
   const filterInputs = section.querySelectorAll('[data-filter-input]');
-  filterInputs.forEach(function(input) {
-    input.addEventListener('change', function() {
-      applyDesktopFilters();
-    });
+  filterInputs.forEach(input => {
+    input.addEventListener('change', applyFilters);
   });
 
-  function applyDesktopFilters() {
+  // Price filter
+  const priceApplyBtns = section.querySelectorAll('[data-apply-price]');
+  priceApplyBtns.forEach(btn => {
+    btn.addEventListener('click', applyFilters);
+  });
+
+  function applyFilters() {
     const url = new URL(window.location.href);
 
     // Clear existing filter params
@@ -676,47 +621,36 @@
 
     // Add checked filters
     const checkedInputs = section.querySelectorAll('[data-filter-input]:checked');
-    checkedInputs.forEach(function(input) {
+    checkedInputs.forEach(input => {
       url.searchParams.append(input.name, input.value);
+    });
+
+    // Add price filters
+    const priceInputs = section.querySelectorAll('[data-price-input]');
+    priceInputs.forEach(input => {
+      if (input.value) {
+        url.searchParams.set(input.name, input.value * 100); // Convert to cents
+      }
     });
 
     window.location.href = url.toString();
   }
 
-  function applyMobileFilters() {
-    const url = new URL(window.location.href);
-
-    // Clear existing filter params
-    for (const key of [...url.searchParams.keys()]) {
-      if (key.startsWith('filter.')) {
-        url.searchParams.delete(key);
-      }
+  // ESC to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      chips.forEach(chip => {
+        chip.classList.remove('is-open');
+        chip.querySelector('[data-chip-toggle]')?.setAttribute('aria-expanded', 'false');
+      });
     }
-
-    // Add checked mobile filters
-    const checkedInputs = section.querySelectorAll('[data-mobile-filter-input]:checked');
-    checkedInputs.forEach(function(input) {
-      url.searchParams.append(input.name, input.value);
-    });
-
-    window.location.href = url.toString();
-  }
-
-  // Close desktop dropdowns when clicking outside
-  document.addEventListener('click', function(e) {
-    const groups = section.querySelectorAll('[data-filter-group]');
-    groups.forEach(function(group) {
-      if (!group.contains(e.target)) {
-        group.removeAttribute('open');
-      }
-    });
   });
 })();
 </script>
 
 {% schema %}
 {
-  "name": "Milaura Filtres",
+  "name": "Filtres Collection",
   "tag": "section",
   "class": "milaura-section",
   "settings": [
@@ -735,27 +669,11 @@
       "id": "enable_sorting",
       "label": "Activer le tri",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "🎨 Couleurs"
-    },
-    {
-      "type": "color",
-      "id": "filter_bg",
-      "label": "Fond des filtres",
-      "default": "#FDFBF7"
-    },
-    {
-      "type": "color",
-      "id": "filter_accent",
-      "label": "Couleur accent",
-      "default": "#C0A062"
     }
   ],
   "presets": [
     {
-      "name": "Milaura Filtres"
+      "name": "Filtres Collection"
     }
   ]
 }
