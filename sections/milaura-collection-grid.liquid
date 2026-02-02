@@ -485,11 +485,13 @@
               <div class="grid__card-img">
                 {%- comment -%} Badges {%- endcomment -%}
                 {%- if section.settings.show_badges -%}
+                  {%- assign thirty_days_ago = 'now' | date: '%s' | minus: 2592000 -%}
+                  {%- assign product_date = product.created_at | date: '%s' -%}
                   {%- if product.available == false -%}
-                    <span class="grid__card-badge grid__card-badge--soldout">Épuisé</span>
+                    <span class="grid__card-badge grid__card-badge--soldout">Rupture</span>
                   {%- elsif product.compare_at_price > product.price -%}
                     <span class="grid__card-badge grid__card-badge--sale">Promo</span>
-                  {%- elsif product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%d' -%}
+                  {%- elsif product_date > thirty_days_ago -%}
                     <span class="grid__card-badge grid__card-badge--new">Nouveau</span>
                   {%- endif -%}
                 {%- endif -%}
