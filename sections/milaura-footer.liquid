@@ -1,12 +1,13 @@
 {% comment %}
-  MILAURA FOOTER
-  Footer custom avec style Vision OS glassmorphism
+  MILAURA FOOTER 2.0
+  Footer premium avec collections auto-generees, social proof, et trust badges
+  Style Vision OS glassmorphism
 {% endcomment %}
 
 <footer id="MilauraFooter-{{ section.id }}" class="milaura-footer">
   <div class="milaura-footer-container">
 
-    {%- comment -%} Haut du footer - Logo + Newsletter {%- endcomment -%}
+    {%- comment -%} TOP : Logo + Newsletter {%- endcomment -%}
     <div class="milaura-footer-top">
       <div class="milaura-footer-brand">
         {% if section.settings.logo != blank %}
@@ -52,8 +53,28 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} Milieu du footer - Liens {%- endcomment -%}
+    {%- comment -%} MIDDLE : Colonnes principales {%- endcomment -%}
     <div class="milaura-footer-middle">
+
+      {%- comment -%} Colonne 1 : Collections auto-generees {%- endcomment -%}
+      {%- if section.settings.show_collections -%}
+        <div class="milaura-footer-column">
+          <h3 class="milaura-footer-column-title">{{ section.settings.collections_title }}</h3>
+          <ul class="milaura-footer-links">
+            {%- for collection in collections -%}
+              {%- if collection.all_products_count > 0 -%}
+                <li>
+                  <a href="{{ collection.url }}" class="milaura-footer-link">
+                    {{ collection.title }}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Colonnes dynamiques via blocks {%- endcomment -%}
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'link_list' -%}
@@ -83,29 +104,79 @@
         {%- endcase -%}
       {%- endfor -%}
 
-      {%- comment -%} Réseaux sociaux {%- endcomment -%}
+      {%- comment -%} Colonne : Decouvrir (avec blog placeholder) {%- endcomment -%}
+      {%- if section.settings.show_discover -%}
+        <div class="milaura-footer-column">
+          <h3 class="milaura-footer-column-title">{{ section.settings.discover_title }}</h3>
+          <ul class="milaura-footer-links">
+            {%- if section.settings.discover_quiz_link != blank -%}
+              <li>
+                <a href="{{ section.settings.discover_quiz_link }}" class="milaura-footer-link">
+                  {{ section.settings.discover_quiz_label }}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if section.settings.discover_blog_link != blank -%}
+              <li>
+                <a href="{{ section.settings.discover_blog_link }}" class="milaura-footer-link">
+                  {{ section.settings.discover_blog_label }}
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if section.settings.discover_about_link != blank -%}
+              <li>
+                <a href="{{ section.settings.discover_about_link }}" class="milaura-footer-link">
+                  {{ section.settings.discover_about_label }}
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Colonne : Reseaux sociaux avec SVG {%- endcomment -%}
       {%- if section.settings.show_social -%}
         <div class="milaura-footer-column">
           <h3 class="milaura-footer-column-title">{{ section.settings.social_title }}</h3>
           <div class="milaura-footer-social">
             {%- if settings.social_instagram_link != blank -%}
               <a href="{{ settings.social_instagram_link }}" class="milaura-social-link" target="_blank" rel="noopener" aria-label="Suivez-nous sur Instagram">
-                <span class="milaura-social-icon" aria-hidden="true">📸</span>
+                <svg class="milaura-social-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
               </a>
             {%- endif -%}
             {%- if settings.social_facebook_link != blank -%}
               <a href="{{ settings.social_facebook_link }}" class="milaura-social-link" target="_blank" rel="noopener" aria-label="Suivez-nous sur Facebook">
-                <span class="milaura-social-icon" aria-hidden="true">👥</span>
+                <svg class="milaura-social-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                </svg>
               </a>
             {%- endif -%}
             {%- if settings.social_tiktok_link != blank -%}
               <a href="{{ settings.social_tiktok_link }}" class="milaura-social-link" target="_blank" rel="noopener" aria-label="Suivez-nous sur TikTok">
-                <span class="milaura-social-icon" aria-hidden="true">🎵</span>
+                <svg class="milaura-social-svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
               </a>
             {%- endif -%}
             {%- if settings.social_pinterest_link != blank -%}
               <a href="{{ settings.social_pinterest_link }}" class="milaura-social-link" target="_blank" rel="noopener" aria-label="Suivez-nous sur Pinterest">
-                <span class="milaura-social-icon" aria-hidden="true">📌</span>
+                <svg class="milaura-social-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M8 12c0-4 3-5 4.5-5 2 0 3.5 1.5 3.5 3.5 0 2.5-1.5 4.5-3 4.5s-2-1-2-1"/>
+                  <path d="M9.5 14.5l-1 6"/>
+                </svg>
+              </a>
+            {%- endif -%}
+            {%- if settings.social_youtube_link != blank -%}
+              <a href="{{ settings.social_youtube_link }}" class="milaura-social-link" target="_blank" rel="noopener" aria-label="Suivez-nous sur YouTube">
+                <svg class="milaura-social-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+                </svg>
               </a>
             {%- endif -%}
           </div>
@@ -113,7 +184,57 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} Bas du footer - Légal + Paiements {%- endcomment -%}
+    {%- comment -%} TRUST BADGES (style reassurance, plus petits) {%- endcomment -%}
+    {%- if section.settings.show_trust_badges -%}
+      <div class="milaura-footer-trust">
+        <div class="milaura-footer-trust-grid">
+          {%- if section.settings.trust_1_text != blank -%}
+            <div class="milaura-footer-trust-item">
+              <span class="milaura-footer-trust-emoji">{{ section.settings.trust_1_emoji }}</span>
+              <span class="milaura-footer-trust-text">{{ section.settings.trust_1_text }}</span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.trust_2_text != blank -%}
+            <div class="milaura-footer-trust-item">
+              <span class="milaura-footer-trust-emoji">{{ section.settings.trust_2_emoji }}</span>
+              <span class="milaura-footer-trust-text">{{ section.settings.trust_2_text }}</span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.trust_3_text != blank -%}
+            <div class="milaura-footer-trust-item">
+              <span class="milaura-footer-trust-emoji">{{ section.settings.trust_3_emoji }}</span>
+              <span class="milaura-footer-trust-text">{{ section.settings.trust_3_text }}</span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.trust_4_text != blank -%}
+            <div class="milaura-footer-trust-item">
+              <span class="milaura-footer-trust-emoji">{{ section.settings.trust_4_emoji }}</span>
+              <span class="milaura-footer-trust-text">{{ section.settings.trust_4_text }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} SOCIAL PROOF PLACEHOLDER {%- endcomment -%}
+    {%- if section.settings.show_social_proof -%}
+      <div class="milaura-footer-social-proof">
+        <div class="milaura-footer-social-proof-content">
+          {%- if section.settings.social_proof_stars -%}
+            <div class="milaura-footer-stars">
+              {%- for i in (1..5) -%}
+                <svg class="milaura-star-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <p class="milaura-footer-social-proof-text">{{ section.settings.social_proof_text }}</p>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} BOTTOM : Legal + Paiements {%- endcomment -%}
     <div class="milaura-footer-bottom">
       <div class="milaura-footer-legal">
         <p class="milaura-footer-copyright">
@@ -137,7 +258,7 @@
 
       {%- if section.settings.show_payment_icons -%}
         <div class="milaura-footer-payment">
-          <span class="milaura-footer-payment-text">Paiement sécurisé</span>
+          <span class="milaura-footer-payment-text">{{ section.settings.payment_text }}</span>
           {%- unless shop.enabled_payment_types == empty -%}
             <ul class="milaura-payment-icons">
               {%- for type in shop.enabled_payment_types -%}
@@ -153,7 +274,7 @@
 </footer>
 
 <style>
-  /* --- FOOTER MILAURA VISION OS --- */
+  /* --- FOOTER MILAURA 2.0 VISION OS --- */
   .milaura-footer {
     background: linear-gradient(
       135deg,
@@ -161,24 +282,24 @@
       {{ section.settings.bg_color_end }} 100%
     );
     border-top: 1px solid rgba(192, 160, 98, 0.2);
-    padding: 4rem 0 2rem 0;
-    margin-top: 4rem;
+    padding: 3rem 0 1.5rem 0;
+    margin-top: 0;
   }
 
   .milaura-footer-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 var(--milaura-spacing-sm, 12px);
   }
 
   /* --- TOP : Logo + Newsletter --- */
   .milaura-footer-top {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
-    margin-bottom: 3rem;
+    gap: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.12);
+    margin-bottom: 2rem;
   }
 
   @media screen and (min-width: 768px) {
@@ -193,46 +314,47 @@
   }
 
   .milaura-footer-logo {
-    max-width: 180px;
+    max-width: 140px;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   .milaura-footer-logo-text {
     font-family: var(--font-heading-family, 'Playfair Display'), serif;
-    font-size: 2rem;
+    font-size: 1.75rem;
     color: var(--milaura-gold, #C0A062);
-    margin: 0 0 1rem 0;
+    margin: 0 0 0.75rem 0;
   }
 
   .milaura-footer-tagline {
-    font-size: 0.9375rem;
-    color: rgba(0, 0, 0, 0.7);
+    font-size: {{ section.settings.tagline_size }}px;
+    color: {{ section.settings.text_color }};
     margin: 0;
     line-height: 1.6;
-    max-width: 400px;
+    max-width: 360px;
   }
 
   /* Newsletter */
   .milaura-footer-newsletter {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 2rem;
-    border: 1px solid rgba(192, 160, 98, 0.2);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid rgba(192, 160, 98, 0.15);
   }
 
   .milaura-footer-newsletter-title {
     font-family: var(--font-heading-family, 'Playfair Display'), serif;
-    font-size: 1.5rem;
-    margin: 0 0 0.5rem 0;
-    color: var(--milaura-text, #000000);
+    font-size: {{ section.settings.newsletter_title_size }}px;
+    margin: 0 0 0.35rem 0;
+    color: {{ section.settings.title_color }};
   }
 
   .milaura-footer-newsletter-text {
-    font-size: 0.9375rem;
-    margin: 0 0 1.5rem 0;
-    color: rgba(0, 0, 0, 0.7);
+    font-size: {{ section.settings.newsletter_text_size }}px;
+    margin: 0 0 1rem 0;
+    color: {{ section.settings.text_color }};
   }
 
   .milaura-newsletter-input-wrapper {
@@ -242,11 +364,11 @@
 
   .milaura-newsletter-input {
     flex: 1;
-    padding: 0.875rem 1.25rem;
-    border: 1px solid rgba(192, 160, 98, 0.3);
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(192, 160, 98, 0.25);
     border-radius: 50px;
-    background: rgba(255, 255, 255, 0.8);
-    font-size: 0.9375rem;
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
     transition: all 0.3s ease;
   }
 
@@ -257,13 +379,13 @@
   }
 
   .milaura-newsletter-btn {
-    padding: 0.875rem 1.75rem;
+    padding: 0.75rem 1.5rem;
     background: var(--milaura-gold, #C0A062);
     color: white;
     border: none;
     border-radius: 50px;
     font-weight: 600;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -271,30 +393,31 @@
 
   .milaura-newsletter-btn:hover {
     background: var(--milaura-gold-dark, #8F723A);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(192, 160, 98, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(192, 160, 98, 0.25);
   }
 
   /* --- MIDDLE : Colonnes de liens --- */
   .milaura-footer-middle {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.12);
+    margin-bottom: 1.5rem;
   }
 
   @media screen and (min-width: 768px) {
     .milaura-footer-middle {
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 2rem;
     }
   }
 
   .milaura-footer-column-title {
     font-family: var(--font-heading-family, 'Playfair Display'), serif;
-    font-size: 1.125rem;
-    margin: 0 0 1rem 0;
+    font-size: {{ section.settings.column_title_size }}px;
+    margin: 0 0 0.75rem 0;
     color: {{ section.settings.title_color }};
   }
 
@@ -305,13 +428,13 @@
   }
 
   .milaura-footer-links li {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   .milaura-footer-link {
     color: {{ section.settings.text_color }};
     text-decoration: none;
-    font-size: 0.9375rem;
+    font-size: {{ section.settings.link_size }}px;
     transition: color 0.3s ease;
   }
 
@@ -320,46 +443,126 @@
   }
 
   .milaura-footer-text {
-    font-size: 0.9375rem;
+    font-size: {{ section.settings.link_size }}px;
     line-height: 1.6;
-    color: rgba(0, 0, 0, 0.7);
+    color: {{ section.settings.text_color }};
   }
 
-  /* Réseaux sociaux */
+  /* Reseaux sociaux avec SVG */
   .milaura-footer-social {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
   }
 
   .milaura-social-link {
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.5);
     border-radius: 50%;
     border: 1px solid rgba(192, 160, 98, 0.2);
     text-decoration: none;
+    color: {{ section.settings.text_color }};
     transition: all 0.3s ease;
   }
 
   .milaura-social-link:hover {
     background: var(--milaura-gold, #C0A062);
     border-color: var(--milaura-gold, #C0A062);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(192, 160, 98, 0.3);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(192, 160, 98, 0.25);
   }
 
-  .milaura-social-icon {
-    font-size: 1.25rem;
+  .milaura-social-svg {
+    width: 18px;
+    height: 18px;
   }
 
-  /* --- BOTTOM : Légal + Paiements --- */
+  /* --- TRUST BADGES (mini version) --- */
+  .milaura-footer-trust {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.12);
+    margin-bottom: 1.5rem;
+  }
+
+  .milaura-footer-trust-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-trust-grid {
+      justify-content: space-around;
+    }
+  }
+
+  .milaura-footer-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .milaura-footer-trust-emoji {
+    font-size: {{ section.settings.trust_emoji_size }}px;
+  }
+
+  .milaura-footer-trust-text {
+    font-size: {{ section.settings.trust_text_size }}px;
+    color: {{ section.settings.text_color }};
+    font-weight: 500;
+  }
+
+  /* --- SOCIAL PROOF --- */
+  .milaura-footer-social-proof {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.12);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .milaura-footer-social-proof-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-social-proof-content {
+      flex-direction: row;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+  }
+
+  .milaura-footer-stars {
+    display: flex;
+    gap: 0.15rem;
+  }
+
+  .milaura-star-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-footer-social-proof-text {
+    font-size: {{ section.settings.social_proof_text_size }}px;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+  }
+
+  /* --- BOTTOM : Legal + Paiements --- */
   .milaura-footer-bottom {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     align-items: center;
     text-align: center;
   }
@@ -375,20 +578,20 @@
   .milaura-footer-legal {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   @media screen and (min-width: 768px) {
     .milaura-footer-legal {
       flex-direction: row;
       align-items: center;
-      gap: 2rem;
+      gap: 1.5rem;
     }
   }
 
   .milaura-footer-copyright {
-    font-size: 0.875rem;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: 0.8125rem;
+    color: rgba(0, 0, 0, 0.55);
     margin: 0;
   }
 
@@ -398,7 +601,7 @@
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1rem;
     justify-content: center;
   }
 
@@ -409,9 +612,9 @@
   }
 
   .milaura-footer-policies a {
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.55);
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     transition: color 0.3s ease;
   }
 
@@ -419,11 +622,11 @@
     color: var(--milaura-gold, #C0A062);
   }
 
-  /* Icônes de paiement */
+  /* Icones de paiement */
   .milaura-footer-payment {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
     justify-content: center;
   }
@@ -435,8 +638,8 @@
   }
 
   .milaura-footer-payment-text {
-    font-size: 0.875rem;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: 0.8125rem;
+    color: rgba(0, 0, 0, 0.55);
   }
 
   .milaura-payment-icons {
@@ -444,13 +647,13 @@
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.35rem;
     flex-wrap: wrap;
   }
 
   .milaura-payment-icon {
-    width: 40px;
-    height: 26px;
+    width: 36px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -459,13 +662,19 @@
   .milaura-payment-icon svg {
     width: 100%;
     height: auto;
-    opacity: 0.7;
+    opacity: 0.65;
   }
 
   /* Mobile adjustments */
   @media screen and (max-width: 767px) {
     .milaura-footer {
-      padding: 3rem 0 1.5rem 0;
+      padding: 2rem 0 1.25rem 0;
+    }
+
+    .milaura-footer-top {
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .milaura-newsletter-input-wrapper {
@@ -475,12 +684,30 @@
     .milaura-newsletter-btn {
       width: 100%;
     }
+
+    .milaura-footer-trust-grid {
+      gap: 1rem;
+    }
+
+    .milaura-footer-trust-item {
+      flex-basis: calc(50% - 0.5rem);
+      justify-content: center;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-social-link,
+    .milaura-newsletter-btn,
+    .milaura-footer-link {
+      transition: none;
+    }
   }
 </style>
 
 {% schema %}
 {
-  "name": "Milaura Footer",
+  "name": "Milaura Footer 2.0",
   "tag": "footer",
   "class": "milaura-footer-section",
   "settings": [
@@ -491,20 +718,20 @@
     {
       "type": "color",
       "id": "bg_color_start",
-      "label": "Fond dégradé début",
+      "label": "Fond degrade debut",
       "default": "#FDFBF7"
     },
     {
       "type": "color",
       "id": "bg_color_end",
-      "label": "Fond dégradé fin",
+      "label": "Fond degrade fin",
       "default": "#F2E8D5"
     },
     {
       "type": "color",
       "id": "title_color",
       "label": "Couleur des titres",
-      "default": "#000000"
+      "default": "#1a1a1a"
     },
     {
       "type": "color",
@@ -531,17 +758,27 @@
       "type": "textarea",
       "id": "tagline",
       "label": "Tagline",
-      "default": "Bougies et pierres naturelles pour créer des rituels émotionnels authentiques."
+      "default": "Bougies et pierres naturelles pour creer des rituels emotionnels authentiques."
+    },
+    {
+      "type": "range",
+      "id": "tagline_size",
+      "label": "Taille tagline",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
     },
     {
       "type": "text",
       "id": "copyright_text",
       "label": "Copyright text",
-      "default": "Tous droits réservés."
+      "default": "Tous droits reserves."
     },
     {
       "type": "header",
-      "content": "Newsletter"
+      "content": "📧 Newsletter"
     },
     {
       "type": "checkbox",
@@ -553,13 +790,33 @@
       "type": "text",
       "id": "newsletter_title",
       "label": "Titre newsletter",
-      "default": "Rejoins notre communauté"
+      "default": "Rejoins notre communaute"
+    },
+    {
+      "type": "range",
+      "id": "newsletter_title_size",
+      "label": "Taille titre newsletter",
+      "min": 16,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "textarea",
       "id": "newsletter_text",
       "label": "Texte newsletter",
-      "default": "Reçois en avant-première nos nouvelles créations et rituels exclusifs."
+      "default": "Recois en avant-premiere nos nouvelles creations et rituels exclusifs."
+    },
+    {
+      "type": "range",
+      "id": "newsletter_text_size",
+      "label": "Taille texte newsletter",
+      "min": 12,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 14
     },
     {
       "type": "text",
@@ -575,35 +832,240 @@
     },
     {
       "type": "header",
-      "content": "Réseaux sociaux"
+      "content": "🛍️ Collections auto"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collections",
+      "label": "Afficher toutes les collections",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "collections_title",
+      "label": "Titre colonne collections",
+      "default": "Nos collections"
+    },
+    {
+      "type": "header",
+      "content": "🔍 Decouvrir"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discover",
+      "label": "Afficher colonne Decouvrir",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "discover_title",
+      "label": "Titre colonne",
+      "default": "Decouvrir"
+    },
+    {
+      "type": "text",
+      "id": "discover_quiz_label",
+      "label": "Lien quiz - Label",
+      "default": "Le quiz emotionnel"
+    },
+    {
+      "type": "url",
+      "id": "discover_quiz_link",
+      "label": "Lien quiz - URL"
+    },
+    {
+      "type": "text",
+      "id": "discover_blog_label",
+      "label": "Lien blog - Label",
+      "default": "Notre univers"
+    },
+    {
+      "type": "url",
+      "id": "discover_blog_link",
+      "label": "Lien blog - URL"
+    },
+    {
+      "type": "text",
+      "id": "discover_about_label",
+      "label": "Lien a propos - Label",
+      "default": "Notre histoire"
+    },
+    {
+      "type": "url",
+      "id": "discover_about_link",
+      "label": "Lien a propos - URL"
+    },
+    {
+      "type": "header",
+      "content": "📱 Reseaux sociaux"
     },
     {
       "type": "checkbox",
       "id": "show_social",
-      "label": "Afficher réseaux sociaux",
+      "label": "Afficher reseaux sociaux",
       "default": true
     },
     {
       "type": "text",
       "id": "social_title",
-      "label": "Titre réseaux",
-      "default": "Suis-nous"
+      "label": "Titre reseaux",
+      "default": "Suivez-nous"
     },
     {
       "type": "header",
-      "content": "Liens légaux & Paiements"
+      "content": "✨ Trust badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Afficher trust badges",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "trust_emoji_size",
+      "label": "Taille emoji",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "trust_text_size",
+      "label": "Taille texte badge",
+      "min": 11,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "trust_1_emoji",
+      "label": "Badge 1 - Emoji",
+      "default": "🇫🇷"
+    },
+    {
+      "type": "text",
+      "id": "trust_1_text",
+      "label": "Badge 1 - Texte",
+      "default": "Artisanat Francais"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_emoji",
+      "label": "Badge 2 - Emoji",
+      "default": "💎"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_text",
+      "label": "Badge 2 - Texte",
+      "default": "Pierres Certifiees"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_emoji",
+      "label": "Badge 3 - Emoji",
+      "default": "🚚"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_text",
+      "label": "Badge 3 - Texte",
+      "default": "Livraison Offerte"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_emoji",
+      "label": "Badge 4 - Emoji",
+      "default": "💝"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_text",
+      "label": "Badge 4 - Texte",
+      "default": "Emballage Cadeau"
+    },
+    {
+      "type": "header",
+      "content": "⭐ Social Proof"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_proof",
+      "label": "Afficher social proof",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "social_proof_stars",
+      "label": "Afficher etoiles",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "social_proof_text",
+      "label": "Texte social proof",
+      "default": "Rejoins + de 500 ames connectees"
+    },
+    {
+      "type": "range",
+      "id": "social_proof_text_size",
+      "label": "Taille texte",
+      "min": 12,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "📏 Typographie colonnes"
+    },
+    {
+      "type": "range",
+      "id": "column_title_size",
+      "label": "Taille titres colonnes",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "label": "Taille liens",
+      "min": 12,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "⚖️ Liens legaux & Paiements"
     },
     {
       "type": "checkbox",
       "id": "show_policy_links",
-      "label": "Afficher liens légaux",
+      "label": "Afficher liens legaux",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "Afficher icônes de paiement",
+      "label": "Afficher icones de paiement",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "payment_text",
+      "label": "Texte paiement",
+      "default": "Paiement securise"
     }
   ],
   "blocks": [
@@ -615,7 +1077,7 @@
           "type": "text",
           "id": "heading",
           "label": "Titre",
-          "default": "Liens rapides"
+          "default": "Aide"
         },
         {
           "type": "link_list",
@@ -633,40 +1095,26 @@
           "type": "text",
           "id": "heading",
           "label": "Titre",
-          "default": "À propos"
+          "default": "A propos"
         },
         {
           "type": "richtext",
           "id": "text",
           "label": "Contenu",
-          "default": "<p>Milaura crée des bougies émotionnelles et des bijoux en pierres naturelles pour accompagner tes rituels quotidiens.</p>"
+          "default": "<p>Milaura cree des bougies emotionnelles et des bijoux en pierres naturelles pour accompagner tes rituels quotidiens.</p>"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Milaura Footer",
+      "name": "Milaura Footer 2.0",
       "blocks": [
-        {
-          "type": "link_list",
-          "settings": {
-            "heading": "Collections",
-            "menu": "footer"
-          }
-        },
         {
           "type": "link_list",
           "settings": {
             "heading": "Aide",
             "menu": "footer"
-          }
-        },
-        {
-          "type": "text",
-          "settings": {
-            "heading": "À propos",
-            "text": "<p>Milaura crée des bougies émotionnelles et des bijoux en pierres naturelles pour accompagner tes rituels quotidiens.</p>"
           }
         }
       ]
