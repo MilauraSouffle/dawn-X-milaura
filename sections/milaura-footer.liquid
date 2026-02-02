@@ -56,13 +56,18 @@
     {%- comment -%} MIDDLE : Colonnes principales {%- endcomment -%}
     <div class="milaura-footer-middle">
 
-      {%- comment -%} Colonne 1 : Collections auto-generees {%- endcomment -%}
+      {%- comment -%} Colonne 1 : Collections auto-generees (filtre les collections internes) {%- endcomment -%}
       {%- if section.settings.show_collections -%}
         <div class="milaura-footer-column">
           <h3 class="milaura-footer-column-title">{{ section.settings.collections_title }}</h3>
           <ul class="milaura-footer-links">
             {%- for collection in collections -%}
-              {%- if collection.all_products_count > 0 -%}
+              {%- comment -%} Exclure collections internes/techniques {%- endcomment -%}
+              {%- assign is_internal = false -%}
+              {%- if collection.handle contains 'recos' or collection.handle contains 'pool' or collection.handle contains 'frontpage' or collection.handle contains 'all' -%}
+                {%- assign is_internal = true -%}
+              {%- endif -%}
+              {%- if collection.all_products_count > 0 and is_internal == false -%}
                 <li>
                   <a href="{{ collection.url }}" class="milaura-footer-link">
                     {{ collection.title }}
