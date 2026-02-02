@@ -634,7 +634,7 @@
             {% endif %}
 
             {% if section.settings.title != blank %}
-              <h1 class="hero-title-script">{{ section.settings.title }}</h1>
+              <h2 class="hero-title-script">{{ section.settings.title }}</h2>
             {% endif %}
 
             {% if section.settings.subtitle != blank %}
@@ -700,13 +700,23 @@
                   aria-hidden="{% if slide_index == 0 %}false{% else %}true{% endif %}"
                   {{ block.shopify_attributes }}
                 >
+                  {%- if slide_index == 0 -%}
                   {{
                     block.settings.image
                     | image_url: width: 1400
-                    | image_tag: loading: 'eager', alt: block.settings.image.alt
+                    | image_tag: loading: 'eager', fetchpriority: 'high', alt: block.settings.image.alt
                     | default: block.settings.title
                     | default: 'Milaura'
                   }}
+                {%- else -%}
+                  {{
+                    block.settings.image
+                    | image_url: width: 1400
+                    | image_tag: loading: 'lazy', alt: block.settings.image.alt
+                    | default: block.settings.title
+                    | default: 'Milaura'
+                  }}
+                {%- endif -%}
                 </div>
                 {% assign slide_index = slide_index | plus: 1 %}
               {% endif %}
