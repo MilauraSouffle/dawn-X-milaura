@@ -1,9 +1,13 @@
 {%- comment -%}
   MILAURA COLLECTION HERO - DYNAMIC ISLAND
   Animation style Apple Dynamic Island + BFM typewriter
-  Ultra-minimal, 2026 design
-  @version 4.0.0
+  100% CSS - Works in Shopify editor
+  @version 4.1.0
 {%- endcomment -%}
+
+{%- assign title_length = collection.title | size -%}
+{%- assign typing_duration = title_length | times: 0.08 -%}
+{%- if typing_duration < 0.8 %}{% assign typing_duration = 0.8 %}{% endif -%}
 
 {%- style -%}
   #MilauraCollectionHero-{{ section.id }} {
@@ -44,7 +48,7 @@
   }
 
   /* =============================================
-     DYNAMIC ISLAND - La magie
+     DYNAMIC ISLAND - Animation fluide
      ============================================= */
   #MilauraCollectionHero-{{ section.id }} .hero__island-wrapper {
     display: flex;
@@ -53,6 +57,7 @@
   }
 
   #MilauraCollectionHero-{{ section.id }} .hero__island {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -71,24 +76,19 @@
       0 2px 8px rgba(0, 0, 0, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
-    /* Animation fluide GPU-accelerated */
-    animation: islandReveal 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    /* Animation d'apparition */
+    animation: islandReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     transform-origin: center center;
-    will-change: transform, opacity;
   }
 
   @keyframes islandReveal {
     0% {
       opacity: 0;
-      transform: scale(0.3) translateY(-10px);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.02) translateY(0);
+      transform: scale(0.6);
     }
     100% {
       opacity: 1;
-      transform: scale(1) translateY(0);
+      transform: scale(1);
     }
   }
 
@@ -137,7 +137,9 @@
     }
   }
 
-  /* Titre */
+  /* =============================================
+     TYPEWRITER - 100% CSS
+     ============================================= */
   #MilauraCollectionHero-{{ section.id }} .hero__island-title {
     font-family: {{ section.settings.title_font }};
     font-size: {{ section.settings.title_size }}px;
@@ -147,40 +149,38 @@
     white-space: nowrap;
     letter-spacing: 0.3px;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
   }
 
-  /* Typewriter container - JS will populate */
-  #MilauraCollectionHero-{{ section.id }} .hero__island-title .typewriter {
-    display: inline;
-    visibility: hidden;
+  #MilauraCollectionHero-{{ section.id }} .hero__typewriter-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    animation: typewriter {{ typing_duration }}s steps({{ title_length }}, end) 0.4s forwards;
   }
 
-  /* Fallback for no-JS */
-  .no-js #MilauraCollectionHero-{{ section.id }} .hero__island-title .typewriter {
-    visibility: visible;
+  @keyframes typewriter {
+    0% { width: 0; }
+    100% { width: 100%; }
   }
 
-  /* Curseur clignotant (optionnel) */
-  #MilauraCollectionHero-{{ section.id }} .hero__island-title .cursor {
+  /* Curseur clignotant */
+  #MilauraCollectionHero-{{ section.id }} .hero__cursor {
     display: inline-block;
     width: 2px;
     height: 1em;
     background: var(--milaura-gold, #C0A062);
     margin-left: 2px;
-    animation: blink 0.8s infinite;
     vertical-align: middle;
-    opacity: 0;
-    animation: cursorFade 1.5s forwards;
+    animation: cursorBlink 0.8s step-end infinite;
+    animation-delay: 0.4s;
   }
 
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-  }
-
-  @keyframes cursorFade {
-    0%, 80% { opacity: 0; }
-    81%, 100% { opacity: 1; animation: blink 0.8s infinite; }
+  @keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
   /* Compteur produits */
@@ -196,7 +196,7 @@
     color: var(--milaura-gold-light, #E6C88B);
     flex-shrink: 0;
     opacity: 0;
-    animation: fadeIn 0.4s ease 1s forwards;
+    animation: fadeIn 0.4s ease {{ typing_duration | plus: 0.6 }}s forwards;
   }
 
   @keyframes fadeIn {
@@ -264,7 +264,12 @@
       transform: none;
     }
 
-    #MilauraCollectionHero-{{ section.id }} .hero__island-title .cursor {
+    #MilauraCollectionHero-{{ section.id }} .hero__typewriter-text {
+      animation: none;
+      width: auto;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .hero__cursor {
       display: none;
     }
 
@@ -278,38 +283,6 @@
     }
   }
 {%- endstyle -%}
-
-<script>
-(function() {
-  // Typewriter effect for smoother animation
-  const section = document.getElementById('MilauraCollectionHero-{{ section.id }}');
-  if (!section) return;
-
-  const typewriterEl = section.querySelector('.typewriter');
-  if (!typewriterEl) return;
-
-  // Check for reduced motion preference
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const text = typewriterEl.textContent;
-  typewriterEl.textContent = '';
-  typewriterEl.style.visibility = 'visible';
-
-  let i = 0;
-  const speed = 50; // ms per character
-
-  function type() {
-    if (i < text.length) {
-      typewriterEl.textContent += text.charAt(i);
-      i++;
-      setTimeout(type, speed);
-    }
-  }
-
-  // Start typing after island animation
-  setTimeout(type, 400);
-})();
-</script>
 
 <section
   id="MilauraCollectionHero-{{ section.id }}"
@@ -330,15 +303,15 @@
 
     {%- comment -%} Dynamic Island {%- endcomment -%}
     <div class="hero__island-wrapper">
-      <h1 class="hero__island" role="banner">
+      <h1 class="hero__island">
         {%- comment -%} Point doré pulsant {%- endcomment -%}
         <span class="hero__island-dot" aria-hidden="true"></span>
 
-        {%- comment -%} Titre avec typewriter {%- endcomment -%}
+        {%- comment -%} Titre avec typewriter CSS {%- endcomment -%}
         <span class="hero__island-title">
-          <span class="typewriter">{{ collection.title }}</span>
+          <span class="hero__typewriter-text">{{ collection.title }}</span>
           {%- if section.settings.show_cursor -%}
-            <span class="cursor" aria-hidden="true"></span>
+            <span class="hero__cursor" aria-hidden="true"></span>
           {%- endif -%}
         </span>
 
