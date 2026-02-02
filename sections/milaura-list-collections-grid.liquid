@@ -1,503 +1,914 @@
 {%- comment -%}
-  MILAURA LIST COLLECTIONS GRID
-  Grille de collections avec cartes luxueuses
-  Design: Cards 3D avec hover effect, glassmorphism, animations staggered
-  @version 1.0.1 - Force resync
+  MILAURA BENTO COLLECTIONS
+  Layout asymétrique style magazine luxe
+  Support vidéo/GIF/image pour chaque collection
+  Optimisé réseaux sociaux et engagement
+  @version 2.0.0
 {%- endcomment -%}
 
 {%- style -%}
-  #MilauraListCollectionsGrid-{{ section.id }} {
-    padding: var(--milaura-spacing-lg) 0 var(--milaura-spacing-xl);
+  #MilauraBento-{{ section.id }} {
+    padding: var(--milaura-spacing-md) 0 var(--milaura-spacing-lg);
   }
 
-  /* Grid */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-grid {
+  /* =============================================
+     BENTO GRID - Layout asymétrique
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento {
     display: grid;
-    grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
-    gap: 30px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(180px, auto);
+    gap: 16px;
   }
 
-  /* Card Collection */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card {
+  /* Tailles des cartes */
+  #MilauraBento-{{ section.id }} .bento__card--large {
+    grid-column: span 8;
+    grid-row: span 2;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--medium {
+    grid-column: span 4;
+    grid-row: span 2;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--small {
+    grid-column: span 4;
+    grid-row: span 1;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--wide {
+    grid-column: span 6;
+    grid-row: span 1;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--tall {
+    grid-column: span 4;
+    grid-row: span 2;
+  }
+
+  /* =============================================
+     CARTE - Style de base
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__card {
     position: relative;
-    border-radius: var(--milaura-border-radius, 20px);
+    border-radius: 24px;
     overflow: hidden;
-    background: #ffffff;
-    box-shadow:
-      0 10px 40px rgba(0, 0, 0, 0.08),
-      0 0 0 1px rgba(192, 160, 98, 0.1);
-    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transform-style: preserve-3d;
-    perspective: 1000px;
-
-    /* Animation entree staggered */
-    opacity: 0;
-    transform: translateY(30px);
-    animation: milauraCardReveal 0.7s ease-out forwards;
+    cursor: pointer;
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 
-  /* Stagger delay pour chaque carte */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:nth-child(1) { animation-delay: 0.1s; }
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:nth-child(2) { animation-delay: 0.2s; }
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:nth-child(3) { animation-delay: 0.3s; }
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:nth-child(4) { animation-delay: 0.4s; }
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:nth-child(5) { animation-delay: 0.5s; }
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:nth-child(6) { animation-delay: 0.6s; }
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:nth-child(7) { animation-delay: 0.7s; }
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:nth-child(8) { animation-delay: 0.8s; }
+  #MilauraBento-{{ section.id }} .bento__card-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
 
-  @keyframes milauraCardReveal {
+  /* =============================================
+     MEDIA - Image/Video/GIF container
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__media img,
+  #MilauraBento-{{ section.id }} .bento__media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:hover .bento__media img,
+  #MilauraBento-{{ section.id }} .bento__card:hover .bento__media video {
+    transform: scale(1.05);
+  }
+
+  /* Video controls */
+  #MilauraBento-{{ section.id }} .bento__media video {
+    pointer-events: none;
+  }
+
+  /* =============================================
+     OVERLAY - Dégradé élégant
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(0, 0, 0, 0.1) 60%,
+      rgba(0, 0, 0, 0.5) 85%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+    transition: opacity 0.4s ease;
+    z-index: 1;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:hover .bento__overlay {
+    opacity: 0.9;
+  }
+
+  /* =============================================
+     CONTENU - Texte et badges
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 24px;
+    z-index: 2;
+    transform: translateY(8px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:hover .bento__content {
+    transform: translateY(0);
+  }
+
+  /* Badge catégorie */
+  #MilauraBento-{{ section.id }} .bento__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:hover .bento__badge {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--milaura-gold, #C0A062);
+    border-radius: 50%;
+    animation: bentoPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes bentoPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.8); }
+  }
+
+  /* Titre */
+  #MilauraBento-{{ section.id }} .bento__title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 8px 0;
+    line-height: 1.15;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--small .bento__title,
+  #MilauraBento-{{ section.id }} .bento__card--wide .bento__title {
+    font-size: 1.3rem;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--large .bento__title {
+    font-size: 2.4rem;
+  }
+
+  /* Description */
+  #MilauraBento-{{ section.id }} .bento__desc {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    line-height: 1.5;
+    max-width: 400px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:hover .bento__desc {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--small .bento__desc,
+  #MilauraBento-{{ section.id }} .bento__card--wide .bento__desc {
+    display: none;
+  }
+
+  /* CTA */
+  #MilauraBento-{{ section.id }} .bento__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 10px 20px;
+    background: var(--milaura-gold, #C0A062);
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:hover .bento__cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__cta:hover {
+    background: #ffffff;
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__cta svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--small .bento__cta,
+  #MilauraBento-{{ section.id }} .bento__card--wide .bento__cta {
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    margin-top: 12px;
+  }
+
+  /* =============================================
+     COIN BADGE - Nombre de produits
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__count {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 12px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:hover .bento__count {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--small .bento__count,
+  #MilauraBento-{{ section.id }} .bento__card--wide .bento__count {
+    min-width: 36px;
+    height: 36px;
+    font-size: 0.7rem;
+    top: 12px;
+    right: 12px;
+  }
+
+  /* =============================================
+     INDICATEUR VIDÉO/GIF
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__play-indicator {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 50px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__play-indicator svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* =============================================
+     SHIMMER EFFECT - Bord doré subtil
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 2px;
+    background: linear-gradient(
+      135deg,
+      rgba(192, 160, 98, 0) 0%,
+      rgba(192, 160, 98, 0.3) 50%,
+      rgba(192, 160, 98, 0) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:hover::before {
+    opacity: 1;
+  }
+
+  /* =============================================
+     ANIMATIONS D'ENTRÉE
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    animation: bentoReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card:nth-child(1) { animation-delay: 0.05s; }
+  #MilauraBento-{{ section.id }} .bento__card:nth-child(2) { animation-delay: 0.1s; }
+  #MilauraBento-{{ section.id }} .bento__card:nth-child(3) { animation-delay: 0.15s; }
+  #MilauraBento-{{ section.id }} .bento__card:nth-child(4) { animation-delay: 0.2s; }
+  #MilauraBento-{{ section.id }} .bento__card:nth-child(5) { animation-delay: 0.25s; }
+  #MilauraBento-{{ section.id }} .bento__card:nth-child(6) { animation-delay: 0.3s; }
+
+  @keyframes bentoReveal {
     to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* =============================================
+     RESPONSIVE - Tablette
+     ============================================= */
+  @media screen and (max-width: 1024px) {
+    #MilauraBento-{{ section.id }} .bento {
+      grid-template-columns: repeat(8, 1fr);
+      gap: 14px;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__card--large {
+      grid-column: span 8;
+      grid-row: span 2;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__card--medium,
+    #MilauraBento-{{ section.id }} .bento__card--tall {
+      grid-column: span 4;
+      grid-row: span 2;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__card--small,
+    #MilauraBento-{{ section.id }} .bento__card--wide {
+      grid-column: span 4;
+      grid-row: span 1;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__title {
+      font-size: 1.5rem;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__card--large .bento__title {
+      font-size: 2rem;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__content {
+      padding: 20px;
+    }
+
+    /* Toujours visible sur tablette */
+    #MilauraBento-{{ section.id }} .bento__badge,
+    #MilauraBento-{{ section.id }} .bento__desc,
+    #MilauraBento-{{ section.id }} .bento__cta {
       opacity: 1;
       transform: translateY(0);
     }
   }
 
-  /* Hover 3D effect */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:hover {
-    box-shadow:
-      0 25px 60px rgba(192, 160, 98, 0.25),
-      0 0 0 2px rgba(192, 160, 98, 0.3);
-    transform: translateY(-8px) rotateX(2deg);
-  }
-
-  /* Halo dore au hover */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at center, rgba(192, 160, 98, 0.15) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:hover::after {
-    opacity: 1;
-  }
-
-  /* Card Link */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  /* Image container */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__image-wrap {
-    position: relative;
-    aspect-ratio: {{ section.settings.image_ratio }};
-    overflow: hidden;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:hover .milaura-lc-card__image {
-    transform: scale(1.08);
-  }
-
-  /* Overlay gradient */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60%;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.7) 0%,
-      rgba(0, 0, 0, 0.3) 50%,
-      transparent 100%
-    );
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  /* Badge count */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__badge {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 3;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 12px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 50px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--milaura-gold, #C0A062);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Content inside image */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__content-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 24px;
-    z-index: 3;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__title {
-    font-family: {{ section.settings.title_font }};
-    font-size: {{ section.settings.title_size }}px;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0 0 8px 0;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    line-height: 1.2;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__description {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0;
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* Content below (alternate style) */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__content-below {
-    padding: 20px 24px 24px;
-    background: #ffffff;
-    position: relative;
-    z-index: 2;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__content-below .milaura-lc-card__title {
-    color: var(--milaura-text, #000000);
-    text-shadow: none;
-    font-size: {{ section.settings.title_size | times: 0.9 | round: 0 }}px;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__content-below .milaura-lc-card__description {
-    color: var(--milaura-text-light, #666666);
-    margin-bottom: 16px;
-  }
-
-  /* CTA Arrow */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--milaura-gold, #C0A062);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: gap 0.3s ease;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:hover .milaura-lc-card__cta {
-    gap: 12px;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__cta svg {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.3s ease;
-  }
-
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card:hover .milaura-lc-card__cta svg {
-    transform: translateX(4px);
-  }
-
-  /* Empty placeholder */
-  #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #FDFBF7 0%, #F2E8D5 100%);
-    font-size: 48px;
-  }
-
-  /* Tablet */
-  @media screen and (max-width: 1024px) {
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__title {
-      font-size: {{ section.settings.title_size | times: 0.85 | round: 0 }}px;
-    }
-  }
-
-  /* Mobile */
+  /* =============================================
+     RESPONSIVE - Mobile
+     ============================================= */
   @media screen and (max-width: 768px) {
-    #MilauraListCollectionsGrid-{{ section.id }} {
-      padding: var(--milaura-spacing-md) 0 var(--milaura-spacing-lg);
+    #MilauraBento-{{ section.id }} {
+      padding: var(--milaura-spacing-sm) 0 var(--milaura-spacing-md);
     }
 
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-grid {
-      grid-template-columns: repeat({{ section.settings.mobile_columns }}, 1fr);
-      gap: 16px;
+    #MilauraBento-{{ section.id }} .bento {
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: minmax(140px, auto);
+      gap: 12px;
     }
 
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__content-overlay {
-      padding: 16px;
+    #MilauraBento-{{ section.id }} .bento__card--large {
+      grid-column: span 4;
+      grid-row: span 2;
     }
 
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__title {
-      font-size: 20px;
+    #MilauraBento-{{ section.id }} .bento__card--medium,
+    #MilauraBento-{{ section.id }} .bento__card--tall,
+    #MilauraBento-{{ section.id }} .bento__card--wide {
+      grid-column: span 2;
+      grid-row: span 1;
     }
 
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__description {
-      font-size: 13px;
-      -webkit-line-clamp: 1;
+    #MilauraBento-{{ section.id }} .bento__card--small {
+      grid-column: span 2;
+      grid-row: span 1;
     }
 
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__badge {
-      top: 12px;
-      right: 12px;
+    #MilauraBento-{{ section.id }} .bento__card {
+      border-radius: 18px;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__card::before {
+      border-radius: 18px;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__content {
+      padding: 14px;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__title {
+      font-size: 1.1rem;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__card--large .bento__title {
+      font-size: 1.5rem;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__badge {
       padding: 4px 10px;
-      font-size: 11px;
+      font-size: 9px;
+      margin-bottom: 8px;
     }
 
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__content-below {
-      padding: 16px;
+    #MilauraBento-{{ section.id }} .bento__cta {
+      padding: 8px 14px;
+      font-size: 0.65rem;
+      margin-top: 10px;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__count {
+      min-width: 32px;
+      height: 32px;
+      font-size: 0.65rem;
+      top: 10px;
+      right: 10px;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__play-indicator {
+      top: 10px;
+      left: 10px;
+      padding: 4px 8px;
+      font-size: 8px;
+    }
+
+    /* Toujours visible sur mobile */
+    #MilauraBento-{{ section.id }} .bento__badge,
+    #MilauraBento-{{ section.id }} .bento__desc,
+    #MilauraBento-{{ section.id }} .bento__cta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #MilauraBento-{{ section.id }} .bento__desc {
+      display: none;
     }
   }
 
-  /* Reduced motion */
+  /* =============================================
+     REDUCED MOTION
+     ============================================= */
   @media (prefers-reduced-motion: reduce) {
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card {
+    #MilauraBento-{{ section.id }} .bento__card {
       animation: none;
       opacity: 1;
       transform: none;
     }
 
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card,
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__image,
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__cta,
-    #MilauraListCollectionsGrid-{{ section.id }} .milaura-lc-card__cta svg {
+    #MilauraBento-{{ section.id }} .bento__media img,
+    #MilauraBento-{{ section.id }} .bento__media video,
+    #MilauraBento-{{ section.id }} .bento__overlay,
+    #MilauraBento-{{ section.id }} .bento__content,
+    #MilauraBento-{{ section.id }} .bento__badge,
+    #MilauraBento-{{ section.id }} .bento__desc,
+    #MilauraBento-{{ section.id }} .bento__cta,
+    #MilauraBento-{{ section.id }} .bento__count,
+    #MilauraBento-{{ section.id }} .bento__card::before {
       transition: none;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__badge-dot {
+      animation: none;
+    }
+  }
+
+  /* =============================================
+     HOVER NONE (tactile)
+     ============================================= */
+  @media (hover: none) {
+    #MilauraBento-{{ section.id }} .bento__badge,
+    #MilauraBento-{{ section.id }} .bento__desc,
+    #MilauraBento-{{ section.id }} .bento__cta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #MilauraBento-{{ section.id }} .bento__content {
+      transform: translateY(0);
     }
   }
 {%- endstyle -%}
 
-{%- liquid
-  # Sort collections
-  case section.settings.sort
-    when 'products_high', 'products_low'
-      assign sorted_collections = collections | sort: 'all_products_count'
-    when 'date', 'date_reversed'
-      assign sorted_collections = collections | sort: 'published_at'
-    else
-      assign sorted_collections = collections
-  endcase
-
-  if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
-    assign sorted_collections = sorted_collections | reverse
-  endif
--%}
-
 <section
-  id="MilauraListCollectionsGrid-{{ section.id }}"
-  class="milaura-list-collections-grid"
+  id="MilauraBento-{{ section.id }}"
+  class="milaura-bento-collections"
+  aria-label="Nos univers"
 >
   <div class="page-width">
-    <div class="milaura-lc-grid">
-      {%- for collection in sorted_collections -%}
-        {%- if collection.handle != 'all' and collection.handle != 'recos-pool' -%}
-          <article class="milaura-lc-card">
-            <a href="{{ collection.url }}" class="milaura-lc-card__link">
-              {%- comment -%} Image {%- endcomment -%}
-              <div class="milaura-lc-card__image-wrap">
-                {%- if collection.image != blank -%}
-                  {{
-                    collection.image
-                    | image_url: width: 800
-                    | image_tag:
-                      class: 'milaura-lc-card__image',
-                      loading: 'lazy',
-                      widths: '300, 500, 800',
-                      sizes: '(min-width: 1024px) 33vw, 50vw',
-                      alt: collection.title | escape
-                  }}
-                {%- elsif collection.products.first and collection.products.first.featured_image -%}
-                  {{
-                    collection.products.first.featured_image
-                    | image_url: width: 800
-                    | image_tag:
-                      class: 'milaura-lc-card__image',
-                      loading: 'lazy',
-                      widths: '300, 500, 800',
-                      sizes: '(min-width: 1024px) 33vw, 50vw',
-                      alt: collection.title | escape
-                  }}
-                {%- else -%}
-                  <div class="milaura-lc-card__placeholder">
-                    ✨
-                  </div>
-                {%- endif -%}
+    <div class="bento">
+      {%- for block in section.blocks -%}
+        {%- assign collection = collections[block.settings.collection] -%}
+        {%- assign card_size = block.settings.card_size | default: 'medium' -%}
 
-                {%- comment -%} Overlay {%- endcomment -%}
-                <div class="milaura-lc-card__overlay"></div>
+        <article class="bento__card bento__card--{{ card_size }}" {{ block.shopify_attributes }}>
+          <a href="{{ collection.url | default: '#' }}" class="bento__card-link">
 
-                {%- comment -%} Badge {%- endcomment -%}
-                <span class="milaura-lc-card__badge">
-                  {{ collection.products_count }} {{ collection.products_count | pluralize: 'piece', 'pieces' }}
-                </span>
-
-                {%- comment -%} Content over image (overlay style) {%- endcomment -%}
-                {%- if section.settings.content_position == 'overlay' -%}
-                  <div class="milaura-lc-card__content-overlay">
-                    <h2 class="milaura-lc-card__title">{{ collection.title }}</h2>
-                    {%- if collection.description != blank and section.settings.show_description -%}
-                      <p class="milaura-lc-card__description">{{ collection.description | strip_html | truncate: 100 }}</p>
-                    {%- endif -%}
-                  </div>
-                {%- endif -%}
-              </div>
-
-              {%- comment -%} Content below image (below style) {%- endcomment -%}
-              {%- if section.settings.content_position == 'below' -%}
-                <div class="milaura-lc-card__content-below">
-                  <h2 class="milaura-lc-card__title">{{ collection.title }}</h2>
-                  {%- if collection.description != blank and section.settings.show_description -%}
-                    <p class="milaura-lc-card__description">{{ collection.description | strip_html | truncate: 120 }}</p>
-                  {%- endif -%}
-                  <span class="milaura-lc-card__cta">
-                    Decouvrir
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </span>
+            {%- comment -%} Media: Video, GIF ou Image {%- endcomment -%}
+            <div class="bento__media">
+              {%- if block.settings.video_url != blank -%}
+                {%- comment -%} Vidéo externe (MP4, WebM) {%- endcomment -%}
+                <video
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  preload="metadata"
+                  poster="{{ block.settings.image | image_url: width: 800 }}"
+                >
+                  <source src="{{ block.settings.video_url }}" type="video/mp4">
+                </video>
+              {%- elsif block.settings.video != blank -%}
+                {%- comment -%} Vidéo Shopify {%- endcomment -%}
+                {{
+                  block.settings.video
+                  | video_tag:
+                    autoplay: true,
+                    loop: true,
+                    muted: true,
+                    playsinline: true,
+                    preload: 'metadata'
+                }}
+              {%- elsif block.settings.image != blank -%}
+                {%- comment -%} Image (peut être un GIF) {%- endcomment -%}
+                <img
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  srcset="{{ block.settings.image | image_url: width: 400 }} 400w,
+                          {{ block.settings.image | image_url: width: 800 }} 800w,
+                          {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  alt="{{ collection.title | default: block.settings.custom_title | escape }}"
+                  loading="{% if forloop.index <= 2 %}eager{% else %}lazy{% endif %}"
+                  width="1200"
+                  height="800"
+                >
+              {%- elsif collection.image != blank -%}
+                {%- comment -%} Image de la collection {%- endcomment -%}
+                <img
+                  src="{{ collection.image | image_url: width: 1200 }}"
+                  srcset="{{ collection.image | image_url: width: 400 }} 400w,
+                          {{ collection.image | image_url: width: 800 }} 800w,
+                          {{ collection.image | image_url: width: 1200 }} 1200w"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  alt="{{ collection.title | escape }}"
+                  loading="{% if forloop.index <= 2 %}eager{% else %}lazy{% endif %}"
+                  width="1200"
+                  height="800"
+                >
+              {%- else -%}
+                {%- comment -%} Placeholder {%- endcomment -%}
+                <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #FDFBF7 0%, #F2E8D5 100%); display: flex; align-items: center; justify-content: center; font-size: 48px;">
+                  {{ block.settings.placeholder_icon | default: '✨' }}
                 </div>
               {%- endif -%}
+            </div>
+
+            {%- comment -%} Indicateur vidéo/GIF {%- endcomment -%}
+            {%- if block.settings.video_url != blank or block.settings.video != blank -%}
+              <span class="bento__play-indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                Vidéo
+              </span>
+            {%- elsif block.settings.is_gif -%}
+              <span class="bento__play-indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                GIF
+              </span>
+            {%- endif -%}
+
+            {%- comment -%} Overlay {%- endcomment -%}
+            <div class="bento__overlay"></div>
+
+            {%- comment -%} Compteur produits {%- endcomment -%}
+            {%- if collection != blank and block.settings.show_count -%}
+              <span class="bento__count">
+                {{ collection.products_count }} {{ collection.products_count | pluralize: 'pièce', 'pièces' }}
+              </span>
+            {%- endif -%}
+
+            {%- comment -%} Contenu {%- endcomment -%}
+            <div class="bento__content">
+              {%- comment -%} Badge catégorie {%- endcomment -%}
+              {%- if block.settings.badge_text != blank -%}
+                <span class="bento__badge">
+                  <span class="bento__badge-dot"></span>
+                  {{ block.settings.badge_text }}
+                </span>
+              {%- endif -%}
+
+              {%- comment -%} Titre {%- endcomment -%}
+              <h2 class="bento__title">
+                {{ block.settings.custom_title | default: collection.title | default: 'Collection' }}
+              </h2>
+
+              {%- comment -%} Description {%- endcomment -%}
+              {%- assign desc = block.settings.custom_description | default: collection.description -%}
+              {%- if desc != blank -%}
+                <p class="bento__desc">{{ desc | strip_html | truncate: 120 }}</p>
+              {%- endif -%}
+
+              {%- comment -%} CTA {%- endcomment -%}
+              <span class="bento__cta">
+                {{ block.settings.cta_text | default: 'Découvrir' }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </div>
+
+          </a>
+        </article>
+      {%- endfor -%}
+
+      {%- comment -%} Fallback si aucun block {%- endcomment -%}
+      {%- if section.blocks.size == 0 -%}
+        {%- for i in (1..4) -%}
+          <article class="bento__card bento__card--{% cycle 'large', 'small', 'small', 'medium' %}">
+            <a href="#" class="bento__card-link">
+              <div class="bento__media">
+                <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #FDFBF7 0%, #F2E8D5 100%); display: flex; align-items: center; justify-content: center; font-size: 48px;">
+                  {% cycle '💎', '🕯️', '✨', '🌿' %}
+                </div>
+              </div>
+              <div class="bento__overlay"></div>
+              <div class="bento__content">
+                <span class="bento__badge">
+                  <span class="bento__badge-dot"></span>
+                  Collection
+                </span>
+                <h2 class="bento__title">Collection {{ i }}</h2>
+                <span class="bento__cta">
+                  Découvrir
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </span>
+              </div>
             </a>
           </article>
-        {%- endif -%}
-      {%- endfor -%}
+        {%- endfor -%}
+      {%- endif -%}
     </div>
   </div>
 </section>
 
+<script>
+(function() {
+  const section = document.getElementById('MilauraBento-{{ section.id }}');
+  if (!section) return;
+
+  // Pause videos when not in viewport (performance)
+  const videos = section.querySelectorAll('video');
+  if (videos.length === 0) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      if (entry.isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  videos.forEach(video => observer.observe(video));
+})();
+</script>
+
 {% schema %}
 {
-  "name": "Grille Collections",
+  "name": "Bento Collections",
   "tag": "section",
   "class": "milaura-section",
-  "settings": [
+  "max_blocks": 8,
+  "settings": [],
+  "blocks": [
     {
-      "type": "header",
-      "content": "📐 Layout"
-    },
-    {
-      "type": "range",
-      "id": "columns",
-      "label": "Colonnes (desktop)",
-      "min": 2,
-      "max": 4,
-      "step": 1,
-      "default": 3
-    },
-    {
-      "type": "select",
-      "id": "mobile_columns",
-      "label": "Colonnes (mobile)",
-      "options": [
-        { "value": "1", "label": "1 colonne" },
-        { "value": "2", "label": "2 colonnes" }
-      ],
-      "default": "1"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Ratio image",
-      "options": [
-        { "value": "1/1", "label": "Carre (1:1)" },
-        { "value": "4/3", "label": "Paysage (4:3)" },
-        { "value": "3/4", "label": "Portrait (3:4)" },
-        { "value": "16/9", "label": "Cinema (16:9)" }
-      ],
-      "default": "4/3"
-    },
-    {
-      "type": "select",
-      "id": "content_position",
-      "label": "Position du contenu",
-      "options": [
-        { "value": "overlay", "label": "Sur l'image" },
-        { "value": "below", "label": "Sous l'image" }
-      ],
-      "default": "overlay"
-    },
-    {
-      "type": "header",
-      "content": "⚙️ Options"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_description",
-      "label": "Afficher la description",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "sort",
-      "label": "Tri des collections",
-      "options": [
-        { "value": "alphabetical", "label": "A-Z" },
-        { "value": "alphabetical_reversed", "label": "Z-A" },
-        { "value": "date_reversed", "label": "Plus recentes" },
-        { "value": "date", "label": "Plus anciennes" },
-        { "value": "products_high", "label": "Plus de produits" },
-        { "value": "products_low", "label": "Moins de produits" }
-      ],
-      "default": "alphabetical"
-    },
-    {
-      "type": "header",
-      "content": "✏️ Style Titres"
-    },
-    {
-      "type": "select",
-      "id": "title_font",
-      "label": "Police du titre",
-      "options": [
-        { "value": "'Lato', sans-serif", "label": "Lato" },
-        { "value": "'Playfair Display', serif", "label": "Playfair Display" },
-        { "value": "'Dancing Script', cursive", "label": "Dancing Script" }
-      ],
-      "default": "'Dancing Script', cursive"
-    },
-    {
-      "type": "range",
-      "id": "title_size",
-      "label": "Taille du titre",
-      "min": 20,
-      "max": 36,
-      "step": 1,
-      "unit": "px",
-      "default": 28
+      "type": "collection_card",
+      "name": "Carte Collection",
+      "settings": [
+        {
+          "type": "header",
+          "content": "📐 Taille"
+        },
+        {
+          "type": "select",
+          "id": "card_size",
+          "label": "Taille de la carte",
+          "options": [
+            { "value": "large", "label": "Grande (8 colonnes)" },
+            { "value": "medium", "label": "Moyenne (4 colonnes)" },
+            { "value": "tall", "label": "Haute (4 col, 2 rangées)" },
+            { "value": "wide", "label": "Large (6 colonnes)" },
+            { "value": "small", "label": "Petite (4 colonnes)" }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "header",
+          "content": "🔗 Collection"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection liée"
+        },
+        {
+          "type": "header",
+          "content": "🎬 Média"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image / GIF",
+          "info": "Uploadez un GIF animé pour du mouvement"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_gif",
+          "label": "C'est un GIF animé",
+          "default": false,
+          "info": "Affiche l'indicateur GIF"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Vidéo Shopify",
+          "info": "Upload vidéo depuis Shopify"
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "URL vidéo externe",
+          "info": "Lien MP4 direct (ex: CDN)"
+        },
+        {
+          "type": "header",
+          "content": "📝 Contenu personnalisé"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Titre (optionnel)",
+          "info": "Remplace le titre de la collection"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_description",
+          "label": "Description (optionnel)",
+          "info": "Remplace la description de la collection"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge",
+          "placeholder": "Ex: Nouveauté, Best-seller",
+          "info": "Petit badge au-dessus du titre"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Texte du bouton",
+          "default": "Découvrir"
+        },
+        {
+          "type": "header",
+          "content": "⚙️ Options"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_count",
+          "label": "Afficher le compteur",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "placeholder_icon",
+          "label": "Icône placeholder",
+          "default": "✨",
+          "info": "Si aucune image"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Grille Collections"
+      "name": "Bento Collections",
+      "blocks": [
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "large",
+            "badge_text": "Incontournable"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "small",
+            "badge_text": "Nouveauté"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "small"
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "card_size": "medium"
+          }
+        }
+      ]
     }
   ]
 }
