@@ -244,11 +244,12 @@
     {%- comment -%} BOTTOM : Legal + Paiements {%- endcomment -%}
     <div class="milaura-footer-bottom">
       <div class="milaura-footer-legal">
-        <p class="milaura-footer-copyright">
-          © {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.copyright_text }}
-        </p>
+        <span class="milaura-footer-copyright">
+          © {{ 'now' | date: '%Y' }} {{ shop.name }} · {{ section.settings.copyright_text }}
+        </span>
 
         {%- if section.settings.show_policy_links -%}
+          <span class="milaura-footer-legal-separator">·</span>
           <ul class="milaura-footer-policies">
             {%- if shop.privacy_policy -%}
               <li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a></li>
@@ -581,9 +582,9 @@
     gap: 1rem;
     align-items: center;
     text-align: center;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(192, 160, 98, 0.12);
-    margin-top: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(192, 160, 98, 0.15);
+    margin-top: 1rem;
   }
 
   @media screen and (min-width: 768px) {
@@ -605,16 +606,29 @@
   @media screen and (min-width: 768px) {
     .milaura-footer-legal {
       flex-direction: row;
-      align-items: center;
-      gap: 1.5rem;
+      align-items: baseline;
+      gap: 0.5rem;
     }
   }
 
   .milaura-footer-copyright {
-    font-size: 0.875rem;
-    color: {{ section.settings.text_color }};
+    font-size: 15px;
+    color: {{ section.settings.title_color }};
     margin: 0;
     font-weight: 500;
+  }
+
+  /* Separateur entre copyright et policies */
+  .milaura-footer-legal-separator {
+    display: none;
+    color: {{ section.settings.text_color }};
+    font-size: 15px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-footer-legal-separator {
+      display: inline;
+    }
   }
 
   .milaura-footer-policies {
@@ -623,9 +637,9 @@
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 1.25rem;
+    gap: 0.5rem;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
   }
 
   @media screen and (min-width: 768px) {
@@ -635,20 +649,22 @@
   }
 
   .milaura-footer-policies li {
-    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
   }
 
   .milaura-footer-policies li:not(:last-child)::after {
     content: "·";
-    position: absolute;
-    right: -0.75rem;
-    color: rgba(0, 0, 0, 0.3);
+    color: {{ section.settings.text_color }};
+    font-size: 15px;
   }
 
   .milaura-footer-policies a {
-    color: {{ section.settings.text_color }};
+    color: {{ section.settings.title_color }};
     text-decoration: none;
-    font-size: 0.875rem;
+    font-size: 15px;
+    font-weight: 500;
     transition: color 0.3s ease;
   }
 
@@ -672,8 +688,8 @@
   }
 
   .milaura-footer-payment-text {
-    font-size: 0.875rem;
-    color: {{ section.settings.text_color }};
+    font-size: 15px;
+    color: {{ section.settings.title_color }};
     font-weight: 500;
   }
 
