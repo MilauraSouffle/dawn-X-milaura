@@ -56,12 +56,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-
-    /* État initial : petit point */
-    min-width: 12px;
-    height: 42px;
-    padding: 0 20px;
+    gap: 12px;
+    height: 44px;
+    padding: 0 24px;
 
     /* Style noir premium */
     background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
@@ -69,34 +66,29 @@
 
     /* Liseré doré subtil */
     box-shadow:
-      0 0 0 1px rgba(192, 160, 98, 0.25),
-      0 8px 32px rgba(0, 0, 0, 0.25),
-      0 2px 8px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(192, 160, 98, 0.3),
+      0 8px 32px rgba(0, 0, 0, 0.2),
+      0 2px 8px rgba(0, 0, 0, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
-    /* Animation d'expansion */
-    animation: islandExpand 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    overflow: hidden;
+    /* Animation fluide GPU-accelerated */
+    animation: islandReveal 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    transform-origin: center center;
+    will-change: transform, opacity;
   }
 
-  @keyframes islandExpand {
+  @keyframes islandReveal {
     0% {
-      min-width: 12px;
-      padding: 0 6px;
-      opacity: 0.5;
-      transform: scale(0.8);
+      opacity: 0;
+      transform: scale(0.3) translateY(-10px);
     }
-    30% {
-      min-width: 12px;
-      padding: 0 6px;
+    50% {
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1.02) translateY(0);
     }
     100% {
-      min-width: auto;
-      padding: 0 20px;
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translateY(0);
     }
   }
 
@@ -145,29 +137,27 @@
     }
   }
 
-  /* Titre avec effet typewriter */
+  /* Titre */
   #MilauraCollectionHero-{{ section.id }} .hero__island-title {
     font-family: {{ section.settings.title_font }};
     font-size: {{ section.settings.title_size }}px;
-    font-weight: 500;
+    font-weight: 600;
     color: #ffffff;
     margin: 0;
     white-space: nowrap;
-    overflow: hidden;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    line-height: 1;
   }
 
+  /* Typewriter container - JS will populate */
   #MilauraCollectionHero-{{ section.id }} .hero__island-title .typewriter {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    animation: typing 1.2s steps(30, end) 0.3s forwards;
-    width: 0;
+    display: inline;
+    visibility: hidden;
   }
 
-  @keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
+  /* Fallback for no-JS */
+  .no-js #MilauraCollectionHero-{{ section.id }} .hero__island-title .typewriter {
+    visibility: visible;
   }
 
   /* Curseur clignotant (optionnel) */
@@ -218,27 +208,27 @@
      ============================================= */
   @media screen and (max-width: 768px) {
     #MilauraCollectionHero-{{ section.id }} {
-      padding: var(--milaura-spacing-xs) var(--milaura-spacing-xs) var(--milaura-spacing-xs);
+      padding: var(--milaura-spacing-xs) var(--milaura-spacing-xs);
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__breadcrumb {
       font-size: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__island {
-      height: 38px;
-      padding: 0 16px;
-      gap: 8px;
+      height: 40px;
+      padding: 0 18px;
+      gap: 10px;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__island-title {
-      font-size: {{ section.settings.title_size | times: 0.75 | round: 0 }}px;
+      font-size: 16px;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__island-count {
       padding: 3px 8px;
-      font-size: 10px;
+      font-size: 9px;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__island-dot {
@@ -250,12 +240,13 @@
   /* Petit mobile */
   @media screen and (max-width: 380px) {
     #MilauraCollectionHero-{{ section.id }} .hero__island {
-      height: 34px;
-      padding: 0 12px;
+      height: 36px;
+      padding: 0 14px;
+      gap: 8px;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__island-title {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__island-count {
@@ -269,14 +260,8 @@
   @media (prefers-reduced-motion: reduce) {
     #MilauraCollectionHero-{{ section.id }} .hero__island {
       animation: none;
-      min-width: auto;
-      padding: 0 20px;
       opacity: 1;
-    }
-
-    #MilauraCollectionHero-{{ section.id }} .hero__island-title .typewriter {
-      animation: none;
-      width: auto;
+      transform: none;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__island-title .cursor {
@@ -293,6 +278,38 @@
     }
   }
 {%- endstyle -%}
+
+<script>
+(function() {
+  // Typewriter effect for smoother animation
+  const section = document.getElementById('MilauraCollectionHero-{{ section.id }}');
+  if (!section) return;
+
+  const typewriterEl = section.querySelector('.typewriter');
+  if (!typewriterEl) return;
+
+  // Check for reduced motion preference
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const text = typewriterEl.textContent;
+  typewriterEl.textContent = '';
+  typewriterEl.style.visibility = 'visible';
+
+  let i = 0;
+  const speed = 50; // ms per character
+
+  function type() {
+    if (i < text.length) {
+      typewriterEl.textContent += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+
+  // Start typing after island animation
+  setTimeout(type, 400);
+})();
+</script>
 
 <section
   id="MilauraCollectionHero-{{ section.id }}"
