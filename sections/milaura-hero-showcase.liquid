@@ -177,15 +177,20 @@
 
   #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
     font-family: var(--milaura-font-body);
-    font-size: {{ section.settings.subtitle_size | divided_by: 10.0 }}rem;
+    font-size: {{ section.settings.subtitle_size }}px;
     color: {{ section.settings.banner_text_color }};
     line-height: 1.6;
     max-width: 800px;
     margin: var(--milaura-spacing-sm, 10px) auto 0 auto;
     text-align: center;
+    {% if section.settings.subtitle_stroke_enabled %}
+    -webkit-text-stroke: {{ section.settings.subtitle_stroke_width }}px {{ section.settings.subtitle_stroke_color }};
+    paint-order: stroke fill;
+    {% else %}
     text-shadow:
       0 1px 3px rgba(0,0,0,0.4),
       0 2px 8px rgba(0,0,0,0.3);
+    {% endif %}
   }
 
   /* --- GRILLE --- */
@@ -482,7 +487,7 @@
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
-      font-size: 0.82rem;
+      font-size: {{ section.settings.subtitle_size_mobile }}px;
       line-height: 1.45;
       margin-top: 6px;
     }
@@ -977,19 +982,54 @@
     {
       "type": "range",
       "id": "subtitle_size",
-      "label": "Taille du sous-titre",
-      "min": 8,
-      "max": 15,
+      "label": "Taille du sous-titre (desktop)",
+      "min": 14,
+      "max": 28,
       "step": 1,
       "unit": "px",
-      "default": 11,
-      "info": "Valeur en dixièmes de rem (11 = 1.1rem)"
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Taille du sous-titre (mobile)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 15
     },
     {
       "type": "color",
       "id": "banner_text_color",
       "label": "Couleur texte bandeau",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "🖊️ Contour du sous-titre"
+    },
+    {
+      "type": "checkbox",
+      "id": "subtitle_stroke_enabled",
+      "label": "Activer le contour (remplace l'ombre)",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "subtitle_stroke_width",
+      "label": "Épaisseur du contour",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "subtitle_stroke_color",
+      "label": "Couleur du contour",
+      "default": "#000000"
     },
 
     { "type": "header", "content": "🎨 Couleurs" },
