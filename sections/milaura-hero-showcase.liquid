@@ -151,15 +151,20 @@
 
   #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
     font-family: var(--milaura-font-body);
-    font-size: 0.9rem;
+    font-size: {{ section.settings.kicker_size }}px;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: {{ section.settings.banner_text_color }};
     font-weight: 650;
     margin-bottom: var(--milaura-spacing-sm, 10px);
+    {% if section.settings.kicker_stroke_enabled %}
+    -webkit-text-stroke: {{ section.settings.kicker_stroke_width }}px {{ section.settings.kicker_stroke_color }};
+    paint-order: stroke fill;
+    {% else %}
     text-shadow:
       0 1px 2px rgba(0,0,0,0.4),
       0 2px 6px rgba(0,0,0,0.3);
+    {% endif %}
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
@@ -474,7 +479,7 @@
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-kicker {
-      font-size: 0.7rem;
+      font-size: {{ section.settings.kicker_size_mobile }}px;
       letter-spacing: 1.5px;
       margin-bottom: 4px;
     }
@@ -949,6 +954,48 @@
   "settings": [
     { "type": "header", "content": "📝 Textes du bandeau" },
     { "type": "text", "id": "kicker", "label": "Sur-titre", "default": "Découvrez" },
+    {
+      "type": "range",
+      "id": "kicker_size",
+      "label": "Taille sur-titre (desktop)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "kicker_size_mobile",
+      "label": "Taille sur-titre (mobile)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "kicker_stroke_enabled",
+      "label": "Contour sur le sur-titre",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "kicker_stroke_width",
+      "label": "Épaisseur contour sur-titre",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "kicker_stroke_color",
+      "label": "Couleur contour sur-titre",
+      "default": "#000000"
+    },
     { "type": "text", "id": "title", "label": "Titre principal", "default": "Votre univers énergétique" },
     {
       "type": "textarea",
