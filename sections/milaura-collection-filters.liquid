@@ -1,120 +1,52 @@
 {%- comment -%}
   MILAURA COLLECTION FILTERS
-  Barre de filtres ultra-fine style chips
-  Optimisée bijoux & bougies
-  @version 2.0.0
+  Ultra-minimal: just filter button + sort dropdown
+  @version 3.0.0
 {%- endcomment -%}
 
 {%- style -%}
   #MilauraFilters-{{ section.id }} {
     padding: 0;
-    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
-    background: rgba(253, 251, 247, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    position: sticky;
-    top: 0;
-    z-index: 50;
   }
 
   #MilauraFilters-{{ section.id }} .filters__bar {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    min-height: 44px;
+    justify-content: space-between;
+    padding: 8px 0;
   }
 
-  /* Compteur à gauche */
-  #MilauraFilters-{{ section.id }} .filters__count {
-    flex-shrink: 0;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--milaura-text-light, #888);
-    white-space: nowrap;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__count strong {
-    color: var(--milaura-gold, #C0A062);
-    font-weight: 700;
-  }
-
-  /* Séparateur */
-  #MilauraFilters-{{ section.id }} .filters__sep {
-    width: 1px;
-    height: 20px;
-    background: rgba(192, 160, 98, 0.25);
-    flex-shrink: 0;
-  }
-
-  /* Container scrollable des chips */
-  #MilauraFilters-{{ section.id }} .filters__chips {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 2px 0;
-    margin: -2px 0;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__chips::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Chip de filtre (dropdown) */
-  #MilauraFilters-{{ section.id }} .filters__chip {
-    position: relative;
-    flex-shrink: 0;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__chip-btn {
+  /* Bouton Filtres - minimal */
+  #MilauraFilters-{{ section.id }} .filters__trigger {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 6px 12px;
-    background: #ffffff;
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: 50px;
-    font-size: 12px;
+    gap: 6px;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 13px;
     font-weight: 500;
     color: var(--milaura-text, #333);
     cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
+    transition: color 0.2s ease;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__chip-btn:hover {
-    border-color: var(--milaura-gold, #C0A062);
-    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.15);
+  #MilauraFilters-{{ section.id }} .filters__trigger:hover {
+    color: var(--milaura-gold, #C0A062);
   }
 
-  #MilauraFilters-{{ section.id }} .filters__chip-btn.is-active {
-    background: var(--milaura-gold, #C0A062);
-    border-color: var(--milaura-gold, #C0A062);
-    color: #ffffff;
+  #MilauraFilters-{{ section.id }} .filters__trigger svg {
+    width: 16px;
+    height: 16px;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__chip-btn svg {
-    width: 10px;
-    height: 10px;
-    transition: transform 0.2s ease;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__chip.is-open .filters__chip-btn svg {
-    transform: rotate(180deg);
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__chip-count {
+  #MilauraFilters-{{ section.id }} .filters__trigger-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
     background: var(--milaura-gold, #C0A062);
     border-radius: 50px;
     font-size: 10px;
@@ -122,66 +54,143 @@
     color: #ffffff;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__chip-btn.is-active .filters__chip-count {
-    background: rgba(255, 255, 255, 0.3);
+  /* Sort dropdown - minimal */
+  #MilauraFilters-{{ section.id }} .filters__sort {
+    position: relative;
   }
 
-  /* Dropdown */
-  #MilauraFilters-{{ section.id }} .filters__dropdown {
+  #MilauraFilters-{{ section.id }} .filters__sort-select {
+    appearance: none;
+    padding: 0 20px 0 0;
+    background: transparent;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--milaura-text, #333);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__sort-select:hover,
+  #MilauraFilters-{{ section.id }} .filters__sort-select:focus {
+    color: var(--milaura-gold, #C0A062);
+    outline: none;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__sort-icon {
     position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    min-width: 180px;
-    max-height: 280px;
-    overflow-y: auto;
-    background: #ffffff;
-    border: 1px solid rgba(192, 160, 98, 0.2);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    padding: 6px;
-    z-index: 100;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: all 0.2s ease;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    color: var(--milaura-text-light, #888);
   }
 
-  #MilauraFilters-{{ section.id }} .filters__chip.is-open .filters__dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  /* =============================================
+     DRAWER PANEL - Filtres
+     ============================================= */
+  #MilauraFilters-{{ section.id }} .filters__drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 320px;
+    height: 100vh;
+    background: #ffffff;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__drawer.is-open {
+    transform: translateX(0);
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__drawer-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--milaura-text, #333);
+    margin: 0;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__drawer-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--milaura-text-light, #888);
+    transition: color 0.2s ease;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__drawer-close:hover {
+    color: var(--milaura-text, #333);
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__drawer-close svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+  }
+
+  /* Filter groups */
+  #MilauraFilters-{{ section.id }} .filters__group {
+    margin-bottom: 20px;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__group-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--milaura-text-light, #888);
+    margin: 0 0 10px 0;
   }
 
   #MilauraFilters-{{ section.id }} .filters__option {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    border-radius: 8px;
+    gap: 10px;
+    padding: 8px 0;
     cursor: pointer;
-    transition: background 0.15s ease;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__option:hover {
-    background: rgba(192, 160, 98, 0.08);
   }
 
   #MilauraFilters-{{ section.id }} .filters__option input {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     accent-color: var(--milaura-gold, #C0A062);
     cursor: pointer;
     flex-shrink: 0;
   }
 
   #MilauraFilters-{{ section.id }} .filters__option-label {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--milaura-text, #333);
     flex: 1;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__option-num {
-    font-size: 11px;
+  #MilauraFilters-{{ section.id }} .filters__option-count {
+    font-size: 12px;
     color: var(--milaura-text-light, #999);
   }
 
@@ -190,176 +199,154 @@
     pointer-events: none;
   }
 
-  /* Filtres actifs (pills) */
-  #MilauraFilters-{{ section.id }} .filters__active-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 5px 8px 5px 10px;
-    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: 50px;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--milaura-text, #333);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__active-pill-remove {
+  /* Price range */
+  #MilauraFilters-{{ section.id }} .filters__price-inputs {
     display: flex;
+    gap: 10px;
     align-items: center;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    background: rgba(192, 160, 98, 0.2);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    padding: 0;
-    transition: background 0.15s ease;
-    color: var(--milaura-text, #333);
   }
 
-  #MilauraFilters-{{ section.id }} .filters__active-pill-remove:hover {
-    background: var(--milaura-gold, #C0A062);
-    color: #ffffff;
+  #MilauraFilters-{{ section.id }} .filters__price-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__active-pill-remove svg {
-    width: 8px;
-    height: 8px;
+  #MilauraFilters-{{ section.id }} .filters__price-input:focus {
+    border-color: var(--milaura-gold, #C0A062);
+    outline: none;
   }
 
-  /* Clear all */
-  #MilauraFilters-{{ section.id }} .filters__clear {
-    flex-shrink: 0;
-    padding: 5px 10px;
-    background: none;
-    border: none;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--milaura-text-light, #888);
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: color 0.2s ease;
-    white-space: nowrap;
+  #MilauraFilters-{{ section.id }} .filters__price-sep {
+    color: var(--milaura-text-light, #999);
+    font-size: 13px;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__clear:hover {
-    color: var(--milaura-gold, #C0A062);
+  /* Drawer footer */
+  #MilauraFilters-{{ section.id }} .filters__drawer-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    gap: 10px;
   }
 
-  /* Sort (à droite) */
-  #MilauraFilters-{{ section.id }} .filters__sort {
-    flex-shrink: 0;
-    position: relative;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__sort-select {
-    appearance: none;
-    padding: 6px 28px 6px 10px;
+  #MilauraFilters-{{ section.id }} .filters__btn-clear {
+    flex: 1;
+    padding: 12px;
     background: transparent;
-    border: 1px solid rgba(192, 160, 98, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 50px;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 600;
     color: var(--milaura-text, #333);
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__sort-select:hover,
-  #MilauraFilters-{{ section.id }} .filters__sort-select:focus {
+  #MilauraFilters-{{ section.id }} .filters__btn-clear:hover {
     border-color: var(--milaura-gold, #C0A062);
-    outline: none;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__sort-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+  #MilauraFilters-{{ section.id }} .filters__btn-apply {
+    flex: 1;
+    padding: 12px;
+    background: var(--milaura-gold, #C0A062);
+    border: none;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__btn-apply:hover {
+    background: var(--milaura-gold-dark, #A8894F);
+  }
+
+  /* Overlay */
+  #MilauraFilters-{{ section.id }} .filters__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Active filters pills inline */
+  #MilauraFilters-{{ section.id }} .filters__active {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 16px;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__active::-webkit-scrollbar {
+    display: none;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__active-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px 4px 10px;
+    background: rgba(192, 160, 98, 0.1);
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--milaura-text, #333);
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__active-pill:hover {
+    background: rgba(192, 160, 98, 0.2);
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__active-pill svg {
     width: 10px;
     height: 10px;
-    pointer-events: none;
-    color: var(--milaura-text-light, #888);
+    opacity: 0.6;
   }
 
-  /* Mobile */
+  /* Mobile adjustments */
   @media screen and (max-width: 768px) {
-    #MilauraFilters-{{ section.id }} {
-      position: relative;
-      top: auto;
-    }
-
     #MilauraFilters-{{ section.id }} .filters__bar {
-      padding: 8px 0;
-      gap: 8px;
+      padding: 6px 0;
     }
 
-    #MilauraFilters-{{ section.id }} .filters__count {
-      display: none;
-    }
-
-    #MilauraFilters-{{ section.id }} .filters__sep:first-of-type {
-      display: none;
-    }
-
-    #MilauraFilters-{{ section.id }} .filters__chips {
-      gap: 6px;
-      padding-right: 8px;
-    }
-
-    #MilauraFilters-{{ section.id }} .filters__chip-btn {
-      padding: 5px 10px;
-      font-size: 11px;
-    }
-
-    #MilauraFilters-{{ section.id }} .filters__dropdown {
-      position: fixed;
-      top: auto;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      max-height: 50vh;
-      border-radius: 16px 16px 0 0;
-      transform: translateY(100%);
-    }
-
-    #MilauraFilters-{{ section.id }} .filters__chip.is-open .filters__dropdown {
-      transform: translateY(0);
-    }
-
-    #MilauraFilters-{{ section.id }} .filters__overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 99;
-    }
-
-    #MilauraFilters-{{ section.id }} .filters__chip.is-open ~ .filters__overlay {
-      display: block;
-    }
-
+    #MilauraFilters-{{ section.id }} .filters__trigger,
     #MilauraFilters-{{ section.id }} .filters__sort-select {
-      padding: 5px 24px 5px 8px;
-      font-size: 11px;
+      font-size: 12px;
     }
 
-    #MilauraFilters-{{ section.id }} .filters__active-pill {
-      font-size: 10px;
-      padding: 4px 6px 4px 8px;
+    #MilauraFilters-{{ section.id }} .filters__active {
+      margin: 0 12px;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__drawer {
+      max-width: 100%;
     }
   }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    #MilauraFilters-{{ section.id }} .filters__dropdown,
-    #MilauraFilters-{{ section.id }} .filters__chip-btn,
-    #MilauraFilters-{{ section.id }} .filters__chip-btn svg {
+    #MilauraFilters-{{ section.id }} .filters__drawer,
+    #MilauraFilters-{{ section.id }} .filters__overlay {
       transition: none;
     }
   }
@@ -373,139 +360,43 @@
   <div class="page-width">
     <div class="filters__bar">
 
-      {%- comment -%} Compteur {%- endcomment -%}
-      <span class="filters__count">
-        <strong>{{ collection.products_count }}</strong> {{ collection.products_count | pluralize: 'création', 'créations' }}
-      </span>
+      {%- comment -%} Bouton Filtres {%- endcomment -%}
+      {%- if section.settings.enable_filtering -%}
+        {%- assign active_count = 0 -%}
+        {%- for filter in collection.filters -%}
+          {%- assign active_count = active_count | plus: filter.active_values.size -%}
+          {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+            {%- assign active_count = active_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
 
-      <span class="filters__sep"></span>
+        <button type="button" class="filters__trigger" data-open-drawer>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="6" x2="20" y2="6"></line>
+            <line x1="4" y1="12" x2="14" y2="12"></line>
+            <line x1="4" y1="18" x2="10" y2="18"></line>
+          </svg>
+          <span>Filtres</span>
+          {%- if active_count > 0 -%}
+            <span class="filters__trigger-count">{{ active_count }}</span>
+          {%- endif -%}
+        </button>
+      {%- endif -%}
 
-      {%- comment -%} Chips scrollables {%- endcomment -%}
-      <div class="filters__chips">
-
-        {%- comment -%} Filtres actifs d'abord {%- endcomment -%}
+      {%- comment -%} Filtres actifs inline {%- endcomment -%}
+      <div class="filters__active">
         {%- for filter in collection.filters -%}
           {%- for value in filter.active_values -%}
             <a href="{{ value.url_to_remove }}" class="filters__active-pill">
               {{ value.label }}
-              <span class="filters__active-pill-remove" aria-label="Supprimer {{ value.label }}">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
             </a>
           {%- endfor -%}
         {%- endfor -%}
-
-        {%- comment -%} Chips de filtres {%- endcomment -%}
-        {%- if section.settings.enable_filtering -%}
-          {%- for filter in collection.filters -%}
-            {%- if filter.type == 'list' and filter.values.size > 0 -%}
-              <div class="filters__chip" data-filter-chip>
-                <button
-                  type="button"
-                  class="filters__chip-btn{% if filter.active_values.size > 0 %} is-active{% endif %}"
-                  aria-expanded="false"
-                  data-chip-toggle
-                >
-                  <span>{{ filter.label }}</span>
-                  {%- if filter.active_values.size > 0 -%}
-                    <span class="filters__chip-count">{{ filter.active_values.size }}</span>
-                  {%- endif -%}
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </button>
-
-                <div class="filters__dropdown">
-                  {%- for value in filter.values -%}
-                    <label class="filters__option{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
-                      <input
-                        type="checkbox"
-                        name="{{ filter.param_name }}"
-                        value="{{ value.value }}"
-                        {% if value.active %}checked{% endif %}
-                        {% if value.count == 0 and value.active == false %}disabled{% endif %}
-                        data-filter-input
-                      >
-                      <span class="filters__option-label">{{ value.label }}</span>
-                      <span class="filters__option-num">{{ value.count }}</span>
-                    </label>
-                  {%- endfor -%}
-                </div>
-              </div>
-            {%- endif -%}
-
-            {%- comment -%} Price range filter {%- endcomment -%}
-            {%- if filter.type == 'price_range' -%}
-              <div class="filters__chip" data-filter-chip>
-                <button
-                  type="button"
-                  class="filters__chip-btn{% if filter.min_value.value != nil or filter.max_value.value != nil %} is-active{% endif %}"
-                  aria-expanded="false"
-                  data-chip-toggle
-                >
-                  <span>Prix</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </button>
-
-                <div class="filters__dropdown" style="min-width: 200px; padding: 12px;">
-                  <div style="display: flex; gap: 8px; align-items: center;">
-                    <input
-                      type="number"
-                      name="{{ filter.min_value.param_name }}"
-                      value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-                      placeholder="{{ filter.range_min | money_without_currency }}"
-                      min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
-                      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                      style="flex: 1; padding: 8px; border: 1px solid rgba(192,160,98,0.3); border-radius: 8px; font-size: 13px; width: 70px;"
-                      data-price-input
-                    >
-                    <span style="color: #999; font-size: 12px;">à</span>
-                    <input
-                      type="number"
-                      name="{{ filter.max_value.param_name }}"
-                      value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-                      placeholder="{{ filter.range_max | money_without_currency }}"
-                      min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
-                      max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                      style="flex: 1; padding: 8px; border: 1px solid rgba(192,160,98,0.3); border-radius: 8px; font-size: 13px; width: 70px;"
-                      data-price-input
-                    >
-                    <span style="color: #999; font-size: 12px;">€</span>
-                  </div>
-                  <button
-                    type="button"
-                    data-apply-price
-                    style="width: 100%; margin-top: 10px; padding: 8px; background: var(--milaura-gold, #C0A062); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;"
-                  >
-                    Appliquer
-                  </button>
-                </div>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endif -%}
-
-        {%- comment -%} Clear all {%- endcomment -%}
-        {%- assign has_active = false -%}
-        {%- for filter in collection.filters -%}
-          {%- if filter.active_values.size > 0 or filter.min_value.value != nil or filter.max_value.value != nil -%}
-            {%- assign has_active = true -%}
-            {%- break -%}
-          {%- endif -%}
-        {%- endfor -%}
-
-        {%- if has_active -%}
-          <a href="{{ collection.url }}" class="filters__clear">Effacer tout</a>
-        {%- endif -%}
-
       </div>
-
-      <span class="filters__sep"></span>
 
       {%- comment -%} Tri {%- endcomment -%}
       {%- if section.settings.enable_sorting -%}
@@ -529,11 +420,78 @@
       {%- endif -%}
 
     </div>
-
-    {%- comment -%} Overlay mobile {%- endcomment -%}
-    <div class="filters__overlay" data-filters-overlay></div>
-
   </div>
+
+  {%- comment -%} Drawer Panel {%- endcomment -%}
+  {%- if section.settings.enable_filtering -%}
+    <div class="filters__overlay" data-drawer-overlay></div>
+    <aside class="filters__drawer" data-drawer aria-label="Filtres">
+      <header class="filters__drawer-header">
+        <h2 class="filters__drawer-title">Filtres</h2>
+        <button type="button" class="filters__drawer-close" data-close-drawer aria-label="Fermer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </header>
+
+      <div class="filters__drawer-body">
+        {%- for filter in collection.filters -%}
+          <div class="filters__group">
+            <h3 class="filters__group-title">{{ filter.label }}</h3>
+
+            {%- if filter.type == 'list' -%}
+              {%- for value in filter.values -%}
+                <label class="filters__option{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                  <input
+                    type="checkbox"
+                    name="{{ filter.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    data-filter-input
+                  >
+                  <span class="filters__option-label">{{ value.label }}</span>
+                  <span class="filters__option-count">{{ value.count }}</span>
+                </label>
+              {%- endfor -%}
+            {%- endif -%}
+
+            {%- if filter.type == 'price_range' -%}
+              <div class="filters__price-inputs">
+                <input
+                  type="number"
+                  class="filters__price-input"
+                  name="{{ filter.min_value.param_name }}"
+                  value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                  placeholder="{{ filter.range_min | money_without_currency }}"
+                  min="{{ filter.range_min | money_without_currency | replace: ',', '' }}"
+                  data-price-input
+                >
+                <span class="filters__price-sep">à</span>
+                <input
+                  type="number"
+                  class="filters__price-input"
+                  name="{{ filter.max_value.param_name }}"
+                  value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                  placeholder="{{ filter.range_max | money_without_currency }}"
+                  max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  data-price-input
+                >
+                <span class="filters__price-sep">€</span>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <footer class="filters__drawer-footer">
+        <a href="{{ collection.url }}" class="filters__btn-clear">Effacer</a>
+        <button type="button" class="filters__btn-apply" data-apply-filters>Appliquer</button>
+      </footer>
+    </aside>
+  {%- endif -%}
 </section>
 
 <script>
@@ -541,50 +499,40 @@
   const section = document.getElementById('MilauraFilters-{{ section.id }}');
   if (!section) return;
 
-  // Chip toggles
-  const chips = section.querySelectorAll('[data-filter-chip]');
-  const overlay = section.querySelector('[data-filters-overlay]');
+  const drawer = section.querySelector('[data-drawer]');
+  const overlay = section.querySelector('[data-drawer-overlay]');
+  const openBtn = section.querySelector('[data-open-drawer]');
+  const closeBtn = section.querySelector('[data-close-drawer]');
+  const applyBtn = section.querySelector('[data-apply-filters]');
 
-  chips.forEach(chip => {
-    const btn = chip.querySelector('[data-chip-toggle]');
-    if (!btn) return;
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = chip.classList.contains('is-open');
-
-      // Close all
-      chips.forEach(c => {
-        c.classList.remove('is-open');
-        c.querySelector('[data-chip-toggle]')?.setAttribute('aria-expanded', 'false');
-      });
-
-      // Open this one if it was closed
-      if (!isOpen) {
-        chip.classList.add('is-open');
-        btn.setAttribute('aria-expanded', 'true');
-      }
+  // Open drawer
+  if (openBtn && drawer && overlay) {
+    openBtn.addEventListener('click', () => {
+      drawer.classList.add('is-open');
+      overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
     });
-  });
+  }
 
-  // Close on click outside
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('[data-filter-chip]')) {
-      chips.forEach(chip => {
-        chip.classList.remove('is-open');
-        chip.querySelector('[data-chip-toggle]')?.setAttribute('aria-expanded', 'false');
-      });
+  // Close drawer
+  function closeDrawer() {
+    if (drawer && overlay) {
+      drawer.classList.remove('is-open');
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
     }
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (overlay) overlay.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
   });
 
-  // Close on overlay click (mobile)
-  if (overlay) {
-    overlay.addEventListener('click', () => {
-      chips.forEach(chip => {
-        chip.classList.remove('is-open');
-        chip.querySelector('[data-chip-toggle]')?.setAttribute('aria-expanded', 'false');
-      });
-    });
+  // Apply filters
+  if (applyBtn) {
+    applyBtn.addEventListener('click', applyFilters);
   }
 
   // Sort select
@@ -596,18 +544,6 @@
       window.location.href = url.toString();
     });
   }
-
-  // Filter checkboxes
-  const filterInputs = section.querySelectorAll('[data-filter-input]');
-  filterInputs.forEach(input => {
-    input.addEventListener('change', applyFilters);
-  });
-
-  // Price filter
-  const priceApplyBtns = section.querySelectorAll('[data-apply-price]');
-  priceApplyBtns.forEach(btn => {
-    btn.addEventListener('click', applyFilters);
-  });
 
   function applyFilters() {
     const url = new URL(window.location.href);
@@ -629,22 +565,12 @@
     const priceInputs = section.querySelectorAll('[data-price-input]');
     priceInputs.forEach(input => {
       if (input.value) {
-        url.searchParams.set(input.name, input.value * 100); // Convert to cents
+        url.searchParams.set(input.name, input.value * 100);
       }
     });
 
     window.location.href = url.toString();
   }
-
-  // ESC to close
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      chips.forEach(chip => {
-        chip.classList.remove('is-open');
-        chip.querySelector('[data-chip-toggle]')?.setAttribute('aria-expanded', 'false');
-      });
-    }
-  });
 })();
 </script>
 
@@ -652,12 +578,8 @@
 {
   "name": "Filtres Collection",
   "tag": "section",
-  "class": "milaura-section",
+  "class": "milaura-section milaura-section--no-padding",
   "settings": [
-    {
-      "type": "header",
-      "content": "⚙️ Options"
-    },
     {
       "type": "checkbox",
       "id": "enable_filtering",
