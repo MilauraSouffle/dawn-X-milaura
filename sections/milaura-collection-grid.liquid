@@ -150,11 +150,38 @@
     font-weight: 400;
   }
 
-  /* Bouton voir produit */
-  #MilauraGrid-{{ section.id }} .grid__card-btn {
+  /* Container des boutons */
+  #MilauraGrid-{{ section.id }} .grid__card-actions {
     margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Bouton voir produit - toujours visible */
+  #MilauraGrid-{{ section.id }} .grid__card-btn {
     padding: 10px 16px;
+    background: transparent;
+    color: var(--milaura-gold, #C0A062);
+    border: 1.5px solid var(--milaura-gold, #C0A062);
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+  }
+
+  #MilauraGrid-{{ section.id }} .grid__card:hover .grid__card-btn {
     background: var(--milaura-gold, #C0A062);
+    color: #ffffff;
+  }
+
+  /* Bouton ajout rapide - apparaît au hover */
+  #MilauraGrid-{{ section.id }} .grid__card-quick {
+    padding: 10px 16px;
+    background: #1a1a1a;
     color: #ffffff;
     border: none;
     border-radius: 50px;
@@ -163,17 +190,41 @@
     font-weight: 600;
     cursor: pointer;
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
     transition: all 0.25s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
 
-  #MilauraGrid-{{ section.id }} .grid__card:hover .grid__card-btn {
+  #MilauraGrid-{{ section.id }} .grid__card-quick svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  #MilauraGrid-{{ section.id }} .grid__card:hover .grid__card-quick {
     opacity: 1;
     transform: translateY(0);
   }
 
-  #MilauraGrid-{{ section.id }} .grid__card-btn:hover {
-    background: #1a1a1a;
+  #MilauraGrid-{{ section.id }} .grid__card-quick:hover {
+    background: var(--milaura-gold, #C0A062);
+  }
+
+  /* Bouton rupture de stock - grisé */
+  #MilauraGrid-{{ section.id }} .grid__card-btn--soldout {
+    padding: 10px 16px;
+    background: #e0e0e0;
+    color: #888888;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: not-allowed;
+    text-align: center;
   }
 
   /* État vide */
@@ -276,7 +327,7 @@
       gap: 16px;
     }
 
-    #MilauraGrid-{{ section.id }} .grid__card-btn {
+    #MilauraGrid-{{ section.id }} .grid__card-quick {
       opacity: 1;
       transform: translateY(0);
     }
@@ -315,9 +366,19 @@
       font-size: 0.95rem;
     }
 
-    #MilauraGrid-{{ section.id }} .grid__card-btn {
+    #MilauraGrid-{{ section.id }} .grid__card-actions {
+      margin-top: 8px;
+      gap: 4px;
+    }
+
+    #MilauraGrid-{{ section.id }} .grid__card-btn,
+    #MilauraGrid-{{ section.id }} .grid__card-quick,
+    #MilauraGrid-{{ section.id }} .grid__card-btn--soldout {
       padding: 8px 12px;
       font-size: 0.75rem;
+    }
+
+    #MilauraGrid-{{ section.id }} .grid__card-quick {
       opacity: 1;
       transform: translateY(0);
     }
@@ -352,10 +413,21 @@
       -webkit-line-clamp: 1;
     }
 
-    #MilauraGrid-{{ section.id }} .grid__card-btn {
+    #MilauraGrid-{{ section.id }} .grid__card-actions {
+      margin-top: 6px;
+      gap: 3px;
+    }
+
+    #MilauraGrid-{{ section.id }} .grid__card-btn,
+    #MilauraGrid-{{ section.id }} .grid__card-quick,
+    #MilauraGrid-{{ section.id }} .grid__card-btn--soldout {
       padding: 6px 10px;
       font-size: 0.7rem;
-      margin-top: 8px;
+    }
+
+    #MilauraGrid-{{ section.id }} .grid__card-quick svg {
+      width: 12px;
+      height: 12px;
     }
   }
 
@@ -454,7 +526,22 @@
                 </div>
               </div>
 
-              <span class="grid__card-btn">Voir le produit</span>
+              {%- comment -%} Boutons d'action {%- endcomment -%}
+              <div class="grid__card-actions">
+                {%- if product.available -%}
+                  <span class="grid__card-btn">Voir le produit</span>
+                  <span class="grid__card-quick" data-quick-add data-product-id="{{ product.variants.first.id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    Ajout rapide
+                  </span>
+                {%- else -%}
+                  <span class="grid__card-btn--soldout">Rupture de stock</span>
+                {%- endif -%}
+              </div>
             </a>
           {%- endfor -%}
         {%- endif -%}
@@ -494,6 +581,76 @@
     {%- endpaginate -%}
   </div>
 </section>
+
+<script>
+(function() {
+  const section = document.getElementById('MilauraGrid-{{ section.id }}');
+  if (!section) return;
+
+  // Quick Add to Cart
+  const quickAddBtns = section.querySelectorAll('[data-quick-add]');
+
+  quickAddBtns.forEach(btn => {
+    btn.addEventListener('click', async function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const variantId = this.dataset.productId;
+      if (!variantId) return;
+
+      // Visual feedback
+      const originalText = this.innerHTML;
+      this.innerHTML = '<svg class="spinner" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="40" stroke-dashoffset="10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></circle></svg> Ajout...';
+      this.style.pointerEvents = 'none';
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: variantId,
+            quantity: 1
+          })
+        });
+
+        if (response.ok) {
+          this.innerHTML = '✓ Ajouté !';
+          this.style.background = 'var(--milaura-gold, #C0A062)';
+
+          // Update cart count if element exists
+          const cartCount = document.querySelector('.cart-count-bubble, [data-cart-count]');
+          if (cartCount) {
+            const currentCount = parseInt(cartCount.textContent) || 0;
+            cartCount.textContent = currentCount + 1;
+          }
+
+          // Trigger cart drawer if available
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.style.background = '';
+            this.style.pointerEvents = '';
+          }, 2000);
+        } else {
+          throw new Error('Failed to add to cart');
+        }
+      } catch (error) {
+        this.innerHTML = '✗ Erreur';
+        this.style.background = '#E85A4F';
+
+        setTimeout(() => {
+          this.innerHTML = originalText;
+          this.style.background = '';
+          this.style.pointerEvents = '';
+        }, 2000);
+      }
+    });
+  });
+})();
+</script>
 
 {% schema %}
 {
