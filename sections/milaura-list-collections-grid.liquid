@@ -12,6 +12,31 @@
   }
 
   /* =============================================
+     SECTION HEADER
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__header {
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraBento-{{ section.id }} .bento__section-title {
+    font-family: {{ section.settings.section_title_font }};
+    font-size: {{ section.settings.section_title_size }}px;
+    font-weight: 600;
+    color: {{ section.settings.section_title_color }};
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__section-subtitle {
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    color: {{ section.settings.section_subtitle_color }};
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* =============================================
      BENTO GRID - Layout asymétrique
      ============================================= */
   #MilauraBento-{{ section.id }} .bento {
@@ -176,10 +201,10 @@
 
   /* Titre */
   #MilauraBento-{{ section.id }} .bento__title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
+    font-family: {{ section.settings.title_font }};
+    font-size: {{ section.settings.title_size }}px;
     font-weight: 600;
-    color: #ffffff;
+    color: {{ section.settings.title_color }};
     margin: 0 0 8px 0;
     line-height: 1.15;
     text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
@@ -187,18 +212,18 @@
 
   #MilauraBento-{{ section.id }} .bento__card--small .bento__title,
   #MilauraBento-{{ section.id }} .bento__card--wide .bento__title {
-    font-size: 1.3rem;
+    font-size: {{ section.settings.title_size | times: 0.75 | round: 0 }}px;
   }
 
   #MilauraBento-{{ section.id }} .bento__card--large .bento__title {
-    font-size: 2.4rem;
+    font-size: {{ section.settings.title_size | times: 1.4 | round: 0 }}px;
   }
 
   /* Description */
   #MilauraBento-{{ section.id }} .bento__desc {
-    font-family: 'Lato', sans-serif;
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.85);
+    font-family: {{ section.settings.desc_font }};
+    font-size: {{ section.settings.desc_size }}px;
+    color: {{ section.settings.desc_color }};
     margin: 0;
     line-height: 1.5;
     max-width: 400px;
@@ -414,11 +439,15 @@
     }
 
     #MilauraBento-{{ section.id }} .bento__title {
-      font-size: 1.5rem;
+      font-size: {{ section.settings.title_size | times: 0.85 | round: 0 }}px;
     }
 
     #MilauraBento-{{ section.id }} .bento__card--large .bento__title {
-      font-size: 2rem;
+      font-size: {{ section.settings.title_size | times: 1.15 | round: 0 }}px;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__section-title {
+      font-size: {{ section.settings.section_title_size | times: 0.85 | round: 0 }}px;
     }
 
     #MilauraBento-{{ section.id }} .bento__content {
@@ -478,11 +507,15 @@
     }
 
     #MilauraBento-{{ section.id }} .bento__title {
-      font-size: 1.1rem;
+      font-size: {{ section.settings.title_size | times: 0.65 | round: 0 }}px;
     }
 
     #MilauraBento-{{ section.id }} .bento__card--large .bento__title {
-      font-size: 1.5rem;
+      font-size: {{ section.settings.title_size | times: 0.85 | round: 0 }}px;
+    }
+
+    #MilauraBento-{{ section.id }} .bento__section-title {
+      font-size: {{ section.settings.section_title_size | times: 0.7 | round: 0 }}px;
     }
 
     #MilauraBento-{{ section.id }} .bento__badge {
@@ -572,9 +605,20 @@
 <section
   id="MilauraBento-{{ section.id }}"
   class="milaura-bento-collections"
-  aria-label="Nos univers"
+  aria-label="{{ section.settings.section_title | default: 'Nos univers' | escape }}"
 >
   <div class="page-width">
+    {%- if section.settings.section_title != blank or section.settings.section_subtitle != blank -%}
+      <header class="bento__header">
+        {%- if section.settings.section_title != blank -%}
+          <h2 class="bento__section-title">{{ section.settings.section_title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.section_subtitle != blank -%}
+          <p class="bento__section-subtitle">{{ section.settings.section_subtitle }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
     <div class="bento">
       {%- for block in section.blocks -%}
         {%- assign collection = collections[block.settings.collection] -%}
@@ -768,7 +812,118 @@
   "tag": "section",
   "class": "milaura-section",
   "max_blocks": 8,
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "📝 En-tête de section"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Titre de la section",
+      "default": "Nos Univers"
+    },
+    {
+      "type": "textarea",
+      "id": "section_subtitle",
+      "label": "Sous-titre",
+      "default": "Découvrez nos collections uniques, créées avec passion"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style du titre de section"
+    },
+    {
+      "type": "select",
+      "id": "section_title_font",
+      "label": "Police du titre",
+      "options": [
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" },
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Dancing Script', cursive", "label": "Dancing Script" }
+      ],
+      "default": "'Playfair Display', serif"
+    },
+    {
+      "type": "range",
+      "id": "section_title_size",
+      "label": "Taille du titre",
+      "min": 24,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "section_title_color",
+      "label": "Couleur du titre",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "color",
+      "id": "section_subtitle_color",
+      "label": "Couleur du sous-titre",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style des cartes"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Police des titres",
+      "options": [
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" },
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Dancing Script', cursive", "label": "Dancing Script" }
+      ],
+      "default": "'Playfair Display', serif"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille des titres (base)",
+      "min": 18,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur des titres",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "desc_font",
+      "label": "Police des descriptions",
+      "options": [
+        { "value": "'Lato', sans-serif", "label": "Lato" },
+        { "value": "'Playfair Display', serif", "label": "Playfair Display" }
+      ],
+      "default": "'Lato', sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "label": "Taille des descriptions",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Couleur des descriptions",
+      "default": "rgba(255, 255, 255, 0.85)"
+    }
+  ],
   "blocks": [
     {
       "type": "collection_card",
