@@ -12,51 +12,30 @@
   #MilauraFilters-{{ section.id }} .filters__bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding: 8px 0;
   }
 
-  /* Bouton Filtres - minimal */
+  /* Bouton Filtres - CACHÉ */
   #MilauraFilters-{{ section.id }} .filters__trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0;
-    background: none;
-    border: none;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--milaura-text, #333);
-    cursor: pointer;
-    transition: color 0.2s ease;
+    display: none !important;
   }
 
-  #MilauraFilters-{{ section.id }} .filters__trigger:hover {
-    color: var(--milaura-gold, #C0A062);
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__trigger svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__trigger-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 5px;
-    background: var(--milaura-gold, #C0A062);
-    border-radius: 50px;
-    font-size: 10px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-
-  /* Sort dropdown - minimal */
+  /* Sort dropdown - avec rectangle arrondi */
   #MilauraFilters-{{ section.id }} .filters__sort {
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    transition: all 0.2s ease;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__sort:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.15);
   }
 
   #MilauraFilters-{{ section.id }} .filters__sort-select {
@@ -79,7 +58,7 @@
 
   #MilauraFilters-{{ section.id }} .filters__sort-icon {
     position: absolute;
-    right: 0;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     width: 12px;
@@ -283,44 +262,9 @@
     visibility: visible;
   }
 
-  /* Active filters pills inline */
+  /* Active filters pills - CACHÉ (filtres désactivés) */
   #MilauraFilters-{{ section.id }} .filters__active {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-    overflow-x: auto;
-    scrollbar-width: none;
-    margin: 0 16px;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__active::-webkit-scrollbar {
-    display: none;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__active-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 8px 4px 10px;
-    background: rgba(192, 160, 98, 0.1);
-    border-radius: 50px;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--milaura-text, #333);
-    white-space: nowrap;
-    text-decoration: none;
-    transition: background 0.2s ease;
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__active-pill:hover {
-    background: rgba(192, 160, 98, 0.2);
-  }
-
-  #MilauraFilters-{{ section.id }} .filters__active-pill svg {
-    width: 10px;
-    height: 10px;
-    opacity: 0.6;
+    display: none !important;
   }
 
   /* Mobile adjustments */
@@ -329,13 +273,16 @@
       padding: 6px 0;
     }
 
-    #MilauraFilters-{{ section.id }} .filters__trigger,
+    #MilauraFilters-{{ section.id }} .filters__sort {
+      padding: 6px 12px;
+    }
+
     #MilauraFilters-{{ section.id }} .filters__sort-select {
       font-size: 12px;
     }
 
-    #MilauraFilters-{{ section.id }} .filters__active {
-      margin: 0 12px;
+    #MilauraFilters-{{ section.id }} .filters__sort-icon {
+      right: 12px;
     }
 
     #MilauraFilters-{{ section.id }} .filters__drawer {
@@ -398,20 +345,38 @@
         {%- endfor -%}
       </div>
 
-      {%- comment -%} Tri {%- endcomment -%}
+      {%- comment -%} Tri + Disponibilité {%- endcomment -%}
       {%- if section.settings.enable_sorting -%}
+        {%- comment -%} Détecte si un filtre de disponibilité est actif {%- endcomment -%}
+        {%- assign current_availability = '' -%}
+        {%- if request.url contains 'filter.v.availability=1' -%}
+          {%- assign current_availability = 'in_stock' -%}
+        {%- elsif request.url contains 'filter.v.availability=0' -%}
+          {%- assign current_availability = 'out_of_stock' -%}
+        {%- endif -%}
+
         <div class="filters__sort">
           <select
             class="filters__sort-select"
             name="sort_by"
-            aria-label="Trier"
+            aria-label="Trier et filtrer"
             data-sort-select
           >
-            {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if collection.sort_by == option.value %}selected{% endif %}>
-                {{ option.name }}
+            <optgroup label="Trier par">
+              {%- for option in collection.sort_options -%}
+                <option value="sort:{{ option.value }}" {% if collection.sort_by == option.value and current_availability == '' %}selected{% endif %}>
+                  {{ option.name }}
+                </option>
+              {%- endfor -%}
+            </optgroup>
+            <optgroup label="Disponibilité">
+              <option value="availability:in_stock" {% if current_availability == 'in_stock' %}selected{% endif %}>
+                ✓ En stock
               </option>
-            {%- endfor -%}
+              <option value="availability:out_of_stock" {% if current_availability == 'out_of_stock' %}selected{% endif %}>
+                ✗ Rupture de stock
+              </option>
+            </optgroup>
           </select>
           <svg class="filters__sort-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
@@ -535,12 +500,32 @@
     applyBtn.addEventListener('click', applyFilters);
   }
 
-  // Sort select
+  // Sort & Availability select
   const sortSelect = section.querySelector('[data-sort-select]');
   if (sortSelect) {
     sortSelect.addEventListener('change', function() {
       const url = new URL(window.location.href);
-      url.searchParams.set('sort_by', this.value);
+      const value = this.value;
+
+      if (value.startsWith('sort:')) {
+        // C'est une option de tri
+        const sortValue = value.replace('sort:', '');
+        url.searchParams.set('sort_by', sortValue);
+        // Supprime le filtre de disponibilité si présent
+        url.searchParams.delete('filter.v.availability');
+      } else if (value.startsWith('availability:')) {
+        // C'est un filtre de disponibilité
+        const availabilityValue = value.replace('availability:', '');
+        // Supprime l'ancien filtre de disponibilité
+        url.searchParams.delete('filter.v.availability');
+
+        if (availabilityValue === 'in_stock') {
+          url.searchParams.set('filter.v.availability', '1');
+        } else if (availabilityValue === 'out_of_stock') {
+          url.searchParams.set('filter.v.availability', '0');
+        }
+      }
+
       window.location.href = url.toString();
     });
   }
