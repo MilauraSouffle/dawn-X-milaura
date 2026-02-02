@@ -11,20 +11,31 @@
 
 {%- style -%}
   #MilauraCollectionHero-{{ section.id }} {
-    padding: 4px var(--milaura-spacing-sm) 6px;
+    padding: 1px var(--milaura-spacing-sm) 6px;
   }
 
   /* =============================================
-     BREADCRUMB - Ultra discret
+     HERO ROW - Breadcrumb à gauche, Island au centre
      ============================================= */
-  #MilauraCollectionHero-{{ section.id }} .hero__breadcrumb {
+  #MilauraCollectionHero-{{ section.id }} .hero__row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    position: relative;
+    min-height: 48px;
+  }
+
+  /* =============================================
+     BREADCRUMB - Position gauche absolue
+     ============================================= */
+  #MilauraCollectionHero-{{ section.id }} .hero__breadcrumb {
+    position: absolute;
+    left: 0;
+    display: flex;
+    align-items: center;
     gap: 6px;
-    margin-bottom: 6px;
     font-size: 11px;
     color: var(--milaura-text-light, #999);
+    z-index: 1;
   }
 
   #MilauraCollectionHero-{{ section.id }} .hero__breadcrumb a {
@@ -48,12 +59,12 @@
   }
 
   /* =============================================
-     DYNAMIC ISLAND - Animation fluide
+     DYNAMIC ISLAND - Centré dans le row
      ============================================= */
   #MilauraCollectionHero-{{ section.id }} .hero__island-wrapper {
     display: flex;
     justify-content: center;
-    margin-bottom: 0;
+    width: 100%;
   }
 
   #MilauraCollectionHero-{{ section.id }} .hero__island {
@@ -208,12 +219,15 @@
      ============================================= */
   @media screen and (max-width: 768px) {
     #MilauraCollectionHero-{{ section.id }} {
-      padding: var(--milaura-spacing-xs) var(--milaura-spacing-xs);
+      padding: 1px var(--milaura-spacing-xs) 6px;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .hero__row {
+      min-height: 44px;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__breadcrumb {
       font-size: 10px;
-      margin-bottom: 8px;
     }
 
     #MilauraCollectionHero-{{ section.id }} .hero__island {
@@ -234,6 +248,13 @@
     #MilauraCollectionHero-{{ section.id }} .hero__island-dot {
       width: 5px;
       height: 5px;
+    }
+  }
+
+  /* Tablette - cacher le breadcrumb pour éviter chevauchement */
+  @media screen and (max-width: 600px) {
+    #MilauraCollectionHero-{{ section.id }} .hero__breadcrumb {
+      display: none;
     }
   }
 
@@ -290,19 +311,21 @@
   aria-label="{{ collection.title | escape }}"
 >
   <div class="page-width">
-    {%- comment -%} Breadcrumb ultra-discret {%- endcomment -%}
-    {%- if section.settings.show_breadcrumb -%}
-      <nav class="hero__breadcrumb" aria-label="Fil d'Ariane">
-        <a href="{{ routes.root_url }}">Accueil</a>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-        <span aria-current="page">{{ collection.title }}</span>
-      </nav>
-    {%- endif -%}
+    {%- comment -%} Row: Breadcrumb à gauche + Dynamic Island au centre {%- endcomment -%}
+    <div class="hero__row">
+      {%- comment -%} Breadcrumb ultra-discret {%- endcomment -%}
+      {%- if section.settings.show_breadcrumb -%}
+        <nav class="hero__breadcrumb" aria-label="Fil d'Ariane">
+          <a href="{{ routes.root_url }}">Accueil</a>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span aria-current="page">{{ collection.title }}</span>
+        </nav>
+      {%- endif -%}
 
-    {%- comment -%} Dynamic Island {%- endcomment -%}
-    <div class="hero__island-wrapper">
+      {%- comment -%} Dynamic Island {%- endcomment -%}
+      <div class="hero__island-wrapper">
       <h1 class="hero__island">
         {%- comment -%} Point doré pulsant {%- endcomment -%}
         <span class="hero__island-dot" aria-hidden="true"></span>
@@ -322,6 +345,7 @@
           </span>
         {%- endif -%}
       </h1>
+      </div>
     </div>
   </div>
 </section>
