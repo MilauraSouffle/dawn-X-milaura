@@ -390,6 +390,38 @@
   }
 
   /* =============================================
+     CARTE CTA DE REMPLISSAGE
+     ============================================= */
+  #MilauraBento-{{ section.id }} .bento__card--cta .bento__cta-bg {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #FDFBF7 0%, #F2E8D5 50%, #E6D8C0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__cta-icon {
+    font-size: 64px;
+    opacity: 0.6;
+    transition: all 0.4s ease;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--cta:hover .bento__cta-icon {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--cta .bento__overlay {
+    background: linear-gradient(180deg, transparent 0%, rgba(253, 251, 247, 0.3) 100%) !important;
+  }
+
+  #MilauraBento-{{ section.id }} .bento__card--cta .bento__content {
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.9) 60%);
+    padding-top: 40px;
+  }
+
+  /* =============================================
      ANIMATIONS D'ENTRÉE
      ============================================= */
   #MilauraBento-{{ section.id }} .bento__card {
@@ -749,6 +781,38 @@
         </article>
       {%- endfor -%}
 
+      {%- comment -%} Carte CTA de remplissage - affichée si activée {%- endcomment -%}
+      {%- if section.settings.show_filler_cta -%}
+        <article class="bento__card bento__card--{{ section.settings.filler_size }} bento__card--cta">
+          <a href="{{ section.settings.filler_link }}" class="bento__card-link">
+            <div class="bento__media">
+              <div class="bento__cta-bg">
+                <span class="bento__cta-icon">{{ section.settings.filler_icon }}</span>
+              </div>
+            </div>
+            <div class="bento__overlay" style="background: linear-gradient(180deg, transparent 0%, rgba(192, 160, 98, 0.1) 100%);"></div>
+            <div class="bento__content">
+              {%- if section.settings.filler_badge != blank -%}
+                <span class="bento__badge">
+                  <span class="bento__badge-dot"></span>
+                  {{ section.settings.filler_badge }}
+                </span>
+              {%- endif -%}
+              <h2 class="bento__title" style="color: var(--milaura-gold, #C0A062); text-shadow: none;">
+                {{ section.settings.filler_title }}
+              </h2>
+              <span class="bento__cta">
+                {{ section.settings.filler_cta_text }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </article>
+      {%- endif -%}
+
       {%- comment -%} Fallback si aucun block {%- endcomment -%}
       {%- if section.blocks.size == 0 -%}
         {%- for i in (1..4) -%}
@@ -922,6 +986,59 @@
       "id": "desc_color",
       "label": "Couleur des descriptions",
       "default": "rgba(255, 255, 255, 0.85)"
+    },
+    {
+      "type": "header",
+      "content": "🎯 Carte CTA de remplissage"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filler_cta",
+      "label": "Afficher une carte CTA",
+      "default": false,
+      "info": "Ajoute une carte à la fin pour combler les espaces vides"
+    },
+    {
+      "type": "select",
+      "id": "filler_size",
+      "label": "Taille de la carte CTA",
+      "options": [
+        { "value": "large", "label": "Grande (8 colonnes)" },
+        { "value": "medium", "label": "Moyenne (4 colonnes)" },
+        { "value": "wide", "label": "Large (6 colonnes)" },
+        { "value": "small", "label": "Petite (4 colonnes)" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "text",
+      "id": "filler_icon",
+      "label": "Icône",
+      "default": "✨"
+    },
+    {
+      "type": "text",
+      "id": "filler_badge",
+      "label": "Badge",
+      "default": "Quiz 2 min"
+    },
+    {
+      "type": "text",
+      "id": "filler_title",
+      "label": "Titre",
+      "default": "Trouve ta création idéale"
+    },
+    {
+      "type": "text",
+      "id": "filler_cta_text",
+      "label": "Texte du bouton",
+      "default": "Faire le quiz"
+    },
+    {
+      "type": "url",
+      "id": "filler_link",
+      "label": "Lien",
+      "default": "/"
     }
   ],
   "blocks": [
