@@ -137,117 +137,148 @@
     display: none;
   }
 
+  /* Dots cachés sur desktop */
+  #MilauraVideoProcess-{{ section.id }} .carousel-dots {
+    display: none;
+  }
+
   /* ============================================
-     MOBILE / TABLETTE (≤ 768px) - CARROUSEL
+     MOBILE / TABLETTE (≤ 768px) - CARROUSEL SINGLE
      ============================================ */
   @media screen and (max-width: 768px) {
     #MilauraVideoProcess-{{ section.id }} {
-      padding: var(--milaura-spacing-sm) 0;
+      padding: var(--milaura-spacing-md) var(--milaura-spacing-sm);
     }
 
     #MilauraVideoProcess-{{ section.id }} .video-process-container {
-      grid-template-columns: 1fr;
-      gap: var(--milaura-spacing-sm);
+      display: flex;
+      flex-direction: column;
+      gap: var(--milaura-spacing-md);
+      align-items: center;
     }
 
     #MilauraVideoProcess-{{ section.id }} .video-column {
-      padding: 0 var(--milaura-spacing-sm);
+      width: 100%;
+      text-align: center;
     }
 
     #MilauraVideoProcess-{{ section.id }} .video-title {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      text-align: center;
     }
 
     #MilauraVideoProcess-{{ section.id }} .video-subtitle {
-      font-size: 0.95rem;
-      margin-bottom: 12px;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      text-align: center;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     #MilauraVideoProcess-{{ section.id }} .video-wrapper {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
       border-radius: 16px;
+      aspect-ratio: 16 / 9;
     }
 
-    /* Produits en carrousel horizontal */
+    /* Produits en carrousel single card */
     #MilauraVideoProcess-{{ section.id }} .products-column {
-      padding: 0;
+      width: 100%;
+      max-width: 320px;
     }
 
     #MilauraVideoProcess-{{ section.id }} .products-list {
+      position: relative;
       display: flex;
       flex-direction: row;
-      gap: 12px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding: 12px var(--milaura-spacing-sm);
-      margin: 0;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-
-    #MilauraVideoProcess-{{ section.id }} .products-list::-webkit-scrollbar {
-      display: none;
+      overflow: hidden;
     }
 
     #MilauraVideoProcess-{{ section.id }} .product-item {
-      flex: 0 0 auto;
-      width: 140px;
-      scroll-snap-align: start;
+      flex: 0 0 100%;
+      width: 100%;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .product-item:first-child {
+      position: relative;
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .product-item.is-active {
+      opacity: 1;
+      position: relative;
+      transform: scale(1);
+      pointer-events: auto;
     }
 
     #MilauraVideoProcess-{{ section.id }} .product-card {
       flex-direction: column;
       text-align: center;
-      padding: 12px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(192, 160, 98, 0.2);
-      height: 100%;
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(192, 160, 98, 0.3);
+      box-shadow: 0 8px 25px rgba(192, 160, 98, 0.15);
     }
 
     #MilauraVideoProcess-{{ section.id }} .product-image {
-      width: 100px;
-      height: 100px;
-      border-radius: 12px;
-      margin-bottom: 8px;
+      width: 180px;
+      height: 180px;
+      border-radius: 16px;
+      margin: 0 auto 16px auto;
     }
 
     #MilauraVideoProcess-{{ section.id }} .product-name {
-      font-size: 0.9rem;
-      line-height: 1.25;
-      margin-bottom: 6px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      font-size: 1.25rem;
+      line-height: 1.3;
+      margin-bottom: 12px;
     }
 
     #MilauraVideoProcess-{{ section.id }} .product-price {
-      font-size: 1rem;
+      font-size: 1.3rem;
       display: inline-block;
       background: linear-gradient(135deg, rgba(192, 160, 98, 0.15) 0%, rgba(192, 160, 98, 0.08) 100%);
-      padding: 4px 10px;
-      border-radius: 8px;
-      border: 1px solid rgba(192, 160, 98, 0.25);
+      padding: 8px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(192, 160, 98, 0.3);
     }
 
-    /* Indicateur de scroll (fade droite) */
-    #MilauraVideoProcess-{{ section.id }} .products-column::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 40px;
-      background: linear-gradient(to left, rgba(253, 251, 247, 0.9) 0%, transparent 100%);
-      pointer-events: none;
-      z-index: 2;
+    /* Dots navigation */
+    #MilauraVideoProcess-{{ section.id }} .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
     }
 
-    #MilauraVideoProcess-{{ section.id }} .products-column {
-      position: relative;
+    #MilauraVideoProcess-{{ section.id }} .carousel-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(192, 160, 98, 0.3);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .carousel-dot:hover {
+      background: rgba(192, 160, 98, 0.5);
+    }
+
+    #MilauraVideoProcess-{{ section.id }} .carousel-dot.is-active {
+      background: var(--milaura-gold);
+      transform: scale(1.2);
     }
 
     /* Mobile : CTA sous la vidéo caché, CTA sous produits visible */
@@ -257,28 +288,28 @@
 
     #MilauraVideoProcess-{{ section.id }} .collection-button.mobile-only {
       display: block;
-      padding: 0 var(--milaura-spacing-sm);
-      margin-top: 8px;
+      margin-top: 20px;
+      text-align: center;
     }
   }
 
   /* Très petit mobile */
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 380px) {
     #MilauraVideoProcess-{{ section.id }} .video-title {
-      font-size: 1.5rem;
+      font-size: 1.7rem;
     }
 
-    #MilauraVideoProcess-{{ section.id }} .product-item {
-      width: 130px;
+    #MilauraVideoProcess-{{ section.id }} .products-column {
+      max-width: 280px;
     }
 
     #MilauraVideoProcess-{{ section.id }} .product-image {
-      width: 85px;
-      height: 85px;
+      width: 150px;
+      height: 150px;
     }
 
     #MilauraVideoProcess-{{ section.id }} .product-name {
-      font-size: 0.85rem;
+      font-size: 1.1rem;
     }
   }
 {% endstyle %}
@@ -355,24 +386,38 @@
     <!-- Colonne droite : Produits -->
     <div class="products-column">
       {% assign selected_collection = collections[section.settings.collection] %}
-      
+      {% assign products_count = 0 %}
+
       {% if selected_collection != blank and selected_collection.products.size > 0 %}
-        <div class="products-list">
+        <div class="products-list" id="products-carousel-{{ section.id }}">
           {% for product in selected_collection.products limit: 4 %}
-            <a href="{{ product.url }}" class="product-item">
+            {% assign products_count = products_count | plus: 1 %}
+            <a href="{{ product.url }}" class="product-item {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}">
               <div class="product-card milaura-card">
                 {% if product.featured_image != blank %}
-                  {{ product.featured_image | image_url: width: 200 | image_tag: class: 'product-image', loading: 'lazy', alt: product.title }}
+                  {{ product.featured_image | image_url: width: 400 | image_tag: class: 'product-image', loading: 'lazy', alt: product.title }}
                 {% else %}
                   {{ 'product-1' | placeholder_svg_tag: 'product-image' }}
                 {% endif %}
-                
+
                 <div class="product-info">
                   <h3 class="product-name">{{ product.title }}</h3>
                   <div class="product-price">{{ product.price | money }}</div>
                 </div>
               </div>
             </a>
+          {% endfor %}
+        </div>
+
+        <!-- Dots navigation (mobile) -->
+        <div class="carousel-dots" id="carousel-dots-{{ section.id }}">
+          {% for product in selected_collection.products limit: 4 %}
+            <button
+              type="button"
+              class="carousel-dot {% if forloop.first %}is-active{% endif %}"
+              data-index="{{ forloop.index0 }}"
+              aria-label="Voir {{ product.title }}"
+            ></button>
           {% endfor %}
         </div>
 
@@ -401,6 +446,107 @@
     </div>
   </div>
 </div>
+
+<script>
+(function() {
+  'use strict';
+
+  var sectionId = '{{ section.id }}';
+  var carousel = document.getElementById('products-carousel-' + sectionId);
+  var dotsContainer = document.getElementById('carousel-dots-' + sectionId);
+
+  if (!carousel || !dotsContainer) return;
+
+  var items = Array.prototype.slice.call(carousel.querySelectorAll('.product-item'));
+  var dots = Array.prototype.slice.call(dotsContainer.querySelectorAll('.carousel-dot'));
+  var currentIndex = 0;
+  var autoPlayInterval = null;
+
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
+
+  function showSlide(index) {
+    if (index < 0) index = items.length - 1;
+    if (index >= items.length) index = 0;
+
+    currentIndex = index;
+
+    items.forEach(function(item, i) {
+      item.classList.toggle('is-active', i === index);
+    });
+
+    dots.forEach(function(dot, i) {
+      dot.classList.toggle('is-active', i === index);
+    });
+  }
+
+  function startAutoPlay() {
+    if (!isMobile()) return;
+    stopAutoPlay();
+    autoPlayInterval = setInterval(function() {
+      showSlide(currentIndex + 1);
+    }, 4000);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+      autoPlayInterval = null;
+    }
+  }
+
+  // Click on dots
+  dots.forEach(function(dot, i) {
+    dot.addEventListener('click', function() {
+      showSlide(i);
+      stopAutoPlay();
+      startAutoPlay();
+    });
+  });
+
+  // Swipe support
+  var touchStartX = 0;
+  var touchEndX = 0;
+
+  carousel.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+    stopAutoPlay();
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    var diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        showSlide(currentIndex + 1);
+      } else {
+        showSlide(currentIndex - 1);
+      }
+    }
+    startAutoPlay();
+  }, { passive: true });
+
+  // Start autoplay on mobile
+  if (isMobile()) {
+    startAutoPlay();
+  }
+
+  // Handle resize
+  window.addEventListener('resize', function() {
+    if (isMobile()) {
+      startAutoPlay();
+    } else {
+      stopAutoPlay();
+      // Show all items on desktop
+      items.forEach(function(item) {
+        item.classList.remove('is-active');
+      });
+    }
+  });
+})();
+</script>
 
 {% schema %}
 {
