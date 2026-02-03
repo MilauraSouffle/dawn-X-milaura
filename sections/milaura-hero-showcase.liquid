@@ -158,7 +158,50 @@
     {% endif %}
   }
 
+  /* --- BULLE GLASSMORPHISM TITRE --- */
+  #MilauraHeroShowcase-{{ section.id }} .hero-title-wrap {
+    position: relative;
+    display: inline-block;
+    padding: 0;
+  }
+
+  {% if section.settings.title_bubble_enabled %}
+  #MilauraHeroShowcase-{{ section.id }} .hero-title-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -12px -28px;
+    border-radius: 50px;
+    background: {{ section.settings.title_bubble_color }};
+    opacity: {{ section.settings.title_bubble_opacity | divided_by: 100.0 }};
+    backdrop-filter: blur({{ section.settings.title_bubble_blur }}px);
+    -webkit-backdrop-filter: blur({{ section.settings.title_bubble_blur }}px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* Reflet subtil en haut de la bulle */
+  #MilauraHeroShowcase-{{ section.id }} .hero-title-wrap::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  {% endif %}
+
   #MilauraHeroShowcase-{{ section.id }} .hero-title-script {
+    position: relative;
+    z-index: 1;
     font-family: {{ section.settings.title_font }};
     font-size: {{ section.settings.title_size | divided_by: 10.0 }}rem;
     font-weight: 650;
@@ -425,6 +468,13 @@
       font-size: clamp(2.2rem, 4vw, {{ section.settings.title_size | divided_by: 10.0 }}rem);
     }
 
+    {% if section.settings.title_bubble_enabled %}
+    #MilauraHeroShowcase-{{ section.id }} .hero-title-wrap::before {
+      inset: -10px -22px;
+      border-radius: 40px;
+    }
+    {% endif %}
+
     #MilauraHeroShowcase-{{ section.id }} .hero-banner {
       padding: 16px 24px;
     }
@@ -473,6 +523,13 @@
       line-height: 1.1;
       margin: 0;
     }
+
+    {% if section.settings.title_bubble_enabled %}
+    #MilauraHeroShowcase-{{ section.id }} .hero-title-wrap::before {
+      inset: -8px -16px;
+      border-radius: 30px;
+    }
+    {% endif %}
 
     #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
       font-size: {{ section.settings.subtitle_size_mobile }}px;
@@ -583,6 +640,13 @@
       font-size: 1.5rem;
     }
 
+    {% if section.settings.title_bubble_enabled %}
+    #MilauraHeroShowcase-{{ section.id }} .hero-title-wrap::before {
+      inset: -6px -12px;
+      border-radius: 24px;
+    }
+    {% endif %}
+
     #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
       font-size: 0.75rem;
     }
@@ -627,7 +691,9 @@
             {% endif %}
 
             {% if section.settings.title != blank %}
-              <h2 class="hero-title-script">{{ section.settings.title }}</h2>
+              <div class="hero-title-wrap">
+                <h2 class="hero-title-script">{{ section.settings.title }}</h2>
+              </div>
             {% endif %}
 
             {% if section.settings.subtitle != blank %}
@@ -1008,6 +1074,40 @@
       "unit": "px",
       "default": 40,
       "info": "Valeur en dixièmes de rem (40 = 4rem)"
+    },
+    { "type": "header", "content": "💫 Bulle glassmorphism (titre)" },
+    {
+      "type": "checkbox",
+      "id": "title_bubble_enabled",
+      "label": "Activer la bulle derrière le titre",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "title_bubble_color",
+      "label": "Couleur de la bulle",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "title_bubble_opacity",
+      "label": "Opacité de la bulle",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "title_bubble_blur",
+      "label": "Intensité du flou (glassmorphism)",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12,
+      "info": "0 = pas de flou, 30 = flou maximum"
     },
     {
       "type": "range",
