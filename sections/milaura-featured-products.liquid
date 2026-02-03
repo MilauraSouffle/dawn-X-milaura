@@ -56,24 +56,35 @@
     display: none;
   }
 
-  /* --- LA CARTE PRODUIT --- */
+  /* --- LA CARTE PRODUIT (style bijou) --- */
   #MilauraProd-{{ section.id }} .prod-card {
     flex: 0 0 auto;
     width: 260px;
-    background: #ffffff;
     border-radius: 20px;
     padding: 12px;
     text-align: center;
     text-decoration: none;
     position: relative;
-    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
-    border: 1px solid rgba(192, 160, 98, 0.35);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     scroll-snap-align: start;
+
+    /* Style cadre bijou */
+    border: 2px solid transparent;
+    background:
+      linear-gradient(#ffffff, #ffffff) padding-box,
+      linear-gradient(135deg,
+        rgba(255, 240, 200, 0.92) 0%,
+        rgba(214, 176, 96, 0.92) 18%,
+        rgba(255, 232, 172, 0.92) 42%,
+        rgba(176, 130, 48, 0.92) 70%,
+        rgba(255, 240, 200, 0.92) 100%) border-box;
+    box-shadow:
+      0 10px 28px rgba(0,0,0,0.06),
+      0 0 0 1px rgba(255,255,255,0.65) inset;
+    transition: transform 220ms ease, box-shadow 260ms ease;
   }
 
   #MilauraProd-{{ section.id }} .prod-card:first-child {
@@ -86,10 +97,11 @@
 
   /* --- INTERACTION SURVOL --- */
   #MilauraProd-{{ section.id }} .prod-card:hover {
-    border-color: var(--milaura-gold);
-    border-width: 2px;
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(192, 160, 98, 0.25), 0 0 0 1px rgba(192, 160, 98, 0.1);
+    transform: translateY(-4px);
+    box-shadow:
+      0 14px 40px rgba(0,0,0,0.10),
+      0 0 0 1px rgba(255,255,255,0.75) inset,
+      0 0 24px rgba(214, 176, 96, 0.28);
   }
 
   /* IMAGE */
@@ -185,7 +197,7 @@
     background: #1A1A1A;
   }
 
-  /* --- BOUTON CTA VOIR TOUT --- */
+  /* --- BOUTON CTA VOIR TOUT (style bijou) --- */
   #MilauraProd-{{ section.id }} .prod-cta-wrapper {
     text-align: center;
     margin-top: var(--milaura-spacing-lg);
@@ -195,26 +207,36 @@
   #MilauraProd-{{ section.id }} .prod-cta {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    background: transparent;
-    color: var(--milaura-gold);
-    font-family: 'Lato', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    text-decoration: none;
+    min-height: 48px;
+    min-width: 180px;
     padding: 14px 32px;
-    border: 2px solid var(--milaura-gold);
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    border-radius: 999px;
+    border: 1px solid rgba(214, 176, 96, 0.55);
+    background: linear-gradient(135deg,
+      rgba(255, 240, 200, 0.92) 0%,
+      rgba(214, 176, 96, 0.92) 18%,
+      rgba(255, 232, 172, 0.92) 42%,
+      rgba(176, 130, 48, 0.92) 70%,
+      rgba(255, 240, 200, 0.92) 100%);
+    color: #000;
+    text-decoration: none;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    box-shadow:
+      0 12px 32px rgba(130, 90, 30, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+    transition: transform 180ms ease, box-shadow 220ms ease;
   }
 
   #MilauraProd-{{ section.id }} .prod-cta:hover {
-    background: var(--milaura-gold);
-    color: #ffffff;
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.3);
+    box-shadow:
+      0 16px 40px rgba(130, 90, 30, 0.22),
+      0 0 0 1px rgba(255, 255, 255, 0.35) inset;
   }
 
   #MilauraProd-{{ section.id }} .prod-cta-arrow {
@@ -225,14 +247,40 @@
     transform: translateX(5px);
   }
 
-  /* --- INDICATEUR DE SCROLL (Mobile) --- */
-  #MilauraProd-{{ section.id }} .prod-scroll-hint {
-    display: none;
-    text-align: center;
-    margin-top: var(--milaura-spacing-sm);
-    color: var(--milaura-text-light);
-    font-size: 0.8rem;
-    opacity: 0.7;
+  /* --- INDICATEURS DE SLIDE (DOTS) --- */
+  #MilauraProd-{{ section.id }} .prod-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(192, 160, 98, 0.3);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-dot:hover {
+    background: rgba(192, 160, 98, 0.5);
+    transform: scale(1.2);
+  }
+
+  #MilauraProd-{{ section.id }} .prod-dot.is-active {
+    background: var(--milaura-gold, #C0A062);
+    transform: scale(1.3);
+  }
+
+  /* Cacher les dots sur grand écran (tout visible) */
+  @media screen and (min-width: 1200px) {
+    #MilauraProd-{{ section.id }} .prod-dots {
+      display: none;
+    }
   }
 
   /* --- RESPONSIVE DESKTOP --- */
@@ -260,10 +308,6 @@
     #MilauraProd-{{ section.id }} .quick-add-btn {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    #MilauraProd-{{ section.id }} .prod-scroll-hint {
-      display: block;
     }
   }
 
@@ -423,7 +467,20 @@
     </div>
   </div>
 
-  <p class="prod-scroll-hint">← Glisse pour voir plus →</p>
+  <!-- Indicateurs de slide (dots) -->
+  <div class="prod-dots" aria-label="Navigation produits">
+    {% assign collection = collections[section.settings.collection] %}
+    {% assign product_count = collection.products.size | at_most: section.settings.products_to_show %}
+    {% if product_count == 0 %}{% assign product_count = 5 %}{% endif %}
+    {% for i in (1..product_count) %}
+      <button
+        type="button"
+        class="prod-dot {% if forloop.first %}is-active{% endif %}"
+        data-dot-index="{{ forloop.index0 }}"
+        aria-label="Voir produit {{ forloop.index }}"
+      ></button>
+    {% endfor %}
+  </div>
 
   {% if section.settings.cta_label != blank %}
     <div class="prod-cta-wrapper">
@@ -434,6 +491,61 @@
     </div>
   {% endif %}
 </section>
+
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const root = document.getElementById('MilauraProd-' + sectionId);
+    if (!root) return;
+
+    const carousel = root.querySelector('.prod-carousel');
+    const dots = Array.from(root.querySelectorAll('.prod-dot[data-dot-index]'));
+    const cards = Array.from(carousel.querySelectorAll('.prod-card'));
+
+    if (!carousel || !dots.length || !cards.length) return;
+
+    function updateDots() {
+      const scrollLeft = carousel.scrollLeft;
+      const cardWidth = cards[0].offsetWidth + 20; // width + gap
+      const activeIndex = Math.round(scrollLeft / cardWidth);
+
+      dots.forEach((dot, i) => {
+        if (i === activeIndex) {
+          dot.classList.add('is-active');
+        } else {
+          dot.classList.remove('is-active');
+        }
+      });
+    }
+
+    function scrollToCard(index) {
+      const cardWidth = cards[0].offsetWidth + 20;
+      carousel.scrollTo({
+        left: index * cardWidth,
+        behavior: 'smooth'
+      });
+    }
+
+    // Scroll listener avec debounce
+    let scrollTimeout;
+    carousel.addEventListener('scroll', function() {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateDots, 50);
+    });
+
+    // Click sur les dots
+    dots.forEach((dot) => {
+      dot.addEventListener('click', function(e) {
+        e.preventDefault();
+        const idx = parseInt(this.getAttribute('data-dot-index'), 10);
+        if (!isNaN(idx)) scrollToCard(idx);
+      });
+    });
+
+    // Init
+    updateDots();
+  })();
+</script>
 
 {% schema %}
 {
