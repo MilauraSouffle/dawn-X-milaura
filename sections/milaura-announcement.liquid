@@ -1,5 +1,17 @@
 {% style %}
-  /* --- LE CONTENEUR PRINCIPAL (OR) --- */
+  /* --- VARIABLES EFFET BIJOU --- */
+  #MilauraAnnouncement-{{ section.id }} {
+    --announce-gold-grad: linear-gradient(
+      135deg,
+      rgba(255, 240, 200, 0.95) 0%,
+      rgba(240, 210, 140, 0.95) 20%,
+      rgba(214, 176, 96, 0.95) 50%,
+      rgba(240, 210, 140, 0.95) 80%,
+      rgba(255, 240, 200, 0.95) 100%
+    );
+  }
+
+  /* --- LE CONTENEUR PRINCIPAL (EFFET BIJOU) --- */
   #MilauraAnnouncement-{{ section.id }} {
     position: fixed;
     top: 0;
@@ -7,11 +19,34 @@
     width: 100%;
     height: {{ section.settings.bar_height }}px;
     overflow: hidden;
-    background: linear-gradient(90deg, {{ section.settings.bg_color_start }}, {{ section.settings.bg_color_end }}, {{ section.settings.bg_color_start }});
     z-index: 1000001;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+    /* Fond crème/beige clair */
+    background: linear-gradient(90deg, #FFFDF8, #FFF9EE, #FFFDF8);
+
+    /* Bordure dorée dégradée (effet bijou) */
+    border-bottom: 2px solid transparent;
+    background-clip: padding-box;
+
+    /* Ombres luxueuses */
+    box-shadow:
+      0 2px 12px rgba(192, 160, 98, 0.15),
+      0 1px 0 rgba(214, 176, 96, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      inset 0 -1px 0 rgba(214, 176, 96, 0.3);
   }
-  
+
+  /* Bordure dorée en bas avec dégradé */
+  #MilauraAnnouncement-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--announce-gold-grad);
+  }
+
   /* Compensation pour le body */
   body {
     padding-top: {{ section.settings.bar_height }}px;
@@ -23,7 +58,7 @@
     }
   }
 
-  /* --- LE BROUILLARD ARGENTÉ (SHIMMER) --- */
+  /* --- LE REFLET DORÉ (SHEEN EFFECT) --- */
   #MilauraAnnouncement-{{ section.id }}::after {
     content: '';
     position: absolute;
@@ -31,16 +66,16 @@
     left: 0;
     width: 200%;
     height: 100%;
-    /* Le voile argenté : Transparent -> Blanc léger -> Transparent */
     background: linear-gradient(
-      110deg, 
-      transparent 30%, 
-      rgba(255, 255, 255, 0.4) 50%, 
-      transparent 70%
+      120deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255, 248, 220, 0.5) 50%,
+      transparent 60%,
+      transparent 100%
     );
-    animation: silverFog 3s infinite linear; /* Animation rapide et constante */
+    animation: goldSheen 4s infinite ease-in-out;
     pointer-events: none;
-    mix-blend-mode: overlay; /* Fusionne joliment avec l'or */
   }
 
   /* --- LE TEXTE DÉFILANT (BFM STYLE) --- */
@@ -75,18 +110,23 @@
     font-weight: {{ section.settings.font_weight }};
     font-size: {{ section.settings.font_size | divided_by: 10.0 }}rem;
     text-transform: {{ section.settings.text_transform }};
-    letter-spacing: 1px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    letter-spacing: 0.5px;
   }
 
   .announcement-icon {
     font-size: {{ section.settings.font_size | plus: 2 | divided_by: 10.0 }}rem;
   }
 
+  .announcement-separator {
+    color: #C0A062;
+    font-size: 0.5rem;
+    opacity: 0.7;
+  }
+
   /* --- ANIMATIONS --- */
-  @keyframes silverFog {
-    0% { transform: translateX(-150%); }
-    100% { transform: translateX(50%); }
+  @keyframes goldSheen {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
   }
 
   @keyframes scrollText {
@@ -126,7 +166,7 @@
           {% endif %}
           <span>{{ block.settings.text }}</span>
         </div>
-        <div class="announcement-item">•</div> 
+        <div class="announcement-separator">◆</div>
       {%- endfor -%}
 
       {%- for block in section.blocks -%}
@@ -136,7 +176,7 @@
           {% endif %}
           <span>{{ block.settings.text }}</span>
         </div>
-        <div class="announcement-item">•</div>
+        <div class="announcement-separator">◆</div>
       {%- endfor -%}
 
     </div>
@@ -167,7 +207,7 @@
       "type": "color",
       "id": "text_color",
       "label": "Couleur du texte",
-      "default": "#FFFFFF"
+      "default": "#1b1b1b"
     },
     {
       "type": "header",
@@ -188,12 +228,12 @@
       "type": "range",
       "id": "font_size",
       "label": "Taille du texte",
-      "min": 7,
-      "max": 12,
+      "min": 8,
+      "max": 14,
       "step": 1,
       "unit": "px",
-      "default": 9,
-      "info": "Valeur en dixièmes de rem (9 = 0.9rem)"
+      "default": 11,
+      "info": "Valeur en dixièmes de rem (11 = 1.1rem)"
     },
     {
       "type": "select",
@@ -259,7 +299,7 @@
           "type": "text",
           "id": "icon",
           "label": "Emoji/Icône",
-          "default": "✨",
+          "default": "📦",
           "info": "Copiez-collez un emoji ici (ex: 🇫🇷, 💎, 📦)"
         }
       ]
@@ -273,7 +313,7 @@
           "type": "announcement",
           "settings": {
             "text": "Livraison offerte dès 39 €",
-            "icon": "✨"
+            "icon": "📦"
           }
         },
         {
