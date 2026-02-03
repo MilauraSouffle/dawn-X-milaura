@@ -1,14 +1,20 @@
 {% style %}
   /* ============================================
-     MILAURA BENEFITS EXPLORER - V9 (ACCORDÉON MOBILE + CONVERSION)
+     MILAURA BENEFITS EXPLORER - V10 (HYBRID)
+     Desktop: Navigation classique + Cartes
+     Mobile: Accordéon optimisé conversion
      ============================================ */
 
   #MilauraBenefits-{{ section.id }} {
     width: 100%;
     padding: var(--milaura-spacing-lg) 0;
     background: transparent;
-    margin-top: var(--milaura-spacing-md);
+    margin-top: var(--milaura-spacing-lg);
     margin-bottom: var(--milaura-spacing-lg);
+    transition: background-image 0.5s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    position: relative;
   }
 
   /* --- CONTENEUR GLOBAL (LA CARTE) --- */
@@ -43,11 +49,11 @@
   }
 
   /* ============================================
-     DESKTOP LAYOUT (> 990px)
+     DESKTOP LAYOUT (> 990px) - STYLE CLASSIQUE
      ============================================ */
   #MilauraBenefits-{{ section.id }} .benefits-layout {
     display: grid;
-    grid-template-columns: 380px 1fr;
+    grid-template-columns: 350px 1fr;
     gap: 40px;
     align-items: start;
   }
@@ -56,14 +62,19 @@
   #MilauraBenefits-{{ section.id }} .benefits-nav {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
+  }
+
+  /* Cacher le contenu accordéon sur desktop */
+  #MilauraBenefits-{{ section.id }} .benefit-accordion-content {
+    display: none;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn {
-    background: rgba(255, 255, 255, 0.6);
-    border: 2px solid rgba(192, 160, 98, 0.15);
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid transparent;
     border-radius: 20px;
-    padding: 18px 20px;
+    padding: 20px;
     text-align: left;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -74,8 +85,7 @@
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn:hover {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(192, 160, 98, 0.4);
+    background: rgba(255, 255, 255, 0.9);
     transform: translateX(5px);
   }
 
@@ -87,26 +97,19 @@
   #MilauraBenefits-{{ section.id }} .benefit-btn.is-active {
     background: #ffffff;
     border-color: var(--milaura-gold);
-    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.2);
-    transform: translateX(8px);
+    box-shadow: 0 10px 25px rgba(192, 160, 98, 0.2);
+    transform: scale(1.02);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn-content {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 15px;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn-icon {
-    font-size: 2rem;
+    font-size: 1.8rem;
     flex-shrink: 0;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, rgba(192, 160, 98, 0.1) 0%, rgba(192, 160, 98, 0.05) 100%);
-    border-radius: 14px;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn-text {
@@ -118,30 +121,24 @@
     font-family: var(--milaura-font-heading);
     font-weight: 700;
     color: {{ section.settings.btn_name_color }};
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     display: block;
-    line-height: 1.2;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-btn-tagline {
     font-family: var(--milaura-font-body);
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: var(--milaura-text-light);
     display: block;
-    margin-top: 4px;
-  }
-
-  /* Prix sur le bouton */
-  #MilauraBenefits-{{ section.id }} .benefit-btn-price {
-    font-family: var(--milaura-font-body);
-    font-size: 0.9rem;
-    color: var(--milaura-gold);
-    font-weight: 700;
     margin-top: 6px;
-    display: block;
   }
 
-  /* Chevron desktop */
+  /* Prix caché sur desktop */
+  #MilauraBenefits-{{ section.id }} .benefit-btn-price {
+    display: none;
+  }
+
+  /* Chevron caché sur desktop */
   #MilauraBenefits-{{ section.id }} .benefit-btn-chevron {
     display: none;
   }
@@ -153,7 +150,7 @@
     border-radius: 25px;
     overflow: hidden;
     position: relative;
-    min-height: 520px;
+    min-height: 500px;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
   }
 
@@ -168,7 +165,7 @@
     background-position: center;
     display: flex;
     align-items: center;
-    padding: var(--milaura-spacing-lg);
+    padding: var(--milaura-spacing-md);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-card.is-active {
@@ -183,22 +180,23 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(to right, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0) 100%);
     z-index: 1;
   }
 
-  /* --- BOITE TEXTE --- */
+  /* --- BOITE TEXTE DESKTOP --- */
   #MilauraBenefits-{{ section.id }} .benefit-info-box {
     position: relative;
     z-index: 2;
     max-width: 480px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: var(--milaura-spacing-lg);
-    border-radius: 24px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-    border: 2px solid rgba(192, 160, 98, 0.2);
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: var(--milaura-spacing-md);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 2px solid transparent;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   }
 
   /* Badge best-seller */
@@ -218,50 +216,44 @@
   #MilauraBenefits-{{ section.id }} .benefit-info-subtitle {
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     color: {{ section.settings.info_subtitle_color }};
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-info-title {
     font-family: var(--milaura-font-heading);
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     color: {{ section.settings.info_title_color }};
-    margin-bottom: 16px;
-    line-height: 1.15;
+    margin-bottom: 15px;
+    line-height: 1.2;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-info-desc {
     font-family: var(--milaura-font-body);
     color: var(--milaura-text);
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     line-height: 1.7;
-    margin-bottom: 24px;
   }
 
-  /* --- PRODUIT SECTION --- */
-  #MilauraBenefits-{{ section.id }} .benefit-product {
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: 16px;
-    padding: 16px;
-    border: 1px solid rgba(192, 160, 98, 0.15);
-  }
-
-  #MilauraBenefits-{{ section.id }} .benefit-product-row {
+  /* --- PRODUIT MINI DESKTOP --- */
+  #MilauraBenefits-{{ section.id }} .benefit-product-mini {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    flex-wrap: wrap;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-product-thumb {
-    width: 80px;
-    height: 80px;
-    border-radius: 14px;
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
     object-fit: cover;
     flex-shrink: 0;
-    border: 2px solid rgba(192, 160, 98, 0.2);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-product-info {
@@ -270,75 +262,67 @@
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-product-title {
-    font-family: var(--milaura-font-heading);
     font-weight: 700;
+    margin-bottom: 5px;
     color: var(--milaura-text);
-    font-size: 1.15rem;
-    margin-bottom: 6px;
-    line-height: 1.2;
+    font-size: 1.3rem;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-product-price {
-    display: inline-block;
-    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15) 0%, rgba(192, 160, 98, 0.08) 100%);
-    color: var(--milaura-gold-dark, #8F723A);
-    font-weight: 800;
-    font-size: 1.3rem;
-    padding: 6px 14px;
-    border-radius: 12px;
-    border: 1px solid rgba(192, 160, 98, 0.25);
+    color: var(--milaura-gold);
+    font-weight: 700;
+    font-size: 1.4rem;
   }
 
-  /* CTA Principal - Gros et visible */
-  #MilauraBenefits-{{ section.id }} .benefit-cta {
-    display: flex;
+  /* CTA Desktop */
+  #MilauraBenefits-{{ section.id }} .benefit-product-cta {
+    flex-shrink: 0;
+    white-space: nowrap;
+    margin-left: auto;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    width: 100%;
-    min-height: 56px;
-    padding: 16px 28px;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-decoration: none;
-    color: #000;
+    min-height: 48px;
+    min-width: 160px;
+    padding: 11px 24px;
+    font-size: 1.05rem;
+    border-radius: 999px;
+    border: 1px solid rgba(214, 176, 96, 0.55);
     background: linear-gradient(
       135deg,
-      rgba(255, 240, 200, 0.95) 0%,
-      rgba(214, 176, 96, 0.95) 20%,
-      rgba(255, 232, 172, 0.95) 45%,
-      rgba(176, 130, 48, 0.95) 75%,
-      rgba(255, 240, 200, 0.95) 100%
+      rgba(255, 240, 200, 0.92) 0%,
+      rgba(214, 176, 96, 0.92) 18%,
+      rgba(255, 232, 172, 0.92) 42%,
+      rgba(176, 130, 48, 0.92) 70%,
+      rgba(255, 240, 200, 0.92) 100%
     );
-    background-size: 200% 200%;
-    border: 2px solid rgba(214, 176, 96, 0.6);
-    border-radius: 16px;
+    color: #000;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.3px;
     box-shadow:
-      0 8px 25px rgba(192, 160, 98, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    transition: all 0.3s ease;
+      0 12px 32px rgba(130, 90, 30, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+    transition: transform 180ms ease, box-shadow 220ms ease;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    animation: ctaPulse 3s ease-in-out infinite;
   }
 
-  @keyframes ctaPulse {
-    0%, 100% { box-shadow: 0 8px 25px rgba(192, 160, 98, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
-    50% { box-shadow: 0 8px 35px rgba(192, 160, 98, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 20px rgba(192, 160, 98, 0.3); }
-  }
-
-  #MilauraBenefits-{{ section.id }} .benefit-cta:hover {
+  #MilauraBenefits-{{ section.id }} .benefit-product-cta:hover {
     transform: translateY(-2px);
     box-shadow:
-      0 12px 35px rgba(192, 160, 98, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    animation: none;
+      0 16px 40px rgba(130, 90, 30, 0.20),
+      0 0 0 1px rgba(255, 255, 255, 0.30) inset,
+      0 0 24px rgba(214, 176, 96, 0.28);
   }
 
-  #MilauraBenefits-{{ section.id }} .benefit-cta-icon {
-    font-size: 1.3rem;
+  /* Image mobile cachée sur desktop */
+  #MilauraBenefits-{{ section.id }} .benefit-mobile-image {
+    display: none;
+  }
+
+  /* Produit mobile caché sur desktop */
+  #MilauraBenefits-{{ section.id }} .benefit-product-mobile {
+    display: none;
   }
 
   /* ============================================
@@ -365,6 +349,11 @@
       display: flex;
       flex-direction: column;
       gap: 0;
+    }
+
+    /* Cacher la zone desktop */
+    #MilauraBenefits-{{ section.id }} .benefits-content {
+      display: none !important;
     }
 
     /* Navigation devient accordéon */
@@ -394,20 +383,24 @@
 
     #MilauraBenefits-{{ section.id }} .benefit-btn:hover {
       background: rgba(192, 160, 98, 0.05);
-      transform: none;
+      transform: none !important;
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn.is-active {
       background: rgba(192, 160, 98, 0.08);
       border: none;
       box-shadow: none;
-      transform: none;
+      transform: none !important;
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn-icon {
+      font-size: 1.6rem;
       width: 44px;
       height: 44px;
-      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(192, 160, 98, 0.1) 0%, rgba(192, 160, 98, 0.05) 100%);
       border-radius: 12px;
     }
 
@@ -417,14 +410,20 @@
 
     #MilauraBenefits-{{ section.id }} .benefit-btn-tagline {
       font-size: 0.85rem;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-btn-price {
-      font-size: 0.85rem;
       margin-top: 4px;
     }
 
-    /* Chevron accordéon */
+    /* Prix visible sur mobile */
+    #MilauraBenefits-{{ section.id }} .benefit-btn-price {
+      display: block;
+      font-family: var(--milaura-font-body);
+      font-size: 0.85rem;
+      color: var(--milaura-gold);
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* Chevron accordéon visible */
     #MilauraBenefits-{{ section.id }} .benefit-btn-chevron {
       display: flex;
       align-items: center;
@@ -434,7 +433,8 @@
       background: rgba(192, 160, 98, 0.1);
       border-radius: 50%;
       flex-shrink: 0;
-      transition: transform 0.3s ease, background 0.3s ease;
+      margin-left: auto;
+      transition: background 0.3s ease;
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn-chevron svg {
@@ -453,12 +453,9 @@
       transform: rotate(180deg);
     }
 
-    /* Contenu accordéon */
-    #MilauraBenefits-{{ section.id }} .benefits-content {
-      display: none;
-    }
-
+    /* Contenu accordéon visible sur mobile */
     #MilauraBenefits-{{ section.id }} .benefit-accordion-content {
+      display: block;
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -474,6 +471,7 @@
 
     /* Image en haut sur mobile */
     #MilauraBenefits-{{ section.id }} .benefit-mobile-image {
+      display: block;
       width: 100%;
       height: 180px;
       object-fit: cover;
@@ -487,6 +485,7 @@
       padding: 20px;
       border-radius: 20px;
       max-width: 100%;
+      border: 1px solid rgba(192, 160, 98, 0.15);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-info-title {
@@ -505,33 +504,93 @@
       margin-bottom: 20px;
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-product {
+    /* Produit mobile visible */
+    #MilauraBenefits-{{ section.id }} .benefit-product-mobile {
+      display: block;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 16px;
       padding: 14px;
+      border: 1px solid rgba(192, 160, 98, 0.15);
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-product-row {
+    #MilauraBenefits-{{ section.id }} .benefit-product-mobile .benefit-product-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
       margin-bottom: 14px;
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-product-thumb {
+    #MilauraBenefits-{{ section.id }} .benefit-product-mobile .benefit-product-thumb {
       width: 70px;
       height: 70px;
+      border-radius: 14px;
+      border: 2px solid rgba(192, 160, 98, 0.2);
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-product-title {
+    #MilauraBenefits-{{ section.id }} .benefit-product-mobile .benefit-product-title {
+      font-family: var(--milaura-font-heading);
       font-size: 1.05rem;
+      margin-bottom: 6px;
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-product-price {
+    #MilauraBenefits-{{ section.id }} .benefit-product-mobile .benefit-product-price {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(192, 160, 98, 0.15) 0%, rgba(192, 160, 98, 0.08) 100%);
+      color: var(--milaura-gold-dark, #8F723A);
+      font-weight: 800;
       font-size: 1.15rem;
       padding: 5px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(192, 160, 98, 0.25);
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-cta {
+    /* CTA Mobile - Gros et visible */
+    #MilauraBenefits-{{ section.id }} .benefit-cta-mobile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
       min-height: 52px;
       padding: 14px 24px;
       font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      color: #000;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 240, 200, 0.95) 0%,
+        rgba(214, 176, 96, 0.95) 20%,
+        rgba(255, 232, 172, 0.95) 45%,
+        rgba(176, 130, 48, 0.95) 75%,
+        rgba(255, 240, 200, 0.95) 100%
+      );
+      border: 2px solid rgba(214, 176, 96, 0.6);
       border-radius: 14px;
+      box-shadow:
+        0 8px 25px rgba(192, 160, 98, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      animation: ctaPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 8px 25px rgba(192, 160, 98, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+      50% { box-shadow: 0 8px 35px rgba(192, 160, 98, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 20px rgba(192, 160, 98, 0.3); }
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefit-cta-mobile:hover {
+      animation: none;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefit-cta-icon {
+      font-size: 1.2rem;
+    }
+
+    /* Cacher produit desktop mini sur mobile */
+    #MilauraBenefits-{{ section.id }} .benefit-product-mini {
+      display: none;
     }
   }
 
@@ -565,11 +624,11 @@
       font-size: 1.5rem;
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-product-row {
+    #MilauraBenefits-{{ section.id }} .benefit-product-mobile .benefit-product-row {
       flex-wrap: wrap;
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-product-thumb {
+    #MilauraBenefits-{{ section.id }} .benefit-product-mobile .benefit-product-thumb {
       width: 60px;
       height: 60px;
     }
@@ -595,8 +654,8 @@
     {% endif %}
 
     <div class="benefits-layout">
-      <!-- DESKTOP: Navigation à gauche -->
-      <nav class="benefits-nav desktop-nav" role="tablist" aria-label="Sélecteur de besoins">
+      <!-- Navigation (Desktop: tabs, Mobile: accordéon) -->
+      <nav class="benefits-nav" role="tablist" aria-label="Sélecteur de besoins">
         {%- for block in section.blocks -%}
           {%- assign prod = block.settings.product -%}
           <div class="benefit-accordion-item">
@@ -629,7 +688,7 @@
               </div>
             </button>
 
-            <!-- Contenu accordéon (mobile) -->
+            <!-- Contenu accordéon (mobile uniquement) -->
             <div class="benefit-accordion-content {% if forloop.first %}is-open{% endif %}" id="accordion-{{ block.id }}">
               <div class="benefit-accordion-inner">
                 {%- if block.settings.stone_image != blank -%}
@@ -650,7 +709,7 @@
                   <div class="benefit-info-desc">{{ block.settings.description }}</div>
 
                   {%- if prod != blank -%}
-                    <div class="benefit-product">
+                    <div class="benefit-product-mobile">
                       <div class="benefit-product-row">
                         {%- if prod.featured_image -%}
                           <img
@@ -665,7 +724,7 @@
                           <div class="benefit-product-price">{{ prod.price | money }}</div>
                         </div>
                       </div>
-                      <a href="{{ prod.url }}" class="benefit-cta">
+                      <a href="{{ prod.url }}" class="benefit-cta-mobile">
                         <span class="benefit-cta-icon">✨</span>
                         <span>{{ block.settings.product_cta_label | default: 'Je découvre cette pierre' }}</span>
                       </a>
@@ -678,7 +737,7 @@
         {%- endfor -%}
       </nav>
 
-      <!-- DESKTOP: Zone de contenu à droite -->
+      <!-- DESKTOP: Zone de contenu à droite (cartes empilées) -->
       <div class="benefits-content" id="benefits-content-{{ section.id }}">
         {%- for block in section.blocks -%}
           {%- assign prod = block.settings.product -%}
@@ -699,24 +758,21 @@
               <div class="benefit-info-desc">{{ block.settings.description }}</div>
 
               {%- if prod != blank -%}
-                <div class="benefit-product">
-                  <div class="benefit-product-row">
-                    {%- if prod.featured_image -%}
-                      <img
-                        src="{{ prod.featured_image | image_url: width: 200 }}"
-                        alt="{{ prod.title }}"
-                        class="benefit-product-thumb"
-                        loading="lazy"
-                      >
-                    {%- endif -%}
-                    <div class="benefit-product-info">
-                      <div class="benefit-product-title">{{ prod.title }}</div>
-                      <div class="benefit-product-price">{{ prod.price | money }}</div>
-                    </div>
+                <div class="benefit-product-mini">
+                  {%- if prod.featured_image -%}
+                    <img
+                      src="{{ prod.featured_image | image_url: width: 160 }}"
+                      alt="{{ prod.title }}"
+                      class="benefit-product-thumb"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+                  <div class="benefit-product-info">
+                    <div class="benefit-product-title">{{ prod.title }}</div>
+                    <div class="benefit-product-price">{{ prod.price | money }}</div>
                   </div>
-                  <a href="{{ prod.url }}" class="benefit-cta">
-                    <span class="benefit-cta-icon">✨</span>
-                    <span>{{ block.settings.product_cta_label | default: 'Je découvre cette pierre' }}</span>
+                  <a href="{{ prod.url }}" class="benefit-product-cta">
+                    {{ block.settings.product_cta_label | default: 'Découvrir' }}
                   </a>
                 </div>
               {%- endif -%}
@@ -895,7 +951,7 @@
         { "type": "checkbox", "id": "is_bestseller", "label": "Afficher badge Best-seller", "default": false },
         { "type": "header", "content": "Produit" },
         { "type": "product", "id": "product", "label": "Produit Lié" },
-        { "type": "text", "id": "product_cta_label", "label": "Texte du bouton", "default": "Je découvre cette pierre" }
+        { "type": "text", "id": "product_cta_label", "label": "Texte du bouton", "default": "Découvrir" }
       ]
     }
   ],
