@@ -403,20 +403,36 @@
       gap: 0;
     }
 
-    /* Wrapper accordéon */
+    /* Wrapper accordéon - Cadre doré */
     #MilauraBenefits-{{ section.id }} .benefit-accordion-item {
-      border-bottom: 1px solid rgba(192, 160, 98, 0.15);
+      margin-bottom: 12px;
+      border-radius: 16px;
+      border: 2px solid rgba(192, 160, 98, 0.35);
+      background: rgba(255, 255, 255, 0.7);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(192, 160, 98, 0.1);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-accordion-item:last-child {
-      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefit-accordion-item:hover {
+      border-color: rgba(192, 160, 98, 0.55);
+      box-shadow: 0 6px 20px rgba(192, 160, 98, 0.18);
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefit-accordion-item.is-expanded {
+      border-color: var(--milaura-gold);
+      box-shadow: 0 8px 30px rgba(192, 160, 98, 0.25);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn {
       background: transparent;
       border: none;
       border-radius: 0;
-      padding: 18px 8px;
+      padding: 16px 14px;
       margin: 0;
       transform: none !important;
       box-shadow: none;
@@ -470,29 +486,52 @@
       margin-top: 4px;
     }
 
-    /* Chevron accordéon visible */
+    /* Chevron accordéon visible + animation */
     #MilauraBenefits-{{ section.id }} .benefit-btn-chevron {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
-      background: rgba(192, 160, 98, 0.1);
+      width: 36px;
+      height: 36px;
+      background: rgba(192, 160, 98, 0.15);
+      border: 2px solid rgba(192, 160, 98, 0.3);
       border-radius: 50%;
       flex-shrink: 0;
       margin-left: auto;
-      transition: background 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: chevronPulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes chevronPulse {
+      0%, 100% {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(192, 160, 98, 0.2);
+      }
+      50% {
+        transform: translateY(3px);
+        box-shadow: 0 4px 12px rgba(192, 160, 98, 0.35);
+      }
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn-chevron svg {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       color: var(--milaura-gold);
-      transition: transform 0.3s ease;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefit-btn:hover .benefit-btn-chevron {
+      background: rgba(192, 160, 98, 0.25);
+      border-color: rgba(192, 160, 98, 0.5);
+      animation: none;
+      transform: translateY(2px);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn.is-active .benefit-btn-chevron {
       background: var(--milaura-gold);
+      border-color: var(--milaura-gold);
+      animation: none;
+      box-shadow: 0 4px 15px rgba(192, 160, 98, 0.4);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn.is-active .benefit-btn-chevron svg {
@@ -705,17 +744,17 @@
       <nav class="benefits-nav" role="tablist" aria-label="Sélecteur de besoins">
         {%- for block in section.blocks -%}
           {%- assign prod = block.settings.product -%}
-          <div class="benefit-accordion-item">
+          <div class="benefit-accordion-item" data-accordion-index="{{ forloop.index0 }}">
             <button
               type="button"
               id="benefit-btn-{{ block.id }}"
-              class="benefit-btn {% if forloop.first %}is-active{% endif %}"
+              class="benefit-btn"
               data-target="benefit-{{ block.id }}"
               data-index="{{ forloop.index0 }}"
               role="tab"
-              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-selected="false"
               aria-controls="benefit-{{ block.id }}"
-              aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-expanded="false"
               {{ block.shopify_attributes }}
             >
               <div class="benefit-btn-content">
@@ -736,7 +775,7 @@
             </button>
 
             <!-- Contenu accordéon (mobile uniquement) -->
-            <div class="benefit-accordion-content {% if forloop.first %}is-open{% endif %}" id="accordion-{{ block.id }}">
+            <div class="benefit-accordion-content" id="accordion-{{ block.id }}">
               <div class="benefit-accordion-inner">
                 {%- if block.settings.stone_image != blank -%}
                   <img
@@ -842,13 +881,28 @@
     var btns = Array.prototype.slice.call(container.querySelectorAll('.benefit-btn'));
     var cards = Array.prototype.slice.call(container.querySelectorAll('.benefit-card'));
     var accordionContents = Array.prototype.slice.call(container.querySelectorAll('.benefit-accordion-content'));
+    var accordionItems = Array.prototype.slice.call(container.querySelectorAll('.benefit-accordion-item'));
 
     if (btns.length === 0) return;
 
-    var currentIndex = 0;
+    var currentIndex = -1; // -1 = aucun ouvert sur mobile
 
     function isMobile() {
       return window.innerWidth <= 990;
+    }
+
+    function closeAllMobile() {
+      btns.forEach(function (btn) {
+        btn.classList.remove('is-active');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+      accordionContents.forEach(function (content) {
+        content.classList.remove('is-open');
+      });
+      accordionItems.forEach(function (item) {
+        item.classList.remove('is-expanded');
+      });
+      currentIndex = -1;
     }
 
     function activateTab(index) {
@@ -869,10 +923,13 @@
         card.classList.toggle('is-active', i === index);
       });
 
-      // Mobile: accordéon
+      // Mobile: accordéon + cadre doré
       if (isMobile()) {
         accordionContents.forEach(function (content, i) {
           content.classList.toggle('is-open', i === index);
+        });
+        accordionItems.forEach(function (item, i) {
+          item.classList.toggle('is-expanded', i === index);
         });
       }
     }
@@ -884,9 +941,7 @@
 
         // Sur mobile, si on clique sur l'actif, on le ferme
         if (isMobile() && i === currentIndex && accordionContents[i].classList.contains('is-open')) {
-          accordionContents[i].classList.remove('is-open');
-          btn.classList.remove('is-active');
-          btn.setAttribute('aria-expanded', 'false');
+          closeAllMobile();
           return;
         }
 
@@ -929,11 +984,24 @@
       }
     });
 
-    // Initialisation
-    btns.forEach(function (btn, i) {
-      if (btn.classList.contains('is-active')) {
-        currentIndex = i;
+    // Initialisation: Desktop ouvre le premier, Mobile tout fermé
+    function initializeState() {
+      if (!isMobile()) {
+        // Desktop: activer le premier tab
+        activateTab(0);
+      } else {
+        // Mobile: tout fermé
+        closeAllMobile();
       }
+    }
+
+    initializeState();
+
+    // Réinitialiser au changement de taille
+    var resizeTimeout;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(initializeState, 150);
     });
   })();
 </script>
