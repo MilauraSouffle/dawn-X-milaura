@@ -78,7 +78,16 @@
 
   /* Contenu texte - Police personnalisable */
   #MilauraImageText-{{ section.id }} .text-wrapper .text-content {
-    font-family: {{ section.settings.text_font }} !important;
+    {% case section.settings.text_font %}
+      {% when 'lato' %}
+        font-family: 'Lato', -apple-system, sans-serif !important;
+      {% when 'playfair' %}
+        font-family: 'Playfair Display', Georgia, serif !important;
+      {% when 'dancing' %}
+        font-family: 'Dancing Script', cursive !important;
+      {% else %}
+        font-family: var(--milaura-font-body) !important;
+    {% endcase %}
     color: {{ section.settings.text_color }};
     font-size: {{ section.settings.text_size }}rem;
     line-height: 1.65;
@@ -404,23 +413,23 @@
       "label": "Police du texte",
       "options": [
         {
-          "value": "'Lato', -apple-system, BlinkMacSystemFont, sans-serif",
+          "value": "lato",
           "label": "Lato (Recommandé)"
         },
         {
-          "value": "'Playfair Display', Georgia, serif",
+          "value": "playfair",
           "label": "Playfair Display"
         },
         {
-          "value": "'Dancing Script', cursive",
+          "value": "dancing",
           "label": "Dancing Script"
         },
         {
-          "value": "var(--milaura-font-body)",
+          "value": "theme",
           "label": "Police du thème"
         }
       ],
-      "default": "'Lato', -apple-system, BlinkMacSystemFont, sans-serif"
+      "default": "lato"
     },
     {
       "type": "range",
