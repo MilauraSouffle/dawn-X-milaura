@@ -231,7 +231,7 @@
     display: grid;
     grid-template-columns: 40% 60%;
     gap: var(--milaura-spacing-lg, 32px);
-    align-items: start;
+    align-items: stretch;
   }
 
   /* --- ONGLETS GAUCHE (doré bijou en bordure, pas "plastique plein") --- */
@@ -337,6 +337,8 @@
     position: relative;
     border-radius: var(--milaura-radius);
     overflow: visible;
+    display: flex;
+    flex-direction: column;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel-frame {
@@ -350,12 +352,16 @@
     transform: translate(0px, 8px);
     margin-right: 8px;
     margin-bottom: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-carousel {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 3;
+    flex: 1;
+    min-height: 350px;
     border-radius: calc(var(--milaura-radius) - 6px);
     overflow: hidden;
     background: var(--milaura-beige);
@@ -425,11 +431,11 @@
 
   #MilauraHeroShowcase-{{ section.id }} .hero-quiz-hint {
     font-family: var(--milaura-font-body);
-    font-size: 0.95rem;
+    font-size: {{ section.settings.quiz_hint_size | default: 1.15 }}rem;
     color: var(--milaura-text-light, #666);
     text-align: center;
     line-height: 1.5;
-    max-width: 280px;
+    max-width: 320px;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta {
@@ -1300,6 +1306,16 @@
       "id": "quiz_cta_hint",
       "label": "Texte d'accroche (bulle)",
       "default": "Vous ne savez pas par où commencer ? Découvrez vos minéraux bien-être."
+    },
+    {
+      "type": "range",
+      "id": "quiz_hint_size",
+      "label": "Taille texte d'accroche",
+      "min": 1,
+      "max": 1.6,
+      "step": 0.1,
+      "unit": "rem",
+      "default": 1.15
     },
     {
       "type": "text",
