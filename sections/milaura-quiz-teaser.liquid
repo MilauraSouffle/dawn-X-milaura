@@ -15,6 +15,36 @@
     background: transparent;
     margin-top: 0;
     margin-bottom: var(--milaura-spacing-sm);
+    position: relative;
+  }
+
+  /* Ligne dorée animée au-dessus de la section */
+  #MilauraQuizTeaser-{{ section.id }} .section-gold-separator {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(214, 176, 96, 0.5) 20%, rgba(214, 176, 96, 0.7) 50%, rgba(214, 176, 96, 0.5) 80%, transparent 100%);
+    border-radius: 2px;
+    z-index: 10;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), background 0.6s ease;
+  }
+
+  #MilauraQuizTeaser-{{ section.id }} .section-gold-separator.is-expanded {
+    width: 90%;
+    background: linear-gradient(90deg, transparent 0%, rgba(214, 176, 96, 0.6) 10%, rgba(214, 176, 96, 0.8) 50%, rgba(214, 176, 96, 0.6) 90%, transparent 100%);
+  }
+
+  @media screen and (max-width: 768px) {
+    #MilauraQuizTeaser-{{ section.id }} .section-gold-separator {
+      width: 80px;
+    }
+
+    #MilauraQuizTeaser-{{ section.id }} .section-gold-separator.is-expanded {
+      width: 85%;
+    }
   }
 
   /* Container principal avec effet glassmorphism */
@@ -379,6 +409,9 @@
   class="milaura-quiz-teaser"
   aria-label="{{ section.settings.title }}"
 >
+  <!-- Ligne dorée animée -->
+  <div class="section-gold-separator" data-gold-separator></div>
+
   <div class="page-width">
     <div class="teaser-container milaura-section-card">
 
@@ -460,6 +493,42 @@
     </div>
   </div>
 </section>
+
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const section = document.getElementById('MilauraQuizTeaser-' + sectionId);
+    if (!section) return;
+
+    const separator = section.querySelector('[data-gold-separator]');
+    if (!separator) return;
+
+    // Vérifie prefers-reduced-motion
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      separator.classList.add('is-expanded');
+      return;
+    }
+
+    // IntersectionObserver pour animer au scroll
+    const observer = new IntersectionObserver(
+      function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            separator.classList.add('is-expanded');
+          } else {
+            separator.classList.remove('is-expanded');
+          }
+        });
+      },
+      {
+        rootMargin: '-10% 0px -30% 0px',
+        threshold: 0
+      }
+    );
+
+    observer.observe(section);
+  })();
+</script>
 
 {% schema %}
 {
