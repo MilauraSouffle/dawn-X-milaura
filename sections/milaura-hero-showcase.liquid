@@ -762,6 +762,68 @@
       overflow: hidden;
     }
   }
+
+  /* --- TRUST BADGES (intégrés au hero) --- */
+  #MilauraHeroShowcase-{{ section.id }} .hero-trust-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--milaura-spacing-sm, 12px);
+    margin-top: var(--milaura-spacing-md, 24px);
+    padding: 0 var(--milaura-spacing-md, 24px);
+    width: 100%;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFFFFF;
+    border: 1px solid var(--milaura-gold, #C0A062);
+    padding: var(--milaura-spacing-xs, 6px) var(--milaura-spacing-md, 24px);
+    border-radius: 50px;
+    box-shadow: var(--milaura-shadow-sm, 0 4px 15px rgba(192, 160, 98, 0.15));
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-trust-badge:hover {
+    transform: translateY(-3px);
+    border-color: var(--milaura-gold-light, #E6C88B);
+    box-shadow: var(--milaura-shadow-md, 0 15px 40px rgba(192, 160, 98, 0.25));
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-trust-badge .badge-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-trust-badge .badge-text {
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--milaura-text, #1b1b1b);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    #MilauraHeroShowcase-{{ section.id }} .hero-trust-badges {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      padding: 0 var(--milaura-spacing-sm, 12px);
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-trust-badge {
+      justify-content: center;
+      padding: 10px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-trust-badge .badge-text {
+      font-size: 11px;
+    }
+  }
 {% endstyle %}
 
 <div id="MilauraHeroShowcase-{{ section.id }}">
@@ -912,6 +974,23 @@
         </div>
       </div>
     </div>
+
+    <!-- Trust Badges intégrés -->
+    {% assign trust_badges = section.blocks | where: 'type', 'trust_badge' %}
+    {% if trust_badges.size > 0 %}
+      <div class="hero-trust-badges">
+        {% for block in trust_badges %}
+          <div class="hero-trust-badge" {{ block.shopify_attributes }}>
+            {% if block.settings.icon != blank %}
+              <span class="badge-icon">{{ block.settings.icon }}</span>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <span class="badge-text">{{ block.settings.text }}</span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 </div>
 
@@ -1402,6 +1481,25 @@
         { "type": "text", "id": "cta_label", "label": "Texte du bouton", "default": "Découvrir" },
         { "type": "url", "id": "cta_link", "label": "Lien du bouton" }
       ]
+    },
+    {
+      "type": "trust_badge",
+      "name": "Badge confiance",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icône (Emoji)",
+          "default": "🇫🇷"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Artisanat Français"
+        }
+      ]
     }
   ],
   "presets": [
@@ -1446,6 +1544,34 @@
             "title": "Rituels & bien-être",
             "text": "Guides et accessoires pour vos rituels de reconnexion et de self-care.",
             "cta_label": "Découvrir"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "🇫🇷",
+            "text": "Artisanat Français"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "💎",
+            "text": "Pierres Certifiées"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "🚚",
+            "text": "Livraison Offerte dès 39€"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "💝",
+            "text": "Emballage Cadeau"
           }
         }
       ]
