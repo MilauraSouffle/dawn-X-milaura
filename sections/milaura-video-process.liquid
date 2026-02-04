@@ -622,26 +622,56 @@
     });
   });
 
-  // Swipe support
+  // Touch swipe support (mobile)
   var touchStartX = 0;
-  var touchEndX = 0;
+  var touchStartY = 0;
+  var touchMoved = false;
+  var isSwiping = false;
 
   carousel.addEventListener('touchstart', function(e) {
-    touchStartX = e.changedTouches[0].screenX;
+    if (!isMobile()) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchMoved = false;
+    isSwiping = false;
     stopAutoPlay();
   }, { passive: true });
 
+  carousel.addEventListener('touchmove', function(e) {
+    if (!isMobile() || !touchStartX) return;
+
+    var touchCurrentX = e.touches[0].clientX;
+    var touchCurrentY = e.touches[0].clientY;
+    var diffX = touchStartX - touchCurrentX;
+    var diffY = touchStartY - touchCurrentY;
+
+    // Si le mouvement horizontal est plus grand que vertical, c'est un swipe
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+      isSwiping = true;
+      touchMoved = true;
+    }
+  }, { passive: true });
+
   carousel.addEventListener('touchend', function(e) {
-    touchEndX = e.changedTouches[0].screenX;
+    if (!isMobile()) return;
+
+    var touchEndX = e.changedTouches[0].clientX;
     var diff = touchStartX - touchEndX;
 
-    if (Math.abs(diff) > 50) {
+    // Seuil réduit à 30px pour meilleure réactivité
+    if (isSwiping && Math.abs(diff) > 30) {
       if (diff > 0) {
+        // Swipe gauche -> slide suivant
         showSlide(currentIndex + 1);
       } else {
+        // Swipe droite -> slide précédent
         showSlide(currentIndex - 1);
       }
     }
+
+    touchStartX = 0;
+    touchStartY = 0;
+    isSwiping = false;
     startAutoPlay();
   }, { passive: true });
 
