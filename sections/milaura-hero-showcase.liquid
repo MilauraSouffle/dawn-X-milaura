@@ -976,18 +976,27 @@
     </div>
 
     <!-- Trust Badges intégrés -->
-    {% assign trust_badges = section.blocks | where: 'type', 'trust_badge' %}
-    {% if trust_badges.size > 0 %}
+    {% assign has_trust_badges = false %}
+    {% for block in section.blocks %}
+      {% if block.type == 'trust_badge' %}
+        {% assign has_trust_badges = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_trust_badges %}
       <div class="hero-trust-badges">
-        {% for block in trust_badges %}
-          <div class="hero-trust-badge" {{ block.shopify_attributes }}>
-            {% if block.settings.icon != blank %}
-              <span class="badge-icon">{{ block.settings.icon }}</span>
-            {% endif %}
-            {% if block.settings.text != blank %}
-              <span class="badge-text">{{ block.settings.text }}</span>
-            {% endif %}
-          </div>
+        {% for block in section.blocks %}
+          {% if block.type == 'trust_badge' %}
+            <div class="hero-trust-badge" {{ block.shopify_attributes }}>
+              {% if block.settings.icon != blank %}
+                <span class="badge-icon">{{ block.settings.icon }}</span>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <span class="badge-text">{{ block.settings.text }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
     {% endif %}
