@@ -13,8 +13,16 @@
     font-family: var(--milaura-font-heading);
     font-size: {{ section.settings.title_size }}rem;
     color: {{ section.settings.title_color }};
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-weight: 700;
+  }
+
+  .trust-subtitle {
+    font-family: var(--milaura-font-body);
+    font-size: {{ section.settings.subtitle_size }}rem;
+    color: {{ section.settings.subtitle_color }};
+    margin-bottom: 15px;
+    line-height: 1.5;
   }
 
   .trust-badges-grid {
@@ -45,7 +53,7 @@
   }
 
   .trust-icon {
-    font-size: 3rem;
+    font-size: {{ section.settings.badge_icon_size }}rem;
     margin-bottom: 15px;
     line-height: 1;
   }
@@ -53,7 +61,7 @@
   .trust-badge-title {
     font-family: var(--milaura-font-heading);
     color: {{ section.settings.badge_title_color }};
-    font-size: 1.2rem;
+    font-size: {{ section.settings.badge_title_size }}rem;
     font-weight: 600;
     margin-bottom: 10px;
   }
@@ -61,7 +69,7 @@
   .trust-badge-text {
     font-family: var(--milaura-font-body);
     color: {{ section.settings.badge_text_color }};
-    font-size: 0.9rem;
+    font-size: {{ section.settings.badge_text_size }}rem;
     line-height: 1.5;
   }
 
@@ -77,9 +85,14 @@
 {% endstyle %}
 
 <div id="MilauraTrust-{{ section.id }}">
-  {% if section.settings.title != blank %}
+  {% if section.settings.title != blank or section.settings.subtitle != blank %}
     <div class="trust-header">
-      <h2 class="trust-title">{{ section.settings.title }}</h2>
+      {% if section.settings.title != blank %}
+        <h2 class="trust-title">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <p class="trust-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
     </div>
   {% endif %}
 
@@ -117,8 +130,13 @@
       "default": "Pourquoi nous faire confiance ?"
     },
     {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre Section"
+    },
+    {
       "type": "header",
-      "content": "✏️ Style"
+      "content": "✏️ Style Section"
     },
     {
       "type": "range",
@@ -137,10 +155,60 @@
       "default": "#C0A062"
     },
     {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Taille du sous-titre",
+      "min": 0.8,
+      "max": 1.5,
+      "step": 0.1,
+      "unit": "rem",
+      "default": 1.1
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Couleur du sous-titre",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Badges"
+    },
+    {
+      "type": "range",
+      "id": "badge_icon_size",
+      "label": "Taille icône badge",
+      "min": 2,
+      "max": 4,
+      "step": 0.1,
+      "unit": "rem",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "badge_title_size",
+      "label": "Taille titre badge",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "unit": "rem",
+      "default": 1.2
+    },
+    {
       "type": "color",
       "id": "badge_title_color",
       "label": "Couleur titres badges",
       "default": "#C0A062"
+    },
+    {
+      "type": "range",
+      "id": "badge_text_size",
+      "label": "Taille texte badge",
+      "min": 0.8,
+      "max": 1.4,
+      "step": 0.1,
+      "unit": "rem",
+      "default": 0.9
     },
     {
       "type": "color",
