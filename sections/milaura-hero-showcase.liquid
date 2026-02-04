@@ -400,39 +400,59 @@
     margin-top: 14px;
   }
 
-  /* --- CTA QUIZ SECONDAIRE (outline doré) --- */
+  /* --- CTA QUIZ SECONDAIRE avec bulle glassmorphism --- */
   #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta-row {
     display: flex;
     justify-content: center;
-    margin-top: 12px;
+    margin-top: 16px;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-quiz-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 28px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 24px;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-quiz-hint {
+    font-family: var(--milaura-font-body);
+    font-size: 0.95rem;
+    color: var(--milaura-text-light, #666);
+    text-align: center;
+    line-height: 1.5;
+    max-width: 280px;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 24px;
+    justify-content: center;
+    padding: 14px 32px;
     border-radius: 50px;
     text-decoration: none;
     font-family: var(--milaura-font-body);
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1.1rem;
+    font-weight: 700;
     letter-spacing: 0.3px;
-    color: var(--milaura-gold, #C0A062);
-    background: transparent;
-    border: 2px solid var(--milaura-gold, #C0A062);
-    transition: all 0.25s ease;
+    color: #fff;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062) 0%, #D4B678 50%, var(--milaura-gold-light, #E6C88B) 100%);
+    border: none;
+    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.35);
+    transition: all 0.3s ease;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta:hover {
-    background: rgba(192, 160, 98, 0.1);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.2);
-  }
-
-  #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta-icon {
-    font-size: 1.1rem;
-    line-height: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.45);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta-text {
@@ -678,15 +698,22 @@
 
     /* Quiz CTA mobile */
     #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta-row {
-      margin-top: 10px;
+      margin-top: 12px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-quiz-bubble {
+      padding: 14px 20px;
+      gap: 10px;
+      border-radius: 20px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-quiz-hint {
+      font-size: 0.85rem;
+      max-width: 240px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta {
-      padding: 8px 18px;
-      font-size: 0.85rem;
-    }
-
-    #MilauraHeroShowcase-{{ section.id }} .hero-quiz-cta-icon {
+      padding: 12px 24px;
       font-size: 1rem;
     }
   }
@@ -806,10 +833,12 @@
 
         {% if section.settings.show_quiz_cta %}
           <div class="hero-quiz-cta-row">
-            <a href="{{ section.settings.quiz_cta_link | default: '/pages/diagnostic-emotionnel' }}" class="hero-quiz-cta">
-              <span class="hero-quiz-cta-icon">✨</span>
-              <span class="hero-quiz-cta-text">{{ section.settings.quiz_cta_label | default: 'Trouver mon profil émotionnel' }}</span>
-            </a>
+            <div class="hero-quiz-bubble">
+              <p class="hero-quiz-hint">{{ section.settings.quiz_cta_hint | default: 'Vous ne savez pas par où commencer ? Découvrez vos minéraux bien-être.' }}</p>
+              <a href="{{ section.settings.quiz_cta_link | default: '/pages/diagnostic-emotionnel' }}" class="hero-quiz-cta">
+                <span class="hero-quiz-cta-text">{{ section.settings.quiz_cta_label | default: 'Tester mon profil émotionnel' }}</span>
+              </a>
+            </div>
           </div>
         {% endif %}
       </div>
@@ -1267,10 +1296,16 @@
       "default": true
     },
     {
+      "type": "textarea",
+      "id": "quiz_cta_hint",
+      "label": "Texte d'accroche (bulle)",
+      "default": "Vous ne savez pas par où commencer ? Découvrez vos minéraux bien-être."
+    },
+    {
       "type": "text",
       "id": "quiz_cta_label",
-      "label": "Texte CTA Quiz",
-      "default": "Trouver mon profil émotionnel"
+      "label": "Texte du bouton",
+      "default": "Tester mon profil émotionnel"
     },
     {
       "type": "url",
