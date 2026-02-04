@@ -115,9 +115,9 @@
 
   @media (min-width: 992px) {
     #MilauraQuizTeaser-{{ section.id }} .teaser-expert-block {
-      max-width: 800px;
-      padding: 32px 48px;
-      gap: 32px;
+      max-width: 1600px;
+      padding: 40px 60px;
+      gap: 40px;
     }
   }
 
@@ -139,8 +139,8 @@
 
   @media (min-width: 992px) {
     #MilauraQuizTeaser-{{ section.id }} .teaser-expert-image {
-      width: 140px;
-      height: 140px;
+      width: 200px;
+      height: 200px;
     }
   }
 
@@ -158,15 +158,15 @@
 
   @media (min-width: 992px) {
     #MilauraQuizTeaser-{{ section.id }} .teaser-expert-name {
-      font-size: 2.2rem;
+      font-size: 3.5rem;
     }
 
     #MilauraQuizTeaser-{{ section.id }} .teaser-expert-title {
-      font-size: 1.2rem;
+      font-size: 1.6rem;
     }
 
     #MilauraQuizTeaser-{{ section.id }} .teaser-expert-text {
-      font-size: 1.4rem;
+      font-size: 2.9rem;
     }
   }
 
@@ -263,11 +263,6 @@
       font-size: 1.4rem;
     }
 
-    #MilauraQuizTeaser-{{ section.id }} .teaser-note {
-      font-size: 1.1rem;
-      margin-top: 16px;
-    }
-
     #MilauraQuizTeaser-{{ section.id }} .teaser-cta-wrapper {
       margin-top: 40px;
     }
@@ -292,36 +287,26 @@
     50% { opacity: 0.7; transform: scale(1.1); }
   }
 
-  /* Note sous le CTA */
+  /* Note sous le CTA - bulle dorée */
   #MilauraQuizTeaser-{{ section.id }} .teaser-note {
+    display: inline-block;
     font-family: var(--milaura-font-body);
-    color: var(--milaura-text-light);
-    font-size: 0.85rem;
-    margin-top: 8px;
-    opacity: 0.8;
-  }
-
-  /* Lien derniere revelation */
-  #MilauraQuizTeaser-{{ section.id }} .teaser-last-result {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(192, 160, 98, 0.15);
-  }
-
-  #MilauraQuizTeaser-{{ section.id }} .teaser-last-result-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--milaura-font-body);
-    color: var(--milaura-gold);
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  #MilauraQuizTeaser-{{ section.id }} .teaser-last-result-link:hover {
     color: var(--milaura-gold-dark);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 16px;
+    padding: 10px 24px;
+    background: rgba(192, 160, 98, 0.12);
+    border: 1px solid var(--milaura-gold);
+    border-radius: 50px;
+  }
+
+  @media (min-width: 992px) {
+    #MilauraQuizTeaser-{{ section.id }} .teaser-note {
+      font-size: 1.3rem;
+      padding: 14px 32px;
+      margin-top: 24px;
+    }
   }
 
   /* --- RESPONSIVE TABLETTE --- */
@@ -543,37 +528,9 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} Lien vers derniere revelation (si existe) {%- endcomment -%}
-      <div class="teaser-last-result" id="teaser-last-result-{{ section.id }}" style="display: none;">
-        <a href="{{ section.settings.cta_link }}" class="teaser-last-result-link" id="teaser-show-last-{{ section.id }}">
-          <span>Revoir ma derniere revelation</span>
-          <span>→</span>
-        </a>
-      </div>
-
     </div>
   </div>
 </section>
-
-<script>
-  (function() {
-    const sectionId = '{{ section.id }}';
-
-    // Verifier si l'utilisateur a deja fait le quiz
-    const lastResult = localStorage.getItem('milauraLastResult');
-    if (lastResult) {
-      try {
-        const data = JSON.parse(lastResult);
-        const linkContainer = document.querySelector('#teaser-last-result-' + sectionId);
-        if (linkContainer && data.profileName) {
-          linkContainer.style.display = 'block';
-        }
-      } catch (e) {
-        // Silently fail
-      }
-    }
-  })();
-</script>
 
 {% schema %}
 {
