@@ -105,6 +105,24 @@
       0 0 24px rgba(214, 176, 96, 0.28) !important;
   }
 
+  /* --- BADGE BESTSELLER --- */
+  #MilauraProd-{{ section.id }} .prod-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #C0A062, #8F723A);
+    color: white;
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(143, 114, 58, 0.3);
+  }
+
   /* IMAGE */
   #MilauraProd-{{ section.id }} .prod-img-container {
     width: 100%;
@@ -482,6 +500,9 @@
 
           <a href="{{ product.url }}" class="prod-card milaura-card">
             <div class="prod-img-container">
+              {% if product.metafields.milaura.is_bestseller == true %}
+                <span class="prod-badge">Bestseller</span>
+              {% endif %}
               {{ product.featured_image | image_url: width: 600 | image_tag: class: 'prod-img', loading: img_loading, widths: '165, 360, 533, 600', sizes: '(min-width: 1024px) 260px, 180px' }}
             </div>
 
@@ -530,7 +551,12 @@
   {% if section.settings.cta_label != blank %}
     <div class="prod-cta-wrapper">
       <a href="{{ section.settings.cta_link | default: collection.url }}" class="prod-cta">
-        <span>{{ section.settings.cta_label }}</span>
+        <span>
+          {{ section.settings.cta_label }}
+          {% if section.settings.show_product_count and collection != blank %}
+            ({{ collection.products_count }} produits)
+          {% endif %}
+        </span>
         <span class="prod-cta-arrow">→</span>
       </a>
     </div>
@@ -641,6 +667,13 @@
       "id": "cta_link",
       "label": "Lien du bouton (optionnel)",
       "info": "Si vide, redirige vers la collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Afficher le nombre de produits",
+      "default": true,
+      "info": "Ex: Voir toute la collection (24 produits)"
     },
     {
       "type": "header",
