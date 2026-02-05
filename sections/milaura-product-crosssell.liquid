@@ -20,59 +20,54 @@
   # 1. Priorité 1 : Metafield crosssell_products
   assign meta_crosssell = product.metafields.milaura.crosssell_products.value
   if meta_crosssell != blank and meta_crosssell.size > 0
-    assign crosssell_products = meta_crosssell | where_exp: 'item', 'item.id != product.id' | where: 'available'
+    assign crosssell_products = meta_crosssell | where_exp: 'item', 'item.id != product.id'
     assign source_label = 'metafield'
   endif
 
-  # 2. Priorité 2 : Même pierre (stone_handle)
+  # 2. Priorité 2 : Collection de fallback configurée (le plus fiable)
   if crosssell_products == blank or crosssell_products.size == 0
-    assign current_stone = product.metafields.milaura.stone_handle
-    if current_stone != blank
-      assign fallback_collection = collections[section.settings.fallback_collection]
-      if fallback_collection != blank
-        assign stone_products = fallback_collection.products | where_exp: 'item', 'item.id != product.id' | where: 'available'
-        assign filtered_by_stone = ''
-        for p in stone_products
-          if p.metafields.milaura.stone_handle == current_stone
-            if filtered_by_stone == ''
-              assign filtered_by_stone = p.id | append: ''
-            else
-              assign filtered_by_stone = filtered_by_stone | append: ',' | append: p.id
-            endif
-          endif
-        endfor
-        if filtered_by_stone != ''
-          assign crosssell_products = stone_products | where_exp: 'item', 'item.metafields.milaura.stone_handle == current_stone'
-          assign source_label = 'same_stone'
-        endif
+    if section.settings.fallback_collection != blank
+      assign fallback_col = collections[section.settings.fallback_collection]
+      if fallback_col != blank and fallback_col.products.size > 0
+        assign crosssell_products = fallback_col.products | where_exp: 'item', 'item.id != product.id'
+        assign source_label = 'fallback_collection'
       endif
     endif
   endif
 
-  # 3. Priorité 3 : Même collection
+  # 3. Priorité 3 : Même collection que le produit
   if crosssell_products == blank or crosssell_products.size == 0
     for col in product.collections
-      if col.handle != 'all' and crosssell_products == blank
-        assign col_products = col.products | where_exp: 'item', 'item.id != product.id' | where: 'available'
-        if col_products.size > 0
-          assign crosssell_products = col_products
+      if col.handle != 'all' and col.handle != 'frontpage' and crosssell_products == blank
+        if col.products.size > 1
+          assign crosssell_products = col.products | where_exp: 'item', 'item.id != product.id'
           assign source_label = 'same_collection'
         endif
       endif
     endfor
   endif
 
-  # 4. Priorité 4 : Collection de fallback
+  # 4. Priorité 4 : Recommandations Shopify natives
   if crosssell_products == blank or crosssell_products.size == 0
-    assign fallback_collection = collections[section.settings.fallback_collection]
-    if fallback_collection != blank
-      assign crosssell_products = fallback_collection.products | where_exp: 'item', 'item.id != product.id' | where: 'available'
-      assign source_label = 'fallback'
+    if recommendations.performed and recommendations.products_count > 0
+      assign crosssell_products = recommendations.products
+      assign source_label = 'shopify_recommendations'
+    endif
+  endif
+
+  # 5. Priorité 5 : N'importe quelle collection du produit
+  if crosssell_products == blank or crosssell_products.size == 0
+    if product.collections.size > 0
+      assign any_col = product.collections.first
+      if any_col.products.size > 1
+        assign crosssell_products = any_col.products | where_exp: 'item', 'item.id != product.id'
+        assign source_label = 'any_collection'
+      endif
     endif
   endif
 
   # Limiter le nombre de produits
-  if crosssell_products != blank
+  if crosssell_products != blank and crosssell_products.size > 0
     assign crosssell_products = crosssell_products | slice: 0, max_products
   endif
 
@@ -83,7 +78,7 @@
   endif
 
   # Minimum de produits requis
-  assign min_products = section.settings.min_products | default: 2
+  assign min_products = section.settings.min_products | default: 1
   if crosssell_products.size < min_products
     assign show_section = false
   endif
@@ -695,7 +690,7 @@
       "min": 1,
       "max": 4,
       "step": 1,
-      "default": 2,
+      "default": 1,
       "info": "Section cachée si moins de produits trouvés"
     },
     {
