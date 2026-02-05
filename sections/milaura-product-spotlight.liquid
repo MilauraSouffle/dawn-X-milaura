@@ -21,12 +21,12 @@
 
 <section
   id="MilauraProductSpotlight-{{ section.id }}"
-  class="milaura-spotlight"
+  class="milaura-spotlight{% if section.settings.transparent_image %} milaura-spotlight--transparent-mode{% endif %}"
   data-section-id="{{ section.id }}"
   data-autoplay-speed="{{ autoplay_speed }}"
   aria-label="{{ section.settings.aria_label | default: 'Découvrez les bénéfices' }}"
 >
-  <div class="spotlight-container milaura-section-card">
+  <div class="spotlight-container milaura-section-card{% if section.settings.transparent_image %} spotlight-container--transparent{% endif %}">
     <div class="spotlight-grid">
 
       {%- comment -%} Media (Image/Vidéo + Hotspots + SVG Lines) {%- endcomment -%}
@@ -292,12 +292,96 @@
 
   .spotlight-media--transparent .spotlight-media__image,
   .spotlight-media--transparent .spotlight-media__video {
-    object-fit: cover !important;
+    object-fit: contain !important;
     background: transparent !important;
     border-radius: 0 !important;
     border: none !important;
     width: 100% !important;
     height: auto !important;
+    max-height: 500px;
+  }
+
+  /* ============================================
+     TRANSPARENT MODE - Golden Frame Adjustments
+     ============================================ */
+
+  /* Container with tight padding for transparent images */
+  .spotlight-container--transparent {
+    padding: 24px !important;
+  }
+
+  /* Desktop: proportional layout with transparent image */
+  @media screen and (min-width: 1024px) {
+    .spotlight-container--transparent {
+      padding: 32px !important;
+    }
+
+    .milaura-spotlight--transparent-mode .spotlight-grid {
+      align-items: center;
+      gap: 32px;
+    }
+
+    .spotlight-media--transparent {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spotlight-media--transparent .spotlight-media__image,
+    .spotlight-media--transparent .spotlight-media__video {
+      max-height: 500px;
+      width: auto;
+      max-width: 100%;
+    }
+  }
+
+  /* Tablet: balanced proportions */
+  @media screen and (min-width: 769px) and (max-width: 1023px) {
+    .spotlight-container--transparent {
+      padding: 24px !important;
+    }
+
+    .spotlight-media--transparent .spotlight-media__image,
+    .spotlight-media--transparent .spotlight-media__video {
+      max-height: 400px;
+    }
+  }
+
+  /* Mobile: compact layout, no excessive gaps */
+  @media screen and (max-width: 768px) {
+    .spotlight-container--transparent {
+      padding: 16px !important;
+    }
+
+    .milaura-spotlight--transparent-mode .spotlight-grid {
+      gap: 16px;
+    }
+
+    .spotlight-media--transparent {
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spotlight-media--transparent .spotlight-media__image,
+    .spotlight-media--transparent .spotlight-media__video {
+      max-height: 280px;
+      width: auto;
+      max-width: 90%;
+    }
+  }
+
+  /* Very small mobile */
+  @media screen and (max-width: 379px) {
+    .spotlight-container--transparent {
+      padding: 12px !important;
+    }
+
+    .spotlight-media--transparent .spotlight-media__image,
+    .spotlight-media--transparent .spotlight-media__video {
+      max-height: 220px;
+    }
   }
 
   /* ============================================
