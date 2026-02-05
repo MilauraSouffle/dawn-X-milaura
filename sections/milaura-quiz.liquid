@@ -371,121 +371,151 @@
     50% { opacity: 1; }
   }
 
-  /* --- ÉTAT : RESULT - DASHBOARD PREMIUM --- */
+  /* ============================================
+     ÉTAT : RESULT - EFFET "MENTALIST" REVEAL
+     Progressive disclosure mobile-first
+     ============================================ */
 
-  /* Header du résultat */
-  #MilauraQuiz-{{ section.id }} .quiz-result-header {
-    text-align: center;
-    margin-bottom: var(--milaura-spacing-xl);
-    padding-bottom: var(--milaura-spacing-lg);
-    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
+  /* Container principal - Single column mobile-first */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-container {
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-kicker {
-    font-family: var(--milaura-font-body);
-    color: var(--milaura-gold);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: var(--milaura-spacing-sm);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-main-title {
-    font-family: var(--milaura-font-heading);
-    color: var(--milaura-text);
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: var(--milaura-spacing-sm);
-    line-height: 1.2;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-profile-name {
-    font-family: var(--milaura-font-script);
-    color: var(--milaura-gold);
-    font-size: 1.8rem;
-  }
-
-  /* Layout principal 3 colonnes */
-  #MilauraQuiz-{{ section.id }} .quiz-result-layout {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr;
-    gap: var(--milaura-spacing-lg);
-    align-items: start;
-  }
-
-  /* Carte produit (colonne gauche) */
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-card {
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px) saturate(170%);
-    -webkit-backdrop-filter: blur(20px) saturate(170%);
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: var(--milaura-border-radius);
-    padding: var(--milaura-spacing-md);
-    box-shadow:
-      0 12px 40px rgba(192, 160, 98, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    position: relative;
-    overflow: hidden;
-    /* Staggered reveal animation */
+  /* Phase reveal system - Hidden by default */
+  #MilauraQuiz-{{ section.id }} .reveal-phase {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
     transition:
-      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
       transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-card.is-visible {
+  #MilauraQuiz-{{ section.id }} .reveal-phase.is-revealed {
     opacity: 1;
     transform: translateY(0);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-card::before {
+  /* === PHASE 1 : HEADER MYSTIQUE === */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-header {
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-lg);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-kicker {
+    font-family: var(--milaura-font-script);
+    color: var(--milaura-gold);
+    font-size: 1.4rem;
+    margin-bottom: var(--milaura-spacing-sm);
+    letter-spacing: 0.5px;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-profile-name {
+    font-family: var(--milaura-font-heading);
+    color: var(--milaura-text);
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    line-height: 1.2;
+  }
+
+  /* === PHASE 2 : CARTE PRINCIPALE (Cold Reading + Produit + CTA) === */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-main {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: var(--milaura-border-radius);
+    padding: var(--milaura-spacing-lg);
+    box-shadow:
+      0 15px 50px rgba(192, 160, 98, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  /* Bordure dorée en haut */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-main::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--milaura-gold), var(--milaura-gold-light));
+    background: linear-gradient(90deg, var(--milaura-gold), var(--milaura-gold-light), var(--milaura-gold));
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-badge {
-    display: inline-block;
+  /* Cold reading description - Italique émotionnel */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-reading {
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text);
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.75;
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-lg);
+    padding-bottom: var(--milaura-spacing-md);
+    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
+  }
+
+  /* Badge "Ton Allié Vibratoire" */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     background: linear-gradient(135deg, var(--milaura-gold), var(--milaura-gold-light));
     color: #fff;
+    font-family: var(--milaura-font-body);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 6px 12px;
-    border-radius: 20px;
+    letter-spacing: 1.5px;
+    padding: 8px 16px;
+    border-radius: 25px;
     margin-bottom: var(--milaura-spacing-md);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-image {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-badge::before {
+    content: '⟡';
+    font-size: 0.9rem;
+  }
+
+  /* Section produit centrée */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-product {
+    text-align: center;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-product-image {
     width: 100%;
+    max-width: 280px;
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: var(--milaura-border-radius-sm);
-    margin-bottom: var(--milaura-spacing-md);
+    margin: 0 auto var(--milaura-spacing-md);
+    display: block;
     border: 2px solid rgba(192, 160, 98, 0.2);
-    transition: transform 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-image:hover {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-product-image:hover {
     transform: scale(1.02);
+    box-shadow: 0 15px 40px rgba(192, 160, 98, 0.2);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-title {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-product-title {
     font-family: var(--milaura-font-heading);
     color: var(--milaura-text);
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     line-height: 1.3;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-price {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-product-price {
     font-family: var(--milaura-font-heading);
     color: var(--milaura-gold);
     font-size: 1.8rem;
@@ -493,339 +523,279 @@
     margin-bottom: var(--milaura-spacing-md);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-cta-primary {
+  /* CTA Principal - Pleine largeur */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-cta-primary {
     display: block;
     width: 100%;
     background: linear-gradient(135deg, var(--milaura-gold), var(--milaura-gold-dark));
     color: #fff !important;
     font-family: var(--milaura-font-body);
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     text-align: center;
     text-decoration: none !important;
-    padding: 16px 24px;
+    padding: 18px 28px;
     border-radius: var(--milaura-border-radius-sm);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(192, 160, 98, 0.4);
+    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.4);
+    margin-bottom: var(--milaura-spacing-sm);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-cta-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.5);
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(192, 160, 98, 0.5);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-cta-secondary {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-cta-primary:active {
+    transform: translateY(-1px);
+  }
+
+  /* CTA Secondaire */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-cta-secondary {
     display: block;
     width: 100%;
     background: transparent;
     color: var(--milaura-gold) !important;
     font-family: var(--milaura-font-body);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
     text-align: center;
-    text-decoration: underline !important;
+    text-decoration: none !important;
     padding: 12px;
     border: none;
     cursor: pointer;
     transition: color 0.3s ease;
-    margin-top: var(--milaura-spacing-sm);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-cta-secondary:hover {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-cta-secondary:hover {
     color: var(--milaura-gold-dark) !important;
   }
 
-  /* Carte description (colonne centrale) */
-  #MilauraQuiz-{{ section.id }} .quiz-result-desc-card {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(20px) saturate(170%);
-    -webkit-backdrop-filter: blur(20px) saturate(170%);
-    border: 1px solid rgba(192, 160, 98, 0.2);
-    border-radius: var(--milaura-border-radius);
-    padding: var(--milaura-spacing-lg);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    /* Staggered reveal animation */
-    opacity: 0;
-    transform: translateY(30px);
-    transition:
-      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: 120ms;
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-cta-secondary span {
+    text-decoration: underline;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-desc-card.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-profile-intro {
-    font-family: var(--milaura-font-body);
-    color: var(--milaura-text);
-    font-size: 1.05rem;
-    line-height: 1.7;
-    margin-bottom: var(--milaura-spacing-lg);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-profile-intro strong {
-    color: var(--milaura-gold-dark);
-  }
-
-  /* Duo Pierre + Senteur */
-  #MilauraQuiz-{{ section.id }} .quiz-result-duo {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--milaura-spacing-md);
-    margin-bottom: var(--milaura-spacing-lg);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-duo-item {
-    background: rgba(255, 255, 255, 0.6);
-    border-radius: var(--milaura-border-radius-sm);
-    padding: var(--milaura-spacing-md);
-    text-align: center;
-    border: 1px solid rgba(192, 160, 98, 0.2);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-duo-icon {
-    font-size: 2rem;
-    margin-bottom: 8px;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-duo-label {
-    font-family: var(--milaura-font-body);
-    color: var(--milaura-gold);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-duo-name {
-    font-family: var(--milaura-font-heading);
-    color: var(--milaura-text);
-    font-size: 1.2rem;
-    font-weight: 700;
-  }
-
-  /* Bénéfices */
-  #MilauraQuiz-{{ section.id }} .quiz-result-benefits-title {
-    font-family: var(--milaura-font-heading);
-    color: var(--milaura-gold);
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: var(--milaura-spacing-sm);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-bullets {
-    font-family: var(--milaura-font-body);
-    color: var(--milaura-text);
-    font-size: 1.05rem;
-    line-height: 1.8;
+  /* === PHASE 3 : ACCORDÉONS EXPANDABLES === */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordions {
     margin-bottom: var(--milaura-spacing-md);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-bullets ul {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: var(--milaura-border-radius-sm);
+    margin-bottom: var(--milaura-spacing-sm);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion:hover {
+    border-color: rgba(192, 160, 98, 0.35);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--milaura-spacing-md);
+    cursor: pointer;
+    font-family: var(--milaura-font-heading);
+    color: var(--milaura-gold);
+    font-size: 1rem;
+    font-weight: 600;
+    list-style: none;
+    transition: background 0.2s ease;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion summary::after {
+    content: '+';
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--milaura-gold);
+    transition: transform 0.3s ease;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion summary:hover {
+    background: rgba(192, 160, 98, 0.05);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion-content {
+    padding: 0 var(--milaura-spacing-md) var(--milaura-spacing-md);
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text);
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  /* Duo Pierre + Senteur dans accordéon */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--milaura-spacing-sm);
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-duo-item {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: var(--milaura-border-radius-sm);
+    padding: var(--milaura-spacing-sm);
+    text-align: center;
+    border: 1px solid rgba(192, 160, 98, 0.15);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-duo-icon {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-duo-label {
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-gold);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-duo-name {
+    font-family: var(--milaura-font-heading);
+    color: var(--milaura-text);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /* Bénéfices dans accordéon */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits {
     list-style: none;
     padding: 0;
     margin: 0;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-bullets li {
-    padding-left: 28px;
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits li {
+    padding-left: 24px;
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-bullets li::before {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits li::before {
     content: '✧';
     position: absolute;
     left: 0;
     color: var(--milaura-gold);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
 
-  /* Mantra */
-  #MilauraQuiz-{{ section.id }} .quiz-result-mantra {
+  /* Mantra dans accordéon rituel */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mantra {
     font-family: var(--milaura-font-script);
     color: var(--milaura-gold);
-    font-size: 1.4rem;
-    font-style: italic;
+    font-size: 1.2rem;
     text-align: center;
-    margin: var(--milaura-spacing-md) 0;
-    padding: var(--milaura-spacing-md);
-    background: linear-gradient(135deg, rgba(192, 160, 98, 0.08), rgba(192, 160, 98, 0.15));
+    margin-bottom: var(--milaura-spacing-md);
+    padding: var(--milaura-spacing-sm);
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.06), rgba(192, 160, 98, 0.12));
     border-radius: var(--milaura-border-radius-sm);
     border-left: 3px solid var(--milaura-gold);
   }
 
-  /* Rituel */
-  #MilauraQuiz-{{ section.id }} .quiz-result-ritual-section {
-    margin-top: var(--milaura-spacing-lg);
-    padding-top: var(--milaura-spacing-md);
-    border-top: 1px solid rgba(192, 160, 98, 0.2);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-ritual-title {
-    font-family: var(--milaura-font-heading);
-    color: var(--milaura-gold);
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: var(--milaura-spacing-sm);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-ritual {
+  /* Rituel dans accordéon */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-ritual {
     font-family: var(--milaura-font-body);
     color: var(--milaura-text);
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     line-height: 1.7;
     white-space: pre-line;
-    padding: var(--milaura-spacing-sm);
-    background: rgba(192, 160, 98, 0.05);
+  }
+
+  /* === PHASE 4 : MÉTÉO ÉMOTIONNELLE (Mini-jauges) === */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(192, 160, 98, 0.15);
     border-radius: var(--milaura-border-radius-sm);
-  }
-
-  /* Carte météo (colonne droite) */
-  #MilauraQuiz-{{ section.id }} .quiz-result-mood-card {
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(20px) saturate(170%);
-    -webkit-backdrop-filter: blur(20px) saturate(170%);
-    border: 1px solid rgba(192, 160, 98, 0.2);
-    border-radius: var(--milaura-border-radius);
-    padding: var(--milaura-spacing-lg);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    /* Staggered reveal animation */
-    opacity: 0;
-    transform: translateY(30px);
-    transition:
-      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: 240ms;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-mood-card.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-mood-header {
-    text-align: center;
-    margin-bottom: var(--milaura-spacing-lg);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-mood-icon {
-    font-size: 2.5rem;
-    margin-bottom: var(--milaura-spacing-sm);
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-mood-title {
-    font-family: var(--milaura-font-heading);
-    color: var(--milaura-gold);
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-mood-subtitle {
-    font-family: var(--milaura-font-body);
-    color: var(--milaura-text-light);
-    font-size: 0.95rem;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge {
+    padding: var(--milaura-spacing-md);
     margin-bottom: var(--milaura-spacing-md);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-label {
-    font-family: var(--milaura-font-body);
-    color: var(--milaura-text);
-    font-size: 0.95rem;
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-title {
+    font-family: var(--milaura-font-heading);
+    color: var(--milaura-gold);
+    font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 6px;
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-gauges {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-label .emotion-name {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+    min-width: 50px;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-label .emotion-icon {
-    font-size: 1rem;
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini-icon {
+    font-size: 1.1rem;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-label .emotion-sublabel {
-    font-weight: 400;
-    color: var(--milaura-text-light, #666);
-    font-size: 0.8rem;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-bar {
-    width: 100%;
-    height: 10px;
-    background: rgba(192, 160, 98, 0.12);
-    border-radius: 10px;
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini-bar {
+    width: 40px;
+    height: 6px;
+    background: rgba(192, 160, 98, 0.15);
+    border-radius: 3px;
     overflow: hidden;
-    position: relative;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-fill {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini-fill {
     height: 100%;
-    border-radius: 10px;
+    border-radius: 3px;
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-fill.is-winner {
-    background: linear-gradient(90deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
-    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.4);
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini-fill.is-winner {
+    background: linear-gradient(90deg, var(--milaura-gold), var(--milaura-gold-light));
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-mood-gauge-fill:not(.is-winner) {
-    background: linear-gradient(90deg, rgba(192, 160, 98, 0.35) 0%, rgba(192, 160, 98, 0.2) 100%);
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini-fill:not(.is-winner) {
+    background: rgba(192, 160, 98, 0.35);
   }
 
-  /* Invitation compte */
-  #MilauraQuiz-{{ section.id }} .quiz-result-account-invite {
-    margin-top: var(--milaura-spacing-lg);
-    padding-top: var(--milaura-spacing-lg);
-    border-top: 1px solid rgba(192, 160, 98, 0.2);
-    text-align: center;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-account-text {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini-percent {
     font-family: var(--milaura-font-body);
-    color: var(--milaura-text);
-    font-size: 0.9rem;
-    margin-bottom: var(--milaura-spacing-sm);
+    font-size: 0.7rem;
+    color: var(--milaura-text-light, #666);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-account-link {
-    display: inline-block;
-    color: var(--milaura-gold);
-    font-weight: 600;
-    text-decoration: underline;
-    transition: color 0.3s ease;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-result-account-link:hover {
-    color: var(--milaura-gold-dark);
-  }
-
-  /* Footer résultat */
-  #MilauraQuiz-{{ section.id }} .quiz-result-footer {
-    margin-top: var(--milaura-spacing-xl);
-    padding-top: var(--milaura-spacing-lg);
-    border-top: 1px solid rgba(192, 160, 98, 0.15);
+  /* === FOOTER === */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-footer {
     text-align: center;
+    padding-top: var(--milaura-spacing-md);
+    border-top: 1px solid rgba(192, 160, 98, 0.1);
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-restart {
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-restart {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -835,15 +805,43 @@
     font-weight: 600;
     text-decoration: none;
     padding: 12px 24px;
-    border: 1px solid var(--milaura-gold);
+    border: 1px solid rgba(192, 160, 98, 0.4);
     border-radius: var(--milaura-border-radius-sm);
     background: transparent;
     cursor: pointer;
     transition: all 0.3s ease;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-result-restart:hover {
-    background: rgba(192, 160, 98, 0.1);
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-restart:hover {
+    background: rgba(192, 160, 98, 0.08);
+    border-color: var(--milaura-gold);
+  }
+
+  /* Invitation compte (pour guests) */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-invite {
+    margin-top: var(--milaura-spacing-md);
+    padding-top: var(--milaura-spacing-sm);
+    text-align: center;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-text {
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text-light, #666);
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-link {
+    display: inline-block;
+    color: var(--milaura-gold);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-link:hover {
+    color: var(--milaura-gold-dark);
   }
 
   /* --- LIEN DERNIÈRE RÉVÉLATION --- */
@@ -866,19 +864,22 @@
     color: var(--milaura-gold-dark);
   }
 
-  /* --- TABLETTE --- */
-  @media screen and (max-width: 1200px) {
-    #MilauraQuiz-{{ section.id }} .quiz-result-layout {
-      grid-template-columns: 1fr 1fr;
-      gap: var(--milaura-spacing-md);
+  /* --- DESKTOP : Center the reveal container --- */
+  @media screen and (min-width: 769px) {
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-container {
+      max-width: 560px;
     }
 
-    #MilauraQuiz-{{ section.id }} .quiz-result-mood-card {
-      grid-column: 1 / -1;
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-profile-name {
+      font-size: 2.5rem;
     }
 
-    #MilauraQuiz-{{ section.id }} .quiz-result-main-title {
-      font-size: 2rem;
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-reading {
+      font-size: 1.1rem;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-product-image {
+      max-width: 320px;
     }
   }
 
@@ -940,44 +941,12 @@
       padding: var(--milaura-spacing-sm);
     }
 
-    #MilauraQuiz-{{ section.id }} .quiz-result-layout {
-      grid-template-columns: 1fr;
-    }
-
-    #MilauraQuiz-{{ section.id }} .quiz-result-product-card {
-      order: 1;
-    }
-
-    #MilauraQuiz-{{ section.id }} .quiz-result-desc-card {
-      order: 2;
-    }
-
-    #MilauraQuiz-{{ section.id }} .quiz-result-mood-card {
-      order: 3;
-    }
-
-    #MilauraQuiz-{{ section.id }} .quiz-result-header {
-      margin-bottom: var(--milaura-spacing-md);
-    }
-
-    #MilauraQuiz-{{ section.id }} .quiz-result-main-title {
-      font-size: 1.6rem;
-    }
-
-    #MilauraQuiz-{{ section.id }} .quiz-result-profile-name {
-      font-size: 1.3rem;
-    }
-
     #MilauraQuiz-{{ section.id }} .quiz-transition-title {
       font-size: 1.6rem;
     }
 
     #MilauraQuiz-{{ section.id }} .quiz-transition-subtitle {
       font-size: 1.2rem;
-    }
-
-    #MilauraQuiz-{{ section.id }} .quiz-result-duo {
-      grid-template-columns: 1fr 1fr;
     }
 
     #MilauraQuiz-{{ section.id }} .quiz-questions-header {
@@ -988,6 +957,41 @@
     #MilauraQuiz-{{ section.id }} .quiz-question-title {
       font-size: 1.6rem;
       margin-bottom: var(--milaura-spacing-sm);
+    }
+
+    /* Mobile reveal styles */
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-profile-name {
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-kicker {
+      font-size: 1.2rem;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-main {
+      padding: var(--milaura-spacing-md);
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-reading {
+      font-size: 1rem;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-product-image {
+      max-width: 220px;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-product-title {
+      font-size: 1.2rem;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-product-price {
+      font-size: 1.5rem;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-cta-primary {
+      padding: 16px 20px;
+      font-size: 1rem;
     }
   }
 
@@ -1022,21 +1026,31 @@
       font-size: 1.5rem;
     }
 
-    #MilauraQuiz-{{ section.id }} .quiz-result-main-title {
+    /* Small mobile reveal styles */
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-profile-name {
       font-size: 1.5rem;
+      letter-spacing: 1.5px;
     }
 
-    #MilauraQuiz-{{ section.id }} .quiz-mood-title {
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-kicker {
       font-size: 1.1rem;
     }
 
-    #MilauraQuiz-{{ section.id }} .quiz-result-product-price {
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-product-price {
       font-size: 1.3rem;
     }
 
-    #MilauraQuiz-{{ section.id }} .quiz-result-cta-primary {
-      padding: 12px 18px;
-      font-size: 0.9rem;
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-cta-primary {
+      padding: 14px 18px;
+      font-size: 0.95rem;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini {
+      min-width: 45px;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-mood-mini-bar {
+      width: 35px;
     }
   }
 
@@ -1047,9 +1061,7 @@
   /* GPU acceleration hints for animated elements */
   #MilauraQuiz-{{ section.id }} .quiz-state,
   #MilauraQuiz-{{ section.id }} .quiz-answer-btn,
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-card,
-  #MilauraQuiz-{{ section.id }} .quiz-result-desc-card,
-  #MilauraQuiz-{{ section.id }} .quiz-result-mood-card,
+  #MilauraQuiz-{{ section.id }} .reveal-phase,
   #MilauraQuiz-{{ section.id }} .quiz-progress-fill {
     will-change: transform, opacity;
   }
@@ -1057,9 +1069,7 @@
   /* Cleanup will-change after animation completes */
   #MilauraQuiz-{{ section.id }} .quiz-state.is-active,
   #MilauraQuiz-{{ section.id }} .quiz-answer-btn.is-visible,
-  #MilauraQuiz-{{ section.id }} .quiz-result-product-card.is-visible,
-  #MilauraQuiz-{{ section.id }} .quiz-result-desc-card.is-visible,
-  #MilauraQuiz-{{ section.id }} .quiz-result-mood-card.is-visible {
+  #MilauraQuiz-{{ section.id }} .reveal-phase.is-revealed {
     will-change: auto;
   }
 
@@ -1080,9 +1090,9 @@
   @supports not (backdrop-filter: blur(1px)) {
     #MilauraQuiz-{{ section.id }} .quiz-expert-block,
     #MilauraQuiz-{{ section.id }} .quiz-answer-btn,
-    #MilauraQuiz-{{ section.id }} .quiz-result-product-card,
-    #MilauraQuiz-{{ section.id }} .quiz-result-desc-card,
-    #MilauraQuiz-{{ section.id }} .quiz-result-mood-card {
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-main,
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-accordion,
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-mood {
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
       background: rgba(255, 255, 255, 0.95) !important;
@@ -1181,94 +1191,102 @@
       </div>
     </div>
 
-    <!-- ÉTAT 4 : RESULT - DASHBOARD PREMIUM -->
+    <!-- ÉTAT 4 : RESULT - EFFET "MENTALIST" REVEAL -->
     <div class="quiz-state quiz-state-result" data-state="result" style="display: none;">
+      <div class="quiz-reveal-container">
 
-      <!-- Header du résultat -->
-      <div class="quiz-result-header">
-        <div class="quiz-result-kicker">Analyse complète</div>
-        <h2 class="quiz-result-main-title" id="quiz-result-main-title-{{ section.id }}">Ta bougie du moment</h2>
-        <div class="quiz-result-profile-name" id="quiz-result-profile-name-{{ section.id }}"></div>
-      </div>
-
-      <!-- Layout 3 colonnes -->
-      <div class="quiz-result-layout">
-
-        <!-- Colonne gauche : Produit -->
-        <div class="quiz-result-product-card">
-          <div class="quiz-result-product-badge">Recommandé pour toi</div>
-          <div id="quiz-result-product-{{ section.id }}">
-            <!-- Injecté par JS : image, titre, prix -->
-          </div>
-          <div id="quiz-result-cta-{{ section.id }}">
-            <!-- Injecté par JS : boutons CTA -->
-          </div>
+        <!-- PHASE 1 : Header Mystique (révélé à 0ms) -->
+        <div class="quiz-reveal-header reveal-phase" data-reveal-phase="1">
+          <div class="quiz-reveal-kicker" id="quiz-reveal-kicker-{{ section.id }}">{{ section.settings.result_kicker | default: "Ce que ton âme murmure..." }}</div>
+          <h2 class="quiz-reveal-profile-name" id="quiz-reveal-profile-name-{{ section.id }}"></h2>
         </div>
 
-        <!-- Colonne centrale : Description & Duo -->
-        <div class="quiz-result-desc-card">
-          <div class="quiz-result-profile-intro" id="quiz-result-profile-desc-{{ section.id }}">
-            <!-- Injecté par JS : description du profil -->
+        <!-- PHASE 2 : Carte Principale (révélée à 200ms) -->
+        <div class="quiz-reveal-main reveal-phase" data-reveal-phase="2">
+          <!-- Cold reading description -->
+          <div class="quiz-reveal-reading" id="quiz-reveal-reading-{{ section.id }}">
+            <!-- Injecté par JS : description cold reading -->
           </div>
 
-          <!-- Duo Pierre + Senteur -->
-          <div class="quiz-result-duo" id="quiz-result-duo-{{ section.id }}">
-            <div class="quiz-result-duo-item">
-              <div class="quiz-result-duo-icon">💎</div>
-              <div class="quiz-result-duo-label">Ta pierre</div>
-              <div class="quiz-result-duo-name" id="quiz-result-stone-{{ section.id }}">-</div>
+          <!-- Section produit -->
+          <div class="quiz-reveal-product">
+            <div class="quiz-reveal-badge" id="quiz-reveal-badge-{{ section.id }}">Ton Allié Vibratoire</div>
+            <div id="quiz-reveal-product-content-{{ section.id }}">
+              <!-- Injecté par JS : image produit -->
             </div>
-            <div class="quiz-result-duo-item">
-              <div class="quiz-result-duo-icon">🌸</div>
-              <div class="quiz-result-duo-label">Ta senteur</div>
-              <div class="quiz-result-duo-name" id="quiz-result-scent-{{ section.id }}">-</div>
-            </div>
-          </div>
+            <h3 class="quiz-reveal-product-title" id="quiz-reveal-product-title-{{ section.id }}"></h3>
+            <div class="quiz-reveal-product-price" id="quiz-reveal-product-price-{{ section.id }}"></div>
 
-          <!-- Bénéfices -->
-          <div class="quiz-result-benefits-title">Ce que cette bougie t'apporte</div>
-          <div class="quiz-result-bullets" id="quiz-result-bullets-{{ section.id }}">
-            <!-- Injecté par JS -->
-          </div>
-
-          <!-- Mantra -->
-          <div class="quiz-result-mantra" id="quiz-result-mantra-{{ section.id }}">
-            <!-- Injecté par JS -->
-          </div>
-
-          <!-- Rituel -->
-          <div class="quiz-result-ritual-section">
-            <div class="quiz-result-ritual-title">Ton rituel du soir</div>
-            <div class="quiz-result-ritual" id="quiz-result-ritual-{{ section.id }}">
-              <!-- Injecté par JS -->
+            <!-- CTA Principal -->
+            <div id="quiz-reveal-cta-{{ section.id }}">
+              <!-- Injecté par JS : boutons CTA -->
             </div>
           </div>
         </div>
 
-        <!-- Colonne droite : Météo émotionnelle -->
-        <div class="quiz-result-mood-card">
-          <div class="quiz-mood-header">
-            <div class="quiz-mood-icon">🌤️</div>
-            <h3 class="quiz-mood-title">Ta météo émotionnelle</h3>
-            <div class="quiz-mood-subtitle">Basée sur tes 7 réponses</div>
+        <!-- PHASE 3 : Accordéons Expandables (révélés à 400ms et 600ms) -->
+        <div class="quiz-reveal-accordions">
+          <!-- Accordéon 1 : L'Alchimie du Duo -->
+          <details class="quiz-reveal-accordion reveal-phase" data-reveal-phase="3">
+            <summary id="quiz-reveal-accordion-duo-label-{{ section.id }}">{{ section.settings.accordion_duo_label | default: "L'Alchimie du Duo" }}</summary>
+            <div class="quiz-reveal-accordion-content">
+              <!-- Duo Pierre + Senteur -->
+              <div class="quiz-reveal-duo">
+                <div class="quiz-reveal-duo-item">
+                  <div class="quiz-reveal-duo-icon">💎</div>
+                  <div class="quiz-reveal-duo-label">Ta pierre</div>
+                  <div class="quiz-reveal-duo-name" id="quiz-reveal-stone-{{ section.id }}">-</div>
+                </div>
+                <div class="quiz-reveal-duo-item">
+                  <div class="quiz-reveal-duo-icon">🌸</div>
+                  <div class="quiz-reveal-duo-label">Ta senteur</div>
+                  <div class="quiz-reveal-duo-name" id="quiz-reveal-scent-{{ section.id }}">-</div>
+                </div>
+              </div>
+              <!-- Bénéfices -->
+              <ul class="quiz-reveal-benefits" id="quiz-reveal-benefits-{{ section.id }}">
+                <!-- Injecté par JS -->
+              </ul>
+            </div>
+          </details>
+
+          <!-- Accordéon 2 : Ton Rituel de Connexion -->
+          <details class="quiz-reveal-accordion reveal-phase" data-reveal-phase="4">
+            <summary id="quiz-reveal-accordion-ritual-label-{{ section.id }}">{{ section.settings.accordion_ritual_label | default: "Ton Rituel de Connexion" }}</summary>
+            <div class="quiz-reveal-accordion-content">
+              <!-- Mantra -->
+              <div class="quiz-reveal-mantra" id="quiz-reveal-mantra-{{ section.id }}">
+                <!-- Injecté par JS -->
+              </div>
+              <!-- Rituel -->
+              <div class="quiz-reveal-ritual" id="quiz-reveal-ritual-{{ section.id }}">
+                <!-- Injecté par JS -->
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- PHASE 4 : Météo Émotionnelle Mini (révélée à 800ms) -->
+        <div class="quiz-reveal-mood reveal-phase" data-reveal-phase="5">
+          <div class="quiz-reveal-mood-title">Ta Météo Émotionnelle</div>
+          <div class="quiz-reveal-mood-gauges" id="quiz-reveal-mood-gauges-{{ section.id }}">
+            <!-- Injecté par JS : mini-jauges par émotion -->
           </div>
-          <div id="quiz-mood-gauges-{{ section.id }}">
-            <!-- Injecté par JS : gauges par émotion -->
-          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="quiz-reveal-footer reveal-phase" data-reveal-phase="5">
+          <button type="button" class="quiz-reveal-restart" id="quiz-restart-btn-{{ section.id }}">
+            <span>↺</span> Refaire mon diagnostic
+          </button>
 
           <!-- Invitation compte (pour guests) -->
-          <div class="quiz-result-account-invite" id="quiz-account-invite-{{ section.id }}">
-            <p class="quiz-result-account-text">Crée ton compte pour sauvegarder ton profil émotionnel</p>
-            <a href="/account/register" class="quiz-result-account-link">Créer mon compte →</a>
+          <div class="quiz-reveal-account-invite" id="quiz-reveal-account-invite-{{ section.id }}">
+            <p class="quiz-reveal-account-text">Sauvegarde ton profil émotionnel</p>
+            <a href="/account/register" class="quiz-reveal-account-link">Créer mon compte →</a>
           </div>
         </div>
-      </div>
 
-      <!-- Footer avec bouton refaire -->
-      <div class="quiz-result-footer">
-        <button type="button" class="quiz-result-restart" id="quiz-restart-btn-{{ section.id }}">
-          <span>↺</span> Refaire mon diagnostic
-        </button>
       </div>
     </div>
   </div>
@@ -1644,8 +1662,17 @@
     }
 
     // ============================================
-    // AFFICHAGE DES RÉSULTATS - DASHBOARD PREMIUM
+    // AFFICHAGE DES RÉSULTATS - EFFET "MENTALIST"
+    // Progressive disclosure avec timing précis
     // ============================================
+    const REVEAL_TIMING = {
+      phase1_header: 0,        // Immédiat après transition
+      phase2_main: 200,        // Cold reading + produit
+      phase3_accordion1: 400,  // "L'Alchimie du Duo"
+      phase4_accordion2: 600,  // "Ton Rituel"
+      phase5_mood: 800         // Météo émotionnelle + footer
+    };
+
     function displayResults() {
       const results = calculateResults();
       const winnerProfile = results.winnerProfile;
@@ -1653,94 +1680,106 @@
       const profile = profileData[winnerProfile];
       if (!profile) return;
 
-      // === HEADER ===
-      const mainTitleEl = container.querySelector('#quiz-result-main-title-' + sectionId);
-      if (mainTitleEl) {
-        // Use personalized dashboardTitle from profile if available
-        mainTitleEl.textContent = profile.dashboardTitle || 'Ta bougie du moment';
-      }
+      // Reset all reveal phases (hide all)
+      const allPhases = container.querySelectorAll('.reveal-phase');
+      allPhases.forEach(phase => phase.classList.remove('is-revealed'));
 
-      const profileNameEl = container.querySelector('#quiz-result-profile-name-' + sectionId);
+      // Close all accordions
+      const accordions = container.querySelectorAll('.quiz-reveal-accordion');
+      accordions.forEach(acc => acc.removeAttribute('open'));
+
+      // === PHASE 1 : HEADER MYSTIQUE ===
+      const profileNameEl = container.querySelector('#quiz-reveal-profile-name-' + sectionId);
       if (profileNameEl) {
-        profileNameEl.textContent = profile.displayName || profile.label;
+        profileNameEl.textContent = (profile.displayName || profile.label).toUpperCase();
       }
 
-      // === COLONNE PRODUIT ===
-      const productEl = container.querySelector('#quiz-result-product-' + sectionId);
-      if (productEl && profile.product) {
+      // === PHASE 2 : CARTE PRINCIPALE ===
+      // Cold reading description
+      const readingEl = container.querySelector('#quiz-reveal-reading-' + sectionId);
+      if (readingEl && profile.description) {
+        readingEl.innerHTML = profile.description;
+      }
+
+      // Produit image
+      const productContentEl = container.querySelector('#quiz-reveal-product-content-' + sectionId);
+      if (productContentEl && profile.product) {
         const product = profile.product;
-        let html = '';
-
         if (product.featured_image) {
-          html += `<img src="${product.featured_image}" alt="${product.title}" class="quiz-result-product-image">`;
+          productContentEl.innerHTML = `<img src="${product.featured_image}" alt="${product.title}" class="quiz-reveal-product-image">`;
         } else {
-          html += `<div class="quiz-result-product-image" style="background: linear-gradient(135deg, var(--milaura-beige), #f5f0e8); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🕯️</div>`;
+          productContentEl.innerHTML = `<div class="quiz-reveal-product-image" style="background: linear-gradient(135deg, var(--milaura-beige), #f5f0e8); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🕯️</div>`;
         }
-
-        html += `<h3 class="quiz-result-product-title">${product.title || profile.label}</h3>`;
-
-        if (product.price) {
-          html += `<div class="quiz-result-product-price">${product.price}</div>`;
-        }
-
-        productEl.innerHTML = html;
       }
 
-      // === CTA BOUTONS ===
-      const ctaEl = container.querySelector('#quiz-result-cta-' + sectionId);
+      // Produit titre
+      const productTitleEl = container.querySelector('#quiz-reveal-product-title-' + sectionId);
+      if (productTitleEl && profile.product) {
+        productTitleEl.textContent = profile.product.title || profile.label;
+      }
+
+      // Produit prix
+      const productPriceEl = container.querySelector('#quiz-reveal-product-price-' + sectionId);
+      if (productPriceEl && profile.product && profile.product.price) {
+        productPriceEl.textContent = profile.product.price;
+      }
+
+      // CTA Boutons
+      const ctaEl = container.querySelector('#quiz-reveal-cta-' + sectionId);
       if (ctaEl && profile.product) {
         const product = profile.product;
+        const ctaLabel = '{{ section.settings.result_cta_label | default: "Adopter mon rituel" }}';
         let html = '';
 
         if (product.variant_id) {
-          html += `<button type="button" class="quiz-result-cta-primary" id="quiz-add-to-cart-btn-${sectionId}" onclick="addToCartWithFeedback(${product.variant_id}, this)">Ajouter au panier</button>`;
+          html += `<button type="button" class="quiz-reveal-cta-primary" id="quiz-add-to-cart-btn-${sectionId}" onclick="addToCartWithFeedback(${product.variant_id}, this)">${ctaLabel}</button>`;
         }
 
         if (product.handle) {
-          // Force le template milaura-produit
-          html += `<a href="/products/${product.handle}?view=milaura-produit" class="quiz-result-cta-secondary">Découvrir ce produit →</a>`;
+          html += `<a href="/products/${product.handle}?view=milaura-produit" class="quiz-reveal-cta-secondary"><span>Voir le détail →</span></a>`;
         }
 
         ctaEl.innerHTML = html;
       }
 
-      // === DESCRIPTION DU PROFIL ===
-      const profileDescEl = container.querySelector('#quiz-result-profile-desc-' + sectionId);
-      if (profileDescEl && profile.description) {
-        profileDescEl.innerHTML = profile.description;
-      }
-
-      // === DUO PIERRE + SENTEUR ===
-      const stoneEl = container.querySelector('#quiz-result-stone-' + sectionId);
+      // === ACCORDÉON 1 : DUO PIERRE + SENTEUR ===
+      const stoneEl = container.querySelector('#quiz-reveal-stone-' + sectionId);
       if (stoneEl && profile.stone) {
         stoneEl.textContent = profile.stone;
       }
 
-      const scentEl = container.querySelector('#quiz-result-scent-' + sectionId);
+      const scentEl = container.querySelector('#quiz-reveal-scent-' + sectionId);
       if (scentEl && profile.scent) {
         scentEl.textContent = profile.scent;
       }
 
-      // === BULLETS ===
-      const bulletsEl = container.querySelector('#quiz-result-bullets-' + sectionId);
-      if (bulletsEl && profile.bullets) {
-        bulletsEl.innerHTML = profile.bullets;
+      // Bénéfices (extract from profile.bullets HTML)
+      const benefitsEl = container.querySelector('#quiz-reveal-benefits-' + sectionId);
+      if (benefitsEl && profile.bullets) {
+        // Parse bullets from HTML string and recreate as li elements
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = profile.bullets;
+        const liElements = tempDiv.querySelectorAll('li');
+        let benefitsHtml = '';
+        liElements.forEach(li => {
+          benefitsHtml += `<li>${li.textContent}</li>`;
+        });
+        benefitsEl.innerHTML = benefitsHtml;
       }
 
-      // === MANTRA ===
-      const mantraEl = container.querySelector('#quiz-result-mantra-' + sectionId);
+      // === ACCORDÉON 2 : MANTRA + RITUEL ===
+      const mantraEl = container.querySelector('#quiz-reveal-mantra-' + sectionId);
       if (mantraEl && profile.mantra) {
         mantraEl.textContent = `« ${profile.mantra} »`;
       }
 
-      // === RITUEL ===
-      const ritualEl = container.querySelector('#quiz-result-ritual-' + sectionId);
+      const ritualEl = container.querySelector('#quiz-reveal-ritual-' + sectionId);
       if (ritualEl && profile.ritual) {
         ritualEl.textContent = profile.ritual;
       }
 
-      // === MÉTÉO ÉMOTIONNELLE ===
-      const gaugesEl = container.querySelector('#quiz-mood-gauges-' + sectionId);
+      // === MÉTÉO ÉMOTIONNELLE (Mini-jauges) ===
+      const gaugesEl = container.querySelector('#quiz-reveal-mood-gauges-' + sectionId);
       if (gaugesEl) {
         gaugesEl.innerHTML = '';
 
@@ -1754,45 +1793,28 @@
           const percentage = results.percentages[profileId] || 0;
           const isWinner = profileId === winnerProfile;
 
-          const gauge = document.createElement('div');
-          gauge.className = 'quiz-mood-gauge';
+          const miniGauge = document.createElement('div');
+          miniGauge.className = 'quiz-reveal-mood-mini';
 
-          const label = document.createElement('div');
-          label.className = 'quiz-mood-gauge-label';
-          label.innerHTML = `
-            <span class="emotion-name">
-              <span class="emotion-icon">${profileInfo.icon || '○'}</span>
-              ${profileInfo.displayName || profileId}${profileInfo.moodLabel ? ` <span class="emotion-sublabel">· ${profileInfo.moodLabel}</span>` : ''}
-            </span>
-            <span>${percentage}%</span>
+          miniGauge.innerHTML = `
+            <div class="quiz-reveal-mood-mini-icon">${profileInfo.icon || '○'}</div>
+            <div class="quiz-reveal-mood-mini-bar">
+              <div class="quiz-reveal-mood-mini-fill${isWinner ? ' is-winner' : ''}" style="width: 0%;"></div>
+            </div>
+            <div class="quiz-reveal-mood-mini-percent">${percentage}%</div>
           `;
 
-          const bar = document.createElement('div');
-          bar.className = 'quiz-mood-gauge-bar';
-
-          const fill = document.createElement('div');
-          fill.className = 'quiz-mood-gauge-fill' + (isWinner ? ' is-winner' : '');
-          // Animation : commence à 0 puis anime vers la valeur
-          fill.style.width = '0%';
-
-          bar.appendChild(fill);
-          gauge.appendChild(label);
-          gauge.appendChild(bar);
-          gaugesEl.appendChild(gauge);
-
-          // Animer après un délai
-          setTimeout(() => {
-            fill.style.width = percentage + '%';
-          }, 100);
+          gaugesEl.appendChild(miniGauge);
         });
       }
 
       // === INVITATION COMPTE ===
-      const accountInviteEl = container.querySelector('#quiz-account-invite-' + sectionId);
+      const accountInviteEl = container.querySelector('#quiz-reveal-account-invite-' + sectionId);
       if (accountInviteEl) {
-        // Cacher si l'utilisateur est déjà connecté
         if (isCustomerLoggedIn) {
           accountInviteEl.style.display = 'none';
+        } else {
+          accountInviteEl.style.display = '';
         }
       }
 
@@ -1810,17 +1832,62 @@
       };
       localStorage.setItem('milauraLastResult', JSON.stringify(storageData));
 
-      // === STAGGERED REVEAL FOR RESULT CARDS ===
-      setTimeout(() => {
-        const productCard = container.querySelector('.quiz-result-product-card');
-        const descCard = container.querySelector('.quiz-result-desc-card');
-        const moodCard = container.querySelector('.quiz-result-mood-card');
+      // === PROGRESSIVE DISCLOSURE - STAGGERED REVEAL ===
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // Staggered reveal: 0ms, 120ms, 240ms (defined in CSS transition-delay)
-        if (productCard) productCard.classList.add('is-visible');
-        if (descCard) descCard.classList.add('is-visible');
-        if (moodCard) moodCard.classList.add('is-visible');
-      }, 100); // Small delay after state transition
+      if (prefersReducedMotion) {
+        // Reveal all phases immediately if user prefers reduced motion
+        allPhases.forEach(phase => phase.classList.add('is-revealed'));
+        // Animate gauges immediately
+        setTimeout(() => animateMoodGauges(results, winnerProfile), 50);
+      } else {
+        // Phase 1: Header (immediate)
+        setTimeout(() => {
+          const phase1 = container.querySelector('[data-reveal-phase="1"]');
+          if (phase1) phase1.classList.add('is-revealed');
+        }, REVEAL_TIMING.phase1_header);
+
+        // Phase 2: Main card with product
+        setTimeout(() => {
+          const phase2 = container.querySelector('[data-reveal-phase="2"]');
+          if (phase2) phase2.classList.add('is-revealed');
+        }, REVEAL_TIMING.phase2_main);
+
+        // Phase 3: First accordion
+        setTimeout(() => {
+          const phase3 = container.querySelector('[data-reveal-phase="3"]');
+          if (phase3) phase3.classList.add('is-revealed');
+        }, REVEAL_TIMING.phase3_accordion1);
+
+        // Phase 4: Second accordion
+        setTimeout(() => {
+          const phase4 = container.querySelector('[data-reveal-phase="4"]');
+          if (phase4) phase4.classList.add('is-revealed');
+        }, REVEAL_TIMING.phase4_accordion2);
+
+        // Phase 5: Mood + Footer
+        setTimeout(() => {
+          const phase5Elements = container.querySelectorAll('[data-reveal-phase="5"]');
+          phase5Elements.forEach(el => el.classList.add('is-revealed'));
+          // Animate mood gauges after they're visible
+          setTimeout(() => animateMoodGauges(results, winnerProfile), 100);
+        }, REVEAL_TIMING.phase5_mood);
+      }
+    }
+
+    // Helper function to animate mood gauge fills
+    function animateMoodGauges(results, winnerProfile) {
+      const fills = container.querySelectorAll('.quiz-reveal-mood-mini-fill');
+      const sortedProfiles = [...profiles].sort((a, b) =>
+        (results.percentages[b] || 0) - (results.percentages[a] || 0)
+      );
+
+      fills.forEach((fill, index) => {
+        const profileId = sortedProfiles[index];
+        const percentage = results.percentages[profileId] || 0;
+        fill.style.width = percentage + '%';
+      });
     }
 
     // Fonction globale pour ajouter au panier avec feedback visuel
@@ -1921,9 +1988,13 @@
           currentQuestionIndex = 0;
           question7Answer = null; // Reset tiebreaker
 
-          // Reset result cards visibility for next reveal animation
-          const resultCards = container.querySelectorAll('.quiz-result-product-card, .quiz-result-desc-card, .quiz-result-mood-card');
-          resultCards.forEach(card => card.classList.remove('is-visible'));
+          // Reset reveal phases visibility for next animation
+          const revealPhases = container.querySelectorAll('.reveal-phase');
+          revealPhases.forEach(phase => phase.classList.remove('is-revealed'));
+
+          // Close all accordions
+          const accordions = container.querySelectorAll('.quiz-reveal-accordion');
+          accordions.forEach(acc => acc.removeAttribute('open'));
 
           goToQuestions();
         });
@@ -2037,19 +2108,37 @@
     },
     {
       "type": "header",
-      "content": "Résultats"
+      "content": "Résultats - Effet Mentalist"
     },
     {
       "type": "text",
-      "id": "result_main_title",
-      "label": "Titre principal des résultats",
-      "default": "Ta bougie du moment"
+      "id": "result_kicker",
+      "label": "Accroche mystique (kicker)",
+      "default": "Ce que ton âme murmure..."
+    },
+    {
+      "type": "text",
+      "id": "result_cta_label",
+      "label": "Label CTA principal",
+      "default": "Adopter mon rituel"
+    },
+    {
+      "type": "text",
+      "id": "accordion_duo_label",
+      "label": "Label accordéon duo pierre/senteur",
+      "default": "L'Alchimie du Duo"
+    },
+    {
+      "type": "text",
+      "id": "accordion_ritual_label",
+      "label": "Label accordéon rituel",
+      "default": "Ton Rituel de Connexion"
     },
     {
       "type": "text",
       "id": "result_mood_title",
       "label": "Titre météo émotionnelle",
-      "default": "Ta météo émotionnelle"
+      "default": "Ta Météo Émotionnelle"
     },
     {
       "type": "header",
