@@ -11,62 +11,48 @@
 {% endcomment %}
 
 {%- liquid
-  assign crosssell_products = blank
-  assign products_array = blank
+  # 1. Produits sélectionnés manuellement dans le customizer
+  assign manual_1 = section.settings.product_1
+  assign manual_2 = section.settings.product_2
+  assign manual_3 = section.settings.product_3
+  assign manual_4 = section.settings.product_4
 
-  # 1. Priorité: Produits sélectionnés dans le customizer
-  if section.settings.product_1 != blank
-    assign products_array = products_array | concat: section.settings.product_1 | compact
-  endif
-  if section.settings.product_2 != blank
-    assign products_array = products_array | concat: section.settings.product_2 | compact
+  assign has_manual = false
+  if manual_1 != blank or manual_2 != blank or manual_3 != blank or manual_4 != blank
+    assign has_manual = true
   endif
 
-  # Filtrer pour exclure le produit actuel et garder max 2
-  if products_array.size > 0
-    assign filtered_products = products_array | uniq
-    assign final_products = ''
-    assign count = 0
-    for p in filtered_products
-      if p.id != product.id and p.available and count < 2
-        if final_products == ''
-          assign final_products = p.id
-        else
-          assign final_products = final_products | append: ',' | append: p.id
-        endif
-        assign count = count | plus: 1
+  # 2. Fallback: Metafield milaura.crosssell_products
+  assign meta_products = blank
+  if has_manual == false
+    assign meta_raw = product.metafields.milaura.crosssell_products.value
+    if meta_raw != blank and meta_raw.size > 0
+      assign meta_products = meta_raw | where_exp: 'item', 'item.id != product.id' | where: 'available' | slice: 0, 4
+    endif
+  endif
+
+  # 3. Fallback: Produits de la même collection
+  assign collection_products = blank
+  if has_manual == false and meta_products == blank
+    for col in product.collections
+      if col.handle != 'all' and collection_products == blank
+        assign collection_products = col.products | where_exp: 'item', 'item.id != product.id' | where: 'available' | slice: 0, 4
       endif
     endfor
   endif
 
-  # 2. Fallback: Metafield
-  if count == 0 or count == blank
-    assign meta_products = product.metafields.milaura.crosssell_products.value
-    if meta_products != blank and meta_products.size > 0
-      assign crosssell_products = meta_products | where_exp: 'item', 'item.id != product.id' | where: 'available' | slice: 0, 2
-    endif
-  endif
-
-  # 3. Fallback: Même collection
-  if crosssell_products == blank or crosssell_products.size == 0
-    if count == 0 or count == blank
-      for col in product.collections
-        if col.handle != 'all' and crosssell_products == blank
-          assign crosssell_products = col.products | where_exp: 'item', 'item.id != product.id' | where: 'available' | slice: 0, 2
-        endif
-      endfor
-    endif
-  endif
-
-  # Si on a des produits du customizer, les utiliser
-  if count > 0
-    assign use_manual = true
-  else
-    assign use_manual = false
+  # Déterminer quelle source utiliser
+  assign show_section = false
+  if has_manual
+    assign show_section = true
+  elsif meta_products != blank and meta_products.size > 0
+    assign show_section = true
+  elsif collection_products != blank and collection_products.size > 0
+    assign show_section = true
   endif
 -%}
 
-{%- if crosssell_products.size > 0 or use_manual -%}
+{%- if show_section -%}
 <section
   id="MilauraProductCrosssell-{{ section.id }}"
   class="milaura-product-crosssell"
@@ -88,24 +74,55 @@
 
     <div class="milaura-product-crosssell__grid">
 
-      {%- if use_manual -%}
+      {%- if has_manual -%}
         {%- comment -%} Produits manuels depuis le customizer {%- endcomment -%}
-        {%- assign manual_products = section.settings.product_1 | concat: section.settings.product_2 | compact | uniq -%}
-        {%- assign shown = 0 -%}
-        {%- for recommended_product in manual_products limit: 2 -%}
-          {%- if recommended_product.id != product.id and recommended_product.available and shown < 2 -%}
-            {%- assign shown = shown | plus: 1 -%}
-            {%- render 'milaura-crosssell-card',
-                recommended_product: recommended_product,
-                button_text: section.settings.button_text,
-                button_text_sold_out: section.settings.button_text_sold_out,
-                show_vendor: section.settings.show_vendor
-            -%}
-          {%- endif -%}
+        {%- if manual_1 != blank and manual_1.id != product.id and manual_1.available -%}
+          {%- render 'milaura-crosssell-card',
+              recommended_product: manual_1,
+              button_text: section.settings.button_text,
+              button_text_sold_out: section.settings.button_text_sold_out,
+              show_vendor: section.settings.show_vendor
+          -%}
+        {%- endif -%}
+        {%- if manual_2 != blank and manual_2.id != product.id and manual_2.available -%}
+          {%- render 'milaura-crosssell-card',
+              recommended_product: manual_2,
+              button_text: section.settings.button_text,
+              button_text_sold_out: section.settings.button_text_sold_out,
+              show_vendor: section.settings.show_vendor
+          -%}
+        {%- endif -%}
+        {%- if manual_3 != blank and manual_3.id != product.id and manual_3.available -%}
+          {%- render 'milaura-crosssell-card',
+              recommended_product: manual_3,
+              button_text: section.settings.button_text,
+              button_text_sold_out: section.settings.button_text_sold_out,
+              show_vendor: section.settings.show_vendor
+          -%}
+        {%- endif -%}
+        {%- if manual_4 != blank and manual_4.id != product.id and manual_4.available -%}
+          {%- render 'milaura-crosssell-card',
+              recommended_product: manual_4,
+              button_text: section.settings.button_text,
+              button_text_sold_out: section.settings.button_text_sold_out,
+              show_vendor: section.settings.show_vendor
+          -%}
+        {%- endif -%}
+
+      {%- elsif meta_products != blank and meta_products.size > 0 -%}
+        {%- comment -%} Produits depuis metafield {%- endcomment -%}
+        {%- for recommended_product in meta_products limit: 4 -%}
+          {%- render 'milaura-crosssell-card',
+              recommended_product: recommended_product,
+              button_text: section.settings.button_text,
+              button_text_sold_out: section.settings.button_text_sold_out,
+              show_vendor: section.settings.show_vendor
+          -%}
         {%- endfor -%}
-      {%- else -%}
-        {%- comment -%} Produits automatiques {%- endcomment -%}
-        {%- for recommended_product in crosssell_products limit: 2 -%}
+
+      {%- elsif collection_products != blank and collection_products.size > 0 -%}
+        {%- comment -%} Produits de la même collection {%- endcomment -%}
+        {%- for recommended_product in collection_products limit: 4 -%}
           {%- render 'milaura-crosssell-card',
               recommended_product: recommended_product,
               button_text: section.settings.button_text,
@@ -470,8 +487,18 @@
       "label": "Produit 2"
     },
     {
+      "type": "product",
+      "id": "product_3",
+      "label": "Produit 3"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Produit 4"
+    },
+    {
       "type": "paragraph",
-      "content": "Si aucun produit n'est sélectionné, la section affichera automatiquement des produits de la même collection."
+      "content": "Sélectionne jusqu'à 4 produits. Si aucun n'est choisi, des produits de la même collection s'afficheront automatiquement."
     },
     {
       "type": "header",
