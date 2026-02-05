@@ -25,7 +25,20 @@
   class="milaura-product-scent"
   data-section-id="{{ section.id }}"
 >
-  <div class="milaura-product-scent__container milaura-section-card">
+  <div class="milaura-product-scent__container milaura-section-card{% if section.settings.background_image != blank %} has-background-image{% endif %}">
+
+    {%- if section.settings.background_image != blank -%}
+      <div class="milaura-product-scent__bg">
+        {{ section.settings.background_image
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'lazy',
+            class: 'milaura-product-scent__bg-image',
+            sizes: '(min-width: 768px) 900px, 100vw'
+        }}
+        <div class="milaura-product-scent__bg-overlay" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+      </div>
+    {%- endif -%}
 
     {%- if section.settings.show_title -%}
       <h2 class="milaura-product-scent__title">
@@ -117,7 +130,49 @@
   .milaura-product-scent__container {
     max-width: 900px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
     /* padding handled by milaura-section-card */
+  }
+
+  /* Background image */
+  .milaura-product-scent__container.has-background-image {
+    background: transparent;
+  }
+
+  .milaura-product-scent__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .milaura-product-scent__bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .milaura-product-scent__bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: {{ section.settings.overlay_color }};
+  }
+
+  /* Ensure content is above background */
+  .milaura-product-scent__container.has-background-image .milaura-product-scent__title,
+  .milaura-product-scent__container.has-background-image .milaura-product-scent__name,
+  .milaura-product-scent__container.has-background-image .milaura-product-scent__pyramid,
+  .milaura-product-scent__container.has-background-image .milaura-product-scent__description,
+  .milaura-product-scent__container.has-background-image .milaura-product-scent__partner {
+    position: relative;
+    z-index: 1;
   }
 
   .milaura-product-scent__title {
@@ -243,6 +298,34 @@
   "name": "Milaura Product Scent",
   "class": "milaura-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "🖼️ Image de fond"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image de fond",
+      "info": "L'image remplira toute la carte en arrière-plan"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Couleur de l'overlay",
+      "default": "#FFFFFF",
+      "info": "Couleur du voile au-dessus de l'image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacité de l'overlay (%)",
+      "min": 0,
+      "max": 95,
+      "step": 5,
+      "default": 70,
+      "unit": "%",
+      "info": "0% = image visible, 95% = presque opaque"
+    },
     {
       "type": "header",
       "content": "📝 Titre"
