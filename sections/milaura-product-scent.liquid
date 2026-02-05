@@ -31,15 +31,8 @@
 >
   <div class="milaura-scent__card milaura-section-card{% if section.settings.background_image != blank %} has-bg{% endif %}">
 
-    {%- comment -%} Background Image + Overlay {%- endcomment -%}
+    {%- comment -%} Background Image + Overlay via CSS ::after {%- endcomment -%}
     {%- if section.settings.background_image != blank -%}
-      {%- comment -%} Construction manuelle de la décimale (bulletproof) {%- endcomment -%}
-      {%- assign overlay_pct = section.settings.overlay_opacity -%}
-      {%- if overlay_pct < 10 -%}
-        {%- capture overlay_opacity_value -%}0.0{{ overlay_pct }}{%- endcapture -%}
-      {%- else -%}
-        {%- capture overlay_opacity_value -%}0.{{ overlay_pct }}{%- endcapture -%}
-      {%- endif -%}
       <div class="milaura-scent__bg">
         {{ section.settings.background_image
           | image_url: width: 1200
@@ -48,7 +41,6 @@
             class: 'milaura-scent__bg-img',
             sizes: '(min-width: 768px) 800px, 100vw'
         }}
-        <div class="milaura-scent__overlay" style="background: {{ section.settings.overlay_color }}; opacity: {{ overlay_opacity_value }};"></div>
       </div>
     {%- endif -%}
 
@@ -144,13 +136,17 @@
     filter: blur({{ section.settings.image_blur }}px);
   }
 
-  .milaura-scent__overlay {
+  /* Overlay via pseudo-élément - BULLETPROOF */
+  .milaura-scent__bg::after {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* background et opacity gérés via inline style pour fiabilité */
+    background: {{ section.settings.overlay_color }};
+    opacity: 0.{{ section.settings.overlay_opacity }};
+    pointer-events: none;
   }
 
   /* ============================================
