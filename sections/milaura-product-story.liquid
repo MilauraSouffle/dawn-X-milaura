@@ -13,20 +13,25 @@
   case product_type
     when 'bijou', 'bracelet', 'collier', 'bague'
       assign template_type = 'bijou'
-      assign quiz_cta = 'Découvre ton bijou idéal'
+      assign default_quiz_cta = 'Découvre ton bijou idéal'
     when 'bougie'
       assign template_type = 'bougie'
-      assign quiz_cta = 'Découvre ta bougie émotionnelle'
+      assign default_quiz_cta = 'Découvre ta bougie émotionnelle'
     when 'sauge', 'encens'
       assign template_type = 'sauge'
-      assign quiz_cta = 'Trouve ton rituel de purification'
+      assign default_quiz_cta = 'Trouve ton rituel de purification'
     when 'coffret', 'bundle'
       assign template_type = 'coffret'
-      assign quiz_cta = 'Découvre ton coffret sur-mesure'
+      assign default_quiz_cta = 'Découvre ton coffret sur-mesure'
     else
       assign template_type = 'bijou'
-      assign quiz_cta = 'Découvre ton profil émotionnel'
+      assign default_quiz_cta = 'Découvre ton profil émotionnel'
   endcase
+
+  assign quiz_cta = section.settings.quiz_cta_text
+  if quiz_cta == blank
+    assign quiz_cta = default_quiz_cta
+  endif
 -%}
 
 <section
@@ -133,8 +138,8 @@
     background: rgba(192, 160, 98, 0.1);
     border: 1px solid rgba(192, 160, 98, 0.3);
     border-radius: 12px;
-    color: var(--milaura-gold-dark, #8F723A);
-    font-size: 15px;
+    color: {{ section.settings.quiz_link_color }};
+    font-size: {{ section.settings.quiz_link_size }}px;
     font-weight: 500;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -294,6 +299,32 @@
       "type": "url",
       "id": "quiz_url",
       "label": "URL du quiz"
+    },
+    {
+      "type": "text",
+      "id": "quiz_cta_text",
+      "label": "Texte du lien quiz",
+      "info": "Laisse vide pour texte automatique selon type produit"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style Lien Quiz"
+    },
+    {
+      "type": "range",
+      "id": "quiz_link_size",
+      "label": "Taille lien quiz",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "quiz_link_color",
+      "label": "Couleur lien quiz",
+      "default": "#8F723A"
     }
   ],
   "presets": [
