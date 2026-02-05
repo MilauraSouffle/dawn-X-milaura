@@ -244,7 +244,7 @@
 
   #MilauraHeroShowcase-{{ section.id }} .hero-tab {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: var(--milaura-spacing-md, 14px);
     padding: 12px 18px;
     width: 100%;
@@ -269,14 +269,18 @@
     transition: transform 220ms ease, box-shadow 260ms ease, background 260ms ease, max-height 400ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Mode expandable - icône centrée verticalement */
+  /* Mode expandable - passe en flex-start quand déplié */
   {% if section.settings.expandable_pillars %}
   #MilauraHeroShowcase-{{ section.id }} .hero-tab {
     flex-wrap: wrap;
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-icon {
-    margin-top: 4px;
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded {
+    align-items: flex-start;
+  }
+
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-icon {
+    margin-top: 2px;
   }
   {% endif %}
 
@@ -482,7 +486,8 @@
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron {
     position: absolute;
     right: 16px;
-    top: 18px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 22px;
     height: 22px;
     display: flex;
@@ -493,6 +498,12 @@
     border: 1px solid rgba(192, 160, 98, 0.2);
     transition: all 350ms cubic-bezier(0.22, 1, 0.36, 1);
     font-size: 0;
+  }
+
+  /* Quand expanded, fixer en haut */
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-chevron {
+    top: 18px;
+    transform: translateY(0);
   }
 
   /* Icône + en CSS pur */
@@ -521,7 +532,6 @@
   #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-chevron {
     background: linear-gradient(135deg, rgba(192, 160, 98, 0.25) 0%, rgba(192, 160, 98, 0.15) 100%);
     border-color: rgba(192, 160, 98, 0.35);
-    transform: rotate(180deg);
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-chevron::after {
@@ -971,9 +981,12 @@
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron {
       right: 12px;
-      top: 14px;
       width: 20px;
       height: 20px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-chevron {
+      top: 14px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron::before {
