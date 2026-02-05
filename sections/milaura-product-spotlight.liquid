@@ -271,15 +271,24 @@
     50% { transform: translateY(-10px); }
   }
 
-  /* Transparent/Cutout Image Mode - removes white frame for PNG cutouts */
+  /* ============================================
+     TRANSPARENT/CUTOUT IMAGE MODE
+     Key: Container shrinks to fit image so hotspots align correctly
+     ============================================ */
   .spotlight-media--transparent {
     background: transparent !important;
     border-radius: 0 !important;
     box-shadow: none !important;
     overflow: visible !important;
     border: none !important;
-    aspect-ratio: auto !important;
+    /* CRITICAL: Remove fixed aspect-ratio so container fits image */
+    aspect-ratio: unset !important;
     max-height: none !important;
+    /* Container shrinks to image size - hotspots will align */
+    width: fit-content !important;
+    height: fit-content !important;
+    margin: 0 auto;
+    position: relative;
   }
 
   .spotlight-media--transparent .spotlight-media__inner {
@@ -287,30 +296,34 @@
     border-radius: 0 !important;
     overflow: visible !important;
     border: none !important;
+    width: auto !important;
     height: auto !important;
+    display: block;
   }
 
   .spotlight-media--transparent .spotlight-media__image,
   .spotlight-media--transparent .spotlight-media__video {
-    object-fit: contain !important;
+    /* Image displays at natural size, container wraps it */
     background: transparent !important;
     border-radius: 0 !important;
     border: none !important;
-    width: 100% !important;
+    width: auto !important;
     height: auto !important;
-    max-height: 500px;
+    max-width: 100%;
+    max-height: 450px;
+    display: block;
+    object-fit: unset !important;
   }
 
   /* ============================================
-     TRANSPARENT MODE - Golden Frame Adjustments
+     TRANSPARENT MODE - Golden Frame & Layout
      ============================================ */
 
-  /* Container with tight padding for transparent images */
   .spotlight-container--transparent {
     padding: 24px !important;
   }
 
-  /* Desktop: proportional layout with transparent image */
+  /* Desktop */
   @media screen and (min-width: 1024px) {
     .spotlight-container--transparent {
       padding: 32px !important;
@@ -318,24 +331,16 @@
 
     .milaura-spotlight--transparent-mode .spotlight-grid {
       align-items: center;
-      gap: 32px;
-    }
-
-    .spotlight-media--transparent {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      gap: 40px;
     }
 
     .spotlight-media--transparent .spotlight-media__image,
     .spotlight-media--transparent .spotlight-media__video {
-      max-height: 500px;
-      width: auto;
-      max-width: 100%;
+      max-height: 480px;
     }
   }
 
-  /* Tablet: balanced proportions */
+  /* Tablet */
   @media screen and (min-width: 769px) and (max-width: 1023px) {
     .spotlight-container--transparent {
       padding: 24px !important;
@@ -343,11 +348,11 @@
 
     .spotlight-media--transparent .spotlight-media__image,
     .spotlight-media--transparent .spotlight-media__video {
-      max-height: 400px;
+      max-height: 380px;
     }
   }
 
-  /* Mobile: compact layout, no excessive gaps */
+  /* Mobile */
   @media screen and (max-width: 768px) {
     .spotlight-container--transparent {
       padding: 16px !important;
@@ -357,18 +362,9 @@
       gap: 16px;
     }
 
-    .spotlight-media--transparent {
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     .spotlight-media--transparent .spotlight-media__image,
     .spotlight-media--transparent .spotlight-media__video {
-      max-height: 280px;
-      width: auto;
-      max-width: 90%;
+      max-height: 260px;
     }
   }
 
@@ -380,7 +376,7 @@
 
     .spotlight-media--transparent .spotlight-media__image,
     .spotlight-media--transparent .spotlight-media__video {
-      max-height: 220px;
+      max-height: 200px;
     }
   }
 
