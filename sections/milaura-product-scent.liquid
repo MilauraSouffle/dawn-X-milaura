@@ -1,9 +1,13 @@
 {% comment %}
-  MILAURA PRODUCT SCENT
-  Pyramide olfactive (Tête/Cœur/Fond) 3 colonnes
-  Description sensorielle 2-3 phrases
-  Logo partenaire Maison Candella discret
-  Conditionnel : uniquement pour bougies
+  MILAURA PRODUCT SCENT - "L'Essence"
+  Version 2.0 - Refonte complète
+
+  Design émotionnel inspiré Aesop/Diptyque
+  - Description poétique de la fragrance
+  - Notes olfactives en pills (blocks)
+  - Suggestion d'usage
+  - Image de fond avec overlay fonctionnel
+  - Conditionnel : uniquement pour bougies
 {% endcomment %}
 
 {%- liquid
@@ -14,133 +18,109 @@
     assign is_candle = true
   endif
 
-  assign scent_name = product.metafields.milaura.scent_name | default: section.settings.default_scent_name
-  assign scent_description = product.metafields.milaura.scent_description | default: section.settings.default_description
-  assign scent_notes = product.metafields.milaura.scent_notes.value
+  assign mood_statement = section.settings.mood_statement | default: section.settings.default_mood
+  assign usage_suggestion = section.settings.usage_suggestion
+  assign note_blocks = section.blocks | where: 'type', 'note'
 -%}
 
 {%- if is_candle -%}
 <section
   id="MilauraProductScent-{{ section.id }}"
-  class="milaura-product-scent"
+  class="milaura-scent"
   data-section-id="{{ section.id }}"
 >
-  <div class="milaura-product-scent__container milaura-section-card{% if section.settings.background_image != blank %} has-background-image{% endif %}">
+  <div class="milaura-scent__card milaura-section-card{% if section.settings.background_image != blank %} has-bg{% endif %}">
 
+    {%- comment -%} Background Image + Overlay {%- endcomment -%}
     {%- if section.settings.background_image != blank -%}
-      <div class="milaura-product-scent__bg">
+      <div class="milaura-scent__bg">
         {{ section.settings.background_image
           | image_url: width: 1200
           | image_tag:
             loading: 'lazy',
-            class: 'milaura-product-scent__bg-image',
-            sizes: '(min-width: 768px) 900px, 100vw'
+            class: 'milaura-scent__bg-img',
+            sizes: '(min-width: 768px) 800px, 100vw'
         }}
-        <div class="milaura-product-scent__bg-overlay"></div>
+        <div class="milaura-scent__overlay"></div>
       </div>
     {%- endif -%}
 
-    {%- if section.settings.show_title -%}
-      <h2 class="milaura-product-scent__title">
-        {{ section.settings.title }}
-      </h2>
-    {%- endif -%}
+    {%- comment -%} Content {%- endcomment -%}
+    <div class="milaura-scent__content">
 
-    {%- if scent_name != blank -%}
-      <p class="milaura-product-scent__name">
-        {{ scent_name }}
-      </p>
-    {%- endif -%}
+      {%- if section.settings.show_title -%}
+        <p class="milaura-scent__label">{{ section.settings.title }}</p>
+      {%- endif -%}
 
-    {%- comment -%} Pyramide olfactive {%- endcomment -%}
-    {%- if scent_notes -%}
-      <div class="milaura-product-scent__pyramid">
+      {%- if mood_statement != blank -%}
+        <div class="milaura-scent__mood">
+          {{ mood_statement }}
+        </div>
+      {%- endif -%}
 
-        {%- if scent_notes.top and scent_notes.top.size > 0 -%}
-          <div class="milaura-product-scent__note">
-            <div class="milaura-product-scent__note-label">{{ section.settings.label_top }}</div>
-            <div class="milaura-product-scent__note-values">
-              {%- for note in scent_notes.top -%}
-                <span class="milaura-product-scent__note-value">{{ note }}</span>
-              {%- endfor -%}
-            </div>
-          </div>
-        {%- endif -%}
+      {%- if note_blocks.size > 0 -%}
+        <div class="milaura-scent__notes">
+          {%- for block in note_blocks -%}
+            <span class="milaura-scent__note" {{ block.shopify_attributes }}>
+              {{ block.settings.note_text }}
+            </span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
 
-        {%- if scent_notes.heart and scent_notes.heart.size > 0 -%}
-          <div class="milaura-product-scent__note">
-            <div class="milaura-product-scent__note-label">{{ section.settings.label_heart }}</div>
-            <div class="milaura-product-scent__note-values">
-              {%- for note in scent_notes.heart -%}
-                <span class="milaura-product-scent__note-value">{{ note }}</span>
-              {%- endfor -%}
-            </div>
-          </div>
-        {%- endif -%}
+      {%- if usage_suggestion != blank -%}
+        <p class="milaura-scent__usage">
+          <span class="milaura-scent__usage-icon">&#10022;</span>
+          {{ usage_suggestion }}
+        </p>
+      {%- endif -%}
 
-        {%- if scent_notes.base and scent_notes.base.size > 0 -%}
-          <div class="milaura-product-scent__note">
-            <div class="milaura-product-scent__note-label">{{ section.settings.label_base }}</div>
-            <div class="milaura-product-scent__note-values">
-              {%- for note in scent_notes.base -%}
-                <span class="milaura-product-scent__note-value">{{ note }}</span>
-              {%- endfor -%}
-            </div>
-          </div>
-        {%- endif -%}
-
-      </div>
-    {%- endif -%}
-
-    {%- if scent_description != blank -%}
-      <div class="milaura-product-scent__description">
-        {{ scent_description }}
-      </div>
-    {%- endif -%}
-
-    {%- if section.settings.show_partner -%}
-      <div class="milaura-product-scent__partner">
-        {%- if section.settings.partner_logo != blank -%}
-          {{
-            section.settings.partner_logo
-            | image_url: width: 200
+      {%- if section.settings.show_partner and section.settings.partner_logo != blank -%}
+        <div class="milaura-scent__partner">
+          {{ section.settings.partner_logo
+            | image_url: width: 160
             | image_tag:
               loading: 'lazy',
-              class: 'milaura-product-scent__partner-logo',
+              class: 'milaura-scent__partner-logo',
               alt: section.settings.partner_text | escape
           }}
-        {%- else -%}
-          <p class="milaura-product-scent__partner-text">
-            {{ section.settings.partner_text }}
-          </p>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>
 
   </div>
 </section>
 {%- endif -%}
 
 <style>
-  .milaura-product-scent {
+  /* ============================================
+     L'ESSENCE - Base Styles
+     ============================================ */
+  .milaura-scent {
     padding: 20px 0;
     background: transparent;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
   }
 
-  .milaura-product-scent__container {
-    max-width: 900px;
-    text-align: center;
+  .milaura-scent.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .milaura-scent__card {
     position: relative;
+    max-width: 800px;
     overflow: hidden;
-    /* padding handled by milaura-section-card */
+    text-align: center;
   }
 
-  /* Background image */
-  .milaura-product-scent__container.has-background-image {
-    background: transparent;
-  }
-
-  .milaura-product-scent__bg {
+  /* ============================================
+     Background Image + Overlay
+     ============================================ */
+  .milaura-scent__bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -149,154 +129,258 @@
     z-index: 0;
   }
 
-  .milaura-product-scent__bg-image {
+  .milaura-scent__bg-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
+    filter: blur({{ section.settings.image_blur }}px);
   }
 
-  .milaura-product-scent__bg-overlay {
+  .milaura-scent__overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: {{ section.settings.overlay_color }};
-    opacity: 0.65;
+    opacity: {{ section.settings.overlay_opacity | times: 0.01 }};
   }
 
-  /* Ensure content is above background */
-  .milaura-product-scent__container.has-background-image .milaura-product-scent__title,
-  .milaura-product-scent__container.has-background-image .milaura-product-scent__name,
-  .milaura-product-scent__container.has-background-image .milaura-product-scent__pyramid,
-  .milaura-product-scent__container.has-background-image .milaura-product-scent__description,
-  .milaura-product-scent__container.has-background-image .milaura-product-scent__partner {
+  /* Fallback si Liquid ne calcule pas bien */
+  .milaura-scent__card.has-bg .milaura-scent__overlay {
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+
+  /* ============================================
+     Content Layer
+     ============================================ */
+  .milaura-scent__content {
     position: relative;
     z-index: 1;
-  }
-
-  .milaura-product-scent__title {
-    font-family: {{ section.settings.title_font }};
-    font-size: {{ section.settings.title_size_mobile }}px;
-    font-weight: 600;
-    color: {{ section.settings.title_color }};
-    margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
-  }
-
-  .milaura-product-scent__name {
-    font-family: {{ section.settings.scent_name_font }};
-    font-size: {{ section.settings.scent_name_size_mobile }}px;
-    font-style: italic;
-    color: {{ section.settings.scent_name_color }};
-    margin: 0 0 var(--milaura-spacing-lg, 36px) 0;
-  }
-
-  .milaura-product-scent__pyramid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--milaura-spacing-md, 24px);
-    margin-bottom: var(--milaura-spacing-lg, 36px);
-  }
-
-  .milaura-product-scent__note {
-    padding: var(--milaura-spacing-md, 24px);
-    background: rgba(192, 160, 98, 0.08);
-    border: 1px solid rgba(192, 160, 98, 0.2);
-    border-radius: var(--milaura-border-radius, 20px);
-  }
-
-  .milaura-product-scent__note-label {
-    font-family: {{ section.settings.note_label_font }};
-    font-size: {{ section.settings.note_label_size_mobile }}px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: {{ section.settings.note_label_color }};
-    margin-bottom: var(--milaura-spacing-sm, 12px);
-  }
-
-  .milaura-product-scent__note-values {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-  }
-
-  .milaura-product-scent__note-value {
-    font-family: {{ section.settings.note_value_font }};
-    font-size: {{ section.settings.note_value_size_mobile }}px;
-    line-height: 1.5;
-    color: {{ section.settings.note_value_color }};
-  }
-
-  .milaura-product-scent__description {
-    font-family: {{ section.settings.description_font }};
-    font-size: {{ section.settings.description_size_mobile }}px;
-    line-height: 1.7;
-    color: {{ section.settings.description_color }};
-    opacity: 0.9;
-    font-style: italic;
-    margin-bottom: var(--milaura-spacing-lg, 36px);
-  }
-
-  .milaura-product-scent__description p {
-    margin: 0 0 1em 0;
-  }
-
-  .milaura-product-scent__description p:last-child {
-    margin-bottom: 0;
-  }
-
-  .milaura-product-scent__partner {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    opacity: 0.6;
+    gap: 20px;
+    padding: 40px 24px;
   }
 
-  .milaura-product-scent__partner-logo {
-    max-width: 120px;
-    height: auto;
-  }
-
-  .milaura-product-scent__partner-text {
-    font-size: 13px;
-    color: var(--milaura-text, #000000);
+  /* Label / Titre */
+  .milaura-scent__label {
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--milaura-gold, #C0A062);
     margin: 0;
   }
 
-  /* Desktop: 3 colonnes */
+  /* Mood Statement */
+  .milaura-scent__mood {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: 20px;
+    font-style: italic;
+    line-height: 1.6;
+    color: {{ section.settings.text_color }};
+    max-width: 580px;
+    margin: 0;
+  }
+
+  .milaura-scent__mood p {
+    margin: 0;
+  }
+
+  /* Note Pills */
+  .milaura-scent__notes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .milaura-scent__note {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(192, 160, 98, 0.1);
+    border: 1px solid rgba(192, 160, 98, 0.35);
+    border-radius: 50px;
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--milaura-gold-dark, #8F723A);
+    transition: all 0.3s ease;
+  }
+
+  .milaura-scent__note:hover {
+    background: rgba(192, 160, 98, 0.2);
+    border-color: var(--milaura-gold, #C0A062);
+    transform: translateY(-2px);
+  }
+
+  /* Usage Suggestion */
+  .milaura-scent__usage {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 14px;
+    color: {{ section.settings.text_color }};
+    opacity: 0.7;
+    margin: 8px 0 0 0;
+  }
+
+  .milaura-scent__usage-icon {
+    color: var(--milaura-gold, #C0A062);
+    font-size: 10px;
+  }
+
+  /* Partner Logo */
+  .milaura-scent__partner {
+    margin-top: 16px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+
+  .milaura-scent__partner:hover {
+    opacity: 0.8;
+  }
+
+  .milaura-scent__partner-logo {
+    max-width: 100px;
+    height: auto;
+  }
+
+  /* ============================================
+     Desktop (768px+)
+     ============================================ */
   @media screen and (min-width: 768px) {
-    .milaura-product-scent__pyramid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--milaura-spacing-lg, 36px);
+    .milaura-scent__content {
+      padding: 56px 48px;
+      gap: 24px;
     }
 
-    .milaura-product-scent__title {
-      font-size: {{ section.settings.title_size_desktop }}px;
+    .milaura-scent__label {
+      font-size: 13px;
+      letter-spacing: 0.2em;
     }
 
-    .milaura-product-scent__name {
-      font-size: {{ section.settings.scent_name_size_desktop }}px;
+    .milaura-scent__mood {
+      font-size: 26px;
+      line-height: 1.7;
     }
 
-    .milaura-product-scent__note-label {
-      font-size: {{ section.settings.note_label_size_desktop }}px;
+    .milaura-scent__notes {
+      gap: 12px;
+      margin-top: 12px;
     }
 
-    .milaura-product-scent__note-value {
-      font-size: {{ section.settings.note_value_size_desktop }}px;
+    .milaura-scent__note {
+      padding: 10px 24px;
+      font-size: 13px;
     }
 
-    .milaura-product-scent__description {
-      font-size: {{ section.settings.description_size_desktop }}px;
+    .milaura-scent__usage {
+      font-size: 15px;
+      margin-top: 12px;
+    }
+
+    .milaura-scent__partner-logo {
+      max-width: 120px;
+    }
+  }
+
+  /* ============================================
+     Large Desktop (1024px+)
+     ============================================ */
+  @media screen and (min-width: 1024px) {
+    .milaura-scent__content {
+      padding: 64px 64px;
+    }
+
+    .milaura-scent__mood {
+      font-size: 28px;
+    }
+  }
+
+  /* ============================================
+     Small Mobile (< 380px)
+     ============================================ */
+  @media screen and (max-width: 379px) {
+    .milaura-scent__content {
+      padding: 32px 16px;
+      gap: 16px;
+    }
+
+    .milaura-scent__label {
+      font-size: 11px;
+    }
+
+    .milaura-scent__mood {
+      font-size: 18px;
+    }
+
+    .milaura-scent__notes {
+      gap: 8px;
+    }
+
+    .milaura-scent__note {
+      padding: 6px 14px;
+      font-size: 11px;
+    }
+
+    .milaura-scent__usage {
+      font-size: 13px;
+    }
+  }
+
+  /* ============================================
+     Reduced Motion
+     ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-scent {
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .milaura-scent__note {
+      transition: none;
     }
   }
 </style>
 
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('MilauraProductScent-' + sectionId);
+  if (!section) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reducedMotion) {
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(section);
+  } else {
+    section.classList.add('is-visible');
+  }
+})();
+</script>
+
 {% schema %}
 {
-  "name": "Milaura Product Scent",
+  "name": "L'Essence (Senteur)",
   "class": "milaura-section",
   "settings": [
     {
@@ -307,284 +391,73 @@
       "type": "image_picker",
       "id": "background_image",
       "label": "Image de fond",
-      "info": "L'image remplira toute la carte en arrière-plan"
+      "info": "Image atmosphérique pour l'ambiance (optionnel)"
     },
     {
       "type": "color",
       "id": "overlay_color",
       "label": "Couleur de l'overlay",
-      "default": "#FFFFFF",
-      "info": "Couleur du voile au-dessus de l'image"
+      "default": "#FFFFFF"
     },
     {
       "type": "range",
       "id": "overlay_opacity",
-      "label": "Opacité de l'overlay (%)",
+      "label": "Opacité overlay",
       "min": 0,
       "max": 95,
       "step": 5,
-      "default": 70,
-      "unit": "%",
-      "info": "0% = image visible, 95% = presque opaque"
+      "default": 75,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "image_blur",
+      "label": "Flou de l'image",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 2,
+      "unit": "px",
+      "info": "Léger flou pour plus de douceur"
     },
     {
       "type": "header",
-      "content": "📝 Titre"
+      "content": "📝 Contenu"
     },
     {
       "type": "checkbox",
       "id": "show_title",
-      "label": "Afficher le titre",
+      "label": "Afficher le label",
       "default": true
     },
     {
       "type": "text",
       "id": "title",
-      "label": "Titre",
-      "default": "La senteur"
-    },
-    {
-      "type": "header",
-      "content": "📝 Contenu par défaut"
-    },
-    {
-      "type": "text",
-      "id": "default_scent_name",
-      "label": "Nom de senteur par défaut",
-      "info": "Utilisé si metafield milaura.scent_name est vide"
+      "label": "Label",
+      "default": "L'Essence"
     },
     {
       "type": "richtext",
-      "id": "default_description",
-      "label": "Description par défaut",
-      "default": "<p>Une fragrance enveloppante qui évolue au fil du temps, révélant ses notes avec subtilité.</p>",
-      "info": "Utilisé si metafield milaura.scent_description est vide"
-    },
-    {
-      "type": "header",
-      "content": "✏️ Style Titre"
-    },
-    {
-      "type": "select",
-      "id": "title_font",
-      "label": "Typographie titre",
-      "options": [
-        { "value": "var(--milaura-font-heading)", "label": "Playfair Display" },
-        { "value": "var(--milaura-font-body)", "label": "Lato" },
-        { "value": "var(--milaura-font-script)", "label": "Dancing Script" }
-      ],
-      "default": "var(--milaura-font-heading)"
-    },
-    {
-      "type": "range",
-      "id": "title_size_desktop",
-      "label": "Taille titre (desktop)",
-      "min": 22,
-      "max": 48,
-      "step": 1,
-      "unit": "px",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "title_size_mobile",
-      "label": "Taille titre (mobile)",
-      "min": 20,
-      "max": 36,
-      "step": 1,
-      "unit": "px",
-      "default": 26
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Couleur du titre",
-      "default": "#000000"
-    },
-    {
-      "type": "header",
-      "content": "✏️ Style Nom Senteur"
-    },
-    {
-      "type": "select",
-      "id": "scent_name_font",
-      "label": "Typographie nom senteur",
-      "options": [
-        { "value": "var(--milaura-font-heading)", "label": "Playfair Display" },
-        { "value": "var(--milaura-font-body)", "label": "Lato" },
-        { "value": "var(--milaura-font-script)", "label": "Dancing Script" }
-      ],
-      "default": "var(--milaura-font-body)"
-    },
-    {
-      "type": "range",
-      "id": "scent_name_size_desktop",
-      "label": "Taille nom senteur (desktop)",
-      "min": 14,
-      "max": 28,
-      "step": 1,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "scent_name_size_mobile",
-      "label": "Taille nom senteur (mobile)",
-      "min": 14,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "default": 18
-    },
-    {
-      "type": "color",
-      "id": "scent_name_color",
-      "label": "Couleur nom senteur",
-      "default": "#C0A062"
-    },
-    {
-      "type": "header",
-      "content": "✏️ Style Labels Notes"
-    },
-    {
-      "type": "select",
-      "id": "note_label_font",
-      "label": "Typographie label note",
-      "options": [
-        { "value": "var(--milaura-font-heading)", "label": "Playfair Display" },
-        { "value": "var(--milaura-font-body)", "label": "Lato" },
-        { "value": "var(--milaura-font-script)", "label": "Dancing Script" }
-      ],
-      "default": "var(--milaura-font-body)"
-    },
-    {
-      "type": "range",
-      "id": "note_label_size_desktop",
-      "label": "Taille label note (desktop)",
-      "min": 10,
-      "max": 18,
-      "step": 1,
-      "unit": "px",
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "note_label_size_mobile",
-      "label": "Taille label note (mobile)",
-      "min": 10,
-      "max": 16,
-      "step": 1,
-      "unit": "px",
-      "default": 11
-    },
-    {
-      "type": "color",
-      "id": "note_label_color",
-      "label": "Couleur label note",
-      "default": "#C0A062"
-    },
-    {
-      "type": "header",
-      "content": "📝 Labels pyramide"
+      "id": "mood_statement",
+      "label": "Description émotionnelle",
+      "default": "<p>Une fragrance enveloppante qui transforme ton espace en un havre de paix. Laisse-toi porter par ses notes délicates.</p>",
+      "info": "1-2 phrases poétiques décrivant l'expérience olfactive"
     },
     {
       "type": "text",
-      "id": "label_top",
-      "label": "Label note de tête",
-      "default": "Tête"
-    },
-    {
-      "type": "text",
-      "id": "label_heart",
-      "label": "Label note de cœur",
-      "default": "Cœur"
-    },
-    {
-      "type": "text",
-      "id": "label_base",
-      "label": "Label note de fond",
-      "default": "Fond"
+      "id": "usage_suggestion",
+      "label": "Suggestion d'usage",
+      "default": "Parfait pour tes rituels du soir",
+      "info": "Quand utiliser cette bougie ? (optionnel)"
     },
     {
       "type": "header",
-      "content": "✏️ Style Valeurs Notes"
-    },
-    {
-      "type": "select",
-      "id": "note_value_font",
-      "label": "Typographie valeur note",
-      "options": [
-        { "value": "var(--milaura-font-heading)", "label": "Playfair Display" },
-        { "value": "var(--milaura-font-body)", "label": "Lato" },
-        { "value": "var(--milaura-font-script)", "label": "Dancing Script" }
-      ],
-      "default": "var(--milaura-font-body)"
-    },
-    {
-      "type": "range",
-      "id": "note_value_size_desktop",
-      "label": "Taille valeur note (desktop)",
-      "min": 14,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "note_value_size_mobile",
-      "label": "Taille valeur note (mobile)",
-      "min": 13,
-      "max": 20,
-      "step": 1,
-      "unit": "px",
-      "default": 16
+      "content": "🎨 Style"
     },
     {
       "type": "color",
-      "id": "note_value_color",
-      "label": "Couleur valeur note",
-      "default": "#000000"
-    },
-    {
-      "type": "header",
-      "content": "✏️ Style Description"
-    },
-    {
-      "type": "select",
-      "id": "description_font",
-      "label": "Typographie description",
-      "options": [
-        { "value": "var(--milaura-font-heading)", "label": "Playfair Display" },
-        { "value": "var(--milaura-font-body)", "label": "Lato" },
-        { "value": "var(--milaura-font-script)", "label": "Dancing Script" }
-      ],
-      "default": "var(--milaura-font-body)"
-    },
-    {
-      "type": "range",
-      "id": "description_size_desktop",
-      "label": "Taille description (desktop)",
-      "min": 14,
-      "max": 22,
-      "step": 1,
-      "unit": "px",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "description_size_mobile",
-      "label": "Taille description (mobile)",
-      "min": 13,
-      "max": 18,
-      "step": 1,
-      "unit": "px",
-      "default": 15
-    },
-    {
-      "type": "color",
-      "id": "description_color",
-      "label": "Couleur description",
+      "id": "text_color",
+      "label": "Couleur du texte",
       "default": "#000000"
     },
     {
@@ -594,26 +467,45 @@
     {
       "type": "checkbox",
       "id": "show_partner",
-      "label": "Afficher le partenaire",
-      "default": true
+      "label": "Afficher le logo partenaire",
+      "default": false
     },
     {
       "type": "image_picker",
       "id": "partner_logo",
-      "label": "Logo partenaire",
-      "info": "Optionnel - logo Maison Candella"
+      "label": "Logo partenaire"
     },
     {
       "type": "text",
       "id": "partner_text",
-      "label": "Texte partenaire",
-      "default": "En partenariat avec Maison Candella",
-      "info": "Utilisé si pas de logo"
+      "label": "Texte alternatif",
+      "default": "Maison Candella"
     }
   ],
+  "blocks": [
+    {
+      "type": "note",
+      "name": "Note olfactive",
+      "settings": [
+        {
+          "type": "text",
+          "id": "note_text",
+          "label": "Ingrédient",
+          "default": "Néroli",
+          "info": "Ex: Vanille, Bois de santal, Fleur d'oranger..."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
   "presets": [
     {
-      "name": "Milaura Product Scent"
+      "name": "L'Essence (Senteur)",
+      "blocks": [
+        { "type": "note", "settings": { "note_text": "Néroli" } },
+        { "type": "note", "settings": { "note_text": "Vanille" } },
+        { "type": "note", "settings": { "note_text": "Musc blanc" } }
+      ]
     }
   ]
 }
