@@ -14,79 +14,12 @@
 
 {%- liquid
   assign max_products = section.settings.products_to_show | default: 4
-  assign crosssell_products = blank
-  assign source_label = ''
-
-  # 1. Priorité 1 : Metafield crosssell_products
-  assign meta_crosssell = product.metafields.milaura.crosssell_products.value
-  if meta_crosssell != blank and meta_crosssell.size > 0
-    assign crosssell_products = meta_crosssell | where_exp: 'item', 'item.id != product.id'
-    assign source_label = 'metafield'
-  endif
-
-  # 2. Priorité 2 : Collection de fallback configurée (le plus fiable)
-  if crosssell_products == blank or crosssell_products.size == 0
-    if section.settings.fallback_collection != blank
-      assign fallback_col = collections[section.settings.fallback_collection]
-      if fallback_col != blank and fallback_col.products.size > 0
-        assign crosssell_products = fallback_col.products | where_exp: 'item', 'item.id != product.id'
-        assign source_label = 'fallback_collection'
-      endif
-    endif
-  endif
-
-  # 3. Priorité 3 : Même collection que le produit
-  if crosssell_products == blank or crosssell_products.size == 0
-    for col in product.collections
-      if col.handle != 'all' and col.handle != 'frontpage' and crosssell_products == blank
-        if col.products.size > 1
-          assign crosssell_products = col.products | where_exp: 'item', 'item.id != product.id'
-          assign source_label = 'same_collection'
-        endif
-      endif
-    endfor
-  endif
-
-  # 4. Priorité 4 : Recommandations Shopify natives
-  if crosssell_products == blank or crosssell_products.size == 0
-    if recommendations.performed and recommendations.products_count > 0
-      assign crosssell_products = recommendations.products
-      assign source_label = 'shopify_recommendations'
-    endif
-  endif
-
-  # 5. Priorité 5 : N'importe quelle collection du produit
-  if crosssell_products == blank or crosssell_products.size == 0
-    if product.collections.size > 0
-      assign any_col = product.collections.first
-      if any_col.products.size > 1
-        assign crosssell_products = any_col.products | where_exp: 'item', 'item.id != product.id'
-        assign source_label = 'any_collection'
-      endif
-    endif
-  endif
-
-  # Limiter le nombre de produits
-  if crosssell_products != blank and crosssell_products.size > 0
-    assign crosssell_products = crosssell_products | slice: 0, max_products
-  endif
-
-  # Déterminer si on affiche la section
-  assign show_section = false
-  if crosssell_products != blank and crosssell_products.size > 0
-    assign show_section = true
-  endif
-
-  # Minimum de produits requis
   assign min_products = section.settings.min_products | default: 1
-  if crosssell_products.size < min_products
-    assign show_section = false
-  endif
+  assign the_collection = collections[section.settings.fallback_collection]
+  assign current_product_id = product.id | default: 0
 -%}
 
-<!-- DEBUG CROSSSELL: show_section={{ show_section }}, source={{ source_label }}, products_count={{ crosssell_products.size }}, fallback_setting={{ section.settings.fallback_collection }}, product_collections={{ product.collections.size }} -->
-
-{%- if show_section -%}
+{%- if the_collection != blank and the_collection.products.size >= min_products -%}
 {% style %}
   /* ============================================
      CROSSSELL - Base Layout
@@ -541,9 +474,17 @@
   <div class="crosssell-carousel-wrapper">
     <div class="crosssell-carousel">
 
-      {%- for rec_product in crosssell_products limit: max_products -%}
+      {%- assign shown_count = 0 -%}
+      {%- for rec_product in the_collection.products -%}
+        {%- if rec_product.id == current_product_id -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- if shown_count >= max_products -%}
+          {%- break -%}
+        {%- endif -%}
+        {%- assign shown_count = shown_count | plus: 1 -%}
         {%- assign rec_variant = rec_product.selected_or_first_available_variant -%}
-        {%- if forloop.index <= 2 -%}
+        {%- if shown_count <= 2 -%}
           {%- assign img_loading = 'eager' -%}
         {%- else -%}
           {%- assign img_loading = 'lazy' -%}
@@ -594,9 +535,10 @@
     </div>
   </div>
 
-  {%- if crosssell_products.size > 1 -%}
+  {%- assign dot_count = the_collection.products.size | at_most: max_products -%}
+  {%- if dot_count > 1 -%}
     <div class="crosssell-dots" aria-label="Navigation produits">
-      {%- for rec_product in crosssell_products limit: max_products -%}
+      {%- for i in (1..dot_count) -%}
         <button
           type="button"
           class="crosssell-dot {% if forloop.first %}is-active{% endif %}"
