@@ -30,7 +30,7 @@
     <div class="spotlight-grid">
 
       {%- comment -%} Media (Image/Vidéo + Hotspots + SVG Lines) {%- endcomment -%}
-      <div class="spotlight-media{% if section.settings.enable_float %} spotlight-media--float{% endif %}">
+      <div class="spotlight-media{% if section.settings.enable_float %} spotlight-media--float{% endif %}{% if section.settings.transparent_image %} spotlight-media--transparent{% endif %}">
 
       {%- comment -%} Image ou Vidéo {%- endcomment -%}
       <div class="spotlight-media__inner">
@@ -269,6 +269,25 @@
   @keyframes spotlightFloat {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
+  }
+
+  /* Transparent/Cutout Image Mode */
+  .spotlight-media--transparent {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .spotlight-media--transparent .spotlight-media__inner {
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .spotlight-media--transparent .spotlight-media__image {
+    object-fit: contain;
+    background: transparent;
   }
 
   /* ============================================
@@ -1044,6 +1063,13 @@
       "label": "Animation de lévitation",
       "default": false,
       "info": "L'image flotte légèrement"
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_image",
+      "label": "Image détourée (fond transparent)",
+      "default": false,
+      "info": "Supprime le cadre blanc pour les images PNG détourées"
     },
     {
       "type": "header",
