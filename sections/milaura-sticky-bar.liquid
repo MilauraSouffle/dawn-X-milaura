@@ -179,7 +179,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const stickyBar = document.getElementById('MilauraStickyBarSection');
       const triggerBtn = document.getElementById('TriggerMainAtc');
-      
+
       // Sélecteurs pour trouver le bouton principal dans la page
       // On cherche large pour être sûr de le trouver (Hero, Product Form standard, etc.)
       const mainButtonSelectors = [
@@ -199,13 +199,22 @@
         }
       }
 
+      // Trouver le footer pour masquer la sticky bar quand on y arrive
+      const footer = document.querySelector('footer') || document.querySelector('.footer') || document.querySelector('#shopify-section-footer');
+      const stickyBarHeight = stickyBar ? stickyBar.offsetHeight : 80;
+
       // 1. Logique d'affichage (Scroll)
       if (stickyBar && mainButton) {
         const handleScroll = () => {
           const rect = mainButton.getBoundingClientRect();
+          const footerRect = footer ? footer.getBoundingClientRect() : null;
+
+          // Vérifier si le footer est visible (entre dans le viewport)
+          const footerVisible = footerRect && footerRect.top < window.innerHeight;
+
           // Le bouton est-il passé au-dessus de l'écran ? (top < 0)
           // On ajoute une marge de sécurité (ex: -50px) pour être sûr qu'il est bien sorti
-          if (rect.top < -50) {
+          if (rect.top < -50 && !footerVisible) {
             stickyBar.classList.add('is-visible');
           } else {
             stickyBar.classList.remove('is-visible');
@@ -218,7 +227,10 @@
       } else {
         // Fallback si pas de bouton trouvé (ex: page bizarre), on affiche après un certain scroll
         window.addEventListener('scroll', () => {
-          if (window.scrollY > 800) stickyBar.classList.add('is-visible');
+          const footerRect = footer ? footer.getBoundingClientRect() : null;
+          const footerVisible = footerRect && footerRect.top < window.innerHeight;
+
+          if (window.scrollY > 800 && !footerVisible) stickyBar.classList.add('is-visible');
           else stickyBar.classList.remove('is-visible');
         }, { passive: true });
       }
