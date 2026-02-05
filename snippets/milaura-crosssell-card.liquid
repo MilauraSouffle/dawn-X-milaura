@@ -1,0 +1,84 @@
+{% comment %}
+  MILAURA CROSSSELL CARD
+  Snippet pour afficher une carte produit dans le crosssell
+
+  Params:
+  - recommended_product: Le produit à afficher
+  - button_text: Texte du bouton d'ajout
+  - button_text_sold_out: Texte si rupture
+  - show_vendor: Booléen pour afficher le vendeur
+{% endcomment %}
+
+{%- assign recommended_variant = recommended_product.selected_or_first_available_variant -%}
+
+<div class="milaura-product-crosssell__card">
+
+  <a href="{{ recommended_product.url }}" class="milaura-product-crosssell__image-link">
+    {%- if recommended_product.featured_image -%}
+      {{
+        recommended_product.featured_image
+        | image_url: width: 600
+        | image_tag:
+          loading: 'lazy',
+          class: 'milaura-product-crosssell__image',
+          widths: '200, 300, 400, 600',
+          sizes: '(min-width: 1024px) 320px, (min-width: 600px) 280px, 320px',
+          alt: recommended_product.title | escape
+      }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'milaura-product-crosssell__placeholder' }}
+    {%- endif -%}
+  </a>
+
+  <div class="milaura-product-crosssell__content">
+
+    {%- if show_vendor and recommended_product.vendor != blank -%}
+      <p class="milaura-product-crosssell__vendor">
+        {{ recommended_product.vendor }}
+      </p>
+    {%- endif -%}
+
+    <h3 class="milaura-product-crosssell__product-title">
+      <a href="{{ recommended_product.url }}">
+        {{ recommended_product.title | escape }}
+      </a>
+    </h3>
+
+    <div class="milaura-product-crosssell__price">
+      {%- if recommended_variant.compare_at_price > recommended_variant.price -%}
+        <span class="milaura-product-crosssell__price-sale">
+          {{ recommended_variant.price | money }}
+        </span>
+        <span class="milaura-product-crosssell__price-compare">
+          {{ recommended_variant.compare_at_price | money }}
+        </span>
+      {%- else -%}
+        <span class="milaura-product-crosssell__price-regular">
+          {{ recommended_variant.price | money }}
+        </span>
+      {%- endif -%}
+    </div>
+
+    {%- form 'product', recommended_product, class: 'milaura-product-crosssell__form' -%}
+      <input type="hidden" name="id" value="{{ recommended_variant.id }}">
+      <input type="hidden" name="quantity" value="1">
+
+      <button
+        type="submit"
+        name="add"
+        class="milaura-product-crosssell__cta"
+        {% if recommended_variant.available == false %}disabled{% endif %}
+        data-product-id="{{ recommended_product.id }}"
+        data-variant-id="{{ recommended_variant.id }}"
+      >
+        {% if recommended_variant.available %}
+          {{ button_text | default: 'Ajouter' }}
+        {% else %}
+          {{ button_text_sold_out | default: 'Rupture' }}
+        {% endif %}
+      </button>
+    {%- endform -%}
+
+  </div>
+
+</div>
