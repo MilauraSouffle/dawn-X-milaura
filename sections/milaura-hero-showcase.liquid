@@ -269,18 +269,23 @@
     transition: transform 220ms ease, box-shadow 260ms ease, background 260ms ease, max-height 400ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Mode expandable - passe en flex-start quand déplié */
+  /* Mode expandable - structure en colonnes */
   {% if section.settings.expandable_pillars %}
   #MilauraHeroShowcase-{{ section.id }} .hero-tab {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded {
-    align-items: flex-start;
+  /* Wrapper pour icon + titre (toujours centré horizontalement) */
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-header {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-md, 14px);
+    width: 100%;
   }
 
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-icon {
-    margin-top: 2px;
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-content {
+    flex: 1;
   }
   {% endif %}
 
@@ -484,12 +489,9 @@
 
   /* Indicateur d'expansion - élégant et subtil */
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 22px;
-    height: 22px;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -498,12 +500,7 @@
     border: 1px solid rgba(192, 160, 98, 0.2);
     transition: all 350ms cubic-bezier(0.22, 1, 0.36, 1);
     font-size: 0;
-  }
-
-  /* Quand expanded, fixer en haut */
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-chevron {
-    top: 18px;
-    transform: translateY(0);
+    margin-left: auto;
   }
 
   /* Icône + en CSS pur */
@@ -544,11 +541,6 @@
     background: linear-gradient(135deg, rgba(192, 160, 98, 0.2) 0%, rgba(192, 160, 98, 0.1) 100%);
     border-color: rgba(192, 160, 98, 0.35);
     box-shadow: 0 2px 8px rgba(192, 160, 98, 0.2);
-  }
-
-  /* Ajuster le padding pour l'indicateur */
-  #MilauraHeroShowcase-{{ section.id }} .hero-tab {
-    padding-right: 48px;
   }
 
   {% endif %}
@@ -975,18 +967,9 @@
 
     /* Mode expandable sur mobile - PREMIUM */
     {% if section.settings.expandable_pillars %}
-    #MilauraHeroShowcase-{{ section.id }} .hero-tab {
-      padding-right: 44px;
-    }
-
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron {
-      right: 12px;
-      width: 20px;
-      height: 20px;
-    }
-
-    #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-chevron {
-      top: 14px;
+      width: 22px;
+      height: 22px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron::before {
@@ -1284,22 +1267,23 @@
               id="hero-tab-{{ section.id }}-{{ tab_index }}"
               {{ block.shopify_attributes }}
             >
-              {% if block.settings.icon != blank %}
-                <div class="hero-pillar-icon">{{ block.settings.icon }}</div>
-              {% endif %}
-              <div class="hero-pillar-content">
-                {% if block.settings.tab_label != blank %}
-                  <div class="hero-pillar-title">{{ block.settings.tab_label }}</div>
-                {% elsif block.settings.title != blank %}
-                  <div class="hero-pillar-title">{{ block.settings.title }}</div>
-                {% endif %}
-                {% if block.settings.text != blank %}
-                  <div class="hero-pillar-text milaura-text">{{ block.settings.text }}</div>
-                {% endif %}
-              </div>
-
               {%- if section.settings.expandable_pillars -%}
-                <span class="hero-pillar-chevron" aria-hidden="true"></span>
+                <div class="hero-pillar-header">
+                  {% if block.settings.icon != blank %}
+                    <div class="hero-pillar-icon">{{ block.settings.icon }}</div>
+                  {% endif %}
+                  <div class="hero-pillar-content">
+                    {% if block.settings.tab_label != blank %}
+                      <div class="hero-pillar-title">{{ block.settings.tab_label }}</div>
+                    {% elsif block.settings.title != blank %}
+                      <div class="hero-pillar-title">{{ block.settings.title }}</div>
+                    {% endif %}
+                    {% if block.settings.text != blank %}
+                      <div class="hero-pillar-text milaura-text">{{ block.settings.text }}</div>
+                    {% endif %}
+                  </div>
+                  <span class="hero-pillar-chevron" aria-hidden="true"></span>
+                </div>
                 <div class="hero-pillar-expand">
                   {%- assign long_desc = block.settings.long_description | default: block.settings.text -%}
                   {%- if long_desc != blank -%}
@@ -1310,6 +1294,20 @@
                       {{ block.settings.cta_label }}
                     </a>
                   {%- endif -%}
+                </div>
+              {%- else -%}
+                {% if block.settings.icon != blank %}
+                  <div class="hero-pillar-icon">{{ block.settings.icon }}</div>
+                {% endif %}
+                <div class="hero-pillar-content">
+                  {% if block.settings.tab_label != blank %}
+                    <div class="hero-pillar-title">{{ block.settings.tab_label }}</div>
+                  {% elsif block.settings.title != blank %}
+                    <div class="hero-pillar-title">{{ block.settings.title }}</div>
+                  {% endif %}
+                  {% if block.settings.text != blank %}
+                    <div class="hero-pillar-text milaura-text">{{ block.settings.text }}</div>
+                  {% endif %}
                 </div>
               {%- endif -%}
             </button>
