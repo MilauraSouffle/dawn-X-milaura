@@ -344,7 +344,7 @@
   }
 
   /* ============================================
-     MODE PILIERS EXPANSIBLES
+     MODE PILIERS EXPANSIBLES - PREMIUM
      ============================================ */
   {% if section.settings.expandable_pillars %}
 
@@ -354,74 +354,191 @@
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease, margin 300ms ease;
+    transition:
+      max-height 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 400ms ease 100ms,
+      margin 400ms cubic-bezier(0.22, 1, 0.36, 1),
+      padding 400ms cubic-bezier(0.22, 1, 0.36, 1);
     margin-top: 0;
+    padding-top: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
+    border-top: 0 solid rgba(192, 160, 98, 0.15);
   }
 
   /* État expanded */
   #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-expand {
-    max-height: 200px;
+    max-height: 220px;
     opacity: 1;
-    margin-top: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top-width: 1px;
+  }
+
+  /* État expanded du pilier - Design PREMIUM doré */
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 250, 240, 0.97) 0%,
+        rgba(255, 245, 230, 0.95) 50%,
+        rgba(255, 248, 235, 0.97) 100%
+      ) padding-box,
+      linear-gradient(
+        135deg,
+        rgba(214, 176, 96, 0.9) 0%,
+        rgba(192, 160, 98, 1) 25%,
+        rgba(230, 200, 139, 0.95) 50%,
+        rgba(192, 160, 98, 1) 75%,
+        rgba(214, 176, 96, 0.9) 100%
+      ) border-box;
+    border-width: 2px;
+    box-shadow:
+      0 20px 50px rgba(192, 160, 98, 0.25),
+      0 8px 25px rgba(0, 0, 0, 0.08),
+      0 0 0 1px rgba(255, 255, 255, 0.6) inset,
+      inset 0 1px 0 rgba(255, 255, 255, 0.8),
+      0 0 40px rgba(192, 160, 98, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Reflet lumineux sur expanded */
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+    opacity: 1;
   }
 
   /* Description longue dans l'expand */
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-long-desc {
     font-family: var(--milaura-font-body);
     font-size: 0.95rem;
-    line-height: 1.5;
-    color: {{ section.settings.tab_text_color | default: '#666666' }};
+    line-height: 1.55;
+    color: #4a4a4a;
     margin: 0;
+    padding-left: 2px;
   }
 
-  /* CTA inline dans le pilier */
+  /* CTA inline dans le pilier - Style bijou raffiné */
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-cta {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 20px;
+    padding: 11px 24px;
     border-radius: 50px;
     text-decoration: none;
     font-family: 'Lato', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #fff;
-    background: linear-gradient(135deg, var(--milaura-gold, #C0A062) 0%, #D4B678 50%, var(--milaura-gold-light, #E6C88B) 100%);
+    letter-spacing: 0.8px;
+    color: #1a1a1a;
+    background: var(--milaura-gold-grad);
     border: none;
-    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.4);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow:
+      0 4px 18px rgba(192, 160, 98, 0.45),
+      0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
     align-self: flex-start;
+    overflow: hidden;
+  }
+
+  /* Sheen effect sur CTA */
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-cta::after {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: linear-gradient(
+      120deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 70%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
   }
 
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(192, 160, 98, 0.5);
+    transform: translateY(-3px);
+    box-shadow:
+      0 8px 28px rgba(192, 160, 98, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.4) inset,
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 
-  /* Icône chevron pour indiquer l'expandabilité */
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-cta:hover::after {
+    transform: translateX(100%);
+  }
+
+  /* Indicateur d'expansion - élégant et subtil */
   #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron {
     position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
-    color: var(--milaura-gold, #C0A062);
-    transition: transform 300ms ease;
-    opacity: 0.6;
+    right: 16px;
+    top: 18px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.12) 0%, rgba(192, 160, 98, 0.06) 100%);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    transition: all 350ms cubic-bezier(0.22, 1, 0.36, 1);
+    font-size: 0;
   }
 
+  /* Icône + en CSS pur */
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron::before,
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron::after {
+    content: '';
+    position: absolute;
+    background: linear-gradient(135deg, #b8956d, #C0A062);
+    border-radius: 2px;
+    transition: all 350ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Ligne horizontale */
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron::before {
+    width: 10px;
+    height: 2px;
+  }
+
+  /* Ligne verticale (devient invisible en expanded) */
+  #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron::after {
+    width: 2px;
+    height: 10px;
+  }
+
+  /* État expanded: + devient - */
   #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-chevron {
-    transform: translateY(-50%) rotate(180deg);
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.25) 0%, rgba(192, 160, 98, 0.15) 100%);
+    border-color: rgba(192, 160, 98, 0.35);
+    transform: rotate(180deg);
   }
 
-  /* Ajuster le padding pour le chevron */
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-chevron::after {
+    height: 0;
+    opacity: 0;
+  }
+
+  /* Hover sur l'indicateur */
+  #MilauraHeroShowcase-{{ section.id }} .hero-tab:hover .hero-pillar-chevron {
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.2) 0%, rgba(192, 160, 98, 0.1) 100%);
+    border-color: rgba(192, 160, 98, 0.35);
+    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.2);
+  }
+
+  /* Ajuster le padding pour l'indicateur */
   #MilauraHeroShowcase-{{ section.id }} .hero-tab {
-    padding-right: 40px;
+    padding-right: 48px;
   }
 
   {% endif %}
@@ -846,31 +963,55 @@
       margin-top: var(--milaura-spacing-sm, 8px);
     }
 
-    /* Mode expandable sur mobile */
+    /* Mode expandable sur mobile - PREMIUM */
     {% if section.settings.expandable_pillars %}
     #MilauraHeroShowcase-{{ section.id }} .hero-tab {
-      padding-right: 36px;
+      padding-right: 44px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron {
-      right: 10px;
-      font-size: 1rem;
+      right: 12px;
+      top: 14px;
+      width: 20px;
+      height: 20px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron::before {
+      width: 9px;
+      height: 1.5px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-pillar-chevron::after {
+      width: 1.5px;
+      height: 9px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-long-desc {
       font-size: 0.9rem;
-      line-height: 1.45;
+      line-height: 1.5;
+      color: #555;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-pillar-cta {
-      padding: 10px 18px;
-      font-size: 0.85rem;
+      padding: 12px 20px;
+      font-size: 0.8rem;
       width: 100%;
       justify-content: center;
+      letter-spacing: 0.6px;
     }
 
     #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded .hero-pillar-expand {
-      max-height: 180px;
+      max-height: 200px;
+      margin-top: 12px;
+      padding-top: 12px;
+    }
+
+    #MilauraHeroShowcase-{{ section.id }} .hero-tab.is-expanded {
+      box-shadow:
+        0 12px 35px rgba(192, 160, 98, 0.22),
+        0 4px 15px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+        0 0 25px rgba(192, 160, 98, 0.12);
     }
     {% endif %}
 
@@ -1145,7 +1286,7 @@
               </div>
 
               {%- if section.settings.expandable_pillars -%}
-                <span class="hero-pillar-chevron" aria-hidden="true">▼</span>
+                <span class="hero-pillar-chevron" aria-hidden="true"></span>
                 <div class="hero-pillar-expand">
                   {%- assign long_desc = block.settings.long_description | default: block.settings.text -%}
                   {%- if long_desc != blank -%}
