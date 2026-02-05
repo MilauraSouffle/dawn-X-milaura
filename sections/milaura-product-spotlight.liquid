@@ -130,7 +130,7 @@
     <div class="spotlight-benefits" role="tablist" aria-label="Bénéfices du produit">
 
       {%- if stone_name != blank -%}
-        <h2 class="spotlight-title" style="font-size: {{ section.settings.title_size }}px; color: {{ section.settings.title_color }};">
+        <h2 class="spotlight-title">
           {{ stone_name }}
         </h2>
       {%- endif -%}
@@ -152,13 +152,13 @@
             {%- endif -%}
 
             {%- if block.settings.title != blank -%}
-              <h3 class="spotlight-benefit__title" style="font-size: {{ section.settings.benefit_title_size }}px; color: {{ section.settings.benefit_title_color }};">
+              <h3 class="spotlight-benefit__title">
                 {{ block.settings.title }}
               </h3>
             {%- endif -%}
 
             {%- if block.settings.description != blank -%}
-              <div class="spotlight-benefit__description" style="font-size: {{ section.settings.description_size }}px; color: {{ section.settings.description_color }};">
+              <div class="spotlight-benefit__description">
                 {{ block.settings.description }}
               </div>
             {%- endif -%}
@@ -415,8 +415,10 @@
   }
 
   .spotlight-title {
-    font-family: var(--milaura-font-heading);
+    font-family: {{ section.settings.title_font }};
+    font-size: {{ section.settings.title_size_mobile }}px;
     font-weight: 600;
+    color: {{ section.settings.title_color }};
     margin: 0 0 var(--milaura-spacing-sm, 12px) 0;
   }
 
@@ -463,12 +465,17 @@
   }
 
   .spotlight-benefit__title {
-    font-family: var(--milaura-font-heading);
+    font-family: {{ section.settings.benefit_title_font }};
+    font-size: {{ section.settings.benefit_title_size_mobile }}px;
     font-weight: 600;
+    color: {{ section.settings.benefit_title_color }};
     margin: 0;
   }
 
   .spotlight-benefit__description {
+    font-family: {{ section.settings.description_font }};
+    font-size: {{ section.settings.description_size_mobile }}px;
+    color: {{ section.settings.description_color }};
     line-height: 1.7;
     opacity: 0.9;
   }
@@ -556,7 +563,15 @@
     }
 
     .spotlight-title {
-      font-size: 32px !important;
+      font-size: {{ section.settings.title_size_desktop }}px;
+    }
+
+    .spotlight-benefit__title {
+      font-size: {{ section.settings.benefit_title_size_desktop }}px;
+    }
+
+    .spotlight-benefit__description {
+      font-size: {{ section.settings.description_size_desktop }}px;
     }
 
     .spotlight-carousel {
@@ -1116,14 +1131,35 @@
       "content": "✏️ Style Titre"
     },
     {
+      "type": "select",
+      "id": "title_font",
+      "label": "Typographie titre",
+      "options": [
+        { "value": "var(--milaura-font-heading)", "label": "Playfair Display" },
+        { "value": "var(--milaura-font-body)", "label": "Lato" },
+        { "value": "var(--milaura-font-script)", "label": "Dancing Script" }
+      ],
+      "default": "var(--milaura-font-heading)"
+    },
+    {
       "type": "range",
-      "id": "title_size",
-      "label": "Taille du titre",
+      "id": "title_size_desktop",
+      "label": "Taille titre (desktop)",
       "min": 20,
-      "max": 40,
+      "max": 48,
       "step": 1,
       "unit": "px",
-      "default": 30
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille titre (mobile)",
+      "min": 18,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 24
     },
     {
       "type": "color",
@@ -1133,17 +1169,38 @@
     },
     {
       "type": "header",
-      "content": "✏️ Style Bénéfices"
+      "content": "✏️ Style Titre Bénéfice"
+    },
+    {
+      "type": "select",
+      "id": "benefit_title_font",
+      "label": "Typographie titre bénéfice",
+      "options": [
+        { "value": "var(--milaura-font-heading)", "label": "Playfair Display" },
+        { "value": "var(--milaura-font-body)", "label": "Lato" },
+        { "value": "var(--milaura-font-script)", "label": "Dancing Script" }
+      ],
+      "default": "var(--milaura-font-heading)"
     },
     {
       "type": "range",
-      "id": "benefit_title_size",
-      "label": "Taille titre bénéfice",
+      "id": "benefit_title_size_desktop",
+      "label": "Taille titre bénéfice (desktop)",
       "min": 16,
-      "max": 28,
+      "max": 32,
       "step": 1,
       "unit": "px",
       "default": 20
+    },
+    {
+      "type": "range",
+      "id": "benefit_title_size_mobile",
+      "label": "Taille titre bénéfice (mobile)",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
     },
     {
       "type": "color",
@@ -1152,14 +1209,39 @@
       "default": "#000000"
     },
     {
+      "type": "header",
+      "content": "✏️ Style Description"
+    },
+    {
+      "type": "select",
+      "id": "description_font",
+      "label": "Typographie description",
+      "options": [
+        { "value": "var(--milaura-font-heading)", "label": "Playfair Display" },
+        { "value": "var(--milaura-font-body)", "label": "Lato" },
+        { "value": "var(--milaura-font-script)", "label": "Dancing Script" }
+      ],
+      "default": "var(--milaura-font-body)"
+    },
+    {
       "type": "range",
-      "id": "description_size",
-      "label": "Taille description",
+      "id": "description_size_desktop",
+      "label": "Taille description (desktop)",
       "min": 14,
-      "max": 20,
+      "max": 22,
       "step": 1,
       "unit": "px",
       "default": 16
+    },
+    {
+      "type": "range",
+      "id": "description_size_mobile",
+      "label": "Taille description (mobile)",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
     },
     {
       "type": "color",
