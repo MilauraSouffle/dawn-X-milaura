@@ -15,11 +15,28 @@
 {%- liquid
   assign max_products = section.settings.products_to_show | default: 4
   assign min_products = section.settings.min_products | default: 1
-  assign the_collection = collections[section.settings.fallback_collection]
   assign current_product_id = product.id | default: 0
+
+  # Source 1 : Metafield personnalisé par produit
+  assign metafield_products = product.metafields.milaura.crosssell_products.value
+  assign use_metafield = false
+  if metafield_products != blank and metafield_products.size > 0
+    assign use_metafield = true
+  endif
+
+  # Source 2 : Collection globale (fallback)
+  assign the_collection = collections[section.settings.fallback_collection]
+
+  # Déterminer si on a assez de produits
+  assign has_products = false
+  if use_metafield and metafield_products.size >= min_products
+    assign has_products = true
+  elsif the_collection != blank and the_collection.products.size >= min_products
+    assign has_products = true
+  endif
 -%}
 
-{%- if the_collection != blank and the_collection.products.size >= min_products -%}
+{%- if has_products -%}
 {% style %}
   /* ============================================
      CROSSSELL - Base Layout
@@ -475,7 +492,15 @@
     <div class="crosssell-carousel">
 
       {%- assign shown_count = 0 -%}
-      {%- for rec_product in the_collection.products -%}
+
+      {%- comment -%} Source : Metafield OU Collection {%- endcomment -%}
+      {%- if use_metafield -%}
+        {%- assign product_source = metafield_products -%}
+      {%- else -%}
+        {%- assign product_source = the_collection.products -%}
+      {%- endif -%}
+
+      {%- for rec_product in product_source -%}
         {%- if rec_product.id == current_product_id -%}
           {%- continue -%}
         {%- endif -%}
@@ -535,7 +560,11 @@
     </div>
   </div>
 
-  {%- assign dot_count = the_collection.products.size | at_most: max_products -%}
+  {%- if use_metafield -%}
+    {%- assign dot_count = metafield_products.size | at_most: max_products -%}
+  {%- else -%}
+    {%- assign dot_count = the_collection.products.size | at_most: max_products -%}
+  {%- endif -%}
   {%- if dot_count > 1 -%}
     <div class="crosssell-dots" aria-label="Navigation produits">
       {%- for i in (1..dot_count) -%}
@@ -639,7 +668,7 @@
     },
     {
       "type": "paragraph",
-      "content": "📌 Priorité automatique : 1. Metafield crosssell → 2. Même pierre → 3. Même collection → 4. Collection fallback"
+      "content": "📌 Priorité : 1. Metafield 'milaura.crosssell_products' sur le produit → 2. Collection ci-dessus"
     },
     {
       "type": "header",
