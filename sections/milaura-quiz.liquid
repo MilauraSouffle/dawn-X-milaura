@@ -5,7 +5,7 @@
 
      #MilauraQuiz-{{ section.id }} {
     width: 100%;
-    padding: var(--milaura-spacing-xs) var(--milaura-spacing-sm) 0;
+    padding: var(--milaura-spacing-xs) var(--milaura-spacing-sm) var(--milaura-spacing-sm);
     background: transparent;
     min-height: 400px;
     margin-top: 0 !important;
@@ -772,7 +772,7 @@
   /* --- MOBILE --- */
   @media screen and (max-width: 989px) {
     #MilauraQuiz-{{ section.id }} {
-      padding: var(--milaura-spacing-xs) var(--milaura-spacing-xs) 0;
+      padding: var(--milaura-spacing-xs) var(--milaura-spacing-xs) var(--milaura-spacing-sm);
       margin-top: 0 !important;
       margin-bottom: 0 !important;
     }
@@ -1650,6 +1650,14 @@
 
       // Dispatch event so downstream sections can react
       window.dispatchEvent(new CustomEvent('milaura:quiz-result', { detail: storageData }));
+
+      // Add spacing between dashboard sections (applied via JS since section files may be cached)
+      setTimeout(function() {
+        document.querySelectorAll('.milaura-quiz-weather, .milaura-quiz-ritual, .milaura-quiz-crosssell').forEach(function(section) {
+          var card = section.querySelector('.milaura-section-card') || section.querySelector('.qcs-container');
+          if (card) card.style.marginTop = '24px';
+        });
+      }, 100);
     }
 
     // Fonction globale pour ajouter au panier avec feedback visuel
