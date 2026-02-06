@@ -210,9 +210,22 @@
 
   #MilauraQuiz-{{ section.id }} .quiz-answers {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: var(--milaura-spacing-md);
     margin-top: var(--milaura-spacing-lg);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-answer-btn {
+    grid-column: span 2;
+  }
+
+  /* 3+2 centered layout: bottom row cards centered */
+  #MilauraQuiz-{{ section.id }} .quiz-answer-btn:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-answer-btn:nth-child(5) {
+    grid-column: 4 / span 2;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-answer-btn {
@@ -936,8 +949,11 @@
       margin-top: var(--milaura-spacing-sm);
     }
 
-    #MilauraQuiz-{{ section.id }} .quiz-answer-btn {
-      min-height: 75px;
+    #MilauraQuiz-{{ section.id }} .quiz-answer-btn,
+    #MilauraQuiz-{{ section.id }} .quiz-answer-btn:nth-child(4),
+    #MilauraQuiz-{{ section.id }} .quiz-answer-btn:nth-child(5) {
+      grid-column: auto;
+      min-height: 60px;
       padding: var(--milaura-spacing-sm);
     }
 
@@ -1018,8 +1034,9 @@
     }
 
     #MilauraQuiz-{{ section.id }} .quiz-answer-btn {
-      min-height: 65px;
-      font-size: 1rem;
+      min-height: 52px;
+      font-size: 0.95rem;
+      padding: 8px var(--milaura-spacing-sm);
     }
 
     #MilauraQuiz-{{ section.id }} .quiz-transition-title {
@@ -1449,7 +1466,10 @@
               { label: {{ block.settings.answer_3_label | json }}, profile: {{ block.settings.answer_3_profile | json }} },
             {% endif %}
             {% if block.settings.answer_4_label != blank %}
-              { label: {{ block.settings.answer_4_label | json }}, profile: {{ block.settings.answer_4_profile | json }} }
+              { label: {{ block.settings.answer_4_label | json }}, profile: {{ block.settings.answer_4_profile | json }} },
+            {% endif %}
+            {% if block.settings.answer_5_label != blank %}
+              { label: {{ block.settings.answer_5_label | json }}, profile: {{ block.settings.answer_5_profile | json }} }
             {% endif %}
           ]
         });
@@ -2450,6 +2470,39 @@
             }
           ],
           "default": "amour"
+        },
+        {
+          "type": "text",
+          "id": "answer_5_label",
+          "label": "Réponse 5 (optionnel)"
+        },
+        {
+          "type": "select",
+          "id": "answer_5_profile",
+          "label": "Profil réponse 5",
+          "options": [
+            {
+              "value": "apaisement",
+              "label": "Apaisement"
+            },
+            {
+              "value": "protection",
+              "label": "Protection"
+            },
+            {
+              "value": "serenite",
+              "label": "Sérénité"
+            },
+            {
+              "value": "amour",
+              "label": "Amour"
+            },
+            {
+              "value": "chance",
+              "label": "Chance"
+            }
+          ],
+          "default": "chance"
         }
       ]
     }
@@ -2469,7 +2522,9 @@
             "answer_3_label": "Tu passes d'une tâche à l'autre, tu fais de nombreuses choses en même temps sans vraiment en terminer une seule",
             "answer_3_profile": "serenite",
             "answer_4_label": "Tu as besoin d'un petit déclic, d'un signe, d'un « mood » tu le sens au fond de toi",
-            "answer_4_profile": "chance"
+            "answer_4_profile": "chance",
+            "answer_5_label": "Tu te sens seul(e) même entouré(e), il te manque une vraie connexion",
+            "answer_5_profile": "amour"
           }
         },
         {
@@ -2483,7 +2538,9 @@
             "answer_3_label": "Retrouver du silence, du propre, du simple, juste prendre une douche par exemple, ça te fait comme une coupure avec le monde extérieur",
             "answer_3_profile": "serenite",
             "answer_4_label": "Te sentir aimée, te poser avec ton/ta chéri(e) ou ton chat ;) sentir simplement de la tendresse",
-            "answer_4_profile": "amour"
+            "answer_4_profile": "amour",
+            "answer_5_label": "Sentir que demain peut être différent, te reconnecter à cette petite flamme d'espoir",
+            "answer_5_profile": "chance"
           }
         },
         {
@@ -2497,7 +2554,9 @@
             "answer_3_label": "Le bruit mental, les décisions, les listes, les pensées en boucle",
             "answer_3_profile": "serenite",
             "answer_4_label": "La sensation que tout stagne, tu aimerais que ça avance",
-            "answer_4_profile": "chance"
+            "answer_4_profile": "chance",
+            "answer_5_label": "Le manque de douceur, tu donnes sans recevoir en retour",
+            "answer_5_profile": "amour"
           }
         },
         {
@@ -2511,7 +2570,9 @@
             "answer_3_label": "Calmer ton mental et retrouver une sorte de paix, peut-être juste en se posant devant la TV et ne penser à rien",
             "answer_3_profile": "serenite",
             "answer_4_label": "Remettre du positif, de l'élan, comme une lumière qui revient, comme une sorte de motivation",
-            "answer_4_profile": "chance"
+            "answer_4_profile": "chance",
+            "answer_5_label": "Recevoir un geste tendre, sentir que quelqu'un pense vraiment à toi",
+            "answer_5_profile": "amour"
           }
         },
         {
@@ -2525,7 +2586,9 @@
             "answer_3_label": "Tu es présent(e) physiquement, mais la tête est ailleurs",
             "answer_3_profile": "serenite",
             "answer_4_label": "Tu as besoin de douceur, de gestes simples, de chaleur humaine",
-            "answer_4_profile": "amour"
+            "answer_4_profile": "amour",
+            "answer_5_label": "Tu sens que quelque chose doit changer, tu attends le bon moment pour oser",
+            "answer_5_profile": "chance"
           }
         },
         {
@@ -2539,7 +2602,9 @@
             "answer_3_label": "Tisane, silence, respiration, tout simplement",
             "answer_3_profile": "serenite",
             "answer_4_label": "Musique douce, tu te sens « reconnectée », bien dans tes baskets",
-            "answer_4_profile": "amour"
+            "answer_4_profile": "amour",
+            "answer_5_label": "Tu oses un truc spontané, tu te surprends toi-même, ça te fait du bien",
+            "answer_5_profile": "chance"
           }
         },
         {
@@ -2553,7 +2618,9 @@
             "answer_3_label": "J'ai besoin de clarté, j'ai l'impression de tourner en boucle",
             "answer_3_profile": "serenite",
             "answer_4_label": "J'ai besoin de douceur, je veux me sentir sereine",
-            "answer_4_profile": "amour"
+            "answer_4_profile": "amour",
+            "answer_5_label": "J'ai besoin d'un élan, d'un signe, que quelque chose bouge enfin",
+            "answer_5_profile": "chance"
           }
         }
       ]
