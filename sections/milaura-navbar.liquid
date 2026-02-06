@@ -346,6 +346,29 @@
     height: 20px;
   }
 
+  /* Badge compteur panier (header) */
+  #MilauraNav-{{ section.id }} .nav-cart-icon {
+    position: relative;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-cart-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    min-width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-dark) 100%);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    pointer-events: none;
+  }
+
   /* --- MENU BURGER --- */
   #MilauraNav-{{ section.id }} .nav-burger {
     display: none;
@@ -1281,12 +1304,13 @@
             <circle cx="12" cy="7" r="4"/>
           </svg>
         </a>
-        <a href="{{ routes.cart_url }}" class="nav-icon" aria-label="Panier">
+        <a href="{{ routes.cart_url }}" class="nav-icon nav-cart-icon" aria-label="Panier">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
             <line x1="3" y1="6" x2="21" y2="6"/>
             <path d="M16 10a4 4 0 0 1-8 0"/>
           </svg>
+          <span class="nav-cart-count" id="desktop-cart-count-{{ section.id }}" style="display: none;">0</span>
         </a>
         </div>
       </div><!-- fin nav-right -->
@@ -1387,6 +1411,7 @@
     const mobileMenu = document.getElementById('mobile-menu-' + sectionId);
     const overlay = document.getElementById('mobile-overlay-' + sectionId);
     const cartCount = document.getElementById('mobile-cart-count-' + sectionId);
+    const desktopCartCount = document.getElementById('desktop-cart-count-' + sectionId);
 
     let isAnimating = false;
 
@@ -1511,14 +1536,16 @@
         fetch('/cart.js')
           .then(function(response) { return response.json(); })
           .then(function(cart) {
-            if (cartCount) {
-              if (cart.item_count > 0) {
-                cartCount.textContent = cart.item_count;
-                cartCount.style.display = 'flex';
-              } else {
-                cartCount.style.display = 'none';
+            [cartCount, desktopCartCount].forEach(function(el) {
+              if (el) {
+                if (cart.item_count > 0) {
+                  el.textContent = cart.item_count;
+                  el.style.display = 'flex';
+                } else {
+                  el.style.display = 'none';
+                }
               }
-            }
+            });
           })
           .catch(function() {});
       }
