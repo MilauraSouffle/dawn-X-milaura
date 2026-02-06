@@ -1,0 +1,603 @@
+{% comment %}
+  MILAURA QUIZ CROSSSELL
+  Cross-sell par pierre — lit localStorage.milauraLastResult.stoneHandle
+  Liquid rend tous les produits cachés (data-stone-handle), JS filtre
+  Carrousel doré + dots (clone du style crosssell existant)
+{% endcomment %}
+
+{%- liquid
+  assign source = section.settings.source_collection
+  assign max_products = section.settings.products_to_show | default: 6
+-%}
+
+{% style %}
+  #MilauraQuizCrosssell-{{ section.id }} {
+    padding: 20px 0;
+    background: transparent;
+    overflow: hidden;
+    display: none; /* Hidden until JS shows it */
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }}.is-visible {
+    display: block;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-sm);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-header {
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-title {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: {{ section.settings.title_size_mobile }}px;
+    font-weight: 600;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-subtitle {
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 15px;
+    color: {{ section.settings.subtitle_color }};
+    opacity: 0.8;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Carousel */
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-carousel-wrap {
+    position: relative;
+    margin: 0 calc(-1 * var(--milaura-spacing-sm));
+    padding: 0 var(--milaura-spacing-sm);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 10px 0 20px 0;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Card (doré bijou — clone crosssell) */
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-card {
+    flex: 0 0 auto;
+    width: 240px;
+    border-radius: 20px;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    display: none; /* Hidden, JS shows matching stones */
+    flex-direction: column;
+    scroll-snap-align: start;
+    border: 2px solid transparent;
+    background:
+      linear-gradient(#ffffff, #ffffff) padding-box,
+      linear-gradient(135deg,
+        rgba(255, 240, 200, 0.92) 0%,
+        rgba(214, 176, 96, 0.92) 18%,
+        rgba(255, 232, 172, 0.92) 42%,
+        rgba(176, 130, 48, 0.92) 70%,
+        rgba(255, 240, 200, 0.92) 100%) border-box;
+    box-shadow:
+      0 10px 28px rgba(0,0,0,0.06),
+      0 0 0 1px rgba(255,255,255,0.65) inset;
+    transition: transform 220ms ease, box-shadow 260ms ease;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-card.is-match {
+    display: flex;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-card:first-child {
+    margin-left: var(--milaura-spacing-sm);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 14px 40px rgba(0,0,0,0.10),
+      0 0 0 1px rgba(255,255,255,0.75) inset,
+      0 0 24px rgba(214, 176, 96, 0.28);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-img-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 15px;
+    margin-bottom: 12px;
+    background: #f9f9f9;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-card:hover .qcs-img {
+    transform: scale(1.08);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-info {
+    padding: 8px 4px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-name {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: 1.1rem;
+    color: #1b1b1b;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.6em;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-price {
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    color: var(--milaura-gold, #C0A062);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-top: auto;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.1) 0%, rgba(192, 160, 98, 0.05) 100%);
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-block;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-price-compare {
+    font-size: 0.85rem;
+    text-decoration: line-through;
+    opacity: 0.5;
+    margin-left: 6px;
+    font-weight: 400;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px;
+    background: var(--milaura-gold, #C0A062);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.3s ease;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-card:hover .qcs-btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-btn:hover {
+    background: #1A1A1A;
+  }
+
+  /* Dots */
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-dots {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-dots.is-visible {
+    display: flex;
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 10px;
+    background: rgba(192, 160, 98, 0.25);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-dot:hover {
+    background: rgba(192, 160, 98, 0.5);
+    transform: scale(1.15);
+  }
+
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-dot.is-active {
+    width: 24px;
+    background: linear-gradient(135deg,
+      rgba(255, 240, 200, 1) 0%,
+      rgba(214, 176, 96, 1) 25%,
+      rgba(255, 232, 172, 1) 50%,
+      rgba(176, 130, 48, 1) 75%,
+      rgba(214, 176, 96, 1) 100%);
+    box-shadow:
+      0 2px 8px rgba(192, 160, 98, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  }
+
+  /* No results message */
+  #MilauraQuizCrosssell-{{ section.id }} .qcs-empty {
+    text-align: center;
+    padding: var(--milaura-spacing-lg);
+    font-family: var(--milaura-font-body);
+    color: var(--milaura-text-light, #666);
+    font-size: 0.95rem;
+    display: none;
+  }
+
+  /* Responsive */
+  @media screen and (min-width: 1024px) {
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-title {
+      font-size: {{ section.settings.title_size_desktop }}px;
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-card {
+      width: 280px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-carousel {
+      gap: 14px;
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-card {
+      width: 180px;
+      padding: 10px;
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-name {
+      font-size: 1rem;
+      min-height: 2.4em;
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-dots {
+      padding: 6px 12px;
+      gap: 5px;
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-dot {
+      width: 6px;
+      height: 6px;
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-dot.is-active {
+      width: 20px;
+    }
+  }
+
+  @media (hover: none) {
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-card:hover {
+      transform: none;
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-card:hover .qcs-img {
+      transform: none;
+    }
+
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-card,
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-img,
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-btn,
+    #MilauraQuizCrosssell-{{ section.id }} .qcs-dot {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<section
+  id="MilauraQuizCrosssell-{{ section.id }}"
+  class="milaura-quiz-crosssell"
+  data-section-id="{{ section.id }}"
+  aria-label="{{ section.settings.title }}"
+>
+  <div class="qcs-container">
+    <header class="qcs-header">
+      <h2 class="qcs-title">{{ section.settings.title }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="qcs-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </header>
+  </div>
+
+  <div class="qcs-carousel-wrap">
+    <div class="qcs-carousel">
+      {%- assign shown = 0 -%}
+      {%- for product in collections[source].products limit: 50 -%}
+        {%- if shown >= max_products -%}{%- break -%}{%- endif -%}
+        {%- assign stone = product.metafields.milaura.stone_handle | default: '' -%}
+        {%- if stone == blank -%}{%- continue -%}{%- endif -%}
+        {%- assign shown = shown | plus: 1 -%}
+        {%- assign variant = product.selected_or_first_available_variant -%}
+
+        <a href="{{ product.url }}" class="qcs-card" data-stone-handle="{{ stone }}">
+          <div class="qcs-img-container">
+            {%- if product.featured_image -%}
+              {{ product.featured_image
+                | image_url: width: 500
+                | image_tag:
+                  class: 'qcs-img',
+                  loading: 'lazy',
+                  widths: '160, 220, 260, 500',
+                  sizes: '(min-width: 1024px) 260px, (min-width: 601px) 220px, 180px',
+                  alt: product.title | escape
+              }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'qcs-img' }}
+            {%- endif -%}
+          </div>
+          <div class="qcs-info">
+            <h3 class="qcs-name">{{ product.title }}</h3>
+            <div class="qcs-price">
+              {{ variant.price | money }}
+              {%- if variant.compare_at_price > variant.price -%}
+                <span class="qcs-price-compare">{{ variant.compare_at_price | money }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+          <span class="qcs-btn">{{ section.settings.button_text }}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <div class="qcs-dots" id="qcs-dots-{{ section.id }}" aria-label="Navigation produits"></div>
+  <p class="qcs-empty" id="qcs-empty-{{ section.id }}">Aucun produit correspondant trouvé.</p>
+</section>
+
+<script>
+(function() {
+  var sectionId = '{{ section.id }}';
+  var root = document.getElementById('MilauraQuizCrosssell-' + sectionId);
+  if (!root) return;
+
+  var carousel = root.querySelector('.qcs-carousel');
+  var allCards = Array.from(carousel.querySelectorAll('.qcs-card'));
+  var dotsContainer = root.querySelector('#qcs-dots-' + sectionId);
+
+  function filterAndShow(stoneHandle) {
+    if (!stoneHandle || !allCards.length) return;
+
+    var matchCount = 0;
+    allCards.forEach(function(card) {
+      if (card.dataset.stoneHandle === stoneHandle) {
+        card.classList.add('is-match');
+        matchCount++;
+      } else {
+        card.classList.remove('is-match');
+      }
+    });
+
+    if (matchCount === 0) {
+      var emptyEl = root.querySelector('#qcs-empty-' + sectionId);
+      if (emptyEl) emptyEl.style.display = 'block';
+    }
+
+    if (matchCount > 0) {
+      root.classList.add('is-visible');
+      buildDots(matchCount);
+    }
+  }
+
+  function buildDots(count) {
+    if (!dotsContainer || count <= 1) return;
+
+    dotsContainer.innerHTML = '';
+    for (var i = 0; i < count; i++) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'qcs-dot' + (i === 0 ? ' is-active' : '');
+      dot.setAttribute('data-dot-index', i);
+      dot.setAttribute('aria-label', 'Voir produit ' + (i + 1));
+      dotsContainer.appendChild(dot);
+    }
+    dotsContainer.classList.add('is-visible');
+
+    // Dot click handlers
+    var dots = Array.from(dotsContainer.querySelectorAll('.qcs-dot'));
+    dots.forEach(function(dot) {
+      dot.addEventListener('click', function(e) {
+        e.preventDefault();
+        var idx = parseInt(this.getAttribute('data-dot-index'), 10);
+        if (!isNaN(idx)) scrollToCard(idx);
+      });
+    });
+
+    // Scroll listener for dot updates
+    var scrollTimeout;
+    carousel.addEventListener('scroll', function() {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(function() { updateDots(dots); }, 50);
+    }, { passive: true });
+  }
+
+  function scrollToCard(index) {
+    var visibleCards = Array.from(carousel.querySelectorAll('.qcs-card.is-match'));
+    if (!visibleCards[index]) return;
+    var gap = window.innerWidth >= 600 ? 20 : 14;
+    var cardWidth = visibleCards[0].offsetWidth + gap;
+    carousel.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
+  }
+
+  function updateDots(dots) {
+    if (!dots.length) return;
+    var visibleCards = Array.from(carousel.querySelectorAll('.qcs-card.is-match'));
+    if (!visibleCards.length) return;
+    var gap = window.innerWidth >= 600 ? 20 : 14;
+    var cardWidth = visibleCards[0].offsetWidth + gap;
+    var activeIndex = Math.round(carousel.scrollLeft / cardWidth);
+    dots.forEach(function(dot, i) {
+      dot.classList.toggle('is-active', i === activeIndex);
+    });
+  }
+
+  function init() {
+    try {
+      var raw = localStorage.getItem('milauraLastResult');
+      if (raw) {
+        var data = JSON.parse(raw);
+        if (data.stoneHandle) filterAndShow(data.stoneHandle);
+      }
+    } catch (e) { /* silent */ }
+  }
+
+  window.addEventListener('milaura:quiz-result', function(e) {
+    if (e.detail && e.detail.stoneHandle) filterAndShow(e.detail.stoneHandle);
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Quiz Crosssell",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "🎯 Source"
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Collection source",
+      "info": "Collection contenant les produits filtrables par pierre (metafield milaura.stone_handle)."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Max produits à charger",
+      "min": 4,
+      "max": 50,
+      "step": 1,
+      "default": 20,
+      "info": "Produits rendus en HTML (le JS filtre ensuite par pierre)"
+    },
+    {
+      "type": "header",
+      "content": "📝 Titre"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Les créations qui résonnent avec ta pierre"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Sélectionnées selon ton profil émotionnel"
+    },
+    {
+      "type": "header",
+      "content": "✏️ Style"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Taille titre (desktop)",
+      "min": 24,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille titre (mobile)",
+      "min": 20,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Couleur sous-titre",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "⚙️ Options"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Voir le produit"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz Crosssell"
+    }
+  ]
+}
+{% endschema %}

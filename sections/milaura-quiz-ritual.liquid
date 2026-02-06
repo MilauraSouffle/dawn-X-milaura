@@ -1,0 +1,341 @@
+{% comment %}
+  MILAURA QUIZ RITUAL
+  Rituel de connexion autonome — lit localStorage.milauraLastResult
+  Clone du style milaura-product-ritual adapté au quiz
+  Mantra + 3 étapes numérotées avec couleur accent profil
+{% endcomment %}
+
+{% style %}
+  #MilauraQuizRitual-{{ section.id }} {
+    padding: 20px 0;
+    background: transparent;
+    display: none; /* Hidden until JS shows it */
+  }
+
+  #MilauraQuizRitual-{{ section.id }}.is-visible {
+    display: block;
+  }
+
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-container {
+    max-width: 900px;
+  }
+
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-title {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: {{ section.settings.title_size_mobile }}px;
+    font-weight: 600;
+    text-align: center;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 var(--milaura-spacing-sm) 0;
+  }
+
+  /* Mantra block */
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-mantra {
+    font-family: var(--milaura-font-script, 'Dancing Script', cursive);
+    color: var(--ritual-accent, var(--milaura-gold));
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-lg);
+    padding: var(--milaura-spacing-md);
+    background: linear-gradient(135deg,
+      rgba(var(--ritual-accent-rgb, 192, 160, 98), 0.06),
+      rgba(var(--ritual-accent-rgb, 192, 160, 98), 0.12));
+    border-radius: var(--milaura-border-radius-sm, 12px);
+    line-height: 1.5;
+    position: relative;
+  }
+
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-mantra::before {
+    content: '«';
+    margin-right: 4px;
+  }
+
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-mantra::after {
+    content: '»';
+    margin-left: 4px;
+  }
+
+  /* Steps */
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-lg, 36px);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--milaura-spacing-md, 24px);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-step.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-step-number {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--ritual-accent, var(--milaura-gold)), rgba(var(--ritual-accent-rgb, 192, 160, 98), 0.7));
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(var(--ritual-accent-rgb, 192, 160, 98), 0.3);
+    flex-shrink: 0;
+  }
+
+  #MilauraQuizRitual-{{ section.id }} .quiz-ritual-step-text {
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+    padding-top: 12px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    #MilauraQuizRitual-{{ section.id }} .quiz-ritual-title {
+      font-size: {{ section.settings.title_size_desktop }}px;
+    }
+
+    #MilauraQuizRitual-{{ section.id }} .quiz-ritual-step {
+      grid-template-columns: 64px 1fr;
+      gap: var(--milaura-spacing-lg, 36px);
+    }
+
+    #MilauraQuizRitual-{{ section.id }} .quiz-ritual-step-number {
+      width: 64px;
+      height: 64px;
+      font-size: 24px;
+    }
+
+    #MilauraQuizRitual-{{ section.id }} .quiz-ritual-step-text {
+      font-size: 1.1rem;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    #MilauraQuizRitual-{{ section.id }} .quiz-ritual-mantra {
+      font-size: 1.1rem;
+      padding: var(--milaura-spacing-sm);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraQuizRitual-{{ section.id }} .quiz-ritual-step {
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+{% endstyle %}
+
+<section
+  id="MilauraQuizRitual-{{ section.id }}"
+  class="milaura-quiz-ritual"
+  data-section-id="{{ section.id }}"
+>
+  <div class="quiz-ritual-container milaura-section-card">
+    <h2 class="quiz-ritual-title">{{ section.settings.title }}</h2>
+    <div class="quiz-ritual-mantra" id="quiz-ritual-mantra-{{ section.id }}"></div>
+    <div class="quiz-ritual-steps" id="quiz-ritual-steps-{{ section.id }}">
+      <!-- Populated by JS from localStorage -->
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const root = document.getElementById('MilauraQuizRitual-' + sectionId);
+  if (!root) return;
+
+  // Profile ritual data (matches quiz profileData)
+  const ritualData = {
+    apaisement: {
+      mantra: 'Je peux déposer les armes',
+      steps: [
+        'Allume-la. Inspire 3 fois.',
+        'Autorise-toi à être vulnérable, juste 10 minutes.',
+        'Dis-toi : « Je peux déposer les armes. »'
+      ]
+    },
+    protection: {
+      mantra: 'Je protège mon énergie',
+      steps: [
+        'Allume-la en rentrant.',
+        'Imagine un mur invisible se lever.',
+        'Dis-toi : « Ici, c\'est mon sanctuaire. »'
+      ]
+    },
+    serenite: {
+      mantra: 'Je reviens à l\'essentiel',
+      steps: [
+        'Coupe le téléphone. Allume.',
+        'Regarde la flamme.',
+        'Laisse les pensées passer sans les accrocher.'
+      ]
+    },
+    amour: {
+      mantra: 'Je mérite la douceur que je donne aux autres',
+      steps: [
+        'Allume-la. Main sur le cœur.',
+        'Dis-toi les mots que tu aimerais entendre de quelqu\'un d\'autre.',
+        'Dis-toi : « Je mérite la douceur que je donne aux autres. »'
+      ]
+    },
+    chance: {
+      mantra: 'L\'énergie suit l\'intention',
+      steps: [
+        'Allume-la.',
+        'Visualise ton objectif comme s\'il était déjà fait.',
+        'Souris. L\'énergie suit l\'intention.'
+      ]
+    }
+  };
+
+  function render(data) {
+    if (!data || !data.profileId) return;
+
+    const ritual = ritualData[data.profileId];
+    if (!ritual) return;
+
+    // Set accent colors
+    if (data.profileAccent) root.style.setProperty('--ritual-accent', data.profileAccent);
+    if (data.profileAccentRgb) root.style.setProperty('--ritual-accent-rgb', data.profileAccentRgb);
+
+    // Use mantra from localStorage (may be customizer-edited) or fallback
+    const mantra = data.mantra || ritual.mantra;
+    const mantraEl = root.querySelector('#quiz-ritual-mantra-' + sectionId);
+    if (mantraEl) mantraEl.textContent = mantra;
+
+    // Parse ritual steps from localStorage or use hardcoded
+    let steps = ritual.steps;
+    if (data.ritual) {
+      const parsed = data.ritual.split('\n').filter(function(s) { return s.trim(); });
+      if (parsed.length > 0) {
+        steps = parsed.map(function(s) { return s.replace(/^\d+\.\s*/, '').trim(); });
+      }
+    }
+
+    const stepsEl = root.querySelector('#quiz-ritual-steps-' + sectionId);
+    if (!stepsEl) return;
+
+    stepsEl.innerHTML = '';
+    steps.forEach(function(text, i) {
+      var step = document.createElement('div');
+      step.className = 'quiz-ritual-step';
+      step.setAttribute('data-step-index', i + 1);
+      step.innerHTML =
+        '<div class="quiz-ritual-step-number">' + (i + 1) + '</div>' +
+        '<p class="quiz-ritual-step-text">' + text + '</p>';
+      stepsEl.appendChild(step);
+    });
+
+    root.classList.add('is-visible');
+    animateSteps();
+  }
+
+  function animateSteps() {
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var steps = root.querySelectorAll('.quiz-ritual-step');
+
+    if (reducedMotion) {
+      steps.forEach(function(step) { step.classList.add('is-visible'); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var idx = parseInt(entry.target.getAttribute('data-step-index'));
+          setTimeout(function() {
+            entry.target.classList.add('is-visible');
+          }, (idx - 1) * 200);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    steps.forEach(function(step) { observer.observe(step); });
+  }
+
+  function init() {
+    try {
+      var raw = localStorage.getItem('milauraLastResult');
+      if (raw) render(JSON.parse(raw));
+    } catch (e) { /* silent */ }
+  }
+
+  window.addEventListener('milaura:quiz-result', function(e) {
+    render(e.detail);
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Quiz Rituel",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Ton Rituel de Connexion"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Taille titre (desktop)",
+      "min": 22,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille titre (mobile)",
+      "min": 20,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz Rituel"
+    }
+  ]
+}
+{% endschema %}

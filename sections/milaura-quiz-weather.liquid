@@ -1,0 +1,260 @@
+{% comment %}
+  MILAURA QUIZ WEATHER
+  Météo émotionnelle autonome — lit localStorage.milauraLastResult
+  5 barres horizontales avec couleur accent du profil gagnant
+{% endcomment %}
+
+{% style %}
+  #MilauraQuizWeather-{{ section.id }} {
+    padding: 20px 0;
+    background: transparent;
+    display: none; /* Hidden until JS shows it */
+  }
+
+  #MilauraQuizWeather-{{ section.id }}.is-visible {
+    display: block;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-container {
+    max-width: 900px;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-title {
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+    font-size: {{ section.settings.title_size_mobile }}px;
+    font-weight: 600;
+    text-align: center;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 var(--milaura-spacing-md) 0;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 36px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-icon {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-track {
+    height: 6px;
+    background: rgba(192, 160, 98, 0.12);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-track.is-winner {
+    height: 12px;
+    border-radius: 6px;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-fill {
+    height: 100%;
+    border-radius: inherit;
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-fill.is-winner {
+    background: linear-gradient(90deg, var(--weather-accent, var(--milaura-gold)), rgba(var(--weather-accent-rgb, 192, 160, 98), 0.7));
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-fill:not(.is-winner) {
+    background: rgba(192, 160, 98, 0.3);
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-percent {
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 0.8rem;
+    color: var(--milaura-text-light, #666);
+    text-align: right;
+    font-weight: 600;
+  }
+
+  #MilauraQuizWeather-{{ section.id }} .quiz-weather-percent.is-winner {
+    color: var(--weather-accent, var(--milaura-gold));
+    font-weight: 700;
+  }
+
+  @media screen and (min-width: 1024px) {
+    #MilauraQuizWeather-{{ section.id }} .quiz-weather-title {
+      font-size: {{ section.settings.title_size_desktop }}px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraQuizWeather-{{ section.id }} .quiz-weather-fill {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<section
+  id="MilauraQuizWeather-{{ section.id }}"
+  class="milaura-quiz-weather"
+  data-section-id="{{ section.id }}"
+>
+  <div class="quiz-weather-container milaura-section-card">
+    <h2 class="quiz-weather-title">{{ section.settings.title }}</h2>
+    <div class="quiz-weather-bars" id="quiz-weather-bars-{{ section.id }}">
+      <!-- Populated by JS from localStorage -->
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const root = document.getElementById('MilauraQuizWeather-' + sectionId);
+  if (!root) return;
+
+  const profileMeta = {
+    apaisement: { icon: '💙', label: 'Apaisement' },
+    protection: { icon: '🖤', label: 'Protection' },
+    serenite:   { icon: '💜', label: 'Sérénité' },
+    amour:      { icon: '💗', label: 'Amour' },
+    chance:     { icon: '💚', label: 'Chance' }
+  };
+
+  const profiles = ['apaisement', 'protection', 'serenite', 'amour', 'chance'];
+
+  function render(data) {
+    if (!data || !data.percentages || !data.profileId) return;
+
+    // Set accent color
+    if (data.profileAccent) {
+      root.style.setProperty('--weather-accent', data.profileAccent);
+    }
+    if (data.profileAccentRgb) {
+      root.style.setProperty('--weather-accent-rgb', data.profileAccentRgb);
+    }
+
+    const barsEl = root.querySelector('#quiz-weather-bars-' + sectionId);
+    if (!barsEl) return;
+
+    // Sort by percentage descending
+    const sorted = [...profiles].sort((a, b) =>
+      (data.percentages[b] || 0) - (data.percentages[a] || 0)
+    );
+
+    barsEl.innerHTML = '';
+    sorted.forEach(pid => {
+      const meta = profileMeta[pid];
+      const pct = data.percentages[pid] || 0;
+      const isWinner = pid === data.profileId;
+
+      const row = document.createElement('div');
+      row.className = 'quiz-weather-row';
+      row.innerHTML =
+        '<div class="quiz-weather-icon">' + (meta.icon || '○') + '</div>' +
+        '<div class="quiz-weather-track' + (isWinner ? ' is-winner' : '') + '">' +
+          '<div class="quiz-weather-fill' + (isWinner ? ' is-winner' : '') + '" data-pct="' + pct + '"></div>' +
+        '</div>' +
+        '<div class="quiz-weather-percent' + (isWinner ? ' is-winner' : '') + '">' + pct + '%</div>';
+      barsEl.appendChild(row);
+    });
+
+    root.classList.add('is-visible');
+    animateBars();
+  }
+
+  function animateBars() {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fills = root.querySelectorAll('.quiz-weather-fill');
+
+    if (reducedMotion) {
+      fills.forEach(fill => { fill.style.width = fill.dataset.pct + '%'; });
+      return;
+    }
+
+    // Intersection Observer to animate on scroll
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          fills.forEach(fill => { fill.style.width = fill.dataset.pct + '%'; });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(root);
+  }
+
+  // Try to render from localStorage
+  function init() {
+    try {
+      const raw = localStorage.getItem('milauraLastResult');
+      if (raw) render(JSON.parse(raw));
+    } catch (e) { /* silent */ }
+  }
+
+  // Listen for live quiz result
+  window.addEventListener('milaura:quiz-result', function(e) {
+    render(e.detail);
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Quiz Météo",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Ta Météo Émotionnelle"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Taille titre (desktop)",
+      "min": 22,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille titre (mobile)",
+      "min": 20,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz Météo"
+    }
+  ]
+}
+{% endschema %}
