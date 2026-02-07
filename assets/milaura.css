@@ -22,10 +22,12 @@
   --milaura-spacing-xl: 48px;
   
   /* --- HEADER HEIGHT OFFSET --- */
-  /* Compensation exacte : announcement bar (38px) + navbar height */
+  /* Compensation : main padding-top = navbar bottom - body padding-top (annonce)
+     body padding-top vient de milaura-announcement.liquid (38px desktop, 40px mobile)
+     navbar bottom = top(38px) + height (snake 4px + inner-padding + logo) */
   --header-height-desktop: 98px;
-  --header-height-tablet: 92px;
-  --header-height-mobile: 88px;
+  --header-height-tablet: 62px;   /* navbar: 2+6+46+6+2=62, body 38px => 38+62=100 ~= 38+62 */
+  --header-height-mobile: 56px;   /* navbar: 2+6+40+6+2=56, body 40px => 40+56=96 ~= 94 (top 38) */
   --header-height-offset: 96px;    /* Legacy, garder pour compatibilité */
   
   /* --- BORDURES & OMBRES --- */
@@ -71,6 +73,14 @@ main#MainContent {
   main#MainContent {
     padding-top: var(--header-height-mobile);
   }
+}
+
+/* ============================================
+   ESPACEMENT UNIFIE - 12px entre toutes les sections
+   Une seule regle pour tout le site.
+   ============================================ */
+#MainContent > .shopify-section {
+  margin-top: var(--milaura-spacing-sm); /* 12px */
 }
 
 /* --- FORCE GLOBALE TAILLE TEXTE (19px Desktop) --- */
@@ -271,18 +281,6 @@ html, body, .gradient {
   box-shadow: var(--milaura-shadow-md) !important;
 }
 
-/* ============================================
-   ESPACEMENT UNIVERSEL - TOUTES LES PREMIÈRES SECTIONS
-   Le padding sur main#MainContent gère tout, on enlève les extras
-   ============================================ */
-.shopify-section:first-of-type,
-section[id*="Hero"]:first-of-type,
-section[id*="hero"]:first-of-type,
-section[id*="Product"]:first-of-type,
-section[id*="product"]:first-of-type {
-  padding-top: 0 !important;
-  margin-top: 0 !important;
-}
 
 /* --- Responsive (ON GARDE) --- */
 @media screen and (max-width: 768px) {
@@ -357,13 +355,6 @@ section[id*="product"]:first-of-type {
   }
 }
 
-/* ============================================
-   RÈGLE GLOBALE: PREMIÈRE SECTION SOUS LE HEADER
-   Le padding-top sur main#MainContent gère l'espacement
-   ============================================ */
-#MainContent > section:first-child {
-  margin-top: 0 !important; /* Pas d'espace supplémentaire, le padding suffit */
-}
 
 /* ============================================
    LE "HALO VISION OS" UNIVERSEL
@@ -383,8 +374,6 @@ section[id*="product"]:first-of-type {
   
   /* Forme */
   border-radius: 30px;
-  margin-top: 12px; /* Espacement réduit entre les halos */
-  margin-bottom: 12px;
   padding: 40px; /* Espace interne pour que le contenu respire */
 }
 
@@ -449,17 +438,6 @@ section[id*="product"]:first-of-type {
   margin: 0 auto !important;
 }
 
-/* Reassurance sur collection - espacement réduit */
-body:has(section.milaura-collection-grid) section[id*="Reassurance"],
-body:has(section.milaura-collection-grid) section[id*="reassurance"] {
-  margin-top: 8px !important;
-}
-
-/* CTA sur collection - espacement réduit */
-body:has(section.milaura-collection-grid) section[id*="CollectionCta"],
-body:has(section.milaura-collection-grid) section[id*="Cta"] {
-  margin-top: 0 !important;
-}
 
 /* ============================================
    FIX PRODUCT HERO - CADRE DORÉ TABLETTE
@@ -503,17 +481,6 @@ body:has(section.milaura-collection-grid) section[id*="Cta"] {
   }
 }
 
-/* PREMIÈRE SECTION : Supprimer le margin-top du halo car géré par la section elle-même */
-#MainContent section:first-child .page-width {
-  margin-top: 0 !important; /* Évite le double espacement */
-}
-
-/* TABLETTE seulement : Réduire l'écart entre sections */
-@media screen and (min-width: 750px) and (max-width: 989px) {
-  #MainContent section:not(:first-child) .page-width {
-    margin-top: 12px;
-  }
-}
 
 /* ============================================
    SUPPRESSION FOND BEIGE DAWN SUR SECTIONS MILAURA
@@ -605,89 +572,6 @@ section.milaura-section {
   }
 }
 
-/* ============================================
-   ESPACEMENTS VERTICAUX HARMONISÉS
-   ============================================ */
-.milaura-section-spacing {
-  margin-top: var(--milaura-spacing-lg);
-  margin-bottom: var(--milaura-spacing-lg);
-}
-
-/* Réduction de l'espacement pour la première section */
-.shopify-section:first-of-type.milaura-section-spacing {
-  margin-top: var(--milaura-spacing-md);
-}
-
-/* ============================================
-   CLASSE GLOBALE MOBILE SPACING
-   ============================================ */
-.milaura-mobile-spacing {
-  margin-top: var(--milaura-spacing-md);
-  margin-bottom: var(--milaura-spacing-md);
-}
-
-/* Application automatique aux sections principales */
-@media screen and (max-width: 768px) {
-  /* Hero - Règle désactivée car gérée par les règles spécifiques ci-dessus */
-  /* section[id*="Hero"]:not(:first-of-type),
-  section[id*="hero"]:not(:first-of-type) {
-    margin-top: var(--milaura-spacing-md) !important;
-    margin-bottom: var(--milaura-spacing-md) !important;
-  } */
-
-  /* Benefits Explorer */
-  section[id*="Benefits"],
-  section[id*="benefits"] {
-    margin-top: var(--milaura-spacing-md) !important;
-    margin-bottom: var(--milaura-spacing-md) !important;
-  }
-
-  /* Quiz */
-  section[id*="Quiz"],
-  section[id*="quiz"] {
-    margin-top: var(--milaura-spacing-md) !important;
-    margin-bottom: var(--milaura-spacing-md) !important;
-  }
-
-  /* Univers / Collection List */
-  section[id*="Collection"],
-  section[id*="collection"],
-  section[id*="Univers"],
-  section[id*="univers"] {
-    margin-top: var(--milaura-spacing-md) !important;
-    margin-bottom: var(--milaura-spacing-md) !important;
-  }
-
-  /* Nouveautés / Featured Products */
-  section[id*="Featured"],
-  section[id*="featured"],
-  section[id*="Nouveautés"],
-  section[id*="nouveautes"] {
-    margin-top: var(--milaura-spacing-md) !important;
-    margin-bottom: var(--milaura-spacing-md) !important;
-  }
-
-  /* Reviews / Testimonials */
-  section[id*="Testimonials"],
-  section[id*="testimonials"],
-  section[id*="Reviews"],
-  section[id*="reviews"] {
-    margin-top: var(--milaura-spacing-md) !important;
-    margin-bottom: var(--milaura-spacing-md) !important;
-  }
-}
-
-/* Responsive pour mobile */
-@media screen and (max-width: 768px) {
-  .milaura-section-spacing {
-    margin-top: var(--milaura-spacing-md);
-    margin-bottom: var(--milaura-spacing-md);
-  }
-  
-  .shopify-section:first-of-type.milaura-section-spacing {
-    margin-top: var(--milaura-spacing-sm);
-  }
-}
 
 /* ============================================
    CARROUSEL MOBILE HORIZONTAL
