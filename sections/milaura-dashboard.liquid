@@ -1,137 +1,132 @@
 {% comment %}
-  Milaura Dashboard V2 — Section monolithique
-  Affiche les resultats du quiz emotionnel sur la page /account
-  Donnees : localStorage.milauraLastResult + profileData JS + produits Liquid
+  Milaura Dashboard V2 — App-like mobile-first
+  Score + profil + CTA en hero card, KPIs swipeable, cold reading accordeon,
+  ritual carousel, bottom tab bar fixe
 {% endcomment %}
 
 {% style %}
 /* ============================================
-   MILAURA DASHBOARD — CSS SCOPE
+   MILAURA DASHBOARD — APP-LIKE CSS
    ============================================ */
 #MilauraDashboard-{{ section.id }} {
   --dash-accent: {{ section.settings.accent_color | default: '#C0A062' }};
   --dash-accent-rgb: 192, 160, 98;
-  max-width: 900px;
+  max-width: 520px;
   margin: 0 auto;
-  padding: 0 0 var(--milaura-spacing-xl) 0;
+  padding: 0 0 80px 0; /* space for bottom bar */
 }
 
-/* --- LOADING STATE --- */
+/* --- LOADING --- */
 .dash-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 80px 20px;
-  gap: 20px;
+  gap: 16px;
 }
 .dash-spinner {
-  width: 48px;
-  height: 48px;
-  border: 3px solid rgba(192, 160, 98, 0.15);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(192, 160, 98, 0.12);
   border-top-color: var(--dash-accent);
   border-radius: 50%;
   animation: dash-spin 0.8s linear infinite;
 }
-@keyframes dash-spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes dash-spin { to { transform: rotate(360deg); } }
 .dash-loading-text {
   font-family: var(--milaura-font-body);
-  font-size: 15px;
+  font-size: 14px;
   color: var(--milaura-text-light);
-  letter-spacing: 0.5px;
 }
 
 /* --- EMPTY STATE --- */
 .dash-empty {
   display: none;
   text-align: center;
-  padding: 60px 24px;
+  padding: 48px 20px;
 }
 .dash-empty-card {
   background-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(192, 160, 98, 0.4);
-  border-radius: 30px;
-  box-shadow: 0 20px 50px rgba(192, 160, 98, 0.15);
-  padding: 50px 36px;
-  max-width: 520px;
+  border: 1px solid rgba(192, 160, 98, 0.35);
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(192, 160, 98, 0.12);
+  padding: 40px 28px;
+  max-width: 400px;
   margin: 0 auto;
 }
-.dash-empty-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-  display: block;
-}
+.dash-empty-icon { font-size: 40px; margin-bottom: 12px; display: block; }
 .dash-empty-title {
   font-family: var(--milaura-font-heading);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 500;
   color: var(--milaura-text);
-  margin: 0 0 12px 0;
+  margin: 0 0 10px 0;
   line-height: 1.25;
 }
 .dash-empty-text {
   font-family: var(--milaura-font-body);
-  font-size: 15px;
+  font-size: 14px;
   color: var(--milaura-text-light);
-  line-height: 1.65;
-  margin: 0 0 24px 0;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
 }
 
 /* --- DASHBOARD STATE --- */
 .dash-main {
   display: none;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
+  padding: 0 4px;
 }
 
-/* --- A. HEADER --- */
-.dash-header {
+/* ============================================
+   HERO CARD (score + profil + produit CTA)
+   ============================================ */
+.dash-hero {
+  background-color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(192, 160, 98, 0.35);
+  border-radius: 28px;
+  box-shadow: 0 16px 48px rgba(192, 160, 98, 0.12);
+  padding: 24px 20px;
   text-align: center;
-  padding: 8px 0 0 0;
 }
 .dash-greeting {
   font-family: var(--milaura-font-heading);
-  font-size: {{ section.settings.heading_size | default: 32 }}px;
+  font-size: 24px;
   font-weight: 500;
   color: var(--milaura-text);
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
   line-height: 1.2;
 }
 .dash-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 18px;
+  gap: 6px;
+  padding: 4px 14px;
   border-radius: 50px;
   background: rgba(var(--dash-accent-rgb), 0.1);
-  border: 1px solid rgba(var(--dash-accent-rgb), 0.25);
+  border: 1px solid rgba(var(--dash-accent-rgb), 0.2);
   font-family: var(--milaura-font-body);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--dash-accent);
-  letter-spacing: 0.5px;
+  margin-bottom: 16px;
 }
-.dash-badge-icon {
-  font-size: 16px;
-  line-height: 1;
-}
+.dash-badge-icon { font-size: 14px; line-height: 1; }
 
-/* --- B. SCORE VIBRATOIRE --- */
-.dash-score {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 0;
-}
+/* Score ring inside hero */
 .dash-score-ring {
   position: relative;
-  width: 160px;
-  height: 160px;
+  width: 130px;
+  height: 130px;
+  margin: 0 auto 12px;
 }
 .dash-score-ring svg {
   transform: rotate(-90deg);
@@ -140,7 +135,7 @@
 }
 .dash-score-bg {
   fill: none;
-  stroke: rgba(var(--dash-accent-rgb), 0.12);
+  stroke: rgba(var(--dash-accent-rgb), 0.1);
   stroke-width: 8;
 }
 .dash-score-fill {
@@ -161,7 +156,7 @@
 }
 .dash-score-percent {
   font-family: var(--milaura-font-heading);
-  font-size: 38px;
+  font-size: 32px;
   font-weight: 600;
   color: var(--dash-accent);
   line-height: 1;
@@ -169,96 +164,201 @@
 }
 .dash-score-label {
   font-family: var(--milaura-font-body);
-  font-size: 11px;
+  font-size: 10px;
   color: var(--milaura-text-light);
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-top: 4px;
+  margin-top: 2px;
   display: block;
 }
 
-/* --- C. KPI GRID --- */
-.dash-kpis {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* Hero product CTA row */
+.dash-hero-cta {
+  display: flex;
+  align-items: center;
   gap: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(var(--dash-accent-rgb), 0.06);
+  border-radius: 18px;
+  text-align: left;
 }
-.dash-kpi {
-  background-color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(192, 160, 98, 0.2);
-  border-radius: 20px;
-  padding: 18px 16px;
-  text-align: center;
+.dash-hero-cta-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
-.dash-kpi-icon {
-  font-size: 22px;
-  margin-bottom: 6px;
-  display: block;
+.dash-hero-cta-info {
+  flex: 1;
+  min-width: 0;
 }
-.dash-kpi-value {
+.dash-hero-cta-name {
   font-family: var(--milaura-font-heading);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--milaura-text);
-  display: block;
-  margin-bottom: 2px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.dash-kpi-label {
+.dash-hero-cta-sub {
   font-family: var(--milaura-font-body);
   font-size: 11px;
   color: var(--milaura-text-light);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  margin: 2px 0 0 0;
+}
+.dash-hero-cta-btn {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  font-size: 11px;
 }
 
-/* --- D. COLD READING --- */
+/* ============================================
+   KPI PILLS (horizontal scroll)
+   ============================================ */
+.dash-kpis {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 0;
+}
+.dash-kpis::-webkit-scrollbar { display: none; }
+.dash-kpi {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(192, 160, 98, 0.2);
+  border-radius: 16px;
+  white-space: nowrap;
+}
+.dash-kpi-icon { font-size: 18px; line-height: 1; }
+.dash-kpi-text { display: flex; flex-direction: column; }
+.dash-kpi-value {
+  font-family: var(--milaura-font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--milaura-text);
+  line-height: 1.2;
+}
+.dash-kpi-label {
+  font-family: var(--milaura-font-body);
+  font-size: 10px;
+  color: var(--milaura-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* ============================================
+   MANTRA (compact accent band)
+   ============================================ */
+.dash-mantra {
+  text-align: center;
+  padding: 16px 14px;
+  background: rgba(var(--dash-accent-rgb), 0.06);
+  border-radius: 18px;
+  border: 1px solid rgba(var(--dash-accent-rgb), 0.12);
+}
+.dash-mantra-text {
+  font-family: var(--milaura-font-script);
+  font-size: 22px;
+  color: var(--dash-accent);
+  line-height: 1.3;
+  margin: 0;
+}
+.dash-mantra-quotes {
+  font-family: var(--milaura-font-heading);
+  font-size: 18px;
+  color: rgba(var(--dash-accent-rgb), 0.35);
+}
+
+/* ============================================
+   COLD READING (accordion)
+   ============================================ */
 .dash-reading {
   background-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(192, 160, 98, 0.4);
-  border-radius: 30px;
-  box-shadow: 0 20px 50px rgba(192, 160, 98, 0.15);
-  padding: 36px 30px;
+  border: 1px solid rgba(192, 160, 98, 0.3);
+  border-radius: 22px;
+  overflow: hidden;
 }
-.dash-reading-title {
+.dash-reading-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
   font-family: var(--milaura-font-heading);
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 500;
   font-style: italic;
   color: var(--milaura-text);
-  margin: 0 0 16px 0;
+  text-align: left;
   line-height: 1.35;
+}
+.dash-reading-arrow {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+  color: var(--milaura-text-light);
+}
+.dash-reading.is-open .dash-reading-arrow {
+  transform: rotate(180deg);
+}
+.dash-reading-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dash-reading.is-open .dash-reading-body {
+  max-height: 600px;
+}
+.dash-reading-inner {
+  padding: 0 20px 20px;
 }
 .dash-reading-text {
   font-family: var(--milaura-font-body);
-  font-size: {{ section.settings.body_size | default: 15 }}px;
+  font-size: {{ section.settings.body_size | default: 14 }}px;
   color: var(--milaura-text-light);
-  line-height: 1.75;
-  margin: 0 0 16px 0;
+  line-height: 1.7;
+  margin: 0 0 14px 0;
 }
 .dash-reading-text .word {
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
 }
-.dash-reading-text .word.visible {
-  opacity: 1;
-}
+.dash-reading-text .word.visible { opacity: 1; }
 .dash-reading-bullets {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .dash-reading-bullets li {
   font-family: var(--milaura-font-body);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--milaura-text);
-  padding: 6px 0;
-  padding-left: 24px;
+  padding-left: 20px;
   position: relative;
   line-height: 1.5;
 }
@@ -266,138 +366,60 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 13px;
-  width: 8px;
-  height: 8px;
+  top: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--dash-accent);
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
-/* --- E. MANTRA --- */
-.dash-mantra {
-  text-align: center;
-  padding: 20px 16px;
-}
-.dash-mantra-text {
-  font-family: var(--milaura-font-script);
-  font-size: 28px;
-  color: var(--dash-accent);
-  line-height: 1.4;
-  margin: 0;
-  text-shadow: 0 0 30px rgba(var(--dash-accent-rgb), 0.2);
-}
-.dash-mantra-quotes {
-  font-family: var(--milaura-font-heading);
-  font-size: 22px;
-  color: rgba(var(--dash-accent-rgb), 0.4);
-}
-
-/* --- F. PRODUIT STAR --- */
-.dash-product {
-  background-color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(192, 160, 98, 0.4);
-  border-radius: 30px;
-  box-shadow: 0 20px 50px rgba(192, 160, 98, 0.15);
-  padding: 28px 24px;
-  text-align: center;
-}
-.dash-product-eyebrow {
-  font-family: var(--milaura-font-body);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: var(--milaura-gold-dark);
-  margin: 0 0 16px 0;
-}
-.dash-product-img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 20px;
-  margin: 0 auto 16px auto;
-  display: block;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-}
-.dash-product-title {
-  font-family: var(--milaura-font-heading);
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--milaura-text);
-  margin: 0 0 10px 0;
-}
-.dash-product-badges {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-.dash-product-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 14px;
-  border-radius: 50px;
-  background: rgba(var(--dash-accent-rgb), 0.08);
-  font-family: var(--milaura-font-body);
-  font-size: 12px;
-  color: var(--milaura-text-light);
-}
-.dash-product-price {
-  font-family: var(--milaura-font-body);
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--milaura-text);
-  margin: 0 0 16px 0;
-}
-.dash-product-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* --- G. RITUEL --- */
-.dash-ritual {
-  padding: 8px 0;
-}
+/* ============================================
+   RITUAL (horizontal carousel)
+   ============================================ */
+.dash-ritual { padding: 0; }
 .dash-ritual-title {
   font-family: var(--milaura-font-heading);
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 500;
   color: var(--milaura-text);
-  margin: 0 0 16px 0;
-  text-align: center;
+  margin: 0 0 10px 4px;
 }
 .dash-ritual-steps {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 4px;
 }
+.dash-ritual-steps::-webkit-scrollbar { display: none; }
 .dash-ritual-step {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
+  flex-shrink: 0;
+  width: 75%;
+  max-width: 280px;
+  scroll-snap-align: start;
   background-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(192, 160, 98, 0.2);
-  border-radius: 20px;
-  padding: 18px 16px;
+  border-radius: 18px;
+  padding: 16px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
 }
 .dash-ritual-num {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--dash-accent);
   color: #fff;
   font-family: var(--milaura-font-heading);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -405,197 +427,169 @@
 }
 .dash-ritual-text {
   font-family: var(--milaura-font-body);
-  font-size: 14px;
-  color: var(--milaura-text);
-  line-height: 1.6;
-  padding-top: 5px;
-}
-
-/* --- H. QUICK ACTIONS --- */
-.dash-actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  padding: 4px 0;
-}
-.dash-action-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 20px;
-  border-radius: 50px;
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(192, 160, 98, 0.3);
-  font-family: var(--milaura-font-body);
   font-size: 13px;
-  font-weight: 600;
   color: var(--milaura-text);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  letter-spacing: 0.3px;
-}
-.dash-action-pill:hover {
-  border-color: var(--milaura-gold);
-  box-shadow: 0 4px 15px rgba(192, 160, 98, 0.2);
-  transform: translateY(-1px);
-}
-.dash-action-pill span {
-  font-size: 15px;
-  line-height: 1;
+  line-height: 1.55;
+  padding-top: 4px;
 }
 
-/* --- I. METEO EMOTIONNELLE --- */
-.dash-mood {
-  padding: 8px 0;
-}
+/* ============================================
+   MOOD BARS (compact)
+   ============================================ */
+.dash-mood { padding: 0; }
 .dash-mood-title {
   font-family: var(--milaura-font-heading);
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 500;
   color: var(--milaura-text);
-  margin: 0 0 16px 0;
-  text-align: center;
+  margin: 0 0 10px 4px;
 }
 .dash-mood-bars {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-.dash-mood-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.dash-mood-label {
-  width: 110px;
-  font-family: var(--milaura-font-body);
-  font-size: 13px;
-  color: var(--milaura-text-light);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-.dash-mood-label-icon {
-  font-size: 14px;
-  line-height: 1;
-}
-.dash-mood-track {
-  flex: 1;
-  height: 8px;
-  background: rgba(192, 160, 98, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-  min-width: 60px;
-}
-.dash-mood-fill {
-  height: 100%;
-  border-radius: 8px;
-  width: 0%;
-  transition: width 1s ease;
-}
-.dash-mood-fill.is-winner {
-  background: linear-gradient(90deg, var(--dash-accent) 0%, rgba(var(--dash-accent-rgb), 0.6) 100%);
-}
-.dash-mood-fill.is-secondary {
-  background: linear-gradient(90deg, rgba(192, 160, 98, 0.35) 0%, rgba(192, 160, 98, 0.15) 100%);
-}
-.dash-mood-pct {
-  width: 42px;
-  font-family: var(--milaura-font-body);
-  font-size: 13px;
-  color: var(--milaura-text-light);
-  text-align: right;
-  flex-shrink: 0;
-}
-
-/* --- J. MON VOYAGE --- */
-.dash-voyage {
+  gap: 8px;
   background-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(192, 160, 98, 0.2);
-  border-radius: 20px;
-  padding: 22px 20px;
+  border-radius: 18px;
+  padding: 16px 14px;
+}
+.dash-mood-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dash-mood-label {
+  width: 85px;
+  font-family: var(--milaura-font-body);
+  font-size: 12px;
+  color: var(--milaura-text-light);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.dash-mood-label-icon { font-size: 12px; line-height: 1; }
+.dash-mood-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(192, 160, 98, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 40px;
+}
+.dash-mood-fill {
+  height: 100%;
+  border-radius: 6px;
+  width: 0%;
+  transition: width 1s ease;
+}
+.dash-mood-fill.is-winner {
+  background: linear-gradient(90deg, var(--dash-accent), rgba(var(--dash-accent-rgb), 0.5));
+}
+.dash-mood-fill.is-secondary {
+  background: linear-gradient(90deg, rgba(192, 160, 98, 0.3), rgba(192, 160, 98, 0.1));
+}
+.dash-mood-pct {
+  width: 36px;
+  font-family: var(--milaura-font-body);
+  font-size: 11px;
+  color: var(--milaura-text-light);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   VOYAGE (compact card)
+   ============================================ */
+.dash-voyage {
+  background-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(192, 160, 98, 0.15);
+  border-radius: 16px;
+  padding: 14px 16px;
   text-align: center;
 }
 .dash-voyage-title {
   font-family: var(--milaura-font-heading);
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--milaura-text);
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
 }
 .dash-voyage-date {
   font-family: var(--milaura-font-body);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--milaura-text-light);
-  margin: 0 0 6px 0;
+  margin: 0 0 2px 0;
 }
 .dash-voyage-summary {
   font-family: var(--milaura-font-body);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--milaura-text);
-  line-height: 1.5;
   margin: 0;
 }
 
-/* --- K. FOOTER --- */
-.dash-footer {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 8px 0 0 0;
-}
-
-/* --- STICKY CTA --- */
-.dash-sticky {
+/* ============================================
+   BOTTOM TAB BAR (fixed, app-like)
+   ============================================ */
+.dash-tabbar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.96);
   background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(192, 160, 98, 0.3);
-  padding: 12px 20px;
-  display: flex;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid rgba(192, 160, 98, 0.2);
+  display: none; /* shown by JS */
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 8px 0;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
 }
-.dash-sticky.visible {
-  transform: translateY(0);
+.dash-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  padding: 4px 12px;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
 }
-.dash-sticky-name {
-  font-family: var(--milaura-font-heading);
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--milaura-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 180px;
+.dash-tab:active {
+  background: rgba(var(--dash-accent-rgb), 0.08);
 }
-.dash-sticky-price {
+.dash-tab-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+.dash-tab-label {
   font-family: var(--milaura-font-body);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--milaura-text);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--milaura-text-light);
+  letter-spacing: 0.3px;
+}
+.dash-tab.is-active .dash-tab-label {
+  color: var(--dash-accent);
 }
 
-/* --- SCROLL REVEAL --- */
+/* ============================================
+   SCROLL REVEAL
+   ============================================ */
 .dash-reveal {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .dash-reveal.revealed {
   opacity: 1;
@@ -603,94 +597,49 @@
 }
 
 /* ============================================
-   RESPONSIVE
+   RESPONSIVE DESKTOP (> 520px)
    ============================================ */
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 521px) {
   #MilauraDashboard-{{ section.id }} {
-    padding: 0 0 90px 0;
+    padding-bottom: 40px;
   }
-  .dash-greeting {
-    font-size: 26px;
-  }
-  .dash-score-ring {
-    width: 140px;
-    height: 140px;
-  }
-  .dash-score-percent {
-    font-size: 32px;
-  }
-  .dash-reading {
-    padding: 28px 20px;
-    border-radius: 20px;
-  }
-  .dash-reading-title {
-    font-size: 19px;
-  }
-  .dash-product {
-    padding: 24px 18px;
-    border-radius: 20px;
-  }
-  .dash-product-img {
-    width: 160px;
-    height: 160px;
-  }
-  .dash-mantra-text {
-    font-size: 24px;
-  }
-  .dash-kpis {
-    gap: 10px;
-  }
-  .dash-kpi {
-    padding: 14px 12px;
-    border-radius: 16px;
-  }
-  .dash-mood-label {
-    width: 90px;
-    font-size: 12px;
-  }
-  .dash-actions {
+  .dash-tabbar {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-top: none;
+    padding: 8px 0;
     gap: 8px;
   }
-  .dash-action-pill {
-    padding: 8px 16px;
+  .dash-tab {
+    flex-direction: row;
+    gap: 6px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 50px;
+  }
+  .dash-tab:hover {
+    border-color: var(--milaura-gold);
+    box-shadow: 0 4px 15px rgba(192, 160, 98, 0.15);
+  }
+  .dash-tab-label {
     font-size: 12px;
   }
-}
-
-@media screen and (max-width: 480px) {
-  .dash-greeting {
-    font-size: 22px;
-  }
-  .dash-score-ring {
-    width: 120px;
-    height: 120px;
-  }
-  .dash-score-percent {
-    font-size: 28px;
-  }
-  .dash-empty-card {
-    padding: 36px 20px;
-    border-radius: 20px;
-  }
-  .dash-empty-title {
-    font-size: 22px;
-  }
-  .dash-reading {
-    padding: 22px 16px;
-  }
-  .dash-product {
-    padding: 20px 14px;
-  }
-  .dash-product-img {
-    width: 140px;
-    height: 140px;
-  }
   .dash-ritual-step {
-    padding: 14px 12px;
+    width: 45%;
   }
 }
 
+/* ============================================
+   SMALL MOBILE (≤380px)
+   ============================================ */
 @media screen and (max-width: 380px) {
+  .dash-hero {
+    padding: 20px 16px;
+    border-radius: 22px;
+  }
   .dash-greeting {
     font-size: 20px;
   }
@@ -698,65 +647,48 @@
     width: 110px;
     height: 110px;
   }
-  .dash-kpis {
-    gap: 8px;
+  .dash-score-percent {
+    font-size: 26px;
   }
   .dash-kpi {
-    padding: 12px 10px;
-    border-radius: 14px;
+    padding: 8px 12px;
   }
-  .dash-kpi-value {
-    font-size: 14px;
+  .dash-mantra-text {
+    font-size: 19px;
   }
   .dash-mood-label {
-    width: 80px;
+    width: 72px;
     font-size: 11px;
   }
-  .dash-reading {
-    border-radius: 16px;
-    padding: 18px 14px;
-  }
-  .dash-product {
-    border-radius: 16px;
+  .dash-reading-toggle {
+    font-size: 14px;
+    padding: 14px 16px;
   }
 }
 
-/* --- REDUCED MOTION --- */
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  .dash-spinner {
-    animation: none;
-    border-top-color: transparent;
-  }
-  .dash-score-fill {
-    transition: none;
-  }
-  .dash-mood-fill {
-    transition: none;
-  }
-  .dash-reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .dash-sticky {
-    transition: none;
-  }
-  .dash-reading-text .word {
-    opacity: 1;
-    transition: none;
-  }
+  .dash-spinner { animation: none; border-top-color: transparent; }
+  .dash-score-fill { transition: none; }
+  .dash-mood-fill { transition: none; }
+  .dash-reveal { opacity: 1; transform: none; transition: none; }
+  .dash-reading-body { transition: none; }
+  .dash-reading-text .word { opacity: 1; transition: none; }
+  .dash-reading-arrow { transition: none; }
 }
 {% endstyle %}
 
 <div id="MilauraDashboard-{{ section.id }}">
 
-  {%- comment -%} ETAT LOADING {%- endcomment -%}
+  {%- comment -%} LOADING {%- endcomment -%}
   <div class="dash-loading" data-dash-state="loading">
     <div class="dash-spinner" aria-hidden="true"></div>
     <div class="dash-loading-text">{{ section.settings.loading_text | default: "Chargement de votre profil..." }}</div>
   </div>
 
-  {%- comment -%} ETAT VIDE (pas de quiz) {%- endcomment -%}
+  {%- comment -%} EMPTY STATE {%- endcomment -%}
   <div class="dash-empty" data-dash-state="empty">
     <div class="dash-empty-card">
       <span class="dash-empty-icon" aria-hidden="true">{{ section.settings.empty_icon | default: "✨" }}</span>
@@ -768,11 +700,11 @@
     </div>
   </div>
 
-  {%- comment -%} ETAT DASHBOARD {%- endcomment -%}
+  {%- comment -%} DASHBOARD {%- endcomment -%}
   <div class="dash-main" data-dash-state="dashboard">
 
-    {%- comment -%} A. HEADER {%- endcomment -%}
-    <div class="dash-header dash-reveal">
+    {%- comment -%} HERO CARD: greeting + score + product CTA {%- endcomment -%}
+    <div class="dash-hero dash-reveal">
       <h1 class="dash-greeting">
         {{ section.settings.greeting_prefix | default: "Bonjour" }}{% if customer %} {{ customer.first_name }}{% endif %}
       </h1>
@@ -780,10 +712,7 @@
         <span class="dash-badge-icon" data-dash-badge-icon></span>
         <span data-dash-badge-label></span>
       </div>
-    </div>
 
-    {%- comment -%} B. SCORE VIBRATOIRE {%- endcomment -%}
-    <div class="dash-score dash-reveal">
       <div class="dash-score-ring">
         <svg viewBox="0 0 160 160" aria-hidden="true">
           <circle class="dash-score-bg" cx="80" cy="80" r="70"></circle>
@@ -794,74 +723,81 @@
           <span class="dash-score-label">{{ section.settings.score_label | default: "Vibration" }}</span>
         </div>
       </div>
+
+      <div class="dash-hero-cta" data-dash-hero-cta style="display:none">
+        <img class="dash-hero-cta-img" src="" alt="" data-dash-product-img loading="lazy">
+        <div class="dash-hero-cta-info">
+          <p class="dash-hero-cta-name" data-dash-product-title></p>
+          <p class="dash-hero-cta-sub" data-dash-product-badges></p>
+        </div>
+        <button type="button" class="milaura-btn-gold dash-hero-cta-btn" data-dash-add-to-cart disabled>
+          Adopter
+        </button>
+      </div>
     </div>
 
-    {%- comment -%} C. KPI GRID {%- endcomment -%}
+    {%- comment -%} KPI PILLS (horizontal scroll) {%- endcomment -%}
     <div class="dash-kpis dash-reveal">
       <div class="dash-kpi">
         <span class="dash-kpi-icon" data-dash-kpi-profile-icon></span>
-        <span class="dash-kpi-value" data-dash-kpi-profile></span>
-        <span class="dash-kpi-label">Profil</span>
+        <div class="dash-kpi-text">
+          <span class="dash-kpi-value" data-dash-kpi-profile></span>
+          <span class="dash-kpi-label">Profil</span>
+        </div>
       </div>
       <div class="dash-kpi">
         <span class="dash-kpi-icon">💎</span>
-        <span class="dash-kpi-value" data-dash-kpi-stone></span>
-        <span class="dash-kpi-label">Pierre</span>
+        <div class="dash-kpi-text">
+          <span class="dash-kpi-value" data-dash-kpi-stone></span>
+          <span class="dash-kpi-label">Pierre</span>
+        </div>
       </div>
       <div class="dash-kpi">
         <span class="dash-kpi-icon">🕯️</span>
-        <span class="dash-kpi-value" data-dash-kpi-scent></span>
-        <span class="dash-kpi-label">Senteur</span>
+        <div class="dash-kpi-text">
+          <span class="dash-kpi-value" data-dash-kpi-scent></span>
+          <span class="dash-kpi-label">Senteur</span>
+        </div>
       </div>
       <div class="dash-kpi">
         <span class="dash-kpi-icon">📅</span>
-        <span class="dash-kpi-value" data-dash-kpi-date></span>
-        <span class="dash-kpi-label">Dernier diagnostic</span>
+        <div class="dash-kpi-text">
+          <span class="dash-kpi-value" data-dash-kpi-date></span>
+          <span class="dash-kpi-label">Diagnostic</span>
+        </div>
       </div>
     </div>
 
-    {%- comment -%} D. COLD READING {%- endcomment -%}
-    {%- if section.settings.show_cold_reading != false -%}
-    <div class="dash-reading dash-reveal" data-dash-reading>
-      <h2 class="dash-reading-title" data-dash-reading-title></h2>
-      <p class="dash-reading-text" data-dash-reading-text></p>
-      <ul class="dash-reading-bullets" data-dash-reading-bullets></ul>
-    </div>
-    {%- endif -%}
-
-    {%- comment -%} E. MANTRA {%- endcomment -%}
+    {%- comment -%} MANTRA {%- endcomment -%}
     <div class="dash-mantra dash-reveal">
       <p class="dash-mantra-text">
         <span class="dash-mantra-quotes">&laquo;&nbsp;</span><span data-dash-mantra></span><span class="dash-mantra-quotes">&nbsp;&raquo;</span>
       </p>
     </div>
 
-    {%- comment -%} F. PRODUIT STAR {%- endcomment -%}
-    <div class="dash-product dash-reveal" data-dash-product>
-      <p class="dash-product-eyebrow">{{ section.settings.product_eyebrow | default: "L'appel de l'âme" }}</p>
-      <img class="dash-product-img" src="" alt="" data-dash-product-img loading="lazy">
-      <h3 class="dash-product-title" data-dash-product-title></h3>
-      <div class="dash-product-badges" data-dash-product-badges></div>
-      <p class="dash-product-price" data-dash-product-price></p>
-      <button type="button" class="milaura-btn-gold dash-product-cta" data-dash-add-to-cart disabled>
-        Adopter
+    {%- comment -%} COLD READING (accordion) {%- endcomment -%}
+    {%- if section.settings.show_cold_reading != false -%}
+    <div class="dash-reading dash-reveal" data-dash-reading>
+      <button type="button" class="dash-reading-toggle" data-dash-reading-toggle aria-expanded="false">
+        <span data-dash-reading-title></span>
+        <svg class="dash-reading-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
+      <div class="dash-reading-body">
+        <div class="dash-reading-inner">
+          <p class="dash-reading-text" data-dash-reading-text></p>
+          <ul class="dash-reading-bullets" data-dash-reading-bullets></ul>
+        </div>
+      </div>
     </div>
+    {%- endif -%}
 
-    {%- comment -%} G. RITUEL {%- endcomment -%}
+    {%- comment -%} RITUAL (carousel) {%- endcomment -%}
     <div class="dash-ritual dash-reveal" data-dash-ritual>
-      <h3 class="dash-ritual-title">{{ section.settings.ritual_title | default: "Ton rituel de connexion" }}</h3>
+      <h3 class="dash-ritual-title">{{ section.settings.ritual_title | default: "Ton rituel" }}</h3>
       <div class="dash-ritual-steps" data-dash-ritual-steps></div>
     </div>
 
-    {%- comment -%} H. QUICK ACTIONS {%- endcomment -%}
-    <div class="dash-actions dash-reveal">
-      <a href="#dash-ritual-{{ section.id }}" class="dash-action-pill"><span>🕯️</span> Mon Rituel</a>
-      <a href="/collections/all" class="dash-action-pill"><span>🛍️</span> Boutique</a>
-      <a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}" class="dash-action-pill"><span>🔄</span> Refaire le quiz</a>
-    </div>
-
-    {%- comment -%} I. METEO EMOTIONNELLE {%- endcomment -%}
+    {%- comment -%} MOOD BARS {%- endcomment -%}
     {%- if section.settings.show_mood_bars != false -%}
     <div class="dash-mood dash-reveal" data-dash-mood>
       <h3 class="dash-mood-title">{{ section.settings.mood_title | default: "Ta météo émotionnelle" }}</h3>
@@ -869,7 +805,7 @@
     </div>
     {%- endif -%}
 
-    {%- comment -%} J. MON VOYAGE {%- endcomment -%}
+    {%- comment -%} VOYAGE {%- endcomment -%}
     {%- if section.settings.show_voyage != false -%}
     <div class="dash-voyage dash-reveal" data-dash-voyage>
       <h3 class="dash-voyage-title">{{ section.settings.voyage_title | default: "Mon Voyage" }}</h3>
@@ -878,26 +814,31 @@
     </div>
     {%- endif -%}
 
-    {%- comment -%} K. FOOTER {%- endcomment -%}
-    <div class="dash-footer dash-reveal">
-      <a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}" class="milaura-btn-gold">Refaire le diagnostic</a>
-      <a href="/collections/all" class="milaura-btn" style="font-size:13px">Boutique</a>
-    </div>
-
   </div><!-- /dash-main -->
 
-  {%- comment -%} STICKY CTA {%- endcomment -%}
-  <div class="dash-sticky" data-dash-sticky aria-hidden="true">
-    <span class="dash-sticky-name" data-dash-sticky-name></span>
-    <span class="dash-sticky-price" data-dash-sticky-price></span>
-    <button type="button" class="milaura-btn-gold" style="padding:10px 24px;font-size:12px" data-dash-sticky-btn disabled>
-      Ajouter
-    </button>
-  </div>
+  {%- comment -%} BOTTOM TAB BAR {%- endcomment -%}
+  <nav class="dash-tabbar" data-dash-tabbar aria-label="Navigation rapide">
+    <a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}" class="dash-tab">
+      <span class="dash-tab-icon">🔮</span>
+      <span class="dash-tab-label">Quiz</span>
+    </a>
+    <a href="/collections/all" class="dash-tab">
+      <span class="dash-tab-icon">🛍️</span>
+      <span class="dash-tab-label">Boutique</span>
+    </a>
+    <a href="#" class="dash-tab is-active" data-dash-tab-add>
+      <span class="dash-tab-icon">✨</span>
+      <span class="dash-tab-label" data-dash-tab-add-label>Adopter</span>
+    </a>
+    <a href="/account" class="dash-tab">
+      <span class="dash-tab-icon">👤</span>
+      <span class="dash-tab-label">Compte</span>
+    </a>
+  </nav>
 
 </div><!-- /MilauraDashboard -->
 
-{%- comment -%} PRODUIT DATA (Liquid → JSON pour JS) {%- endcomment -%}
+{%- comment -%} PRODUCT DATA (Liquid → JSON) {%- endcomment -%}
 <script type="application/json" data-dash-products>
 {
   {%- assign profiles = "apaisement,protection,serenite,amour,chance" | split: "," -%}
@@ -925,82 +866,61 @@
   if (!root) return;
 
   /* ============================================
-     PROFILES — Source de verite (identique a quiz.liquid L1176-1292)
+     PROFILES (identique a quiz.liquid)
      ============================================ */
   var PROFILES = {
     apaisement: {
-      label: 'Apaisement',
-      displayName: 'Apaisement',
+      label: 'Apaisement', displayName: 'Apaisement',
       moodLabel: 'Système nerveux en surchauffe',
       dashboardTitle: 'Ton système nerveux réclame une trêve.',
       description: "Tu es la personne « forte ». Celle qui gère, qui encaisse, qui avance. De l'extérieur, tout a l'air sous contrôle. Mais ton corps, lui, raconte une autre histoire. Mâchoires serrées, sommeil agité, souffle court... Tu ne te reposes pas, tu t'éteins d'épuisement. Ton problème n'est pas ta capacité à faire, c'est ta capacité à déposer les armes.",
       bullets: ['Apaisement immédiat du système nerveux', 'Douceur émotionnelle et lâcher-prise', 'Sensation de cocon réparateur'],
       ritual: "1. Allume-la. Inspire 3 fois.\n2. Autorise-toi à être vulnérable, juste 10 minutes.\n3. Dis-toi : « Je peux déposer les armes. »",
-      stone: 'Calcédoine bleue',
-      scent: 'Néroli',
-      icon: '💙',
-      colorAccent: '#6BA3C7',
-      colorAccentRgb: '107, 163, 199'
+      stone: 'Calcédoine bleue', scent: 'Néroli', icon: '💙',
+      colorAccent: '#6BA3C7', colorAccentRgb: '107, 163, 199'
     },
     protection: {
-      label: 'Protection',
-      displayName: 'Protection',
+      label: 'Protection', displayName: 'Protection',
       moodLabel: 'Énergie envahie',
       dashboardTitle: "Ton énergie est précieuse, arrête de la distribuer.",
       description: "Tu as une hypersensibilité que tu essaies de cacher. Tu ressens les ambiances et les intentions des gens avant même qu'ils ne parlent. C'est un don, mais en ce moment, c'est une malédiction : tu te laisses envahir. Tu finis tes journées vidé(e) non pas par ton travail, mais par les autres. Tu as besoin de reconstruire tes frontières.",
       bullets: ['Bouclier énergétique', 'Frontières claires et nettes', 'Sanctuaire personnel'],
       ritual: "1. Allume-la en rentrant.\n2. Imagine un mur invisible se lever.\n3. Dis-toi : « Ici, c'est mon sanctuaire. »",
-      stone: 'Obsidienne noire',
-      scent: "Bois d'oud",
-      icon: '🖤',
-      colorAccent: '#4A4A4A',
-      colorAccentRgb: '74, 74, 74'
+      stone: 'Obsidienne noire', scent: "Bois d'oud", icon: '🖤',
+      colorAccent: '#4A4A4A', colorAccentRgb: '74, 74, 74'
     },
     serenite: {
-      label: 'Sérénité',
-      displayName: 'Sérénité',
+      label: 'Sérénité', displayName: 'Sérénité',
       moodLabel: 'Mental en sur-contrôle',
       dashboardTitle: 'Ton mental est saturé, tu dois couper le flux.',
       description: "Tu n'es pas fatigué(e) de la vie, tu es fatigué(e) de la gérer. Ton problème n'est pas le chaos, c'est le sur-contrôle. Tu analyses, tu planifies, tu anticipes les problèmes qui n'existent pas encore. Ton cerveau est comme un navigateur avec 50 onglets ouverts qui ne répond plus. Tu as perdu la clarté parce que tu as peur que si tu arrêtes d'y penser, tout s'écroule. Spoiler : le monde continuera de tourner si tu débranches 10 minutes.",
       bullets: ['Déconnexion sélective', 'Reset cognitif', 'Clarté mentale retrouvée'],
       ritual: "1. Coupe le téléphone. Allume.\n2. Regarde la flamme.\n3. Laisse les pensées passer sans les accrocher.",
-      stone: 'Améthyste',
-      scent: 'Thé blanc',
-      icon: '💜',
-      colorAccent: '#9B7EC8',
-      colorAccentRgb: '155, 126, 200'
+      stone: 'Améthyste', scent: 'Thé blanc', icon: '💜',
+      colorAccent: '#9B7EC8', colorAccentRgb: '155, 126, 200'
     },
     amour: {
-      label: 'Amour',
-      displayName: 'Amour',
+      label: 'Amour', displayName: 'Amour',
       moodLabel: 'Carence de bienveillance envers soi',
       dashboardTitle: "Tu donnes tout aux autres, mais qui s'occupe de toi ?",
       description: "C'est le paradoxe de ta vie actuelle : tu es une source inépuisable de soutien pour tes proches, mais tu es d'une dureté implacable avec toi-même. Tu attends inconsciemment que quelqu'un vienne te « sauver » ou te valider, alors que ton cœur a juste besoin de ta propre douceur. Tu es en carence de bienveillance envers toi-même.",
       bullets: ['Réparation vibratoire du cœur', 'Bienveillance envers soi', 'Douceur enveloppante'],
       ritual: "1. Allume-la. Main sur le cœur.\n2. Dis-toi les mots que tu aimerais entendre de quelqu'un d'autre.\n3. Dis-toi : « Je mérite la douceur que je donne aux autres. »",
-      stone: 'Quartz rose',
-      scent: 'Ambre gris',
-      icon: '💗',
-      colorAccent: '#D4839E',
-      colorAccentRgb: '212, 131, 158'
+      stone: 'Quartz rose', scent: 'Ambre gris', icon: '💗',
+      colorAccent: '#D4839E', colorAccentRgb: '212, 131, 158'
     },
     chance: {
-      label: 'Chance',
-      displayName: 'Chance',
+      label: 'Chance', displayName: 'Chance',
       moodLabel: "En attente d'un déclic",
       dashboardTitle: "Tu es prêt(e) pour le renouveau, il manque juste l'étincelle.",
       description: "Tu n'es pas déprimé(e), tu es impatient(e). Tu sens au fond de tes tripes que tu es à la fin d'un cycle. L'ancien ne te convient plus, le nouveau n'est pas encore là. Cette zone d'entre-deux te rend nerveux(se). Tu cherches le « truc », l'opportunité, le signe qui va tout débloquer. Spoiler : le blocage n'est pas dehors, c'est juste une peur de sauter.",
       bullets: ["Énergie d'action et d'opportunité", 'Joie et élan retrouvés', 'Feu vert intérieur'],
       ritual: "1. Allume-la.\n2. Visualise ton objectif comme s'il était déjà fait.\n3. Souris. L'énergie suit l'intention.",
-      stone: 'Aventurine verte',
-      scent: "Fleur d'oranger",
-      icon: '💚',
-      colorAccent: '#6BAF7B',
-      colorAccentRgb: '107, 175, 123'
+      stone: 'Aventurine verte', scent: "Fleur d'oranger", icon: '💚',
+      colorAccent: '#6BAF7B', colorAccentRgb: '107, 175, 123'
     }
   };
 
-  /* Mantras from Liquid schema settings */
   var MANTRAS = {
     apaisement: {{ section.settings.profile_apaisement_mantra | default: "Je peux déposer les armes" | json }},
     protection: {{ section.settings.profile_protection_mantra | default: "Je protège mon énergie" | json }},
@@ -1009,12 +929,9 @@
     chance: {{ section.settings.profile_chance_mantra | default: "L'énergie suit l'intention" | json }}
   };
 
-  /* Mood label order (for mood bars) */
   var MOOD_ORDER = ['apaisement', 'protection', 'serenite', 'amour', 'chance'];
 
-  /* ============================================
-     DOM REFS
-     ============================================ */
+  /* DOM REFS */
   var els = {
     loading: root.querySelector('[data-dash-state="loading"]'),
     empty: root.querySelector('[data-dash-state="empty"]'),
@@ -1032,77 +949,60 @@
     readingTitle: root.querySelector('[data-dash-reading-title]'),
     readingText: root.querySelector('[data-dash-reading-text]'),
     readingBullets: root.querySelector('[data-dash-reading-bullets]'),
+    readingToggle: root.querySelector('[data-dash-reading-toggle]'),
+    readingCard: root.querySelector('[data-dash-reading]'),
     mantra: root.querySelector('[data-dash-mantra]'),
-    productCard: root.querySelector('[data-dash-product]'),
+    heroCta: root.querySelector('[data-dash-hero-cta]'),
     productImg: root.querySelector('[data-dash-product-img]'),
     productTitle: root.querySelector('[data-dash-product-title]'),
     productBadges: root.querySelector('[data-dash-product-badges]'),
-    productPrice: root.querySelector('[data-dash-product-price]'),
     addToCartBtn: root.querySelector('[data-dash-add-to-cart]'),
     ritualSteps: root.querySelector('[data-dash-ritual-steps]'),
     moodBars: root.querySelector('[data-dash-mood-bars]'),
     voyageDate: root.querySelector('[data-dash-voyage-date]'),
     voyageSummary: root.querySelector('[data-dash-voyage-summary]'),
-    sticky: root.querySelector('[data-dash-sticky]'),
-    stickyName: root.querySelector('[data-dash-sticky-name]'),
-    stickyPrice: root.querySelector('[data-dash-sticky-price]'),
-    stickyBtn: root.querySelector('[data-dash-sticky-btn]')
+    tabbar: root.querySelector('[data-dash-tabbar]'),
+    tabAdd: root.querySelector('[data-dash-tab-add]'),
+    tabAddLabel: root.querySelector('[data-dash-tab-add-label]')
   };
 
-  /* ============================================
-     PRODUCT DATA (from Liquid JSON)
-     ============================================ */
+  /* PRODUCT DATA */
   var productData = {};
   try {
     var jsonEl = document.querySelector('[data-dash-products]');
     if (jsonEl) productData = JSON.parse(jsonEl.textContent);
-  } catch (e) {
-    console.error('Dashboard: error parsing product data', e);
-  }
+  } catch (e) { console.error('Dashboard: product parse error', e); }
 
-  /* ============================================
-     STATE MANAGEMENT
-     ============================================ */
+  /* STATE */
   function showState(state) {
     els.loading.style.display = state === 'loading' ? 'flex' : 'none';
     els.empty.style.display = state === 'empty' ? 'block' : 'none';
     els.main.style.display = state === 'dashboard' ? 'flex' : 'none';
-    if (state !== 'dashboard') {
-      els.sticky.classList.remove('visible');
-    }
+    if (els.tabbar) els.tabbar.style.display = state === 'dashboard' ? 'flex' : 'none';
   }
 
-  /* ============================================
-     SET ACCENT COLOR
-     ============================================ */
   function setAccentColor(hex, rgb) {
     root.style.setProperty('--dash-accent', hex);
     root.style.setProperty('--dash-accent-rgb', rgb);
   }
 
-  /* ============================================
-     RENDER SCORE SVG
-     ============================================ */
+  /* RENDER SCORE */
   function renderScore(percentages, profileId) {
     var pct = percentages && percentages[profileId] ? percentages[profileId] : 0;
     if (els.scorePct) els.scorePct.textContent = Math.round(pct) + '%';
     if (els.scoreCircle) {
-      var circumference = 2 * Math.PI * 70; /* r=70 */
-      var offset = circumference - (pct / 100) * circumference;
-      /* Start at full offset, animate to target */
-      els.scoreCircle.style.strokeDasharray = circumference;
-      els.scoreCircle.style.strokeDashoffset = circumference;
+      var c = 2 * Math.PI * 70;
+      els.scoreCircle.style.strokeDasharray = c;
+      els.scoreCircle.style.strokeDashoffset = c;
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
-          els.scoreCircle.style.strokeDashoffset = offset;
+          els.scoreCircle.style.strokeDashoffset = c - (pct / 100) * c;
         });
       });
     }
   }
 
-  /* ============================================
-     RENDER KPIs
-     ============================================ */
+  /* RENDER KPIs */
   function renderKPIs(data, profile) {
     if (els.kpiProfile) els.kpiProfile.textContent = profile.displayName;
     if (els.kpiProfileIcon) els.kpiProfileIcon.textContent = profile.icon;
@@ -1114,162 +1014,104 @@
     }
   }
 
-  /* ============================================
-     RENDER COLD READING (mot-par-mot)
-     ============================================ */
+  /* RENDER COLD READING (accordion + word reveal) */
   function renderColdReading(profile) {
     if (els.readingTitle) els.readingTitle.textContent = profile.dashboardTitle;
-
     if (els.readingText) {
       var words = profile.description.split(' ');
-      var html = words.map(function(w) { return '<span class="word">' + w + '</span>'; }).join(' ');
-      els.readingText.innerHTML = html;
-
-      /* Stagger reveal */
-      var wordEls = els.readingText.querySelectorAll('.word');
-      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      wordEls.forEach(function(el, i) {
-        if (reducedMotion) {
-          el.classList.add('visible');
-        } else {
-          setTimeout(function() { el.classList.add('visible'); }, 30 * i);
+      els.readingText.innerHTML = words.map(function(w) { return '<span class="word">' + w + '</span>'; }).join(' ');
+    }
+    if (els.readingBullets && profile.bullets) {
+      els.readingBullets.innerHTML = profile.bullets.map(function(b) { return '<li>' + b + '</li>'; }).join('');
+    }
+    /* Accordion toggle */
+    if (els.readingToggle && els.readingCard) {
+      els.readingToggle.addEventListener('click', function() {
+        var isOpen = els.readingCard.classList.toggle('is-open');
+        els.readingToggle.setAttribute('aria-expanded', isOpen);
+        /* Trigger word reveal on first open */
+        if (isOpen && els.readingText) {
+          var wordEls = els.readingText.querySelectorAll('.word:not(.visible)');
+          if (wordEls.length > 0) {
+            var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            wordEls.forEach(function(el, i) {
+              if (reduced) { el.classList.add('visible'); }
+              else { setTimeout(function() { el.classList.add('visible'); }, 25 * i); }
+            });
+          }
         }
       });
     }
-
-    if (els.readingBullets && profile.bullets) {
-      els.readingBullets.innerHTML = profile.bullets.map(function(b) {
-        return '<li>' + b + '</li>';
-      }).join('');
-    }
   }
 
-  /* ============================================
-     RENDER MANTRA
-     ============================================ */
+  /* RENDER MANTRA */
   function renderMantra(profileId) {
-    if (els.mantra) {
-      els.mantra.textContent = MANTRAS[profileId] || '';
-    }
+    if (els.mantra) els.mantra.textContent = MANTRAS[profileId] || '';
   }
 
-  /* ============================================
-     RENDER PRODUCT STAR
-     ============================================ */
+  /* RENDER PRODUCT (in hero CTA + tab bar) */
+  var currentVariantId = null;
   function renderProduct(profileId, profile) {
     var prod = productData[profileId];
     if (!prod) {
-      if (els.productCard) els.productCard.style.display = 'none';
-      if (els.sticky) els.sticky.style.display = 'none';
+      if (els.heroCta) els.heroCta.style.display = 'none';
       return;
     }
-
-    if (els.productImg) {
-      els.productImg.src = prod.featured_image || '';
-      els.productImg.alt = prod.title || '';
-    }
+    if (els.heroCta) els.heroCta.style.display = 'flex';
+    if (els.productImg) { els.productImg.src = prod.featured_image || ''; els.productImg.alt = prod.title || ''; }
     if (els.productTitle) els.productTitle.textContent = prod.title || '';
-    if (els.productPrice) els.productPrice.textContent = prod.price || '';
-
-    /* Badges pierre + senteur */
-    if (els.productBadges) {
-      els.productBadges.innerHTML =
-        '<span class="dash-product-badge">💎 ' + profile.stone + '</span>' +
-        '<span class="dash-product-badge">🌸 ' + profile.scent + '</span>';
-    }
-
-    /* Add-to-cart button */
+    if (els.productBadges) els.productBadges.textContent = profile.stone + ' · ' + profile.scent;
     if (els.addToCartBtn && prod.variant_id) {
       els.addToCartBtn.disabled = false;
-      els.addToCartBtn.setAttribute('data-variant-id', prod.variant_id);
+      currentVariantId = prod.variant_id;
     }
-
-    /* Sticky bar data */
-    if (els.stickyName) els.stickyName.textContent = prod.title || '';
-    if (els.stickyPrice) els.stickyPrice.textContent = prod.price || '';
-    if (els.stickyBtn && prod.variant_id) {
-      els.stickyBtn.disabled = false;
-      els.stickyBtn.setAttribute('data-variant-id', prod.variant_id);
-    }
+    /* Tab bar add button */
+    if (els.tabAddLabel) els.tabAddLabel.textContent = prod.price || 'Adopter';
   }
 
-  /* ============================================
-     RENDER RITUAL
-     ============================================ */
+  /* RENDER RITUAL */
   function renderRitual(profile, data) {
     if (!els.ritualSteps) return;
     var ritual = data.ritual || profile.ritual || '';
     var steps = ritual.split('\n').filter(function(s) { return s.trim(); });
     els.ritualSteps.innerHTML = steps.map(function(step, i) {
-      /* Remove leading "1. " numbering if present */
-      var text = step.replace(/^\d+\.\s*/, '');
-      return '<div class="dash-ritual-step">' +
-        '<span class="dash-ritual-num">' + (i + 1) + '</span>' +
-        '<span class="dash-ritual-text">' + text + '</span>' +
-        '</div>';
+      return '<div class="dash-ritual-step"><span class="dash-ritual-num">' + (i + 1) + '</span><span class="dash-ritual-text">' + step.replace(/^\d+\.\s*/, '') + '</span></div>';
     }).join('');
   }
 
-  /* ============================================
-     RENDER MOOD BARS
-     ============================================ */
+  /* RENDER MOOD BARS */
   function renderMoodBars(percentages, profileId) {
     if (!els.moodBars || !percentages) return;
-
-    var html = MOOD_ORDER.map(function(id) {
-      var p = PROFILES[id];
-      var pct = percentages[id] || 0;
-      var isWinner = id === profileId;
-      return '<div class="dash-mood-row">' +
-        '<span class="dash-mood-label"><span class="dash-mood-label-icon">' + p.icon + '</span> ' + p.label + '</span>' +
-        '<div class="dash-mood-track"><div class="dash-mood-fill ' + (isWinner ? 'is-winner' : 'is-secondary') + '" data-pct="' + Math.round(pct) + '"></div></div>' +
-        '<span class="dash-mood-pct">' + Math.round(pct) + '%</span>' +
-        '</div>';
+    els.moodBars.innerHTML = MOOD_ORDER.map(function(id) {
+      var p = PROFILES[id], pct = percentages[id] || 0, w = id === profileId;
+      return '<div class="dash-mood-row"><span class="dash-mood-label"><span class="dash-mood-label-icon">' + p.icon + '</span> ' + p.label + '</span><div class="dash-mood-track"><div class="dash-mood-fill ' + (w ? 'is-winner' : 'is-secondary') + '" data-pct="' + Math.round(pct) + '"></div></div><span class="dash-mood-pct">' + Math.round(pct) + '%</span></div>';
     }).join('');
-
-    els.moodBars.innerHTML = html;
-
-    /* Animate bars */
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        var fills = els.moodBars.querySelectorAll('.dash-mood-fill');
-        fills.forEach(function(el) {
-          el.style.width = el.getAttribute('data-pct') + '%';
-        });
-      });
-    });
+    requestAnimationFrame(function() { requestAnimationFrame(function() {
+      els.moodBars.querySelectorAll('.dash-mood-fill').forEach(function(el) { el.style.width = el.getAttribute('data-pct') + '%'; });
+    }); });
   }
 
-  /* ============================================
-     RENDER VOYAGE
-     ============================================ */
+  /* RENDER VOYAGE */
   function renderVoyage(data, profile) {
     if (els.voyageDate && data.timestamp) {
       var d = new Date(data.timestamp);
       els.voyageDate.textContent = 'Diagnostic du ' + d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
     }
-    if (els.voyageSummary) {
-      els.voyageSummary.textContent = 'Profil ' + profile.displayName + ' — ' + profile.stone + ' & ' + profile.scent;
-    }
+    if (els.voyageSummary) els.voyageSummary.textContent = 'Profil ' + profile.displayName + ' — ' + profile.stone + ' & ' + profile.scent;
   }
 
-  /* ============================================
-     RENDER BADGE
-     ============================================ */
+  /* RENDER BADGE */
   function renderBadge(profile) {
     if (els.badgeIcon) els.badgeIcon.textContent = profile.icon;
     if (els.badgeLabel) els.badgeLabel.textContent = 'Profil ' + profile.displayName;
   }
 
-  /* ============================================
-     ADD TO CART (pattern identique a quiz.liquid L1662-1701)
-     ============================================ */
+  /* ADD TO CART */
   function addToCart(variantId, btn) {
     if (!variantId || btn.disabled) return;
-    var originalText = btn.textContent;
-    btn.textContent = 'Ajout en cours...';
+    var orig = btn.textContent;
+    btn.textContent = '...';
     btn.disabled = true;
-
     fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1277,98 +1119,39 @@
     })
     .then(function(r) { return r.json(); })
     .then(function() {
-      btn.textContent = '\u2713 Ajouté au panier';
+      btn.textContent = '\u2713 Ajouté';
       btn.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
-      setTimeout(function() {
-        btn.textContent = originalText;
-        btn.style.background = '';
-        btn.disabled = false;
-      }, 2000);
+      setTimeout(function() { btn.textContent = orig; btn.style.background = ''; btn.disabled = false; }, 2000);
       if (typeof window.updateCartCount === 'function') window.updateCartCount();
     })
-    .catch(function(err) {
-      console.error('Dashboard add-to-cart error:', err);
-      btn.textContent = 'Erreur - Réessayer';
+    .catch(function() {
+      btn.textContent = 'Erreur';
       btn.style.background = 'linear-gradient(135deg, #f44336, #e57373)';
       btn.disabled = false;
-      setTimeout(function() {
-        btn.textContent = originalText;
-        btn.style.background = '';
-      }, 2000);
+      setTimeout(function() { btn.textContent = orig; btn.style.background = ''; }, 2000);
     });
   }
 
-  /* ============================================
-     STICKY BAR (IntersectionObserver)
-     ============================================ */
-  function initStickyBar() {
-    if (!els.productCard || !els.sticky) return;
-    if (!('IntersectionObserver' in window)) return;
-
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          els.sticky.classList.remove('visible');
-          els.sticky.setAttribute('aria-hidden', 'true');
-        } else {
-          els.sticky.classList.add('visible');
-          els.sticky.setAttribute('aria-hidden', 'false');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    observer.observe(els.productCard);
-  }
-
-  /* ============================================
-     SCROLL REVEAL (IntersectionObserver)
-     ============================================ */
+  /* SCROLL REVEAL */
   function initScrollAnimations() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      root.querySelectorAll('.dash-reveal').forEach(function(el) {
-        el.classList.add('revealed');
-      });
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !('IntersectionObserver' in window)) {
+      root.querySelectorAll('.dash-reveal').forEach(function(el) { el.classList.add('revealed'); });
       return;
     }
-    if (!('IntersectionObserver' in window)) {
-      root.querySelectorAll('.dash-reveal').forEach(function(el) {
-        el.classList.add('revealed');
-      });
-      return;
-    }
-
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-
-    root.querySelectorAll('.dash-reveal').forEach(function(el) {
-      observer.observe(el);
-    });
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+    root.querySelectorAll('.dash-reveal').forEach(function(el) { obs.observe(el); });
   }
 
-  /* ============================================
-     SHOW DASHBOARD (orchestre tout)
-     ============================================ */
+  /* SHOW DASHBOARD */
   function showDashboard(data) {
     var profileId = data.profileId;
     var profile = PROFILES[profileId];
-    if (!profile) {
-      showState('empty');
-      return;
-    }
+    if (!profile) { showState('empty'); return; }
 
-    /* Accent color */
-    setAccentColor(
-      data.profileAccent || profile.colorAccent,
-      data.profileAccentRgb || profile.colorAccentRgb
-    );
-
-    /* Render all blocks */
+    setAccentColor(data.profileAccent || profile.colorAccent, data.profileAccentRgb || profile.colorAccentRgb);
     renderBadge(profile);
     renderScore(data.percentages, profileId);
     renderKPIs(data, profile);
@@ -1379,80 +1162,44 @@
     renderMoodBars(data.percentages, profileId);
     renderVoyage(data, profile);
 
-    /* Show dashboard, init animations */
     showState('dashboard');
     initScrollAnimations();
-    initStickyBar();
   }
 
-  /* ============================================
-     INIT — Read localStorage, route to state
-     ============================================ */
+  /* INIT */
   function init() {
     showState('loading');
 
-    /* Add-to-cart event listeners */
+    /* Add-to-cart listeners */
     if (els.addToCartBtn) {
-      els.addToCartBtn.addEventListener('click', function() {
-        addToCart(this.getAttribute('data-variant-id'), this);
-      });
+      els.addToCartBtn.addEventListener('click', function() { addToCart(currentVariantId, this); });
     }
-    if (els.stickyBtn) {
-      els.stickyBtn.addEventListener('click', function() {
-        addToCart(this.getAttribute('data-variant-id'), this);
+    /* Tab bar add button */
+    if (els.tabAdd) {
+      els.tabAdd.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (currentVariantId && els.tabAddLabel) addToCart(currentVariantId, els.tabAddLabel);
       });
     }
 
-    /* Read localStorage */
     var raw = null;
-    try {
-      raw = localStorage.getItem('milauraLastResult');
-    } catch (e) {
-      /* localStorage blocked */
-    }
-
-    if (!raw) {
-      showState('empty');
-      return;
-    }
-
+    try { raw = localStorage.getItem('milauraLastResult'); } catch (e) {}
+    if (!raw) { showState('empty'); return; }
     var data = null;
-    try {
-      data = JSON.parse(raw);
-    } catch (e) {
-      showState('empty');
-      return;
-    }
+    try { data = JSON.parse(raw); } catch (e) { showState('empty'); return; }
+    if (!data || !data.profileId || !PROFILES[data.profileId]) { showState('empty'); return; }
 
-    if (!data || !data.profileId || !PROFILES[data.profileId]) {
-      showState('empty');
-      return;
-    }
-
-    /* Small delay for loading UX */
-    setTimeout(function() {
-      showDashboard(data);
-    }, 400);
+    setTimeout(function() { showDashboard(data); }, 350);
   }
 
-  /* ============================================
-     LISTEN FOR QUIZ RESULTS (real-time update)
-     ============================================ */
+  /* LISTEN FOR QUIZ UPDATE */
   window.addEventListener('milaura:quiz-result', function(e) {
-    if (e.detail && e.detail.profileId) {
-      showDashboard(e.detail);
-    }
+    if (e.detail && e.detail.profileId) showDashboard(e.detail);
   });
 
-  /* ============================================
-     BOOT
-     ============================================ */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
+  /* BOOT */
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+  else { init(); }
 })();
 </script>
 
@@ -1495,7 +1242,7 @@
       "type": "text",
       "id": "ritual_title",
       "label": "Titre rituel",
-      "default": "Ton rituel de connexion"
+      "default": "Ton rituel"
     },
     {
       "type": "text",
@@ -1628,7 +1375,7 @@
       "min": 20,
       "max": 48,
       "step": 1,
-      "default": 32,
+      "default": 24,
       "unit": "px"
     },
     {
@@ -1638,7 +1385,7 @@
       "min": 12,
       "max": 20,
       "step": 1,
-      "default": 15,
+      "default": 14,
       "unit": "px"
     },
     {
