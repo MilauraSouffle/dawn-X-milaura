@@ -120,6 +120,21 @@
   margin-bottom: 16px;
 }
 .dash-badge-icon { font-size: 14px; line-height: 1; }
+.dash-review-link {
+  display: none; /* shown by JS */
+  font-family: var(--milaura-font-body);
+  font-size: 12px;
+  color: var(--dash-accent);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  margin-bottom: 12px;
+}
+.dash-review-link:hover,
+.dash-review-link:active {
+  opacity: 1;
+  text-decoration: underline;
+}
 
 /* Score ring inside hero */
 .dash-score-ring {
@@ -712,6 +727,7 @@
         <span class="dash-badge-icon" data-dash-badge-icon></span>
         <span data-dash-badge-label></span>
       </div>
+      <a href="#" class="dash-review-link" data-dash-review-link>Revoir mon diagnostic →</a>
 
       <div class="dash-score-ring">
         <svg viewBox="0 0 160 160" aria-hidden="true">
@@ -963,7 +979,8 @@
     voyageSummary: root.querySelector('[data-dash-voyage-summary]'),
     tabbar: root.querySelector('[data-dash-tabbar]'),
     tabAdd: root.querySelector('[data-dash-tab-add]'),
-    tabAddLabel: root.querySelector('[data-dash-tab-add-label]')
+    tabAddLabel: root.querySelector('[data-dash-tab-add-label]'),
+    reviewLink: root.querySelector('[data-dash-review-link]')
   };
 
   /* PRODUCT DATA */
@@ -1161,6 +1178,13 @@
     renderRitual(profile, data);
     renderMoodBars(data.percentages, profileId);
     renderVoyage(data, profile);
+
+    /* Lien "Revoir mon diagnostic" */
+    if (els.reviewLink) {
+      var quizUrl = {{ section.settings.quiz_url | default: '/pages/quiz' | json }};
+      els.reviewLink.href = quizUrl + (quizUrl.indexOf('?') > -1 ? '&' : '?') + 'show=result';
+      els.reviewLink.style.display = 'inline-block';
+    }
 
     showState('dashboard');
     initScrollAnimations();

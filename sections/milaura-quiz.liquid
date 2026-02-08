@@ -1762,6 +1762,21 @@
       // Vérifier dernière révélation
       checkLastResult();
 
+      // Si ?show=result dans l'URL → afficher direct le dernier résultat
+      if (new URLSearchParams(window.location.search).get('show') === 'result') {
+        const stored = localStorage.getItem('milauraLastResult');
+        if (stored) {
+          try {
+            const storedData = JSON.parse(stored);
+            scores = storedData.scores;
+            hasUserInteracted = true;
+            displayResults();
+            goToState(QuizState.RESULT);
+            return; // ne pas afficher l'intro
+          } catch (e) {}
+        }
+      }
+
       // Afficher l'état initial
       goToState(QuizState.INTRO);
     }
