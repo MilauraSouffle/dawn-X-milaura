@@ -1,19 +1,29 @@
 {% comment %}
-  Milaura Dashboard V2 — App-like mobile-first
-  Score + profil + CTA en hero card, KPIs swipeable, cold reading accordeon,
-  ritual carousel, bottom tab bar fixe
+  Milaura Dashboard V3 — Desktop 2-column + Product tabs
+  Hero diagnostic card, [Bougie][Pierre][Rituel] tabs, diagnostic block,
+  ritual carousel, no dock
 {% endcomment %}
 
 {% style %}
 /* ============================================
-   MILAURA DASHBOARD — APP-LIKE CSS
+   MILAURA DASHBOARD V3
    ============================================ */
 #MilauraDashboard-{{ section.id }} {
   --dash-accent: {{ section.settings.accent_color | default: '#C0A062' }};
   --dash-accent-rgb: 192, 160, 98;
-  max-width: 520px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 0 80px 0; /* space for bottom bar */
+  padding: 0 16px 40px;
+}
+
+/* --- GLASS CARD --- */
+.dash-glass {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(192, 160, 98, 0.3);
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(192, 160, 98, 0.1);
 }
 
 /* --- LOADING --- */
@@ -47,7 +57,6 @@
   padding: 48px 20px;
 }
 .dash-empty-card {
-  background-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -55,7 +64,7 @@
   border-radius: 24px;
   box-shadow: 0 12px 40px rgba(192, 160, 98, 0.12);
   padding: 40px 28px;
-  max-width: 400px;
+  max-width: 480px;
   margin: 0 auto;
 }
 .dash-empty-icon { font-size: 40px; margin-bottom: 12px; display: block; }
@@ -75,34 +84,41 @@
   margin: 0 0 20px 0;
 }
 
-/* --- DASHBOARD STATE --- */
+/* --- DASHBOARD LAYOUT --- */
 .dash-main {
   display: none;
+}
+.dash-main.is-visible {
+  display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 0 4px;
 }
 
+/* Mobile: flatten columns, reorder blocks */
+.dash-col-left,
+.dash-col-right {
+  display: contents;
+}
+.dash-hero { order: 1; }
+.dash-kpis { order: 2; }
+.dash-mantra { order: 3; }
+.dash-diagnostic { order: 4; }
+.dash-ritual { order: 5; }
+.dash-voyage { order: 6; }
+
 /* ============================================
-   HERO CARD (score + profil + produit CTA)
+   HERO CARD (diagnostic + product tabs)
    ============================================ */
 .dash-hero {
-  background-color: rgba(255, 255, 255, 0.88);
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(192, 160, 98, 0.35);
-  border-radius: 28px;
-  box-shadow: 0 16px 48px rgba(192, 160, 98, 0.12);
-  padding: 24px 20px;
+  padding: 28px 24px;
   text-align: center;
 }
 .dash-greeting {
   font-family: var(--milaura-font-heading);
-  font-size: 24px;
+  font-size: {{ section.settings.heading_size | default: 24 }}px;
   font-weight: 500;
   color: var(--milaura-text);
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
   line-height: 1.2;
 }
 .dash-badge {
@@ -117,18 +133,18 @@
   font-size: 12px;
   font-weight: 600;
   color: var(--dash-accent);
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 .dash-badge-icon { font-size: 14px; line-height: 1; }
 .dash-review-link {
-  display: none; /* shown by JS */
+  display: none;
   font-family: var(--milaura-font-body);
   font-size: 12px;
   color: var(--dash-accent);
   text-decoration: none;
   opacity: 0.7;
   transition: opacity 0.2s ease;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 .dash-review-link:hover,
 .dash-review-link:active {
@@ -136,103 +152,106 @@
   text-decoration: underline;
 }
 
-/* Score ring inside hero */
-.dash-score-ring {
-  position: relative;
-  width: 130px;
-  height: 130px;
-  margin: 0 auto 12px;
-}
-.dash-score-ring svg {
-  transform: rotate(-90deg);
-  width: 100%;
-  height: 100%;
-}
-.dash-score-bg {
-  fill: none;
-  stroke: rgba(var(--dash-accent-rgb), 0.1);
-  stroke-width: 8;
-}
-.dash-score-fill {
-  fill: none;
-  stroke: var(--dash-accent);
-  stroke-width: 8;
-  stroke-linecap: round;
-  stroke-dasharray: 440;
-  stroke-dashoffset: 440;
-  transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.dash-score-value {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
-.dash-score-percent {
+/* Pain phrase */
+.dash-pain {
   font-family: var(--milaura-font-heading);
-  font-size: 32px;
-  font-weight: 600;
-  color: var(--dash-accent);
-  line-height: 1;
-  display: block;
-}
-.dash-score-label {
-  font-family: var(--milaura-font-body);
-  font-size: 10px;
-  color: var(--milaura-text-light);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-top: 2px;
-  display: block;
+  font-size: 18px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--milaura-text);
+  line-height: 1.4;
+  margin: 0 0 20px 0;
 }
 
-/* Hero product CTA row */
-.dash-hero-cta {
+/* Product tabs */
+.dash-product-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.dash-product-tab {
+  padding: 8px 18px;
+  border: 1px solid rgba(var(--dash-accent-rgb), 0.2);
+  border-radius: 50px;
+  background: transparent;
+  font-family: var(--milaura-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--milaura-text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.dash-product-tab:hover {
+  border-color: var(--dash-accent);
+  color: var(--dash-accent);
+}
+.dash-product-tab.is-active {
+  background: var(--dash-accent);
+  border-color: var(--dash-accent);
+  color: #fff;
+}
+
+/* Product card in hero */
+.dash-hero-product {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 16px;
-  padding: 12px;
-  background: rgba(var(--dash-accent-rgb), 0.06);
+  gap: 14px;
+  padding: 14px;
+  background: rgba(var(--dash-accent-rgb), 0.05);
   border-radius: 18px;
   text-align: left;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease;
 }
-.dash-hero-cta-img {
-  width: 56px;
-  height: 56px;
+.dash-hero-product:hover {
+  box-shadow: 0 4px 20px rgba(192, 160, 98, 0.15);
+}
+.dash-hero-product-img {
+  width: 64px;
+  height: 64px;
   border-radius: 14px;
   object-fit: cover;
   flex-shrink: 0;
 }
-.dash-hero-cta-info {
+.dash-hero-product-info {
   flex: 1;
   min-width: 0;
 }
-.dash-hero-cta-name {
+.dash-hero-product-name {
   font-family: var(--milaura-font-heading);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--milaura-text);
   margin: 0;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
-.dash-hero-cta-sub {
+.dash-hero-product-price {
   font-family: var(--milaura-font-body);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--milaura-text-light);
-  margin: 2px 0 0 0;
+  margin: 3px 0 0 0;
 }
-.dash-hero-cta-btn {
+.dash-hero-product-btn {
   flex-shrink: 0;
-  padding: 10px 20px;
-  font-size: 11px;
+  padding: 10px 22px;
+  font-size: 12px;
+}
+.dash-hero-product-empty {
+  padding: 20px;
+  text-align: center;
+  font-family: var(--milaura-font-body);
+  font-size: 13px;
+  color: var(--milaura-text-light);
 }
 
 /* ============================================
-   KPI PILLS (horizontal scroll)
+   KPI PILLS
    ============================================ */
 .dash-kpis {
   display: flex;
@@ -251,7 +270,6 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -277,7 +295,7 @@
 }
 
 /* ============================================
-   MANTRA (compact accent band)
+   MANTRA
    ============================================ */
 .dash-mantra {
   text-align: center;
@@ -300,76 +318,98 @@
 }
 
 /* ============================================
-   COLD READING (accordion)
+   DIAGNOSTIC BLOCK (replaces mood bars + cold reading)
    ============================================ */
-.dash-reading {
-  background-color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(192, 160, 98, 0.3);
-  border-radius: 22px;
-  overflow: hidden;
+.dash-diagnostic {
+  padding: 24px 20px;
 }
-.dash-reading-toggle {
+.dash-diagnostic-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 18px 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: var(--milaura-font-heading);
-  font-size: 16px;
-  font-weight: 500;
-  font-style: italic;
-  color: var(--milaura-text);
-  text-align: left;
-  line-height: 1.35;
+  margin-bottom: 16px;
 }
-.dash-reading-arrow {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  transition: transform 0.3s ease;
+.dash-diagnostic-title {
+  font-family: var(--milaura-font-heading);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--milaura-text);
+  margin: 0;
+}
+.dash-diagnostic-date {
+  font-family: var(--milaura-font-body);
+  font-size: 11px;
   color: var(--milaura-text-light);
 }
-.dash-reading.is-open .dash-reading-arrow {
-  transform: rotate(180deg);
+
+/* Dominant profile row */
+.dash-diagnostic-dominant {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(var(--dash-accent-rgb), 0.08);
+  border-radius: 14px;
+  margin-bottom: 16px;
 }
-.dash-reading-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.dash-diagnostic-dominant-icon {
+  font-size: 24px;
+  line-height: 1;
 }
-.dash-reading.is-open .dash-reading-body {
-  max-height: 600px;
+.dash-diagnostic-dominant-info {
+  flex: 1;
 }
-.dash-reading-inner {
-  padding: 0 20px 20px;
+.dash-diagnostic-dominant-label {
+  font-family: var(--milaura-font-heading);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dash-accent);
+  margin: 0;
 }
-.dash-reading-text {
+.dash-diagnostic-dominant-mood {
+  font-family: var(--milaura-font-body);
+  font-size: 12px;
+  color: var(--milaura-text-light);
+  margin: 2px 0 0 0;
+}
+.dash-diagnostic-dominant-pct {
+  font-family: var(--milaura-font-heading);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--dash-accent);
+}
+
+/* Cold reading text (word reveal) */
+.dash-diagnostic-reading {
   font-family: var(--milaura-font-body);
   font-size: {{ section.settings.body_size | default: 14 }}px;
   color: var(--milaura-text-light);
   line-height: 1.7;
-  margin: 0 0 14px 0;
+  margin: 0 0 16px 0;
 }
-.dash-reading-text .word {
+.dash-diagnostic-reading .word {
   opacity: 0;
   transition: opacity 0.25s ease;
 }
-.dash-reading-text .word.visible { opacity: 1; }
-.dash-reading-bullets {
+.dash-diagnostic-reading .word.visible { opacity: 1; }
+
+/* Bullets */
+.dash-diagnostic-needs-title {
+  font-family: var(--milaura-font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--milaura-text);
+  margin: 0 0 8px 0;
+}
+.dash-diagnostic-bullets {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 18px 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.dash-reading-bullets li {
+.dash-diagnostic-bullets li {
   font-family: var(--milaura-font-body);
   font-size: 13px;
   color: var(--milaura-text);
@@ -377,7 +417,7 @@
   position: relative;
   line-height: 1.5;
 }
-.dash-reading-bullets li::before {
+.dash-diagnostic-bullets li::before {
   content: '';
   position: absolute;
   left: 0;
@@ -387,6 +427,33 @@
   border-radius: 50%;
   background: var(--dash-accent);
   opacity: 0.5;
+}
+
+/* Secondary profiles */
+.dash-diagnostic-others-title {
+  font-family: var(--milaura-font-body);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--milaura-text-light);
+  margin: 0 0 8px 0;
+}
+.dash-diagnostic-others {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.dash-diagnostic-other {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 50px;
+  background: rgba(192, 160, 98, 0.06);
+  border: 1px solid rgba(192, 160, 98, 0.12);
+  font-family: var(--milaura-font-body);
+  font-size: 11px;
+  color: var(--milaura-text-light);
 }
 
 /* ============================================
@@ -415,7 +482,6 @@
   width: 75%;
   max-width: 280px;
   scroll-snap-align: start;
-  background-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
@@ -449,78 +515,9 @@
 }
 
 /* ============================================
-   MOOD BARS (compact)
-   ============================================ */
-.dash-mood { padding: 0; }
-.dash-mood-title {
-  font-family: var(--milaura-font-heading);
-  font-size: 17px;
-  font-weight: 500;
-  color: var(--milaura-text);
-  margin: 0 0 10px 4px;
-}
-.dash-mood-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background-color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(192, 160, 98, 0.2);
-  border-radius: 18px;
-  padding: 16px 14px;
-}
-.dash-mood-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.dash-mood-label {
-  width: 85px;
-  font-family: var(--milaura-font-body);
-  font-size: 12px;
-  color: var(--milaura-text-light);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  flex-shrink: 0;
-}
-.dash-mood-label-icon { font-size: 12px; line-height: 1; }
-.dash-mood-track {
-  flex: 1;
-  height: 6px;
-  background: rgba(192, 160, 98, 0.08);
-  border-radius: 6px;
-  overflow: hidden;
-  min-width: 40px;
-}
-.dash-mood-fill {
-  height: 100%;
-  border-radius: 6px;
-  width: 0%;
-  transition: width 1s ease;
-}
-.dash-mood-fill.is-winner {
-  background: linear-gradient(90deg, var(--dash-accent), rgba(var(--dash-accent-rgb), 0.5));
-}
-.dash-mood-fill.is-secondary {
-  background: linear-gradient(90deg, rgba(192, 160, 98, 0.3), rgba(192, 160, 98, 0.1));
-}
-.dash-mood-pct {
-  width: 36px;
-  font-family: var(--milaura-font-body);
-  font-size: 11px;
-  color: var(--milaura-text-light);
-  text-align: right;
-  flex-shrink: 0;
-}
-
-/* ============================================
    VOYAGE (compact card)
    ============================================ */
 .dash-voyage {
-  background-color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -550,55 +547,6 @@
 }
 
 /* ============================================
-   BOTTOM TAB BAR (fixed, app-like)
-   ============================================ */
-.dash-tabbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background-color: rgba(255, 255, 255, 0.96);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-top: 1px solid rgba(192, 160, 98, 0.2);
-  display: none; /* shown by JS */
-  justify-content: space-around;
-  align-items: center;
-  padding: 8px 0;
-  padding-bottom: max(8px, env(safe-area-inset-bottom));
-}
-.dash-tab {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  text-decoration: none;
-  padding: 4px 12px;
-  border-radius: 12px;
-  transition: background 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-.dash-tab:active {
-  background: rgba(var(--dash-accent-rgb), 0.08);
-}
-.dash-tab-icon {
-  font-size: 20px;
-  line-height: 1;
-}
-.dash-tab-label {
-  font-family: var(--milaura-font-body);
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--milaura-text-light);
-  letter-spacing: 0.3px;
-}
-.dash-tab.is-active .dash-tab-label {
-  color: var(--dash-accent);
-}
-
-/* ============================================
    SCROLL REVEAL
    ============================================ */
 .dash-reveal {
@@ -612,58 +560,82 @@
 }
 
 /* ============================================
-   RESPONSIVE DESKTOP (> 520px)
+   DESKTOP LAYOUT (>= 768px)
    ============================================ */
-@media screen and (min-width: 521px) {
-  #MilauraDashboard-{{ section.id }} {
-    padding-bottom: 40px;
+@media screen and (min-width: 768px) {
+  .dash-main.is-visible {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 20px;
+    align-items: start;
   }
-  .dash-tabbar {
-    position: static;
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border-top: none;
-    padding: 8px 0;
-    gap: 8px;
+  .dash-col-left,
+  .dash-col-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
-  .dash-tab {
-    flex-direction: row;
-    gap: 6px;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(192, 160, 98, 0.25);
-    border-radius: 50px;
+  .dash-col-left {
+    position: sticky;
+    top: 20px;
   }
-  .dash-tab:hover {
-    border-color: var(--milaura-gold);
-    box-shadow: 0 4px 15px rgba(192, 160, 98, 0.15);
+  .dash-hero,
+  .dash-kpis,
+  .dash-mantra,
+  .dash-diagnostic,
+  .dash-ritual,
+  .dash-voyage {
+    order: unset;
   }
-  .dash-tab-label {
-    font-size: 12px;
+  .dash-kpis {
+    overflow-x: visible;
+    flex-wrap: wrap;
   }
   .dash-ritual-step {
     width: 45%;
+    max-width: none;
   }
 }
 
 /* ============================================
-   SMALL MOBILE (≤380px)
+   LARGE DESKTOP (>= 1024px)
+   ============================================ */
+@media screen and (min-width: 1024px) {
+  .dash-hero {
+    padding: 36px 32px;
+  }
+  .dash-greeting {
+    font-size: 28px;
+  }
+  .dash-pain {
+    font-size: 20px;
+  }
+  .dash-hero-product-img {
+    width: 72px;
+    height: 72px;
+  }
+  .dash-diagnostic {
+    padding: 28px 24px;
+  }
+}
+
+/* ============================================
+   SMALL MOBILE (<=380px)
    ============================================ */
 @media screen and (max-width: 380px) {
+  #MilauraDashboard-{{ section.id }} {
+    padding: 0 8px 32px;
+  }
   .dash-hero {
     padding: 20px 16px;
-    border-radius: 22px;
+    border-radius: 20px;
   }
   .dash-greeting {
     font-size: 20px;
   }
-  .dash-score-ring {
-    width: 110px;
-    height: 110px;
-  }
-  .dash-score-percent {
-    font-size: 26px;
+  .dash-product-tab {
+    padding: 6px 12px;
+    font-size: 11px;
   }
   .dash-kpi {
     padding: 8px 12px;
@@ -671,13 +643,9 @@
   .dash-mantra-text {
     font-size: 19px;
   }
-  .dash-mood-label {
-    width: 72px;
-    font-size: 11px;
-  }
-  .dash-reading-toggle {
-    font-size: 14px;
-    padding: 14px 16px;
+  .dash-diagnostic {
+    padding: 18px 14px;
+    border-radius: 20px;
   }
 }
 
@@ -686,12 +654,8 @@
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
   .dash-spinner { animation: none; border-top-color: transparent; }
-  .dash-score-fill { transition: none; }
-  .dash-mood-fill { transition: none; }
   .dash-reveal { opacity: 1; transform: none; transition: none; }
-  .dash-reading-body { transition: none; }
-  .dash-reading-text .word { opacity: 1; transition: none; }
-  .dash-reading-arrow { transition: none; }
+  .dash-diagnostic-reading .word { opacity: 1; transition: none; }
 }
 {% endstyle %}
 
@@ -718,157 +682,153 @@
   {%- comment -%} DASHBOARD {%- endcomment -%}
   <div class="dash-main" data-dash-state="dashboard">
 
-    {%- comment -%} HERO CARD: greeting + score + product CTA {%- endcomment -%}
-    <div class="dash-hero dash-reveal">
-      <h1 class="dash-greeting">
-        {{ section.settings.greeting_prefix | default: "Bonjour" }}{% if customer %} {{ customer.first_name }}{% endif %}
-      </h1>
-      <div class="dash-badge" data-dash-badge>
-        <span class="dash-badge-icon" data-dash-badge-icon></span>
-        <span data-dash-badge-label></span>
-      </div>
-      <a href="#" class="dash-review-link" data-dash-review-link>Revoir mon diagnostic →</a>
+    {%- comment -%} LEFT COLUMN {%- endcomment -%}
+    <div class="dash-col-left">
 
-      <div class="dash-score-ring">
-        <svg viewBox="0 0 160 160" aria-hidden="true">
-          <circle class="dash-score-bg" cx="80" cy="80" r="70"></circle>
-          <circle class="dash-score-fill" cx="80" cy="80" r="70" data-dash-score-circle></circle>
-        </svg>
-        <div class="dash-score-value">
-          <span class="dash-score-percent" data-dash-score-pct>0%</span>
-          <span class="dash-score-label">{{ section.settings.score_label | default: "Vibration" }}</span>
+      {%- comment -%} HERO CARD {%- endcomment -%}
+      <div class="dash-hero dash-glass dash-reveal">
+        <h1 class="dash-greeting">
+          {{ section.settings.greeting_prefix | default: "Bonjour" }}{% if customer %} {{ customer.first_name }}{% endif %}
+        </h1>
+        <div class="dash-badge" data-dash-badge>
+          <span class="dash-badge-icon" data-dash-badge-icon></span>
+          <span data-dash-badge-label></span>
+        </div>
+        <a href="#" class="dash-review-link" data-dash-review-link>Revoir mon diagnostic →</a>
+
+        <p class="dash-pain" data-dash-pain></p>
+
+        {%- comment -%} Product tabs [Bougie] [Pierre] [Rituel] {%- endcomment -%}
+        <div class="dash-product-tabs" data-dash-product-tabs>
+          <button type="button" class="dash-product-tab is-active" data-dash-tab="bougie">Bougie</button>
+          <button type="button" class="dash-product-tab" data-dash-tab="pierre">Pierre</button>
+          <button type="button" class="dash-product-tab" data-dash-tab="rituel">Rituel</button>
+        </div>
+
+        <div data-dash-product-panel>
+          <div class="dash-hero-product-empty" data-dash-product-empty style="display:none">
+            Produit bientôt disponible
+          </div>
         </div>
       </div>
 
-      <div class="dash-hero-cta" data-dash-hero-cta style="display:none">
-        <img class="dash-hero-cta-img" src="" alt="" data-dash-product-img loading="lazy">
-        <div class="dash-hero-cta-info">
-          <p class="dash-hero-cta-name" data-dash-product-title></p>
-          <p class="dash-hero-cta-sub" data-dash-product-badges></p>
-        </div>
-        <button type="button" class="milaura-btn-gold dash-hero-cta-btn" data-dash-add-to-cart disabled>
-          Adopter
-        </button>
+      {%- comment -%} MANTRA {%- endcomment -%}
+      <div class="dash-mantra dash-reveal">
+        <p class="dash-mantra-text">
+          <span class="dash-mantra-quotes">&laquo;&nbsp;</span><span data-dash-mantra></span><span class="dash-mantra-quotes">&nbsp;&raquo;</span>
+        </p>
       </div>
-    </div>
 
-    {%- comment -%} KPI PILLS (horizontal scroll) {%- endcomment -%}
-    <div class="dash-kpis dash-reveal">
-      <div class="dash-kpi">
-        <span class="dash-kpi-icon" data-dash-kpi-profile-icon></span>
-        <div class="dash-kpi-text">
-          <span class="dash-kpi-value" data-dash-kpi-profile></span>
-          <span class="dash-kpi-label">Profil</span>
-        </div>
-      </div>
-      <div class="dash-kpi">
-        <span class="dash-kpi-icon">💎</span>
-        <div class="dash-kpi-text">
-          <span class="dash-kpi-value" data-dash-kpi-stone></span>
-          <span class="dash-kpi-label">Pierre</span>
-        </div>
-      </div>
-      <div class="dash-kpi">
-        <span class="dash-kpi-icon">🕯️</span>
-        <div class="dash-kpi-text">
-          <span class="dash-kpi-value" data-dash-kpi-scent></span>
-          <span class="dash-kpi-label">Senteur</span>
-        </div>
-      </div>
-      <div class="dash-kpi">
-        <span class="dash-kpi-icon">📅</span>
-        <div class="dash-kpi-text">
-          <span class="dash-kpi-value" data-dash-kpi-date></span>
-          <span class="dash-kpi-label">Diagnostic</span>
-        </div>
-      </div>
-    </div>
+    </div><!-- /dash-col-left -->
 
-    {%- comment -%} MANTRA {%- endcomment -%}
-    <div class="dash-mantra dash-reveal">
-      <p class="dash-mantra-text">
-        <span class="dash-mantra-quotes">&laquo;&nbsp;</span><span data-dash-mantra></span><span class="dash-mantra-quotes">&nbsp;&raquo;</span>
-      </p>
-    </div>
+    {%- comment -%} RIGHT COLUMN {%- endcomment -%}
+    <div class="dash-col-right">
 
-    {%- comment -%} COLD READING (accordion) {%- endcomment -%}
-    {%- if section.settings.show_cold_reading != false -%}
-    <div class="dash-reading dash-reveal" data-dash-reading>
-      <button type="button" class="dash-reading-toggle" data-dash-reading-toggle aria-expanded="false">
-        <span data-dash-reading-title></span>
-        <svg class="dash-reading-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="dash-reading-body">
-        <div class="dash-reading-inner">
-          <p class="dash-reading-text" data-dash-reading-text></p>
-          <ul class="dash-reading-bullets" data-dash-reading-bullets></ul>
+      {%- comment -%} KPI PILLS {%- endcomment -%}
+      <div class="dash-kpis dash-reveal">
+        <div class="dash-kpi">
+          <span class="dash-kpi-icon" data-dash-kpi-profile-icon></span>
+          <div class="dash-kpi-text">
+            <span class="dash-kpi-value" data-dash-kpi-profile></span>
+            <span class="dash-kpi-label">Profil</span>
+          </div>
+        </div>
+        <div class="dash-kpi">
+          <span class="dash-kpi-icon">💎</span>
+          <div class="dash-kpi-text">
+            <span class="dash-kpi-value" data-dash-kpi-stone></span>
+            <span class="dash-kpi-label">Pierre</span>
+          </div>
+        </div>
+        <div class="dash-kpi">
+          <span class="dash-kpi-icon">🕯️</span>
+          <div class="dash-kpi-text">
+            <span class="dash-kpi-value" data-dash-kpi-scent></span>
+            <span class="dash-kpi-label">Senteur</span>
+          </div>
+        </div>
+        <div class="dash-kpi">
+          <span class="dash-kpi-icon">📅</span>
+          <div class="dash-kpi-text">
+            <span class="dash-kpi-value" data-dash-kpi-date></span>
+            <span class="dash-kpi-label">Diagnostic</span>
+          </div>
         </div>
       </div>
-    </div>
-    {%- endif -%}
 
-    {%- comment -%} RITUAL (carousel) {%- endcomment -%}
-    <div class="dash-ritual dash-reveal" data-dash-ritual>
-      <h3 class="dash-ritual-title">{{ section.settings.ritual_title | default: "Ton rituel" }}</h3>
-      <div class="dash-ritual-steps" data-dash-ritual-steps></div>
-    </div>
+      {%- comment -%} DIAGNOSTIC BLOCK {%- endcomment -%}
+      <div class="dash-diagnostic dash-glass dash-reveal" data-dash-diagnostic>
+        <div class="dash-diagnostic-header">
+          <h2 class="dash-diagnostic-title">{{ section.settings.diagnostic_title | default: "Ton diagnostic" }}</h2>
+          <span class="dash-diagnostic-date" data-dash-diagnostic-date></span>
+        </div>
 
-    {%- comment -%} MOOD BARS {%- endcomment -%}
-    {%- if section.settings.show_mood_bars != false -%}
-    <div class="dash-mood dash-reveal" data-dash-mood>
-      <h3 class="dash-mood-title">{{ section.settings.mood_title | default: "Ta météo émotionnelle" }}</h3>
-      <div class="dash-mood-bars" data-dash-mood-bars></div>
-    </div>
-    {%- endif -%}
+        <div class="dash-diagnostic-dominant" data-dash-dominant>
+          <span class="dash-diagnostic-dominant-icon" data-dash-dominant-icon></span>
+          <div class="dash-diagnostic-dominant-info">
+            <p class="dash-diagnostic-dominant-label" data-dash-dominant-label></p>
+            <p class="dash-diagnostic-dominant-mood" data-dash-dominant-mood></p>
+          </div>
+          <span class="dash-diagnostic-dominant-pct" data-dash-dominant-pct></span>
+        </div>
 
-    {%- comment -%} VOYAGE {%- endcomment -%}
-    {%- if section.settings.show_voyage != false -%}
-    <div class="dash-voyage dash-reveal" data-dash-voyage>
-      <h3 class="dash-voyage-title">{{ section.settings.voyage_title | default: "Mon Voyage" }}</h3>
-      <p class="dash-voyage-date" data-dash-voyage-date></p>
-      <p class="dash-voyage-summary" data-dash-voyage-summary></p>
-    </div>
-    {%- endif -%}
+        <p class="dash-diagnostic-reading" data-dash-reading-text></p>
+
+        <p class="dash-diagnostic-needs-title">Ce dont tu as besoin :</p>
+        <ul class="dash-diagnostic-bullets" data-dash-diagnostic-bullets></ul>
+
+        <p class="dash-diagnostic-others-title">Autres profils</p>
+        <div class="dash-diagnostic-others" data-dash-diagnostic-others></div>
+      </div>
+
+      {%- comment -%} RITUAL {%- endcomment -%}
+      <div class="dash-ritual dash-reveal" data-dash-ritual>
+        <h3 class="dash-ritual-title">{{ section.settings.ritual_title | default: "Ton rituel" }}</h3>
+        <div class="dash-ritual-steps" data-dash-ritual-steps></div>
+      </div>
+
+      {%- comment -%} VOYAGE {%- endcomment -%}
+      {%- if section.settings.show_voyage != false -%}
+      <div class="dash-voyage dash-reveal" data-dash-voyage>
+        <h3 class="dash-voyage-title">{{ section.settings.voyage_title | default: "Mon Voyage" }}</h3>
+        <p class="dash-voyage-date" data-dash-voyage-date></p>
+        <p class="dash-voyage-summary" data-dash-voyage-summary></p>
+      </div>
+      {%- endif -%}
+
+    </div><!-- /dash-col-right -->
 
   </div><!-- /dash-main -->
 
-  {%- comment -%} BOTTOM TAB BAR {%- endcomment -%}
-  <nav class="dash-tabbar" data-dash-tabbar aria-label="Navigation rapide">
-    <a href="{{ section.settings.quiz_url | default: '/pages/diagnostic-emotionnel' }}" class="dash-tab">
-      <span class="dash-tab-icon">🔮</span>
-      <span class="dash-tab-label">Quiz</span>
-    </a>
-    <a href="/collections/all" class="dash-tab">
-      <span class="dash-tab-icon">🛍️</span>
-      <span class="dash-tab-label">Boutique</span>
-    </a>
-    <a href="#" class="dash-tab is-active" data-dash-tab-add>
-      <span class="dash-tab-icon">✨</span>
-      <span class="dash-tab-label" data-dash-tab-add-label>Adopter</span>
-    </a>
-    <a href="/account" class="dash-tab">
-      <span class="dash-tab-icon">👤</span>
-      <span class="dash-tab-label">Compte</span>
-    </a>
-  </nav>
-
 </div><!-- /MilauraDashboard -->
 
-{%- comment -%} PRODUCT DATA (Liquid → JSON) {%- endcomment -%}
+{%- comment -%} PRODUCT DATA (Liquid → JSON) — 3 products per profile {%- endcomment -%}
 <script type="application/json" data-dash-products>
 {
   {%- assign profiles = "apaisement,protection,serenite,amour,chance" | split: "," -%}
+  {%- assign categories = "bougie,pierre,rituel" | split: "," -%}
   {%- for p in profiles -%}
-    {%- assign pid = "profile_" | append: p | append: "_product" -%}
-    {%- assign prod = section.settings[pid] -%}
-    "{{ p }}": {% if prod %}{
-      "title": {{ prod.title | json }},
-      "url": {{ prod.url | json }},
-      "price": {{ prod.price | money | json }},
-      "featured_image": {% if prod.featured_image %}{{ prod.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
-      "handle": {{ prod.handle | json }},
-      "variant_id": {% if prod.selected_or_first_available_variant %}{{ prod.selected_or_first_available_variant.id }}{% else %}null{% endif %}
-    }{% else %}null{% endif %}{% unless forloop.last %},{% endunless %}
+    "{{ p }}": {
+      {%- for cat in categories -%}
+        {%- assign pid = "profile_" | append: p | append: "_" | append: cat -%}
+        {%- assign prod = section.settings[pid] -%}
+        {%- comment -%} Fallback: legacy single product picker → bougie {%- endcomment -%}
+        {%- unless prod -%}
+          {%- if cat == "bougie" -%}
+            {%- assign legacy_pid = "profile_" | append: p | append: "_product" -%}
+            {%- assign prod = section.settings[legacy_pid] -%}
+          {%- endif -%}
+        {%- endunless -%}
+        "{{ cat }}": {% if prod %}{
+          "title": {{ prod.title | json }},
+          "url": {{ prod.url | json }},
+          "price": {{ prod.price | money | json }},
+          "featured_image": {% if prod.featured_image %}{{ prod.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          "handle": {{ prod.handle | json }},
+          "variant_id": {% if prod.selected_or_first_available_variant %}{{ prod.selected_or_first_available_variant.id }}{% else %}null{% endif %}
+        }{% else %}null{% endif %}{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    }{% unless forloop.last %},{% endunless %}
   {%- endfor -%}
 }
 </script>
@@ -882,7 +842,7 @@
   if (!root) return;
 
   /* ============================================
-     PROFILES (identique a quiz.liquid)
+     PROFILES
      ============================================ */
   var PROFILES = {
     apaisement: {
@@ -955,31 +915,27 @@
     badge: root.querySelector('[data-dash-badge]'),
     badgeIcon: root.querySelector('[data-dash-badge-icon]'),
     badgeLabel: root.querySelector('[data-dash-badge-label]'),
-    scoreCircle: root.querySelector('[data-dash-score-circle]'),
-    scorePct: root.querySelector('[data-dash-score-pct]'),
+    pain: root.querySelector('[data-dash-pain]'),
+    productTabs: root.querySelector('[data-dash-product-tabs]'),
+    productPanel: root.querySelector('[data-dash-product-panel]'),
+    productEmpty: root.querySelector('[data-dash-product-empty]'),
     kpiProfile: root.querySelector('[data-dash-kpi-profile]'),
     kpiProfileIcon: root.querySelector('[data-dash-kpi-profile-icon]'),
     kpiStone: root.querySelector('[data-dash-kpi-stone]'),
     kpiScent: root.querySelector('[data-dash-kpi-scent]'),
     kpiDate: root.querySelector('[data-dash-kpi-date]'),
-    readingTitle: root.querySelector('[data-dash-reading-title]'),
+    diagnosticDate: root.querySelector('[data-dash-diagnostic-date]'),
+    dominantIcon: root.querySelector('[data-dash-dominant-icon]'),
+    dominantLabel: root.querySelector('[data-dash-dominant-label]'),
+    dominantMood: root.querySelector('[data-dash-dominant-mood]'),
+    dominantPct: root.querySelector('[data-dash-dominant-pct]'),
     readingText: root.querySelector('[data-dash-reading-text]'),
-    readingBullets: root.querySelector('[data-dash-reading-bullets]'),
-    readingToggle: root.querySelector('[data-dash-reading-toggle]'),
-    readingCard: root.querySelector('[data-dash-reading]'),
+    diagnosticBullets: root.querySelector('[data-dash-diagnostic-bullets]'),
+    diagnosticOthers: root.querySelector('[data-dash-diagnostic-others]'),
     mantra: root.querySelector('[data-dash-mantra]'),
-    heroCta: root.querySelector('[data-dash-hero-cta]'),
-    productImg: root.querySelector('[data-dash-product-img]'),
-    productTitle: root.querySelector('[data-dash-product-title]'),
-    productBadges: root.querySelector('[data-dash-product-badges]'),
-    addToCartBtn: root.querySelector('[data-dash-add-to-cart]'),
     ritualSteps: root.querySelector('[data-dash-ritual-steps]'),
-    moodBars: root.querySelector('[data-dash-mood-bars]'),
     voyageDate: root.querySelector('[data-dash-voyage-date]'),
     voyageSummary: root.querySelector('[data-dash-voyage-summary]'),
-    tabbar: root.querySelector('[data-dash-tabbar]'),
-    tabAdd: root.querySelector('[data-dash-tab-add]'),
-    tabAddLabel: root.querySelector('[data-dash-tab-add-label]'),
     reviewLink: root.querySelector('[data-dash-review-link]')
   };
 
@@ -990,12 +946,18 @@
     if (jsonEl) productData = JSON.parse(jsonEl.textContent);
   } catch (e) { console.error('Dashboard: product parse error', e); }
 
+  /* HELPERS */
+  function esc(str) {
+    var d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
   /* STATE */
   function showState(state) {
     els.loading.style.display = state === 'loading' ? 'flex' : 'none';
     els.empty.style.display = state === 'empty' ? 'block' : 'none';
-    els.main.style.display = state === 'dashboard' ? 'flex' : 'none';
-    if (els.tabbar) els.tabbar.style.display = state === 'dashboard' ? 'flex' : 'none';
+    els.main.classList.toggle('is-visible', state === 'dashboard');
   }
 
   function setAccentColor(hex, rgb) {
@@ -1003,20 +965,15 @@
     root.style.setProperty('--dash-accent-rgb', rgb);
   }
 
-  /* RENDER SCORE */
-  function renderScore(percentages, profileId) {
-    var pct = percentages && percentages[profileId] ? percentages[profileId] : 0;
-    if (els.scorePct) els.scorePct.textContent = Math.round(pct) + '%';
-    if (els.scoreCircle) {
-      var c = 2 * Math.PI * 70;
-      els.scoreCircle.style.strokeDasharray = c;
-      els.scoreCircle.style.strokeDashoffset = c;
-      requestAnimationFrame(function() {
-        requestAnimationFrame(function() {
-          els.scoreCircle.style.strokeDashoffset = c - (pct / 100) * c;
-        });
-      });
-    }
+  /* RENDER BADGE */
+  function renderBadge(profile) {
+    if (els.badgeIcon) els.badgeIcon.textContent = profile.icon;
+    if (els.badgeLabel) els.badgeLabel.textContent = 'Profil ' + profile.displayName;
+  }
+
+  /* RENDER PAIN PHRASE */
+  function renderPain(profile) {
+    if (els.pain) els.pain.textContent = profile.dashboardTitle;
   }
 
   /* RENDER KPIs */
@@ -1031,33 +988,112 @@
     }
   }
 
-  /* RENDER COLD READING (accordion + word reveal) */
-  function renderColdReading(profile) {
-    if (els.readingTitle) els.readingTitle.textContent = profile.dashboardTitle;
+  /* RENDER PRODUCT TABS */
+  var currentProfileId = null;
+  var currentTab = 'bougie';
+
+  function renderProductCard(profileId, category) {
+    var profileProducts = productData[profileId];
+    var prod = profileProducts ? profileProducts[category] : null;
+
+    /* Remove existing card */
+    var existing = els.productPanel.querySelector('.dash-hero-product');
+    if (existing) existing.remove();
+
+    if (!prod) {
+      if (els.productEmpty) els.productEmpty.style.display = 'block';
+      return;
+    }
+
+    if (els.productEmpty) els.productEmpty.style.display = 'none';
+
+    /* Create product card as <a> link */
+    var card = document.createElement('a');
+    card.href = prod.url || '#';
+    card.className = 'dash-hero-product';
+    card.innerHTML =
+      '<img class="dash-hero-product-img" src="' + esc(prod.featured_image || '') + '" alt="' + esc(prod.title || '') + '" loading="lazy">' +
+      '<div class="dash-hero-product-info">' +
+        '<p class="dash-hero-product-name">' + esc(prod.title || '') + '</p>' +
+        '<p class="dash-hero-product-price">' + esc(prod.price || '') + '</p>' +
+      '</div>' +
+      '<button type="button" class="milaura-btn-gold dash-hero-product-btn">Adopter</button>';
+
+    /* Add-to-cart on button */
+    var btn = card.querySelector('.dash-hero-product-btn');
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      addToCart(prod.variant_id, this);
+    });
+
+    els.productPanel.insertBefore(card, els.productEmpty);
+  }
+
+  function initProductTabs(profileId) {
+    currentProfileId = profileId;
+    var profileProducts = productData[profileId] || {};
+
+    if (els.productTabs) {
+      var tabs = els.productTabs.querySelectorAll('[data-dash-tab]');
+      var firstVisibleTab = null;
+      tabs.forEach(function(tab) {
+        var cat = tab.getAttribute('data-dash-tab');
+        var hasProd = profileProducts[cat] != null;
+        tab.style.display = hasProd ? '' : 'none';
+        tab.classList.remove('is-active');
+        if (hasProd && !firstVisibleTab) firstVisibleTab = tab;
+      });
+
+      /* Default to bougie, fallback to first available */
+      var defaultTab = els.productTabs.querySelector('[data-dash-tab="bougie"]');
+      if (defaultTab && defaultTab.style.display !== 'none') {
+        defaultTab.classList.add('is-active');
+        currentTab = 'bougie';
+      } else if (firstVisibleTab) {
+        firstVisibleTab.classList.add('is-active');
+        currentTab = firstVisibleTab.getAttribute('data-dash-tab');
+      }
+    }
+
+    renderProductCard(profileId, currentTab);
+  }
+
+  /* RENDER DIAGNOSTIC BLOCK */
+  function renderDiagnostic(data, profile, profileId) {
+    /* Date */
+    if (els.diagnosticDate && data.timestamp) {
+      var d = new Date(data.timestamp);
+      els.diagnosticDate.textContent = d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    /* Dominant profile */
+    var pct = data.percentages && data.percentages[profileId] ? Math.round(data.percentages[profileId]) : 0;
+    if (els.dominantIcon) els.dominantIcon.textContent = profile.icon;
+    if (els.dominantLabel) els.dominantLabel.textContent = profile.displayName;
+    if (els.dominantMood) els.dominantMood.textContent = profile.moodLabel;
+    if (els.dominantPct) els.dominantPct.textContent = pct + '%';
+
+    /* Cold reading text with word reveal */
     if (els.readingText) {
       var words = profile.description.split(' ');
-      els.readingText.innerHTML = words.map(function(w) { return '<span class="word">' + w + '</span>'; }).join(' ');
+      els.readingText.innerHTML = words.map(function(w) { return '<span class="word">' + esc(w) + '</span>'; }).join(' ');
     }
-    if (els.readingBullets && profile.bullets) {
-      els.readingBullets.innerHTML = profile.bullets.map(function(b) { return '<li>' + b + '</li>'; }).join('');
+
+    /* Bullets */
+    if (els.diagnosticBullets && profile.bullets) {
+      els.diagnosticBullets.innerHTML = profile.bullets.map(function(b) { return '<li>' + esc(b) + '</li>'; }).join('');
     }
-    /* Accordion toggle */
-    if (els.readingToggle && els.readingCard) {
-      els.readingToggle.addEventListener('click', function() {
-        var isOpen = els.readingCard.classList.toggle('is-open');
-        els.readingToggle.setAttribute('aria-expanded', isOpen);
-        /* Trigger word reveal on first open */
-        if (isOpen && els.readingText) {
-          var wordEls = els.readingText.querySelectorAll('.word:not(.visible)');
-          if (wordEls.length > 0) {
-            var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            wordEls.forEach(function(el, i) {
-              if (reduced) { el.classList.add('visible'); }
-              else { setTimeout(function() { el.classList.add('visible'); }, 25 * i); }
-            });
-          }
-        }
-      });
+
+    /* Secondary profiles */
+    if (els.diagnosticOthers && data.percentages) {
+      els.diagnosticOthers.innerHTML = MOOD_ORDER
+        .filter(function(id) { return id !== profileId; })
+        .map(function(id) {
+          var p = PROFILES[id];
+          var otherPct = Math.round(data.percentages[id] || 0);
+          return '<span class="dash-diagnostic-other">' + esc(p.label) + ' ' + otherPct + '%</span>';
+        }).join('');
     }
   }
 
@@ -1066,46 +1102,14 @@
     if (els.mantra) els.mantra.textContent = MANTRAS[profileId] || '';
   }
 
-  /* RENDER PRODUCT (in hero CTA + tab bar) */
-  var currentVariantId = null;
-  function renderProduct(profileId, profile) {
-    var prod = productData[profileId];
-    if (!prod) {
-      if (els.heroCta) els.heroCta.style.display = 'none';
-      return;
-    }
-    if (els.heroCta) els.heroCta.style.display = 'flex';
-    if (els.productImg) { els.productImg.src = prod.featured_image || ''; els.productImg.alt = prod.title || ''; }
-    if (els.productTitle) els.productTitle.textContent = prod.title || '';
-    if (els.productBadges) els.productBadges.textContent = profile.stone + ' · ' + profile.scent;
-    if (els.addToCartBtn && prod.variant_id) {
-      els.addToCartBtn.disabled = false;
-      currentVariantId = prod.variant_id;
-    }
-    /* Tab bar add button */
-    if (els.tabAddLabel) els.tabAddLabel.textContent = prod.price || 'Adopter';
-  }
-
   /* RENDER RITUAL */
   function renderRitual(profile, data) {
     if (!els.ritualSteps) return;
     var ritual = data.ritual || profile.ritual || '';
     var steps = ritual.split('\n').filter(function(s) { return s.trim(); });
     els.ritualSteps.innerHTML = steps.map(function(step, i) {
-      return '<div class="dash-ritual-step"><span class="dash-ritual-num">' + (i + 1) + '</span><span class="dash-ritual-text">' + step.replace(/^\d+\.\s*/, '') + '</span></div>';
+      return '<div class="dash-ritual-step"><span class="dash-ritual-num">' + (i + 1) + '</span><span class="dash-ritual-text">' + esc(step.replace(/^\d+\.\s*/, '')) + '</span></div>';
     }).join('');
-  }
-
-  /* RENDER MOOD BARS */
-  function renderMoodBars(percentages, profileId) {
-    if (!els.moodBars || !percentages) return;
-    els.moodBars.innerHTML = MOOD_ORDER.map(function(id) {
-      var p = PROFILES[id], pct = percentages[id] || 0, w = id === profileId;
-      return '<div class="dash-mood-row"><span class="dash-mood-label"><span class="dash-mood-label-icon">' + p.icon + '</span> ' + p.label + '</span><div class="dash-mood-track"><div class="dash-mood-fill ' + (w ? 'is-winner' : 'is-secondary') + '" data-pct="' + Math.round(pct) + '"></div></div><span class="dash-mood-pct">' + Math.round(pct) + '%</span></div>';
-    }).join('');
-    requestAnimationFrame(function() { requestAnimationFrame(function() {
-      els.moodBars.querySelectorAll('.dash-mood-fill').forEach(function(el) { el.style.width = el.getAttribute('data-pct') + '%'; });
-    }); });
   }
 
   /* RENDER VOYAGE */
@@ -1115,12 +1119,6 @@
       els.voyageDate.textContent = 'Diagnostic du ' + d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
     }
     if (els.voyageSummary) els.voyageSummary.textContent = 'Profil ' + profile.displayName + ' — ' + profile.stone + ' & ' + profile.scent;
-  }
-
-  /* RENDER BADGE */
-  function renderBadge(profile) {
-    if (els.badgeIcon) els.badgeIcon.textContent = profile.icon;
-    if (els.badgeLabel) els.badgeLabel.textContent = 'Profil ' + profile.displayName;
   }
 
   /* ADD TO CART */
@@ -1149,6 +1147,28 @@
     });
   }
 
+  /* WORD REVEAL (triggered by IntersectionObserver) */
+  function initWordReveal() {
+    if (!els.readingText) return;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      els.readingText.querySelectorAll('.word').forEach(function(el) { el.classList.add('visible'); });
+      return;
+    }
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          var wordEls = els.readingText.querySelectorAll('.word:not(.visible)');
+          wordEls.forEach(function(el, i) {
+            setTimeout(function() { el.classList.add('visible'); }, 25 * i);
+          });
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    obs.observe(els.readingText);
+  }
+
   /* SCROLL REVEAL */
   function initScrollAnimations() {
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1170,13 +1190,12 @@
 
     setAccentColor(data.profileAccent || profile.colorAccent, data.profileAccentRgb || profile.colorAccentRgb);
     renderBadge(profile);
-    renderScore(data.percentages, profileId);
+    renderPain(profile);
     renderKPIs(data, profile);
-    renderColdReading(profile);
+    initProductTabs(profileId);
+    renderDiagnostic(data, profile, profileId);
     renderMantra(profileId);
-    renderProduct(profileId, profile);
     renderRitual(profile, data);
-    renderMoodBars(data.percentages, profileId);
     renderVoyage(data, profile);
 
     /* Lien "Revoir mon diagnostic" */
@@ -1188,21 +1207,22 @@
 
     showState('dashboard');
     initScrollAnimations();
+    initWordReveal();
   }
 
   /* INIT */
   function init() {
     showState('loading');
 
-    /* Add-to-cart listeners */
-    if (els.addToCartBtn) {
-      els.addToCartBtn.addEventListener('click', function() { addToCart(currentVariantId, this); });
-    }
-    /* Tab bar add button */
-    if (els.tabAdd) {
-      els.tabAdd.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (currentVariantId && els.tabAddLabel) addToCart(currentVariantId, els.tabAddLabel);
+    /* Product tab click handlers */
+    if (els.productTabs) {
+      els.productTabs.addEventListener('click', function(e) {
+        var tab = e.target.closest('[data-dash-tab]');
+        if (!tab || tab.classList.contains('is-active')) return;
+        els.productTabs.querySelectorAll('[data-dash-tab]').forEach(function(t) { t.classList.remove('is-active'); });
+        tab.classList.add('is-active');
+        currentTab = tab.getAttribute('data-dash-tab');
+        if (currentProfileId) renderProductCard(currentProfileId, currentTab);
       });
     }
 
@@ -1221,9 +1241,33 @@
     if (e.detail && e.detail.profileId) showDashboard(e.detail);
   });
 
+  /* STYLE SHOPIFY ACCOUNT ZONE — empty state override */
+  function styleAccountZone() {
+    var accountSection = document.querySelector('.customer.account');
+    if (!accountSection) return;
+
+    /* Empty state: remplacer "Aucune commande" par CTA positif */
+    var ordersDiv = accountSection.querySelector(':scope > div:nth-of-type(2) > div:first-of-type');
+    if (ordersDiv) {
+      var emptyP = ordersDiv.querySelector('p');
+      var table = ordersDiv.querySelector('table');
+      if (emptyP && !table) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'milaura-empty-orders';
+        wrapper.innerHTML = '<p>Votre collection attend d\u2019\u00eatre cr\u00e9\u00e9e\u2026</p>'
+          + '<a href="/collections/all">D\u00e9couvrir nos pi\u00e8ces</a>';
+        emptyP.replaceWith(wrapper);
+      }
+    }
+  }
+
   /* BOOT */
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
-  else { init(); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { init(); styleAccountZone(); });
+  } else {
+    init();
+    styleAccountZone();
+  }
 })();
 </script>
 
@@ -1252,27 +1296,15 @@
     },
     {
       "type": "text",
-      "id": "score_label",
-      "label": "Label du score",
-      "default": "Vibration"
-    },
-    {
-      "type": "text",
-      "id": "product_eyebrow",
-      "label": "Accroche produit",
-      "default": "L'appel de l'âme"
+      "id": "diagnostic_title",
+      "label": "Titre du bloc diagnostic",
+      "default": "Ton diagnostic"
     },
     {
       "type": "text",
       "id": "ritual_title",
       "label": "Titre rituel",
       "default": "Ton rituel"
-    },
-    {
-      "type": "text",
-      "id": "mood_title",
-      "label": "Titre météo émotionnelle",
-      "default": "Ta météo émotionnelle"
     },
     {
       "type": "text",
@@ -1319,8 +1351,18 @@
     },
     {
       "type": "product",
-      "id": "profile_apaisement_product",
-      "label": "Produit Apaisement"
+      "id": "profile_apaisement_bougie",
+      "label": "Bougie Apaisement"
+    },
+    {
+      "type": "product",
+      "id": "profile_apaisement_pierre",
+      "label": "Pierre Apaisement"
+    },
+    {
+      "type": "product",
+      "id": "profile_apaisement_rituel",
+      "label": "Rituel Apaisement"
     },
     {
       "type": "text",
@@ -1334,8 +1376,18 @@
     },
     {
       "type": "product",
-      "id": "profile_protection_product",
-      "label": "Produit Protection"
+      "id": "profile_protection_bougie",
+      "label": "Bougie Protection"
+    },
+    {
+      "type": "product",
+      "id": "profile_protection_pierre",
+      "label": "Pierre Protection"
+    },
+    {
+      "type": "product",
+      "id": "profile_protection_rituel",
+      "label": "Rituel Protection"
     },
     {
       "type": "text",
@@ -1349,8 +1401,18 @@
     },
     {
       "type": "product",
-      "id": "profile_serenite_product",
-      "label": "Produit Sérénité"
+      "id": "profile_serenite_bougie",
+      "label": "Bougie Sérénité"
+    },
+    {
+      "type": "product",
+      "id": "profile_serenite_pierre",
+      "label": "Pierre Sérénité"
+    },
+    {
+      "type": "product",
+      "id": "profile_serenite_rituel",
+      "label": "Rituel Sérénité"
     },
     {
       "type": "text",
@@ -1364,8 +1426,18 @@
     },
     {
       "type": "product",
-      "id": "profile_amour_product",
-      "label": "Produit Amour"
+      "id": "profile_amour_bougie",
+      "label": "Bougie Amour"
+    },
+    {
+      "type": "product",
+      "id": "profile_amour_pierre",
+      "label": "Pierre Amour"
+    },
+    {
+      "type": "product",
+      "id": "profile_amour_rituel",
+      "label": "Rituel Amour"
     },
     {
       "type": "text",
@@ -1379,8 +1451,18 @@
     },
     {
       "type": "product",
-      "id": "profile_chance_product",
-      "label": "Produit Chance"
+      "id": "profile_chance_bougie",
+      "label": "Bougie Chance"
+    },
+    {
+      "type": "product",
+      "id": "profile_chance_pierre",
+      "label": "Pierre Chance"
+    },
+    {
+      "type": "product",
+      "id": "profile_chance_rituel",
+      "label": "Rituel Chance"
     },
     {
       "type": "text",
@@ -1425,18 +1507,6 @@
     {
       "type": "header",
       "content": "Affichage"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cold_reading",
-      "label": "Afficher le cold reading",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_mood_bars",
-      "label": "Afficher la météo émotionnelle",
-      "default": true
     },
     {
       "type": "checkbox",
