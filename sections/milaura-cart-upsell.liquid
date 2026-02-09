@@ -1,56 +1,32 @@
 {%- comment -%}
   MILAURA CART UPSELL
-  Suggestions produits complementaires
-  Filtre les produits deja dans le panier
+  Suggestions produits complementaires avec tabs Bougie/Pierre/Rituel
+  3 product pickers dans le customizer
+  @version 2.0.0 - 2026-02-09
 {%- endcomment -%}
 
 {%- liquid
-  assign upsell_products = blank
-  assign cart_product_ids = ''
-
-  # Build list of product IDs in cart
-  for item in cart.items
-    assign cart_product_ids = cart_product_ids | append: item.product.id | append: ','
-  endfor
-
-  # Get products from source collection
-  assign source_collection = collections[section.settings.source_collection]
-
-  if source_collection != blank and source_collection.products.size > 0
-    assign filtered_products = ''
-    assign count = 0
-
-    for product in source_collection.products
-      if count < 2
-        assign product_id_str = product.id | append: ','
-        unless cart_product_ids contains product_id_str
-          if product.available
-            assign count = count | plus: 1
-            # We can't build array in Liquid easily, so we'll use a different approach
-          endif
-        endunless
-      endif
-    endfor
+  assign bougie = section.settings.upsell_bougie
+  assign pierre = section.settings.upsell_pierre
+  assign rituel = section.settings.upsell_rituel
+  assign has_any = false
+  if bougie != blank or pierre != blank or rituel != blank
+    assign has_any = true
   endif
 -%}
 
 {%- style -%}
   #MilauraCartUpsell-{{ section.id }} {
     padding: var(--milaura-spacing-lg) 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(242, 232, 213, 0.3) 0%,
-      transparent 100%
-    );
   }
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__header {
     text-align: center;
-    margin-bottom: var(--milaura-spacing-lg);
+    margin-bottom: var(--milaura-spacing-md);
   }
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__title {
-    font-family: var(--milaura-font-heading);
+    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
     font-size: {{ section.settings.title_size }}px;
     color: {{ section.settings.title_color }};
     font-weight: 600;
@@ -63,21 +39,68 @@
     margin: 0;
   }
 
-  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--milaura-spacing-md);
-    max-width: 800px;
+  /* Tabs */
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tab {
+    padding: 10px 24px;
+    border: 1.5px solid rgba(192, 160, 98, 0.3);
+    border-radius: 50px;
+    background: transparent;
+    font-family: var(--milaura-font-body, 'Lato', sans-serif);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--milaura-text, #000000);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tab:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tab.is-active {
+    background: var(--milaura-gold, #C0A062);
+    border-color: var(--milaura-gold, #C0A062);
+    color: #ffffff;
+  }
+
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tab:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tab:disabled:hover {
+    border-color: rgba(192, 160, 98, 0.3);
+    color: var(--milaura-text, #000000);
+  }
+
+  /* Card wrapper */
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__card-wrapper {
+    max-width: 480px;
     margin: 0 auto;
   }
 
-  /* Upsell card */
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__card {
-    background: #ffffff;
-    border-radius: var(--milaura-border-radius, 20px);
+    display: none;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: var(--milaura-border-radius, 20px);
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__card.is-active {
+    display: block;
   }
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__card:hover {
@@ -87,7 +110,7 @@
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__image-link {
     display: block;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
   }
 
@@ -104,16 +127,25 @@
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__content {
     padding: var(--milaura-spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--milaura-spacing-md);
+  }
+
+  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__info {
+    flex: 1;
+    min-width: 0;
   }
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__product-title {
     font-family: 'Playfair Display', serif;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
     color: var(--milaura-text, #000000);
     text-decoration: none;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     line-height: 1.3;
     transition: color 0.3s ease;
   }
@@ -123,10 +155,9 @@
   }
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__price {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--milaura-gold, #C0A062);
-    margin-bottom: var(--milaura-spacing-sm);
   }
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__price-compare {
@@ -137,22 +168,19 @@
     font-weight: 400;
   }
 
-  #MilauraCartUpsell-{{ section.id }} .milaura-upsell__form {
-    width: 100%;
-  }
-
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__cta {
-    width: 100%;
-    padding: 10px;
+    flex-shrink: 0;
+    padding: 12px 24px;
     background: var(--milaura-gold, #C0A062);
     color: #ffffff;
     border: none;
-    border-radius: 10px;
+    border-radius: 50px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    white-space: nowrap;
   }
 
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__cta:hover {
@@ -179,10 +207,10 @@
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-top-color: #ffffff;
     border-radius: 50%;
-    animation: spin 0.6s linear infinite;
+    animation: milauraUpsellSpin 0.6s linear infinite;
   }
 
-  @keyframes spin {
+  @keyframes milauraUpsellSpin {
     to { transform: rotate(360deg); }
   }
 
@@ -190,41 +218,42 @@
     background: #4CAF50;
   }
 
+  /* Empty state */
   #MilauraCartUpsell-{{ section.id }} .milaura-upsell__empty {
     text-align: center;
-    padding: var(--milaura-spacing-lg);
+    padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
     color: var(--milaura-text-light, #666666);
+    font-size: 15px;
+    font-style: italic;
   }
 
   /* Mobile */
   @media screen and (max-width: 768px) {
-    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__grid {
-      grid-template-columns: 1fr;
-      max-width: 400px;
+    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tabs {
+      width: 100%;
+      gap: 6px;
     }
 
-    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__card {
-      display: grid;
-      grid-template-columns: 100px 1fr;
+    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tab {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 13px;
+      text-align: center;
     }
 
-    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__image-link {
-      aspect-ratio: 1 / 1;
+    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__card-wrapper {
+      max-width: 100%;
     }
 
     #MilauraCartUpsell-{{ section.id }} .milaura-upsell__content {
-      padding: var(--milaura-spacing-sm);
-      display: flex;
       flex-direction: column;
-      justify-content: center;
+      align-items: stretch;
+      gap: var(--milaura-spacing-sm);
     }
 
-    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__product-title {
-      font-size: 14px;
-    }
-
-    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__price {
-      font-size: 14px;
+    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__cta {
+      width: 100%;
+      text-align: center;
     }
   }
 
@@ -232,7 +261,8 @@
   @media (prefers-reduced-motion: reduce) {
     #MilauraCartUpsell-{{ section.id }} .milaura-upsell__card,
     #MilauraCartUpsell-{{ section.id }} .milaura-upsell__image,
-    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__cta {
+    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__cta,
+    #MilauraCartUpsell-{{ section.id }} .milaura-upsell__tab {
       transition: none;
     }
 
@@ -258,81 +288,168 @@
         {%- endif -%}
       </div>
 
-      {%- assign source_collection = collections[section.settings.source_collection] -%}
+      {%- if has_any -%}
+        {%- comment -%} Tabs {%- endcomment -%}
+        <div class="milaura-upsell__tabs" role="tablist">
+          <button
+            class="milaura-upsell__tab is-active"
+            role="tab"
+            aria-selected="true"
+            aria-controls="upsell-panel-bougie-{{ section.id }}"
+            data-upsell-tab="bougie"
+            {% if bougie == blank %}disabled{% endif %}
+          >
+            {{ section.settings.tab_bougie_label }}
+          </button>
+          <button
+            class="milaura-upsell__tab"
+            role="tab"
+            aria-selected="false"
+            aria-controls="upsell-panel-pierre-{{ section.id }}"
+            data-upsell-tab="pierre"
+            {% if pierre == blank %}disabled{% endif %}
+          >
+            {{ section.settings.tab_pierre_label }}
+          </button>
+          <button
+            class="milaura-upsell__tab"
+            role="tab"
+            aria-selected="false"
+            aria-controls="upsell-panel-rituel-{{ section.id }}"
+            data-upsell-tab="rituel"
+            {% if rituel == blank %}disabled{% endif %}
+          >
+            {{ section.settings.tab_rituel_label }}
+          </button>
+        </div>
 
-      {%- if source_collection != blank and source_collection.products.size > 0 -%}
-        <div class="milaura-upsell__grid">
-          {%- assign displayed_count = 0 -%}
-          {%- for product in source_collection.products -%}
-            {%- if displayed_count < 2 -%}
-              {%- assign product_id_str = product.id | append: ',' -%}
-              {%- unless cart_product_ids contains product_id_str -%}
-                {%- if product.available -%}
-                  {%- assign displayed_count = displayed_count | plus: 1 -%}
-                  {%- assign variant = product.selected_or_first_available_variant -%}
+        {%- comment -%} Product cards {%- endcomment -%}
+        <div class="milaura-upsell__card-wrapper">
 
-                  <div class="milaura-upsell__card">
-                    <a href="{{ product.url }}" class="milaura-upsell__image-link">
-                      {%- if product.featured_image -%}
-                        {{
-                          product.featured_image
-                          | image_url: width: 400
-                          | image_tag:
-                            class: 'milaura-upsell__image',
-                            loading: 'lazy',
-                            widths: '165, 360, 400',
-                            sizes: '(min-width: 768px) 300px, 100px',
-                            alt: product.title | escape
-                        }}
-                      {%- else -%}
-                        {{ 'product-1' | placeholder_svg_tag: 'milaura-upsell__image' }}
-                      {%- endif -%}
-                    </a>
-
-                    <div class="milaura-upsell__content">
-                      <a href="{{ product.url }}" class="milaura-upsell__product-title">
-                        {{ product.title | escape }}
-                      </a>
-
-                      <div class="milaura-upsell__price">
-                        {%- if variant.compare_at_price > variant.price -%}
-                          <span class="milaura-upsell__price-compare">
-                            {{ variant.compare_at_price | money }}
-                          </span>
-                        {%- endif -%}
-                        {{ variant.price | money }}
-                      </div>
-
-                      {%- form 'product', product, class: 'milaura-upsell__form' -%}
-                        <input type="hidden" name="id" value="{{ variant.id }}">
-                        <input type="hidden" name="quantity" value="1">
-
-                        <button
-                          type="submit"
-                          name="add"
-                          class="milaura-upsell__cta"
-                          data-upsell-add
-                          data-variant-id="{{ variant.id }}"
-                        >
-                          {{ section.settings.button_text | default: 'Ajouter' }}
-                        </button>
-                      {%- endform -%}
-                    </div>
-                  </div>
+          {%- comment -%} Bougie card {%- endcomment -%}
+          {%- if bougie != blank -%}
+            {%- assign variant_b = bougie.selected_or_first_available_variant -%}
+            <div class="milaura-upsell__card is-active" id="upsell-panel-bougie-{{ section.id }}" role="tabpanel" data-upsell-panel="bougie">
+              <a href="{{ bougie.url }}" class="milaura-upsell__image-link">
+                {%- if bougie.featured_image -%}
+                  {{ bougie.featured_image | image_url: width: 600 | image_tag:
+                    class: 'milaura-upsell__image',
+                    loading: 'lazy',
+                    widths: '300, 450, 600',
+                    sizes: '(min-width: 768px) 480px, 100vw',
+                    alt: bougie.title | escape
+                  }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'milaura-upsell__image' }}
                 {%- endif -%}
-              {%- endunless -%}
-            {%- endif -%}
-          {%- endfor -%}
-
-          {%- if displayed_count == 0 -%}
-            <p class="milaura-upsell__empty">
-              {{ section.settings.empty_message | default: 'Aucune suggestion disponible' }}
-            </p>
+              </a>
+              <div class="milaura-upsell__content">
+                <div class="milaura-upsell__info">
+                  <a href="{{ bougie.url }}" class="milaura-upsell__product-title">{{ bougie.title | escape }}</a>
+                  <div class="milaura-upsell__price">
+                    {%- if variant_b.compare_at_price > variant_b.price -%}
+                      <span class="milaura-upsell__price-compare">{{ variant_b.compare_at_price | money }}</span>
+                    {%- endif -%}
+                    {{ variant_b.price | money }}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="milaura-upsell__cta"
+                  data-upsell-add
+                  data-variant-id="{{ variant_b.id }}"
+                  {% unless variant_b.available %}disabled{% endunless %}
+                >
+                  {{ section.settings.button_text }}
+                </button>
+              </div>
+            </div>
           {%- endif -%}
+
+          {%- comment -%} Pierre card {%- endcomment -%}
+          {%- if pierre != blank -%}
+            {%- assign variant_p = pierre.selected_or_first_available_variant -%}
+            <div class="milaura-upsell__card" id="upsell-panel-pierre-{{ section.id }}" role="tabpanel" data-upsell-panel="pierre">
+              <a href="{{ pierre.url }}" class="milaura-upsell__image-link">
+                {%- if pierre.featured_image -%}
+                  {{ pierre.featured_image | image_url: width: 600 | image_tag:
+                    class: 'milaura-upsell__image',
+                    loading: 'lazy',
+                    widths: '300, 450, 600',
+                    sizes: '(min-width: 768px) 480px, 100vw',
+                    alt: pierre.title | escape
+                  }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'milaura-upsell__image' }}
+                {%- endif -%}
+              </a>
+              <div class="milaura-upsell__content">
+                <div class="milaura-upsell__info">
+                  <a href="{{ pierre.url }}" class="milaura-upsell__product-title">{{ pierre.title | escape }}</a>
+                  <div class="milaura-upsell__price">
+                    {%- if variant_p.compare_at_price > variant_p.price -%}
+                      <span class="milaura-upsell__price-compare">{{ variant_p.compare_at_price | money }}</span>
+                    {%- endif -%}
+                    {{ variant_p.price | money }}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="milaura-upsell__cta"
+                  data-upsell-add
+                  data-variant-id="{{ variant_p.id }}"
+                  {% unless variant_p.available %}disabled{% endunless %}
+                >
+                  {{ section.settings.button_text }}
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Rituel card {%- endcomment -%}
+          {%- if rituel != blank -%}
+            {%- assign variant_r = rituel.selected_or_first_available_variant -%}
+            <div class="milaura-upsell__card" id="upsell-panel-rituel-{{ section.id }}" role="tabpanel" data-upsell-panel="rituel">
+              <a href="{{ rituel.url }}" class="milaura-upsell__image-link">
+                {%- if rituel.featured_image -%}
+                  {{ rituel.featured_image | image_url: width: 600 | image_tag:
+                    class: 'milaura-upsell__image',
+                    loading: 'lazy',
+                    widths: '300, 450, 600',
+                    sizes: '(min-width: 768px) 480px, 100vw',
+                    alt: rituel.title | escape
+                  }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'milaura-upsell__image' }}
+                {%- endif -%}
+              </a>
+              <div class="milaura-upsell__content">
+                <div class="milaura-upsell__info">
+                  <a href="{{ rituel.url }}" class="milaura-upsell__product-title">{{ rituel.title | escape }}</a>
+                  <div class="milaura-upsell__price">
+                    {%- if variant_r.compare_at_price > variant_r.price -%}
+                      <span class="milaura-upsell__price-compare">{{ variant_r.compare_at_price | money }}</span>
+                    {%- endif -%}
+                    {{ variant_r.price | money }}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="milaura-upsell__cta"
+                  data-upsell-add
+                  data-variant-id="{{ variant_r.id }}"
+                  {% unless variant_r.available %}disabled{% endunless %}
+                >
+                  {{ section.settings.button_text }}
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+
         </div>
       {%- else -%}
         <p class="milaura-upsell__empty">
-          {{ section.settings.empty_message | default: 'Aucune suggestion disponible' }}
+          {{ section.settings.empty_message }}
         </p>
       {%- endif -%}
     </div>
@@ -341,44 +458,82 @@
 
 <script>
 (function() {
-  const sectionId = '{{ section.id }}';
-  const section = document.getElementById('MilauraCartUpsell-' + sectionId);
+  var sectionId = '{{ section.id }}';
+  var section = document.getElementById('MilauraCartUpsell-' + sectionId);
   if (!section) return;
 
-  const forms = section.querySelectorAll('.milaura-upsell__form');
+  /* --- Tabs --- */
+  var tabs = section.querySelectorAll('[data-upsell-tab]');
+  var panels = section.querySelectorAll('[data-upsell-panel]');
 
-  forms.forEach(function(form) {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      if (tab.disabled) return;
+      var target = tab.getAttribute('data-upsell-tab');
 
-      const btn = form.querySelector('.milaura-upsell__cta');
-      const formData = new FormData(form);
+      tabs.forEach(function(t) {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('is-active');
+      tab.setAttribute('aria-selected', 'true');
 
-      // Loading state
+      panels.forEach(function(p) {
+        p.classList.remove('is-active');
+      });
+      var activePanel = section.querySelector('[data-upsell-panel="' + target + '"]');
+      if (activePanel) activePanel.classList.add('is-active');
+    });
+  });
+
+  /* --- If first tab is disabled, activate the first enabled one --- */
+  var firstTab = section.querySelector('[data-upsell-tab].is-active');
+  if (firstTab && firstTab.disabled) {
+    firstTab.classList.remove('is-active');
+    firstTab.setAttribute('aria-selected', 'false');
+    panels.forEach(function(p) { p.classList.remove('is-active'); });
+
+    var enabledTab = section.querySelector('[data-upsell-tab]:not(:disabled)');
+    if (enabledTab) {
+      enabledTab.classList.add('is-active');
+      enabledTab.setAttribute('aria-selected', 'true');
+      var key = enabledTab.getAttribute('data-upsell-tab');
+      var panel = section.querySelector('[data-upsell-panel="' + key + '"]');
+      if (panel) panel.classList.add('is-active');
+    }
+  }
+
+  /* --- Add to cart --- */
+  var addBtns = section.querySelectorAll('[data-upsell-add]');
+
+  addBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var variantId = btn.getAttribute('data-variant-id');
+      if (!variantId) return;
+
       btn.classList.add('is-loading');
       btn.disabled = true;
 
       fetch('/cart/add.js', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: parseInt(variantId, 10), quantity: 1 })
       })
-      .then(response => response.json())
-      .then(data => {
+      .then(function(r) { return r.json(); })
+      .then(function() {
         btn.classList.remove('is-loading');
         btn.classList.add('is-success');
-        const originalText = btn.textContent;
+        var originalText = btn.textContent;
         btn.textContent = 'Ajoute !';
 
-        // Trigger cart update
         document.dispatchEvent(new CustomEvent('cart:updated'));
 
-        // Reload page after short delay to show updated cart
         setTimeout(function() {
           window.location.reload();
-        }, 1000);
+        }, 800);
       })
-      .catch(error => {
-        console.error('Erreur ajout panier:', error);
+      .catch(function(err) {
+        console.error('Erreur ajout panier:', err);
         btn.classList.remove('is-loading');
         btn.textContent = 'Erreur';
 
@@ -400,7 +555,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "📝 Contenu"
+      "content": "Contenu"
     },
     {
       "type": "text",
@@ -416,12 +571,44 @@
     },
     {
       "type": "header",
-      "content": "⚙️ Source"
+      "content": "Produits"
     },
     {
-      "type": "collection",
-      "id": "source_collection",
-      "label": "Collection source"
+      "type": "product",
+      "id": "upsell_bougie",
+      "label": "Bougie"
+    },
+    {
+      "type": "product",
+      "id": "upsell_pierre",
+      "label": "Pierre / Bijou"
+    },
+    {
+      "type": "product",
+      "id": "upsell_rituel",
+      "label": "Rituel / Accessoire"
+    },
+    {
+      "type": "header",
+      "content": "Onglets"
+    },
+    {
+      "type": "text",
+      "id": "tab_bougie_label",
+      "label": "Label onglet Bougie",
+      "default": "Bougie"
+    },
+    {
+      "type": "text",
+      "id": "tab_pierre_label",
+      "label": "Label onglet Pierre",
+      "default": "Pierre"
+    },
+    {
+      "type": "text",
+      "id": "tab_rituel_label",
+      "label": "Label onglet Rituel",
+      "default": "Rituel"
     },
     {
       "type": "text",
@@ -433,11 +620,11 @@
       "type": "text",
       "id": "empty_message",
       "label": "Message si vide",
-      "default": "Aucune suggestion disponible"
+      "default": "Aucune suggestion disponible pour le moment."
     },
     {
       "type": "header",
-      "content": "✏️ Style"
+      "content": "Style"
     },
     {
       "type": "range",
