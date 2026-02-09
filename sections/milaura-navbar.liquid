@@ -369,11 +369,11 @@
     pointer-events: none;
   }
 
-  /* --- MENU BURGER --- */
+  /* --- MENU TOGGLE — Étoile Milaura --- */
   #MilauraNav-{{ section.id }} .nav-burger {
     display: none;
-    flex-direction: column;
-    gap: 5px;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     padding: 8px;
     background: transparent;
@@ -381,29 +381,24 @@
     z-index: 10;
   }
 
-  #MilauraNav-{{ section.id }} .nav-burger span {
-    width: 24px;
-    height: 2px;
-    background-color: var(--milaura-text);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 2px;
-    display: block;
+  #MilauraNav-{{ section.id }} .nav-burger-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--milaura-gold);
+    filter: drop-shadow(0 0 3px rgba(192, 160, 98, 0.3));
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  #MilauraNav-{{ section.id }} .nav-burger:hover span {
-    background-color: var(--milaura-gold);
+  #MilauraNav-{{ section.id }} .nav-burger:hover .nav-burger-icon {
+    color: var(--milaura-gold-light);
+    filter: drop-shadow(0 0 6px rgba(192, 160, 98, 0.5));
+    transform: scale(1.15);
   }
 
-  #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
+  #MilauraNav-{{ section.id }} .nav-burger.active .nav-burger-icon {
+    transform: rotate(90deg) scale(0.85);
+    color: var(--milaura-gold-light);
+    filter: drop-shadow(0 0 8px rgba(192, 160, 98, 0.6));
   }
 
   /* ============================================
@@ -964,6 +959,20 @@
     #MilauraNav-{{ section.id }} .badge-icon {
       font-size: 1.2rem;
     }
+
+    /* Icônes plus confortables sur tablette */
+    #MilauraNav-{{ section.id }} .nav-icons {
+      gap: 18px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon {
+      padding: 6px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon svg {
+      width: 22px;
+      height: 22px;
+    }
   }
 
   /* MOBILE LARGE (481px - 767px) : Badge simplifié */
@@ -999,13 +1008,18 @@
       font-size: 1.1rem;
     }
 
+    /* Icônes plus grandes et espacées sur mobile */
     #MilauraNav-{{ section.id }} .nav-icons {
-      gap: 10px;
+      gap: 16px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon {
+      padding: 6px;
     }
 
     #MilauraNav-{{ section.id }} .nav-icon svg {
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
     }
   }
 
@@ -1043,21 +1057,27 @@
       font-size: 1rem;
     }
 
+    /* Icônes confortables même sur petit écran */
     #MilauraNav-{{ section.id }} .nav-icons {
-      gap: 8px;
+      gap: 14px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon {
+      padding: 5px;
     }
 
     #MilauraNav-{{ section.id }} .nav-icon svg {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
     }
 
     #MilauraNav-{{ section.id }} .nav-burger {
       padding: 6px;
     }
 
-    #MilauraNav-{{ section.id }} .nav-burger span {
+    #MilauraNav-{{ section.id }} .nav-burger-icon {
       width: 20px;
+      height: 20px;
     }
   }
 
@@ -1077,6 +1097,20 @@
 
     #MilauraNav-{{ section.id }} .badge-icon {
       font-size: 0.9rem;
+    }
+
+    /* Icônes : maintenir zone tactile minimum 44px */
+    #MilauraNav-{{ section.id }} .nav-icons {
+      gap: 10px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon {
+      padding: 4px;
+    }
+
+    #MilauraNav-{{ section.id }} .nav-icon svg {
+      width: 18px;
+      height: 18px;
     }
   }
 
@@ -1241,11 +1275,11 @@
   <div class="nav-snake-wrapper">
     <div class="nav-inner">
 
-      <!-- Burger (mobile) -->
+      <!-- Menu toggle (mobile/tablette) — étoile Milaura -->
       <button class="nav-burger" aria-label="Menu" id="burger-{{ section.id }}">
-        <span></span>
-        <span></span>
-        <span></span>
+        <svg class="nav-burger-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L13.5 9.5L21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9.5Z" fill="currentColor" opacity="0.9"/>
+        </svg>
       </button>
 
       <!-- Logo -->
@@ -1292,12 +1326,6 @@
 
         <!-- Icônes -->
         <div class="nav-icons">
-        <a href="{{ routes.search_url }}" class="nav-icon" aria-label="Recherche">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.35-4.35"/>
-          </svg>
-        </a>
         <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Compte">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -1337,12 +1365,6 @@
 
       <!-- Icônes essentielles -->
       <div class="nav-mobile-icons">
-        <a href="{{ routes.search_url }}" class="nav-mobile-icon" aria-label="Recherche" data-close-menu>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.35-4.35"/>
-          </svg>
-        </a>
         <a href="{{ routes.account_url }}" class="nav-mobile-icon" aria-label="Mon compte" data-close-menu>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
