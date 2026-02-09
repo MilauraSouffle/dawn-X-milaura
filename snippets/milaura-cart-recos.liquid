@@ -1,40 +1,85 @@
 {%- comment -%}
-  MILAURA CART DRAWER RECOS
-  Affichage recommandations dans le panier (drawer)
-  À inclure avant le bouton "Passer commande"
+  MILAURA CART DRAWER RECOS V2
+  Recommandations dans le panier (pierre-first, max 2)
+  Self-contained — logique inlinee, pas de | push
 {%- endcomment -%}
 
 {%- if cart.item_count > 0 -%}
-  {%- assign first_item = cart.items.first -%}
+  {%- liquid
+    assign first_item = cart.items.first
+    assign current_stone = first_item.product.metafields.milaura.stone_handle
+    assign current_type = first_item.product.metafields.milaura.product_type_handle
+    assign current_product_id = first_item.product.id
+    assign reco_source = collections['recos-pool'].products
+    assign max_recos = 2
+    assign reco_count = 0
+    assign reco_1_id = 0
+    assign reco_2_id = 0
+  -%}
 
-  {% render 'milaura-recos-engine',
-    current_product: first_item.product,
-    max_recos: 2
-  %}
+  {%- capture reco_cards -%}
+    {%- comment -%} Pass 1 : meme pierre, type different {%- endcomment -%}
+    {%- for item in reco_source limit: 50 -%}
+      {%- if item.id == current_product_id -%}{%- continue -%}{%- endif -%}
+      {%- if item.metafields.milaura.stone_handle == current_stone and item.metafields.milaura.product_type_handle != current_type -%}
+        <div class="milaura-cart-reco-card">
+          <a href="{{ item.url }}" class="milaura-cart-reco-link">
+            <div class="milaura-cart-reco-image">
+              {%- if item.featured_image -%}
+                <img src="{{ item.featured_image | image_url: width: 200 }}" alt="{{ item.title }}" loading="lazy">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="milaura-cart-reco-info">
+              <h4 class="milaura-cart-reco-title">{{ item.title }}</h4>
+              <p class="milaura-cart-reco-price">{{ item.price | money }}</p>
+            </div>
+          </a>
+        </div>
+        {%- if reco_count == 0 -%}
+          {%- assign reco_1_id = item.id -%}
+        {%- elsif reco_count == 1 -%}
+          {%- assign reco_2_id = item.id -%}
+        {%- endif -%}
+        {%- assign reco_count = reco_count | plus: 1 -%}
+        {%- if reco_count >= max_recos -%}{%- break -%}{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
 
-  {% if recommended_products.size > 0 %}
-    <div class="milaura-cart-recos">
-      <p class="milaura-cart-recos-title">Complétez votre rituel</p>
-
-      <div class="milaura-cart-recos-grid">
-        {% for reco in recommended_products %}
+    {%- comment -%} Pass 2 : fallback bestsellers {%- endcomment -%}
+    {%- if reco_count < max_recos -%}
+      {%- for item in reco_source limit: 50 -%}
+        {%- if item.id == current_product_id -%}{%- continue -%}{%- endif -%}
+        {%- if item.id == reco_1_id or item.id == reco_2_id -%}{%- continue -%}{%- endif -%}
+        {%- if item.metafields.milaura.is_bestseller == true -%}
           <div class="milaura-cart-reco-card">
-            <a href="{{ reco.url }}" class="milaura-cart-reco-link">
+            <a href="{{ item.url }}" class="milaura-cart-reco-link">
               <div class="milaura-cart-reco-image">
-                {% if reco.featured_image %}
-                  <img src="{{ reco.featured_image | image_url: width: 200 }}" alt="{{ reco.title }}" loading="lazy">
-                {% else %}
+                {%- if item.featured_image -%}
+                  <img src="{{ item.featured_image | image_url: width: 200 }}" alt="{{ item.title }}" loading="lazy">
+                {%- else -%}
                   {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                {% endif %}
+                {%- endif -%}
               </div>
-
               <div class="milaura-cart-reco-info">
-                <h4 class="milaura-cart-reco-title">{{ reco.title }}</h4>
-                <p class="milaura-cart-reco-price">{{ reco.price | money }}</p>
+                <h4 class="milaura-cart-reco-title">{{ item.title }}</h4>
+                <p class="milaura-cart-reco-price">{{ item.price | money }}</p>
               </div>
             </a>
           </div>
-        {% endfor %}
+          {%- assign reco_count = reco_count | plus: 1 -%}
+          {%- if reco_count >= max_recos -%}{%- break -%}{%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- if reco_count > 0 -%}
+    <div class="milaura-cart-recos">
+      <p class="milaura-cart-recos-title">Complétez votre rituel</p>
+      <div class="milaura-cart-recos-grid">
+        {{ reco_cards }}
       </div>
     </div>
 
@@ -44,19 +89,16 @@
         margin: 1.5rem 0;
         border-top: 1px solid rgba(192, 160, 98, 0.2);
       }
-
       .milaura-cart-recos-title {
         font-family: var(--font-heading-family, 'Playfair Display'), serif;
         font-size: 1.125rem;
         margin: 0 0 1rem 0;
         color: var(--milaura-text, #000000);
       }
-
       .milaura-cart-recos-grid {
         display: grid;
         gap: 1rem;
       }
-
       .milaura-cart-reco-card {
         background: rgba(255, 255, 255, 0.5);
         border-radius: 12px;
@@ -64,12 +106,10 @@
         border: 1px solid rgba(192, 160, 98, 0.15);
         transition: all 0.3s ease;
       }
-
       .milaura-cart-reco-card:hover {
         border-color: var(--milaura-gold, #C0A062);
         background: rgba(255, 255, 255, 0.7);
       }
-
       .milaura-cart-reco-link {
         text-decoration: none;
         color: inherit;
@@ -77,7 +117,6 @@
         gap: 1rem;
         align-items: center;
       }
-
       .milaura-cart-reco-image {
         width: 80px;
         height: 80px;
@@ -85,24 +124,20 @@
         border-radius: 8px;
         overflow: hidden;
       }
-
       .milaura-cart-reco-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
-
       .milaura-cart-reco-info {
         flex: 1;
       }
-
       .milaura-cart-reco-title {
         font-size: 0.9375rem;
         font-weight: 600;
         margin: 0 0 0.25rem 0;
         color: var(--milaura-text, #000000);
       }
-
       .milaura-cart-reco-price {
         font-size: 0.875rem;
         color: var(--milaura-gold, #C0A062);
@@ -110,5 +145,5 @@
         font-weight: 600;
       }
     </style>
-  {% endif %}
+  {%- endif -%}
 {%- endif -%}
