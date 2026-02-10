@@ -108,6 +108,41 @@
                 {{ block.settings.text }}
               </div>
             </div>
+
+          {%- when 'contact_info' -%}
+            <div class="milaura-footer-column milaura-footer-contact-col" {{ block.shopify_attributes }}>
+              <h3 class="milaura-footer-column-title">{{ block.settings.heading }}</h3>
+              <ul class="milaura-footer-links milaura-footer-contact-list">
+                {%- if block.settings.phone != blank -%}
+                  <li>
+                    <a href="tel:{{ block.settings.phone | replace: ' ', '' }}" class="milaura-footer-link milaura-footer-contact-link">
+                      <svg class="milaura-footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                      {{ block.settings.phone }}
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.email != blank -%}
+                  <li>
+                    <a href="mailto:{{ block.settings.email }}" class="milaura-footer-link milaura-footer-contact-link">
+                      <svg class="milaura-footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      {{ block.settings.email }}
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.response_time != blank -%}
+                  <li>
+                    <span class="milaura-footer-contact-detail">{{ block.settings.response_time }}</span>
+                  </li>
+                {%- endif -%}
+                {%- if block.settings.contact_page != blank -%}
+                  <li>
+                    <a href="{{ block.settings.contact_page }}" class="milaura-footer-link milaura-footer-contact-page-link">
+                      {{ block.settings.contact_page_label | default: 'Page contact →' }}
+                    </a>
+                  </li>
+                {%- endif -%}
+              </ul>
+            </div>
         {%- endcase -%}
       {%- endfor -%}
 
@@ -783,6 +818,36 @@
     }
   }
 
+  /* --- Contact block --- */
+  .milaura-footer-contact-list li {
+    margin-bottom: 0.6rem;
+  }
+
+  .milaura-footer-contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .milaura-footer-contact-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .milaura-footer-contact-detail {
+    font-size: {{ section.settings.link_size }}px;
+    color: {{ section.settings.text_color }};
+    font-style: italic;
+    opacity: 0.8;
+  }
+
+  .milaura-footer-contact-page-link {
+    font-weight: 600 !important;
+    color: var(--milaura-gold-dark, #8F723A) !important;
+  }
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .milaura-social-link,
@@ -1178,6 +1243,47 @@
           "id": "text",
           "label": "Contenu",
           "default": "<p>Milaura cree des bougies emotionnelles et des bijoux en pierres naturelles pour accompagner tes rituels quotidiens.</p>"
+        }
+      ]
+    },
+    {
+      "type": "contact_info",
+      "name": "Contact",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Contact"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Telephone",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email",
+          "default": "hello@milaura.fr"
+        },
+        {
+          "type": "text",
+          "id": "response_time",
+          "label": "Delai de reponse",
+          "default": "Reponse sous 24h"
+        },
+        {
+          "type": "url",
+          "id": "contact_page",
+          "label": "Lien page contact"
+        },
+        {
+          "type": "text",
+          "id": "contact_page_label",
+          "label": "Label lien page contact",
+          "default": "Page contact →"
         }
       ]
     }

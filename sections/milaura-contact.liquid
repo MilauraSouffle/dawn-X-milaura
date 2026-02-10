@@ -1,0 +1,890 @@
+{% comment %}
+  MILAURA CONTACT PAGE
+  Page contact dediee avec formulaire, methodes de contact, fondatrice, trust badges
+{% endcomment %}
+
+<section id="MilauraContact-{{ section.id }}" class="milaura-contact">
+  <div class="milaura-contact-container page-width">
+    <div class="milaura-contact-card milaura-section-card">
+
+      {%- comment -%} HERO {%- endcomment -%}
+      <div class="milaura-contact-hero">
+        <p class="milaura-contact-kicker">{{ section.settings.kicker | default: 'A ton ecoute' }}</p>
+        <h1 class="milaura-contact-title">{{ section.settings.title | default: 'Comment pouvons-nous t\'aider ?' }}</h1>
+        <p class="milaura-contact-subtitle">{{ section.settings.subtitle | default: 'Notre equipe est la pour repondre a toutes tes questions sur nos creations, tes commandes ou tes rituels.' }}</p>
+      </div>
+
+      {%- comment -%} 2 COLONNES {%- endcomment -%}
+      <div class="milaura-contact-grid">
+
+        {%- comment -%} GAUCHE : Formulaire {%- endcomment -%}
+        <div class="milaura-contact-form-col">
+          <h2 class="milaura-contact-form-title">{{ section.settings.form_title | default: 'Ecris-nous' }}</h2>
+
+          {% form 'contact' %}
+            {% if form.posted_successfully? %}
+              <div class="milaura-contact-form-success">
+                <div class="milaura-contact-form-success-icon">💌</div>
+                <h3>{{ section.settings.form_success_title | default: 'Message envoye !' }}</h3>
+                <p>{{ section.settings.form_success_text | default: 'Nous te repondons sous 24h. A bientot !' }}</p>
+              </div>
+            {% else %}
+              {% if form.errors %}
+                <div class="milaura-contact-form-errors">
+                  {{ form.errors | default_errors }}
+                </div>
+              {% endif %}
+
+              <div class="milaura-contact-form-fields">
+                <div class="milaura-contact-form-row">
+                  <div class="milaura-contact-form-group">
+                    <label for="contact-firstname-{{ section.id }}">{{ section.settings.label_firstname | default: 'Prenom' }}</label>
+                    <input type="text" id="contact-firstname-{{ section.id }}" name="contact[{{ section.settings.label_firstname | default: 'Prenom' }}]" placeholder="{{ section.settings.placeholder_firstname | default: 'Ton prenom' }}" required>
+                  </div>
+                  <div class="milaura-contact-form-group">
+                    <label for="contact-email-{{ section.id }}">Email</label>
+                    <input type="email" id="contact-email-{{ section.id }}" name="contact[email]" placeholder="{{ section.settings.placeholder_email | default: 'ton@email.com' }}" required autocomplete="email">
+                  </div>
+                </div>
+
+                <div class="milaura-contact-form-group">
+                  <label for="contact-subject-{{ section.id }}">{{ section.settings.label_subject | default: 'Sujet' }}</label>
+                  <select id="contact-subject-{{ section.id }}" name="contact[{{ section.settings.label_subject | default: 'Sujet' }}]" required>
+                    <option value="" disabled selected>{{ section.settings.placeholder_subject | default: 'Choisis un sujet' }}</option>
+                    <option value="commande">{{ section.settings.subject_1 | default: 'Ma commande' }}</option>
+                    <option value="produit">{{ section.settings.subject_2 | default: 'Question sur un produit' }}</option>
+                    <option value="rituel">{{ section.settings.subject_3 | default: 'Conseil rituel / pierre' }}</option>
+                    <option value="retour">{{ section.settings.subject_4 | default: 'Retour / Echange' }}</option>
+                    <option value="autre">{{ section.settings.subject_5 | default: 'Autre' }}</option>
+                  </select>
+                </div>
+
+                <div class="milaura-contact-form-group">
+                  <label for="contact-message-{{ section.id }}">Message</label>
+                  <textarea id="contact-message-{{ section.id }}" name="contact[body]" placeholder="{{ section.settings.placeholder_message | default: 'Raconte-nous...' }}" rows="5" required></textarea>
+                </div>
+
+                <button type="submit" class="milaura-contact-form-submit milaura-btn-gold">
+                  {{ section.settings.submit_label | default: 'Envoyer mon message' }}
+                </button>
+              </div>
+            {% endif %}
+          {% endform %}
+        </div>
+
+        {%- comment -%} DROITE : Methodes + Fondatrice + Trust {%- endcomment -%}
+        <div class="milaura-contact-info-col">
+
+          {%- comment -%} Methodes de contact {%- endcomment -%}
+          <div class="milaura-contact-methods">
+            {% if section.settings.phone != blank %}
+              <a href="tel:{{ section.settings.phone | replace: ' ', '' }}" class="milaura-contact-method-card">
+                <div class="milaura-contact-method-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div class="milaura-contact-method-info">
+                  <strong>{{ section.settings.phone }}</strong>
+                  <span>{{ section.settings.phone_hours | default: 'Lun-Ven 9h-18h' }}</span>
+                </div>
+              </a>
+            {% endif %}
+
+            {% if section.settings.email != blank %}
+              <a href="mailto:{{ section.settings.email }}" class="milaura-contact-method-card">
+                <div class="milaura-contact-method-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div class="milaura-contact-method-info">
+                  <strong>{{ section.settings.email }}</strong>
+                  <span>{{ section.settings.email_delay | default: 'Reponse sous 24h' }}</span>
+                </div>
+              </a>
+            {% endif %}
+          </div>
+
+          {%- comment -%} Fondatrice {%- endcomment -%}
+          {% if section.settings.show_founder %}
+            <div class="milaura-contact-founder">
+              {% if section.settings.founder_image != blank %}
+                <img
+                  src="{{ section.settings.founder_image | image_url: width: 120 }}"
+                  alt="{{ section.settings.founder_name | default: 'Fondatrice' }}"
+                  class="milaura-contact-founder-photo"
+                  width="60"
+                  height="60"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="milaura-contact-founder-photo-placeholder">✨</div>
+              {% endif %}
+              <div class="milaura-contact-founder-info">
+                <strong class="milaura-contact-founder-name">{{ section.settings.founder_name | default: 'Fondatrice Milaura' }}</strong>
+                <span class="milaura-contact-founder-role">{{ section.settings.founder_role | default: 'Creatrice & Artisane' }}</span>
+                {% if section.settings.founder_quote != blank %}
+                  <p class="milaura-contact-founder-quote">"{{ section.settings.founder_quote }}"</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+
+          {%- comment -%} Trust badges {%- endcomment -%}
+          <div class="milaura-contact-trust">
+            {% for block in section.blocks %}
+              {% if block.type == 'trust_badge' %}
+                <div class="milaura-contact-trust-item" {{ block.shopify_attributes }}>
+                  <span class="milaura-contact-trust-emoji">{{ block.settings.emoji }}</span>
+                  <span class="milaura-contact-trust-text">{{ block.settings.text }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      {%- comment -%} FAQ optionnelle {%- endcomment -%}
+      {% assign faq_blocks = section.blocks | where: 'type', 'faq_item' %}
+      {% if faq_blocks.size > 0 %}
+        <div class="milaura-contact-faq">
+          <h2 class="milaura-contact-faq-title">{{ section.settings.faq_title | default: 'Questions frequentes' }}</h2>
+          <div class="milaura-contact-faq-list">
+            {% for block in faq_blocks %}
+              <details class="milaura-contact-faq-item" {{ block.shopify_attributes }}>
+                <summary class="milaura-contact-faq-question">{{ block.settings.question }}</summary>
+                <div class="milaura-contact-faq-answer">{{ block.settings.answer }}</div>
+              </details>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* --- MILAURA CONTACT PAGE --- */
+  .milaura-contact {
+    padding: 8px;
+  }
+
+  .milaura-contact-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  #MilauraContact-{{ section.id }} .milaura-contact-card.milaura-section-card {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 24px;
+    border: 1px solid rgba(192, 160, 98, 0.4);
+    padding: var(--milaura-spacing-lg, 36px) var(--milaura-spacing-md, 24px);
+    box-shadow: 0 15px 40px rgba(192, 160, 98, 0.12);
+  }
+
+  /* Hero */
+  .milaura-contact-hero {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .milaura-contact-kicker {
+    font-family: 'Dancing Script', cursive;
+    color: var(--milaura-gold, #C0A062);
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+  }
+
+  .milaura-contact-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+  }
+
+  .milaura-contact-subtitle {
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    color: #555;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Grid 2 colonnes */
+  .milaura-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .milaura-contact-grid {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 48px;
+    }
+  }
+
+  /* --- Formulaire --- */
+  .milaura-contact-form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 20px 0;
+  }
+
+  .milaura-contact-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .milaura-contact-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media screen and (max-width: 480px) {
+    .milaura-contact-form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .milaura-contact-form-group label {
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #555;
+    margin-bottom: 6px;
+  }
+
+  .milaura-contact-form-group input,
+  .milaura-contact-form-group select,
+  .milaura-contact-form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.7);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    color: #000;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .milaura-contact-form-group input:focus,
+  .milaura-contact-form-group select:focus,
+  .milaura-contact-form-group textarea:focus {
+    outline: none;
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 0 0 3px rgba(192, 160, 98, 0.1);
+  }
+
+  .milaura-contact-form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .milaura-contact-form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .milaura-contact-form-submit {
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    align-self: flex-start;
+  }
+
+  .milaura-contact-form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.35);
+  }
+
+  /* Succes */
+  .milaura-contact-form-success {
+    text-align: center;
+    padding: 32px 16px;
+  }
+
+  .milaura-contact-form-success-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  .milaura-contact-form-success h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #000;
+    margin: 0 0 8px 0;
+  }
+
+  .milaura-contact-form-success p {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0;
+  }
+
+  /* Erreurs */
+  .milaura-contact-form-errors {
+    background: rgba(220, 53, 69, 0.08);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #dc3545;
+  }
+
+  /* --- Colonne Info --- */
+  .milaura-contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .milaura-contact-method-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .milaura-contact-method-card:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    background: rgba(192, 160, 98, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(192, 160, 98, 0.12);
+  }
+
+  .milaura-contact-method-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .milaura-contact-method-icon-wrap svg {
+    width: 20px;
+    height: 20px;
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  .milaura-contact-method-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .milaura-contact-method-info strong {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    color: #000;
+  }
+
+  .milaura-contact-method-info span {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  /* --- Fondatrice --- */
+  .milaura-contact-founder {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    border-radius: 16px;
+    margin-bottom: 24px;
+  }
+
+  .milaura-contact-founder-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid rgba(192, 160, 98, 0.3);
+  }
+
+  .milaura-contact-founder-photo-placeholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .milaura-contact-founder-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .milaura-contact-founder-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: #000;
+  }
+
+  .milaura-contact-founder-role {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .milaura-contact-founder-quote {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #555;
+    margin: 6px 0 0 0;
+    line-height: 1.5;
+  }
+
+  /* --- Trust badges --- */
+  .milaura-contact-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .milaura-contact-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(192, 160, 98, 0.12);
+    border-radius: 20px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    color: #555;
+  }
+
+  .milaura-contact-trust-emoji {
+    font-size: 1rem;
+  }
+
+  /* --- FAQ --- */
+  .milaura-contact-faq {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(192, 160, 98, 0.12);
+  }
+
+  .milaura-contact-faq-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 20px 0;
+    text-align: center;
+  }
+
+  .milaura-contact-faq-list {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .milaura-contact-faq-item {
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .milaura-contact-faq-item[open] {
+    border-color: rgba(192, 160, 98, 0.3);
+  }
+
+  .milaura-contact-faq-question {
+    padding: 16px 20px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #000;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .milaura-contact-faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .milaura-contact-faq-question::after {
+    content: '+';
+    font-size: 1.2rem;
+    color: var(--milaura-gold, #C0A062);
+    font-weight: 300;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .milaura-contact-faq-item[open] .milaura-contact-faq-question::after {
+    content: '−';
+  }
+
+  .milaura-contact-faq-answer {
+    padding: 0 20px 16px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* Mobile */
+  @media screen and (max-width: 768px) {
+    .milaura-contact {
+      padding: 6px;
+    }
+
+    #MilauraContact-{{ section.id }} .milaura-contact-card.milaura-section-card {
+      border-radius: 18px;
+      padding: var(--milaura-spacing-md, 24px) var(--milaura-spacing-sm, 12px);
+    }
+
+    .milaura-contact-title {
+      font-size: 1.5rem;
+    }
+
+    .milaura-contact-hero {
+      margin-bottom: 28px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-contact-method-card,
+    .milaura-contact-form-submit {
+      transition: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Milaura Contact",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "A ton ecoute"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Comment pouvons-nous t'aider ?"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Notre equipe est la pour repondre a toutes tes questions sur nos creations, tes commandes ou tes rituels."
+    },
+    {
+      "type": "header",
+      "content": "Formulaire"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Titre formulaire",
+      "default": "Ecris-nous"
+    },
+    {
+      "type": "text",
+      "id": "label_firstname",
+      "label": "Label prenom",
+      "default": "Prenom"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_firstname",
+      "label": "Placeholder prenom",
+      "default": "Ton prenom"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_email",
+      "label": "Placeholder email",
+      "default": "ton@email.com"
+    },
+    {
+      "type": "text",
+      "id": "label_subject",
+      "label": "Label sujet",
+      "default": "Sujet"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_subject",
+      "label": "Placeholder sujet",
+      "default": "Choisis un sujet"
+    },
+    {
+      "type": "text",
+      "id": "subject_1",
+      "label": "Sujet 1",
+      "default": "Ma commande"
+    },
+    {
+      "type": "text",
+      "id": "subject_2",
+      "label": "Sujet 2",
+      "default": "Question sur un produit"
+    },
+    {
+      "type": "text",
+      "id": "subject_3",
+      "label": "Sujet 3",
+      "default": "Conseil rituel / pierre"
+    },
+    {
+      "type": "text",
+      "id": "subject_4",
+      "label": "Sujet 4",
+      "default": "Retour / Echange"
+    },
+    {
+      "type": "text",
+      "id": "subject_5",
+      "label": "Sujet 5",
+      "default": "Autre"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_message",
+      "label": "Placeholder message",
+      "default": "Raconte-nous..."
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Bouton envoyer",
+      "default": "Envoyer mon message"
+    },
+    {
+      "type": "text",
+      "id": "form_success_title",
+      "label": "Titre succes",
+      "default": "Message envoye !"
+    },
+    {
+      "type": "text",
+      "id": "form_success_text",
+      "label": "Texte succes",
+      "default": "Nous te repondons sous 24h. A bientot !"
+    },
+    {
+      "type": "header",
+      "content": "Methodes de contact"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Telephone",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "phone_hours",
+      "label": "Horaires telephone",
+      "default": "Lun-Ven 9h-18h"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "hello@milaura.fr"
+    },
+    {
+      "type": "text",
+      "id": "email_delay",
+      "label": "Delai reponse email",
+      "default": "Reponse sous 24h"
+    },
+    {
+      "type": "header",
+      "content": "Fondatrice"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_founder",
+      "label": "Afficher section fondatrice",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "founder_image",
+      "label": "Photo fondatrice"
+    },
+    {
+      "type": "text",
+      "id": "founder_name",
+      "label": "Nom",
+      "default": "Fondatrice Milaura"
+    },
+    {
+      "type": "text",
+      "id": "founder_role",
+      "label": "Role",
+      "default": "Creatrice & Artisane"
+    },
+    {
+      "type": "textarea",
+      "id": "founder_quote",
+      "label": "Citation",
+      "default": "Chaque creation porte une intention. Je suis la pour t'aider a trouver celle qui te correspond."
+    },
+    {
+      "type": "header",
+      "content": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Titre FAQ",
+      "default": "Questions frequentes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_badge",
+      "name": "Badge confiance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji",
+          "default": "🇫🇷"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Artisanat Francais"
+        }
+      ]
+    },
+    {
+      "type": "faq_item",
+      "name": "Question FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Quel est le delai de livraison ?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Reponse",
+          "default": "Nous expedions sous 48h. La livraison prend 2 a 4 jours ouvrables en France metropolitaine."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Contact",
+      "blocks": [
+        {
+          "type": "trust_badge",
+          "settings": {
+            "emoji": "🇫🇷",
+            "text": "Artisanat Francais"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "emoji": "💎",
+            "text": "Pierres Certifiees"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "emoji": "🚚",
+            "text": "Livraison Offerte"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Quel est le delai de livraison ?",
+            "answer": "Nous expedions sous 48h. La livraison prend 2 a 4 jours ouvrables en France metropolitaine."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment choisir ma pierre ?",
+            "answer": "Notre quiz emotionnel te guide vers la pierre qui correspond a tes besoins actuels. Tu peux aussi nous contacter pour un conseil personnalise."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Puis-je retourner un produit ?",
+            "answer": "Oui, tu disposes de 14 jours pour retourner un produit non utilise dans son emballage d'origine."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

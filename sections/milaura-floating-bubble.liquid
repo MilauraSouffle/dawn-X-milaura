@@ -1,0 +1,1262 @@
+{% comment %}
+  MILAURA FLOATING BUBBLE
+  Bulle flottante globale avec 2 onglets : Mon Rituel + Contact
+  Presente sur toutes les pages via footer-group.json
+{% endcomment %}
+
+{% style %}
+  /* ============================================
+     MILAURA FLOATING BUBBLE
+     ============================================ */
+
+  /* --- BOUTON TRIGGER --- */
+  .milaura-bubble-trigger {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062) 0%, #D4B678 50%, var(--milaura-gold-light, #E6C88B) 100%);
+    background-size: 200% 200%;
+    box-shadow: 0 4px 20px rgba(192, 160, 98, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: milaura-bubble-shimmer 3s ease-in-out infinite;
+    padding: 0;
+  }
+
+  .milaura-bubble-trigger::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(192, 160, 98, 0.6);
+    animation: milaura-bubble-pulse 2.5s ease-out infinite;
+    pointer-events: none;
+  }
+
+  .milaura-bubble-trigger:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 30px rgba(192, 160, 98, 0.6);
+  }
+
+  .milaura-bubble-trigger:hover::before {
+    animation: none;
+  }
+
+  .milaura-bubble-trigger[aria-expanded="true"]::before {
+    animation: none;
+  }
+
+  @keyframes milaura-bubble-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes milaura-bubble-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(192, 160, 98, 0.5); }
+    50% { box-shadow: 0 0 0 14px rgba(192, 160, 98, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(192, 160, 98, 0); }
+  }
+
+  /* Icone SVG dans le trigger */
+  .milaura-bubble-trigger svg {
+    width: 26px;
+    height: 26px;
+    color: #fff;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    position: absolute;
+  }
+
+  .milaura-bubble-trigger .bubble-icon-star {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+
+  .milaura-bubble-trigger .bubble-icon-close {
+    opacity: 0;
+    transform: rotate(-90deg);
+  }
+
+  .milaura-bubble-trigger[aria-expanded="true"] .bubble-icon-star {
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+
+  .milaura-bubble-trigger[aria-expanded="true"] .bubble-icon-close {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+
+  /* --- OVERLAY MOBILE --- */
+  .milaura-bubble-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: none;
+  }
+
+  .milaura-bubble-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* --- PANNEAU --- */
+  .milaura-bubble-panel {
+    position: fixed;
+    bottom: 96px;
+    right: 24px;
+    width: 380px;
+    max-height: 520px;
+    z-index: 100000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px) scale(0.95);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    /* Glassmorphism */
+    background: rgba(253, 251, 247, 0.95);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-radius: 20px;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(192, 160, 98, 0.1);
+    overflow: hidden;
+  }
+
+  .milaura-bubble-panel.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  /* --- ONGLETS --- */
+  .milaura-bubble-tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.15);
+    flex-shrink: 0;
+  }
+
+  .milaura-bubble-tab {
+    flex: 1;
+    padding: 14px 16px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, background 0.3s ease;
+    position: relative;
+  }
+
+  .milaura-bubble-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: var(--milaura-gold, #C0A062);
+    border-radius: 2px 2px 0 0;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .milaura-bubble-tab.active {
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  .milaura-bubble-tab.active::after {
+    transform: scaleX(1);
+  }
+
+  .milaura-bubble-tab:hover:not(.active) {
+    color: #666;
+    background: rgba(192, 160, 98, 0.05);
+  }
+
+  /* --- CONTENU DES ONGLETS --- */
+  .milaura-bubble-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 20px;
+  }
+
+  .milaura-bubble-pane {
+    display: none;
+  }
+
+  .milaura-bubble-pane.active {
+    display: block;
+  }
+
+  /* --- ONGLET RITUEL --- */
+  .milaura-bubble-ritual-kicker {
+    font-family: 'Dancing Script', cursive;
+    color: var(--milaura-gold, #C0A062);
+    font-size: 1rem;
+    margin: 0 0 6px 0;
+  }
+
+  .milaura-bubble-ritual-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+  }
+
+  .milaura-bubble-ritual-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.875rem;
+    color: #555;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+  }
+
+  .milaura-bubble-ritual-profile {
+    display: inline-block;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    color: var(--milaura-gold-dark, #8F723A);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  /* Micro-quiz dans la bulle (Parcours B) */
+  .milaura-bubble-microquiz {
+    margin-bottom: 16px;
+  }
+
+  .milaura-bubble-microquiz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .milaura-bubble-microquiz-btn {
+    padding: 10px 8px;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .milaura-bubble-microquiz-btn:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .milaura-bubble-microquiz-btn:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    background: rgba(192, 160, 98, 0.08);
+    color: var(--milaura-gold-dark, #8F723A);
+    transform: translateY(-1px);
+  }
+
+  .milaura-bubble-microquiz-btn.selected {
+    border-color: var(--milaura-gold, #C0A062);
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
+    color: var(--milaura-gold-dark, #8F723A);
+    font-weight: 600;
+  }
+
+  /* Formulaire email */
+  .milaura-bubble-form {
+    display: flex;
+    gap: 8px;
+  }
+
+  .milaura-bubble-email {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .milaura-bubble-email:focus {
+    outline: none;
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 0 0 3px rgba(192, 160, 98, 0.12);
+  }
+
+  .milaura-bubble-submit {
+    padding: 10px 18px;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .milaura-bubble-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.35);
+  }
+
+  /* Etat inscrit */
+  .milaura-bubble-subscribed {
+    text-align: center;
+    padding: 16px 0;
+  }
+
+  .milaura-bubble-subscribed-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  .milaura-bubble-subscribed-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  /* Message de succes */
+  .milaura-bubble-success {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .milaura-bubble-success.active {
+    display: block;
+  }
+
+  .milaura-bubble-success-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .milaura-bubble-success-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 6px 0;
+  }
+
+  .milaura-bubble-success-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #555;
+    margin: 0;
+  }
+
+  /* --- ONGLET CONTACT --- */
+  .milaura-bubble-contact-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 16px 0;
+  }
+
+  .milaura-bubble-contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .milaura-bubble-contact-method {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .milaura-bubble-contact-method:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    background: rgba(192, 160, 98, 0.05);
+    transform: translateY(-1px);
+  }
+
+  .milaura-bubble-contact-method-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .milaura-bubble-contact-method-icon svg {
+    width: 16px;
+    height: 16px;
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  .milaura-bubble-contact-method-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .milaura-bubble-contact-method-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #000;
+  }
+
+  .milaura-bubble-contact-method-detail {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  /* Mini formulaire contact rapide */
+  .milaura-bubble-quick-form {
+    margin-top: 4px;
+  }
+
+  .milaura-bubble-quick-form-title {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #999;
+    margin: 0 0 10px 0;
+  }
+
+  .milaura-bubble-quick-field {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+  }
+
+  .milaura-bubble-quick-field:focus {
+    outline: none;
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 0 0 3px rgba(192, 160, 98, 0.1);
+  }
+
+  textarea.milaura-bubble-quick-field {
+    resize: vertical;
+    min-height: 72px;
+  }
+
+  .milaura-bubble-quick-submit {
+    width: 100%;
+    padding: 11px 16px;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 4px;
+  }
+
+  .milaura-bubble-quick-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.35);
+  }
+
+  .milaura-bubble-contact-page-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    color: var(--milaura-gold-dark, #8F723A);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .milaura-bubble-contact-page-link:hover {
+    color: var(--milaura-gold, #C0A062);
+    text-decoration: underline;
+  }
+
+  /* --- MOBILE --- */
+  @media screen and (max-width: 768px) {
+    .milaura-bubble-trigger {
+      width: 56px;
+      height: 56px;
+      bottom: 20px;
+      right: 16px;
+    }
+
+    .milaura-bubble-trigger svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .milaura-bubble-overlay {
+      display: block;
+    }
+
+    .milaura-bubble-panel {
+      bottom: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+      max-height: 85vh;
+      border-radius: 20px 20px 0 0;
+      transform: translateY(100%);
+      transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .milaura-bubble-panel.active {
+      transform: translateY(0);
+    }
+  }
+
+  /* --- REDUCED MOTION --- */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-bubble-trigger,
+    .milaura-bubble-trigger::before,
+    .milaura-bubble-trigger svg,
+    .milaura-bubble-panel,
+    .milaura-bubble-overlay,
+    .milaura-bubble-tab,
+    .milaura-bubble-tab::after,
+    .milaura-bubble-microquiz-btn,
+    .milaura-bubble-submit,
+    .milaura-bubble-contact-method,
+    .milaura-bubble-quick-submit {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+{% endstyle %}
+
+<!-- Overlay mobile -->
+<div class="milaura-bubble-overlay" id="milaura-bubble-overlay"></div>
+
+<!-- Panneau -->
+<div
+  class="milaura-bubble-panel"
+  id="milaura-bubble-panel"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ section.settings.panel_aria_label | default: 'Assistance et rituel personnalise' }}"
+>
+  <!-- Onglets -->
+  <div class="milaura-bubble-tabs" role="tablist">
+    <button
+      class="milaura-bubble-tab active"
+      role="tab"
+      id="milaura-tab-ritual"
+      aria-selected="true"
+      aria-controls="milaura-pane-ritual"
+      data-tab="ritual"
+    >{{ section.settings.tab_ritual_label | default: 'Mon Rituel' }}</button>
+    <button
+      class="milaura-bubble-tab"
+      role="tab"
+      id="milaura-tab-contact"
+      aria-selected="false"
+      aria-controls="milaura-pane-contact"
+      data-tab="contact"
+    >{{ section.settings.tab_contact_label | default: 'Contact' }}</button>
+  </div>
+
+  <!-- Contenu -->
+  <div class="milaura-bubble-content">
+
+    <!-- ONGLET RITUEL -->
+    <div
+      class="milaura-bubble-pane active"
+      role="tabpanel"
+      id="milaura-pane-ritual"
+      aria-labelledby="milaura-tab-ritual"
+    >
+      <!-- Parcours A : a fait le quiz -->
+      <div id="milaura-bubble-ritual-a" style="display:none;">
+        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_a | default: 'Votre profil emotionnel' }}</p>
+        <div class="milaura-bubble-ritual-profile" id="milaura-bubble-profile-name"></div>
+        <p class="milaura-bubble-ritual-text">{{ section.settings.ritual_text_a | default: 'Recevez chaque mois un rituel personnalise adapte a votre profil emotionnel.' }}</p>
+        <form class="milaura-bubble-form" id="milaura-bubble-form-a" method="post" action="/contact#contact_form" accept-charset="UTF-8">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="contact[tags]" value="newsletter,rituel">
+          <input type="hidden" name="contact[note]" id="milaura-bubble-note-a" value="">
+          <label for="milaura-bubble-email-a" class="visually-hidden">Email</label>
+          <input type="email" id="milaura-bubble-email-a" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
+          <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_a | default: 'Recevoir' }}</button>
+        </form>
+      </div>
+
+      <!-- Parcours B : pas de quiz -->
+      <div id="milaura-bubble-ritual-b" style="display:none;">
+        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_b | default: 'Un instant pour toi' }}</p>
+        <h3 class="milaura-bubble-ritual-title">{{ section.settings.ritual_title_b | default: 'De quelle energie as-tu besoin aujourd\'hui ?' }}</h3>
+        <div class="milaura-bubble-microquiz" id="milaura-bubble-microquiz">
+          <div class="milaura-bubble-microquiz-grid">
+            <button class="milaura-bubble-microquiz-btn" data-energy="apaisement">{{ section.settings.energy_1 | default: 'Apaisement' }}</button>
+            <button class="milaura-bubble-microquiz-btn" data-energy="protection">{{ section.settings.energy_2 | default: 'Protection' }}</button>
+            <button class="milaura-bubble-microquiz-btn" data-energy="serenite">{{ section.settings.energy_3 | default: 'Serenite' }}</button>
+            <button class="milaura-bubble-microquiz-btn" data-energy="amour">{{ section.settings.energy_4 | default: 'Amour' }}</button>
+            <button class="milaura-bubble-microquiz-btn" data-energy="chance">{{ section.settings.energy_5 | default: 'Chance' }}</button>
+          </div>
+        </div>
+        <!-- Formulaire apparait apres choix -->
+        <div id="milaura-bubble-post-choice" style="display:none;">
+          <p class="milaura-bubble-ritual-text" id="milaura-bubble-choice-msg"></p>
+          <form class="milaura-bubble-form" id="milaura-bubble-form-b" method="post" action="/contact#contact_form" accept-charset="UTF-8">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[tags]" value="newsletter,rituel">
+            <input type="hidden" name="contact[note]" id="milaura-bubble-note-b" value="">
+            <label for="milaura-bubble-email-b" class="visually-hidden">Email</label>
+            <input type="email" id="milaura-bubble-email-b" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
+            <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_b | default: 'Recevoir' }}</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Parcours C : deja inscrit -->
+      <div id="milaura-bubble-ritual-c" style="display:none;">
+        <div class="milaura-bubble-subscribed">
+          <div class="milaura-bubble-subscribed-icon">✨</div>
+          <p class="milaura-bubble-subscribed-text">{{ section.settings.subscribed_text | default: 'Tu fais deja partie de la communaute Milaura. Ton prochain rituel arrive bientot !' }}</p>
+        </div>
+      </div>
+
+      <!-- Message de succes (apres soumission) -->
+      <div class="milaura-bubble-success" id="milaura-bubble-success">
+        <div class="milaura-bubble-success-icon">✨</div>
+        <h4 class="milaura-bubble-success-title">{{ section.settings.success_title | default: 'Bienvenue dans la communaute !' }}</h4>
+        <p class="milaura-bubble-success-text">{{ section.settings.success_text | default: 'Ton premier rituel personnalise arrive bientot dans ta boite mail.' }}</p>
+      </div>
+    </div>
+
+    <!-- ONGLET CONTACT -->
+    <div
+      class="milaura-bubble-pane"
+      role="tabpanel"
+      id="milaura-pane-contact"
+      aria-labelledby="milaura-tab-contact"
+    >
+      <h3 class="milaura-bubble-contact-title">{{ section.settings.contact_title | default: 'Comment pouvons-nous t\'aider ?' }}</h3>
+
+      <div class="milaura-bubble-contact-methods">
+        {% if section.settings.contact_phone != blank %}
+          <a href="tel:{{ section.settings.contact_phone | replace: ' ', '' }}" class="milaura-bubble-contact-method">
+            <div class="milaura-bubble-contact-method-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div class="milaura-bubble-contact-method-info">
+              <span class="milaura-bubble-contact-method-label">{{ section.settings.contact_phone }}</span>
+              <span class="milaura-bubble-contact-method-detail">{{ section.settings.contact_phone_hours | default: 'Lun-Ven 9h-18h' }}</span>
+            </div>
+          </a>
+        {% endif %}
+
+        {% if section.settings.contact_email != blank %}
+          <a href="mailto:{{ section.settings.contact_email }}" class="milaura-bubble-contact-method">
+            <div class="milaura-bubble-contact-method-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="milaura-bubble-contact-method-info">
+              <span class="milaura-bubble-contact-method-label">{{ section.settings.contact_email }}</span>
+              <span class="milaura-bubble-contact-method-detail">{{ section.settings.contact_email_delay | default: 'Reponse sous 24h' }}</span>
+            </div>
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Formulaire rapide -->
+      <div class="milaura-bubble-quick-form">
+        <p class="milaura-bubble-quick-form-title">{{ section.settings.quick_form_title | default: 'Ou ecris-nous directement' }}</p>
+        <form id="milaura-bubble-contact-form" method="post" action="/contact#contact_form" accept-charset="UTF-8">
+          <input type="hidden" name="form_type" value="contact">
+          <input type="hidden" name="utf8" value="✓">
+          <label for="milaura-bubble-contact-email" class="visually-hidden">Email</label>
+          <input type="email" id="milaura-bubble-contact-email" name="contact[email]" class="milaura-bubble-quick-field" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
+          <label for="milaura-bubble-contact-message" class="visually-hidden">Message</label>
+          <textarea id="milaura-bubble-contact-message" name="contact[body]" class="milaura-bubble-quick-field" placeholder="{{ section.settings.contact_message_placeholder | default: 'Ton message...' }}" required rows="3"></textarea>
+          <button type="submit" class="milaura-bubble-quick-submit">{{ section.settings.contact_submit_label | default: 'Envoyer' }}</button>
+        </form>
+        <!-- Succes contact -->
+        <div class="milaura-bubble-success" id="milaura-bubble-contact-success">
+          <div class="milaura-bubble-success-icon">💌</div>
+          <h4 class="milaura-bubble-success-title">{{ section.settings.contact_success_title | default: 'Message envoye !' }}</h4>
+          <p class="milaura-bubble-success-text">{{ section.settings.contact_success_text | default: 'Nous te repondons sous 24h.' }}</p>
+        </div>
+      </div>
+
+      {% if section.settings.contact_page_url != blank %}
+        <a href="{{ section.settings.contact_page_url }}" class="milaura-bubble-contact-page-link">
+          {{ section.settings.contact_page_label | default: 'Voir la page contact complete →' }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Bouton trigger -->
+<button
+  class="milaura-bubble-trigger"
+  id="milaura-bubble-trigger"
+  aria-label="{{ section.settings.trigger_aria_label | default: 'Ouvrir l\'assistance' }}"
+  aria-expanded="false"
+  aria-controls="milaura-bubble-panel"
+>
+  <!-- Etoile -->
+  <svg class="bubble-icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </svg>
+  <!-- X -->
+  <svg class="bubble-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
+
+<script>
+(function() {
+  'use strict';
+
+  var trigger = document.getElementById('milaura-bubble-trigger');
+  var panel = document.getElementById('milaura-bubble-panel');
+  var overlay = document.getElementById('milaura-bubble-overlay');
+  var isOpen = false;
+
+  /* --- Profile data for energy messages --- */
+  var energyMessages = {
+    apaisement: '{{ section.settings.msg_apaisement | default: "L\'apaisement que tu cherches est a portee de main." | escape }}',
+    protection: '{{ section.settings.msg_protection | default: "Ta protection interieure commence ici." | escape }}',
+    serenite: '{{ section.settings.msg_serenite | default: "La serenite t\'attend, laisse-la entrer." | escape }}',
+    amour: '{{ section.settings.msg_amour | default: "L\'amour commence par un geste envers toi-meme." | escape }}',
+    chance: '{{ section.settings.msg_chance | default: "La chance sourit a celles qui osent." | escape }}'
+  };
+
+  var profileLabels = {
+    apaisement: 'Apaisement',
+    protection: 'Protection',
+    serenite: 'Serenite',
+    amour: 'Amour',
+    chance: 'Chance'
+  };
+
+  /* --- Determine state --- */
+  function isSubscribed() {
+    try { return localStorage.getItem('milauraNewsletterSubscribed') === 'true'; } catch(e) { return false; }
+  }
+
+  function getQuizResult() {
+    try {
+      var raw = localStorage.getItem('milauraLastResult');
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return null;
+  }
+
+  /* --- Render ritual pane based on state --- */
+  function renderRitualPane() {
+    var paneA = document.getElementById('milaura-bubble-ritual-a');
+    var paneB = document.getElementById('milaura-bubble-ritual-b');
+    var paneC = document.getElementById('milaura-bubble-ritual-c');
+    var successEl = document.getElementById('milaura-bubble-success');
+
+    paneA.style.display = 'none';
+    paneB.style.display = 'none';
+    paneC.style.display = 'none';
+    successEl.classList.remove('active');
+
+    if (isSubscribed()) {
+      paneC.style.display = 'block';
+      return;
+    }
+
+    var result = getQuizResult();
+    if (result && result.profile) {
+      paneA.style.display = 'block';
+      var profileName = document.getElementById('milaura-bubble-profile-name');
+      var noteField = document.getElementById('milaura-bubble-note-a');
+      var label = profileLabels[result.profile] || result.profile;
+      if (profileName) profileName.textContent = label;
+      if (noteField) noteField.value = 'Profil: ' + label;
+    } else {
+      paneB.style.display = 'block';
+    }
+  }
+
+  /* --- Tabs --- */
+  var tabs = panel.querySelectorAll('.milaura-bubble-tab');
+  var panes = panel.querySelectorAll('.milaura-bubble-pane');
+
+  function switchTab(tabName) {
+    tabs.forEach(function(t) {
+      var isTarget = t.getAttribute('data-tab') === tabName;
+      t.classList.toggle('active', isTarget);
+      t.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+    });
+    panes.forEach(function(p) {
+      p.classList.toggle('active', p.id === 'milaura-pane-' + tabName);
+    });
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      switchTab(this.getAttribute('data-tab'));
+    });
+  });
+
+  /* --- Open / Close --- */
+  function openBubble(tabName) {
+    if (isOpen) {
+      if (tabName) switchTab(tabName);
+      return;
+    }
+    renderRitualPane();
+    if (tabName) switchTab(tabName);
+    panel.classList.add('active');
+    overlay.classList.add('active');
+    trigger.setAttribute('aria-expanded', 'true');
+    isOpen = true;
+    trapFocus();
+  }
+
+  function closeBubble() {
+    if (!isOpen) return;
+    panel.classList.remove('active');
+    overlay.classList.remove('active');
+    trigger.setAttribute('aria-expanded', 'false');
+    isOpen = false;
+    trigger.focus();
+  }
+
+  /* Public API */
+  window.milauraOpenBubble = function(tab) { openBubble(tab || 'ritual'); };
+  window.milauraCloseBubble = closeBubble;
+
+  /* Trigger click */
+  trigger.addEventListener('click', function() {
+    if (isOpen) { closeBubble(); } else { openBubble('ritual'); }
+  });
+
+  /* Overlay click */
+  overlay.addEventListener('click', closeBubble);
+
+  /* Escape */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isOpen) closeBubble();
+  });
+
+  /* --- Focus trap --- */
+  function trapFocus() {
+    var focusable = panel.querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])');
+    if (focusable.length === 0) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    first.focus();
+
+    panel.addEventListener('keydown', function handler(e) {
+      if (e.key !== 'Tab') return;
+      if (!isOpen) { panel.removeEventListener('keydown', handler); return; }
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+  }
+
+  /* --- Micro-quiz (Parcours B) --- */
+  var microquizBtns = document.querySelectorAll('.milaura-bubble-microquiz-btn');
+  var postChoice = document.getElementById('milaura-bubble-post-choice');
+  var choiceMsg = document.getElementById('milaura-bubble-choice-msg');
+  var noteFieldB = document.getElementById('milaura-bubble-note-b');
+
+  microquizBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      microquizBtns.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      var energy = btn.getAttribute('data-energy');
+      if (choiceMsg) choiceMsg.textContent = energyMessages[energy] || '';
+      if (noteFieldB) noteFieldB.value = 'Energie choisie: ' + (profileLabels[energy] || energy);
+      if (postChoice) postChoice.style.display = 'block';
+    });
+  });
+
+  /* --- Form submissions (newsletter) --- */
+  function handleNewsletterSubmit(formEl, e) {
+    e.preventDefault();
+    var emailInput = formEl.querySelector('input[type="email"]');
+    if (!emailInput || !emailInput.value) return;
+
+    var formData = new FormData(formEl);
+
+    fetch('/contact#contact_form', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'text/html' }
+    }).then(function() {
+      try { localStorage.setItem('milauraNewsletterSubscribed', 'true'); } catch(e) {}
+      /* Dispatch event for popup sync */
+      document.dispatchEvent(new CustomEvent('milaura:newsletter-subscribed'));
+      /* Show success */
+      var paneA = document.getElementById('milaura-bubble-ritual-a');
+      var paneB = document.getElementById('milaura-bubble-ritual-b');
+      var successEl = document.getElementById('milaura-bubble-success');
+      if (paneA) paneA.style.display = 'none';
+      if (paneB) paneB.style.display = 'none';
+      if (successEl) successEl.classList.add('active');
+    }).catch(function() {
+      /* Fallback: submit normally */
+      formEl.submit();
+    });
+  }
+
+  var formA = document.getElementById('milaura-bubble-form-a');
+  var formB = document.getElementById('milaura-bubble-form-b');
+  if (formA) formA.addEventListener('submit', function(e) { handleNewsletterSubmit(this, e); });
+  if (formB) formB.addEventListener('submit', function(e) { handleNewsletterSubmit(this, e); });
+
+  /* --- Contact form submission --- */
+  var contactForm = document.getElementById('milaura-bubble-contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var formData = new FormData(contactForm);
+
+      fetch('/contact#contact_form', {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'text/html' }
+      }).then(function() {
+        contactForm.style.display = 'none';
+        var successEl = document.getElementById('milaura-bubble-contact-success');
+        if (successEl) successEl.classList.add('active');
+      }).catch(function() {
+        contactForm.submit();
+      });
+    });
+  }
+
+  /* --- Listen for quiz result event --- */
+  document.addEventListener('milaura:quiz-result', function() {
+    renderRitualPane();
+  });
+
+  /* --- Listen for external subscription --- */
+  document.addEventListener('milaura:newsletter-subscribed', function() {
+    renderRitualPane();
+  });
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Bulle Flottante",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Onglets"
+    },
+    {
+      "type": "text",
+      "id": "tab_ritual_label",
+      "label": "Label onglet Rituel",
+      "default": "Mon Rituel"
+    },
+    {
+      "type": "text",
+      "id": "tab_contact_label",
+      "label": "Label onglet Contact",
+      "default": "Contact"
+    },
+    {
+      "type": "header",
+      "content": "Rituel - Parcours A (quiz fait)"
+    },
+    {
+      "type": "text",
+      "id": "ritual_kicker_a",
+      "label": "Kicker",
+      "default": "Votre profil emotionnel"
+    },
+    {
+      "type": "textarea",
+      "id": "ritual_text_a",
+      "label": "Texte",
+      "default": "Recevez chaque mois un rituel personnalise adapte a votre profil emotionnel."
+    },
+    {
+      "type": "text",
+      "id": "ritual_btn_a",
+      "label": "Bouton",
+      "default": "Recevoir"
+    },
+    {
+      "type": "header",
+      "content": "Rituel - Parcours B (pas de quiz)"
+    },
+    {
+      "type": "text",
+      "id": "ritual_kicker_b",
+      "label": "Kicker",
+      "default": "Un instant pour toi"
+    },
+    {
+      "type": "text",
+      "id": "ritual_title_b",
+      "label": "Titre",
+      "default": "De quelle energie as-tu besoin aujourd'hui ?"
+    },
+    {
+      "type": "text",
+      "id": "ritual_btn_b",
+      "label": "Bouton",
+      "default": "Recevoir"
+    },
+    {
+      "type": "text",
+      "id": "energy_1",
+      "label": "Energie 1",
+      "default": "Apaisement"
+    },
+    {
+      "type": "text",
+      "id": "energy_2",
+      "label": "Energie 2",
+      "default": "Protection"
+    },
+    {
+      "type": "text",
+      "id": "energy_3",
+      "label": "Energie 3",
+      "default": "Serenite"
+    },
+    {
+      "type": "text",
+      "id": "energy_4",
+      "label": "Energie 4",
+      "default": "Amour"
+    },
+    {
+      "type": "text",
+      "id": "energy_5",
+      "label": "Energie 5",
+      "default": "Chance"
+    },
+    {
+      "type": "header",
+      "content": "Messages par energie"
+    },
+    {
+      "type": "text",
+      "id": "msg_apaisement",
+      "label": "Message Apaisement",
+      "default": "L'apaisement que tu cherches est a portee de main."
+    },
+    {
+      "type": "text",
+      "id": "msg_protection",
+      "label": "Message Protection",
+      "default": "Ta protection interieure commence ici."
+    },
+    {
+      "type": "text",
+      "id": "msg_serenite",
+      "label": "Message Serenite",
+      "default": "La serenite t'attend, laisse-la entrer."
+    },
+    {
+      "type": "text",
+      "id": "msg_amour",
+      "label": "Message Amour",
+      "default": "L'amour commence par un geste envers toi-meme."
+    },
+    {
+      "type": "text",
+      "id": "msg_chance",
+      "label": "Message Chance",
+      "default": "La chance sourit a celles qui osent."
+    },
+    {
+      "type": "header",
+      "content": "Parcours C (inscrit)"
+    },
+    {
+      "type": "textarea",
+      "id": "subscribed_text",
+      "label": "Texte inscrit",
+      "default": "Tu fais deja partie de la communaute Milaura. Ton prochain rituel arrive bientot !"
+    },
+    {
+      "type": "header",
+      "content": "Succes inscription"
+    },
+    {
+      "type": "text",
+      "id": "success_title",
+      "label": "Titre succes",
+      "default": "Bienvenue dans la communaute !"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Texte succes",
+      "default": "Ton premier rituel personnalise arrive bientot dans ta boite mail."
+    },
+    {
+      "type": "header",
+      "content": "Onglet Contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Titre contact",
+      "default": "Comment pouvons-nous t'aider ?"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Telephone",
+      "default": ""
+    },
+    {
+      "type": "text",
+      "id": "contact_phone_hours",
+      "label": "Horaires telephone",
+      "default": "Lun-Ven 9h-18h"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email",
+      "default": "hello@milaura.fr"
+    },
+    {
+      "type": "text",
+      "id": "contact_email_delay",
+      "label": "Delai de reponse",
+      "default": "Reponse sous 24h"
+    },
+    {
+      "type": "text",
+      "id": "contact_message_placeholder",
+      "label": "Placeholder message",
+      "default": "Ton message..."
+    },
+    {
+      "type": "text",
+      "id": "contact_submit_label",
+      "label": "Bouton envoyer",
+      "default": "Envoyer"
+    },
+    {
+      "type": "text",
+      "id": "contact_success_title",
+      "label": "Titre succes contact",
+      "default": "Message envoye !"
+    },
+    {
+      "type": "text",
+      "id": "contact_success_text",
+      "label": "Texte succes contact",
+      "default": "Nous te repondons sous 24h."
+    },
+    {
+      "type": "text",
+      "id": "quick_form_title",
+      "label": "Titre formulaire rapide",
+      "default": "Ou ecris-nous directement"
+    },
+    {
+      "type": "url",
+      "id": "contact_page_url",
+      "label": "Lien page contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_page_label",
+      "label": "Label lien page contact",
+      "default": "Voir la page contact complete →"
+    },
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Placeholder email",
+      "default": "ton@email.com"
+    },
+    {
+      "type": "text",
+      "id": "trigger_aria_label",
+      "label": "Aria label du bouton",
+      "default": "Ouvrir l'assistance"
+    },
+    {
+      "type": "text",
+      "id": "panel_aria_label",
+      "label": "Aria label du panneau",
+      "default": "Assistance et rituel personnalise"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Bulle Flottante"
+    }
+  ]
+}
+{% endschema %}

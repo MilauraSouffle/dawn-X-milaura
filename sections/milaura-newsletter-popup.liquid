@@ -1,0 +1,700 @@
+{% comment %}
+  MILAURA NEWSLETTER POPUP
+  "Votre Rituel Personnalise" - Popup intelligent avec 3 parcours
+  Triggers: scroll+time, exit-intent, post-quiz
+  Google-compliant mobile (max 70vh, easy dismiss)
+{% endcomment %}
+
+{% style %}
+  /* ============================================
+     MILAURA NEWSLETTER POPUP
+     ============================================ */
+
+  .milaura-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 200000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .milaura-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* --- CARTE --- */
+  .milaura-popup-card {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    max-height: 70vh;
+    overflow-y: auto;
+    /* Glassmorphism */
+    background: rgba(253, 251, 247, 0.97);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-radius: 24px;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(192, 160, 98, 0.1);
+    padding: 36px 28px 28px;
+    text-align: center;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .milaura-popup-overlay.active .milaura-popup-card {
+    transform: scale(1) translateY(0);
+  }
+
+  /* Bouton fermer */
+  .milaura-popup-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    padding: 0;
+  }
+
+  .milaura-popup-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .milaura-popup-close svg {
+    width: 16px;
+    height: 16px;
+    color: #666;
+  }
+
+  /* --- CONTENU --- */
+  .milaura-popup-kicker {
+    font-family: 'Dancing Script', cursive;
+    color: var(--milaura-gold, #C0A062);
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+  }
+
+  .milaura-popup-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 8px 0;
+    line-height: 1.3;
+  }
+
+  .milaura-popup-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+  }
+
+  .milaura-popup-profile-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--milaura-gold-dark, #8F723A);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  /* --- Micro-quiz (Parcours B) --- */
+  .milaura-popup-microquiz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .milaura-popup-microquiz-btn {
+    padding: 12px 10px;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .milaura-popup-microquiz-btn:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .milaura-popup-microquiz-btn:hover {
+    border-color: var(--milaura-gold, #C0A062);
+    background: rgba(192, 160, 98, 0.08);
+    color: var(--milaura-gold-dark, #8F723A);
+    transform: translateY(-1px);
+  }
+
+  .milaura-popup-microquiz-btn.selected {
+    border-color: var(--milaura-gold, #C0A062);
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(192, 160, 98, 0.08));
+    color: var(--milaura-gold-dark, #8F723A);
+    font-weight: 600;
+  }
+
+  /* --- Formulaire --- */
+  .milaura-popup-form {
+    display: flex;
+    gap: 10px;
+  }
+
+  .milaura-popup-email {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .milaura-popup-email:focus {
+    outline: none;
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 0 0 3px rgba(192, 160, 98, 0.12);
+  }
+
+  .milaura-popup-submit {
+    padding: 12px 22px;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .milaura-popup-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.35);
+  }
+
+  /* --- Succes --- */
+  .milaura-popup-success {
+    display: none;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .milaura-popup-success.active {
+    display: block;
+  }
+
+  .milaura-popup-success-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  .milaura-popup-success-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 8px 0;
+  }
+
+  .milaura-popup-success-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0;
+  }
+
+  /* Mention RGPD */
+  .milaura-popup-legal {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+
+  /* --- MOBILE --- */
+  @media screen and (max-width: 768px) {
+    .milaura-popup-overlay {
+      align-items: flex-end;
+      padding: 0;
+    }
+
+    .milaura-popup-card {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 24px 24px 0 0;
+      padding: 32px 20px 24px;
+      transform: translateY(100%);
+    }
+
+    .milaura-popup-overlay.active .milaura-popup-card {
+      transform: translateY(0);
+    }
+
+    .milaura-popup-form {
+      flex-direction: column;
+    }
+
+    .milaura-popup-submit {
+      width: 100%;
+    }
+  }
+
+  /* --- REDUCED MOTION --- */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-popup-overlay,
+    .milaura-popup-card,
+    .milaura-popup-microquiz-btn,
+    .milaura-popup-submit {
+      transition: none !important;
+    }
+  }
+{% endstyle %}
+
+<div class="milaura-popup-overlay" id="milaura-popup-overlay" role="dialog" aria-modal="true" aria-label="{{ section.settings.popup_aria_label | default: 'Rituel personnalise' }}">
+  <div class="milaura-popup-card">
+    <button class="milaura-popup-close" id="milaura-popup-close" aria-label="Fermer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <!-- Parcours A : quiz fait -->
+    <div id="milaura-popup-path-a" style="display:none;">
+      <p class="milaura-popup-kicker">{{ section.settings.kicker_a | default: 'Votre profil emotionnel' }}</p>
+      <div class="milaura-popup-profile-badge" id="milaura-popup-profile-name"></div>
+      <p class="milaura-popup-text">{{ section.settings.text_a | default: 'Recevez chaque mois un rituel personnalise adapte a votre profil emotionnel.' }}</p>
+      <form class="milaura-popup-form" id="milaura-popup-form-a" method="post" action="/contact#contact_form" accept-charset="UTF-8">
+        <input type="hidden" name="form_type" value="customer">
+        <input type="hidden" name="utf8" value="✓">
+        <input type="hidden" name="contact[tags]" value="newsletter,rituel,popup">
+        <input type="hidden" name="contact[note]" id="milaura-popup-note-a" value="">
+        <label for="milaura-popup-email-a" class="visually-hidden">Email</label>
+        <input type="email" id="milaura-popup-email-a" name="contact[email]" class="milaura-popup-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
+        <button type="submit" class="milaura-popup-submit">{{ section.settings.btn_a | default: 'Recevoir mon rituel' }}</button>
+      </form>
+      <p class="milaura-popup-legal">{{ section.settings.legal_text | default: 'En t\'inscrivant, tu acceptes de recevoir nos emails. Desabonnement en un clic.' }}</p>
+    </div>
+
+    <!-- Parcours B : pas de quiz -->
+    <div id="milaura-popup-path-b" style="display:none;">
+      <p class="milaura-popup-kicker">{{ section.settings.kicker_b | default: 'Un instant pour toi' }}</p>
+      <h2 class="milaura-popup-title">{{ section.settings.title_b | default: 'De quelle energie as-tu besoin aujourd\'hui ?' }}</h2>
+      <div class="milaura-popup-microquiz-grid" id="milaura-popup-microquiz">
+        <button class="milaura-popup-microquiz-btn" data-energy="apaisement">{{ section.settings.energy_1 | default: 'Apaisement' }}</button>
+        <button class="milaura-popup-microquiz-btn" data-energy="protection">{{ section.settings.energy_2 | default: 'Protection' }}</button>
+        <button class="milaura-popup-microquiz-btn" data-energy="serenite">{{ section.settings.energy_3 | default: 'Serenite' }}</button>
+        <button class="milaura-popup-microquiz-btn" data-energy="amour">{{ section.settings.energy_4 | default: 'Amour' }}</button>
+        <button class="milaura-popup-microquiz-btn" data-energy="chance">{{ section.settings.energy_5 | default: 'Chance' }}</button>
+      </div>
+      <!-- Apres choix -->
+      <div id="milaura-popup-post-choice" style="display:none;">
+        <p class="milaura-popup-text" id="milaura-popup-choice-msg"></p>
+        <form class="milaura-popup-form" id="milaura-popup-form-b" method="post" action="/contact#contact_form" accept-charset="UTF-8">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="contact[tags]" value="newsletter,rituel,popup">
+          <input type="hidden" name="contact[note]" id="milaura-popup-note-b" value="">
+          <label for="milaura-popup-email-b" class="visually-hidden">Email</label>
+          <input type="email" id="milaura-popup-email-b" name="contact[email]" class="milaura-popup-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
+          <button type="submit" class="milaura-popup-submit">{{ section.settings.btn_b | default: 'Recevoir mon premier rituel' }}</button>
+        </form>
+        <p class="milaura-popup-legal">{{ section.settings.legal_text | default: 'En t\'inscrivant, tu acceptes de recevoir nos emails. Desabonnement en un clic.' }}</p>
+      </div>
+    </div>
+
+    <!-- Succes -->
+    <div class="milaura-popup-success" id="milaura-popup-success">
+      <div class="milaura-popup-success-icon">✨</div>
+      <h3 class="milaura-popup-success-title">{{ section.settings.success_title | default: 'Bienvenue dans la communaute !' }}</h3>
+      <p class="milaura-popup-success-text">{{ section.settings.success_text | default: 'Ton premier rituel personnalise arrive bientot dans ta boite mail.' }}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var overlay = document.getElementById('milaura-popup-overlay');
+  var closeBtn = document.getElementById('milaura-popup-close');
+  var popupShown = false;
+
+  var energyMessages = {
+    apaisement: '{{ section.settings.msg_apaisement | default: "L\'apaisement que tu cherches est a portee de main." | escape }}',
+    protection: '{{ section.settings.msg_protection | default: "Ta protection interieure commence ici." | escape }}',
+    serenite: '{{ section.settings.msg_serenite | default: "La serenite t\'attend, laisse-la entrer." | escape }}',
+    amour: '{{ section.settings.msg_amour | default: "L\'amour commence par un geste envers toi-meme." | escape }}',
+    chance: '{{ section.settings.msg_chance | default: "La chance sourit a celles qui osent." | escape }}'
+  };
+
+  var profileLabels = {
+    apaisement: 'Apaisement',
+    protection: 'Protection',
+    serenite: 'Serenite',
+    amour: 'Amour',
+    chance: 'Chance'
+  };
+
+  /* --- Helpers --- */
+  function isSubscribed() {
+    try { return localStorage.getItem('milauraNewsletterSubscribed') === 'true'; } catch(e) { return false; }
+  }
+
+  function isDismissed() {
+    try {
+      var ts = localStorage.getItem('milauraPopupDismissed');
+      if (!ts) return false;
+      return (Date.now() - parseInt(ts, 10)) < 14 * 24 * 60 * 60 * 1000; /* 14 days */
+    } catch(e) { return false; }
+  }
+
+  function getQuizResult() {
+    try {
+      var raw = localStorage.getItem('milauraLastResult');
+      if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return null;
+  }
+
+  function canShow() {
+    return !isSubscribed() && !isDismissed() && !popupShown;
+  }
+
+  /* --- Show popup --- */
+  function showPopup() {
+    if (!canShow()) return;
+    popupShown = true;
+
+    var pathA = document.getElementById('milaura-popup-path-a');
+    var pathB = document.getElementById('milaura-popup-path-b');
+    pathA.style.display = 'none';
+    pathB.style.display = 'none';
+
+    var result = getQuizResult();
+    if (result && result.profile) {
+      pathA.style.display = 'block';
+      var badge = document.getElementById('milaura-popup-profile-name');
+      var note = document.getElementById('milaura-popup-note-a');
+      var label = profileLabels[result.profile] || result.profile;
+      if (badge) badge.textContent = label;
+      if (note) note.value = 'Profil: ' + label;
+    } else {
+      pathB.style.display = 'block';
+    }
+
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  /* --- Close popup --- */
+  function closePopup() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    try { localStorage.setItem('milauraPopupDismissed', String(Date.now())); } catch(e) {}
+  }
+
+  /* Close handlers */
+  if (closeBtn) closeBtn.addEventListener('click', closePopup);
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closePopup();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) closePopup();
+  });
+
+  /* --- Micro-quiz --- */
+  var microquizBtns = document.querySelectorAll('#milaura-popup-microquiz .milaura-popup-microquiz-btn');
+  var postChoice = document.getElementById('milaura-popup-post-choice');
+  var choiceMsg = document.getElementById('milaura-popup-choice-msg');
+  var noteFieldB = document.getElementById('milaura-popup-note-b');
+
+  microquizBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      microquizBtns.forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      var energy = btn.getAttribute('data-energy');
+      if (choiceMsg) choiceMsg.textContent = energyMessages[energy] || '';
+      if (noteFieldB) noteFieldB.value = 'Energie choisie: ' + (profileLabels[energy] || energy);
+      if (postChoice) postChoice.style.display = 'block';
+    });
+  });
+
+  /* --- Form submissions --- */
+  function handleSubmit(formEl, e) {
+    e.preventDefault();
+    var emailInput = formEl.querySelector('input[type="email"]');
+    if (!emailInput || !emailInput.value) return;
+
+    var formData = new FormData(formEl);
+
+    fetch('/contact#contact_form', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'text/html' }
+    }).then(function() {
+      try { localStorage.setItem('milauraNewsletterSubscribed', 'true'); } catch(e) {}
+      document.dispatchEvent(new CustomEvent('milaura:newsletter-subscribed'));
+      /* Show success */
+      var pathA = document.getElementById('milaura-popup-path-a');
+      var pathB = document.getElementById('milaura-popup-path-b');
+      var successEl = document.getElementById('milaura-popup-success');
+      if (pathA) pathA.style.display = 'none';
+      if (pathB) pathB.style.display = 'none';
+      if (successEl) successEl.classList.add('active');
+      /* Auto-close after 3s */
+      setTimeout(closePopup, 3000);
+    }).catch(function() {
+      formEl.submit();
+    });
+  }
+
+  var formA = document.getElementById('milaura-popup-form-a');
+  var formB = document.getElementById('milaura-popup-form-b');
+  if (formA) formA.addEventListener('submit', function(e) { handleSubmit(this, e); });
+  if (formB) formB.addEventListener('submit', function(e) { handleSubmit(this, e); });
+
+  /* --- TRIGGERS --- */
+  var pageTemplate = '{{ template.name }}';
+  var isHomepage = (pageTemplate === 'index');
+  var isProduct = (pageTemplate === 'product');
+
+  /* Trigger: Homepage = 40s AND 60% scroll */
+  if (isHomepage) {
+    var timeReached = false;
+    var scrollReached = false;
+
+    setTimeout(function() {
+      timeReached = true;
+      if (scrollReached) showPopup();
+    }, 40000);
+
+    function checkScroll() {
+      var scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      if (scrollPercent >= 60) {
+        scrollReached = true;
+        window.removeEventListener('scroll', checkScroll);
+        if (timeReached) showPopup();
+      }
+    }
+    window.addEventListener('scroll', checkScroll, { passive: true });
+  }
+
+  /* Trigger: Product page = 30s OR exit-intent (desktop) */
+  if (isProduct) {
+    setTimeout(function() { showPopup(); }, 30000);
+
+    /* Exit intent (desktop only) */
+    if (window.innerWidth > 768) {
+      document.addEventListener('mouseout', function exitHandler(e) {
+        if (e.clientY <= 0 && canShow()) {
+          showPopup();
+          document.removeEventListener('mouseout', exitHandler);
+        }
+      });
+    }
+  }
+
+  /* Trigger: Post-quiz (any page) */
+  document.addEventListener('milaura:quiz-result', function() {
+    setTimeout(function() { showPopup(); }, 2000);
+  });
+
+  /* Listen for subscription from bubble */
+  document.addEventListener('milaura:newsletter-subscribed', function() {
+    if (overlay.classList.contains('active')) closePopup();
+  });
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Popup Newsletter",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Parcours A (quiz fait)"
+    },
+    {
+      "type": "text",
+      "id": "kicker_a",
+      "label": "Kicker",
+      "default": "Votre profil emotionnel"
+    },
+    {
+      "type": "textarea",
+      "id": "text_a",
+      "label": "Texte",
+      "default": "Recevez chaque mois un rituel personnalise adapte a votre profil emotionnel."
+    },
+    {
+      "type": "text",
+      "id": "btn_a",
+      "label": "Bouton",
+      "default": "Recevoir mon rituel"
+    },
+    {
+      "type": "header",
+      "content": "Parcours B (pas de quiz)"
+    },
+    {
+      "type": "text",
+      "id": "kicker_b",
+      "label": "Kicker",
+      "default": "Un instant pour toi"
+    },
+    {
+      "type": "text",
+      "id": "title_b",
+      "label": "Titre",
+      "default": "De quelle energie as-tu besoin aujourd'hui ?"
+    },
+    {
+      "type": "text",
+      "id": "btn_b",
+      "label": "Bouton",
+      "default": "Recevoir mon premier rituel"
+    },
+    {
+      "type": "text",
+      "id": "energy_1",
+      "label": "Energie 1",
+      "default": "Apaisement"
+    },
+    {
+      "type": "text",
+      "id": "energy_2",
+      "label": "Energie 2",
+      "default": "Protection"
+    },
+    {
+      "type": "text",
+      "id": "energy_3",
+      "label": "Energie 3",
+      "default": "Serenite"
+    },
+    {
+      "type": "text",
+      "id": "energy_4",
+      "label": "Energie 4",
+      "default": "Amour"
+    },
+    {
+      "type": "text",
+      "id": "energy_5",
+      "label": "Energie 5",
+      "default": "Chance"
+    },
+    {
+      "type": "header",
+      "content": "Messages par energie"
+    },
+    {
+      "type": "text",
+      "id": "msg_apaisement",
+      "label": "Message Apaisement",
+      "default": "L'apaisement que tu cherches est a portee de main."
+    },
+    {
+      "type": "text",
+      "id": "msg_protection",
+      "label": "Message Protection",
+      "default": "Ta protection interieure commence ici."
+    },
+    {
+      "type": "text",
+      "id": "msg_serenite",
+      "label": "Message Serenite",
+      "default": "La serenite t'attend, laisse-la entrer."
+    },
+    {
+      "type": "text",
+      "id": "msg_amour",
+      "label": "Message Amour",
+      "default": "L'amour commence par un geste envers toi-meme."
+    },
+    {
+      "type": "text",
+      "id": "msg_chance",
+      "label": "Message Chance",
+      "default": "La chance sourit a celles qui osent."
+    },
+    {
+      "type": "header",
+      "content": "Succes"
+    },
+    {
+      "type": "text",
+      "id": "success_title",
+      "label": "Titre succes",
+      "default": "Bienvenue dans la communaute !"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Texte succes",
+      "default": "Ton premier rituel personnalise arrive bientot dans ta boite mail."
+    },
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Placeholder email",
+      "default": "ton@email.com"
+    },
+    {
+      "type": "textarea",
+      "id": "legal_text",
+      "label": "Texte legal",
+      "default": "En t'inscrivant, tu acceptes de recevoir nos emails. Desabonnement en un clic."
+    },
+    {
+      "type": "text",
+      "id": "popup_aria_label",
+      "label": "Aria label popup",
+      "default": "Rituel personnalise"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Popup Newsletter"
+    }
+  ]
+}
+{% endschema %}
