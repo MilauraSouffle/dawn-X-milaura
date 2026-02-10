@@ -613,38 +613,49 @@
       </script>
     {%- endif -%}
     <script>
-      /* MilAura — Cookie Banner Text Personalization v2 */
+      /* MilAura — Cookie Banner Text Personalization v3 */
       (function() {
         function customizeCookieBanner() {
           var banner = document.getElementById('shopify-pc__banner');
           if (!banner) return false;
-          var dialog = banner.querySelector('.shopify-pc__banner__dialog');
-          if (!dialog) return false;
 
-          /* Title (h2) */
-          var title = dialog.querySelector('h2');
-          if (title) title.textContent = 'Votre bien-\u00eatre num\u00e9rique compte aussi';
+          /* Title — try h2, h3, strong, or first bold-ish element */
+          var title = banner.querySelector('h2') || banner.querySelector('h3') || banner.querySelector('strong');
+          if (!title) return false;
 
-          /* Body text (p) */
-          var text = dialog.querySelector('p');
-          if (text) text.innerHTML = 'Nos cookies sont comme nos pierres\u00a0: naturels et bien intentionn\u00e9s. Ils nous aident \u00e0 retenir vos pr\u00e9f\u00e9rences et \u00e0 vous offrir une exp\u00e9rience sur mesure. <a href="/policies/privacy-policy">En savoir plus</a>';
+          title.textContent = 'Votre bien-\u00eatre num\u00e9rique compte aussi';
 
-          /* Buttons */
-          var btnAccept = banner.querySelector('.shopify-pc__banner__btn-accept');
-          var btnDecline = banner.querySelector('.shopify-pc__banner__btn-decline');
-          var btnManage = banner.querySelector('.shopify-pc__banner__btn-manage-prefs');
-          if (btnAccept) btnAccept.textContent = 'J\u2019accepte';
-          if (btnDecline) btnDecline.textContent = 'Non merci';
+          /* Body text — first <p> that isn't tiny */
+          var paragraphs = banner.querySelectorAll('p');
+          for (var i = 0; i < paragraphs.length; i++) {
+            if (paragraphs[i].textContent.length > 30) {
+              paragraphs[i].innerHTML = 'Nos cookies sont comme nos pierres\u00a0: naturels et bien intentionn\u00e9s. Ils nous aident \u00e0 retenir vos pr\u00e9f\u00e9rences et \u00e0 vous offrir une exp\u00e9rience sur mesure. <a href="/policies/privacy-policy">En savoir plus</a>';
+              break;
+            }
+          }
+
+          /* Buttons — try multiple selector patterns */
+          var btnAccept = banner.querySelector('[class*="btn-accept"]') || banner.querySelector('button:first-of-type');
+          var btnDecline = banner.querySelector('[class*="btn-decline"]') || banner.querySelector('button:nth-of-type(2)');
+          var btnManage = banner.querySelector('[class*="btn-manage"]') || banner.querySelector('[class*="manage-prefs"]');
+
+          if (btnAccept && btnAccept.textContent.toLowerCase().indexOf('accept') > -1) btnAccept.textContent = 'J\u2019accepte';
+          if (btnDecline && btnDecline.textContent.toLowerCase().indexOf('refus') > -1) btnDecline.textContent = 'Non merci';
           if (btnManage) btnManage.textContent = 'Mes pr\u00e9f\u00e9rences';
 
           return true;
         }
 
+        var count = 0;
         var obs = new MutationObserver(function(m, o) {
-          if (customizeCookieBanner()) o.disconnect();
+          count++;
+          if (customizeCookieBanner() || count > 200) o.disconnect();
         });
         obs.observe(document.body, { childList: true, subtree: true });
-        setTimeout(function() { obs.disconnect(); }, 12000);
+        /* Also try after a delay in case banner loads late */
+        setTimeout(customizeCookieBanner, 1500);
+        setTimeout(customizeCookieBanner, 3000);
+        setTimeout(function() { obs.disconnect(); }, 15000);
       })();
     </script>
   </body>
