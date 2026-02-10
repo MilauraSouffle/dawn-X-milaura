@@ -612,5 +612,41 @@
         })();
       </script>
     {%- endif -%}
+    <script>
+      /* MilAura — Cookie Banner Text Personalization */
+      (function() {
+        function customizeCookieBanner() {
+          var banner = document.getElementById('shopify-pc__banner');
+          if (!banner) return false;
+
+          var title = banner.querySelector('.shopify-pc-banner__title');
+          var text = banner.querySelector('.shopify-pc-banner__text');
+          var btnAccept = banner.querySelector('.shopify-pc-banner__btn-accept-all');
+          var btnDecline = banner.querySelector('.shopify-pc-banner__btn-decline-all');
+          var btnManage = banner.querySelector('.shopify-pc-banner__btn-manage');
+
+          if (title) {
+            title.childNodes.forEach(function(n) { if (n.nodeType === 3) n.textContent = ''; });
+            var span = document.createElement('span');
+            span.textContent = 'Avant de commencer votre voyage\u2026';
+            title.appendChild(span);
+          }
+          if (text) {
+            text.innerHTML = 'Comme chaque pierre a son \u00e9nergie, chaque visite a ses petites empreintes num\u00e9riques. Elles nous aident \u00e0 mieux vous conna\u00eetre et \u00e0 personnaliser votre exp\u00e9rience. <a href="/policies/privacy-policy">En savoir plus</a>';
+          }
+          if (btnAccept) btnAccept.textContent = 'J\u2019accepte avec plaisir';
+          if (btnDecline) btnDecline.textContent = 'Non merci';
+          if (btnManage) btnManage.textContent = 'Choisir mes pr\u00e9f\u00e9rences';
+
+          return true;
+        }
+
+        var observer = new MutationObserver(function(mutations, obs) {
+          if (customizeCookieBanner()) obs.disconnect();
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+        setTimeout(function() { observer.disconnect(); }, 10000);
+      })();
+    </script>
   </body>
 </html>
