@@ -613,39 +613,38 @@
       </script>
     {%- endif -%}
     <script>
-      /* MilAura — Cookie Banner Text Personalization */
+      /* MilAura — Cookie Banner Text Personalization v2 */
       (function() {
         function customizeCookieBanner() {
           var banner = document.getElementById('shopify-pc__banner');
           if (!banner) return false;
+          var dialog = banner.querySelector('.shopify-pc__banner__dialog');
+          if (!dialog) return false;
 
-          var title = banner.querySelector('.shopify-pc-banner__title');
-          var text = banner.querySelector('.shopify-pc-banner__text');
-          var btnAccept = banner.querySelector('.shopify-pc-banner__btn-accept-all');
-          var btnDecline = banner.querySelector('.shopify-pc-banner__btn-decline-all');
-          var btnManage = banner.querySelector('.shopify-pc-banner__btn-manage');
+          /* Title (h2) */
+          var title = dialog.querySelector('h2');
+          if (title) title.textContent = 'Votre bien-\u00eatre num\u00e9rique compte aussi';
 
-          if (title) {
-            title.childNodes.forEach(function(n) { if (n.nodeType === 3) n.textContent = ''; });
-            var span = document.createElement('span');
-            span.textContent = 'Avant de commencer votre voyage\u2026';
-            title.appendChild(span);
-          }
-          if (text) {
-            text.innerHTML = 'Comme chaque pierre a son \u00e9nergie, chaque visite a ses petites empreintes num\u00e9riques. Elles nous aident \u00e0 mieux vous conna\u00eetre et \u00e0 personnaliser votre exp\u00e9rience. <a href="/policies/privacy-policy">En savoir plus</a>';
-          }
-          if (btnAccept) btnAccept.textContent = 'J\u2019accepte avec plaisir';
+          /* Body text (p) */
+          var text = dialog.querySelector('p');
+          if (text) text.innerHTML = 'Nos cookies sont comme nos pierres\u00a0: naturels et bien intentionn\u00e9s. Ils nous aident \u00e0 retenir vos pr\u00e9f\u00e9rences et \u00e0 vous offrir une exp\u00e9rience sur mesure. <a href="/policies/privacy-policy">En savoir plus</a>';
+
+          /* Buttons */
+          var btnAccept = banner.querySelector('.shopify-pc__banner__btn-accept');
+          var btnDecline = banner.querySelector('.shopify-pc__banner__btn-decline');
+          var btnManage = banner.querySelector('.shopify-pc__banner__btn-manage-prefs');
+          if (btnAccept) btnAccept.textContent = 'J\u2019accepte';
           if (btnDecline) btnDecline.textContent = 'Non merci';
-          if (btnManage) btnManage.textContent = 'Choisir mes pr\u00e9f\u00e9rences';
+          if (btnManage) btnManage.textContent = 'Mes pr\u00e9f\u00e9rences';
 
           return true;
         }
 
-        var observer = new MutationObserver(function(mutations, obs) {
-          if (customizeCookieBanner()) obs.disconnect();
+        var obs = new MutationObserver(function(m, o) {
+          if (customizeCookieBanner()) o.disconnect();
         });
-        observer.observe(document.body, { childList: true, subtree: true });
-        setTimeout(function() { observer.disconnect(); }, 10000);
+        obs.observe(document.body, { childList: true, subtree: true });
+        setTimeout(function() { obs.disconnect(); }, 12000);
       })();
     </script>
   </body>
