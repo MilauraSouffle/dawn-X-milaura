@@ -28,45 +28,67 @@
 
     {% render 'meta-tags' %}
 
+    <!-- MilAura Advanced SEO Schema (Entity Authority & Local Presence) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": {{ shop.name | json }},
-        {% if settings.logo %}
-          "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
-        {% endif %}
-        "sameAs": [
-          {{ settings.social_twitter_link | json }},
-          {{ settings.social_facebook_link | json }},
-          {{ settings.social_pinterest_link | json }},
-          {{ settings.social_instagram_link | json }},
-          {{ settings.social_tiktok_link | json }},
-          {{ settings.social_tumblr_link | json }},
-          {{ settings.social_snapchat_link | json }},
-          {{ settings.social_youtube_link | json }},
-          {{ settings.social_vimeo_link | json }}
-        ],
-        "url": {{ request.origin | append: page.url | json }}
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "{{ shop.url }}/#organization",
+            "name": "MilAura",
+            "url": "{{ shop.url }}",
+            {%- if settings.logo -%}
+            "logo": {
+              "@type": "ImageObject",
+              "url": "{{ settings.logo | image_url: width: 500 | prepend: 'https:' }}"
+            },
+            {%- endif -%}
+            "sameAs": [
+              "https://www.facebook.com/milaura.creations/",
+              "https://www.instagram.com/milaura_souffle/",
+              "https://www.tiktok.com/@milaura_creations",
+              "https://pin.it/3TbjBkFSS",
+              "https://www.pagesjaunes.fr/pros/64692900"
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+33372396473",
+              "contactType": "customer service",
+              "email": "contact@milaura.fr",
+              "areaServed": "FR",
+              "availableLanguage": "French"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "92 Rue de Pont-à-Mousson",
+              "addressLocality": "Montigny-lès-Metz",
+              "postalCode": "57950",
+              "addressCountry": "FR"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 49.0987,
+              "longitude": 6.1576
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "{{ shop.url }}/#website",
+            "url": "{{ shop.url }}",
+            "name": "MilAura",
+            "description": "{{ page_description | default: shop.description | escape }}",
+            "inLanguage": "fr",
+            "publisher": { "@id": "{{ shop.url }}/#organization" },
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "{{ shop.url }}/search?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          }
+        ]
       }
     </script>
-
-    {%- if request.page_type == 'index' -%}
-      {%- assign potential_action_target = request.origin | append: routes.search_url | append: "?q={search_term_string}" -%}
-      <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": {{ shop.name | json }},
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": {{ potential_action_target | json }},
-            "query-input": "required name=search_term_string"
-          },
-          "url": {{ request.origin | append: page.url | json }}
-        }
-      </script>
-    {%- endif -%}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
