@@ -562,6 +562,34 @@
     margin: 0;
   }
 
+  .milaura-bubble-promo {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.12), rgba(192, 160, 98, 0.05));
+    border: 1px dashed rgba(192, 160, 98, 0.4);
+    border-radius: 12px;
+  }
+
+  .milaura-bubble-promo-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.72rem;
+    color: #666;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .milaura-bubble-promo-code {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--milaura-gold-dark, #8F723A);
+    letter-spacing: 2px;
+    margin: 0;
+    user-select: all;
+    cursor: pointer;
+  }
+
   /* --- ONGLET CONTACT --- */
   .milaura-bubble-contact-title {
     font-family: 'Playfair Display', serif;
@@ -888,7 +916,13 @@
           <div class="milaura-bubble-subscribed-profile" id="milaura-bubble-subscribed-profile" style="display:none;"></div>
           <p class="milaura-bubble-subscribed-text">{{ section.settings.subscribed_text | default: 'Tu fais deja partie de la communaute Milaura.' }}</p>
           <p class="milaura-bubble-subscribed-retention">{{ section.settings.subscribed_retention | default: 'Ton prochain rappel quiz arrive bientot pour decouvrir ta nouvelle pierre du moment.' }}</p>
-          <a href="/account" class="milaura-bubble-dashboard-link">{{ section.settings.subscribed_dashboard_label | default: 'Mon espace Milaura' }}</a>
+          {% if section.settings.promo_code != blank %}
+            <div class="milaura-bubble-promo">
+              <p class="milaura-bubble-promo-label">{{ section.settings.promo_label | default: 'Ton code -10% premiere commande' }}</p>
+              <p class="milaura-bubble-promo-code">{{ section.settings.promo_code | default: 'BIENVENUE10' }}</p>
+            </div>
+          {% endif %}
+          <a href="/account" class="milaura-bubble-dashboard-link" style="margin-top:14px;">{{ section.settings.subscribed_dashboard_label | default: 'Mon espace Milaura' }}</a>
         </div>
       </div>
 
@@ -897,6 +931,12 @@
         <div class="milaura-bubble-success-icon">✨</div>
         <h4 class="milaura-bubble-success-title">{{ section.settings.success_title | default: 'Bienvenue dans la communaute !' }}</h4>
         <p class="milaura-bubble-success-text">{{ section.settings.success_text | default: 'Ton premier rituel arrive bientot. Dans 30 jours, tu recevras un rappel pour rafraichir ton quiz et choisir la pierre qui t accompagnera.' }}</p>
+        {% if section.settings.promo_code != blank %}
+          <div class="milaura-bubble-promo">
+            <p class="milaura-bubble-promo-label">{{ section.settings.promo_label | default: 'Ton code -10% premiere commande' }}</p>
+            <p class="milaura-bubble-promo-code">{{ section.settings.promo_code | default: 'BIENVENUE10' }}</p>
+          </div>
+        {% endif %}
       </div>
     </div>
 
@@ -1504,7 +1544,20 @@
     },
     {
       "type": "header",
-      "content": "Succes inscription"
+      "content": "Succes inscription & Code promo"
+    },
+    {
+      "type": "text",
+      "id": "promo_code",
+      "label": "Code promo",
+      "default": "BIENVENUE10",
+      "info": "Laisser vide pour masquer le bloc promo"
+    },
+    {
+      "type": "text",
+      "id": "promo_label",
+      "label": "Label au-dessus du code",
+      "default": "Ton code -10% premiere commande"
     },
     {
       "type": "text",
