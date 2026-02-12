@@ -77,7 +77,7 @@
     position: absolute;
   }
 
-  .milaura-bubble-trigger .bubble-icon-star {
+  .milaura-bubble-trigger .bubble-icon-gift {
     opacity: 1;
     transform: rotate(0deg);
   }
@@ -87,7 +87,7 @@
     transform: rotate(-90deg);
   }
 
-  .milaura-bubble-trigger[aria-expanded="true"] .bubble-icon-star {
+  .milaura-bubble-trigger[aria-expanded="true"] .bubble-icon-gift {
     opacity: 0;
     transform: rotate(90deg);
   }
@@ -95,6 +95,57 @@
   .milaura-bubble-trigger[aria-expanded="true"] .bubble-icon-close {
     opacity: 1;
     transform: rotate(0deg);
+  }
+
+  /* --- MICRO-LABEL --- */
+  .milaura-bubble-label {
+    position: fixed;
+    bottom: 32px;
+    right: 92px;
+    background: rgba(253, 251, 247, 0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 12px;
+    padding: 8px 14px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--milaura-gold-dark, #8F723A);
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: translateX(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+    z-index: 99999;
+  }
+
+  .milaura-bubble-label::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: rgba(253, 251, 247, 0.97);
+    border-right: 1px solid rgba(192, 160, 98, 0.3);
+    border-top: 1px solid rgba(192, 160, 98, 0.3);
+  }
+
+  .milaura-bubble-label.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media screen and (max-width: 768px) {
+    .milaura-bubble-label {
+      bottom: 28px;
+      right: 80px;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+    }
   }
 
   /* --- OVERLAY MOBILE --- */
@@ -249,7 +300,51 @@
     margin-bottom: 14px;
   }
 
-  /* Micro-quiz dans la bulle (Parcours B) */
+  /* Teaser list (Parcours A) */
+  .milaura-bubble-teaser-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 14px 0;
+  }
+
+  .milaura-bubble-teaser-list li {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.82rem;
+    color: #444;
+    padding: 4px 0 4px 20px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .milaura-bubble-teaser-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+  }
+
+  /* Lien quiz (Parcours B2) */
+  .milaura-bubble-quiz-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem;
+    color: var(--milaura-gold-dark, #8F723A);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .milaura-bubble-quiz-link:hover {
+    color: var(--milaura-gold, #C0A062);
+    text-decoration: underline;
+  }
+
+  /* Micro-quiz dans la bulle (Parcours B2) */
   .milaura-bubble-microquiz {
     margin-bottom: 16px;
   }
@@ -625,24 +720,47 @@
     >
       <!-- Parcours A : a fait le quiz -->
       <div id="milaura-bubble-ritual-a" style="display:none;">
-        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_a | default: 'Votre profil emotionnel' }}</p>
+        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_a | default: 'Ton profil' }}</p>
         <div class="milaura-bubble-ritual-profile" id="milaura-bubble-profile-name"></div>
-        <p class="milaura-bubble-ritual-text">{{ section.settings.ritual_text_a | default: 'Recevez chaque mois un rituel personnalise adapte a votre profil emotionnel.' }}</p>
+        <h3 class="milaura-bubble-ritual-title">{{ section.settings.ritual_title_a | default: 'Ton rituel sur-mesure t attend' }}</h3>
+        <p class="milaura-bubble-ritual-text">{{ section.settings.ritual_text_a | default: 'Chaque mois dans ta boite mail :' }}</p>
+        <ul class="milaura-bubble-teaser-list">
+          <li>{{ section.settings.teaser_1 | default: 'Guide pierre & intention du mois' }}</li>
+          <li>{{ section.settings.teaser_2 | default: 'Conseil rituel personnalise' }}</li>
+          <li>{{ section.settings.teaser_3 | default: 'Offre exclusive membre' }}</li>
+        </ul>
         <form class="milaura-bubble-form" id="milaura-bubble-form-a" method="post" action="/contact#contact_form" accept-charset="UTF-8">
           <input type="hidden" name="form_type" value="customer">
           <input type="hidden" name="utf8" value="✓">
-          <input type="hidden" name="contact[tags]" value="newsletter,rituel">
+          <input type="hidden" name="contact[tags]" value="newsletter,rituel,source:bubble">
           <input type="hidden" name="contact[note]" id="milaura-bubble-note-a" value="">
           <label for="milaura-bubble-email-a" class="visually-hidden">Email</label>
           <input type="email" id="milaura-bubble-email-a" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
-          <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_a | default: 'Recevoir' }}</button>
+          <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_a | default: 'Recevoir mon rituel gratuit' }}</button>
         </form>
       </div>
 
-      <!-- Parcours B : pas de quiz -->
+      <!-- Parcours B : pas de quiz — Etape 1 : email d'abord -->
       <div id="milaura-bubble-ritual-b" style="display:none;">
-        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_b | default: 'Un instant pour toi' }}</p>
-        <h3 class="milaura-bubble-ritual-title">{{ section.settings.ritual_title_b | default: "De quelle energie as-tu besoin aujourd'hui ?" }}</h3>
+        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_b | default: 'Rien que pour toi' }}</p>
+        <h3 class="milaura-bubble-ritual-title">{{ section.settings.ritual_title_b | default: 'Recois ton premier rituel bien-etre offert' }}</h3>
+        <p class="milaura-bubble-ritual-text">{{ section.settings.ritual_text_b | default: 'Guide pierres, conseil personnalise et offre membre — directement dans ta boite mail.' }}</p>
+        <form class="milaura-bubble-form" id="milaura-bubble-form-b" method="post" action="/contact#contact_form" accept-charset="UTF-8">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="contact[tags]" value="newsletter,rituel,source:bubble">
+          <input type="hidden" name="contact[note]" id="milaura-bubble-note-b" value="">
+          <label for="milaura-bubble-email-b" class="visually-hidden">Email</label>
+          <input type="email" id="milaura-bubble-email-b" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
+          <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_b | default: 'Recevoir mon rituel' }}</button>
+        </form>
+      </div>
+
+      <!-- Parcours B2 : preferences post-email (optionnel) -->
+      <div id="milaura-bubble-ritual-b2" style="display:none;">
+        <p class="milaura-bubble-ritual-kicker">{{ section.settings.b2_kicker | default: 'Merci !' }}</p>
+        <h3 class="milaura-bubble-ritual-title">{{ section.settings.b2_title | default: 'Personnalise ton experience' }}</h3>
+        <p class="milaura-bubble-ritual-text">{{ section.settings.b2_text | default: "Choisis l'energie qui te parle — c'est optionnel mais ca nous aide a te proposer le meilleur." }}</p>
         <div class="milaura-bubble-microquiz" id="milaura-bubble-microquiz">
           <div class="milaura-bubble-microquiz-grid">
             <button class="milaura-bubble-microquiz-btn" data-energy="apaisement">{{ section.settings.energy_1 | default: 'Apaisement' }}</button>
@@ -652,19 +770,9 @@
             <button class="milaura-bubble-microquiz-btn" data-energy="chance">{{ section.settings.energy_5 | default: 'Chance' }}</button>
           </div>
         </div>
-        <!-- Formulaire apparait apres choix -->
-        <div id="milaura-bubble-post-choice" style="display:none;">
-          <p class="milaura-bubble-ritual-text" id="milaura-bubble-choice-msg"></p>
-          <form class="milaura-bubble-form" id="milaura-bubble-form-b" method="post" action="/contact#contact_form" accept-charset="UTF-8">
-            <input type="hidden" name="form_type" value="customer">
-            <input type="hidden" name="utf8" value="✓">
-            <input type="hidden" name="contact[tags]" value="newsletter,rituel">
-            <input type="hidden" name="contact[note]" id="milaura-bubble-note-b" value="">
-            <label for="milaura-bubble-email-b" class="visually-hidden">Email</label>
-            <input type="email" id="milaura-bubble-email-b" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
-            <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_b | default: 'Recevoir' }}</button>
-          </form>
-        </div>
+        <a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}" class="milaura-bubble-quiz-link" id="milaura-bubble-skip-prefs">
+          {{ section.settings.b2_quiz_cta | default: 'Ou decouvre ton profil complet avec le quiz →' }}
+        </a>
       </div>
 
       <!-- Parcours C : deja inscrit -->
@@ -747,6 +855,11 @@
   </div>
 </div>
 
+<!-- Micro-label -->
+<div class="milaura-bubble-label" id="milaura-bubble-label">
+  {{ section.settings.bubble_label | default: 'Un cadeau pour toi' }}
+</div>
+
 <!-- Bouton trigger -->
 <button
   class="milaura-bubble-trigger"
@@ -755,14 +868,18 @@
   aria-expanded="false"
   aria-controls="milaura-bubble-panel"
 >
-  <!-- Cristal -->
-  <svg class="bubble-icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 3h12l4 7-10 12L2 10z"/>
-    <path d="M2 10h20"/>
-    <path d="M12 22L8.5 10 6 3"/>
-    <path d="M12 22l3.5-12L18 3"/>
-    <path d="M12 22V10"/>
-    <path d="M8.5 10l3.5-7 3.5 7"/>
+  <!-- Cadeau luxe -->
+  <svg class="bubble-icon-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Boite -->
+    <rect x="3" y="11" width="18" height="10" rx="1.5" stroke-width="1.4"/>
+    <!-- Couvercle -->
+    <rect x="2" y="8" width="20" height="3.5" rx="1" stroke-width="1.4"/>
+    <!-- Ruban vertical -->
+    <line x1="12" y1="8" x2="12" y2="21" stroke-width="1.2"/>
+    <!-- Noeud gauche -->
+    <path d="M12 8.5C10.5 8.5 8 7.5 7.5 5.5C7 3.5 9 2.5 10.5 3.5C11.5 4.2 12 6 12 8.5z" stroke-width="1.2"/>
+    <!-- Noeud droit -->
+    <path d="M12 8.5C13.5 8.5 16 7.5 16.5 5.5C17 3.5 15 2.5 13.5 3.5C12.5 4.2 12 6 12 8.5z" stroke-width="1.2"/>
   </svg>
   <!-- X -->
   <svg class="bubble-icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -778,16 +895,8 @@
   var trigger = document.getElementById('milaura-bubble-trigger');
   var panel = document.getElementById('milaura-bubble-panel');
   var overlay = document.getElementById('milaura-bubble-overlay');
+  var labelEl = document.getElementById('milaura-bubble-label');
   var isOpen = false;
-
-  /* --- Profile data for energy messages --- */
-  var energyMessages = {
-    apaisement: {{ section.settings.msg_apaisement | default: "L'apaisement que tu cherches est a portee de main." | json }},
-    protection: {{ section.settings.msg_protection | default: "Ta protection interieure commence ici." | json }},
-    serenite: {{ section.settings.msg_serenite | default: "La serenite t'attend, laisse-la entrer." | json }},
-    amour: {{ section.settings.msg_amour | default: "L'amour commence par un geste envers toi-meme." | json }},
-    chance: {{ section.settings.msg_chance | default: "La chance sourit a celles qui osent." | json }}
-  };
 
   var profileLabels = {
     apaisement: 'Apaisement',
@@ -810,15 +919,42 @@
     return null;
   }
 
+  /* --- Micro-label animation --- */
+  function showMicroLabel() {
+    if (isSubscribed() || isOpen) return;
+    try { if (sessionStorage.getItem('milauraLabelShown')) return; } catch(e) {}
+
+    setTimeout(function() {
+      if (isOpen) return;
+      labelEl.classList.add('visible');
+      setTimeout(function() {
+        labelEl.classList.remove('visible');
+        /* Deuxieme pulse apres 3s */
+        setTimeout(function() {
+          if (isOpen) return;
+          labelEl.classList.add('visible');
+          setTimeout(function() {
+            labelEl.classList.remove('visible');
+            try { sessionStorage.setItem('milauraLabelShown', 'true'); } catch(e) {}
+          }, 3000);
+        }, 3000);
+      }, 4000);
+    }, 2000);
+  }
+
+  showMicroLabel();
+
   /* --- Render ritual pane based on state --- */
   function renderRitualPane() {
     var paneA = document.getElementById('milaura-bubble-ritual-a');
     var paneB = document.getElementById('milaura-bubble-ritual-b');
+    var paneB2 = document.getElementById('milaura-bubble-ritual-b2');
     var paneC = document.getElementById('milaura-bubble-ritual-c');
     var successEl = document.getElementById('milaura-bubble-success');
 
     paneA.style.display = 'none';
     paneB.style.display = 'none';
+    paneB2.style.display = 'none';
     paneC.style.display = 'none';
     successEl.classList.remove('active');
 
@@ -863,6 +999,9 @@
 
   /* --- Open / Close --- */
   function openBubble(tabName) {
+    /* Hide label when opening */
+    labelEl.classList.remove('visible');
+
     if (isOpen) {
       if (tabName) switchTab(tabName);
       return;
@@ -921,25 +1060,23 @@
     });
   }
 
-  /* --- Micro-quiz (Parcours B) --- */
+  /* --- Micro-quiz (Parcours B2 — post-email) --- */
   var microquizBtns = document.querySelectorAll('.milaura-bubble-microquiz-btn');
-  var postChoice = document.getElementById('milaura-bubble-post-choice');
-  var choiceMsg = document.getElementById('milaura-bubble-choice-msg');
-  var noteFieldB = document.getElementById('milaura-bubble-note-b');
-
   microquizBtns.forEach(function(btn) {
     btn.addEventListener('click', function() {
       microquizBtns.forEach(function(b) { b.classList.remove('selected'); });
       btn.classList.add('selected');
       var energy = btn.getAttribute('data-energy');
-      if (choiceMsg) choiceMsg.textContent = energyMessages[energy] || '';
-      if (noteFieldB) noteFieldB.value = 'Energie choisie: ' + (profileLabels[energy] || energy);
-      if (postChoice) postChoice.style.display = 'block';
+      /* Update stored note with energy preference */
+      try {
+        var existing = localStorage.getItem('milauraNewsletterNote') || '';
+        localStorage.setItem('milauraNewsletterNote', existing + ' | Energie: ' + (profileLabels[energy] || energy));
+      } catch(e) {}
     });
   });
 
   /* --- Form submissions (newsletter) --- */
-  function handleNewsletterSubmit(formEl, e) {
+  function handleNewsletterSubmit(formEl, e, isPathA) {
     e.preventDefault();
     var emailInput = formEl.querySelector('input[type="email"]');
     if (!emailInput || !emailInput.value) return;
@@ -951,26 +1088,31 @@
       body: formData,
       headers: { 'Accept': 'text/html' }
     }).then(function() {
-      try { localStorage.setItem('milauraNewsletterSubscribed', 'true'); } catch(e) {}
+      try {
+        localStorage.setItem('milauraNewsletterSubscribed', 'true');
+        localStorage.setItem('milauraNewsletterNote', formEl.querySelector('[name="contact[note]"]').value || '');
+      } catch(e) {}
       /* Dispatch event for popup sync */
       document.dispatchEvent(new CustomEvent('milaura:newsletter-subscribed'));
-      /* Show success */
-      var paneA = document.getElementById('milaura-bubble-ritual-a');
-      var paneB = document.getElementById('milaura-bubble-ritual-b');
-      var successEl = document.getElementById('milaura-bubble-success');
-      if (paneA) paneA.style.display = 'none';
-      if (paneB) paneB.style.display = 'none';
-      if (successEl) successEl.classList.add('active');
+
+      if (isPathA) {
+        /* Parcours A: show success directly */
+        document.getElementById('milaura-bubble-ritual-a').style.display = 'none';
+        document.getElementById('milaura-bubble-success').classList.add('active');
+      } else {
+        /* Parcours B: transition to B2 (preferences) */
+        document.getElementById('milaura-bubble-ritual-b').style.display = 'none';
+        document.getElementById('milaura-bubble-ritual-b2').style.display = 'block';
+      }
     }).catch(function() {
-      /* Fallback: submit normally */
       formEl.submit();
     });
   }
 
   var formA = document.getElementById('milaura-bubble-form-a');
   var formB = document.getElementById('milaura-bubble-form-b');
-  if (formA) formA.addEventListener('submit', function(e) { handleNewsletterSubmit(this, e); });
-  if (formB) formB.addEventListener('submit', function(e) { handleNewsletterSubmit(this, e); });
+  if (formA) formA.addEventListener('submit', function(e) { handleNewsletterSubmit(this, e, true); });
+  if (formB) formB.addEventListener('submit', function(e) { handleNewsletterSubmit(this, e, false); });
 
   /* --- Contact form submission --- */
   var contactForm = document.getElementById('milaura-bubble-contact-form');
@@ -1044,9 +1186,33 @@
     },
     {
       "type": "text",
+      "id": "ritual_title_a",
+      "label": "Titre parcours A",
+      "default": "Ton rituel sur-mesure t attend"
+    },
+    {
+      "type": "text",
       "id": "ritual_btn_a",
       "label": "Bouton",
-      "default": "Recevoir"
+      "default": "Recevoir mon rituel gratuit"
+    },
+    {
+      "type": "text",
+      "id": "teaser_1",
+      "label": "Teaser ligne 1",
+      "default": "Guide pierre & intention du mois"
+    },
+    {
+      "type": "text",
+      "id": "teaser_2",
+      "label": "Teaser ligne 2",
+      "default": "Conseil rituel personnalise"
+    },
+    {
+      "type": "text",
+      "id": "teaser_3",
+      "label": "Teaser ligne 3",
+      "default": "Offre exclusive membre"
     },
     {
       "type": "header",
@@ -1056,19 +1222,58 @@
       "type": "text",
       "id": "ritual_kicker_b",
       "label": "Kicker",
-      "default": "Un instant pour toi"
+      "default": "Rien que pour toi"
     },
     {
       "type": "text",
       "id": "ritual_title_b",
       "label": "Titre",
-      "default": "De quelle energie as-tu besoin aujourd'hui ?"
+      "default": "Recois ton premier rituel bien-etre offert"
+    },
+    {
+      "type": "textarea",
+      "id": "ritual_text_b",
+      "label": "Texte descriptif",
+      "default": "Guide pierres, conseil personnalise et offre membre — directement dans ta boite mail."
     },
     {
       "type": "text",
       "id": "ritual_btn_b",
       "label": "Bouton",
-      "default": "Recevoir"
+      "default": "Recevoir mon rituel"
+    },
+    {
+      "type": "header",
+      "content": "Rituel - Parcours B2 (preferences post-email)"
+    },
+    {
+      "type": "text",
+      "id": "b2_kicker",
+      "label": "Kicker B2",
+      "default": "Merci !"
+    },
+    {
+      "type": "text",
+      "id": "b2_title",
+      "label": "Titre B2",
+      "default": "Personnalise ton experience"
+    },
+    {
+      "type": "textarea",
+      "id": "b2_text",
+      "label": "Texte B2",
+      "default": "Choisis l'energie qui te parle — c'est optionnel mais ca nous aide a te proposer le meilleur."
+    },
+    {
+      "type": "text",
+      "id": "b2_quiz_cta",
+      "label": "Lien quiz B2",
+      "default": "Ou decouvre ton profil complet avec le quiz →"
+    },
+    {
+      "type": "url",
+      "id": "quiz_url",
+      "label": "URL page quiz"
     },
     {
       "type": "text",
@@ -1243,6 +1448,12 @@
       "id": "email_placeholder",
       "label": "Placeholder email",
       "default": "ton@email.com"
+    },
+    {
+      "type": "text",
+      "id": "bubble_label",
+      "label": "Micro-label de la bulle",
+      "default": "Un cadeau pour toi"
     },
     {
       "type": "text",
