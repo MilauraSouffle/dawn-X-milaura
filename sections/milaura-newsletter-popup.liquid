@@ -342,6 +342,8 @@
         </div>
       </div>
 
+      <p class="milaura-popup-retention" style="font-family:'Lato',sans-serif;font-size:0.8rem;color:var(--milaura-gold-dark,#8F723A);font-style:italic;margin:0 0 16px 0;line-height:1.4;">{{ section.settings.retention_text | default: "Et dans 30 jours, un rappel pour rafraichir ton quiz et decouvrir ta nouvelle pierre du moment." }}</p>
+
       <form class="milaura-popup-form" id="milaura-popup-form" method="post" action="/contact#contact_form" accept-charset="UTF-8">
         <input type="hidden" name="form_type" value="customer">
         <input type="hidden" name="utf8" value="✓">
@@ -358,7 +360,7 @@
     <div class="milaura-popup-success" id="milaura-popup-success">
       <div class="milaura-popup-success-icon">✨</div>
       <h3 class="milaura-popup-success-title">{{ section.settings.success_title | default: 'Bienvenue dans la communaute !' }}</h3>
-      <p class="milaura-popup-success-text">{{ section.settings.success_text | default: 'Ton premier rituel personnalise arrive bientot dans ta boite mail.' }}</p>
+      <p class="milaura-popup-success-text">{{ section.settings.success_text | default: 'Ton premier rituel arrive bientot. Dans 30 jours, tu recevras un rappel pour rafraichir ton quiz et choisir la pierre qui t accompagnera.' }}</p>
       <a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}" class="milaura-popup-quiz-cta" id="milaura-popup-quiz-cta" style="display:none;">
         {{ section.settings.quiz_cta_label | default: 'Decouvre ton profil emotionnel →' }}
       </a>
@@ -367,6 +369,7 @@
 </div>
 
 <script>
+{% if customer %}window.milauraIsCustomer = true;{% endif %}
 (function() {
   'use strict';
 
@@ -414,6 +417,7 @@
   var pageCount = getPageCount();
 
   function canShow() {
+    if (window.milauraIsCustomer) return false;
     return !isSubscribed() && !isDismissed() && !popupShown;
   }
 
@@ -504,25 +508,10 @@
   var isProduct = (pageTemplate === 'product');
   var isCollection = (pageTemplate === 'collection');
 
-  /* Trigger 1: Homepage = 40s AND 60% scroll */
+  /* Trigger 1: Homepage = simple delay (configurable, default 30s) */
   if (isHomepage) {
-    var timeReached = false;
-    var scrollReached = false;
-
-    setTimeout(function() {
-      timeReached = true;
-      if (scrollReached) showPopup();
-    }, 40000);
-
-    function checkScrollHome() {
-      var scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      if (scrollPercent >= 60) {
-        scrollReached = true;
-        window.removeEventListener('scroll', checkScrollHome);
-        if (timeReached) showPopup();
-      }
-    }
-    window.addEventListener('scroll', checkScrollHome, { passive: true });
+    var homepageDelay = {{ section.settings.homepage_delay | default: 30 }} * 1000;
+    setTimeout(function() { showPopup(); }, homepageDelay);
   }
 
   /* Trigger 2: Product page = 30s OR exit-intent (desktop) */
@@ -619,6 +608,16 @@
     },
     {
       "type": "header",
+      "content": "Retention"
+    },
+    {
+      "type": "textarea",
+      "id": "retention_text",
+      "label": "Texte de retention (sous les bullets)",
+      "default": "Et dans 30 jours, un rappel pour rafraichir ton quiz et decouvrir ta nouvelle pierre du moment."
+    },
+    {
+      "type": "header",
       "content": "Succes & Quiz CTA"
     },
     {
@@ -628,10 +627,10 @@
       "default": "Bienvenue dans la communaute !"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "success_text",
       "label": "Texte succes",
-      "default": "Ton premier rituel personnalise arrive bientot dans ta boite mail."
+      "default": "Ton premier rituel arrive bientot. Dans 30 jours, tu recevras un rappel pour rafraichir ton quiz et choisir la pierre qui t accompagnera."
     },
     {
       "type": "text",
@@ -643,6 +642,20 @@
       "type": "url",
       "id": "quiz_url",
       "label": "URL page quiz"
+    },
+    {
+      "type": "header",
+      "content": "Triggers"
+    },
+    {
+      "type": "range",
+      "id": "homepage_delay",
+      "label": "Delai homepage (secondes)",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "default": 30,
+      "info": "Temps avant affichage du popup sur la homepage"
     },
     {
       "type": "header",
