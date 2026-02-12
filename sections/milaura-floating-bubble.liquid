@@ -1002,26 +1002,6 @@
           </a>
       </div>
 
-      <!-- Formulaire rapide -->
-      <div class="milaura-bubble-quick-form">
-        <p class="milaura-bubble-quick-form-title">{{ section.settings.quick_form_title | default: 'Ou ecris-nous directement' }}</p>
-        <form id="milaura-bubble-contact-form" method="post" action="/contact#contact_form" accept-charset="UTF-8">
-          <input type="hidden" name="form_type" value="contact">
-          <input type="hidden" name="utf8" value="✓">
-          <label for="milaura-bubble-contact-email" class="visually-hidden">Email</label>
-          <input type="email" id="milaura-bubble-contact-email" name="contact[email]" class="milaura-bubble-quick-field" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
-          <label for="milaura-bubble-contact-message" class="visually-hidden">Message</label>
-          <textarea id="milaura-bubble-contact-message" name="contact[body]" class="milaura-bubble-quick-field" placeholder="{{ section.settings.contact_message_placeholder | default: 'Ton message...' }}" required rows="3"></textarea>
-          <button type="submit" class="milaura-bubble-quick-submit">{{ section.settings.contact_submit_label | default: 'Envoyer' }}</button>
-        </form>
-        <!-- Succes contact -->
-        <div class="milaura-bubble-success" id="milaura-bubble-contact-success">
-          <div class="milaura-bubble-success-icon">💌</div>
-          <h4 class="milaura-bubble-success-title">{{ section.settings.contact_success_title | default: 'Message envoye !' }}</h4>
-          <p class="milaura-bubble-success-text">{{ section.settings.contact_success_text | default: 'Nous te repondons sous 24h.' }}</p>
-        </div>
-      </div>
-
       {% if section.settings.contact_page_url != blank %}
         <a href="{{ section.settings.contact_page_url }}" class="milaura-bubble-contact-page-link">
           {{ section.settings.contact_page_label | default: 'Voir la page contact complete →' }}
@@ -1297,27 +1277,6 @@
   var formB = document.getElementById('milaura-bubble-form-b');
   if (formA) formA.addEventListener('submit', function(e) { handleNewsletterSubmit(this, e, true); });
   if (formB) formB.addEventListener('submit', function(e) { handleNewsletterSubmit(this, e, false); });
-
-  /* --- Contact form submission --- */
-  var contactForm = document.getElementById('milaura-bubble-contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var formData = new FormData(contactForm);
-
-      fetch('/contact#contact_form', {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'text/html' }
-      }).then(function() {
-        contactForm.style.display = 'none';
-        var successEl = document.getElementById('milaura-bubble-contact-success');
-        if (successEl) successEl.classList.add('active');
-      }).catch(function() {
-        contactForm.submit();
-      });
-    });
-  }
 
   /* --- Listen for quiz result event --- */
   document.addEventListener('milaura:quiz-result', function() {
