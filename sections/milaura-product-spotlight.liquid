@@ -16,6 +16,11 @@
     assign has_video = true
   endif
   assign benefit_blocks = section.blocks | where: 'type', 'benefit'
+  assign benefits_meta = product.metafields.milaura.benefits_json.value
+  assign has_benefits_meta = false
+  if benefits_meta != blank and benefits_meta.size > 0
+    assign has_benefits_meta = true
+  endif
   assign autoplay_speed = section.settings.autoplay_speed | default: 4500
 -%}
 
@@ -135,54 +140,92 @@
         </h2>
       {%- endif -%}
 
-      {%- comment -%} Benefits Carousel {%- endcomment -%}
+      {%- comment -%} Benefits Carousel — metafield milaura.benefits_json prioritaire, sinon blocs template {%- endcomment -%}
       <div class="spotlight-carousel">
-        {%- for block in benefit_blocks -%}
-          <div
-            class="spotlight-benefit{% if forloop.first %} is-active{% endif %}"
-            role="tabpanel"
-            id="spotlight-panel-{{ section.id }}-{{ forloop.index0 }}"
-            aria-labelledby="spotlight-tab-{{ section.id }}-{{ forloop.index0 }}"
-            {% unless forloop.first %}aria-hidden="true"{% endunless %}
-            data-benefit-index="{{ forloop.index0 }}"
-            {{ block.shopify_attributes }}
-          >
-            {%- if block.settings.icon != blank -%}
-              <span class="spotlight-benefit__icon">{{ block.settings.icon }}</span>
-            {%- endif -%}
-
-            {%- if block.settings.title != blank -%}
-              <h3 class="spotlight-benefit__title">
-                {{ block.settings.title }}
-              </h3>
-            {%- endif -%}
-
-            {%- if block.settings.description != blank -%}
-              <div class="spotlight-benefit__description">
-                {{ block.settings.description }}
-              </div>
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
+        {%- if has_benefits_meta -%}
+          {%- for benefit in benefits_meta -%}
+            <div
+              class="spotlight-benefit{% if forloop.first %} is-active{% endif %}"
+              role="tabpanel"
+              id="spotlight-panel-{{ section.id }}-{{ forloop.index0 }}"
+              aria-labelledby="spotlight-tab-{{ section.id }}-{{ forloop.index0 }}"
+              {% unless forloop.first %}aria-hidden="true"{% endunless %}
+              data-benefit-index="{{ forloop.index0 }}"
+            >
+              {%- if benefit.emoji != blank -%}
+                <span class="spotlight-benefit__icon">{{ benefit.emoji }}</span>
+              {%- endif -%}
+              {%- if benefit.title != blank -%}
+                <h3 class="spotlight-benefit__title">{{ benefit.title }}</h3>
+              {%- endif -%}
+              {%- if benefit.description != blank -%}
+                <div class="spotlight-benefit__description"><p>{{ benefit.description }}</p></div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in benefit_blocks -%}
+            <div
+              class="spotlight-benefit{% if forloop.first %} is-active{% endif %}"
+              role="tabpanel"
+              id="spotlight-panel-{{ section.id }}-{{ forloop.index0 }}"
+              aria-labelledby="spotlight-tab-{{ section.id }}-{{ forloop.index0 }}"
+              {% unless forloop.first %}aria-hidden="true"{% endunless %}
+              data-benefit-index="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.icon != blank -%}
+                <span class="spotlight-benefit__icon">{{ block.settings.icon }}</span>
+              {%- endif -%}
+              {%- if block.settings.title != blank -%}
+                <h3 class="spotlight-benefit__title">{{ block.settings.title }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <div class="spotlight-benefit__description">{{ block.settings.description }}</div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
       </div>
 
       {%- comment -%} Navigation Dots with Progress {%- endcomment -%}
-      {%- if benefit_blocks.size > 1 -%}
+      {%- assign dot_count = benefit_blocks.size -%}
+      {%- if has_benefits_meta -%}
+        {%- assign dot_count = benefits_meta.size -%}
+      {%- endif -%}
+      {%- if dot_count > 1 -%}
         <div class="spotlight-dots" role="tablist">
-          {%- for block in benefit_blocks -%}
-            <button
-              type="button"
-              class="spotlight-dot{% if forloop.first %} is-active{% endif %}"
-              role="tab"
-              id="spotlight-tab-{{ section.id }}-{{ forloop.index0 }}"
-              aria-controls="spotlight-panel-{{ section.id }}-{{ forloop.index0 }}"
-              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-              data-dot-index="{{ forloop.index0 }}"
-              aria-label="Bénéfice {{ forloop.index }} sur {{ benefit_blocks.size }}"
-            >
-              <span class="spotlight-dot__fill"></span>
-            </button>
-          {%- endfor -%}
+          {%- if has_benefits_meta -%}
+            {%- for benefit in benefits_meta -%}
+              <button
+                type="button"
+                class="spotlight-dot{% if forloop.first %} is-active{% endif %}"
+                role="tab"
+                id="spotlight-tab-{{ section.id }}-{{ forloop.index0 }}"
+                aria-controls="spotlight-panel-{{ section.id }}-{{ forloop.index0 }}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                data-dot-index="{{ forloop.index0 }}"
+                aria-label="Bénéfice {{ forloop.index }} sur {{ benefits_meta.size }}"
+              >
+                <span class="spotlight-dot__fill"></span>
+              </button>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for block in benefit_blocks -%}
+              <button
+                type="button"
+                class="spotlight-dot{% if forloop.first %} is-active{% endif %}"
+                role="tab"
+                id="spotlight-tab-{{ section.id }}-{{ forloop.index0 }}"
+                aria-controls="spotlight-panel-{{ section.id }}-{{ forloop.index0 }}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                data-dot-index="{{ forloop.index0 }}"
+                aria-label="Bénéfice {{ forloop.index }} sur {{ benefit_blocks.size }}"
+              >
+                <span class="spotlight-dot__fill"></span>
+              </button>
+            {%- endfor -%}
+          {%- endif -%}
         </div>
       {%- endif -%}
 
