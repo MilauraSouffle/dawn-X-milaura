@@ -782,6 +782,20 @@
       display: none;
     }
 
+    .milaura-bubble-panel-close {
+      display: none;
+    }
+
+    .milaura-bubble-panel-close:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .milaura-bubble-panel-close svg {
+      width: 14px;
+      height: 14px;
+      color: #666;
+    }
+
     .milaura-bubble-overlay {
       display: block;
     }
@@ -799,6 +813,23 @@
 
     .milaura-bubble-panel.active {
       transform: translateY(0);
+    }
+
+    .milaura-bubble-panel-close {
+      display: flex;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1;
+      padding: 0;
     }
   }
 
@@ -832,6 +863,13 @@
   aria-modal="true"
   aria-label="{{ section.settings.panel_aria_label | default: 'Assistance et rituel personnalise' }}"
 >
+  <!-- Bouton fermer mobile -->
+  <button class="milaura-bubble-panel-close" id="milaura-bubble-panel-close" aria-label="Fermer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
   <!-- Onglets -->
   <div class="milaura-bubble-tabs" role="tablist">
     <button
@@ -1219,6 +1257,10 @@
   trigger.addEventListener('click', function() {
     if (isOpen) { closeBubble(); } else { openBubble('ritual'); }
   });
+
+  /* Panel close button (mobile) */
+  var panelClose = document.getElementById('milaura-bubble-panel-close');
+  if (panelClose) panelClose.addEventListener('click', closeBubble);
 
   /* Overlay click */
   overlay.addEventListener('click', closeBubble);
