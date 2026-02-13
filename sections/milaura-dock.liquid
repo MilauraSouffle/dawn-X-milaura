@@ -1,0 +1,437 @@
+{% comment %}
+  MILAURA DOCK
+  Dock fixe Apple-style en bas de l'ecran sur mobile.
+  4 icones : Telephone, Compte, Contact, Panier (badge reactif).
+  Visible uniquement sur mobile (<=768px).
+{% endcomment %}
+
+{% style %}
+  /* ============================================
+     MILAURA DOCK - Apple-style bottom dock
+     ============================================ */
+
+  .milaura-dock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99998;
+    display: none;
+    align-items: center;
+    justify-content: space-around;
+    padding: 8px 0;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    background: rgba(253, 251, 247, 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(192, 160, 98, 0.2);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  @media screen and (max-width: 768px) {
+    .milaura-dock {
+      display: flex;
+    }
+  }
+
+  /* --- DOCK ITEM --- */
+  .milaura-dock-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    padding: 6px 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: {{ section.settings.text_color | default: '#333333' }};
+    transition: color 0.2s ease, transform 0.2s ease;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .milaura-dock-item:active {
+    transform: scale(0.92);
+  }
+
+  .milaura-dock-item svg {
+    width: 22px;
+    height: 22px;
+    color: {{ section.settings.icon_color | default: '#333333' }};
+    transition: color 0.2s ease;
+  }
+
+  .milaura-dock-item:active svg {
+    color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-dock-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    line-height: 1;
+  }
+
+  /* --- BADGE PANIER --- */
+  .milaura-dock-badge {
+    position: absolute;
+    top: 2px;
+    right: 50%;
+    transform: translateX(calc(50% + 10px));
+    min-width: 16px;
+    height: 16px;
+    background: {{ section.settings.badge_color | default: '#C0A062' }};
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    line-height: 1;
+  }
+
+  /* --- POPUP TELEPHONE --- */
+  .milaura-dock-phone-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100002;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .milaura-dock-phone-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .milaura-dock-phone-card {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    width: calc(100% - 32px);
+    max-width: 340px;
+    background: rgba(253, 251, 247, 0.97);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 20px;
+    padding: 28px 24px;
+    z-index: 100003;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .milaura-dock-phone-overlay.active + .milaura-dock-phone-card,
+  .milaura-dock-phone-card.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .milaura-dock-phone-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1;
+    padding: 0;
+    transition: background 0.2s ease;
+  }
+
+  .milaura-dock-phone-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  .milaura-dock-phone-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 12px 0;
+  }
+
+  .milaura-dock-phone-number {
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--milaura-gold-dark, #8F723A);
+    text-decoration: none;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .milaura-dock-phone-hours {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0 0 16px 0;
+  }
+
+  .milaura-dock-phone-cta {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .milaura-dock-phone-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.35);
+  }
+
+  /* --- REDUCED MOTION --- */
+  @media (prefers-reduced-motion: reduce) {
+    .milaura-dock-item,
+    .milaura-dock-phone-overlay,
+    .milaura-dock-phone-card {
+      transition: none !important;
+    }
+  }
+{% endstyle %}
+
+<!-- ============ DOCK ============ -->
+<div class="milaura-dock" id="milaura-dock" role="navigation" aria-label="Navigation rapide">
+
+  <!-- 1. Telephone -->
+  <button class="milaura-dock-item" data-dock-phone aria-label="{{ section.settings.phone_label | default: 'Appeler' }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span class="milaura-dock-label">{{ section.settings.phone_label | default: 'Appeler' }}</span>
+  </button>
+
+  <!-- 2. Compte -->
+  <a href="/account" class="milaura-dock-item" aria-label="{{ section.settings.account_label | default: 'Compte' }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <span class="milaura-dock-label">{{ section.settings.account_label | default: 'Compte' }}</span>
+  </a>
+
+  <!-- 3. Contact -->
+  <a href="{{ section.settings.contact_url | default: '/pages/contact-milaura' }}" class="milaura-dock-item" aria-label="{{ section.settings.contact_label | default: 'Contact' }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+      <polyline points="22,6 12,13 2,6"/>
+    </svg>
+    <span class="milaura-dock-label">{{ section.settings.contact_label | default: 'Contact' }}</span>
+  </a>
+
+  <!-- 4. Panier -->
+  <a href="/cart" class="milaura-dock-item" aria-label="{{ section.settings.cart_label | default: 'Panier' }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 0 1-8 0"/>
+    </svg>
+    <span class="milaura-dock-label">{{ section.settings.cart_label | default: 'Panier' }}</span>
+    <span class="milaura-dock-badge" id="milaura-dock-badge" style="display:none;">0</span>
+  </a>
+
+</div>
+
+<!-- ============ POPUP TELEPHONE ============ -->
+<div class="milaura-dock-phone-overlay" id="milaura-dock-phone-overlay"></div>
+<div class="milaura-dock-phone-card" id="milaura-dock-phone-card">
+  <button class="milaura-dock-phone-close" id="milaura-dock-phone-close" aria-label="Fermer">&times;</button>
+  <h3 class="milaura-dock-phone-title">Appelez-nous</h3>
+  {%- assign dock_phone = section.settings.phone_number | default: '03 72 39 64 73' -%}
+  <a href="tel:+33{{ dock_phone | remove: ' ' | remove: '0' | prepend: '' }}" class="milaura-dock-phone-number">{{ dock_phone }}</a>
+  <p class="milaura-dock-phone-hours">{{ section.settings.phone_hours | default: 'Lun - Ven, 8h - 18h' }}</p>
+  <a href="tel:+33{{ dock_phone | remove: ' ' | remove: '0' | prepend: '' }}" class="milaura-dock-phone-cta">Appeler maintenant</a>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* --- Phone popup --- */
+  var phoneBtn = document.querySelector('[data-dock-phone]');
+  var phoneOverlay = document.getElementById('milaura-dock-phone-overlay');
+  var phoneCard = document.getElementById('milaura-dock-phone-card');
+  var phoneClose = document.getElementById('milaura-dock-phone-close');
+
+  function openPhonePopup() {
+    phoneOverlay.classList.add('active');
+    phoneCard.classList.add('active');
+  }
+
+  function closePhonePopup() {
+    phoneOverlay.classList.remove('active');
+    phoneCard.classList.remove('active');
+  }
+
+  if (phoneBtn) phoneBtn.addEventListener('click', openPhonePopup);
+  if (phoneOverlay) phoneOverlay.addEventListener('click', closePhonePopup);
+  if (phoneClose) phoneClose.addEventListener('click', closePhonePopup);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && phoneOverlay.classList.contains('active')) {
+      closePhonePopup();
+    }
+  });
+
+  /* --- Cart badge --- */
+  var badge = document.getElementById('milaura-dock-badge');
+
+  function updateDockBadge(count) {
+    if (!badge) return;
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  /* 1. Init: fetch cart count */
+  fetch('/cart.js')
+    .then(function(r) { return r.json(); })
+    .then(function(cart) { updateDockBadge(cart.item_count); })
+    .catch(function() {});
+
+  /* 2. Dawn pub/sub: subscribe to cartUpdate if available */
+  if (typeof window.PUB_SUB_EVENTS !== 'undefined' && typeof subscribe === 'function') {
+    subscribe(PUB_SUB_EVENTS.cartUpdate, function(event) {
+      if (event && event.cart) {
+        updateDockBadge(event.cart.item_count);
+      }
+    });
+  }
+
+  /* 3. Custom event fallback (Milaura + Dawn cart:updated) */
+  document.addEventListener('cart:updated', function() {
+    fetch('/cart.js')
+      .then(function(r) { return r.json(); })
+      .then(function(cart) {
+        updateDockBadge(cart.item_count);
+      })
+      .catch(function() {});
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura Dock Mobile",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Telephone"
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Numero de telephone",
+      "default": "03 72 39 64 73"
+    },
+    {
+      "type": "text",
+      "id": "phone_hours",
+      "label": "Horaires",
+      "default": "Lun - Ven, 8h - 18h"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Label telephone",
+      "default": "Appeler"
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Label compte",
+      "default": "Compte"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Label contact",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "URL page contact"
+    },
+    {
+      "type": "text",
+      "id": "cart_label",
+      "label": "Label panier",
+      "default": "Panier"
+    },
+    {
+      "type": "header",
+      "content": "Apparence"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#FDFBF7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur texte",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Couleur icones",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Couleur badge panier",
+      "default": "#C0A062"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Dock Mobile"
+    }
+  ]
+}
+{% endschema %}
