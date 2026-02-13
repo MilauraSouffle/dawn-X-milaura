@@ -590,6 +590,21 @@
     cursor: pointer;
   }
 
+  /* Highlight promo inscription */
+  .milaura-bubble-promo-highlight {
+    padding: 10px 16px;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.2), rgba(192, 160, 98, 0.08));
+    border: 1px solid rgba(192, 160, 98, 0.4);
+    border-radius: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--milaura-gold-dark, #8F723A);
+    text-align: center;
+    margin-bottom: 14px;
+    letter-spacing: 0.3px;
+  }
+
   /* --- ONGLET CONTACT --- */
   .milaura-bubble-contact-title {
     font-family: 'Playfair Display', serif;
@@ -845,14 +860,16 @@
     >
       <!-- Parcours A : a fait le quiz -->
       <div id="milaura-bubble-ritual-a" style="display:none;">
-        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_a | default: 'Ton profil' }}</p>
+        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_a | default: 'Votre profil emotionnel' }}</p>
         <div class="milaura-bubble-ritual-profile" id="milaura-bubble-profile-name"></div>
-        <h3 class="milaura-bubble-ritual-title">{{ section.settings.ritual_title_a | default: 'Ton rituel sur-mesure t attend' }}</h3>
-        <p class="milaura-bubble-ritual-text">{{ section.settings.ritual_text_a | default: 'Chaque mois dans ta boite mail :' }}</p>
+        <h3 class="milaura-bubble-ritual-title">{{ section.settings.ritual_title_a | default: 'Rejoignez la communaute Mil Aura' }}</h3>
+        {% if section.settings.promo_highlight != blank %}
+          <div class="milaura-bubble-promo-highlight">{{ section.settings.promo_highlight }}</div>
+        {% endif %}
         <ul class="milaura-bubble-teaser-list">
-          <li>{{ section.settings.teaser_1 | default: 'Guide pierre & intention du mois' }}</li>
-          <li>{{ section.settings.teaser_2 | default: 'Conseil rituel personnalise' }}</li>
-          <li>{{ section.settings.teaser_3 | default: 'Offre exclusive membre' }}</li>
+          <li>{{ section.settings.teaser_1 | default: 'Guide pierres & intentions personnalise chaque mois' }}</li>
+          <li>{{ section.settings.teaser_2 | default: 'Offres exclusives 24h avant tout le monde' }}</li>
+          <li>{{ section.settings.teaser_3 | default: 'Frais de port offerts des 19,90€ au lieu de 39,90€' }}</li>
         </ul>
         <form class="milaura-bubble-form" id="milaura-bubble-form-a" method="post" action="/contact#contact_form" accept-charset="UTF-8">
           <input type="hidden" name="form_type" value="customer">
@@ -860,52 +877,54 @@
           <input type="hidden" name="contact[tags]" value="newsletter,rituel,source:bubble">
           <input type="hidden" name="contact[note]" id="milaura-bubble-note-a" value="">
           <label for="milaura-bubble-email-a" class="visually-hidden">Email</label>
-          <input type="email" id="milaura-bubble-email-a" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
-          <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_a | default: 'Recevoir mon rituel gratuit' }}</button>
+          <input type="email" id="milaura-bubble-email-a" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'votre@email.com' }}" required autocomplete="email">
+          <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_a | default: 'Je m inscris' }}</button>
         </form>
       </div>
 
       <!-- Parcours B : pas de quiz — Etape 1 : email d'abord -->
       <div id="milaura-bubble-ritual-b" style="display:none;">
-        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_b | default: 'Rien que pour toi' }}</p>
-        <h3 class="milaura-bubble-ritual-title">{{ section.settings.ritual_title_b | default: 'Recois ton premier rituel bien-etre offert' }}</h3>
+        <p class="milaura-bubble-ritual-kicker">{{ section.settings.ritual_kicker_b | default: 'Un instant pour vous' }}</p>
+        <h3 class="milaura-bubble-ritual-title">{{ section.settings.ritual_title_b | default: 'Pourquoi rejoindre Mil Aura ?' }}</h3>
+        {% if section.settings.promo_highlight != blank %}
+          <div class="milaura-bubble-promo-highlight">{{ section.settings.promo_highlight }}</div>
+        {% endif %}
         <div class="milaura-bubble-benefits">
           <div class="milaura-bubble-benefit">
             <div class="milaura-bubble-benefit-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
             </div>
-            <span class="milaura-bubble-benefit-text">{{ section.settings.benefit_1 | default: 'Guide pierres & intention du mois' }}</span>
+            <span class="milaura-bubble-benefit-text">{{ section.settings.benefit_1 | default: 'Guide pierres & intentions personnalise chaque mois' }}</span>
           </div>
           <div class="milaura-bubble-benefit">
             <div class="milaura-bubble-benefit-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </div>
-            <span class="milaura-bubble-benefit-text">{{ section.settings.benefit_2 | default: 'Conseil rituel personnalise' }}</span>
+            <span class="milaura-bubble-benefit-text">{{ section.settings.benefit_2 | default: 'Offres exclusives 24h avant tout le monde' }}</span>
           </div>
           <div class="milaura-bubble-benefit">
             <div class="milaura-bubble-benefit-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </div>
-            <span class="milaura-bubble-benefit-text">{{ section.settings.benefit_3 | default: 'Offres exclusives membres' }}</span>
+            <span class="milaura-bubble-benefit-text">{{ section.settings.benefit_3 | default: 'Frais de port offerts des 19,90€ au lieu de 39,90€' }}</span>
           </div>
         </div>
-        <p class="milaura-bubble-subscribed-retention">{{ section.settings.retention_text | default: "Et dans 30 jours, un rappel pour rafraichir ton quiz et decouvrir ta nouvelle pierre du moment." }}</p>
         <form class="milaura-bubble-form" id="milaura-bubble-form-b" method="post" action="/contact#contact_form" accept-charset="UTF-8">
           <input type="hidden" name="form_type" value="customer">
           <input type="hidden" name="utf8" value="✓">
           <input type="hidden" name="contact[tags]" value="newsletter,rituel,source:bubble">
           <input type="hidden" name="contact[note]" id="milaura-bubble-note-b" value="">
           <label for="milaura-bubble-email-b" class="visually-hidden">Email</label>
-          <input type="email" id="milaura-bubble-email-b" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'ton@email.com' }}" required autocomplete="email">
-          <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_b | default: 'Recevoir mon rituel' }}</button>
+          <input type="email" id="milaura-bubble-email-b" name="contact[email]" class="milaura-bubble-email" placeholder="{{ section.settings.email_placeholder | default: 'votre@email.com' }}" required autocomplete="email">
+          <button type="submit" class="milaura-bubble-submit">{{ section.settings.ritual_btn_b | default: 'Je m inscris' }}</button>
         </form>
       </div>
 
       <!-- Parcours B2 : preferences post-email (optionnel) -->
       <div id="milaura-bubble-ritual-b2" style="display:none;">
         <p class="milaura-bubble-ritual-kicker">{{ section.settings.b2_kicker | default: 'Merci !' }}</p>
-        <h3 class="milaura-bubble-ritual-title">{{ section.settings.b2_title | default: 'Personnalise ton experience' }}</h3>
-        <p class="milaura-bubble-ritual-text">{{ section.settings.b2_text | default: "Choisis l'energie qui te parle — c'est optionnel mais ca nous aide a te proposer le meilleur." }}</p>
+        <h3 class="milaura-bubble-ritual-title">{{ section.settings.b2_title | default: 'Personnalisez votre experience' }}</h3>
+        <p class="milaura-bubble-ritual-text">{{ section.settings.b2_text | default: "Choisissez l'energie qui vous parle — c'est optionnel mais cela nous aide a vous proposer le meilleur." }}</p>
         <div class="milaura-bubble-microquiz" id="milaura-bubble-microquiz">
           <div class="milaura-bubble-microquiz-grid">
             <button class="milaura-bubble-microquiz-btn" data-energy="apaisement">{{ section.settings.energy_1 | default: 'Apaisement' }}</button>
@@ -916,7 +935,7 @@
           </div>
         </div>
         <a href="{{ section.settings.quiz_url | default: '/pages/quiz' }}" class="milaura-bubble-quiz-link" id="milaura-bubble-skip-prefs">
-          {{ section.settings.b2_quiz_cta | default: 'Ou decouvre ton profil complet avec le quiz →' }}
+          {{ section.settings.b2_quiz_cta | default: 'Ou decouvrez votre profil complet avec le quiz →' }}
         </a>
       </div>
 
@@ -927,15 +946,15 @@
             {{ section.settings.subscribed_greeting | default: 'Bonjour' }}{% if customer %} {{ customer.first_name }}{% endif %}
           </p>
           <div class="milaura-bubble-subscribed-profile" id="milaura-bubble-subscribed-profile" style="display:none;"></div>
-          <p class="milaura-bubble-subscribed-text">{{ section.settings.subscribed_text | default: 'Tu fais deja partie de la communaute Milaura.' }}</p>
-          <p class="milaura-bubble-subscribed-retention">{{ section.settings.subscribed_retention | default: 'Ton prochain rappel quiz arrive bientot pour decouvrir ta nouvelle pierre du moment.' }}</p>
+          <p class="milaura-bubble-subscribed-text">{{ section.settings.subscribed_text | default: 'Vous faites deja partie de la communaute Mil Aura.' }}</p>
+          <p class="milaura-bubble-subscribed-retention">{{ section.settings.subscribed_retention | default: 'Votre prochain rappel quiz arrive bientot pour decouvrir votre nouvelle pierre du moment.' }}</p>
           {% if section.settings.promo_code != blank %}
             <div class="milaura-bubble-promo">
-              <p class="milaura-bubble-promo-label">{{ section.settings.promo_label | default: 'Ton code -10% premiere commande' }}</p>
+              <p class="milaura-bubble-promo-label">{{ section.settings.promo_label | default: 'Votre code -10% premiere commande' }}</p>
               <p class="milaura-bubble-promo-code">{{ section.settings.promo_code | default: 'BIENVENUE10' }}</p>
             </div>
           {% endif %}
-          <a href="/account" class="milaura-bubble-dashboard-link" style="margin-top:14px;">{{ section.settings.subscribed_dashboard_label | default: 'Mon espace Milaura' }}</a>
+          <a href="/account" class="milaura-bubble-dashboard-link" style="margin-top:14px;">{{ section.settings.subscribed_dashboard_label | default: 'Mon espace Mil Aura' }}</a>
         </div>
       </div>
 
@@ -943,10 +962,10 @@
       <div class="milaura-bubble-success" id="milaura-bubble-success">
         <div class="milaura-bubble-success-icon">✨</div>
         <h4 class="milaura-bubble-success-title">{{ section.settings.success_title | default: 'Bienvenue dans la communaute !' }}</h4>
-        <p class="milaura-bubble-success-text">{{ section.settings.success_text | default: 'Ton premier rituel arrive bientot. Dans 30 jours, tu recevras un rappel pour rafraichir ton quiz et choisir la pierre qui t accompagnera.' }}</p>
+        <p class="milaura-bubble-success-text">{{ section.settings.success_text | default: 'Votre premier guide arrive bientot dans votre boite mail.' }}</p>
         {% if section.settings.promo_code != blank %}
           <div class="milaura-bubble-promo">
-            <p class="milaura-bubble-promo-label">{{ section.settings.promo_label | default: 'Ton code -10% premiere commande' }}</p>
+            <p class="milaura-bubble-promo-label">{{ section.settings.promo_label | default: 'Votre code -10% premiere commande' }}</p>
             <p class="milaura-bubble-promo-code">{{ section.settings.promo_code | default: 'BIENVENUE10' }}</p>
           </div>
         {% endif %}
@@ -960,7 +979,7 @@
       id="milaura-pane-contact"
       aria-labelledby="milaura-tab-contact"
     >
-      <h3 class="milaura-bubble-contact-title">{{ section.settings.contact_title | default: "Comment pouvons-nous t'aider ?" }}</h3>
+      <h3 class="milaura-bubble-contact-title">{{ section.settings.contact_title | default: "Comment pouvons-nous vous aider ?" }}</h3>
 
       <div class="milaura-bubble-contact-methods">
         {% assign bubble_phone = section.settings.contact_phone | default: "03 72 39 64 73" %}
@@ -1302,8 +1321,8 @@
     {
       "type": "text",
       "id": "tab_ritual_label",
-      "label": "Label onglet Rituel",
-      "default": "Mon Rituel"
+      "label": "Label onglet Inscription",
+      "default": "Je m'inscris"
     },
     {
       "type": "text",
@@ -1313,7 +1332,18 @@
     },
     {
       "type": "header",
-      "content": "Rituel - Parcours A (quiz fait)"
+      "content": "Offre phare inscription"
+    },
+    {
+      "type": "text",
+      "id": "promo_highlight",
+      "label": "Texte promo phare",
+      "default": "-10% sur votre 1ere commande",
+      "info": "Affiche en evidence dans les parcours A et B. Laisser vide pour masquer."
+    },
+    {
+      "type": "header",
+      "content": "Inscription - Parcours A (quiz fait)"
     },
     {
       "type": "text",
@@ -1322,90 +1352,90 @@
       "default": "Votre profil emotionnel"
     },
     {
-      "type": "textarea",
-      "id": "ritual_text_a",
-      "label": "Texte",
-      "default": "Recevez chaque mois un rituel personnalise adapte a votre profil emotionnel."
-    },
-    {
       "type": "text",
       "id": "ritual_title_a",
       "label": "Titre parcours A",
-      "default": "Ton rituel sur-mesure t attend"
+      "default": "Rejoignez la communaute Mil'Aura"
+    },
+    {
+      "type": "textarea",
+      "id": "ritual_text_a",
+      "label": "Texte",
+      "default": "Inscrivez-vous et profitez de vos avantages exclusifs."
     },
     {
       "type": "text",
       "id": "ritual_btn_a",
       "label": "Bouton",
-      "default": "Recevoir mon rituel gratuit"
+      "default": "Je m'inscris"
     },
     {
       "type": "text",
       "id": "teaser_1",
-      "label": "Teaser ligne 1",
-      "default": "Guide pierre & intention du mois"
+      "label": "Avantage 1",
+      "default": "Guide pierres & intentions personnalise chaque mois"
     },
     {
       "type": "text",
       "id": "teaser_2",
-      "label": "Teaser ligne 2",
-      "default": "Conseil rituel personnalise"
+      "label": "Avantage 2",
+      "default": "Offres exclusives 24h avant tout le monde"
     },
     {
       "type": "text",
       "id": "teaser_3",
-      "label": "Teaser ligne 3",
-      "default": "Offre exclusive membre"
+      "label": "Avantage 3",
+      "default": "Frais de port offerts des 19,90€ au lieu de 39,90€"
     },
     {
       "type": "header",
-      "content": "Rituel - Parcours B (pas de quiz)"
+      "content": "Inscription - Parcours B (pas de quiz)"
     },
     {
       "type": "text",
       "id": "ritual_kicker_b",
       "label": "Kicker",
-      "default": "Rien que pour toi"
+      "default": "Un instant pour vous"
     },
     {
       "type": "text",
       "id": "ritual_title_b",
       "label": "Titre",
-      "default": "Recois ton premier rituel bien-etre offert"
+      "default": "Pourquoi rejoindre Mil'Aura ?"
     },
     {
       "type": "text",
       "id": "benefit_1",
-      "label": "Benefice 1",
-      "default": "Guide pierres & intention du mois"
+      "label": "Avantage 1",
+      "default": "Guide pierres & intentions personnalise chaque mois"
     },
     {
       "type": "text",
       "id": "benefit_2",
-      "label": "Benefice 2",
-      "default": "Conseil rituel personnalise"
+      "label": "Avantage 2",
+      "default": "Offres exclusives 24h avant tout le monde"
     },
     {
       "type": "text",
       "id": "benefit_3",
-      "label": "Benefice 3",
-      "default": "Offres exclusives membres"
+      "label": "Avantage 3",
+      "default": "Frais de port offerts des 19,90€ au lieu de 39,90€"
     },
     {
       "type": "textarea",
       "id": "retention_text",
       "label": "Texte de retention",
-      "default": "Et dans 30 jours, un rappel pour rafraichir ton quiz et decouvrir ta nouvelle pierre du moment."
+      "default": ""
     },
     {
       "type": "text",
       "id": "ritual_btn_b",
       "label": "Bouton",
-      "default": "Recevoir mon rituel"
+      "default": "Je m'inscris"
     },
     {
       "type": "header",
-      "content": "Rituel - Parcours B2 (preferences post-email)"
+      "content": "Inscription - Parcours B2 (preferences post-email)"
     },
     {
       "type": "text",
@@ -1417,19 +1447,19 @@
       "type": "text",
       "id": "b2_title",
       "label": "Titre B2",
-      "default": "Personnalise ton experience"
+      "default": "Personnalisez votre experience"
     },
     {
       "type": "textarea",
       "id": "b2_text",
       "label": "Texte B2",
-      "default": "Choisis l'energie qui te parle — c'est optionnel mais ca nous aide a te proposer le meilleur."
+      "default": "Choisissez l'energie qui vous parle — c'est optionnel mais cela nous aide a vous proposer le meilleur."
     },
     {
       "type": "text",
       "id": "b2_quiz_cta",
       "label": "Lien quiz B2",
-      "default": "Ou decouvre ton profil complet avec le quiz →"
+      "default": "Ou decouvrez votre profil complet avec le quiz →"
     },
     {
       "type": "url",
@@ -1474,25 +1504,25 @@
       "type": "text",
       "id": "msg_apaisement",
       "label": "Message Apaisement",
-      "default": "L'apaisement que tu cherches est a portee de main."
+      "default": "L'apaisement que vous cherchez est a portee de main."
     },
     {
       "type": "text",
       "id": "msg_protection",
       "label": "Message Protection",
-      "default": "Ta protection interieure commence ici."
+      "default": "Votre protection interieure commence ici."
     },
     {
       "type": "text",
       "id": "msg_serenite",
       "label": "Message Serenite",
-      "default": "La serenite t'attend, laisse-la entrer."
+      "default": "La serenite vous attend, laissez-la entrer."
     },
     {
       "type": "text",
       "id": "msg_amour",
       "label": "Message Amour",
-      "default": "L'amour commence par un geste envers toi-meme."
+      "default": "L'amour commence par un geste envers vous-meme."
     },
     {
       "type": "text",
@@ -1514,19 +1544,19 @@
       "type": "textarea",
       "id": "subscribed_text",
       "label": "Texte inscrit",
-      "default": "Tu fais deja partie de la communaute Milaura."
+      "default": "Vous faites deja partie de la communaute Mil'Aura."
     },
     {
       "type": "textarea",
       "id": "subscribed_retention",
       "label": "Message retention",
-      "default": "Ton prochain rappel quiz arrive bientot pour decouvrir ta nouvelle pierre du moment."
+      "default": "Votre prochain rappel quiz arrive bientot pour decouvrir votre nouvelle pierre du moment."
     },
     {
       "type": "text",
       "id": "subscribed_dashboard_label",
       "label": "Label lien dashboard",
-      "default": "Mon espace Milaura"
+      "default": "Mon espace Mil'Aura"
     },
     {
       "type": "header",
@@ -1543,7 +1573,7 @@
       "type": "text",
       "id": "promo_label",
       "label": "Label au-dessus du code",
-      "default": "Ton code -10% premiere commande"
+      "default": "Votre code -10% premiere commande"
     },
     {
       "type": "text",
@@ -1555,7 +1585,7 @@
       "type": "textarea",
       "id": "success_text",
       "label": "Texte succes",
-      "default": "Ton premier rituel arrive bientot. Dans 30 jours, tu recevras un rappel pour rafraichir ton quiz et choisir la pierre qui t accompagnera."
+      "default": "Votre premier guide arrive bientot dans votre boite mail."
     },
     {
       "type": "header",
@@ -1565,7 +1595,7 @@
       "type": "text",
       "id": "contact_title",
       "label": "Titre contact",
-      "default": "Comment pouvons-nous t'aider ?"
+      "default": "Comment pouvons-nous vous aider ?"
     },
     {
       "type": "text",
@@ -1582,7 +1612,7 @@
       "type": "text",
       "id": "contact_email",
       "label": "Email",
-      "default": "hello@milaura.fr"
+      "default": "contact@milaura.fr"
     },
     {
       "type": "text",
@@ -1611,7 +1641,7 @@
       "type": "text",
       "id": "contact_message_placeholder",
       "label": "Placeholder message",
-      "default": "Ton message..."
+      "default": "Votre message..."
     },
     {
       "type": "text",
@@ -1629,13 +1659,13 @@
       "type": "text",
       "id": "contact_success_text",
       "label": "Texte succes contact",
-      "default": "Nous te repondons sous 24h."
+      "default": "Nous vous repondons sous 24h."
     },
     {
       "type": "text",
       "id": "quick_form_title",
       "label": "Titre formulaire rapide",
-      "default": "Ou ecris-nous directement"
+      "default": "Ou ecrivez-nous directement"
     },
     {
       "type": "url",
@@ -1656,13 +1686,13 @@
       "type": "text",
       "id": "email_placeholder",
       "label": "Placeholder email",
-      "default": "ton@email.com"
+      "default": "votre@email.com"
     },
     {
       "type": "text",
       "id": "bubble_label",
       "label": "Micro-label de la bulle",
-      "default": "Un cadeau pour toi"
+      "default": "Un cadeau pour vous"
     },
     {
       "type": "text",
@@ -1674,7 +1704,7 @@
       "type": "text",
       "id": "panel_aria_label",
       "label": "Aria label du panneau",
-      "default": "Assistance et rituel personnalise"
+      "default": "Assistance et inscription"
     }
   ],
   "presets": [
