@@ -1136,30 +1136,18 @@
     return null;
   }
 
-  /* --- Micro-label animation --- */
+  /* --- Micro-label persistant (visible tant que non inscrit) --- */
   function showMicroLabel() {
-    if (isOpen) return;
-    try { if (sessionStorage.getItem('milauraLabelShown')) return; } catch(e) {}
-
-    setTimeout(function() {
-      if (isOpen) return;
-      labelEl.classList.add('visible');
-      setTimeout(function() {
-        labelEl.classList.remove('visible');
-        /* Deuxieme pulse apres 3s */
-        setTimeout(function() {
-          if (isOpen) return;
-          labelEl.classList.add('visible');
-          setTimeout(function() {
-            labelEl.classList.remove('visible');
-            try { sessionStorage.setItem('milauraLabelShown', 'true'); } catch(e) {}
-          }, 3000);
-        }, 3000);
-      }, 4000);
-    }, 2000);
+    if (isOpen || isSubscribed()) return;
+    labelEl.classList.add('visible');
   }
 
-  showMicroLabel();
+  function hideMicroLabel() {
+    labelEl.classList.remove('visible');
+  }
+
+  /* Apparition avec leger delai pour laisser la page charger */
+  setTimeout(showMicroLabel, 1500);
 
   /* --- Render ritual pane based on state --- */
   function renderRitualPane() {
@@ -1247,6 +1235,8 @@
     trigger.setAttribute('aria-expanded', 'false');
     isOpen = false;
     trigger.focus();
+    /* Re-afficher le label si toujours pas inscrit */
+    showMicroLabel();
   }
 
   /* Public API */
@@ -1351,6 +1341,7 @@
   /* --- Listen for external subscription --- */
   document.addEventListener('milaura:newsletter-subscribed', function() {
     renderRitualPane();
+    hideMicroLabel();
   });
 
 })();
