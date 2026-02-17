@@ -7,9 +7,14 @@
 {% endcomment %}
 
 {%- liquid
-  assign product_type = product.type | downcase
+  assign product_type_meta = product.metafields.milaura.product_type_handle.value
+  if product_type_meta != blank
+    assign product_type = product_type_meta | downcase
+  else
+    assign product_type = product.type | downcase
+  endif
   case product_type
-    when 'bijou', 'bracelet', 'collier', 'bague'
+    when 'bijou', 'bracelet', 'collier', 'bague', 'pendentif'
       assign template_type = 'bijou'
     when 'bougie'
       assign template_type = 'bougie'
@@ -17,6 +22,8 @@
       assign template_type = 'sauge'
     when 'coffret', 'bundle'
       assign template_type = 'coffret'
+    when 'pierre-roulee', 'cabochon', 'mineral', 'pierre'
+      assign template_type = 'pierre'
     else
       assign template_type = 'bijou'
   endcase
@@ -128,6 +135,24 @@
             <div class="milaura-product-craft__badge">
               <div class="milaura-product-craft__badge-icon">🎁</div>
               <div class="milaura-product-craft__badge-text">Packaging premium</div>
+            </div>
+
+          {%- when 'pierre' -%}
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">💎</div>
+              <div class="milaura-product-craft__badge-text">Pierre naturelle certifiée</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">🌿</div>
+              <div class="milaura-product-craft__badge-text">Sélection éthique</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">✅</div>
+              <div class="milaura-product-craft__badge-text">Qualité contrôlée</div>
+            </div>
+            <div class="milaura-product-craft__badge">
+              <div class="milaura-product-craft__badge-icon">✨</div>
+              <div class="milaura-product-craft__badge-text">Énergie authentique</div>
             </div>
 
         {%- endcase -%}

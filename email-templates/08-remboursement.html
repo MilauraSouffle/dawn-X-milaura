@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Ton remboursement est en cours</title>
+  <style type="text/css">
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+    body { margin: 0; padding: 0; width: 100% !important; }
+    @media only screen and (max-width: 620px) {
+      .email-container { width: 100% !important; }
+      .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
+      .mobile-title { font-size: 24px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#FDFBF7; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+  <div style="display:none; font-size:1px; color:#FDFBF7; line-height:1px; max-height:0; overflow:hidden;">
+    Le remboursement de ta commande {{ name }} est confirme.
+  </div>
+
+  <center style="width:100%; background-color:#FDFBF7;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#FDFBF7;">
+      <tr>
+        <td style="padding: 30px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" align="center" class="email-container" style="margin:auto; max-width:600px;">
+
+            <!-- HEADER -->
+            <tr>
+              <td style="padding: 30px 40px; text-align:center; background-color:#FDFBF7;" class="mobile-padding">
+                <a href="{{ shop.url }}" target="_blank" style="text-decoration:none;">
+                  <img src="https://ik.imagekit.io/bupjuxqi6/logo%20MiL'Aura%20De%CC%81toure%CC%81%202.png?updatedAt=1762338419186" alt="MilAura" width="160" style="display:inline-block; max-width:160px;" />
+                </a>
+              </td>
+            </tr>
+
+            <!-- GOLD LINE -->
+            <tr>
+              <td style="padding: 0 40px;" class="mobile-padding">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr><td style="height:2px; background-color:#C0A062;"></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- MAIN CONTENT -->
+            <tr>
+              <td style="background-color:#FFFFFF; padding:40px;" class="mobile-padding">
+
+                <p style="margin:0 0 8px 0; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:#C0A062;">
+                  Remboursement
+                </p>
+
+                <h1 style="margin:0 0 8px 0; font-family:Georgia, 'Times New Roman', serif; font-size:28px; font-weight:400; color:#1a1a1a; line-height:1.3;" class="mobile-title">
+                  Ton remboursement est confirme
+                </h1>
+
+                <p style="margin:0 0 24px 0; font-size:14px; color:#999999;">
+                  Commande {{ name }}
+                </p>
+
+                <p style="margin:0 0 28px 0; font-size:16px; line-height:1.7; color:#555555;">
+                  {% if customer.first_name != blank %}{{ customer.first_name }}, nous{% else %}Nous{% endif %} avons procede au remboursement de ta commande. Le montant sera credite sur ton moyen de paiement sous quelques jours ouvrables.
+                </p>
+
+                <!-- REFUND DETAILS -->
+                {% if refund.refund_line_items.size > 0 %}
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 20px 0;">
+                  <tr>
+                    <td style="padding:0 0 12px 0; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#C0A062; border-bottom:1px solid #F2E8D5;">
+                      Articles rembourses
+                    </td>
+                  </tr>
+                  {% for refund_line_item in refund.refund_line_items %}
+                  <tr>
+                    <td style="padding:12px 0; border-bottom:1px solid #F2E8D5;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr>
+                          <td style="font-size:14px; color:#1a1a1a;">
+                            {{ refund_line_item.line_item.title }} &times; {{ refund_line_item.quantity }}
+                          </td>
+                          <td style="font-size:14px; color:#1a1a1a; text-align:right; white-space:nowrap;">
+                            {{ refund_line_item.line_item.price | times: refund_line_item.quantity | money }}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </table>
+                {% endif %}
+
+                <!-- REFUND AMOUNT -->
+                {% for transaction in refund.transactions %}
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 28px 0;">
+                  <tr>
+                    <td style="padding:20px 24px; background-color:#FFF9F0; border-radius:12px; border:1px solid #F2E8D5; text-align:center;">
+                      <p style="margin:0 0 4px 0; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#C0A062;">
+                        Montant rembourse
+                      </p>
+                      <p style="margin:0; font-size:24px; font-weight:700; color:#1a1a1a; font-family:Georgia, 'Times New Roman', serif;">
+                        {{ transaction.amount | money }}
+                      </p>
+                      <p style="margin:8px 0 0 0; font-size:13px; color:#999999;">
+                        via {{ transaction.gateway_display_name }}
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+                {% endfor %}
+
+                <p style="margin:0 0 28px 0; font-size:15px; line-height:1.7; color:#555555;">
+                  Si tu as des questions concernant ce remboursement, n'hesite pas a nous ecrire. Nous esperons te revoir bientot.
+                </p>
+
+                <!-- CTA -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
+                  <tr>
+                    <td align="center" style="border-radius:50px; background-color:#C0A062;">
+                      <a href="{{ shop.url }}" target="_blank" style="display:inline-block; padding:16px 36px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:600; color:#FFFFFF; text-decoration:none; border-radius:50px; letter-spacing:0.5px;">
+                        Retourner sur la boutique
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+            </tr>
+
+            <!-- GOLD LINE -->
+            <tr>
+              <td style="padding: 0 40px;" class="mobile-padding">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr><td style="height:2px; background-color:#C0A062;"></td></tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- FOOTER -->
+            <tr>
+              <td style="padding:30px 40px; text-align:center; background-color:#FDFBF7;" class="mobile-padding">
+                <p style="margin:0 0 8px 0; font-size:13px; color:#999999; line-height:1.6;">MilAura — Bougies & Bijoux en pierres naturelles</p>
+                <p style="margin:0 0 8px 0; font-size:13px; color:#999999;">
+                  <a href="mailto:contact@milaura.fr" style="color:#C0A062; text-decoration:none;">contact@milaura.fr</a>
+                  &nbsp;&middot;&nbsp;
+                  <a href="{{ shop.url }}" style="color:#C0A062; text-decoration:none;">milaura.fr</a>
+                </p>
+                <p style="margin:16px 0 0 0; font-size:11px; color:#CCCCCC;">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits reserves.</p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+</html>
