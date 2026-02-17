@@ -86,12 +86,13 @@
     .sticky-btn-wrapper {
       flex-shrink: 0;
     }
-    
-    /* Le style du bouton est géré par la classe globale .milaura-btn-gold */
-    .sticky-btn {
-      /* Reset minimal pour garantir que le bouton hérite bien */
+
+    /* Bouton plus compact dans la sticky bar (ne touche plus les bords) */
+    .sticky-btn.milaura-btn-gold {
       border: none;
-      background: none;
+      padding: 10px 28px;
+      font-size: 13px;
+      letter-spacing: 0.5px;
     }
 
     /* --- MOBILE RESPONSIVE --- */
@@ -193,12 +194,15 @@
       let mainButton = null;
       for (const sel of mainButtonSelectors) {
         const found = document.querySelector(sel);
-        // On vérifie qu'il est visible et fait partie du contenu principal
         if (found && found.offsetParent !== null) {
           mainButton = found;
           break;
         }
       }
+
+      // Bubble elements (for desktop repositioning when sticky is visible)
+      const bubbleTrigger = document.querySelector('.milaura-bubble-trigger');
+      const bubbleLabel = document.querySelector('.milaura-bubble-label');
 
       // Trouver le footer pour masquer la sticky bar quand on y arrive
       const footer = document.querySelector('footer') || document.querySelector('.footer') || document.querySelector('#shopify-section-footer');
@@ -219,6 +223,13 @@
             stickyBar.classList.add('is-visible');
           } else {
             stickyBar.classList.remove('is-visible');
+          }
+
+          // Desktop only: push floating bubble above sticky bar
+          if (bubbleTrigger && window.innerWidth > 768) {
+            const isUp = stickyBar.classList.contains('is-visible');
+            bubbleTrigger.style.bottom = isUp ? '90px' : '';
+            if (bubbleLabel) bubbleLabel.style.bottom = isUp ? '98px' : '';
           }
         };
 
