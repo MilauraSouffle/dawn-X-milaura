@@ -151,6 +151,8 @@
     width: 100%;
     padding-top: 100%; /* Carré par défaut */
     background: var(--milaura-beige, #FDFBF7);
+    overflow: hidden; /* FIX: clip image to border-radius on all corners */
+    border-radius: 12px;
   }
 
   .product-media-container img,
@@ -298,6 +300,8 @@
     .milaura-hero-gallery-column {
       grid-area: gallery;
       margin: 0;
+      overflow: visible;
+      border-radius: 0;
     }
 
     .product__media-list {
@@ -321,6 +325,59 @@
     
     .slider-buttons {
       display: none;
+    }
+
+    /* Desktop Zoom on hover */
+    .product__media-item:first-child .product-media-container {
+      cursor: zoom-in;
+    }
+
+    .product__media-item:first-child .product-media-container.is-zoomed {
+      cursor: zoom-out;
+    }
+
+    .product__media-item:first-child .product-media-container.is-zoomed img {
+      transform: scale(2.2);
+      transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+      transition: transform-origin 0.05s ease-out;
+    }
+
+    /* Desktop Clickable Thumbnails */
+    .product__media-item:not(:first-child) .product-media-container {
+      cursor: pointer;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .product__media-item:not(:first-child) .product-media-container:hover {
+      border-color: var(--milaura-gold);
+      box-shadow: 0 4px 16px rgba(192, 160, 98, 0.25);
+    }
+
+    /* Desktop Floating Badges - over main image */
+    .milaura-meta-badges {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: auto;
+      padding: 0;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .milaura-meta-badge {
+      pointer-events: auto;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(192, 160, 98, 0.25);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(192, 160, 98, 0.15);
+      padding: 7px 16px;
+      font-size: 0.82rem;
+    }
+
+    .milaura-meta-badge--gold {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(192, 160, 98, 0.12));
+      border-color: rgba(192, 160, 98, 0.4);
     }
 
   }
@@ -1250,6 +1307,122 @@
 
   </product-info>
 </div>
+
+<script>
+(function() {
+  const isDesktop = () => window.matchMedia('(min-width: 990px)').matches;
+
+  /* ============================
+     1. BADGE REPOSITIONING (Desktop)
+     Move badges inside first product-media-container
+     ============================ */
+  function repositionBadges() {
+    const badges = document.querySelector('.milaura-meta-badges');
+    if (!badges) return;
+
+    const firstContainer = document.querySelector('.product__media-item:first-child .product-media-container');
+    const galleryCol = document.querySelector('.milaura-hero-gallery-column');
+
+    if (isDesktop() && firstContainer) {
+      // Move inside the main image container
+      if (badges.parentElement !== firstContainer) {
+        firstContainer.appendChild(badges);
+      }
+    } else if (galleryCol) {
+      // Mobile: move back to gallery column (after slider-component)
+      if (badges.parentElement !== galleryCol) {
+        galleryCol.appendChild(badges);
+      }
+    }
+  }
+
+  /* ============================
+     2. ZOOM ON HOVER (Desktop only)
+     Click to toggle zoom, mouse tracks transform-origin
+     ============================ */
+  function initZoom() {
+    const mainContainer = document.querySelector('.product__media-item:first-child .product-media-container');
+    if (!mainContainer) return;
+
+    mainContainer.addEventListener('click', function(e) {
+      if (!isDesktop()) return;
+      this.classList.toggle('is-zoomed');
+    });
+
+    mainContainer.addEventListener('mousemove', function(e) {
+      if (!isDesktop() || !this.classList.contains('is-zoomed')) return;
+      const rect = this.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      this.style.setProperty('--zoom-x', x + '%');
+      this.style.setProperty('--zoom-y', y + '%');
+    });
+
+    mainContainer.addEventListener('mouseleave', function() {
+      this.classList.remove('is-zoomed');
+    });
+  }
+
+  /* ============================
+     3. CLICKABLE THUMBNAILS (Desktop)
+     Click a thumbnail to swap it with main image
+     ============================ */
+  function initThumbnails() {
+    const mediaList = document.querySelector('.product__media-list');
+    if (!mediaList) return;
+
+    const items = mediaList.querySelectorAll('.product__media-item');
+    if (items.length < 2) return;
+
+    items.forEach(function(item, index) {
+      if (index === 0) return; // Skip main image
+
+      item.querySelector('.product-media-container').addEventListener('click', function(e) {
+        if (!isDesktop()) return;
+        e.preventDefault();
+
+        const firstItem = items[0];
+        const clickedItem = item;
+
+        // Swap the image sources
+        const mainImg = firstItem.querySelector('img');
+        const thumbImg = clickedItem.querySelector('img');
+        if (!mainImg || !thumbImg) return;
+
+        // Swap src and srcset
+        const tmpSrc = mainImg.src;
+        const tmpSrcset = mainImg.srcset || '';
+        const tmpAlt = mainImg.alt || '';
+
+        mainImg.src = thumbImg.src;
+        mainImg.srcset = thumbImg.srcset || '';
+        mainImg.alt = thumbImg.alt || '';
+
+        thumbImg.src = tmpSrc;
+        thumbImg.srcset = tmpSrcset;
+        thumbImg.alt = tmpAlt;
+
+        // Remove zoom state
+        firstItem.querySelector('.product-media-container').classList.remove('is-zoomed');
+      });
+    });
+  }
+
+  /* Init on DOM ready */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  function init() {
+    repositionBadges();
+    initZoom();
+    initThumbnails();
+    window.addEventListener('resize', repositionBadges);
+  }
+})();
+</script>
 
 {% schema %}
 {
