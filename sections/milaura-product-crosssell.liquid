@@ -1,15 +1,16 @@
 {% comment %}
   MILAURA PRODUCT CROSSSELL
-  Version 6.0 - Grille Dawn native + cascade intelligente
+  Version 5.0 - Recommandations intelligentes en cascade
 
-  Utilise la MEME grille et les MEMES cartes que les pages collections.
+  Utilise le snippet Dawn card-product (identique aux collections)
   Cascade de recommandations (par priorite) :
   1. Metafield milaura.crosssell_products (curation manuelle par produit)
   2. Meme pierre (stone_handle) - automatique
   3. Meme type de produit (product_type_handle) - automatique
   4. Collection fallback - filet de securite
 
-  Scan limite a 50 produits par tier (150 max) pour la performance
+  Aucune sélection manuelle requise = scalable pour 2000+ produits
+  Scan limité à 50 produits par tier (150 max) pour la performance
 {% endcomment %}
 
 {%- liquid
@@ -18,11 +19,11 @@
   assign current_product_id = product.id | default: 0
   assign scan_limit = 50
 
-  # Donnees du produit actuel pour le matching intelligent
+  # Données du produit actuel pour le matching intelligent
   assign current_stone = product.metafields.milaura.stone_handle
   assign current_type = product.metafields.milaura.product_type_handle | default: product.type | downcase | handleize
 
-  # Tier 1 : Metafield personnalise par produit (curation manuelle)
+  # Tier 1 : Metafield personnalisé par produit (curation manuelle)
   assign metafield_products = product.metafields.milaura.crosssell_products.value
   assign use_metafield = false
   if metafield_products != blank and metafield_products.size > 0
@@ -32,7 +33,7 @@
   # Pool de recherche pour tiers 2-4
   assign the_collection = collections[section.settings.fallback_collection]
 
-  # Determiner si on a assez de produits potentiels
+  # Déterminer si on a assez de produits potentiels
   assign has_products = false
   if use_metafield and metafield_products.size >= min_products
     assign has_products = true
@@ -42,23 +43,26 @@
 -%}
 
 {%- if has_products -%}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'template-collection.css' | asset_url | stylesheet_tag }}
-{{ 'quick-add.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-
 {% style %}
+  /* ============================================
+     CROSSSELL - Base Layout
+     ============================================ */
   #MilauraCrosssell-{{ section.id }} {
     padding: 20px 0;
     background: transparent;
+    overflow: hidden;
   }
 
+  #MilauraCrosssell-{{ section.id }} .crosssell-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--milaura-spacing-sm);
+  }
+
+  /* Header */
   #MilauraCrosssell-{{ section.id }} .crosssell-header {
     text-align: center;
     margin-bottom: var(--milaura-spacing-md);
-    padding: 0 var(--milaura-spacing-sm);
   }
 
   #MilauraCrosssell-{{ section.id }} .crosssell-title {
@@ -79,6 +83,101 @@
     line-height: 1.5;
   }
 
+  /* ============================================
+     CAROUSEL
+     ============================================ */
+  #MilauraCrosssell-{{ section.id }} .crosssell-carousel-wrapper {
+    position: relative;
+    margin: 0 calc(-1 * var(--milaura-spacing-sm));
+    padding: 0 var(--milaura-spacing-sm);
+  }
+
+  #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 10px 0 20px 0;
+  }
+
+  #MilauraCrosssell-{{ section.id }} .crosssell-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ============================================
+     CARTE PRODUIT (slot carousel pour card-product Dawn)
+     ============================================ */
+  #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+    flex: 0 0 auto;
+    width: 280px;
+    scroll-snap-align: start;
+    position: relative;
+  }
+
+  #MilauraCrosssell-{{ section.id }} .crosssell-card-slot:first-child {
+    margin-left: var(--milaura-spacing-sm);
+  }
+
+  #MilauraCrosssell-{{ section.id }} .crosssell-card-slot:last-child {
+    margin-right: var(--milaura-spacing-sm);
+  }
+
+  /* ============================================
+     DOTS Navigation
+     ============================================ */
+  #MilauraCrosssell-{{ section.id }} .crosssell-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  #MilauraCrosssell-{{ section.id }} .crosssell-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 10px;
+    background: rgba(192, 160, 98, 0.25);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #MilauraCrosssell-{{ section.id }} .crosssell-dot:hover {
+    background: rgba(192, 160, 98, 0.5);
+    transform: scale(1.15);
+  }
+
+  #MilauraCrosssell-{{ section.id }} .crosssell-dot.is-active {
+    width: 24px;
+    background: linear-gradient(135deg,
+      rgba(255, 240, 200, 1) 0%,
+      rgba(214, 176, 96, 1) 25%,
+      rgba(255, 232, 172, 1) 50%,
+      rgba(176, 130, 48, 1) 75%,
+      rgba(214, 176, 96, 1) 100%);
+    box-shadow:
+      0 2px 8px rgba(192, 160, 98, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  }
+
+  /* ============================================
+     RESPONSIVE - Desktop (1024px+)
+     ============================================ */
   @media screen and (min-width: 1024px) {
     #MilauraCrosssell-{{ section.id }} .crosssell-title {
       font-size: {{ section.settings.title_size_desktop }}px;
@@ -86,6 +185,88 @@
 
     #MilauraCrosssell-{{ section.id }} .crosssell-subtitle {
       font-size: {{ section.settings.subtitle_size_desktop }}px;
+    }
+  }
+
+  /* Cacher les dots sur grand ecran (tout visible) */
+  @media screen and (min-width: 1200px) {
+    #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
+      justify-content: center;
+      overflow-x: visible;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot:first-child {
+      margin-left: 0;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot:last-child {
+      margin-right: 0;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-dots {
+      display: none;
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE - Tablette
+     ============================================ */
+  @media screen and (max-width: 1023px) and (min-width: 601px) {
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      width: 240px;
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE - Mobile
+     ============================================ */
+  @media screen and (max-width: 600px) {
+    #MilauraCrosssell-{{ section.id }} {
+      padding: 20px 0;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
+      gap: 14px;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      width: 200px;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-dots {
+      padding: 6px 12px;
+      gap: 5px;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-dot {
+      width: 6px;
+      height: 6px;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-dot.is-active {
+      width: 20px;
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE - Petit Mobile
+     ============================================ */
+  @media screen and (max-width: 380px) {
+    #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
+      gap: 10px;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      width: 170px;
+    }
+  }
+
+  /* ============================================
+     Accessibility & Motion
+     ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraCrosssell-{{ section.id }} .crosssell-dot {
+      transition: none;
     }
   }
 {% endstyle %}
@@ -96,37 +277,43 @@
   data-section-id="{{ section.id }}"
   aria-label="{{ section.settings.title }}"
 >
-  {%- if section.settings.show_title -%}
-    <header class="crosssell-header">
-      <h2 class="crosssell-title">{{ section.settings.title }}</h2>
-      {%- if section.settings.subtitle != blank -%}
-        <p class="crosssell-subtitle">{{ section.settings.subtitle }}</p>
-      {%- endif -%}
-    </header>
-  {%- endif -%}
+  <div class="crosssell-container">
 
-  <div class="collection page-width">
-    <ul
-      class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ section.settings.columns_desktop }}-col-desktop grid--2-col-tablet-down"
-      role="list"
-    >
+    {%- if section.settings.show_title -%}
+      <header class="crosssell-header">
+        <h2 class="crosssell-title">{{ section.settings.title }}</h2>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="crosssell-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+  </div>
+
+  <div class="crosssell-carousel-wrapper">
+    <div class="crosssell-carousel">
+
       {%- assign shown_count = 0 -%}
       {%- assign shown_ids = '' -%}
       {%- assign skip_card_product_styles = false -%}
 
       {%- if use_metafield -%}
-        {%- comment -%} TIER 1 : Metafield cure manuellement {%- endcomment -%}
+        {%- comment -%}
+          ══════════════════════════════════════════
+          TIER 1 : Metafield curé manuellement
+          Le marchand a choisi ces produits à la main
+          ══════════════════════════════════════════
+        {%- endcomment -%}
         {%- for rec_product in metafield_products -%}
           {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
           {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
           {%- assign shown_count = shown_count | plus: 1 -%}
           {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
 
-          <li class="grid__item">
+          <div class="crosssell-card-slot">
             {% render 'card-product',
               card_product: rec_product,
-              media_aspect_ratio: 'adapt',
-              image_shape: 'default',
+              media_aspect_ratio: 'square',
               show_secondary_image: false,
               show_vendor: section.settings.show_vendor,
               show_rating: false,
@@ -135,13 +322,18 @@
               quick_add: 'standard',
               section_id: section.id
             %}
-          </li>
-          {%- assign skip_card_product_styles = true -%}
+            {%- assign skip_card_product_styles = true -%}
+          </div>
           {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
         {%- endfor -%}
 
       {%- else -%}
-        {%- comment -%} TIER 2 : Meme pierre (stone_handle) {%- endcomment -%}
+        {%- comment -%}
+          ══════════════════════════════════════════
+          TIER 2 : Meme pierre (stone_handle)
+          Bracelet améthyste → autres produits améthyste
+          ══════════════════════════════════════════
+        {%- endcomment -%}
         {%- if current_stone != blank and shown_count < max_products -%}
           {%- for rec_product in the_collection.products limit: scan_limit -%}
             {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
@@ -151,11 +343,10 @@
               {%- assign shown_count = shown_count | plus: 1 -%}
               {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
 
-              <li class="grid__item">
+              <div class="crosssell-card-slot">
                 {% render 'card-product',
                   card_product: rec_product,
-                  media_aspect_ratio: 'adapt',
-                  image_shape: 'default',
+                  media_aspect_ratio: 'square',
                   show_secondary_image: false,
                   show_vendor: section.settings.show_vendor,
                   show_rating: false,
@@ -164,14 +355,19 @@
                   quick_add: 'standard',
                   section_id: section.id
                 %}
-              </li>
-              {%- assign skip_card_product_styles = true -%}
+                {%- assign skip_card_product_styles = true -%}
+              </div>
               {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
 
-        {%- comment -%} TIER 3 : Meme type de produit {%- endcomment -%}
+        {%- comment -%}
+          ══════════════════════════════════════════
+          TIER 3 : Meme type de produit
+          Bracelet → autres bracelets (pierres différentes)
+          ══════════════════════════════════════════
+        {%- endcomment -%}
         {%- if current_type != blank and shown_count < max_products -%}
           {%- for rec_product in the_collection.products limit: scan_limit -%}
             {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
@@ -183,11 +379,10 @@
               {%- assign shown_count = shown_count | plus: 1 -%}
               {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
 
-              <li class="grid__item">
+              <div class="crosssell-card-slot">
                 {% render 'card-product',
                   card_product: rec_product,
-                  media_aspect_ratio: 'adapt',
-                  image_shape: 'default',
+                  media_aspect_ratio: 'square',
                   show_secondary_image: false,
                   show_vendor: section.settings.show_vendor,
                   show_rating: false,
@@ -196,14 +391,19 @@
                   quick_add: 'standard',
                   section_id: section.id
                 %}
-              </li>
-              {%- assign skip_card_product_styles = true -%}
+                {%- assign skip_card_product_styles = true -%}
+              </div>
               {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
 
-        {%- comment -%} TIER 4 : Filet de securite {%- endcomment -%}
+        {%- comment -%}
+          ══════════════════════════════════════════
+          TIER 4 : Filet de securité
+          Remplit les places restantes avec d'autres produits
+          ══════════════════════════════════════════
+        {%- endcomment -%}
         {%- if shown_count < max_products -%}
           {%- for rec_product in the_collection.products limit: scan_limit -%}
             {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
@@ -213,11 +413,10 @@
             {%- assign shown_count = shown_count | plus: 1 -%}
             {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
 
-            <li class="grid__item">
+            <div class="crosssell-card-slot">
               {% render 'card-product',
                 card_product: rec_product,
-                media_aspect_ratio: 'adapt',
-                image_shape: 'default',
+                media_aspect_ratio: 'square',
                 show_secondary_image: false,
                 show_vendor: section.settings.show_vendor,
                 show_rating: false,
@@ -226,17 +425,84 @@
                 quick_add: 'standard',
                 section_id: section.id
               %}
-            </li>
-            {%- assign skip_card_product_styles = true -%}
+              {%- assign skip_card_product_styles = true -%}
+            </div>
             {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
           {%- endfor -%}
         {%- endif -%}
 
       {%- endif -%}
-    </ul>
+
+    </div>
   </div>
 
+  {%- if shown_count > 1 -%}
+    <div class="crosssell-dots" aria-label="Navigation produits">
+      {%- for i in (1..shown_count) -%}
+        <button
+          type="button"
+          class="crosssell-dot {% if forloop.first %}is-active{% endif %}"
+          data-dot-index="{{ forloop.index0 }}"
+          aria-label="Voir produit {{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
 </section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const root = document.getElementById('MilauraCrosssell-' + sectionId);
+  if (!root) return;
+
+  const carousel = root.querySelector('.crosssell-carousel');
+  const dots = Array.from(root.querySelectorAll('.crosssell-dot[data-dot-index]'));
+  const cards = Array.from(carousel.querySelectorAll('.crosssell-card-slot'));
+
+  if (!carousel || !cards.length) return;
+
+  function updateDots() {
+    if (!dots.length) return;
+    const scrollLeft = carousel.scrollLeft;
+    const gap = window.innerWidth >= 600 ? 20 : 14;
+    const cardWidth = cards[0].offsetWidth + gap;
+    const activeIndex = Math.round(scrollLeft / cardWidth);
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === activeIndex);
+    });
+  }
+
+  function scrollToCard(index) {
+    const gap = window.innerWidth >= 600 ? 20 : 14;
+    const cardWidth = cards[0].offsetWidth + gap;
+    carousel.scrollTo({
+      left: index * cardWidth,
+      behavior: 'smooth'
+    });
+  }
+
+  // Scroll listener
+  let scrollTimeout;
+  carousel.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(updateDots, 50);
+  }, { passive: true });
+
+  // Click sur les dots
+  dots.forEach((dot) => {
+    dot.addEventListener('click', function(e) {
+      e.preventDefault();
+      const idx = parseInt(this.getAttribute('data-dot-index'), 10);
+      if (!isNaN(idx)) scrollToCard(idx);
+    });
+  });
+
+  updateDots();
+})();
+</script>
 {%- endif -%}
 
 {% schema %}
@@ -260,15 +526,6 @@
       "label": "Nombre de produits",
       "min": 2,
       "max": 6,
-      "step": 1,
-      "default": 4
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "label": "Colonnes (desktop)",
-      "min": 2,
-      "max": 5,
       "step": 1,
       "default": 4
     },
