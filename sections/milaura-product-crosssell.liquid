@@ -1,35 +1,43 @@
 {% comment %}
   MILAURA PRODUCT CROSSSELL
-  Version 4.0 - Refonte card-product Dawn
+  Version 5.0 - Recommandations intelligentes en cascade
 
   Utilise le snippet Dawn card-product (identique aux collections)
-  Recommandations automatiques intelligentes :
-  1. Metafield milaura.crosssell_products (si configuré)
-  2. Collection de fallback (configurable)
+  Cascade de recommandations (par priorite) :
+  1. Metafield milaura.crosssell_products (curation manuelle par produit)
+  2. Meme pierre (stone_handle) - automatique
+  3. Meme type de produit (product_type_handle) - automatique
+  4. Collection fallback - filet de securite
 
   Aucune sélection manuelle requise = scalable pour 2000+ produits
+  Scan limité à 50 produits par tier (150 max) pour la performance
 {% endcomment %}
 
 {%- liquid
   assign max_products = section.settings.products_to_show | default: 4
   assign min_products = section.settings.min_products | default: 1
   assign current_product_id = product.id | default: 0
+  assign scan_limit = 50
 
-  # Source 1 : Metafield personnalisé par produit
+  # Données du produit actuel pour le matching intelligent
+  assign current_stone = product.metafields.milaura.stone_handle
+  assign current_type = product.metafields.milaura.product_type_handle | default: product.type | downcase | handleize
+
+  # Tier 1 : Metafield personnalisé par produit (curation manuelle)
   assign metafield_products = product.metafields.milaura.crosssell_products.value
   assign use_metafield = false
   if metafield_products != blank and metafield_products.size > 0
     assign use_metafield = true
   endif
 
-  # Source 2 : Collection globale (fallback)
+  # Pool de recherche pour tiers 2-4
   assign the_collection = collections[section.settings.fallback_collection]
 
-  # Déterminer si on a assez de produits
+  # Déterminer si on a assez de produits potentiels
   assign has_products = false
   if use_metafield and metafield_products.size >= min_products
     assign has_products = true
-  elsif the_collection != blank and the_collection.products.size >= min_products
+  elsif the_collection != blank and the_collection.products.size > 1
     assign has_products = true
   endif
 -%}
@@ -286,56 +294,151 @@
     <div class="crosssell-carousel">
 
       {%- assign shown_count = 0 -%}
+      {%- assign shown_ids = '' -%}
       {%- assign skip_card_product_styles = false -%}
 
-      {%- comment -%} Source : Metafield OU Collection {%- endcomment -%}
       {%- if use_metafield -%}
-        {%- assign product_source = metafield_products -%}
+        {%- comment -%}
+          ══════════════════════════════════════════
+          TIER 1 : Metafield curé manuellement
+          Le marchand a choisi ces produits à la main
+          ══════════════════════════════════════════
+        {%- endcomment -%}
+        {%- for rec_product in metafield_products -%}
+          {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
+          {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
+          {%- assign shown_count = shown_count | plus: 1 -%}
+          {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
+
+          <div class="crosssell-card-slot">
+            {% render 'card-product',
+              card_product: rec_product,
+              media_aspect_ratio: 'square',
+              show_secondary_image: false,
+              show_vendor: section.settings.show_vendor,
+              show_rating: false,
+              lazy_load: lazy,
+              skip_styles: skip_card_product_styles,
+              quick_add: 'standard',
+              section_id: section.id
+            %}
+            {%- assign skip_card_product_styles = true -%}
+          </div>
+          {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
+        {%- endfor -%}
+
       {%- else -%}
-        {%- assign product_source = the_collection.products -%}
+        {%- comment -%}
+          ══════════════════════════════════════════
+          TIER 2 : Meme pierre (stone_handle)
+          Bracelet améthyste → autres produits améthyste
+          ══════════════════════════════════════════
+        {%- endcomment -%}
+        {%- if current_stone != blank and shown_count < max_products -%}
+          {%- for rec_product in the_collection.products limit: scan_limit -%}
+            {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
+            {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
+            {%- assign rec_stone = rec_product.metafields.milaura.stone_handle -%}
+            {%- if rec_stone == current_stone -%}
+              {%- assign shown_count = shown_count | plus: 1 -%}
+              {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
+
+              <div class="crosssell-card-slot">
+                {% render 'card-product',
+                  card_product: rec_product,
+                  media_aspect_ratio: 'square',
+                  show_secondary_image: false,
+                  show_vendor: section.settings.show_vendor,
+                  show_rating: false,
+                  lazy_load: lazy,
+                  skip_styles: skip_card_product_styles,
+                  quick_add: 'standard',
+                  section_id: section.id
+                %}
+                {%- assign skip_card_product_styles = true -%}
+              </div>
+              {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- comment -%}
+          ══════════════════════════════════════════
+          TIER 3 : Meme type de produit
+          Bracelet → autres bracelets (pierres différentes)
+          ══════════════════════════════════════════
+        {%- endcomment -%}
+        {%- if current_type != blank and shown_count < max_products -%}
+          {%- for rec_product in the_collection.products limit: scan_limit -%}
+            {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
+            {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
+            {%- assign rec_id_check = rec_product.id | append: ',' -%}
+            {%- if shown_ids contains rec_id_check -%}{%- continue -%}{%- endif -%}
+            {%- assign rec_type = rec_product.metafields.milaura.product_type_handle | default: rec_product.type | downcase | handleize -%}
+            {%- if rec_type == current_type -%}
+              {%- assign shown_count = shown_count | plus: 1 -%}
+              {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
+
+              <div class="crosssell-card-slot">
+                {% render 'card-product',
+                  card_product: rec_product,
+                  media_aspect_ratio: 'square',
+                  show_secondary_image: false,
+                  show_vendor: section.settings.show_vendor,
+                  show_rating: false,
+                  lazy_load: lazy,
+                  skip_styles: skip_card_product_styles,
+                  quick_add: 'standard',
+                  section_id: section.id
+                %}
+                {%- assign skip_card_product_styles = true -%}
+              </div>
+              {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- comment -%}
+          ══════════════════════════════════════════
+          TIER 4 : Filet de securité
+          Remplit les places restantes avec d'autres produits
+          ══════════════════════════════════════════
+        {%- endcomment -%}
+        {%- if shown_count < max_products -%}
+          {%- for rec_product in the_collection.products limit: scan_limit -%}
+            {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
+            {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
+            {%- assign rec_id_check = rec_product.id | append: ',' -%}
+            {%- if shown_ids contains rec_id_check -%}{%- continue -%}{%- endif -%}
+            {%- assign shown_count = shown_count | plus: 1 -%}
+            {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
+
+            <div class="crosssell-card-slot">
+              {% render 'card-product',
+                card_product: rec_product,
+                media_aspect_ratio: 'square',
+                show_secondary_image: false,
+                show_vendor: section.settings.show_vendor,
+                show_rating: false,
+                lazy_load: lazy,
+                skip_styles: skip_card_product_styles,
+                quick_add: 'standard',
+                section_id: section.id
+              %}
+              {%- assign skip_card_product_styles = true -%}
+            </div>
+            {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
+          {%- endfor -%}
+        {%- endif -%}
+
       {%- endif -%}
-
-      {%- for rec_product in product_source -%}
-        {%- if rec_product.id == current_product_id -%}
-          {%- continue -%}
-        {%- endif -%}
-        {%- if shown_count >= max_products -%}
-          {%- break -%}
-        {%- endif -%}
-        {%- assign shown_count = shown_count | plus: 1 -%}
-        {%- if shown_count <= 2 -%}
-          {%- assign lazy = false -%}
-        {%- else -%}
-          {%- assign lazy = true -%}
-        {%- endif -%}
-
-        <div class="crosssell-card-slot">
-          {% render 'card-product',
-            card_product: rec_product,
-            media_aspect_ratio: 'square',
-            show_secondary_image: false,
-            show_vendor: section.settings.show_vendor,
-            show_rating: false,
-            lazy_load: lazy,
-            skip_styles: skip_card_product_styles,
-            quick_add: 'standard',
-            section_id: section.id
-          %}
-          {%- assign skip_card_product_styles = true -%}
-        </div>
-      {%- endfor -%}
 
     </div>
   </div>
 
-  {%- if use_metafield -%}
-    {%- assign dot_count = metafield_products.size | at_most: max_products -%}
-  {%- else -%}
-    {%- assign dot_count = the_collection.products.size | at_most: max_products -%}
-  {%- endif -%}
-  {%- if dot_count > 1 -%}
+  {%- if shown_count > 1 -%}
     <div class="crosssell-dots" aria-label="Navigation produits">
-      {%- for i in (1..dot_count) -%}
+      {%- for i in (1..shown_count) -%}
         <button
           type="button"
           class="crosssell-dot {% if forloop.first %}is-active{% endif %}"
@@ -438,7 +541,7 @@
     },
     {
       "type": "paragraph",
-      "content": "Priorite : 1. Metafield 'milaura.crosssell_products' sur le produit - 2. Collection ci-dessus"
+      "content": "Cascade intelligente : 1. Metafield crosssell_products (manuel) - 2. Meme pierre - 3. Meme type - 4. Autres produits"
     },
     {
       "type": "header",
