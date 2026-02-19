@@ -1,0 +1,78 @@
+{%- comment -%}
+  Snippet: milaura-card-product
+  Carte produit reutilisable - style identique aux pages collection
+  Requiert: assets/milaura-card.css + parent .milaura-cards
+
+  Params:
+  - card_product: le produit
+  - img_loading: 'eager' ou 'lazy' (defaut: 'lazy')
+  - show_vendor: boolean
+  - show_badges: boolean (defaut: true)
+  - force_bestseller_badge: boolean
+  - badge_label: texte du badge (defaut: 'Bestseller')
+{%- endcomment -%}
+
+<a href="{{ card_product.url }}" class="grid__card">
+  <div class="grid__card-img">
+    {%- if show_badges != false -%}
+      {%- if force_bestseller_badge or card_product.metafields.milaura.is_bestseller -%}
+        <span class="grid__card-badge grid__card-badge--new">{{ badge_label | default: 'Bestseller' }}</span>
+      {%- elsif card_product.available == false -%}
+        <span class="grid__card-badge grid__card-badge--soldout">Rupture</span>
+      {%- elsif card_product.compare_at_price > card_product.price -%}
+        <span class="grid__card-badge grid__card-badge--sale">Promo</span>
+      {%- else -%}
+        {%- assign mc_product_date = card_product.created_at | date: '%s' | plus: 0 -%}
+        {%- assign mc_thirty_days_ago = 'now' | date: '%s' | minus: 2592000 -%}
+        {%- if mc_product_date > mc_thirty_days_ago -%}
+          <span class="grid__card-badge grid__card-badge--new">Nouveau</span>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if card_product.featured_image != blank -%}
+      <img
+        src="{{ card_product.featured_image | image_url: width: 600 }}"
+        srcset="{{ card_product.featured_image | image_url: width: 200 }} 200w,
+                {{ card_product.featured_image | image_url: width: 400 }} 400w,
+                {{ card_product.featured_image | image_url: width: 600 }} 600w"
+        sizes="(max-width: 380px) 45vw, (max-width: 768px) 48vw, 25vw"
+        alt="{{ card_product.title | escape }}"
+        loading="{{ img_loading | default: 'lazy' }}"
+        width="600"
+        height="600"
+      >
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag }}
+    {%- endif -%}
+  </div>
+
+  <div class="grid__card-info">
+    {%- if show_vendor and card_product.vendor != blank -%}
+      <span class="grid__card-vendor">{{ card_product.vendor }}</span>
+    {%- endif -%}
+    <h3 class="grid__card-title">{{ card_product.title }}</h3>
+    <div class="grid__card-price">
+      {%- if card_product.compare_at_price > card_product.price -%}
+        <span class="grid__card-price--compare">{{ card_product.compare_at_price | money }}</span>
+      {%- endif -%}
+      {{ card_product.price | money }}
+    </div>
+  </div>
+
+  <div class="grid__card-actions">
+    {%- if card_product.available -%}
+      <span class="grid__card-btn">Voir le produit</span>
+      <span class="grid__card-quick" data-quick-add data-product-id="{{ card_product.variants.first.id }}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        Ajout rapide
+      </span>
+    {%- else -%}
+      <span class="grid__card-btn--soldout">Rupture de stock</span>
+    {%- endif -%}
+  </div>
+</a>
