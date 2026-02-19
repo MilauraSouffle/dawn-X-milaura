@@ -1,13 +1,11 @@
 {% comment %}
   MILAURA PRODUCT CROSSSELL
-  Version 3.0 - Refonte complète
+  Version 4.0 - Refonte card-product Dawn
 
-  Design identique à featured-products (carousel doré)
+  Utilise le snippet Dawn card-product (identique aux collections)
   Recommandations automatiques intelligentes :
   1. Metafield milaura.crosssell_products (si configuré)
-  2. Produits avec la même pierre (stone_handle)
-  3. Produits de la même collection
-  4. Collection de fallback (configurable)
+  2. Collection de fallback (configurable)
 
   Aucune sélection manuelle requise = scalable pour 2000+ produits
 {% endcomment %}
@@ -102,169 +100,21 @@
   }
 
   /* ============================================
-     CARTE PRODUIT (Style bijou doré)
+     CARTE PRODUIT (slot carousel pour card-product Dawn)
      ============================================ */
-  #MilauraCrosssell-{{ section.id }} .crosssell-card {
+  #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
     flex: 0 0 auto;
-    width: 240px;
-    border-radius: 20px;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    width: 280px;
     scroll-snap-align: start;
-
-    /* Cadre doré bijou */
-    border: 2px solid transparent;
-    background:
-      linear-gradient(#ffffff, #ffffff) padding-box,
-      linear-gradient(135deg,
-        rgba(255, 240, 200, 0.92) 0%,
-        rgba(214, 176, 96, 0.92) 18%,
-        rgba(255, 232, 172, 0.92) 42%,
-        rgba(176, 130, 48, 0.92) 70%,
-        rgba(255, 240, 200, 0.92) 100%) border-box;
-    box-shadow:
-      0 10px 28px rgba(0,0,0,0.06),
-      0 0 0 1px rgba(255,255,255,0.65) inset;
-    transition: transform 220ms ease, box-shadow 260ms ease;
+    position: relative;
   }
 
-  #MilauraCrosssell-{{ section.id }} .crosssell-card:first-child {
+  #MilauraCrosssell-{{ section.id }} .crosssell-card-slot:first-child {
     margin-left: var(--milaura-spacing-sm);
   }
 
-  #MilauraCrosssell-{{ section.id }} .crosssell-card:last-child {
+  #MilauraCrosssell-{{ section.id }} .crosssell-card-slot:last-child {
     margin-right: var(--milaura-spacing-sm);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-card:hover {
-    transform: translateY(-4px);
-    box-shadow:
-      0 14px 40px rgba(0,0,0,0.10),
-      0 0 0 1px rgba(255,255,255,0.75) inset,
-      0 0 24px rgba(214, 176, 96, 0.28);
-  }
-
-  /* Badge */
-  #MilauraCrosssell-{{ section.id }} .crosssell-badge {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: linear-gradient(135deg, #C0A062, #8F723A);
-    color: white;
-    font-family: var(--milaura-font-body, 'Lato', sans-serif);
-    font-size: 0.7rem;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-    z-index: 2;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(143, 114, 58, 0.3);
-  }
-
-  /* Image */
-  #MilauraCrosssell-{{ section.id }} .crosssell-img-container {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: 15px;
-    margin-bottom: 12px;
-    background: #f9f9f9;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-card:hover .crosssell-img {
-    transform: scale(1.08);
-  }
-
-  /* Info produit */
-  #MilauraCrosssell-{{ section.id }} .crosssell-info {
-    padding: 8px 4px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-vendor {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--milaura-gold, #C0A062);
-    letter-spacing: 1.5px;
-    margin-bottom: 4px;
-    font-weight: 600;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-name {
-    font-family: var(--milaura-font-heading, 'Playfair Display', serif);
-    font-size: 1.1rem;
-    color: {{ section.settings.product_name_color }};
-    font-weight: 600;
-    margin-bottom: 10px;
-    line-height: 1.35;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    min-height: 2.6em;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-price {
-    font-family: var(--milaura-font-body, 'Lato', sans-serif);
-    color: {{ section.settings.price_color }};
-    font-weight: 700;
-    font-size: 1.05rem;
-    margin-top: auto;
-    background: linear-gradient(135deg, rgba(192, 160, 98, 0.1) 0%, rgba(192, 160, 98, 0.05) 100%);
-    padding: 6px 14px;
-    border-radius: 20px;
-    display: inline-block;
-    border: 1px solid rgba(192, 160, 98, 0.2);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-price-compare {
-    font-size: 0.85rem;
-    text-decoration: line-through;
-    opacity: 0.5;
-    margin-left: 6px;
-    font-weight: 400;
-  }
-
-  /* Bouton voir produit */
-  #MilauraCrosssell-{{ section.id }} .crosssell-btn {
-    margin-top: 12px;
-    width: 100%;
-    padding: 10px;
-    background: var(--milaura-gold, #C0A062);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-family: var(--milaura-font-body, 'Lato', sans-serif);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: all 0.3s ease;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-card:hover .crosssell-btn {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-btn:hover {
-    background: #1A1A1A;
   }
 
   /* ============================================
@@ -328,9 +178,25 @@
     #MilauraCrosssell-{{ section.id }} .crosssell-subtitle {
       font-size: {{ section.settings.subtitle_size_desktop }}px;
     }
+  }
 
-    #MilauraCrosssell-{{ section.id }} .crosssell-card {
-      width: 280px;
+  /* Cacher les dots sur grand ecran (tout visible) */
+  @media screen and (min-width: 1200px) {
+    #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
+      justify-content: center;
+      overflow-x: visible;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot:first-child {
+      margin-left: 0;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot:last-child {
+      margin-right: 0;
+    }
+
+    #MilauraCrosssell-{{ section.id }} .crosssell-dots {
+      display: none;
     }
   }
 
@@ -338,13 +204,8 @@
      RESPONSIVE - Tablette
      ============================================ */
   @media screen and (max-width: 1023px) and (min-width: 601px) {
-    #MilauraCrosssell-{{ section.id }} .crosssell-card {
-      width: 220px;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-btn {
-      opacity: 1;
-      transform: translateY(0);
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      width: 240px;
     }
   }
 
@@ -360,26 +221,8 @@
       gap: 14px;
     }
 
-    #MilauraCrosssell-{{ section.id }} .crosssell-card {
-      width: 180px;
-      padding: 10px;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-name {
-      font-size: 1rem;
-      min-height: 2.4em;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-price {
-      font-size: 0.95rem;
-      padding: 5px 12px;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-btn {
-      opacity: 1;
-      transform: translateY(0);
-      padding: 8px;
-      font-size: 0.8rem;
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      width: 200px;
     }
 
     #MilauraCrosssell-{{ section.id }} .crosssell-dots {
@@ -405,47 +248,15 @@
       gap: 10px;
     }
 
-    #MilauraCrosssell-{{ section.id }} .crosssell-card {
-      width: 160px;
-      padding: 8px;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-img-container {
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-name {
-      font-size: 0.95rem;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-price {
-      font-size: 0.9rem;
+    #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      width: 170px;
     }
   }
 
   /* ============================================
      Accessibility & Motion
      ============================================ */
-  @media (hover: none) {
-    #MilauraCrosssell-{{ section.id }} .crosssell-card:hover {
-      transform: none;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-card:hover .crosssell-img {
-      transform: none;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-btn {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    #MilauraCrosssell-{{ section.id }} .crosssell-card,
-    #MilauraCrosssell-{{ section.id }} .crosssell-img,
-    #MilauraCrosssell-{{ section.id }} .crosssell-btn,
     #MilauraCrosssell-{{ section.id }} .crosssell-dot {
       transition: none;
     }
@@ -475,6 +286,7 @@
     <div class="crosssell-carousel">
 
       {%- assign shown_count = 0 -%}
+      {%- assign skip_card_product_styles = false -%}
 
       {%- comment -%} Source : Metafield OU Collection {%- endcomment -%}
       {%- if use_metafield -%}
@@ -491,53 +303,26 @@
           {%- break -%}
         {%- endif -%}
         {%- assign shown_count = shown_count | plus: 1 -%}
-        {%- assign rec_variant = rec_product.selected_or_first_available_variant -%}
         {%- if shown_count <= 2 -%}
-          {%- assign img_loading = 'eager' -%}
+          {%- assign lazy = false -%}
         {%- else -%}
-          {%- assign img_loading = 'lazy' -%}
+          {%- assign lazy = true -%}
         {%- endif -%}
 
-        <a href="{{ rec_product.url }}" class="crosssell-card">
-
-          <div class="crosssell-img-container">
-            {%- if rec_product.metafields.milaura.is_bestseller == true -%}
-              <span class="crosssell-badge">{{ section.settings.badge_text }}</span>
-            {%- endif -%}
-
-            {%- if rec_product.featured_image -%}
-              {{ rec_product.featured_image
-                | image_url: width: 500
-                | image_tag:
-                  class: 'crosssell-img',
-                  loading: img_loading,
-                  widths: '160, 220, 260, 500',
-                  sizes: '(min-width: 1024px) 260px, (min-width: 601px) 220px, 180px',
-                  alt: rec_product.title | escape
-              }}
-            {%- else -%}
-              {{ 'product-1' | placeholder_svg_tag: 'crosssell-img' }}
-            {%- endif -%}
-          </div>
-
-          <div class="crosssell-info">
-            {%- if section.settings.show_vendor and rec_product.vendor != blank -%}
-              <span class="crosssell-vendor">{{ rec_product.vendor }}</span>
-            {%- endif -%}
-
-            <h3 class="crosssell-name">{{ rec_product.title }}</h3>
-
-            <div class="crosssell-price">
-              {{ rec_variant.price | money }}
-              {%- if rec_variant.compare_at_price > rec_variant.price -%}
-                <span class="crosssell-price-compare">{{ rec_variant.compare_at_price | money }}</span>
-              {%- endif -%}
-            </div>
-          </div>
-
-          <span class="crosssell-btn">{{ section.settings.button_text }}</span>
-
-        </a>
+        <div class="crosssell-card-slot">
+          {% render 'card-product',
+            card_product: rec_product,
+            media_aspect_ratio: 'square',
+            show_secondary_image: false,
+            show_vendor: section.settings.show_vendor,
+            show_rating: false,
+            lazy_load: lazy,
+            skip_styles: skip_card_product_styles,
+            quick_add: 'standard',
+            section_id: section.id
+          %}
+          {%- assign skip_card_product_styles = true -%}
+        </div>
       {%- endfor -%}
 
     </div>
@@ -571,7 +356,7 @@
 
   const carousel = root.querySelector('.crosssell-carousel');
   const dots = Array.from(root.querySelectorAll('.crosssell-dot[data-dot-index]'));
-  const cards = Array.from(carousel.querySelectorAll('.crosssell-card'));
+  const cards = Array.from(carousel.querySelectorAll('.crosssell-card-slot'));
 
   if (!carousel || !cards.length) return;
 
@@ -624,13 +409,13 @@
   "settings": [
     {
       "type": "header",
-      "content": "🎯 Source des recommandations"
+      "content": "Source des recommandations"
     },
     {
       "type": "collection",
       "id": "fallback_collection",
       "label": "Collection de recherche",
-      "info": "Collection où chercher les produits similaires (par pierre, etc.). Recommandé: 'Tous les produits' ou collection principale."
+      "info": "Collection ou chercher les produits similaires. Recommande: 'Tous les produits' ou collection principale."
     },
     {
       "type": "range",
@@ -649,15 +434,15 @@
       "max": 4,
       "step": 1,
       "default": 1,
-      "info": "Section cachée si moins de produits trouvés"
+      "info": "Section cachee si moins de produits trouves"
     },
     {
       "type": "paragraph",
-      "content": "📌 Priorité : 1. Metafield 'milaura.crosssell_products' sur le produit → 2. Collection ci-dessus"
+      "content": "Priorite : 1. Metafield 'milaura.crosssell_products' sur le produit - 2. Collection ci-dessus"
     },
     {
       "type": "header",
-      "content": "📝 Titre"
+      "content": "Titre"
     },
     {
       "type": "checkbox",
@@ -669,17 +454,17 @@
       "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Tu pourrais aussi aimer"
+      "default": "Vous pourriez aussi aimer"
     },
     {
       "type": "textarea",
       "id": "subtitle",
       "label": "Sous-titre",
-      "default": "Des créations complémentaires pour enrichir ton rituel"
+      "default": "Des creations complementaires pour enrichir votre rituel"
     },
     {
       "type": "header",
-      "content": "✏️ Style Titre"
+      "content": "Style Titre"
     },
     {
       "type": "range",
@@ -709,7 +494,7 @@
     },
     {
       "type": "header",
-      "content": "✏️ Style Sous-titre"
+      "content": "Style Sous-titre"
     },
     {
       "type": "range",
@@ -739,41 +524,13 @@
     },
     {
       "type": "header",
-      "content": "🎨 Style Produits"
-    },
-    {
-      "type": "color",
-      "id": "product_name_color",
-      "label": "Couleur nom produit",
-      "default": "#1b1b1b"
-    },
-    {
-      "type": "color",
-      "id": "price_color",
-      "label": "Couleur prix",
-      "default": "#C0A062"
-    },
-    {
-      "type": "header",
-      "content": "⚙️ Options"
+      "content": "Options"
     },
     {
       "type": "checkbox",
       "id": "show_vendor",
       "label": "Afficher le vendeur",
       "default": false
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Texte du bouton",
-      "default": "Voir le produit"
-    },
-    {
-      "type": "text",
-      "id": "badge_text",
-      "label": "Texte badge bestseller",
-      "default": "Bestseller"
     }
   ],
   "presets": [
