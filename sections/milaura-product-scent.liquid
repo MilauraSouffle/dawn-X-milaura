@@ -11,7 +11,12 @@
 {% endcomment %}
 
 {%- liquid
-  assign product_type = product.type | downcase
+  assign product_type_meta = product.metafields.milaura.product_type_handle.value
+  if product_type_meta != blank
+    assign product_type = product_type_meta | downcase
+  else
+    assign product_type = product.type | handleize
+  endif
   assign is_candle = false
 
   if product_type == 'bougie'
@@ -456,14 +461,14 @@
       "type": "richtext",
       "id": "mood_statement",
       "label": "Description émotionnelle",
-      "default": "<p>Une fragrance enveloppante qui transforme ton espace en un havre de paix. Laisse-toi porter par ses notes délicates.</p>",
+      "default": "<p>Une fragrance enveloppante qui transforme votre espace en un havre de paix. Laissez-vous porter par ses notes delicates.</p>",
       "info": "1-2 phrases poétiques décrivant l'expérience olfactive"
     },
     {
       "type": "text",
       "id": "usage_suggestion",
       "label": "Suggestion d'usage",
-      "default": "Parfait pour tes rituels du soir",
+      "default": "Parfait pour vos rituels du soir",
       "info": "Quand utiliser cette bougie ? (optionnel)"
     },
     {

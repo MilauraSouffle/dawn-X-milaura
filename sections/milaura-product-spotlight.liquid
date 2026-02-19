@@ -22,8 +22,15 @@
     assign has_benefits_meta = true
   endif
   assign autoplay_speed = section.settings.autoplay_speed | default: 4500
+  assign has_any_benefits = false
+  if has_benefits_meta
+    assign has_any_benefits = true
+  elsif benefit_blocks.size > 0
+    assign has_any_benefits = true
+  endif
 -%}
 
+{%- if has_any_benefits -%}
 <section
   id="MilauraProductSpotlight-{{ section.id }}"
   class="milaura-spotlight{% if section.settings.transparent_image %} milaura-spotlight--transparent-mode{% endif %}"
@@ -1196,6 +1203,8 @@
 
 })();
 </script>
+
+{%- endif -%}
 
 {% schema %}
 {

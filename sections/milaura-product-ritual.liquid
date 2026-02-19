@@ -6,9 +6,15 @@
 {% endcomment %}
 
 {%- liquid
-  assign product_type = product.type | downcase
+  assign product_type_meta = product.metafields.milaura.product_type_handle.value
+  if product_type_meta != blank
+    assign product_type = product_type_meta | downcase
+  else
+    assign product_type = product.type | handleize
+  endif
+
   case product_type
-    when 'bijou', 'bracelet', 'collier', 'bague'
+    when 'bijou', 'bracelet', 'collier', 'bague', 'pendentif', 'fil-de-perles'
       assign template_type = 'bijou'
     when 'bougie'
       assign template_type = 'bougie'
@@ -16,13 +22,27 @@
       assign template_type = 'sauge'
     when 'coffret', 'bundle'
       assign template_type = 'coffret'
+    when 'pierre-roulee', 'cabochon', 'mineral', 'pierre'
+      assign template_type = 'pierre'
+    when 'bol-chantant', 'cymbales'
+      assign template_type = 'rituel'
+    when 'coussin', 'maillet'
+      assign template_type = 'accessoire'
     else
       assign template_type = 'bijou'
   endcase
 
   assign ritual_steps = product.metafields.milaura.ritual_steps.value
+
+  assign show_ritual = true
+  if template_type == 'accessoire'
+    if ritual_steps == blank or ritual_steps.size == 0
+      assign show_ritual = false
+    endif
+  endif
 -%}
 
+{%- if show_ritual -%}
 <section
   id="MilauraProductRitual-{{ section.id }}"
   class="milaura-product-ritual"
@@ -102,28 +122,28 @@
               <div class="milaura-product-ritual__step-number">1</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🌅</div>
-                <p class="milaura-product-ritual__step-text">Choisis un moment calme, le matin ou avant de dormir</p>
+                <p class="milaura-product-ritual__step-text">Choisissez un moment calme, le matin ou avant de dormir</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="2">
               <div class="milaura-product-ritual__step-number">2</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">💭</div>
-                <p class="milaura-product-ritual__step-text">Pose une intention claire : que souhaites-tu aujourd'hui ?</p>
+                <p class="milaura-product-ritual__step-text">Posez une intention claire : que souhaitez-vous aujourd'hui ?</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="3">
               <div class="milaura-product-ritual__step-number">3</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">💎</div>
-                <p class="milaura-product-ritual__step-text">Porte le bijou contre ta peau pour sentir son énergie</p>
+                <p class="milaura-product-ritual__step-text">Portez le bijou contre votre peau pour sentir son energie</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="4">
               <div class="milaura-product-ritual__step-number">4</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">✨</div>
-                <p class="milaura-product-ritual__step-text">Touche-le pour te reconnecter à ton intention</p>
+                <p class="milaura-product-ritual__step-text">Touchez-le pour vous reconnecter a votre intention</p>
               </div>
             </div>
 
@@ -132,28 +152,28 @@
               <div class="milaura-product-ritual__step-number">1</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🕯️</div>
-                <p class="milaura-product-ritual__step-text">Allume ta bougie dans un espace calme</p>
+                <p class="milaura-product-ritual__step-text">Allumez votre bougie dans un espace calme</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="2">
               <div class="milaura-product-ritual__step-number">2</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🌬️</div>
-                <p class="milaura-product-ritual__step-text">Respire profondément, laisse le parfum t'envelopper</p>
+                <p class="milaura-product-ritual__step-text">Respirez profondement, laissez le parfum vous envelopper</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="3">
               <div class="milaura-product-ritual__step-number">3</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🌸</div>
-                <p class="milaura-product-ritual__step-text">Observe la flamme, sens la senteur évoluer</p>
+                <p class="milaura-product-ritual__step-text">Observez la flamme, sentez la senteur evoluer</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="4">
               <div class="milaura-product-ritual__step-number">4</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">💎</div>
-                <p class="milaura-product-ritual__step-text">Récupère la pierre talisman et garde-la près de toi</p>
+                <p class="milaura-product-ritual__step-text">Recuperez la pierre talisman et gardez-la pres de vous</p>
               </div>
             </div>
 
@@ -162,28 +182,28 @@
               <div class="milaura-product-ritual__step-number">1</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🪟</div>
-                <p class="milaura-product-ritual__step-text">Ouvre une fenêtre pour laisser circuler l'énergie</p>
+                <p class="milaura-product-ritual__step-text">Ouvrez une fenetre pour laisser circuler l'energie</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="2">
               <div class="milaura-product-ritual__step-number">2</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🔥</div>
-                <p class="milaura-product-ritual__step-text">Allume la sauge et laisse-la se consumer légèrement</p>
+                <p class="milaura-product-ritual__step-text">Allumez la sauge et laissez-la se consumer legerement</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="3">
               <div class="milaura-product-ritual__step-number">3</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🌀</div>
-                <p class="milaura-product-ritual__step-text">Diffuse la fumée dans chaque pièce avec intention</p>
+                <p class="milaura-product-ritual__step-text">Diffusez la fumee dans chaque piece avec intention</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="4">
               <div class="milaura-product-ritual__step-number">4</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">💭</div>
-                <p class="milaura-product-ritual__step-text">Visualise l'espace purifié, prêt pour un nouveau départ</p>
+                <p class="milaura-product-ritual__step-text">Visualisez l'espace purifie, pret pour un nouveau depart</p>
               </div>
             </div>
 
@@ -192,28 +212,88 @@
               <div class="milaura-product-ritual__step-number">1</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🎁</div>
-                <p class="milaura-product-ritual__step-text">Découvre chaque élément, prends le temps de les observer</p>
+                <p class="milaura-product-ritual__step-text">Decouvrez chaque element, prenez le temps de les observer</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="2">
               <div class="milaura-product-ritual__step-number">2</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">💎</div>
-                <p class="milaura-product-ritual__step-text">Ressens l'énergie de la pierre, laisse-la te guider</p>
+                <p class="milaura-product-ritual__step-text">Ressentez l'energie de la pierre, laissez-la vous guider</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="3">
               <div class="milaura-product-ritual__step-number">3</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🕯️</div>
-                <p class="milaura-product-ritual__step-text">Compose ton rituel : bougie, bijou, moment sacré</p>
+                <p class="milaura-product-ritual__step-text">Composez votre rituel : bougie, bijou, moment sacre</p>
               </div>
             </div>
             <div class="milaura-product-ritual__step" data-step-index="4">
               <div class="milaura-product-ritual__step-number">4</div>
               <div class="milaura-product-ritual__step-content">
                 <div class="milaura-product-ritual__step-icon">🌙</div>
-                <p class="milaura-product-ritual__step-text">Alterne selon tes besoins : jour, soir, énergie, calme</p>
+                <p class="milaura-product-ritual__step-text">Alternez selon vos besoins : jour, soir, energie, calme</p>
+              </div>
+            </div>
+
+          {%- when 'pierre' -%}
+            <div class="milaura-product-ritual__step" data-step-index="1">
+              <div class="milaura-product-ritual__step-number">1</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">💧</div>
+                <p class="milaura-product-ritual__step-text">Purifiez votre pierre sous l'eau claire ou avec de la fumee de sauge</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="2">
+              <div class="milaura-product-ritual__step-number">2</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🤲</div>
+                <p class="milaura-product-ritual__step-text">Tenez-la dans vos mains et formulez votre intention</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="3">
+              <div class="milaura-product-ritual__step-number">3</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🧘</div>
+                <p class="milaura-product-ritual__step-text">Meditez quelques minutes en vous connectant a son energie</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="4">
+              <div class="milaura-product-ritual__step-number">4</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">✨</div>
+                <p class="milaura-product-ritual__step-text">Placez-la pres de vous ou dans votre espace de vie</p>
+              </div>
+            </div>
+
+          {%- when 'rituel' -%}
+            <div class="milaura-product-ritual__step" data-step-index="1">
+              <div class="milaura-product-ritual__step-number">1</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🕊️</div>
+                <p class="milaura-product-ritual__step-text">Preparez votre espace : un endroit calme, a l'abri des distractions</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="2">
+              <div class="milaura-product-ritual__step-number">2</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🔔</div>
+                <p class="milaura-product-ritual__step-text">Frappez ou frottez doucement le bord pour produire le son</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="3">
+              <div class="milaura-product-ritual__step-number">3</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🌊</div>
+                <p class="milaura-product-ritual__step-text">Ecoutez la vibration se propager et laissez-la vous envelopper</p>
+              </div>
+            </div>
+            <div class="milaura-product-ritual__step" data-step-index="4">
+              <div class="milaura-product-ritual__step-number">4</div>
+              <div class="milaura-product-ritual__step-content">
+                <div class="milaura-product-ritual__step-icon">🌙</div>
+                <p class="milaura-product-ritual__step-text">Pratiquez regulierement pour approfondir votre connexion</p>
               </div>
             </div>
 
@@ -394,6 +474,8 @@
 })();
 </script>
 
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Milaura Product Ritual",
@@ -425,7 +507,7 @@
       "type": "textarea",
       "id": "subtitle",
       "label": "Sous-titre",
-      "default": "Un rituel simple pour intégrer cette création dans ton quotidien"
+      "default": "Un rituel simple pour integrer cette creation dans votre quotidien"
     },
     {
       "type": "header",
@@ -605,28 +687,28 @@
           "type": "step",
           "settings": {
             "icon": "🌅",
-            "text": "Choisis un moment calme, le matin ou avant de dormir"
+            "text": "Choisissez un moment calme, le matin ou avant de dormir"
           }
         },
         {
           "type": "step",
           "settings": {
             "icon": "💭",
-            "text": "Pose une intention claire : que souhaites-tu aujourd'hui ?"
+            "text": "Posez une intention claire : que souhaitez-vous aujourd'hui ?"
           }
         },
         {
           "type": "step",
           "settings": {
             "icon": "💎",
-            "text": "Porte le bijou contre ta peau pour sentir son énergie"
+            "text": "Portez le bijou contre votre peau pour sentir son energie"
           }
         },
         {
           "type": "step",
           "settings": {
             "icon": "✨",
-            "text": "Touche-le pour te reconnecter à ton intention"
+            "text": "Touchez-le pour vous reconnecter a votre intention"
           }
         }
       ]

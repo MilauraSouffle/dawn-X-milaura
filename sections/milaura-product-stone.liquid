@@ -11,8 +11,17 @@
   assign stone_image = product.metafields.milaura.stone_image | default: product.featured_image
   assign stone_description = product.metafields.milaura.stone_description | default: section.settings.default_description
   assign stone_benefits = product.metafields.milaura.stone_benefits.value | default: section.settings.default_benefits | split: ','
+  assign stone_handle = product.metafields.milaura.stone_handle
+  assign has_stone = false
+  if product.metafields.milaura.stone_name != blank
+    assign has_stone = true
+  endif
+  if stone_handle != blank
+    assign has_stone = true
+  endif
 -%}
 
+{%- if has_stone -%}
 <section
   id="MilauraProductStone-{{ section.id }}"
   class="milaura-product-stone"
@@ -510,6 +519,8 @@
   });
 })();
 </script>
+
+{%- endif -%}
 
 {% schema %}
 {

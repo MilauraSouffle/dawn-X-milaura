@@ -8,27 +8,45 @@
 
 {%- liquid
   assign story_text = product.metafields.milaura.story_text | default: section.settings.default_story
-  assign product_type = product.type | downcase
+
+  assign product_type_meta = product.metafields.milaura.product_type_handle.value
+  if product_type_meta != blank
+    assign product_type = product_type_meta | downcase
+  else
+    assign product_type = product.type | handleize
+  endif
 
   case product_type
-    when 'bijou', 'bracelet', 'collier', 'bague'
-      assign default_quiz_cta = 'Découvre ton bijou idéal'
+    when 'bijou', 'bracelet', 'collier', 'bague', 'pendentif', 'fil-de-perles'
+      assign default_quiz_cta = 'Decouvrez votre bijou ideal'
     when 'bougie'
-      assign default_quiz_cta = 'Découvre ta bougie émotionnelle'
+      assign default_quiz_cta = 'Decouvrez votre bougie emotionnelle'
     when 'sauge', 'encens'
-      assign default_quiz_cta = 'Trouve ton rituel de purification'
+      assign default_quiz_cta = 'Trouvez votre rituel de purification'
     when 'coffret', 'bundle'
-      assign default_quiz_cta = 'Découvre ton coffret sur-mesure'
+      assign default_quiz_cta = 'Decouvrez votre coffret sur-mesure'
+    when 'pierre-roulee', 'cabochon', 'mineral', 'pierre'
+      assign default_quiz_cta = 'Decouvrez votre pierre ideale'
+    when 'bol-chantant', 'cymbales'
+      assign default_quiz_cta = 'Decouvrez votre rituel sonore'
+    when 'coussin', 'maillet'
+      assign default_quiz_cta = 'Decouvrez votre profil emotionnel'
     else
-      assign default_quiz_cta = 'Découvre ton profil émotionnel'
+      assign default_quiz_cta = 'Decouvrez votre profil emotionnel'
   endcase
 
   assign quiz_cta = section.settings.quiz_cta_text
   if quiz_cta == blank
     assign quiz_cta = default_quiz_cta
   endif
+
+  assign has_story = false
+  if story_text != blank
+    assign has_story = true
+  endif
 -%}
 
+{%- if has_story -%}
 <section
   id="MilauraProductStory-{{ section.id }}"
   class="milaura-product-story"
@@ -218,6 +236,8 @@
 })();
 </script>
 
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Milaura Product Story",
@@ -247,7 +267,7 @@
       "type": "richtext",
       "id": "default_story",
       "label": "Histoire par défaut",
-      "default": "<p>Chaque création Milaura naît d'une intention : celle de t'offrir un refuge. Un objet qui t'accompagne, qui te rappelle que tu mérites de prendre soin de toi.</p><p>Les pierres sont choisies pour leur énergie, leur beauté naturelle, leur capacité à apaiser ou à réveiller. Elles ne sont pas magiques. Elles sont authentiques. Comme toi.</p>",
+      "default": "<p>Chaque creation Milaura nait d'une intention : celle de vous offrir un refuge. Un objet qui vous accompagne, qui vous rappelle que vous meritez de prendre soin de vous.</p><p>Les pierres sont choisies pour leur energie, leur beaute naturelle, leur capacite a apaiser ou a reveiller. Elles ne sont pas magiques. Elles sont authentiques. Comme vous.</p>",
       "info": "Utilisé si metafield milaura.story_text est vide. Style Aesop : sobre, poétique, 3-5 phrases max."
     },
     {
