@@ -20,6 +20,17 @@ inclusion: always
 - **Typographie** : Playfair Display (titres), Lato (corps), Dancing Script (script)
 - **Approche** : Mobile-first, accessibilite WCAG AA, performance optimisee
 
+### Modeles Google AI — REGLE ABSOLUE
+- **Gemini 3 Pro** est le SEUL modele a utiliser pour TOUT : texte (`gemini-3-pro-preview`), images (`gemini-3-pro-image-preview`)
+- **AUCUN modele anterieur** ne doit etre reference (gemini-2.x, gemini-1.x, nano-banana, gemini-pro-latest, flash)
+- D'autres outils Google (Flow, Veo) seront utilises plus tard pour des cas specifiques
+
+### Ton editorial
+- **VOUVOIEMENT OBLIGATOIRE** sur tout le contenu client (descriptions, FAQ, benefices, stories, emails, bulle, quiz)
+- **TIRET CADRATIN (—) INTERDIT** : ne JAMAIS utiliser le grand tiret (em dash) dans le contenu genere. Utiliser la virgule, le point, les deux-points ou les parentheses a la place. Le tiret cadratin est un marqueur flagrant de contenu IA et nuit a la credibilite de la marque. PRIORITE TRES HAUTE.
+- Style : luxe accessible, emotionnel, sensoriel. Jamais commercial, jamais esoterique.
+- Comme une confidente bienveillante qui vous connait profondement.
+
 ### Persona cible
 - **Femmes 25-45 ans** interessees par le bien-etre, la lithotherapie et l'aromatherapie
 - **Recherche** : Reconnexion emotionnelle, rituels de self-care, objets de qualite
