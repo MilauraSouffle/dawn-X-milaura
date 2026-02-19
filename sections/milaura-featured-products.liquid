@@ -183,10 +183,57 @@
     font-size: {{ section.settings.price_size }}rem;
     margin-top: auto;
     background: linear-gradient(135deg, rgba(192, 160, 98, 0.1) 0%, rgba(192, 160, 98, 0.05) 100%);
-    padding: 8px 16px;
+    padding: 8px 12px 8px 16px;
     border-radius: 20px;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     border: 1px solid rgba(192, 160, 98, 0.2);
+    gap: 8px;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-quick-add-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--milaura-gold, #C0A062);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-quick-add-icon:hover {
+    background: #8F723A;
+    transform: scale(1.1);
+  }
+
+  #MilauraProd-{{ section.id }} .prod-quick-add-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-quick-add-icon.is-added {
+    background: #4CAF50;
+  }
+
+  #MilauraProd-{{ section.id }} .prod-quick-add-icon.is-added svg {
+    stroke: white;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   /* BOUTON VOIR PRODUIT */
@@ -504,8 +551,8 @@
 
           <a href="{{ product.url }}" class="prod-card milaura-card">
             <div class="prod-img-container">
-              {% if product.metafields.milaura.is_bestseller == true %}
-                <span class="prod-badge">Bestseller</span>
+              {% if section.settings.force_bestseller_badge or product.metafields.milaura.is_bestseller == true %}
+                <span class="prod-badge">{{ section.settings.badge_label | default: 'Bestseller' }}</span>
               {% endif %}
               {{ product.featured_image | image_url: width: 600 | image_tag: class: 'prod-img', loading: img_loading, widths: '165, 360, 533, 600', sizes: '(min-width: 1024px) 260px, 180px' }}
             </div>
@@ -513,7 +560,20 @@
             <div class="prod-info">
               <span class="prod-vendor">{{ product.vendor }}</span>
               <h3 class="prod-name">{{ product.title }}</h3>
-              <div class="prod-price">{{ product.price | money }}</div>
+              <div class="prod-price">
+                <span>{{ product.price | money }}</span>
+                {% if product.available %}
+                  <button
+                    type="button"
+                    class="prod-quick-add-icon"
+                    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                    onclick="event.preventDefault(); event.stopPropagation(); milauraQuickAdd(this);"
+                    aria-label="Ajouter {{ product.title | escape }} au panier"
+                  >
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                  </button>
+                {% endif %}
+              </div>
             </div>
 
             <span class="quick-add-btn">Voir le produit</span>
@@ -568,6 +628,42 @@
 </section>
 
 <script>
+  // Quick add to cart
+  function milauraQuickAdd(btn) {
+    const variantId = btn.getAttribute('data-variant-id');
+    if (!variantId) return;
+
+    btn.disabled = true;
+    const originalSvg = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="animation:spin 0.6s linear infinite"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="30 70"/></svg>';
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [{ id: parseInt(variantId), quantity: 1 }] })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function() {
+      btn.classList.add('is-added');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"/></svg>';
+      // Update cart count (Dawn PUB_SUB + custom event)
+      fetch('/cart.js').then(function(r) { return r.json(); }).then(function(cart) {
+        document.querySelectorAll('.cart-count-bubble span[aria-hidden]').forEach(function(el) { el.textContent = cart.item_count; });
+        document.querySelectorAll('[data-cart-count]').forEach(function(el) { el.textContent = cart.item_count; });
+        window.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      });
+      setTimeout(function() {
+        btn.classList.remove('is-added');
+        btn.innerHTML = originalSvg;
+        btn.disabled = false;
+      }, 1500);
+    })
+    .catch(function() {
+      btn.innerHTML = originalSvg;
+      btn.disabled = false;
+    });
+  }
+
   (function() {
     const sectionId = '{{ section.id }}';
     const root = document.getElementById('MilauraProd-' + sectionId);
@@ -655,6 +751,23 @@
       "step": 1,
       "default": 5,
       "label": "Nombre de produits"
+    },
+    {
+      "type": "header",
+      "content": "Badges & Quick Add"
+    },
+    {
+      "type": "checkbox",
+      "id": "force_bestseller_badge",
+      "label": "Afficher le badge sur tous les produits",
+      "default": false,
+      "info": "Si coché, tous les produits de cette section auront le badge (sinon, seuls ceux avec le metafield is_bestseller)"
+    },
+    {
+      "type": "text",
+      "id": "badge_label",
+      "label": "Texte du badge",
+      "default": "Bestseller"
     },
     {
       "type": "header",
