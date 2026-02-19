@@ -49,8 +49,10 @@
     padding: 0 var(--milaura-spacing-sm);
   }
 
+  /* Override Dawn .grid pour carousel horizontal */
   #MilauraProd-{{ section.id }} .prod-carousel {
     display: flex;
+    flex-wrap: nowrap;
     gap: 20px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -58,16 +60,19 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 10px 0 20px 0;
+    list-style: none;
+    margin: 0;
   }
 
   #MilauraProd-{{ section.id }} .prod-carousel::-webkit-scrollbar {
     display: none;
   }
 
-  /* --- CARTE PRODUIT (slot carousel pour card-product Dawn) --- */
+  /* --- CARTE PRODUIT - Override Dawn .grid__item pour carousel --- */
   #MilauraProd-{{ section.id }} .prod-card-slot {
-    flex: 0 0 auto;
+    flex: 0 0 280px;
     width: 280px;
+    max-width: 280px;
     scroll-snap-align: start;
     position: relative;
   }
@@ -250,7 +255,9 @@
   /* --- RESPONSIVE TABLETTE --- */
   @media screen and (max-width: 1024px) {
     #MilauraProd-{{ section.id }} .prod-card-slot {
+      flex-basis: 240px;
       width: 240px;
+      max-width: 240px;
     }
   }
 
@@ -270,7 +277,9 @@
     }
 
     #MilauraProd-{{ section.id }} .prod-card-slot {
+      flex-basis: 200px;
       width: 200px;
+      max-width: 200px;
     }
 
     #MilauraProd-{{ section.id }} .prod-cta {
@@ -290,7 +299,9 @@
     }
 
     #MilauraProd-{{ section.id }} .prod-card-slot {
+      flex-basis: 170px;
       width: 170px;
+      max-width: 170px;
     }
   }
 
@@ -313,7 +324,7 @@
   </div>
 
   <div class="prod-carousel-wrapper">
-    <div class="prod-carousel contains-card contains-card--product">
+    <ul class="prod-carousel grid product-grid contains-card contains-card--product" role="list">
       {% assign collection = collections[section.settings.collection] %}
 
       {% if collection != blank %}
@@ -325,7 +336,7 @@
             {%- assign lazy = true -%}
           {%- endif -%}
 
-          <div class="prod-card-slot">
+          <li class="prod-card-slot grid__item">
             {%- if section.settings.force_bestseller_badge or product.metafields.milaura.is_bestseller == true -%}
               <span class="prod-badge-overlay">{{ section.settings.badge_label | default: 'Bestseller' }}</span>
             {%- endif -%}
@@ -333,6 +344,7 @@
             {% render 'card-product',
               card_product: product,
               media_aspect_ratio: 'square',
+              image_shape: 'default',
               show_secondary_image: false,
               show_vendor: true,
               show_rating: false,
@@ -342,22 +354,23 @@
               section_id: section.id
             %}
             {%- assign skip_card_product_styles = true -%}
-          </div>
+          </li>
         {% endfor %}
       {% else %}
         {% for i in (1..5) %}
-          <div class="prod-card-slot">
+          <li class="prod-card-slot grid__item">
             {% render 'card-product',
               media_aspect_ratio: 'square',
+              image_shape: 'default',
               show_vendor: true,
               skip_styles: skip_card_product_styles,
               section_id: section.id
             %}
             {%- assign skip_card_product_styles = true -%}
-          </div>
+          </li>
         {% endfor %}
       {% endif %}
-    </div>
+    </ul>
   </div>
 
   <!-- Indicateurs de slide (dots) -->

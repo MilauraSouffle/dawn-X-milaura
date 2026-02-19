@@ -1,6 +1,6 @@
 {% comment %}
   MILAURA PRODUCT CROSSSELL
-  Version 5.0 - Recommandations intelligentes en cascade
+  Version 5.1 - Recommandations intelligentes en cascade
 
   Utilise le snippet Dawn card-product (identique aux collections)
   Cascade de recommandations (par priorite) :
@@ -9,8 +9,8 @@
   3. Meme type de produit (product_type_handle) - automatique
   4. Collection fallback - filet de securite
 
-  Aucune sélection manuelle requise = scalable pour 2000+ produits
-  Scan limité à 50 produits par tier (150 max) pour la performance
+  Aucune selection manuelle requise = scalable pour 2000+ produits
+  Scan limite a 50 produits par tier (150 max) pour la performance
 {% endcomment %}
 
 {%- liquid
@@ -19,11 +19,11 @@
   assign current_product_id = product.id | default: 0
   assign scan_limit = 50
 
-  # Données du produit actuel pour le matching intelligent
+  # Donnees du produit actuel pour le matching intelligent
   assign current_stone = product.metafields.milaura.stone_handle
   assign current_type = product.metafields.milaura.product_type_handle | default: product.type | downcase | handleize
 
-  # Tier 1 : Metafield personnalisé par produit (curation manuelle)
+  # Tier 1 : Metafield personnalise par produit (curation manuelle)
   assign metafield_products = product.metafields.milaura.crosssell_products.value
   assign use_metafield = false
   if metafield_products != blank and metafield_products.size > 0
@@ -33,7 +33,7 @@
   # Pool de recherche pour tiers 2-4
   assign the_collection = collections[section.settings.fallback_collection]
 
-  # Déterminer si on a assez de produits potentiels
+  # Determiner si on a assez de produits potentiels
   assign has_products = false
   if use_metafield and metafield_products.size >= min_products
     assign has_products = true
@@ -91,7 +91,7 @@
   }
 
   /* ============================================
-     CAROUSEL
+     CAROUSEL - Override Dawn .grid pour scroll horizontal
      ============================================ */
   #MilauraCrosssell-{{ section.id }} .crosssell-carousel-wrapper {
     position: relative;
@@ -101,6 +101,7 @@
 
   #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
     display: flex;
+    flex-wrap: nowrap;
     gap: 20px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -108,6 +109,8 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 10px 0 20px 0;
+    list-style: none;
+    margin: 0;
   }
 
   #MilauraCrosssell-{{ section.id }} .crosssell-carousel::-webkit-scrollbar {
@@ -115,11 +118,12 @@
   }
 
   /* ============================================
-     CARTE PRODUIT (slot carousel pour card-product Dawn)
+     CARTE PRODUIT - Override Dawn .grid__item pour carousel
      ============================================ */
   #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
-    flex: 0 0 auto;
+    flex: 0 0 280px;
     width: 280px;
+    max-width: 280px;
     scroll-snap-align: start;
     position: relative;
   }
@@ -220,7 +224,9 @@
      ============================================ */
   @media screen and (max-width: 1023px) and (min-width: 601px) {
     #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      flex-basis: 240px;
       width: 240px;
+      max-width: 240px;
     }
   }
 
@@ -237,7 +243,9 @@
     }
 
     #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      flex-basis: 200px;
       width: 200px;
+      max-width: 200px;
     }
 
     #MilauraCrosssell-{{ section.id }} .crosssell-dots {
@@ -264,7 +272,9 @@
     }
 
     #MilauraCrosssell-{{ section.id }} .crosssell-card-slot {
+      flex-basis: 170px;
       width: 170px;
+      max-width: 170px;
     }
   }
 
@@ -298,7 +308,7 @@
   </div>
 
   <div class="crosssell-carousel-wrapper">
-    <div class="crosssell-carousel contains-card contains-card--product">
+    <ul class="crosssell-carousel grid product-grid contains-card contains-card--product" role="list">
 
       {%- assign shown_count = 0 -%}
       {%- assign shown_ids = '' -%}
@@ -306,10 +316,7 @@
 
       {%- if use_metafield -%}
         {%- comment -%}
-          ══════════════════════════════════════════
-          TIER 1 : Metafield curé manuellement
-          Le marchand a choisi ces produits à la main
-          ══════════════════════════════════════════
+          TIER 1 : Metafield cure manuellement
         {%- endcomment -%}
         {%- for rec_product in metafield_products -%}
           {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
@@ -317,10 +324,11 @@
           {%- assign shown_count = shown_count | plus: 1 -%}
           {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
 
-          <div class="crosssell-card-slot">
+          <li class="crosssell-card-slot grid__item">
             {% render 'card-product',
               card_product: rec_product,
               media_aspect_ratio: 'square',
+              image_shape: 'default',
               show_secondary_image: false,
               show_vendor: section.settings.show_vendor,
               show_rating: false,
@@ -330,16 +338,13 @@
               section_id: section.id
             %}
             {%- assign skip_card_product_styles = true -%}
-          </div>
+          </li>
           {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
         {%- endfor -%}
 
       {%- else -%}
         {%- comment -%}
-          ══════════════════════════════════════════
           TIER 2 : Meme pierre (stone_handle)
-          Bracelet améthyste → autres produits améthyste
-          ══════════════════════════════════════════
         {%- endcomment -%}
         {%- if current_stone != blank and shown_count < max_products -%}
           {%- for rec_product in the_collection.products limit: scan_limit -%}
@@ -350,10 +355,11 @@
               {%- assign shown_count = shown_count | plus: 1 -%}
               {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
 
-              <div class="crosssell-card-slot">
+              <li class="crosssell-card-slot grid__item">
                 {% render 'card-product',
                   card_product: rec_product,
                   media_aspect_ratio: 'square',
+                  image_shape: 'default',
                   show_secondary_image: false,
                   show_vendor: section.settings.show_vendor,
                   show_rating: false,
@@ -363,17 +369,14 @@
                   section_id: section.id
                 %}
                 {%- assign skip_card_product_styles = true -%}
-              </div>
+              </li>
               {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
 
         {%- comment -%}
-          ══════════════════════════════════════════
           TIER 3 : Meme type de produit
-          Bracelet → autres bracelets (pierres différentes)
-          ══════════════════════════════════════════
         {%- endcomment -%}
         {%- if current_type != blank and shown_count < max_products -%}
           {%- for rec_product in the_collection.products limit: scan_limit -%}
@@ -386,10 +389,11 @@
               {%- assign shown_count = shown_count | plus: 1 -%}
               {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
 
-              <div class="crosssell-card-slot">
+              <li class="crosssell-card-slot grid__item">
                 {% render 'card-product',
                   card_product: rec_product,
                   media_aspect_ratio: 'square',
+                  image_shape: 'default',
                   show_secondary_image: false,
                   show_vendor: section.settings.show_vendor,
                   show_rating: false,
@@ -399,17 +403,14 @@
                   section_id: section.id
                 %}
                 {%- assign skip_card_product_styles = true -%}
-              </div>
+              </li>
               {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
             {%- endif -%}
           {%- endfor -%}
         {%- endif -%}
 
         {%- comment -%}
-          ══════════════════════════════════════════
-          TIER 4 : Filet de securité
-          Remplit les places restantes avec d'autres produits
-          ══════════════════════════════════════════
+          TIER 4 : Filet de securite
         {%- endcomment -%}
         {%- if shown_count < max_products -%}
           {%- for rec_product in the_collection.products limit: scan_limit -%}
@@ -420,10 +421,11 @@
             {%- assign shown_count = shown_count | plus: 1 -%}
             {%- if shown_count <= 2 -%}{%- assign lazy = false -%}{%- else -%}{%- assign lazy = true -%}{%- endif -%}
 
-            <div class="crosssell-card-slot">
+            <li class="crosssell-card-slot grid__item">
               {% render 'card-product',
                 card_product: rec_product,
                 media_aspect_ratio: 'square',
+                image_shape: 'default',
                 show_secondary_image: false,
                 show_vendor: section.settings.show_vendor,
                 show_rating: false,
@@ -433,14 +435,14 @@
                 section_id: section.id
               %}
               {%- assign skip_card_product_styles = true -%}
-            </div>
+            </li>
             {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
           {%- endfor -%}
         {%- endif -%}
 
       {%- endif -%}
 
-    </div>
+    </ul>
   </div>
 
   {%- if shown_count > 1 -%}
