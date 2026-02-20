@@ -1,0 +1,756 @@
+{%- comment -%}
+  Section: milaura-featured-blog-post
+  Affiche automatiquement le dernier article de blog publie
+  + produit associe via metafield article.milaura.related_product
+  Aucune intervention manuelle : le contenu se met a jour tout seul.
+{%- endcomment -%}
+
+{%- liquid
+  assign blog_handle = section.settings.blog_handle | default: 'journal'
+  assign the_blog = blogs[blog_handle]
+  assign latest_article = nil
+  if the_blog != blank and the_blog.articles_count > 0
+    for a in the_blog.articles limit: 1
+      assign latest_article = a
+    endfor
+  endif
+-%}
+
+{% style %}
+  /* ============================================
+     MILAURA FEATURED BLOG POST
+     ============================================ */
+
+  #MilauraFeaturedBlog-{{ section.id }} {
+    width: 100%;
+    padding: var(--milaura-spacing-md) var(--milaura-spacing-sm);
+    background: {% if section.settings.background == 'white_glass' %}rgba(255, 255, 255, 0.6){% else %}transparent{% endif %};
+    {% if section.settings.background == 'white_glass' %}
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    {% endif %}
+  }
+
+  /* --- HEADER SECTION --- */
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto var(--milaura-spacing-md);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-kicker {
+    font-family: 'Lato', -apple-system, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--milaura-gold);
+    margin-bottom: 8px;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-section-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: {{ section.settings.section_title_size }}px;
+    font-weight: 600;
+    color: {{ section.settings.section_title_color }};
+    line-height: 1.3;
+    margin: 0 0 6px;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-section-subtitle {
+    font-family: 'Lato', -apple-system, sans-serif;
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* --- CARTE ARTICLE --- */
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-card {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--milaura-spacing-md);
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: var(--milaura-border-radius);
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    box-shadow: 0 8px 32px rgba(192, 160, 98, 0.08);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-card:hover {
+    box-shadow: 0 12px 40px rgba(192, 160, 98, 0.15);
+  }
+
+  /* --- IMAGE ARTICLE --- */
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 380px;
+    overflow: hidden;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-card:hover .mfbp-image img {
+    transform: scale(1.03);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-image-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, var(--milaura-gold), var(--milaura-gold-dark, #8F723A));
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+
+  /* --- CONTENU ARTICLE --- */
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-content {
+    padding: var(--milaura-spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-meta {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.82rem;
+    color: #999;
+    letter-spacing: 0.3px;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: {{ section.settings.article_title_size }}px;
+    font-weight: 700;
+    color: {{ section.settings.article_title_color }};
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-title a:hover {
+    color: var(--milaura-gold);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-excerpt {
+    font-family: 'Lato', -apple-system, sans-serif;
+    font-size: {{ section.settings.excerpt_size }}px;
+    color: {{ section.settings.excerpt_color }};
+    line-height: 1.7;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* --- PRODUIT ASSOCIE --- */
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(253, 251, 247, 0.8);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 14px;
+    padding: 12px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product:hover {
+    border-color: var(--milaura-gold);
+    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.15);
+    transform: translateY(-1px);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--milaura-gold);
+    margin-bottom: 2px;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1b1b1b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product-price {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--milaura-gold);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product-arrow {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    color: var(--milaura-gold);
+    transition: transform 0.2s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-product:hover .mfbp-product-arrow {
+    transform: translateX(3px);
+  }
+
+  /* --- BOUTONS --- */
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lato', -apple-system, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #000;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 240, 200, 0.95) 0%,
+      rgba(214, 176, 96, 0.95) 20%,
+      rgba(255, 232, 172, 0.95) 45%,
+      rgba(176, 130, 48, 0.95) 75%,
+      rgba(255, 240, 200, 0.95) 100%
+    );
+    border: 2px solid rgba(214, 176, 96, 0.6);
+    box-shadow: 0 6px 20px rgba(192, 160, 98, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(192, 160, 98, 0.3);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-cta-secondary {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--milaura-gold);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-cta-secondary:hover {
+    border-bottom-color: var(--milaura-gold);
+  }
+
+  /* --- FOOTER "VOIR TOUS" --- */
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-footer {
+    text-align: center;
+    margin-top: var(--milaura-spacing-md);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--milaura-gold);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-all-link:hover {
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-all-link svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-all-link:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* --- ETAT VIDE (pas encore d'article) --- */
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-empty {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    border-radius: var(--milaura-border-radius);
+    border: 1px dashed rgba(192, 160, 98, 0.3);
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-empty-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1b1b1b;
+    margin: 0 0 8px;
+  }
+
+  #MilauraFeaturedBlog-{{ section.id }} .mfbp-empty-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* --- RESPONSIVE TABLETTE --- */
+  @media screen and (max-width: 990px) {
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-card {
+      grid-template-columns: 1fr;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-image {
+      min-height: 280px;
+      max-height: 350px;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-content {
+      padding: var(--milaura-spacing-sm) var(--milaura-spacing-md) var(--milaura-spacing-md);
+    }
+  }
+
+  /* --- RESPONSIVE MOBILE --- */
+  @media screen and (max-width: 768px) {
+    #MilauraFeaturedBlog-{{ section.id }} {
+      padding: var(--milaura-spacing-sm) var(--milaura-spacing-xs);
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-section-title {
+      font-size: 2rem;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-image {
+      min-height: 220px;
+      max-height: 280px;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-content {
+      padding: 16px;
+      gap: 12px;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-title {
+      font-size: 1.3rem;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-excerpt {
+      font-size: 0.95rem;
+      -webkit-line-clamp: 3;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-cta-primary {
+      text-align: center;
+      font-size: 0.85rem;
+      padding: 12px 24px;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-cta-secondary {
+      text-align: center;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-product {
+      padding: 10px;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-product-img {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  /* --- PETIT MOBILE --- */
+  @media screen and (max-width: 480px) {
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-image {
+      min-height: 180px;
+      max-height: 240px;
+    }
+
+    #MilauraFeaturedBlog-{{ section.id }} .mfbp-title {
+      font-size: 1.15rem;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraFeaturedBlog-{{ section.id }}">
+
+  {%- comment -%} --- HEADER --- {%- endcomment -%}
+  <div class="mfbp-header">
+    {%- if section.settings.kicker != blank -%}
+      <div class="mfbp-kicker">{{ section.settings.kicker }}</div>
+    {%- endif -%}
+    {%- if section.settings.section_title != blank -%}
+      <h2 class="mfbp-section-title">{{ section.settings.section_title }}</h2>
+    {%- endif -%}
+    {%- if section.settings.section_subtitle != blank -%}
+      <p class="mfbp-section-subtitle">{{ section.settings.section_subtitle }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if latest_article != nil -%}
+    {%- comment -%} --- ARTICLE TROUVE --- {%- endcomment -%}
+    {%- liquid
+      assign article_image = latest_article.image
+      assign article_excerpt = latest_article.excerpt_or_content | strip_html | truncate: 220
+      assign article_date = latest_article.published_at | date: '%d %B %Y'
+
+      assign related_product = latest_article.metafields.milaura.related_product.value
+    -%}
+
+    <div class="mfbp-card">
+      {%- comment -%} --- IMAGE --- {%- endcomment -%}
+      <div class="mfbp-image">
+        {%- if section.settings.badge_label != blank -%}
+          <span class="mfbp-image-badge">{{ section.settings.badge_label }}</span>
+        {%- endif -%}
+
+        {%- if article_image != blank -%}
+          <img
+            src="{{ article_image | image_url: width: 800 }}"
+            srcset="{{ article_image | image_url: width: 400 }} 400w,
+                    {{ article_image | image_url: width: 600 }} 600w,
+                    {{ article_image | image_url: width: 800 }} 800w"
+            sizes="(max-width: 990px) 100vw, 50vw"
+            alt="{{ latest_article.title | escape }}"
+            loading="lazy"
+            width="800"
+            height="500"
+          >
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-image' }}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} --- CONTENU --- {%- endcomment -%}
+      <div class="mfbp-content">
+        <div class="mfbp-meta">
+          {{ article_date }}
+          {%- if latest_article.tags.size > 0 -%}
+            &nbsp;&middot;&nbsp;{{ latest_article.tags | first }}
+          {%- endif -%}
+        </div>
+
+        <h3 class="mfbp-title">
+          <a href="{{ latest_article.url }}">{{ latest_article.title }}</a>
+        </h3>
+
+        <p class="mfbp-excerpt">{{ article_excerpt }}</p>
+
+        {%- comment -%} --- PRODUIT ASSOCIE (si metafield rempli) --- {%- endcomment -%}
+        {%- if related_product != blank and related_product.available -%}
+          <a href="{{ related_product.url }}" class="mfbp-product">
+            {%- if related_product.featured_image != blank -%}
+              <img
+                src="{{ related_product.featured_image | image_url: width: 140 }}"
+                alt="{{ related_product.title | escape }}"
+                class="mfbp-product-img"
+                loading="lazy"
+                width="70"
+                height="70"
+              >
+            {%- endif -%}
+
+            <div class="mfbp-product-info">
+              <div class="mfbp-product-label">{{ section.settings.product_label }}</div>
+              <div class="mfbp-product-name">{{ related_product.title }}</div>
+              <div class="mfbp-product-price">{{ related_product.price | money }}</div>
+            </div>
+
+            <svg class="mfbp-product-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </a>
+        {%- endif -%}
+
+        {%- comment -%} --- CTAs --- {%- endcomment -%}
+        <div class="mfbp-actions">
+          <a href="{{ latest_article.url }}" class="mfbp-cta-primary">
+            {{ section.settings.cta_article_label }}
+          </a>
+          {%- if related_product != blank and related_product.available -%}
+            <a href="{{ related_product.url }}" class="mfbp-cta-secondary">
+              {{ section.settings.cta_product_label }} &rarr;
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} --- LIEN VERS TOUS LES ARTICLES --- {%- endcomment -%}
+    {%- if section.settings.show_all_link and the_blog != blank -%}
+      <div class="mfbp-footer">
+        <a href="{{ the_blog.url }}" class="mfbp-all-link">
+          {{ section.settings.all_articles_label }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+      </div>
+    {%- endif -%}
+
+  {%- else -%}
+    {%- comment -%} --- AUCUN ARTICLE (etat vide) --- {%- endcomment -%}
+    <div class="mfbp-empty">
+      <div class="mfbp-empty-icon">&#x1f4dd;</div>
+      <p class="mfbp-empty-title">{{ section.settings.empty_title }}</p>
+      <p class="mfbp-empty-text">{{ section.settings.empty_text }}</p>
+    </div>
+  {%- endif -%}
+
+</div>
+
+{% schema %}
+{
+  "name": "Article du jour",
+  "tag": "section",
+  "class": "milaura-featured-blog-post",
+  "enabled_on": {
+    "templates": ["*"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Source du blog"
+    },
+    {
+      "type": "text",
+      "id": "blog_handle",
+      "label": "Handle du blog",
+      "info": "Le handle URL de votre blog Shopify (ex: journal, news, le-souffle)",
+      "default": "journal"
+    },
+    {
+      "type": "header",
+      "content": "En-tete de section"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Sur-titre",
+      "default": "Le journal Mil'Aura"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Titre de section",
+      "default": "Inspiration du jour"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Sous-titre de section",
+      "default": "Explorez nos guides, rituels et conseils pour enrichir votre quotidien"
+    },
+    {
+      "type": "range",
+      "id": "section_title_size",
+      "label": "Taille du titre section",
+      "min": 18,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "section_title_color",
+      "label": "Couleur du titre section",
+      "default": "#C0A062"
+    },
+    {
+      "type": "header",
+      "content": "Badge image"
+    },
+    {
+      "type": "text",
+      "id": "badge_label",
+      "label": "Texte du badge",
+      "default": "Nouveau"
+    },
+    {
+      "type": "header",
+      "content": "Style article"
+    },
+    {
+      "type": "range",
+      "id": "article_title_size",
+      "label": "Taille du titre article",
+      "min": 12,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "article_title_color",
+      "label": "Couleur du titre article",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "range",
+      "id": "excerpt_size",
+      "label": "Taille de l'extrait",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "excerpt_color",
+      "label": "Couleur de l'extrait",
+      "default": "#444444"
+    },
+    {
+      "type": "header",
+      "content": "Produit associe"
+    },
+    {
+      "type": "text",
+      "id": "product_label",
+      "label": "Label produit",
+      "info": "Petit texte au-dessus du nom produit",
+      "default": "Produit associe"
+    },
+    {
+      "type": "header",
+      "content": "Boutons"
+    },
+    {
+      "type": "text",
+      "id": "cta_article_label",
+      "label": "Label CTA article",
+      "default": "Lire l'article"
+    },
+    {
+      "type": "text",
+      "id": "cta_product_label",
+      "label": "Label CTA produit",
+      "default": "Voir le produit"
+    },
+    {
+      "type": "header",
+      "content": "Lien vers le blog"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_link",
+      "label": "Afficher le lien vers tous les articles",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "all_articles_label",
+      "label": "Label du lien",
+      "default": "Voir tous nos articles"
+    },
+    {
+      "type": "header",
+      "content": "Etat vide (aucun article)"
+    },
+    {
+      "type": "text",
+      "id": "empty_title",
+      "label": "Titre etat vide",
+      "default": "Bientot disponible"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Texte etat vide",
+      "default": "Nos premiers articles arrivent tres prochainement. Restez a l'ecoute !"
+    },
+    {
+      "type": "header",
+      "content": "Fond"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond de section",
+      "options": [
+        { "value": "transparent", "label": "Transparent" },
+        { "value": "white_glass", "label": "Blanc verre" }
+      ],
+      "default": "transparent"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article du jour"
+    }
+  ]
+}
+{% endschema %}
