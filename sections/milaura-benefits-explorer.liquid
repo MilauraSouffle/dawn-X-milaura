@@ -17,6 +17,16 @@
     position: relative;
   }
 
+  /* Voile blanc sur le fond produit (desktop) */
+  #MilauraBenefits-{{ section.id }}::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 1;
+    pointer-events: none;
+  }
+
   /* --- CONTENEUR GLOBAL (LA CARTE) --- */
   #MilauraBenefits-{{ section.id }} .benefits-dashboard {
     overflow: hidden;
@@ -200,11 +210,7 @@
   #MilauraBenefits-{{ section.id }} .benefits-content {
     display: grid;
     grid-template-areas: "stack";
-    border-radius: 25px;
-    overflow: hidden;
     position: relative;
-    min-height: 500px;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-card {
@@ -212,10 +218,7 @@
     opacity: 0;
     z-index: 0;
     pointer-events: none;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease;
-    transform: scale(0.98);
-    background-size: cover;
-    background-position: center;
+    transition: opacity 0.4s ease-in-out;
     display: flex;
     align-items: center;
     padding: var(--milaura-spacing-md);
@@ -225,16 +228,6 @@
     opacity: 1;
     z-index: 1;
     pointer-events: auto;
-    transform: scale(1);
-  }
-
-  /* Overlay desktop */
-  #MilauraBenefits-{{ section.id }} .benefit-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0) 100%);
-    z-index: 1;
   }
 
   /* --- BOITE TEXTE DESKTOP --- */
@@ -379,88 +372,6 @@
   }
 
   /* ============================================
-     DESKTOP RESPONSIVE
-     ============================================ */
-
-  /* --- Petit desktop (991px - 1200px) : produit visible en haut --- */
-  @media screen and (min-width: 991px) and (max-width: 1200px) {
-    #MilauraBenefits-{{ section.id }} .benefits-layout {
-      grid-template-columns: 280px 1fr;
-      gap: 24px;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefits-content {
-      min-height: 560px;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-card {
-      align-items: flex-end;
-      background-position: center 20%;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-card::before {
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.1) 10%,
-        rgba(255,255,255,0.45) 25%,
-        rgba(255,255,255,0.82) 42%,
-        rgba(255,255,255,0.95) 100%
-      );
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-info-box {
-      max-width: 100%;
-      background: rgba(255, 255, 255, 0.78);
-      padding: 20px;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-info-title {
-      font-size: 1.9rem;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-btn-name {
-      font-size: 1.3rem;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-btn {
-      padding: 16px;
-    }
-  }
-
-  /* --- Grand desktop (1201px+) : produit visible à droite --- */
-  @media screen and (min-width: 1201px) {
-    #MilauraBenefits-{{ section.id }} .benefit-card {
-      background-position: 70% center;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-card::before {
-      background: linear-gradient(
-        to right,
-        rgba(255,255,255,0.75) 0%,
-        rgba(255,255,255,0.4) 40%,
-        rgba(255,255,255,0) 60%
-      );
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-info-box {
-      max-width: 55%;
-      min-width: 340px;
-    }
-  }
-
-  /* --- Très grand desktop (1600px+) --- */
-  @media screen and (min-width: 1600px) {
-    #MilauraBenefits-{{ section.id }} .benefits-content {
-      min-height: 580px;
-    }
-
-    #MilauraBenefits-{{ section.id }} .benefit-info-box {
-      max-width: 45%;
-    }
-  }
-
-  /* ============================================
      MOBILE / TABLETTE (≤ 990px) - ACCORDÉON
      ============================================ */
   @media screen and (max-width: 990px) {
@@ -468,6 +379,11 @@
       padding: var(--milaura-spacing-sm) 0 var(--milaura-spacing-xs) 0;
       margin-top: var(--milaura-spacing-sm);
       margin-bottom: var(--milaura-spacing-xs);
+      background-image: none !important;
+    }
+
+    #MilauraBenefits-{{ section.id }}::after {
+      display: none;
     }
 
     #MilauraBenefits-{{ section.id }} .benefits-dashboard {
@@ -941,7 +857,7 @@
             role="tabpanel"
             aria-labelledby="benefit-btn-{{ block.id }}"
             tabindex="0"
-            style="background-image: url('{{ block.settings.stone_image | image_url: width: 1400 }}');"
+            data-bg-image="{{ block.settings.stone_image | image_url: width: 1400 }}"
           >
             <div class="benefit-info-box">
               {%- if block.settings.is_bestseller -%}
@@ -1028,10 +944,17 @@
         btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
       });
 
-      // Desktop: mise à jour des cartes
+      // Desktop: mise à jour des cartes + fond section
       cards.forEach(function (card, i) {
         card.classList.toggle('is-active', i === index);
       });
+
+      if (!isMobile()) {
+        var bgUrl = cards[index] && cards[index].getAttribute('data-bg-image');
+        if (bgUrl) {
+          container.style.backgroundImage = "url('" + bgUrl + "')";
+        }
+      }
 
       // Mobile: accordéon + cadre doré
       if (isMobile()) {
@@ -1097,11 +1020,10 @@
     // Initialisation: Desktop ouvre le premier, Mobile tout fermé
     function initializeState() {
       if (!isMobile()) {
-        // Desktop: activer le premier tab
         activateTab(0);
       } else {
-        // Mobile: tout fermé
         closeAllMobile();
+        container.style.backgroundImage = '';
       }
     }
 
