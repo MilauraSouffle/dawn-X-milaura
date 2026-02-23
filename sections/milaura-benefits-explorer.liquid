@@ -201,10 +201,9 @@
     display: grid;
     grid-template-areas: "stack";
     border-radius: 25px;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     min-height: 500px;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-card {
@@ -214,11 +213,11 @@
     pointer-events: none;
     transition: opacity 0.5s ease-in-out, transform 0.5s ease;
     transform: scale(0.98);
-    background-size: cover;
-    background-position: center;
+    background: none !important;
     display: flex;
     align-items: center;
     padding: var(--milaura-spacing-md);
+    position: relative;
   }
 
   #MilauraBenefits-{{ section.id }} .benefit-card.is-active {
@@ -228,13 +227,29 @@
     transform: scale(1);
   }
 
-  /* Overlay desktop — voile tres leger pour lisibilite sans masquer l'image */
+  /* Image de fond qui deborde du cadre */
+  #MilauraBenefits-{{ section.id }} .benefit-card-bg {
+    position: absolute;
+    width: 130%;
+    height: 130%;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 20px;
+    filter: drop-shadow(0 8px 25px rgba(0,0,0,0.15));
+  }
+
+  /* Overlay desktop — voile tres leger pour lisibilite du texte */
   #MilauraBenefits-{{ section.id }} .benefit-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(to right, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0) 100%);
     z-index: 1;
+    border-radius: 25px;
   }
 
   /* --- BOITE TEXTE DESKTOP --- */
@@ -854,8 +869,17 @@
             role="tabpanel"
             aria-labelledby="benefit-btn-{{ block.id }}"
             tabindex="0"
-            style="background-image: url('{{ block.settings.stone_image | image_url: width: 1400 }}');"
           >
+            {%- if block.settings.stone_image != blank -%}
+              <img
+                src="{{ block.settings.stone_image | image_url: width: 1400 }}"
+                alt="{{ block.settings.stone_name }}"
+                class="benefit-card-bg"
+                loading="lazy"
+                width="{{ block.settings.stone_image.width }}"
+                height="{{ block.settings.stone_image.height }}"
+              >
+            {%- endif -%}
             <div class="benefit-info-box">
               {%- if block.settings.is_bestseller -%}
                 <span class="benefit-badge">Best-seller</span>
