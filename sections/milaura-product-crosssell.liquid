@@ -273,6 +273,8 @@
         {%- for rec_product in metafield_products -%}
           {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
           {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
+          {%- assign rec_id_check = rec_product.id | append: ',' -%}
+          {%- if shown_ids contains rec_id_check -%}{%- continue -%}{%- endif -%}
           {%- assign shown_count = shown_count | plus: 1 -%}
           {%- if shown_count <= 2 -%}{%- assign lazy_load = 'eager' -%}{%- else -%}{%- assign lazy_load = 'lazy' -%}{%- endif -%}
 
@@ -291,6 +293,8 @@
           {%- for rec_product in the_collection.products limit: scan_limit -%}
             {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
             {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
+            {%- assign rec_id_check = rec_product.id | append: ',' -%}
+            {%- if shown_ids contains rec_id_check -%}{%- continue -%}{%- endif -%}
             {%- assign rec_stone = rec_product.metafields.milaura.stone_handle -%}
             {%- if rec_stone == current_stone -%}
               {%- assign shown_count = shown_count | plus: 1 -%}
