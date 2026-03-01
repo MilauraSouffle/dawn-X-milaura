@@ -8,7 +8,7 @@
   Metafield badges removed - keeping only variant bubbles
   Original metafields (scent_notes, stone_benefits) can still be used
   for recommendations/classification elsewhere
-{% endcomment -%}
+{%- endcomment %}
 
 {% style %}
   .section-{{ section.id }}-padding {
@@ -175,6 +175,48 @@
     }
   }
 
+  /* Fleches Navigation (Mobile/Tablette) */
+  .slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    color: var(--milaura-gold-dark, #8F723A);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    padding: 0;
+  }
+  .slider-button:hover {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.3);
+    transform: translateY(-50%) scale(1.05);
+  }
+  .slider-button:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+  .slider-button[disabled] {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+  }
+  .slider-button--prev {
+    left: 10px;
+  }
+  .slider-button--next {
+    right: 10px;
+  }
+
   /* Pagination Mobile (Dots) */
   .slider-buttons {
     display: flex;
@@ -183,6 +225,14 @@
     gap: 8px;
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+
+  .slider-counter__link--dots {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .slider-counter__link--dots .dot {
@@ -196,7 +246,7 @@
 
   .slider-counter__link--active .dot {
     background: var(--milaura-gold);
-    transform: scale(1.2);
+    transform: scale(1.3);
   }
 
   /* --- BADGES METAFIELDS PRODUIT --- */
@@ -322,8 +372,12 @@
       border-radius: 16px;
       border: 1px solid rgba(0,0,0,0.05);
     }
-    
+
     .slider-buttons {
+      display: none;
+    }
+
+    .slider-button {
       display: none;
     }
 
@@ -722,7 +776,7 @@
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
-  
+
   .product-form__quantity .quantity {
     width: 100% !important;
     height: 100% !important;
@@ -731,7 +785,7 @@
     min-height: auto !important;
     box-shadow: none !important;
   }
-  
+
   .product-form__quantity .quantity__button {
     width: 24px !important;
     height: 24px !important;
@@ -743,7 +797,7 @@
     align-items: center;
     justify-content: center;
   }
-  
+
   .product-form__quantity .quantity__input {
     width: 25px !important;
     font-size: 14px !important;
@@ -988,7 +1042,6 @@
       animation: none !important;
     }
   }
-
 {% endstyle %}
 
 <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -996,144 +1049,220 @@
 
 <div class="page-width section-{{ section.id }}-padding">
   <product-info id="ProductInfo-{{ section.id }}" data-section="{{ section.id }}" data-url="{{ product.url }}">
-  <div class="milaura-hero-wrapper">
+    <div class="milaura-hero-wrapper">
+      <!--
+        ============================================
+        GROUPE 1: HEADER
+        ============================================
+      -->
+      <div class="milaura-hero-header-group">
+        {%- if section.settings.show_vendor -%}
+          <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
+        {%- endif -%}
 
-    <!-- ============================================
-         GROUPE 1: HEADER
-         ============================================ -->
-    <div class="milaura-hero-header-group">
-      {%- if section.settings.show_vendor -%}
-        <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
-      {%- endif -%}
+        <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
 
-      <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
+        <a href="#Reviews" class="rating-badge">
+          <span class="stars">★★★★★</span>
+          <span class="rating-text">(4.9/5 · 127 avis)</span>
+        </a>
 
-      <a href="#Reviews" class="rating-badge">
-        <span class="stars">★★★★★</span>
-        <span class="rating-text">(4.9/5 · 127 avis)</span>
-      </a>
-
-      <div class="no-js-hidden" id="price-{{ section.id }}" role="status">
-        {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'milaura-product__price' -%}
+        <div class="no-js-hidden" id="price-{{ section.id }}" role="status">
+          {%- render 'price',
+            product: product,
+            use_variant: true,
+            show_badges: true,
+            price_class: 'milaura-product__price'
+          -%}
+        </div>
       </div>
-    </div>
 
-    <!-- ============================================
-         GROUPE 2: GALERIE MEDIA (MODERNE)
-         ============================================ -->
-    <div class="milaura-hero-gallery-column">
-      <slider-component class="slider-mobile-gutter">
-        <ul class="product__media-list list-unstyled slider slider--mobile" role="list">
-          {%- if product.media.size == 0 -%}
-             <li class="product__media-item slider__slide">
-               <div class="product-media-container">
-                 {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-               </div>
-             </li>
-          {%- endif -%}
+      <!--
+        ============================================
+        GROUPE 2: GALERIE MEDIA (MODERNE)
+        ============================================
+      -->
+      <div class="milaura-hero-gallery-column">
+        <slider-component class="slider-mobile-gutter">
+          <ul id="Slider-{{ section.id }}" class="product__media-list list-unstyled slider slider--mobile" role="list">
+            {%- if product.media.size == 0 -%}
+              <li id="Slide-{{ section.id }}-1" class="product__media-item slider__slide">
+                <div class="product-media-container">
+                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              </li>
+            {%- endif -%}
 
-          {%- for media in product.media -%}
-            <li class="product__media-item slider__slide{% if media.media_type != 'image' %} product__media-item--video{% endif %}" data-media-id="{{ section.id }}-{{ media.id }}">
-              <div class="product-media-container">
-                {% case media.media_type %}
-                  {% when 'image' %}
-                    {%- if forloop.first -%}
-                      {{ media | image_url: width: 1200 | image_tag: loading: 'eager', fetchpriority: 'high', class: 'image-magnify-hover', sizes: '(min-width: 1200px) 600px, 100vw' }}
-                    {%- else -%}
-                      {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'image-magnify-hover', sizes: '(min-width: 1200px) 600px, 100vw' }}
-                    {%- endif -%}
-                  
-                  {% when 'external_video' %}
-                    {% assign video_class = 'js-youtube' %}
-                    {% if media.host == 'vimeo' %}{% assign video_class = 'js-vimeo' %}{% endif %}
-                    {{ media | external_video_url: autoplay: true, loop: true, playlist: media.external_id | external_video_tag: class: video_class, loading: "lazy" }}
-                  
-                  {% when 'video' %}
-                    {{ media | video_tag: image_size: "1200x", autoplay: true, loop: true, controls: true, preload: "none" }}
-                  
-                  {% when 'model' %}
-                    {{ media | model_viewer_tag }}
-                {% endcase %}
-              </div>
-            </li>
-          {%- endfor -%}
-        </ul>
+            {%- for media in product.media -%}
+              <li
+                id="Slide-{{ section.id }}-{{ forloop.index }}"
+                class="product__media-item slider__slide{% if media.media_type != 'image' %} product__media-item--video{% endif %}"
+                data-media-id="{{ section.id }}-{{ media.id }}"
+              >
+                <div class="product-media-container">
+                  {% case media.media_type %}
+                    {% when 'image' %}
+                      {%- if forloop.first -%}
+                        {{
+                          media
+                          | image_url: width: 1200
+                          | image_tag:
+                            loading: 'eager',
+                            fetchpriority: 'high',
+                            class: 'image-magnify-hover',
+                            sizes: '(min-width: 1200px) 600px, 100vw'
+                        }}
+                      {%- else -%}
+                        {{
+                          media
+                          | image_url: width: 1200
+                          | image_tag:
+                            loading: 'lazy',
+                            class: 'image-magnify-hover',
+                            sizes: '(min-width: 1200px) 600px, 100vw'
+                        }}
+                      {%- endif -%}
 
-        <!-- Pagination Mobile -->
-        <div class="slider-buttons no-js-hidden{% if product.media.size < 2 %} hidden{% endif %}">
-          {%- for media in product.media -%}
-            <button class="slider-counter__link slider-counter__link--dots link" aria-label="Slide {{ forloop.index }}" aria-controls="Slide-{{ section.id }}-{{ forloop.index }}">
-              <span class="dot"></span>
+                    {% when 'external_video' %}
+                      {% assign video_class = 'js-youtube' %}
+                      {% if media.host == 'vimeo' %}{% assign video_class = 'js-vimeo' %}{% endif %}
+                      {{
+                        media
+                        | external_video_url: autoplay: true, loop: true, playlist: media.external_id
+                        | external_video_tag: class: video_class, loading: 'lazy'
+                      }}
+
+                    {% when 'video' %}
+                      {{
+                        media
+                        | video_tag: image_size: '1200x', autoplay: true, loop: true, controls: true, preload: 'none'
+                      }}
+
+                    {% when 'model' %}
+                      {{ media | model_viewer_tag }}
+                  {% endcase %}
+                </div>
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          <!-- Navigation Fleches (Mobile/Tablette) -->
+          {%- if product.media.size > 1 -%}
+            <button
+              type="button"
+              class="slider-button slider-button--prev no-js-hidden"
+              name="previous"
+              aria-label="Diapositive précédente"
+              aria-controls="Slider-{{ section.id }}"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
-          {%- endfor -%}
-        </div>
-
-        {%- comment -%} Overlay variantes supprimé — les variantes sont gérées dans la zone d'achat {%- endcomment -%}
-      </slider-component>
-
-      {%- comment -%} Badges metafields produit {%- endcomment -%}
-      {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
-      {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
-      {%- assign badge_vertus = product.metafields.milaura.vertus -%}
-      {%- assign badge_quality = product.metafields.milaura.qualite -%}
-      {%- assign has_badges = false -%}
-      {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank -%}
-        {%- assign has_badges = true -%}
-      {%- endif -%}
-
-      {%- if has_badges -%}
-        <div class="milaura-meta-badges">
-          {%- if badge_stone != blank -%}
-            <span class="milaura-meta-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              {{ badge_stone }}
-            </span>
+            <button
+              type="button"
+              class="slider-button slider-button--next no-js-hidden"
+              name="next"
+              aria-label="Diapositive suivante"
+              aria-controls="Slider-{{ section.id }}"
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
           {%- endif -%}
-          {%- if badge_energy != blank -%}
-            <span class="milaura-meta-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-              {{ badge_energy }}
-            </span>
-          {%- endif -%}
-          {%- if badge_vertus != blank -%}
-            <span class="milaura-meta-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-              {{ badge_vertus }}
-            </span>
-          {%- endif -%}
-          {%- if badge_quality != blank -%}
-            <span class="milaura-meta-badge milaura-meta-badge--gold">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              {{ badge_quality }}
-            </span>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
 
-    </div>
+          <!-- Pagination Dots (Mobile/Tablette) -->
+          <div class="slider-buttons no-js-hidden{% if product.media.size < 2 %} hidden{% endif %}">
+            {%- for media in product.media -%}
+              <button
+                type="button"
+                class="slider-counter__link slider-counter__link--dots link{% if forloop.first %} slider-counter__link--active{% endif %}"
+                aria-label="Diapositive {{ forloop.index }}"
+                aria-controls="Slide-{{ section.id }}-{{ forloop.index }}"
+                data-slide-index="{{ forloop.index0 }}"
+              >
+                <span class="dot"></span>
+              </button>
+            {%- endfor -%}
+          </div>
 
-    <!-- ============================================
-         GROUPE 3: ACTIONS
-         ============================================ -->
-    <div class="milaura-hero-actions-group">
+          {%- comment -%} Overlay variantes supprimé — les variantes sont gérées dans la zone d'achat {%- endcomment -%}
+        </slider-component>
 
-      <!-- Note: Variant Picker was here, moved to gallery above -->
+        {%- comment -%} Badges metafields produit {%- endcomment -%}
+        {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
+        {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
+        {%- assign badge_vertus = product.metafields.milaura.vertus -%}
+        {%- assign badge_quality = product.metafields.milaura.qualite -%}
+        {%- assign has_badges = false -%}
+        {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank -%}
+          {%- assign has_badges = true -%}
+        {%- endif -%}
 
-      <!-- Volume Offer Block -->
+        {%- if has_badges -%}
+          <div class="milaura-meta-badges">
+            {%- if badge_stone != blank -%}
+              <span class="milaura-meta-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                {{ badge_stone }}
+              </span>
+            {%- endif -%}
+            {%- if badge_energy != blank -%}
+              <span class="milaura-meta-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+                {{ badge_energy }}
+              </span>
+            {%- endif -%}
+            {%- if badge_vertus != blank -%}
+              <span class="milaura-meta-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                {{ badge_vertus }}
+              </span>
+            {%- endif -%}
+            {%- if badge_quality != blank -%}
+              <span class="milaura-meta-badge milaura-meta-badge--gold">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                {{ badge_quality }}
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!--
+        ============================================
+        GROUPE 3: ACTIONS
+        ============================================
+      -->
+      <div class="milaura-hero-actions-group">
+        <!-- Note: Variant Picker was here, moved to gallery above -->
+
+        <!-- Volume Offer Block -->
         {%- for block in section.blocks -%}
           {%- if block.type == 'volume_offer' -%}
             {% if block.settings.title != blank %}
               <h3 class="volume-section-title">{{ block.settings.title }}</h3>
             {% endif %}
-            <div class="milaura-volume-grid" role="radiogroup" aria-label="Choisir une offre volume" {{ block.shopify_attributes }}>
-
+            <div
+              class="milaura-volume-grid"
+              role="radiogroup"
+              aria-label="Choisir une offre volume"
+              {{ block.shopify_attributes }}
+            >
               <!-- Option 1: Standard -->
-              <div class="volume-card"
-                   role="radio"
-                   aria-checked="false"
-                   tabindex="0"
-                   onclick="selectVolume(1, this)"
-                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(1, this);}">
+              <div
+                class="volume-card"
+                role="radio"
+                aria-checked="false"
+                tabindex="0"
+                onclick="selectVolume(1, this)"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(1, this);}"
+              >
                 {% if block.settings.opt1_badge != blank %}
                   <span class="volume-card-badge">{{ block.settings.opt1_badge }}</span>
                 {% endif %}
@@ -1147,12 +1276,14 @@
               </div>
 
               <!-- Option 2: Populaire (sélectionné par défaut) -->
-              <div class="volume-card is-selected"
-                   role="radio"
-                   aria-checked="true"
-                   tabindex="0"
-                   onclick="selectVolume(2, this)"
-                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(2, this);}">
+              <div
+                class="volume-card is-selected"
+                role="radio"
+                aria-checked="true"
+                tabindex="0"
+                onclick="selectVolume(2, this)"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(2, this);}"
+              >
                 {% if block.settings.opt2_badge != blank %}
                   <span class="volume-card-badge">{{ block.settings.opt2_badge }}</span>
                 {% endif %}
@@ -1169,12 +1300,14 @@
               </div>
 
               <!-- Option 3: Meilleure offre -->
-              <div class="volume-card"
-                   role="radio"
-                   aria-checked="false"
-                   tabindex="0"
-                   onclick="selectVolume(3, this)"
-                   onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(3, this);}">
+              <div
+                class="volume-card"
+                role="radio"
+                aria-checked="false"
+                tabindex="0"
+                onclick="selectVolume(3, this)"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectVolume(3, this);}"
+              >
                 {% if block.settings.opt3_badge != blank %}
                   <span class="volume-card-badge">{{ block.settings.opt3_badge }}</span>
                 {% endif %}
@@ -1189,13 +1322,12 @@
                   {{ price3 | money }}
                 </div>
               </div>
-
             </div>
-            
+
             <script>
               function selectVolume(qty, card) {
                 // 1. Visual + ARIA Update
-                document.querySelectorAll('.volume-card').forEach(c => {
+                document.querySelectorAll('.volume-card').forEach((c) => {
                   c.classList.remove('is-selected');
                   c.setAttribute('aria-checked', 'false');
                 });
@@ -1204,7 +1336,7 @@
 
                 // 2. Update Hidden Quantity Input
                 const qtyInput = document.getElementById('Quantity-{{ section.id }}');
-                if(qtyInput) {
+                if (qtyInput) {
                   qtyInput.value = qty;
                   // Trigger change event if needed by other scripts
                   qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1216,21 +1348,26 @@
 
         <!-- Buy Buttons (NEW LUXE LAYOUT) -->
         <div class="milaura-buy-row">
-          
           {%- if section.settings.show_quantity -%}
             <quantity-input class="milaura-quantity-capsule">
               <button class="milaura-quantity-btn" name="minus" type="button">
-                <svg width="12" height="2" viewBox="0 0 12 2" fill="none"><path d="M0 1H12" stroke="currentColor" stroke-width="1.5"/></svg>
+                <svg width="12" height="2" viewBox="0 0 12 2" fill="none">
+                  <path d="M0 1H12" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
               </button>
-              <input class="milaura-quantity-input" 
-                     type="number"
-                     name="quantity"
-                     id="Quantity-{{ section.id }}"
-                     min="1"
-                     value="2"
-                     form="{{ 'product-form-' | append: section.id }}">
+              <input
+                class="milaura-quantity-input"
+                type="number"
+                name="quantity"
+                id="Quantity-{{ section.id }}"
+                min="1"
+                value="2"
+                form="{{ 'product-form-' | append: section.id }}"
+              >
               <button class="milaura-quantity-btn" name="plus" type="button">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 0V12M0 6H12" stroke="currentColor" stroke-width="1.5"/></svg>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M6 0V12M0 6H12" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
               </button>
             </quantity-input>
           {%- endif -%}
@@ -1238,13 +1375,21 @@
           <!-- Add Button -->
           {%- assign product_form_id = 'product-form-' | append: section.id -%}
           <product-form class="product-form" style="flex:1;">
-            {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            {%- form 'product',
+              product,
+              id: product_form_id,
+              class: 'form',
+              novalidate: 'novalidate',
+              data-type: 'add-to-cart-form'
+            -%}
               <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
               <button
                 type="submit"
                 name="add"
                 class="milaura-add-btn milaura-btn-gold"
-                {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+                {% if product.selected_or_first_available_variant.available == false %}
+                  disabled
+                {% endif %}
               >
                 <span>
                   {%- if product.selected_or_first_available_variant.available -%}
@@ -1254,7 +1399,13 @@
                   {%- endif -%}
                 </span>
                 <div class="loading__spinner hidden">
-                  <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    class="spinner"
+                    viewBox="0 0 66 66"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
                   </svg>
                 </div>
@@ -1276,152 +1427,293 @@
         </div>
 
         <!-- Description Extract (Optional) -->
-      {%- if section.settings.show_description -%}
-        <div class="product__description rte quick-add-hidden">
-          {{ product.description | strip_html | truncatewords: 30 }}
-          <a href="#ProductTabs" class="read-more-link" id="readMoreLink-{{ section.id }}">Lire la suite →</a>
-        </div>
-        <script>
-          document.getElementById('readMoreLink-{{ section.id }}').addEventListener('click', function(e) {
-            e.preventDefault();
-            var target = document.getElementById('ProductTabs');
-            if (target) {
-              var headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80;
-              var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-              window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-            }
-          });
-        </script>
-      {%- endif -%}
-
+        {%- if section.settings.show_description -%}
+          <div class="product__description rte quick-add-hidden">
+            {{ product.description | strip_html | truncatewords: 30 }}
+            <a href="#ProductTabs" class="read-more-link" id="readMoreLink-{{ section.id }}">Lire la suite →</a>
+          </div>
+          <script>
+            document.getElementById('readMoreLink-{{ section.id }}').addEventListener('click', function (e) {
+              e.preventDefault();
+              var target = document.getElementById('ProductTabs');
+              if (target) {
+                var headerHeight =
+                  parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80;
+                var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+              }
+            });
+          </script>
+        {%- endif -%}
+      </div>
+      <!-- Fin GROUPE 3: Actions -->
     </div>
-    <!-- Fin GROUPE 3: Actions -->
+    <!-- Fin milaura-hero-wrapper -->
 
-  </div>
-  <!-- Fin milaura-hero-wrapper -->
-
-  {%- comment -%} JSON-LD Structured Data pour SEO {%- endcomment -%}
-  <script type="application/ld+json">
-    {{ product | structured_data }}
-  </script>
-
+    {%- comment -%} JSON-LD Structured Data pour SEO {%- endcomment -%}
+    {%- liquid
+      assign days_to_add = 30 | times: 86400
+      assign price_valid_until = 'now' | date: '%s' | plus: days_to_add | date: '%Y-%m-%d'
+    -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": {{ product.title | json }},
+        "description": {{ product.description | strip_html | json }},
+        "url": {{ request.origin | append: product.url | json }},
+        {%- if product.featured_image -%}
+        "image": [
+          {{ product.featured_image | image_url: width: 1920 | prepend: "https:" | json }}
+        ],
+        {%- endif -%}
+        "brand": {
+          "@type": "Brand",
+          "name": {{ product.vendor | json }}
+        },
+        "sku": {{ product.selected_or_first_available_variant.sku | json }},
+        {%- if product.metafields.reviews.rating.value != blank -%}
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "{{ product.metafields.reviews.rating.value }}",
+          "reviewCount": "{{ product.metafields.reviews.rating_count }}"
+        },
+        {%- endif -%}
+        "offers": [
+          {%- for variant in product.variants -%}
+          {
+            "@type": "Offer",
+            "name": {{ variant.title | json }},
+            "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+            "price": "{{ variant.price | divided_by: 100.0 }}",
+            "priceCurrency": {{ cart.currency.iso_code | json }},
+            "priceValidUntil": "{{ price_valid_until }}",
+            "url": {{ request.origin | append: variant.url | json }},
+            "sku": {{ variant.sku | json }},
+            {%- if variant.barcode.size == 12 -%}
+              "gtin12": {{ variant.barcode | json }},
+            {%- elsif variant.barcode.size == 13 -%}
+              "gtin13": {{ variant.barcode | json }},
+            {%- elsif variant.barcode.size == 14 -%}
+              "gtin14": {{ variant.barcode | json }},
+            {%- endif -%}
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": {% if variant.price >= 3990 %}"0"{% else %}"4.90"{% endif %},
+                "currency": {{ cart.currency.iso_code | json }}
+              },
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": "FR"
+              },
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": "0",
+                  "maxValue": "1",
+                  "unitCode": "d"
+                },
+                "transitTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": "1",
+                  "maxValue": "3",
+                  "unitCode": "d"
+                }
+              }
+            },
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": "CH,BE,LU,FR,DE,ES,IT",
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": "14",
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/CustomerResponsibility",
+              "itemCondition": "https://schema.org/UnopenedCondition",
+              "description": "Retour à la charge du client, gratuit en cas de défaut. Produit doit être scellé dans son emballage d'origine."
+            }
+          }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }
+    </script>
   </product-info>
 </div>
 
 <script>
-(function() {
-  const isDesktop = () => window.matchMedia('(min-width: 990px)').matches;
+  (function () {
+    const isDesktop = () => window.matchMedia('(min-width: 990px)').matches;
 
-  /* ============================
+    /* ============================
      1. BADGE REPOSITIONING (Desktop)
      Move badges inside first product-media-container
      ============================ */
-  function repositionBadges() {
-    const badges = document.querySelector('.milaura-meta-badges');
-    if (!badges) return;
+    function repositionBadges() {
+      const badges = document.querySelector('.milaura-meta-badges');
+      if (!badges) return;
 
-    const firstContainer = document.querySelector('.product__media-item:first-child .product-media-container');
-    const galleryCol = document.querySelector('.milaura-hero-gallery-column');
+      const firstContainer = document.querySelector('.product__media-item:first-child .product-media-container');
+      const galleryCol = document.querySelector('.milaura-hero-gallery-column');
 
-    if (isDesktop() && firstContainer) {
-      // Move inside the main image container
-      if (badges.parentElement !== firstContainer) {
-        firstContainer.appendChild(badges);
-      }
-    } else if (galleryCol) {
-      // Mobile: move back to gallery column (after slider-component)
-      if (badges.parentElement !== galleryCol) {
-        galleryCol.appendChild(badges);
+      if (isDesktop() && firstContainer) {
+        // Move inside the main image container
+        if (badges.parentElement !== firstContainer) {
+          firstContainer.appendChild(badges);
+        }
+      } else if (galleryCol) {
+        // Mobile: move back to gallery column (after slider-component)
+        if (badges.parentElement !== galleryCol) {
+          galleryCol.appendChild(badges);
+        }
       }
     }
-  }
 
-  /* ============================
+    /* ============================
      2. ZOOM ON HOVER (Desktop only)
      Click to toggle zoom, mouse tracks transform-origin
      ============================ */
-  function initZoom() {
-    const mainContainer = document.querySelector('.product__media-item:first-child .product-media-container');
-    if (!mainContainer) return;
+    function initZoom() {
+      const mainContainer = document.querySelector('.product__media-item:first-child .product-media-container');
+      if (!mainContainer) return;
 
-    mainContainer.addEventListener('click', function(e) {
-      if (!isDesktop()) return;
-      this.classList.toggle('is-zoomed');
-    });
+      mainContainer.addEventListener('click', function (e) {
+        if (!isDesktop()) return;
+        this.classList.toggle('is-zoomed');
+      });
 
-    mainContainer.addEventListener('mousemove', function(e) {
-      if (!isDesktop() || !this.classList.contains('is-zoomed')) return;
-      const rect = this.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      this.style.setProperty('--zoom-x', x + '%');
-      this.style.setProperty('--zoom-y', y + '%');
-    });
+      mainContainer.addEventListener('mousemove', function (e) {
+        if (!isDesktop() || !this.classList.contains('is-zoomed')) return;
+        const rect = this.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        this.style.setProperty('--zoom-x', x + '%');
+        this.style.setProperty('--zoom-y', y + '%');
+      });
 
-    mainContainer.addEventListener('mouseleave', function() {
-      this.classList.remove('is-zoomed');
-    });
-  }
+      mainContainer.addEventListener('mouseleave', function () {
+        this.classList.remove('is-zoomed');
+      });
+    }
 
-  /* ============================
+    /* ============================
      3. CLICKABLE THUMBNAILS (Desktop)
      Click a thumbnail to swap it with main image
      ============================ */
-  function initThumbnails() {
-    const mediaList = document.querySelector('.product__media-list');
-    if (!mediaList) return;
+    function initThumbnails() {
+      const mediaList = document.querySelector('.product__media-list');
+      if (!mediaList) return;
 
-    const items = mediaList.querySelectorAll('.product__media-item');
-    if (items.length < 2) return;
+      const items = mediaList.querySelectorAll('.product__media-item');
+      if (items.length < 2) return;
 
-    items.forEach(function(item, index) {
-      if (index === 0) return; // Skip main image
+      items.forEach(function (item, index) {
+        if (index === 0) return; // Skip main image
 
-      item.querySelector('.product-media-container').addEventListener('click', function(e) {
-        if (!isDesktop()) return;
-        e.preventDefault();
+        item.querySelector('.product-media-container').addEventListener('click', function (e) {
+          if (!isDesktop()) return;
+          e.preventDefault();
 
-        const firstItem = items[0];
-        const clickedItem = item;
+          const firstItem = items[0];
+          const clickedItem = item;
 
-        // Swap the image sources
-        const mainImg = firstItem.querySelector('img');
-        const thumbImg = clickedItem.querySelector('img');
-        if (!mainImg || !thumbImg) return;
+          // Swap the image sources
+          const mainImg = firstItem.querySelector('img');
+          const thumbImg = clickedItem.querySelector('img');
+          if (!mainImg || !thumbImg) return;
 
-        // Swap src and srcset
-        const tmpSrc = mainImg.src;
-        const tmpSrcset = mainImg.srcset || '';
-        const tmpAlt = mainImg.alt || '';
+          // Swap src and srcset
+          const tmpSrc = mainImg.src;
+          const tmpSrcset = mainImg.srcset || '';
+          const tmpAlt = mainImg.alt || '';
 
-        mainImg.src = thumbImg.src;
-        mainImg.srcset = thumbImg.srcset || '';
-        mainImg.alt = thumbImg.alt || '';
+          mainImg.src = thumbImg.src;
+          mainImg.srcset = thumbImg.srcset || '';
+          mainImg.alt = thumbImg.alt || '';
 
-        thumbImg.src = tmpSrc;
-        thumbImg.srcset = tmpSrcset;
-        thumbImg.alt = tmpAlt;
+          thumbImg.src = tmpSrc;
+          thumbImg.srcset = tmpSrcset;
+          thumbImg.alt = tmpAlt;
 
-        // Remove zoom state
-        firstItem.querySelector('.product-media-container').classList.remove('is-zoomed');
+          // Remove zoom state
+          firstItem.querySelector('.product-media-container').classList.remove('is-zoomed');
+        });
       });
-    });
-  }
+    }
 
-  /* Init on DOM ready */
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+    /* ============================
+     4. DOTS + SLIDER SYNC (Mobile)
+     Dots click → scroll to slide
+     Scroll → highlight active dot
+     ============================ */
+    function initSliderNav() {
+      var sliderComp = document.querySelector('.milaura-hero-gallery-column slider-component');
+      if (!sliderComp) return;
 
-  function init() {
-    repositionBadges();
-    initZoom();
-    initThumbnails();
-    window.addEventListener('resize', repositionBadges);
-  }
-})();
+      var slider = sliderComp.querySelector('[id^="Slider-"]');
+      var dots = sliderComp.querySelectorAll('.slider-counter__link--dots');
+      var slides = sliderComp.querySelectorAll('.product__media-item');
+
+      if (!slider || dots.length < 2 || slides.length < 2) return;
+
+      /* Dot click → scroll to slide */
+      dots.forEach(function(dot) {
+        dot.addEventListener('click', function(e) {
+          e.preventDefault();
+          var idx = parseInt(this.getAttribute('data-slide-index'), 10);
+          if (isNaN(idx) || !slides[idx]) return;
+          slider.scrollTo({ left: slides[idx].offsetLeft, behavior: 'smooth' });
+        });
+      });
+
+      /* Scroll → update active dot */
+      function updateActiveDot() {
+        if (isDesktop()) return;
+        var scrollLeft = slider.scrollLeft;
+        var containerWidth = slider.clientWidth;
+        var activeIndex = 0;
+        var minDist = Infinity;
+
+        slides.forEach(function(slide, i) {
+          var center = slide.offsetLeft + slide.clientWidth / 2;
+          var dist = Math.abs(center - (scrollLeft + containerWidth / 2));
+          if (dist < minDist) {
+            minDist = dist;
+            activeIndex = i;
+          }
+        });
+
+        dots.forEach(function(dot, i) {
+          dot.classList.toggle('slider-counter__link--active', i === activeIndex);
+        });
+      }
+
+      var scrollTimer;
+      slider.addEventListener('scroll', function() {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(updateActiveDot, 50);
+      }, { passive: true });
+
+      /* Set initial state */
+      updateActiveDot();
+    }
+
+    /* Init on DOM ready */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+    function init() {
+      repositionBadges();
+      initZoom();
+      initThumbnails();
+      initSliderNav();
+      window.addEventListener('resize', repositionBadges);
+    }
+  })();
 </script>
 
 {% schema %}
