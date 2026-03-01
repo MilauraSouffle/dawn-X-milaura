@@ -225,11 +225,20 @@
             stickyBar.classList.remove('is-visible');
           }
 
-          // Desktop only: push floating bubble above sticky bar
-          if (bubbleTrigger && window.innerWidth > 768) {
+          // Push floating bubble above sticky bar on ALL viewports (desktop + mobile)
+          if (bubbleTrigger) {
             const isUp = stickyBar.classList.contains('is-visible');
-            bubbleTrigger.style.bottom = isUp ? '90px' : '';
-            if (bubbleLabel) bubbleLabel.style.bottom = isUp ? '98px' : '';
+            if (isUp) {
+              const stickyRect = stickyBar.getBoundingClientRect();
+              const stickyBottomOffset = window.innerHeight - stickyRect.top;
+              const gap = 16;
+              bubbleTrigger.style.bottom = (stickyBottomOffset + gap) + 'px';
+              if (bubbleLabel) bubbleLabel.style.bottom = (stickyBottomOffset + gap + 8) + 'px';
+            } else {
+              // Reset to CSS defaults (24px desktop, 85px mobile above dock)
+              bubbleTrigger.style.bottom = '';
+              if (bubbleLabel) bubbleLabel.style.bottom = '';
+            }
           }
         };
 
