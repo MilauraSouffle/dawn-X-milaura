@@ -36,15 +36,49 @@ class CartNotification extends HTMLElement {
 
   renderContents(parsedState) {
     this.cartItemKey = parsedState.key;
-    this.getSectionsToRender().forEach((section) => {
-      document.getElementById(section.id).innerHTML = this.getSectionInnerHTML(
-        parsedState.sections[section.id],
-        section.selector
-      );
-    });
+
+    if (parsedState.sections) {
+      this.getSectionsToRender().forEach((section) => {
+        const el = document.getElementById(section.id);
+        const sectionHtml = parsedState.sections[section.id];
+        if (el && sectionHtml) {
+          const html = this.getSectionInnerHTML(sectionHtml, section.selector);
+          if (html) el.innerHTML = html;
+        }
+      });
+    }
+
+    // Update cart badge count (fallback si section rendering echoue)
+    this.updateCartBadge();
 
     if (this.header) this.header.reveal();
     this.open();
+  }
+
+  updateCartBadge() {
+    fetch('/cart.js')
+      .then((r) => r.json())
+      .then((cart) => {
+        // Update all badge elements
+        document.querySelectorAll('.cart-count-bubble span[aria-hidden]').forEach((el) => {
+          el.textContent = cart.item_count;
+        });
+        document.querySelectorAll('[data-cart-count]').forEach((el) => {
+          el.textContent = cart.item_count;
+        });
+        // Update Milaura navbar badges
+        document.querySelectorAll('.nav-cart-count').forEach((el) => {
+          if (cart.item_count > 0) {
+            el.textContent = cart.item_count;
+            el.style.display = 'flex';
+          } else {
+            el.style.display = 'none';
+          }
+        });
+        // Notify other components (dock, etc.)
+        window.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      })
+      .catch(() => {});
   }
 
   getSectionsToRender() {
@@ -63,7 +97,8 @@ class CartNotification extends HTMLElement {
   }
 
   getSectionInnerHTML(html, selector = '.shopify-section') {
-    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
+    const el = new DOMParser().parseFromString(html, 'text/html').querySelector(selector);
+    return el ? el.innerHTML : '';
   }
 
   handleBodyClick(evt) {
