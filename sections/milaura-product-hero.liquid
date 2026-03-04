@@ -315,14 +315,21 @@
   @media screen and (min-width: 990px) {
     .milaura-hero-wrapper {
       display: grid;
-      grid-template-columns: 1fr 0.8fr; /* Image plus grande, colonne droite plus étroite */
+      grid-template-columns: 1fr 0.8fr;
       grid-template-areas:
         "gallery header"
+        "gallery video-bubble"
         "gallery actions";
-      gap: 16px; /* Gap compact */
+      gap: 16px;
       padding: 0 16px;
       overflow: visible;
-      align-items: start; /* Aligner en haut */
+      align-items: start;
+    }
+
+    .milaura-video-bubble-wrapper {
+      grid-area: video-bubble;
+      /* No justify-self: center — wrapper stretches to fill grid column.
+         Bubble is centered via flex justify-content on the wrapper. */
     }
 
     .milaura-hero-header-group {
@@ -355,22 +362,60 @@
     }
 
     .product__media-list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       overflow: visible;
       scroll-snap-type: none;
       padding: 0;
     }
 
+    /* Image principale : pleine largeur */
     .product__media-item:first-child {
-      grid-column: span 2;
+      flex: 0 0 100%;
+      width: 100%;
     }
 
-    .product-media-container {
+    .product__media-item:first-child .product-media-container {
       padding-top: 100%;
       border-radius: 16px;
       border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* Miniatures : petites, en ligne */
+    .product__media-item:not(:first-child) {
+      flex: 0 0 auto;
+      width: auto;
+      min-width: 0;
+      max-width: none;
+    }
+
+    .product__media-item:not(:first-child) .product-media-container {
+      padding-top: 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+      background: var(--milaura-beige, #FDFBF7);
+    }
+
+    .product__media-item:not(:first-child) .product-media-container img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Spotlight slide: hidden on desktop (uses external thumb instead) */
+    .product__media-item--spotlight {
+      /* Visible on mobile via carousel, hidden on desktop via JS-injected style */
+    }
+
+    .product__media-item--spotlight .milaura-hotspot {
+      display: none; /* Hide hotspots in thumbnail mode on desktop */
     }
 
     .slider-buttons {
@@ -1036,6 +1081,499 @@
     text-decoration: underline;
   }
 
+  /* ===========================================
+     SPOTLIGHT SLIDE — Hotspots interactifs
+     =========================================== */
+  .milaura-spotlight-slide-wrapper {
+    position: relative;
+    overflow: visible;
+  }
+
+  .milaura-spotlight-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .milaura-spotlight-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  .milaura-hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+
+  .milaura-hotspot-btn {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--milaura-gold, #C0A062);
+    border: 2px solid #fff;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+    padding: 0;
+    z-index: 3;
+  }
+
+  .milaura-hotspot:hover .milaura-hotspot-btn,
+  .milaura-hotspot.is-active .milaura-hotspot-btn {
+    transform: scale(1.15);
+    background: var(--milaura-gold-dark, #8F723A);
+  }
+
+  .milaura-hotspot-inner {
+    font-size: 14px;
+    line-height: 1;
+    font-weight: bold;
+  }
+
+  .milaura-hotspot-pulse {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: var(--milaura-gold, #C0A062);
+    animation: hotspotPulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+  }
+
+  @keyframes hotspotPulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+
+  .milaura-hotspot-tooltip {
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 240px;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .milaura-hotspot-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.97) transparent transparent transparent;
+  }
+
+  .milaura-hotspot-tooltip-content {
+    padding: 16px;
+    text-align: center;
+  }
+
+  .milaura-hotspot-tooltip h4 {
+    margin: 0 0 8px 0;
+    font-family: var(--milaura-font-heading);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--milaura-text, #000);
+  }
+
+  .milaura-hotspot-tooltip .rte p {
+    margin: 0;
+    font-family: var(--milaura-font-body);
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--milaura-text-light, #666);
+  }
+
+  .milaura-hotspot:hover .milaura-hotspot-tooltip,
+  .milaura-hotspot.is-active .milaura-hotspot-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Mobile: hide CSS tooltip (JS overlay used instead) */
+  @media screen and (max-width: 989px) {
+    .milaura-hotspot-tooltip {
+      display: none !important;
+    }
+  }
+
+  /* Mobile overlay card (appended to body via JS) */
+  .milaura-hotspot-mobile-overlay__card {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    text-align: center;
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+
+  .milaura-hotspot-mobile-overlay__card h4 {
+    margin: 0 0 8px 0;
+    font-family: var(--milaura-font-heading);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--milaura-text, #000);
+  }
+
+  .milaura-hotspot-mobile-overlay__card .rte p,
+  .milaura-hotspot-mobile-overlay__card p {
+    margin: 0;
+    font-family: var(--milaura-font-body);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--milaura-text-light, #666);
+  }
+
+  /* Tablette: tooltip position ajustee */
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .milaura-hotspot-mobile-overlay {
+      left: 10% !important;
+      right: 10% !important;
+    }
+  }
+
+  /* ===========================================
+     VIDEO BUBBLE — Bulle flottante
+     =========================================== */
+  .milaura-video-bubble-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+  }
+
+  .milaura-video-bubble {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(192, 160, 98, 0.3);
+    border: 3px solid rgba(192, 160, 98, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .milaura-video-bubble:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(192, 160, 98, 0.45);
+    border-color: var(--milaura-gold, #C0A062);
+  }
+
+  .milaura-video-bubble__poster {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--milaura-beige, #FDFBF7);
+  }
+
+  .milaura-video-bubble__poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .milaura-video-bubble__play {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    z-index: 2;
+  }
+
+  .milaura-video-bubble:hover .milaura-video-bubble__play {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .milaura-video-bubble__poster--empty {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .milaura-video-bubble__label {
+    font-family: var(--milaura-font-body);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--milaura-text-light, #666);
+  }
+
+  /* Bulle video iframe (apres clic) */
+  .milaura-video-bubble--playing {
+    width: 100%;
+    height: 0;
+    padding-top: 56.25%;
+    border-radius: 16px;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  .milaura-video-bubble--playing iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 16px;
+  }
+
+  /* Mobile : bulle plus petite, centree */
+  @media screen and (max-width: 749px) {
+    .milaura-video-bubble {
+      width: 90px;
+      height: 90px;
+    }
+  }
+
+  /* Desktop : bulle plus grande, bien centree */
+  @media screen and (min-width: 990px) {
+    .milaura-video-bubble-wrapper {
+      padding: 4px 0;
+    }
+
+    .milaura-video-bubble {
+      width: 180px;
+      height: 180px;
+      border-width: 3px;
+    }
+
+    .milaura-video-bubble--playing {
+      width: 100%;
+      height: 0;
+      padding-top: 56.25%;
+      border-radius: 16px;
+    }
+  }
+
+  /* Dot spotlight & video */
+  .dot--spotlight {
+    background: var(--milaura-gold, #C0A062) !important;
+  }
+
+  .dot--video {
+    background: #E74C3C !important;
+  }
+
+  /* ===========================================
+     VIDEO SLIDE — Main carousel (mobile)
+     =========================================== */
+  .milaura-video-main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--milaura-beige, #FDFBF7);
+  }
+
+  .milaura-video-main-poster {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .milaura-video-main-play {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+    transition: transform 0.3s ease;
+  }
+
+  .milaura-video-main-play:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .milaura-video-main-placeholder {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--milaura-beige, #FDFBF7);
+  }
+
+  /* ===========================================
+     VIDEO SLIDE — Desktop hidden, mobile visible
+     =========================================== */
+  @media screen and (min-width: 990px) {
+    .product__media-item--video-slide {
+      display: none !important;
+    }
+  }
+
+  /* Video bubble — hidden on mobile (uses slide instead) */
+  @media screen and (max-width: 989px) {
+    .milaura-video-bubble-wrapper {
+      display: none !important;
+    }
+  }
+
+  /* ===========================================
+     MOBILE THUMBNAIL STRIP
+     =========================================== */
+  .milaura-thumb-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 10px 4px 4px;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .milaura-thumb-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .milaura-thumb-strip__item {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background: var(--milaura-beige, #FDFBF7);
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .milaura-thumb-strip__item.is-active {
+    border-color: var(--milaura-gold, #C0A062);
+    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.3);
+  }
+
+  .milaura-thumb-strip__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .milaura-thumb-strip__item--video {
+    position: relative;
+  }
+
+  .milaura-thumb-strip__video-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+  }
+
+  .milaura-thumb-strip__item--video iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+  }
+
+  .milaura-thumb-strip__item--video.has-autoplay .milaura-thumb-strip__video-overlay {
+    background: transparent;
+  }
+
+  .milaura-thumb-strip__item--video.has-autoplay .milaura-thumb-strip__video-overlay svg {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .milaura-thumb-strip__item--video:hover .milaura-thumb-strip__video-overlay svg {
+    opacity: 1;
+  }
+
+  /* Desktop : hide thumb strip (thumbnails are already inline) */
+  @media screen and (min-width: 990px) {
+    .milaura-thumb-strip {
+      display: none;
+    }
+  }
+
+  /* ===========================================
+     SPOTLIGHT DESKTOP THUMBNAIL (outside slider)
+     =========================================== */
+  .milaura-spotlight-desktop-thumb {
+    display: none; /* Hidden on mobile — mobile uses carousel slide */
+  }
+
+  @media screen and (min-width: 990px) {
+    .milaura-spotlight-desktop-thumb {
+      display: inline-block;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .milaura-spotlight-desktop-thumb__img-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid rgba(192, 160, 98, 0.3);
+      position: relative;
+      background: var(--milaura-beige, #FDFBF7);
+    }
+
+    .milaura-spotlight-desktop-thumb:hover .milaura-spotlight-desktop-thumb__img-wrap {
+      border-color: var(--milaura-gold, #C0A062);
+      box-shadow: 0 4px 16px rgba(192, 160, 98, 0.25);
+    }
+
+    .milaura-spotlight-desktop-thumb__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       transition: none !important;
@@ -1144,10 +1682,91 @@
                 </div>
               </li>
             {%- endfor -%}
+
+            {%- comment -%} ========== SPOTLIGHT SLIDE ========== {%- endcomment -%}
+            {%- assign extra_slides_count = 0 -%}
+            {%- if section.settings.show_spotlight and section.settings.spotlight_image != blank -%}
+              {%- assign spotlight_index = product.media.size | plus: 1 -%}
+              <li
+                id="Slide-{{ section.id }}-{{ spotlight_index }}"
+                class="product__media-item slider__slide product__media-item--spotlight"
+                data-media-id="{{ section.id }}-spotlight"
+              >
+                <div class="product-media-container milaura-spotlight-slide-wrapper">
+                  <div class="milaura-spotlight-container">
+                    {{
+                      section.settings.spotlight_image
+                      | image_url: width: 1200
+                      | image_tag: loading: 'lazy', class: 'milaura-spotlight-image', sizes: '(min-width: 1200px) 600px, 100vw'
+                    }}
+                    {%- for i in (1..3) -%}
+                      {%- assign title_key = 'spotlight_' | append: i | append: '_title' -%}
+                      {%- assign desc_key = 'spotlight_' | append: i | append: '_desc' -%}
+                      {%- assign x_key = 'spotlight_' | append: i | append: '_x' -%}
+                      {%- assign y_key = 'spotlight_' | append: i | append: '_y' -%}
+                      {%- assign hs_title = section.settings[title_key] -%}
+                      {%- assign hs_desc = section.settings[desc_key] -%}
+                      {%- assign hs_x = section.settings[x_key] -%}
+                      {%- assign hs_y = section.settings[y_key] -%}
+                      {%- if hs_title != blank -%}
+                        <div
+                          class="milaura-hotspot"
+                          style="left: {{ hs_x }}%; top: {{ hs_y }}%;"
+                          data-index="{{ i }}"
+                        >
+                          <button class="milaura-hotspot-btn" aria-label="Voir le detail : {{ hs_title | escape }}">
+                            <span class="milaura-hotspot-pulse"></span>
+                            <span class="milaura-hotspot-inner">+</span>
+                          </button>
+                          <div class="milaura-hotspot-tooltip">
+                            <div class="milaura-hotspot-tooltip-content">
+                              <h4>{{ hs_title }}</h4>
+                              <div class="rte">{{ hs_desc }}</div>
+                            </div>
+                          </div>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </li>
+              {%- assign extra_slides_count = extra_slides_count | plus: 1 -%}
+            {%- endif -%}
+
+            {%- comment -%} ========== VIDEO SLIDE (mobile carousel only, hidden desktop) ========== {%- endcomment -%}
+            {%- if section.settings.show_video_slide and section.settings.video_url != blank -%}
+              {%- assign video_slide_index = product.media.size | plus: extra_slides_count | plus: 1 -%}
+              <li
+                id="Slide-{{ section.id }}-{{ video_slide_index }}"
+                class="product__media-item slider__slide product__media-item--video-slide"
+                data-media-id="{{ section.id }}-video"
+              >
+                <div class="product-media-container milaura-video-main-container" data-video-url="{{ section.settings.video_url }}">
+                  {%- if section.settings.video_poster != blank -%}
+                    {{ section.settings.video_poster | image_url: width: 1200 | image_tag: loading: 'lazy', class: 'milaura-video-main-poster' }}
+                    <button class="milaura-video-main-play" aria-label="Lire la video">
+                      <svg width="56" height="56" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(0,0,0,0.45)"/><path d="M22 17L40 28L22 39V17Z" fill="white"/></svg>
+                    </button>
+                  {%- else -%}
+                    <div class="milaura-video-main-placeholder">
+                      <svg width="56" height="56" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="rgba(192,160,98,0.2)"/><path d="M22 17L40 28L22 39V17Z" fill="var(--milaura-gold, #C0A062)"/></svg>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </li>
+            {%- endif -%}
+
           </ul>
 
           <!-- Navigation Fleches (Mobile/Tablette) -->
-          {%- if product.media.size > 1 -%}
+          {%- assign total_slides = product.media.size -%}
+          {%- if section.settings.show_spotlight and section.settings.spotlight_image != blank -%}
+            {%- assign total_slides = total_slides | plus: 1 -%}
+          {%- endif -%}
+          {%- if section.settings.show_video_slide and section.settings.video_url != blank -%}
+            {%- assign total_slides = total_slides | plus: 1 -%}
+          {%- endif -%}
+          {%- if total_slides > 1 -%}
             <button
               type="button"
               class="slider-button slider-button--prev no-js-hidden"
@@ -1169,7 +1788,7 @@
           {%- endif -%}
 
           <!-- Pagination Dots (Mobile/Tablette) -->
-          <div class="slider-buttons no-js-hidden{% if product.media.size < 2 %} hidden{% endif %}">
+          <div class="slider-buttons no-js-hidden{% if total_slides < 2 %} hidden{% endif %}">
             {%- for media in product.media -%}
               <button
                 type="button"
@@ -1181,10 +1800,88 @@
                 <span class="dot"></span>
               </button>
             {%- endfor -%}
+            {%- if section.settings.show_spotlight and section.settings.spotlight_image != blank -%}
+              {%- assign spotlight_dot_index = product.media.size -%}
+              <button
+                type="button"
+                class="slider-counter__link slider-counter__link--dots link"
+                aria-label="Spotlight"
+                aria-controls="Slide-{{ section.id }}-{{ spotlight_dot_index | plus: 1 }}"
+                data-slide-index="{{ spotlight_dot_index }}"
+              >
+                <span class="dot dot--spotlight"></span>
+              </button>
+            {%- endif -%}
+            {%- if section.settings.show_video_slide and section.settings.video_url != blank -%}
+              {%- assign video_dot_index = product.media.size | plus: extra_slides_count -%}
+              <button
+                type="button"
+                class="slider-counter__link slider-counter__link--dots link"
+                aria-label="Video"
+                aria-controls="Slide-{{ section.id }}-{{ video_dot_index | plus: 1 }}"
+                data-slide-index="{{ video_dot_index }}"
+              >
+                <span class="dot dot--video"></span>
+              </button>
+            {%- endif -%}
+          </div>
+
+          <!-- Thumbnail strip (mobile only) -->
+          <div class="milaura-thumb-strip no-js-hidden">
+            {%- for media in product.media -%}
+              <button
+                type="button"
+                class="milaura-thumb-strip__item{% if forloop.first %} is-active{% endif %}"
+                aria-label="{{ media.alt | default: product.title | escape }}"
+                data-slide-index="{{ forloop.index0 }}"
+              >
+                {{ media | image_url: width: 160 | image_tag: loading: 'lazy', class: 'milaura-thumb-strip__img' }}
+              </button>
+            {%- endfor -%}
+            {%- if section.settings.show_spotlight and section.settings.spotlight_image != blank -%}
+              <button
+                type="button"
+                class="milaura-thumb-strip__item milaura-thumb-strip__item--spotlight"
+                aria-label="Spotlight"
+                data-slide-index="{{ product.media.size }}"
+              >
+                {{ section.settings.spotlight_image | image_url: width: 160 | image_tag: loading: 'lazy', class: 'milaura-thumb-strip__img' }}
+              </button>
+            {%- endif -%}
+            {%- if section.settings.show_video_slide and section.settings.video_url != blank -%}
+              {%- assign video_thumb_index = product.media.size | plus: extra_slides_count -%}
+              <button
+                type="button"
+                class="milaura-thumb-strip__item milaura-thumb-strip__item--video"
+                aria-label="Video"
+                data-slide-index="{{ video_thumb_index }}"
+                data-video-url="{{ section.settings.video_url }}"
+              >
+                {%- if section.settings.video_poster != blank -%}
+                  {{ section.settings.video_poster | image_url: width: 160 | image_tag: loading: 'lazy', class: 'milaura-thumb-strip__img' }}
+                {%- endif -%}
+                <div class="milaura-thumb-strip__video-overlay">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.4)"/><path d="M10 7L18 12L10 17V7Z" fill="white"/></svg>
+                </div>
+              </button>
+            {%- endif -%}
           </div>
 
           {%- comment -%} Overlay variantes supprimé — les variantes sont gérées dans la zone d'achat {%- endcomment -%}
         </slider-component>
+
+        {%- comment -%} ========== SPOTLIGHT DESKTOP THUMBNAIL (outside slider) ========== {%- endcomment -%}
+        {%- if section.settings.show_spotlight and section.settings.spotlight_image != blank -%}
+          <div class="milaura-spotlight-desktop-thumb" data-spotlight-slide="Slide-{{ section.id }}-{{ product.media.size | plus: 1 }}">
+            <div class="milaura-spotlight-desktop-thumb__img-wrap">
+              {{
+                section.settings.spotlight_image
+                | image_url: width: 200
+                | image_tag: loading: 'lazy', class: 'milaura-spotlight-desktop-thumb__img'
+              }}
+            </div>
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Badges metafields produit {%- endcomment -%}
         {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
@@ -1233,6 +1930,37 @@
           </div>
         {%- endif -%}
       </div>
+
+      <!--
+        ============================================
+        VIDEO BUBBLE (floating, between header & actions on desktop)
+        ============================================
+      -->
+      {%- if section.settings.show_video_slide and section.settings.video_url != blank -%}
+        <div class="milaura-video-bubble-wrapper">
+          <div class="milaura-video-bubble" data-video-url="{{ section.settings.video_url }}">
+            {%- if section.settings.video_poster != blank -%}
+              <div class="milaura-video-bubble__poster">
+                {{ section.settings.video_poster | image_url: width: 400 | image_tag: loading: 'lazy', class: 'milaura-video-bubble__poster-img' }}
+                <button class="milaura-video-bubble__play" aria-label="Lire la video">
+                  <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                    <circle cx="18" cy="18" r="18" fill="rgba(0,0,0,0.4)"/>
+                    <path d="M14 11L26 18L14 25V11Z" fill="white"/>
+                  </svg>
+                </button>
+              </div>
+            {%- else -%}
+              <div class="milaura-video-bubble__poster milaura-video-bubble__poster--empty">
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <circle cx="18" cy="18" r="18" fill="rgba(192,160,98,0.15)"/>
+                  <path d="M14 11L26 18L14 25V11Z" fill="var(--milaura-gold, #C0A062)"/>
+                </svg>
+                <span class="milaura-video-bubble__label">Video</span>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
 
       <!--
         ============================================
@@ -1610,6 +2338,8 @@
 
       items.forEach(function (item, index) {
         if (index === 0) return; // Skip main image
+        // Skip spotlight and video slides (handled separately)
+        if (item.classList.contains('product__media-item--spotlight') || item.classList.contains('product__media-item--video-slide')) return;
 
         item.querySelector('.product-media-container').addEventListener('click', function (e) {
           if (!isDesktop()) return;
@@ -1619,8 +2349,8 @@
           const clickedItem = item;
 
           // Swap the image sources
-          const mainImg = firstItem.querySelector('img');
-          const thumbImg = clickedItem.querySelector('img');
+          const mainImg = firstItem.querySelector('img.image-magnify-hover');
+          const thumbImg = clickedItem.querySelector('img.image-magnify-hover');
           if (!mainImg || !thumbImg) return;
 
           // Swap src and srcset
@@ -1706,11 +2436,281 @@
       init();
     }
 
+    /* ============================
+     5. SPOTLIGHT HOTSPOTS (Click toggle)
+     On mobile: tooltip is moved to body to escape overflow/transform issues
+     ============================ */
+    function initSpotlightHotspots() {
+      var hotspots = document.querySelectorAll('.milaura-hotspot');
+      if (!hotspots.length) return;
+
+      // Create mobile overlay container (appended to body to escape all overflow)
+      var mobileOverlay = document.createElement('div');
+      mobileOverlay.className = 'milaura-hotspot-mobile-overlay';
+      mobileOverlay.style.cssText = 'display:none;position:fixed;bottom:80px;left:16px;right:16px;z-index:99999;pointer-events:auto;';
+      mobileOverlay.innerHTML = '<div class="milaura-hotspot-mobile-overlay__card"></div>';
+      document.body.appendChild(mobileOverlay);
+      var overlayCard = mobileOverlay.querySelector('.milaura-hotspot-mobile-overlay__card');
+
+      hotspots.forEach(function(hotspot) {
+        var btn = hotspot.querySelector('.milaura-hotspot-btn');
+        if (!btn) return;
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var wasActive = hotspot.classList.contains('is-active');
+
+          // Close all
+          hotspots.forEach(function(h) { h.classList.remove('is-active'); });
+          mobileOverlay.style.display = 'none';
+
+          if (wasActive) return;
+
+          hotspot.classList.add('is-active');
+
+          // On mobile: show tooltip in body overlay instead
+          if (!isDesktop()) {
+            var tooltip = hotspot.querySelector('.milaura-hotspot-tooltip-content');
+            if (tooltip) {
+              overlayCard.innerHTML = tooltip.innerHTML;
+              mobileOverlay.style.display = 'block';
+            }
+          }
+        });
+      });
+
+      document.addEventListener('click', function(e) {
+        if (mobileOverlay.contains(e.target)) return;
+        hotspots.forEach(function(h) { h.classList.remove('is-active'); });
+        mobileOverlay.style.display = 'none';
+      });
+    }
+
+    /* ============================
+     6. VIDEO BUBBLE (Click → expand to 16:9 iframe)
+     ============================ */
+    function initVideoSlide() {
+      var bubbles = document.querySelectorAll('.milaura-video-bubble');
+      bubbles.forEach(function(bubble) {
+        bubble.addEventListener('click', function() {
+          var url = bubble.getAttribute('data-video-url');
+          if (!url) return;
+          var embedUrl = parseVideoUrl(url);
+          if (!embedUrl) return;
+
+          // Expand bubble to 16:9 player
+          bubble.classList.add('milaura-video-bubble--playing');
+          bubble.innerHTML = '<iframe src="' + embedUrl + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+        });
+      });
+    }
+
+    /* ============================
+     7. MOBILE THUMBNAIL STRIP
+     Click → scroll to that slide
+     Video thumbnail autoplay
+     ============================ */
+    function initMobileThumbStrip() {
+      var strip = document.querySelector('.milaura-thumb-strip');
+      if (!strip) return;
+
+      var sliderComp = document.querySelector('.milaura-hero-gallery-column slider-component');
+      if (!sliderComp) return;
+
+      var slider = sliderComp.querySelector('[id^="Slider-"]');
+      var slides = sliderComp.querySelectorAll('.product__media-item');
+      var dots = sliderComp.querySelectorAll('.slider-counter__link--dots');
+      var thumbs = strip.querySelectorAll('.milaura-thumb-strip__item');
+      if (!slider || !slides.length || !thumbs.length) return;
+
+      /* Click thumbnail → scroll to slide + update active states */
+      thumbs.forEach(function(thumb) {
+        thumb.addEventListener('click', function(e) {
+          e.preventDefault();
+          var idx = parseInt(this.getAttribute('data-slide-index'), 10);
+          if (isNaN(idx) || !slides[idx]) return;
+
+          /* If clicking video thumbnail, inject iframe into the video slide */
+          if (thumb.classList.contains('milaura-thumb-strip__item--video')) {
+            var videoSlide = slides[idx];
+            var container = videoSlide ? videoSlide.querySelector('.milaura-video-main-container') : null;
+            if (container && !container.querySelector('iframe')) {
+              var url = container.getAttribute('data-video-url') || thumb.getAttribute('data-video-url');
+              if (url) {
+                var embedUrl = parseVideoUrl(url);
+                if (embedUrl) {
+                  container.innerHTML = '<iframe src="' + embedUrl + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:16px;"></iframe>';
+                }
+              }
+            }
+          }
+
+          slider.scrollTo({ left: slides[idx].offsetLeft, behavior: 'smooth' });
+
+          /* Update active thumb */
+          thumbs.forEach(function(t) { t.classList.remove('is-active'); });
+          thumb.classList.add('is-active');
+
+          /* Update dots */
+          dots.forEach(function(dot, i) {
+            dot.classList.toggle('slider-counter__link--active', i === idx);
+          });
+        });
+      });
+
+      /* Sync thumb strip with scroll */
+      var scrollTimer2;
+      slider.addEventListener('scroll', function() {
+        clearTimeout(scrollTimer2);
+        scrollTimer2 = setTimeout(function() {
+          if (isDesktop()) return;
+          var scrollLeft = slider.scrollLeft;
+          var containerWidth = slider.clientWidth;
+          var activeIndex = 0;
+          var minDist = Infinity;
+          slides.forEach(function(slide, i) {
+            var center = slide.offsetLeft + slide.clientWidth / 2;
+            var dist = Math.abs(center - (scrollLeft + containerWidth / 2));
+            if (dist < minDist) { minDist = dist; activeIndex = i; }
+          });
+          thumbs.forEach(function(t, i) {
+            t.classList.toggle('is-active', i === activeIndex);
+          });
+        }, 50);
+      }, { passive: true });
+
+      /* Video thumbnail autoplay (small muted iframe) */
+      var videoThumb = strip.querySelector('.milaura-thumb-strip__item--video');
+      if (videoThumb) {
+        var videoUrl = videoThumb.getAttribute('data-video-url');
+        if (videoUrl) {
+          var autoplayUrl = parseVideoUrl(videoUrl, true);
+          if (autoplayUrl) {
+            var iframe = document.createElement('iframe');
+            iframe.src = autoplayUrl;
+            iframe.allow = 'autoplay; encrypted-media';
+            iframe.setAttribute('loading', 'lazy');
+            iframe.setAttribute('tabindex', '-1');
+            videoThumb.insertBefore(iframe, videoThumb.querySelector('.milaura-thumb-strip__video-overlay'));
+            videoThumb.classList.add('has-autoplay');
+          }
+        }
+      }
+    }
+
+    /* Video slide play button handler (mobile carousel) */
+    function initVideoSlidePlay() {
+      var playBtns = document.querySelectorAll('.milaura-video-main-play');
+      playBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var container = btn.closest('.milaura-video-main-container');
+          if (!container || container.querySelector('iframe')) return;
+          var url = container.getAttribute('data-video-url');
+          if (!url) return;
+          var embedUrl = parseVideoUrl(url);
+          if (!embedUrl) return;
+          container.innerHTML = '<iframe src="' + embedUrl + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:16px;"></iframe>';
+        });
+      });
+    }
+
+    /* Parse YouTube/Vimeo URL to embed URL */
+    function parseVideoUrl(url, muted) {
+      var embedUrl = '';
+      if (url.indexOf('youtube.com') !== -1 || url.indexOf('youtu.be') !== -1) {
+        var match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&\s?]+)/);
+        if (match) {
+          embedUrl = 'https://www.youtube.com/embed/' + match[1] + '?autoplay=1&rel=0';
+          if (muted) embedUrl += '&mute=1&loop=1&playlist=' + match[1] + '&controls=0&showinfo=0&modestbranding=1';
+        }
+      } else if (url.indexOf('vimeo.com') !== -1) {
+        var vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+        if (vimeoMatch) {
+          embedUrl = 'https://player.vimeo.com/video/' + vimeoMatch[1] + '?autoplay=1';
+          if (muted) embedUrl += '&muted=1&loop=1&background=1';
+        }
+      }
+      return embedUrl;
+    }
+
+    /* ============================
+     8. SPOTLIGHT DESKTOP THUMBNAIL
+     Move outside slider into thumbnail row + click to swap
+     ============================ */
+    function initSpotlightDesktop() {
+      var desktopThumb = document.querySelector('.milaura-spotlight-desktop-thumb');
+      if (!desktopThumb) return;
+
+      var mediaList = document.querySelector('.product__media-list');
+      if (!mediaList) return;
+
+      // On desktop, move the spotlight thumbnail into the media list (as last child)
+      // so it appears in the flex thumbnail row naturally
+      function positionSpotlight() {
+        if (isDesktop()) {
+          if (desktopThumb.parentElement !== mediaList) {
+            mediaList.appendChild(desktopThumb);
+          }
+        } else {
+          // On mobile, move it back outside (hidden via CSS anyway)
+          var galleryCol = document.querySelector('.milaura-hero-gallery-column');
+          if (galleryCol && desktopThumb.parentElement !== galleryCol) {
+            galleryCol.appendChild(desktopThumb);
+          }
+        }
+      }
+
+      positionSpotlight();
+      window.addEventListener('resize', positionSpotlight);
+
+      // Hide the spotlight <li> inside the slider on desktop
+      var spotlightSlide = document.querySelector('.product__media-item--spotlight');
+      if (spotlightSlide) {
+        // Add CSS to hide it on desktop only (mobile still uses it)
+        spotlightSlide.style.cssText += ';';
+        var style = document.createElement('style');
+        style.textContent = '@media(min-width:990px){.product__media-item--spotlight{display:none!important;}}';
+        document.head.appendChild(style);
+      }
+
+      // Click handler: swap spotlight image with main image
+      desktopThumb.addEventListener('click', function() {
+        if (!isDesktop()) return;
+
+        var firstItem = mediaList.querySelector('.product__media-item:first-child');
+        if (!firstItem) return;
+        var mainImg = firstItem.querySelector('img.image-magnify-hover');
+        var spotlightImg = desktopThumb.querySelector('.milaura-spotlight-desktop-thumb__img');
+        if (!mainImg || !spotlightImg) return;
+
+        var tmpSrc = mainImg.src;
+        var tmpSrcset = mainImg.srcset || '';
+        var tmpAlt = mainImg.alt || '';
+
+        mainImg.src = spotlightImg.src;
+        mainImg.srcset = spotlightImg.srcset || '';
+        mainImg.alt = spotlightImg.alt || 'Spotlight';
+
+        spotlightImg.src = tmpSrc;
+        spotlightImg.srcset = tmpSrcset;
+        spotlightImg.alt = tmpAlt;
+
+        firstItem.querySelector('.product-media-container').classList.remove('is-zoomed');
+      });
+    }
+
     function init() {
       repositionBadges();
       initZoom();
       initThumbnails();
       initSliderNav();
+      initSpotlightHotspots();
+      initVideoSlide();
+      initVideoSlidePlay();
+      initMobileThumbStrip();
+      initSpotlightDesktop();
       window.addEventListener('resize', repositionBadges);
     }
   })();
@@ -1793,6 +2793,129 @@
       "id": "price_color",
       "label": "Couleur du prix",
       "default": "#C0A062"
+    },
+    {
+      "type": "header",
+      "content": "🎥 Galerie enrichie"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_spotlight",
+      "default": false,
+      "label": "Afficher slide Spotlight (hotspots)"
+    },
+    {
+      "type": "image_picker",
+      "id": "spotlight_image",
+      "label": "Image Spotlight"
+    },
+    {
+      "type": "text",
+      "id": "spotlight_1_title",
+      "label": "Hotspot 1 — Titre",
+      "default": "Energie apaisante"
+    },
+    {
+      "type": "richtext",
+      "id": "spotlight_1_desc",
+      "label": "Hotspot 1 — Description"
+    },
+    {
+      "type": "range",
+      "id": "spotlight_1_x",
+      "label": "Hotspot 1 — Position X (%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "spotlight_1_y",
+      "label": "Hotspot 1 — Position Y (%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "text",
+      "id": "spotlight_2_title",
+      "label": "Hotspot 2 — Titre"
+    },
+    {
+      "type": "richtext",
+      "id": "spotlight_2_desc",
+      "label": "Hotspot 2 — Description"
+    },
+    {
+      "type": "range",
+      "id": "spotlight_2_x",
+      "label": "Hotspot 2 — Position X (%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 65
+    },
+    {
+      "type": "range",
+      "id": "spotlight_2_y",
+      "label": "Hotspot 2 — Position Y (%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "text",
+      "id": "spotlight_3_title",
+      "label": "Hotspot 3 — Titre"
+    },
+    {
+      "type": "richtext",
+      "id": "spotlight_3_desc",
+      "label": "Hotspot 3 — Description"
+    },
+    {
+      "type": "range",
+      "id": "spotlight_3_x",
+      "label": "Hotspot 3 — Position X (%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "spotlight_3_y",
+      "label": "Hotspot 3 — Position Y (%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 70
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_slide",
+      "default": false,
+      "label": "Afficher slide Video"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "URL Video (YouTube ou Vimeo)",
+      "accept": ["youtube", "vimeo"]
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster",
+      "label": "Miniature video (optionnel)"
     },
     {
       "type": "header",
