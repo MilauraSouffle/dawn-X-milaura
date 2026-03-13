@@ -243,14 +243,14 @@
     <span class="milaura-dock-label">{{ section.settings.account_label | default: 'Compte' }}</span>
   </a>
 
-  <!-- 3. Contact -->
-  <a href="{{ section.settings.contact_url | default: '/pages/contact-milaura' }}" class="milaura-dock-item" aria-label="{{ section.settings.contact_label | default: 'Contact' }}">
+  <!-- 3. Recherche -->
+  <button type="button" class="milaura-dock-item" data-dock-search aria-label="Rechercher">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-      <polyline points="22,6 12,13 2,6"/>
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
     </svg>
-    <span class="milaura-dock-label">{{ section.settings.contact_label | default: 'Contact' }}</span>
-  </a>
+    <span class="milaura-dock-label">Rechercher</span>
+  </button>
 
   <!-- 4. Panier -->
   <a href="/cart" class="milaura-dock-item" aria-label="{{ section.settings.cart_label | default: 'Panier' }}">
@@ -305,6 +305,16 @@
       closePhonePopup();
     }
   });
+
+  /* --- Dock Search --- */
+  var dockSearchBtn = document.querySelector('[data-dock-search]');
+  if (dockSearchBtn) {
+    dockSearchBtn.addEventListener('click', function() {
+      if (typeof window.milauraOpenSearch === 'function') {
+        window.milauraOpenSearch();
+      }
+    });
+  }
 
   /* --- Cart badge --- */
   var badge = document.getElementById('milaura-dock-badge');
