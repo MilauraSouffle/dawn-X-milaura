@@ -571,11 +571,12 @@
       display: block;
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-accordion-content.is-open {
-      max-height: 800px;
+      max-height: 1200px;
+      overflow: visible;
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-accordion-inner {
@@ -987,6 +988,11 @@
       btn.addEventListener('click', function (e) {
         e.preventDefault();
 
+        // Sur mobile, ignorer si le clic vient du contenu accordéon (scroll/interaction)
+        if (isMobile() && e.target.closest('.benefit-accordion-content')) {
+          return;
+        }
+
         // Sur mobile, si on clique sur l'actif, on le ferme
         if (isMobile() && i === currentIndex && accordionContents[i].classList.contains('is-open')) {
           closeAllMobile();
@@ -995,6 +1001,13 @@
 
         activateTab(i);
       });
+    });
+
+    // Empêcher la propagation des touch events depuis le contenu accordéon
+    accordionContents.forEach(function (content) {
+      content.addEventListener('touchmove', function (e) {
+        e.stopPropagation();
+      }, { passive: true });
     });
 
     // Navigation clavier
