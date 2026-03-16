@@ -436,8 +436,7 @@
       border-radius: 16px;
       border: 2px solid rgba(192, 160, 98, 0.35);
       background: rgba(255, 255, 255, 0.7);
-      overflow: hidden;
-      transition: all 0.3s ease;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 4px 15px rgba(192, 160, 98, 0.1);
     }
 
@@ -513,7 +512,7 @@
       margin-top: 4px;
     }
 
-    /* Chevron accordéon visible + animation */
+    /* Chevron accordéon visible */
     #MilauraBenefits-{{ section.id }} .benefit-btn-chevron {
       display: flex;
       align-items: center;
@@ -525,19 +524,7 @@
       border-radius: 50%;
       flex-shrink: 0;
       margin-left: auto;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      animation: chevronPulse 2.5s ease-in-out infinite;
-    }
-
-    @keyframes chevronPulse {
-      0%, 100% {
-        transform: translateY(0);
-        box-shadow: 0 2px 8px rgba(192, 160, 98, 0.2);
-      }
-      50% {
-        transform: translateY(3px);
-        box-shadow: 0 4px 12px rgba(192, 160, 98, 0.35);
-      }
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn-chevron svg {
@@ -550,14 +537,11 @@
     #MilauraBenefits-{{ section.id }} .benefit-btn:hover .benefit-btn-chevron {
       background: rgba(192, 160, 98, 0.25);
       border-color: rgba(192, 160, 98, 0.5);
-      animation: none;
-      transform: translateY(2px);
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-btn.is-active .benefit-btn-chevron {
       background: var(--milaura-gold);
       border-color: var(--milaura-gold);
-      animation: none;
       box-shadow: 0 4px 15px rgba(192, 160, 98, 0.4);
     }
 
@@ -575,8 +559,7 @@
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-accordion-content.is-open {
-      max-height: 1200px;
-      overflow: visible;
+      max-height: 1500px;
     }
 
     #MilauraBenefits-{{ section.id }} .benefit-accordion-inner {
@@ -927,7 +910,8 @@
 
     if (btns.length === 0) return;
 
-    var currentIndex = -1; // -1 = aucun ouvert sur mobile
+    var currentIndex = -1;
+    var lastWidth = window.innerWidth;
 
     function isMobile() {
       return window.innerWidth <= 990;
@@ -937,6 +921,7 @@
       btns.forEach(function (btn) {
         btn.classList.remove('is-active');
         btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-selected', 'false');
       });
       accordionContents.forEach(function (content) {
         content.classList.remove('is-open');
@@ -950,9 +935,17 @@
     function activateTab(index) {
       if (index < 0 || index >= btns.length) return;
 
+      // Sur mobile, fermer l'onglet actif d'abord (un seul ouvert)
+      if (isMobile() && currentIndex >= 0 && currentIndex !== index) {
+        btns[currentIndex].classList.remove('is-active');
+        btns[currentIndex].setAttribute('aria-expanded', 'false');
+        btns[currentIndex].setAttribute('aria-selected', 'false');
+        accordionContents[currentIndex].classList.remove('is-open');
+        accordionItems[currentIndex].classList.remove('is-expanded');
+      }
+
       currentIndex = index;
 
-      // Mise à jour des boutons
       btns.forEach(function (btn, i) {
         var isActive = i === index;
         btn.classList.toggle('is-active', isActive);
@@ -960,7 +953,6 @@
         btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
       });
 
-      // Desktop: mise à jour des cartes + fond section
       cards.forEach(function (card, i) {
         card.classList.toggle('is-active', i === index);
       });
@@ -972,42 +964,25 @@
         }
       }
 
-      // Mobile: accordéon + cadre doré
       if (isMobile()) {
-        accordionContents.forEach(function (content, i) {
-          content.classList.toggle('is-open', i === index);
-        });
-        accordionItems.forEach(function (item, i) {
-          item.classList.toggle('is-expanded', i === index);
-        });
+        accordionContents[index].classList.add('is-open');
+        accordionItems[index].classList.add('is-expanded');
       }
     }
 
-    // Événements clic
+    // Click : uniquement sur le bouton, rien d'autre
     btns.forEach(function (btn, i) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
 
-        // Sur mobile, ignorer si le clic vient du contenu accordéon (scroll/interaction)
-        if (isMobile() && e.target.closest('.benefit-accordion-content')) {
-          return;
-        }
-
-        // Sur mobile, si on clique sur l'actif, on le ferme
-        if (isMobile() && i === currentIndex && accordionContents[i].classList.contains('is-open')) {
+        if (isMobile() && i === currentIndex) {
+          // Toggle : fermer si déjà ouvert
           closeAllMobile();
           return;
         }
 
         activateTab(i);
       });
-    });
-
-    // Empêcher la propagation des touch events depuis le contenu accordéon
-    accordionContents.forEach(function (content) {
-      content.addEventListener('touchmove', function (e) {
-        e.stopPropagation();
-      }, { passive: true });
     });
 
     // Navigation clavier
@@ -1045,7 +1020,7 @@
       }
     });
 
-    // Initialisation: Desktop ouvre le premier, Mobile tout fermé
+    // Init
     function initializeState() {
       if (!isMobile()) {
         activateTab(0);
@@ -1057,11 +1032,13 @@
 
     initializeState();
 
-    // Réinitialiser au changement de taille
-    var resizeTimeout;
+    // Resize : uniquement si la LARGEUR change (ignore toolbar iOS)
     window.addEventListener('resize', function () {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(initializeState, 150);
+      var newWidth = window.innerWidth;
+      if (newWidth !== lastWidth) {
+        lastWidth = newWidth;
+        initializeState();
+      }
     });
   })();
 </script>
