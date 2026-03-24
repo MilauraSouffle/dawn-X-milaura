@@ -225,6 +225,113 @@
   }
 
   /* ============================================
+     MEGA-MENU DESKTOP - Subcategories 3 niveaux
+     ============================================ */
+  #MilauraNav-{{ section.id }} .nav-megamenu {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(192, 160, 98, 0.18);
+    border-radius: 20px;
+    padding: 28px 32px;
+    min-width: 480px;
+    box-shadow:
+      0 16px 48px rgba(0, 0, 0, 0.1),
+      0 2px 8px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+    z-index: 100;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-item-has-megamenu:hover .nav-megamenu,
+  #MilauraNav-{{ section.id }} .nav-item-has-megamenu:focus-within .nav-megamenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Accessibilite : focus-within pour le dropdown simple aussi */
+  #MilauraNav-{{ section.id }} .nav-item-has-children:focus-within .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Bridge hover entre le lien et le mega-menu */
+  #MilauraNav-{{ section.id }} .nav-megamenu::before {
+    content: '';
+    position: absolute;
+    top: -16px;
+    left: 0;
+    right: 0;
+    height: 16px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-megamenu-columns {
+    display: flex;
+    gap: 28px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-megamenu-column {
+    flex: 1;
+    min-width: 130px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-megamenu-column--single {
+    flex: 0 0 auto;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-megamenu-column-title {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--milaura-gold-dark);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding-bottom: 10px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-megamenu-column-title:hover {
+    color: var(--milaura-gold);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-megamenu-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-megamenu-link {
+    display: block;
+    padding: 7px 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.82rem;
+    color: var(--milaura-text);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    border-radius: 8px;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-megamenu-link:hover {
+    background: rgba(192, 160, 98, 0.1);
+    color: var(--milaura-gold-dark);
+  }
+
+  /* ============================================
      SUPER CTA BADGE QUIZ - LE CŒUR DU FUNNEL
      Visible sur TOUS les écrans avec halo pulsant
      ============================================ */
@@ -799,7 +906,7 @@
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-submenu.open {
-    max-height: 500px;
+    max-height: 1000px;
     margin-top: 8px;
     margin-bottom: 8px;
   }
@@ -848,6 +955,35 @@
   #MilauraNav-{{ section.id }} .nav-mobile-sublink:active::before {
     opacity: 1;
     transform: translateY(-50%) scale(1.3);
+  }
+
+  /* --- GROUPES MEGA-MENU MOBILE (3 niveaux) --- */
+  #MilauraNav-{{ section.id }} .nav-mobile-group {
+    padding: 4px 0;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-group-title {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--milaura-gold);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 14px 20px 6px 20px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-group-title:hover,
+  #MilauraNav-{{ section.id }} .nav-mobile-group-title:active {
+    color: var(--milaura-gold-light);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-group-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
   /* Badge Quiz Mobile */
@@ -1292,16 +1428,72 @@
       <ul class="nav-links">
         {%- for link in linklists[section.settings.menu].links -%}
           {%- if link.links.size > 0 -%}
-            <li class="nav-item nav-item-has-children">
+            {%- assign has_grandchildren = false -%}
+            {%- for child in link.links -%}
+              {%- if child.links.size > 0 -%}
+                {%- assign has_grandchildren = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <li class="nav-item nav-item-has-children{% if has_grandchildren %} nav-item-has-megamenu{% endif %}">
               <a href="{{ link.url }}" class="nav-link">
                 {{ link.title }}
                 <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
               </a>
-              <ul class="nav-dropdown">
-                {%- for child in link.links -%}
-                  <li><a href="{{ child.url }}" class="nav-dropdown-link">{{ child.title }}</a></li>
-                {%- endfor -%}
-              </ul>
+              {%- if has_grandchildren -%}
+                <!-- MEGA-MENU : colonnes par sous-categorie -->
+                <div class="nav-megamenu">
+                  <div class="nav-megamenu-columns">
+                    {%- for child in link.links -%}
+                      {%- if child.links.size > 0 -%}
+                        <div class="nav-megamenu-column">
+                          <a href="{{ child.url }}" class="nav-megamenu-column-title">{{ child.title }}</a>
+                          <ul class="nav-megamenu-links">
+                            {%- for grandchild in child.links -%}
+                              {%- assign _skip = false -%}
+                              {%- if grandchild.type == 'collection_link' -%}
+                                {%- if grandchild.object == blank or grandchild.object.products_count == 0 -%}
+                                  {%- assign _skip = true -%}
+                                {%- endif -%}
+                              {%- endif -%}
+                              {%- unless _skip -%}
+                                <li><a href="{{ grandchild.url }}" class="nav-megamenu-link">{{ grandchild.title }}</a></li>
+                              {%- endunless -%}
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      {%- else -%}
+                        {%- assign _skip = false -%}
+                        {%- if child.type == 'collection_link' -%}
+                          {%- if child.object == blank or child.object.products_count == 0 -%}
+                            {%- assign _skip = true -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        {%- unless _skip -%}
+                          <div class="nav-megamenu-column nav-megamenu-column--single">
+                            <a href="{{ child.url }}" class="nav-megamenu-link">{{ child.title }}</a>
+                          </div>
+                        {%- endunless -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- else -%}
+                <!-- DROPDOWN SIMPLE (2 niveaux) -->
+                <ul class="nav-dropdown">
+                  {%- for child in link.links -%}
+                    {%- assign _skip = false -%}
+                    {%- if child.type == 'collection_link' -%}
+                      {%- if child.object == blank or child.object.products_count == 0 -%}
+                        {%- assign _skip = true -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                    {%- unless _skip -%}
+                      <li><a href="{{ child.url }}" class="nav-dropdown-link">{{ child.title }}</a></li>
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
             </li>
           {%- else -%}
             <li class="nav-item">
@@ -1403,7 +1595,7 @@
       </div>
     </div>
 
-    <!-- Liens de navigation -->
+    <!-- Liens de navigation (3 niveaux : mega-menu) -->
     <ul class="nav-mobile-links">
       {%- for link in linklists[section.settings.menu].links -%}
         {%- if link.links.size > 0 -%}
@@ -1414,7 +1606,35 @@
             </div>
             <ul class="nav-mobile-submenu">
               {%- for child in link.links -%}
-                <li><a href="{{ child.url }}" class="nav-mobile-sublink" data-close-menu>{{ child.title }}</a></li>
+                {%- if child.links.size > 0 -%}
+                  <!-- Groupe avec sous-liens (3e niveau) -->
+                  <li class="nav-mobile-group">
+                    <a href="{{ child.url }}" class="nav-mobile-group-title" data-close-menu>{{ child.title }}</a>
+                    <ul class="nav-mobile-group-links">
+                      {%- for grandchild in child.links -%}
+                        {%- assign _skip = false -%}
+                        {%- if grandchild.type == 'collection_link' -%}
+                          {%- if grandchild.object == blank or grandchild.object.products_count == 0 -%}
+                            {%- assign _skip = true -%}
+                          {%- endif -%}
+                        {%- endif -%}
+                        {%- unless _skip -%}
+                          <li><a href="{{ grandchild.url }}" class="nav-mobile-sublink" data-close-menu>{{ grandchild.title }}</a></li>
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    </ul>
+                  </li>
+                {%- else -%}
+                  {%- assign _skip = false -%}
+                  {%- if child.type == 'collection_link' -%}
+                    {%- if child.object == blank or child.object.products_count == 0 -%}
+                      {%- assign _skip = true -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- unless _skip -%}
+                    <li><a href="{{ child.url }}" class="nav-mobile-sublink" data-close-menu>{{ child.title }}</a></li>
+                  {%- endunless -%}
+                {%- endif -%}
               {%- endfor -%}
             </ul>
           </li>
