@@ -99,7 +99,7 @@
   /* --- LIENS DU MENU (Desktop uniquement) --- */
   #MilauraNav-{{ section.id }} .nav-links {
     display: flex;
-    gap: 24px;
+    gap: 18px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -329,6 +329,34 @@
   #MilauraNav-{{ section.id }} .nav-megamenu-link:hover {
     background: rgba(192, 160, 98, 0.1);
     color: var(--milaura-gold-dark);
+  }
+
+  /* --- LIEN NOUVEAUTES : micro-badge dore --- */
+  #MilauraNav-{{ section.id }} .nav-link--nouveautes {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-link--nouveautes::after {
+    content: 'NEW';
+    font-family: 'Lato', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
+    padding: 2px 6px;
+    border-radius: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+    animation: badgeShimmer 3s ease-in-out infinite;
+    background-size: 200% 200%;
+  }
+
+  /* Mobile : badge Nouveautes dore */
+  #MilauraNav-{{ section.id }} .nav-mobile-link--nouveautes {
+    color: var(--milaura-gold-light) !important;
   }
 
   /* ============================================
@@ -1497,7 +1525,7 @@
             </li>
           {%- else -%}
             <li class="nav-item">
-              <a href="{{ link.url }}" class="nav-link">{{ link.title }}</a>
+              <a href="{{ link.url }}" class="nav-link{% if link.title contains 'Nouveaut' or link.title contains 'nouveaut' %} nav-link--nouveautes{% endif %}">{{ link.title }}</a>
             </li>
           {%- endif -%}
         {%- endfor -%}
@@ -1640,7 +1668,7 @@
           </li>
         {%- else -%}
           <li>
-            <a href="{{ link.url }}" class="nav-mobile-link" data-close-menu>
+            <a href="{{ link.url }}" class="nav-mobile-link{% if link.title contains 'Nouveaut' or link.title contains 'nouveaut' %} nav-mobile-link--nouveautes{% endif %}" data-close-menu>
               {{ link.title }}
             </a>
           </li>
