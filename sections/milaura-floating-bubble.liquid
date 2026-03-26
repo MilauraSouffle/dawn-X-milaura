@@ -1639,17 +1639,29 @@
     var isMobile = window.matchMedia('(max-width: 768px)');
     function hideHeaderForPanel() {
       if (!isMobile.matches) return;
+      /* Navbar fixe (position:fixed z-index:1000000) */
+      var navbar = document.querySelector('[id^="MilauraNav"]');
+      if (navbar) navbar.style.display = 'none';
+      /* Announcement bar */
+      var annSections = document.querySelectorAll('.shopify-section-group-header-group > section, .shopify-section-group-header-group > div');
+      annSections.forEach(function(el) { el.style.display = 'none'; });
+      /* Header group wrapper lui-meme */
       var headerGroup = document.querySelector('.shopify-section-group-header-group');
-      var announcement = document.querySelector('.shopify-section-header-group-milaura-announcement');
       if (headerGroup) headerGroup.style.display = 'none';
-      if (announcement) announcement.style.display = 'none';
+      /* Sticky bar mobile si presente */
+      var stickyBar = document.querySelector('[id^="MilauraStickyBar"]');
+      if (stickyBar) stickyBar.style.display = 'none';
       document.body.style.overflow = 'hidden';
     }
     function showHeaderAfterPanel() {
+      var navbar = document.querySelector('[id^="MilauraNav"]');
+      if (navbar) navbar.style.display = '';
+      var annSections = document.querySelectorAll('.shopify-section-group-header-group > section, .shopify-section-group-header-group > div');
+      annSections.forEach(function(el) { el.style.display = ''; });
       var headerGroup = document.querySelector('.shopify-section-group-header-group');
-      var announcement = document.querySelector('.shopify-section-header-group-milaura-announcement');
       if (headerGroup) headerGroup.style.display = '';
-      if (announcement) announcement.style.display = '';
+      var stickyBar = document.querySelector('[id^="MilauraStickyBar"]');
+      if (stickyBar) stickyBar.style.display = '';
       document.body.style.overflow = '';
     }
 
