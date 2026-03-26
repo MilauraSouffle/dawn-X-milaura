@@ -864,7 +864,7 @@
 
     /* Onglets plus grands sur mobile plein ecran — padding-top pour passer sous le bouton fermer */
     .milaura-bubble-tabs {
-      padding-top: 60px;
+      padding-top: 50px;
     }
 
     .milaura-bubble-tab {
@@ -1635,6 +1635,24 @@
       });
     });
 
+    /* --- Mobile : masquer le header quand panel ouvert --- */
+    var isMobile = window.matchMedia('(max-width: 768px)');
+    function hideHeaderForPanel() {
+      if (!isMobile.matches) return;
+      var headerGroup = document.querySelector('.shopify-section-group-header-group');
+      var announcement = document.querySelector('.shopify-section-header-group-milaura-announcement');
+      if (headerGroup) headerGroup.style.display = 'none';
+      if (announcement) announcement.style.display = 'none';
+      document.body.style.overflow = 'hidden';
+    }
+    function showHeaderAfterPanel() {
+      var headerGroup = document.querySelector('.shopify-section-group-header-group');
+      var announcement = document.querySelector('.shopify-section-header-group-milaura-announcement');
+      if (headerGroup) headerGroup.style.display = '';
+      if (announcement) announcement.style.display = '';
+      document.body.style.overflow = '';
+    }
+
     /* --- Open / Close --- */
     function openBubble(tabName) {
       /* Hide label when opening */
@@ -1646,6 +1664,7 @@
       }
       renderRitualPane();
       if (tabName) switchTab(tabName);
+      hideHeaderForPanel();
       panel.classList.add('active');
       overlay.classList.add('active');
       trigger.setAttribute('aria-expanded', 'true');
@@ -1657,6 +1676,7 @@
       if (!isOpen) return;
       panel.classList.remove('active');
       overlay.classList.remove('active');
+      showHeaderAfterPanel();
       trigger.setAttribute('aria-expanded', 'false');
       isOpen = false;
       trigger.focus();
