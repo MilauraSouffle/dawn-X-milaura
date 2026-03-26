@@ -418,6 +418,43 @@
     gap: var(--milaura-spacing-md);
   }
 
+  /* --- ONGLETS PRODUIT (Bougie/Pierre/Rituel) --- */
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-product-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-rpt-tab {
+    flex: 1;
+    padding: 8px 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 50px;
+    background: transparent;
+    color: var(--milaura-text-light, #666);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-rpt-tab:hover {
+    border-color: rgba(192, 160, 98, 0.4);
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-rpt-tab.active {
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.3);
+  }
+
   #MilauraQuiz-{{ section.id }} .quiz-reveal-product-img-wrap {
     aspect-ratio: 1;
     border-radius: 16px;
@@ -1093,8 +1130,14 @@
     <div class="quiz-state quiz-state-result" data-state="result" style="display: none;">
       <div class="quiz-reveal-container">
         <div class="quiz-reveal-hero">
-          <!-- COLONNE GAUCHE : Galerie produit -->
+          <!-- COLONNE GAUCHE : Galerie produit avec onglets -->
           <div class="quiz-reveal-gallery">
+            <!-- Onglets Bougie / Pierre / Rituel -->
+            <div class="quiz-reveal-product-tabs" id="quiz-reveal-product-tabs-{{ section.id }}">
+              <button class="quiz-rpt-tab active" data-tab="candle">🕯️ Bougie</button>
+              <button class="quiz-rpt-tab" data-tab="stone">💎 Pierre</button>
+              <button class="quiz-rpt-tab" data-tab="ritual">✨ Rituel</button>
+            </div>
             <div class="quiz-reveal-product-img-wrap" id="quiz-reveal-img-wrap-{{ section.id }}">
               <img
                 id="quiz-reveal-product-image-{{ section.id }}"
@@ -1110,7 +1153,7 @@
               <div class="quiz-reveal-product-price" id="quiz-reveal-product-price-{{ section.id }}"></div>
             </div>
             <div class="quiz-reveal-cta-stack" id="quiz-reveal-cta-{{ section.id }}">
-              <!-- Injecté par JS : boutons CTA -->
+              <!-- Injecte par JS : boutons CTA -->
             </div>
             <div class="quiz-reveal-trust">
               <span class="quiz-reveal-trust-item"
@@ -1228,6 +1271,22 @@
           featured_image: {% if section.settings.profile_apaisement_product.featured_image %}{{ section.settings.profile_apaisement_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
           handle: {{ section.settings.profile_apaisement_product.handle | json }},
           variant_id: {% if section.settings.profile_apaisement_product.selected_or_first_available_variant %}{{ section.settings.profile_apaisement_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        stoneProduct: {% if section.settings.profile_apaisement_stone_product %}{
+          title: {{ section.settings.profile_apaisement_stone_product.title | json }},
+          url: {{ section.settings.profile_apaisement_stone_product.url | json }},
+          price: {{ section.settings.profile_apaisement_stone_product.price | money | json }},
+          featured_image: {% if section.settings.profile_apaisement_stone_product.featured_image %}{{ section.settings.profile_apaisement_stone_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_apaisement_stone_product.handle | json }},
+          variant_id: {% if section.settings.profile_apaisement_stone_product.selected_or_first_available_variant %}{{ section.settings.profile_apaisement_stone_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        ritualProduct: {% if section.settings.profile_apaisement_ritual_product %}{
+          title: {{ section.settings.profile_apaisement_ritual_product.title | json }},
+          url: {{ section.settings.profile_apaisement_ritual_product.url | json }},
+          price: {{ section.settings.profile_apaisement_ritual_product.price | money | json }},
+          featured_image: {% if section.settings.profile_apaisement_ritual_product.featured_image %}{{ section.settings.profile_apaisement_ritual_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_apaisement_ritual_product.handle | json }},
+          variant_id: {% if section.settings.profile_apaisement_ritual_product.selected_or_first_available_variant %}{{ section.settings.profile_apaisement_ritual_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       },
       protection: {
@@ -1251,6 +1310,22 @@
           featured_image: {% if section.settings.profile_protection_product.featured_image %}{{ section.settings.profile_protection_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
           handle: {{ section.settings.profile_protection_product.handle | json }},
           variant_id: {% if section.settings.profile_protection_product.selected_or_first_available_variant %}{{ section.settings.profile_protection_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        stoneProduct: {% if section.settings.profile_protection_stone_product %}{
+          title: {{ section.settings.profile_protection_stone_product.title | json }},
+          url: {{ section.settings.profile_protection_stone_product.url | json }},
+          price: {{ section.settings.profile_protection_stone_product.price | money | json }},
+          featured_image: {% if section.settings.profile_protection_stone_product.featured_image %}{{ section.settings.profile_protection_stone_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_protection_stone_product.handle | json }},
+          variant_id: {% if section.settings.profile_protection_stone_product.selected_or_first_available_variant %}{{ section.settings.profile_protection_stone_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        ritualProduct: {% if section.settings.profile_protection_ritual_product %}{
+          title: {{ section.settings.profile_protection_ritual_product.title | json }},
+          url: {{ section.settings.profile_protection_ritual_product.url | json }},
+          price: {{ section.settings.profile_protection_ritual_product.price | money | json }},
+          featured_image: {% if section.settings.profile_protection_ritual_product.featured_image %}{{ section.settings.profile_protection_ritual_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_protection_ritual_product.handle | json }},
+          variant_id: {% if section.settings.profile_protection_ritual_product.selected_or_first_available_variant %}{{ section.settings.profile_protection_ritual_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       },
       serenite: {
@@ -1274,6 +1349,22 @@
           featured_image: {% if section.settings.profile_serenite_product.featured_image %}{{ section.settings.profile_serenite_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
           handle: {{ section.settings.profile_serenite_product.handle | json }},
           variant_id: {% if section.settings.profile_serenite_product.selected_or_first_available_variant %}{{ section.settings.profile_serenite_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        stoneProduct: {% if section.settings.profile_serenite_stone_product %}{
+          title: {{ section.settings.profile_serenite_stone_product.title | json }},
+          url: {{ section.settings.profile_serenite_stone_product.url | json }},
+          price: {{ section.settings.profile_serenite_stone_product.price | money | json }},
+          featured_image: {% if section.settings.profile_serenite_stone_product.featured_image %}{{ section.settings.profile_serenite_stone_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_serenite_stone_product.handle | json }},
+          variant_id: {% if section.settings.profile_serenite_stone_product.selected_or_first_available_variant %}{{ section.settings.profile_serenite_stone_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        ritualProduct: {% if section.settings.profile_serenite_ritual_product %}{
+          title: {{ section.settings.profile_serenite_ritual_product.title | json }},
+          url: {{ section.settings.profile_serenite_ritual_product.url | json }},
+          price: {{ section.settings.profile_serenite_ritual_product.price | money | json }},
+          featured_image: {% if section.settings.profile_serenite_ritual_product.featured_image %}{{ section.settings.profile_serenite_ritual_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_serenite_ritual_product.handle | json }},
+          variant_id: {% if section.settings.profile_serenite_ritual_product.selected_or_first_available_variant %}{{ section.settings.profile_serenite_ritual_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       },
       amour: {
@@ -1297,6 +1388,22 @@
           featured_image: {% if section.settings.profile_amour_product.featured_image %}{{ section.settings.profile_amour_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
           handle: {{ section.settings.profile_amour_product.handle | json }},
           variant_id: {% if section.settings.profile_amour_product.selected_or_first_available_variant %}{{ section.settings.profile_amour_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        stoneProduct: {% if section.settings.profile_amour_stone_product %}{
+          title: {{ section.settings.profile_amour_stone_product.title | json }},
+          url: {{ section.settings.profile_amour_stone_product.url | json }},
+          price: {{ section.settings.profile_amour_stone_product.price | money | json }},
+          featured_image: {% if section.settings.profile_amour_stone_product.featured_image %}{{ section.settings.profile_amour_stone_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_amour_stone_product.handle | json }},
+          variant_id: {% if section.settings.profile_amour_stone_product.selected_or_first_available_variant %}{{ section.settings.profile_amour_stone_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        ritualProduct: {% if section.settings.profile_amour_ritual_product %}{
+          title: {{ section.settings.profile_amour_ritual_product.title | json }},
+          url: {{ section.settings.profile_amour_ritual_product.url | json }},
+          price: {{ section.settings.profile_amour_ritual_product.price | money | json }},
+          featured_image: {% if section.settings.profile_amour_ritual_product.featured_image %}{{ section.settings.profile_amour_ritual_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_amour_ritual_product.handle | json }},
+          variant_id: {% if section.settings.profile_amour_ritual_product.selected_or_first_available_variant %}{{ section.settings.profile_amour_ritual_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       },
       chance: {
@@ -1320,6 +1427,22 @@
           featured_image: {% if section.settings.profile_chance_product.featured_image %}{{ section.settings.profile_chance_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
           handle: {{ section.settings.profile_chance_product.handle | json }},
           variant_id: {% if section.settings.profile_chance_product.selected_or_first_available_variant %}{{ section.settings.profile_chance_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        stoneProduct: {% if section.settings.profile_chance_stone_product %}{
+          title: {{ section.settings.profile_chance_stone_product.title | json }},
+          url: {{ section.settings.profile_chance_stone_product.url | json }},
+          price: {{ section.settings.profile_chance_stone_product.price | money | json }},
+          featured_image: {% if section.settings.profile_chance_stone_product.featured_image %}{{ section.settings.profile_chance_stone_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_chance_stone_product.handle | json }},
+          variant_id: {% if section.settings.profile_chance_stone_product.selected_or_first_available_variant %}{{ section.settings.profile_chance_stone_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
+        }{% else %}null{% endif %},
+        ritualProduct: {% if section.settings.profile_chance_ritual_product %}{
+          title: {{ section.settings.profile_chance_ritual_product.title | json }},
+          url: {{ section.settings.profile_chance_ritual_product.url | json }},
+          price: {{ section.settings.profile_chance_ritual_product.price | money | json }},
+          featured_image: {% if section.settings.profile_chance_ritual_product.featured_image %}{{ section.settings.profile_chance_ritual_product.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
+          handle: {{ section.settings.profile_chance_ritual_product.handle | json }},
+          variant_id: {% if section.settings.profile_chance_ritual_product.selected_or_first_available_variant %}{{ section.settings.profile_chance_ritual_product.selected_or_first_available_variant.id | json }}{% else %}null{% endif %}
         }{% else %}null{% endif %}
       }
     };
@@ -1626,51 +1749,101 @@
         benefitsEl.innerHTML = benefitsHtml;
       }
 
-      // === IMAGE PRODUIT ===
-      const productImgEl = container.querySelector('#quiz-reveal-product-image-' + sectionId);
-      if (productImgEl && profile.product) {
-        if (profile.product.featured_image) {
-          productImgEl.src = profile.product.featured_image;
-          productImgEl.alt = profile.product.title || profile.label;
+      // === SYSTEME D'ONGLETS PRODUIT (Bougie/Pierre/Rituel) ===
+      const productTypes = {
+        candle: { data: profile.product, icon: '🕯️', label: 'Bougie' },
+        stone: { data: profile.stoneProduct, icon: '💎', label: 'Pierre' },
+        ritual: { data: profile.ritualProduct, icon: '✨', label: 'Rituel' }
+      };
+
+      // Masquer les onglets sans produit assigne
+      const tabsContainer = container.querySelector('#quiz-reveal-product-tabs-' + sectionId);
+      var availableTabs = [];
+      if (tabsContainer) {
+        var tabBtns = tabsContainer.querySelectorAll('.quiz-rpt-tab');
+        tabBtns.forEach(function(btn) {
+          var tabKey = btn.getAttribute('data-tab');
+          if (productTypes[tabKey] && productTypes[tabKey].data) {
+            btn.style.display = '';
+            availableTabs.push(tabKey);
+          } else {
+            btn.style.display = 'none';
+          }
+        });
+        // Si un seul onglet, masquer les onglets entierement
+        if (availableTabs.length <= 1) {
+          tabsContainer.style.display = 'none';
         } else {
-          productImgEl.style.display = 'none';
-          const wrap = container.querySelector('#quiz-reveal-img-wrap-' + sectionId);
-          if (wrap) {
-            wrap.style.background = 'linear-gradient(135deg, var(--milaura-beige), #f5f0e8)';
-            wrap.style.display = 'flex';
-            wrap.style.alignItems = 'center';
-            wrap.style.justifyContent = 'center';
-            wrap.innerHTML = '<span style="font-size:3rem">🕯️</span>';
+          tabsContainer.style.display = 'flex';
+        }
+      }
+
+      // Fonction pour afficher un produit dans la zone galerie
+      function showProductTab(tabKey) {
+        var pt = productTypes[tabKey];
+        if (!pt || !pt.data) return;
+        var prod = pt.data;
+
+        // Image
+        var imgEl = container.querySelector('#quiz-reveal-product-image-' + sectionId);
+        var wrapEl = container.querySelector('#quiz-reveal-img-wrap-' + sectionId);
+        if (imgEl) {
+          if (prod.featured_image) {
+            imgEl.src = prod.featured_image;
+            imgEl.alt = prod.title || pt.label;
+            imgEl.style.display = '';
+            if (wrapEl) wrapEl.style.background = '';
+          } else {
+            imgEl.style.display = 'none';
+            if (wrapEl) {
+              wrapEl.style.background = 'linear-gradient(135deg, var(--milaura-beige), #f5f0e8)';
+              wrapEl.style.display = 'flex';
+              wrapEl.style.alignItems = 'center';
+              wrapEl.style.justifyContent = 'center';
+              wrapEl.innerHTML = '<span style="font-size:3rem">' + pt.icon + '</span>';
+            }
           }
         }
-      }
 
-      // === TITRE PRODUIT + PRIX ===
-      const productTitleEl = container.querySelector('#quiz-reveal-product-title-' + sectionId);
-      const productPriceEl = container.querySelector('#quiz-reveal-product-price-' + sectionId);
-      if (productTitleEl && profile.product && profile.product.title) {
-        productTitleEl.textContent = profile.product.title;
-      }
-      if (productPriceEl && profile.product && profile.product.price) {
-        productPriceEl.textContent = profile.product.price;
-      }
+        // Titre + Prix
+        var titleEl = container.querySelector('#quiz-reveal-product-title-' + sectionId);
+        var priceEl = container.querySelector('#quiz-reveal-product-price-' + sectionId);
+        if (titleEl) titleEl.textContent = prod.title || '';
+        if (priceEl) priceEl.textContent = prod.price || '';
 
-      // === CTAs ===
-      const ctaEl = container.querySelector('#quiz-reveal-cta-' + sectionId);
-      if (ctaEl && profile.product) {
-        const product = profile.product;
-        const ctaLabel = '{{ section.settings.result_cta_label | default: "Ajouter au panier" }}';
-        let html = '';
-
-        if (product.variant_id) {
-          html += `<button type="button" class="quiz-reveal-cta-primary" id="quiz-add-to-cart-btn-${sectionId}" onclick="addToCartWithFeedback(${product.variant_id}, this)">${ctaLabel}</button>`;
+        // CTAs
+        var ctaEl = container.querySelector('#quiz-reveal-cta-' + sectionId);
+        if (ctaEl) {
+          var ctaLabel = '{{ section.settings.result_cta_label | default: "Ajouter au panier" }}';
+          var html = '';
+          if (prod.variant_id) {
+            html += '<button type="button" class="quiz-reveal-cta-primary" onclick="addToCartWithFeedback(' + prod.variant_id + ', this)">' + ctaLabel + '</button>';
+          }
+          if (prod.handle) {
+            html += '<a href="/products/' + prod.handle + '" class="quiz-reveal-cta-secondary"><span>Decouvrir le produit →</span></a>';
+          }
+          ctaEl.innerHTML = html;
         }
 
-        if (product.handle) {
-          html += `<a href="/products/${product.handle}" class="quiz-reveal-cta-secondary"><span>Découvrir le produit →</span></a>`;
+        // Update active tab
+        if (tabsContainer) {
+          tabsContainer.querySelectorAll('.quiz-rpt-tab').forEach(function(btn) {
+            btn.classList.toggle('active', btn.getAttribute('data-tab') === tabKey);
+          });
         }
+      }
 
-        ctaEl.innerHTML = html;
+      // Afficher le premier onglet disponible
+      var firstTab = availableTabs.length > 0 ? availableTabs[0] : 'candle';
+      showProductTab(firstTab);
+
+      // Event listeners sur les onglets
+      if (tabsContainer) {
+        tabsContainer.querySelectorAll('.quiz-rpt-tab').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            showProductTab(btn.getAttribute('data-tab'));
+          });
+        });
       }
 
       // === INVITATION COMPTE ===
@@ -2021,7 +2194,17 @@
     {
       "type": "product",
       "id": "profile_apaisement_product",
-      "label": "Produit associé"
+      "label": "Bougie associee"
+    },
+    {
+      "type": "product",
+      "id": "profile_apaisement_stone_product",
+      "label": "Pierre/Bracelet associe"
+    },
+    {
+      "type": "product",
+      "id": "profile_apaisement_ritual_product",
+      "label": "Rituel/Accessoire associe"
     },
     {
       "type": "richtext",
@@ -2072,7 +2255,17 @@
     {
       "type": "product",
       "id": "profile_protection_product",
-      "label": "Produit associé"
+      "label": "Bougie associee"
+    },
+    {
+      "type": "product",
+      "id": "profile_protection_stone_product",
+      "label": "Pierre/Bracelet associe"
+    },
+    {
+      "type": "product",
+      "id": "profile_protection_ritual_product",
+      "label": "Rituel/Accessoire associe"
     },
     {
       "type": "richtext",
@@ -2123,7 +2316,17 @@
     {
       "type": "product",
       "id": "profile_serenite_product",
-      "label": "Produit associé"
+      "label": "Bougie associee"
+    },
+    {
+      "type": "product",
+      "id": "profile_serenite_stone_product",
+      "label": "Pierre/Bracelet associe"
+    },
+    {
+      "type": "product",
+      "id": "profile_serenite_ritual_product",
+      "label": "Rituel/Accessoire associe"
     },
     {
       "type": "richtext",
@@ -2174,7 +2377,17 @@
     {
       "type": "product",
       "id": "profile_amour_product",
-      "label": "Produit associé"
+      "label": "Bougie associee"
+    },
+    {
+      "type": "product",
+      "id": "profile_amour_stone_product",
+      "label": "Pierre/Bracelet associe"
+    },
+    {
+      "type": "product",
+      "id": "profile_amour_ritual_product",
+      "label": "Rituel/Accessoire associe"
     },
     {
       "type": "richtext",
@@ -2225,7 +2438,17 @@
     {
       "type": "product",
       "id": "profile_chance_product",
-      "label": "Produit associé"
+      "label": "Bougie associee"
+    },
+    {
+      "type": "product",
+      "id": "profile_chance_stone_product",
+      "label": "Pierre/Bracelet associe"
+    },
+    {
+      "type": "product",
+      "id": "profile_chance_ritual_product",
+      "label": "Rituel/Accessoire associe"
     },
     {
       "type": "richtext",
