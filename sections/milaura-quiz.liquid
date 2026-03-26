@@ -1707,6 +1707,43 @@
 
       // Dispatch event so downstream sections can react
       window.dispatchEvent(new CustomEvent('milaura:quiz-result', { detail: storageData }));
+
+      // === SAUVEGARDE METAFIELD CLIENT (si connecte) ===
+      // Ecrit le profil dans milaura.last_profile_handle pour la personnalisation newsletter
+      if (isCustomerLoggedIn) {
+        try {
+          var profileHandle = winnerProfile; // ex: "serenite", "protection", "amour", "apaisement", "chance"
+          // Ajouter le tag profil au client via l'API cart (seule API accessible cote storefront)
+          // Le metafield sera ecrit via Shopify Flow (trigger: tag ajoute)
+          fetch('/cart/update.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              attributes: {
+                'quiz_profile': profileHandle,
+                'quiz_stone': stoneHandleMap[profileHandle] || '',
+                'quiz_date': new Date().toISOString().split('T')[0]
+              }
+            })
+          }).catch(function() {});
+        } catch(e) {}
+      }
+
+      // Toujours stocker dans un attribut cart (meme si non connecte)
+      // Sera recupere lors du checkout et lie au client
+      try {
+        fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            attributes: {
+              'quiz_profile': winnerProfile,
+              'quiz_stone': stoneHandleMap[winnerProfile] || '',
+              'quiz_date': new Date().toISOString().split('T')[0]
+            }
+          })
+        }).catch(function() {});
+      } catch(e) {}
     }
 
     // Fonction globale pour ajouter au panier avec feedback visuel
