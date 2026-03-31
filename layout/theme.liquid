@@ -34,16 +34,19 @@
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@type": "Organization",
+            "@type": ["Organization", "LocalBusiness", "Store"],
             "@id": "{{ shop.url }}/#organization",
             "name": "MilAura",
+            "legalName": "ONORA SARL",
             "url": "{{ shop.url }}",
             {%- if settings.logo -%}
             "logo": {
               "@type": "ImageObject",
               "url": "{{ settings.logo | image_url: width: 500 | prepend: 'https:' }}"
             },
+            "image": "{{ settings.logo | image_url: width: 800 | prepend: 'https:' }}",
             {%- endif -%}
+            "description": "Boutique de lithotherapie, bijoux en pierres naturelles et bougies artisanales a Montigny-les-Metz. Pierres certifiees, creations artisanales francaises.",
             "sameAs": [
               "https://www.facebook.com/milaura.creations/",
               "https://www.instagram.com/milaura_souffle/",
@@ -51,9 +54,11 @@
               "https://pin.it/3TbjBkFSS",
               "https://www.pagesjaunes.fr/pros/64692900"
             ],
+            "telephone": "+33 3 72 39 64 73",
+            "email": "contact@milaura.fr",
             "contactPoint": {
               "@type": "ContactPoint",
-              "telephone": "+33372396473",
+              "telephone": "+33 3 72 39 64 73",
               "contactType": "customer service",
               "email": "contact@milaura.fr",
               "areaServed": "FR",
@@ -61,23 +66,43 @@
             },
             "address": {
               "@type": "PostalAddress",
-              "streetAddress": "92 Rue de Pont-à-Mousson",
-              "addressLocality": "Montigny-lès-Metz",
+              "streetAddress": "92 Rue de Pont-a-Mousson",
+              "addressLocality": "Montigny-les-Metz",
+              "addressRegion": "Grand Est",
               "postalCode": "57950",
               "addressCountry": "FR"
             },
             "geo": {
               "@type": "GeoCoordinates",
-              "latitude": 49.0987,
-              "longitude": 6.1576
-            }
+              "latitude": 49.1016662,
+              "longitude": 6.1579442
+            },
+            "hasMap": "https://maps.app.goo.gl/hyTwAGPbu71J2LEVA",
+            "priceRange": "$$",
+            "currenciesAccepted": "EUR",
+            "paymentAccepted": "Carte bancaire, PayPal, Apple Pay",
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": "09:00",
+                "closes": "18:00"
+              }
+            ],
+            "founder": {
+              "@type": "Person",
+              "name": "Karine Allie",
+              "jobTitle": "Fondatrice"
+            },
+            "foundingDate": "2024",
+            "knowsAbout": ["Lithotherapie", "Pierres naturelles", "Bijoux en pierres precieuses", "Bougies artisanales", "Aromatherapie"]
           },
           {
             "@type": "WebSite",
             "@id": "{{ shop.url }}/#website",
             "url": "{{ shop.url }}",
             "name": "MilAura",
-            "description": "{{ page_description | default: shop.description | escape }}",
+            "description": {{ shop.description | strip_html | json }},
             "inLanguage": "fr",
             "publisher": { "@id": "{{ shop.url }}/#organization" },
             "potentialAction": {
@@ -335,9 +360,11 @@
       {% comment %}theme-check-enable AssetPreload{% endcomment %}
     {%- endunless -%}
     {%- unless settings.type_header_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
+      {%- unless settings.type_header_font | font_url == settings.type_body_font | font_url -%}
+        {% comment %}theme-check-disable AssetPreload{% endcomment %}
+        <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
+        {% comment %}theme-check-enable AssetPreload{% endcomment %}
+      {%- endunless -%}
     {%- endunless -%}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}

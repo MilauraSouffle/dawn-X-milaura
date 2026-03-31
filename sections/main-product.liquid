@@ -1,15 +1,15 @@
 <style>
   /* --- 1. FOND BEIGE DORÉ EN DUR (Inchangé) --- */
-  section.shopify-section.section, 
+  section.shopify-section.section,
   .product {
-    background: radial-gradient(circle at top center, #FDFBF7 0%, #F2E8D5 60%, #E6D8C0 100%) !important;
+    background: radial-gradient(circle at top center, #fdfbf7 0%, #f2e8d5 60%, #e6d8c0 100%) !important;
     background-size: cover !important;
     background-attachment: fixed !important;
     --gradient-background: transparent !important;
   }
 
   /* --- 2. L'IMAGE PRODUIT (NETTOYAGE + CADRE OR FIXE) --- */
-  
+
   /* SUPPRESSION DES MARGES BLANCHES DÉGUEULASSES */
   /* On dit au conteneur parent de ne pas mettre d'espace autour de l'image */
   .product__media-list .product__media-item {
@@ -17,14 +17,14 @@
   }
 
   /* LE NOUVEAU CADRE : FIXE, DORÉ, SANS MARGE */
-  .product__media-wrapper .global-media-settings, 
+  .product__media-wrapper .global-media-settings,
   .product__media-item > .product-media-container {
     background: transparent !important; /* Plus de fond blanc parasite */
     padding: 0 !important; /* L'image colle aux bords */
-    
+
     /* LE LISERÉ DORÉ FIXE */
-    border: 3px solid #C0A062 !important;
-    
+    border: 3px solid #c0a062 !important;
+
     /* Finitions */
     border-radius: 20px !important; /* Joli arrondi */
     box-shadow: 0 15px 35px rgba(192, 160, 98, 0.2) !important; /* Ombre portée pour le volume */
@@ -53,7 +53,7 @@
     border: 1px solid rgba(255, 255, 255, 0.8) !important;
     box-shadow: 0 10px 40px rgba(160, 140, 100, 0.15) !important;
   }
-  
+
   /* --- HIDE DEFAULT QUANTITY SELECTOR (Moved to Buy Buttons) --- */
   .product-form__input.product-form__quantity {
     display: none !important;
@@ -62,13 +62,13 @@
   /* --- 4. TYPO & LUXE (Inchangé) --- */
   .product__title h1 {
     font-family: 'Playfair Display', serif !important;
-    color: #3A3A3A !important;
+    color: #3a3a3a !important;
     font-size: 3rem !important;
     font-weight: 700 !important;
     margin-bottom: 10px !important;
   }
   .price-item {
-    color: #C0A062 !important;
+    color: #c0a062 !important;
     font-family: 'Lato', sans-serif !important;
     font-weight: 700 !important;
     font-size: 1.5rem !important;
@@ -96,9 +96,13 @@
 
   /* --- MOBILE --- */
   @media screen and (max-width: 750px) {
-    .product__info-container { padding: 20px !important; }
+    .product__info-container {
+      padding: 20px !important;
+    }
     /* Sur mobile, on peut réduire un peu l'épaisseur du cadre si c'est trop */
-    .product__media-wrapper .global-media-settings { border-width: 2px !important; }
+    .product__media-wrapper .global-media-settings {
+      border-width: 2px !important;
+    }
   }
 </style>
 <product-info
@@ -318,9 +322,9 @@
                     <summary>
                       <div class="summary__title">
                         {% render 'icon-accordion', icon: block.settings.icon %}
-                        <h2 class="h4 accordion__title inline-richtext">
+                        <p class="h4 accordion__title inline-richtext">
                           {{ block.settings.heading | default: block.settings.page.title | escape }}
-                        </h2>
+                        </p>
                       </div>
                       {{- 'icon-caret.svg' | inline_asset_content -}}
                     </summary>
@@ -649,9 +653,9 @@
                         <div class="summary__title">
                           {%- if block.settings.make_collapsible_row -%}
                             {% render 'icon-accordion', icon: block.settings.icon %}
-                            <h2 class="h4 accordion__title">{{ block.settings.block_heading }}</h2>
+                            <p class="h4 accordion__title">{{ block.settings.block_heading }}</p>
                           {%- else -%}
-                            <h2 class="h3 accordion__title">{{ block.settings.block_heading }}</h2>
+                            <p class="h3 accordion__title">{{ block.settings.block_heading }}</p>
                           {%- endif -%}
                         </div>
                         {%- if block.settings.make_collapsible_row -%}
@@ -835,8 +839,93 @@
       endif
     -%}
 
+    {%- liquid
+      assign days_to_add = 30 | times: 86400
+      assign price_valid_until = 'now' | date: '%s' | plus: days_to_add | date: '%Y-%m-%d'
+    -%}
     <script type="application/ld+json">
-      {{ product | structured_data }}
+      {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": {{ product.title | json }},
+        "description": {{ product.description | strip_html | json }},
+        "url": {{ request.origin | append: product.url | json }},
+        {%- if seo_media -%}
+        "image": [
+          {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
+        ],
+        {%- endif -%}
+        "brand": {
+          "@type": "Brand",
+          "name": {{ product.vendor | json }}
+        },
+        "sku": {{ product.selected_or_first_available_variant.sku | json }},
+        {%- if product.metafields.reviews.rating.value != blank -%}
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "{{ product.metafields.reviews.rating.value }}",
+          "reviewCount": "{{ product.metafields.reviews.rating_count }}"
+        },
+        {%- endif -%}
+        "offers": [
+          {%- for variant in product.variants -%}
+          {
+            "@type": "Offer",
+            "name": {{ variant.title | json }},
+            "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+            "price": "{{ variant.price | divided_by: 100.0 }}",
+            "priceCurrency": {{ cart.currency.iso_code | json }},
+            "priceValidUntil": "{{ price_valid_until }}",
+            "url": {{ request.origin | append: variant.url | json }},
+            "sku": {{ variant.sku | json }},
+            {%- if variant.barcode.size == 12 -%}
+              "gtin12": {{ variant.barcode | json }},
+            {%- elsif variant.barcode.size == 13 -%}
+              "gtin13": {{ variant.barcode | json }},
+            {%- elsif variant.barcode.size == 14 -%}
+              "gtin14": {{ variant.barcode | json }},
+            {%- endif -%}
+            "shippingDetails": {
+              "@type": "OfferShippingDetails",
+              "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": {% if variant.price >= 3990 %}"0"{% else %}"4.90"{% endif %},
+                "currency": {{ cart.currency.iso_code | json }}
+              },
+              "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": "FR"
+              },
+              "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": "0",
+                  "maxValue": "1",
+                  "unitCode": "d"
+                },
+                "transitTime": {
+                  "@type": "QuantitativeValue",
+                  "minValue": "1",
+                  "maxValue": "3",
+                  "unitCode": "d"
+                }
+              }
+            },
+            "hasMerchantReturnPolicy": {
+              "@type": "MerchantReturnPolicy",
+              "applicableCountry": ["CH", "BE", "LU", "FR", "DE", "ES", "IT"],
+              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+              "merchantReturnDays": "14",
+              "returnMethod": "https://schema.org/ReturnByMail",
+              "returnFees": "https://schema.org/CustomerResponsibility",
+              "itemCondition": "https://schema.org/UnopenedCondition",
+              "description": "Retour à la charge du client, gratuit en cas de défaut. Produit doit être scellé dans son emballage d'origine."
+            }
+          }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }
     </script>
   </div>
 </product-info>
