@@ -1,0 +1,259 @@
+{%- comment -%}
+  Sous-categories collection — Affiche les sous-collections d'une categorie mere
+  en cartes navigables. Lit la structure du menu principal pour detecter
+  automatiquement si la collection courante a des enfants.
+{%- endcomment -%}
+
+{%- assign menu = linklists[section.settings.menu] -%}
+{%- assign has_subcats = false -%}
+{%- assign parent_link = nil -%}
+
+{%- for link in menu.links -%}
+  {%- if link.url == collection.url and link.links.size > 0 -%}
+    {%- assign has_subcats = true -%}
+    {%- assign parent_link = link -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if has_subcats -%}
+  <div class="milaura-subcats" id="MilauraSubcats-{{ section.id }}">
+    <div class="milaura-subcats-inner page-width">
+
+      {%- comment -%} Detecter si c'est un mega-menu (3 niveaux) ou simple (2 niveaux) {%- endcomment -%}
+      {%- assign has_groups = false -%}
+      {%- for child in parent_link.links -%}
+        {%- if child.links.size > 0 -%}
+          {%- assign has_groups = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if has_groups -%}
+        {%- comment -%} 3 NIVEAUX : groupes avec sous-liens {%- endcomment -%}
+        {%- for child in parent_link.links -%}
+          {%- if child.links.size > 0 -%}
+            <div class="milaura-subcats-group">
+              <h3 class="milaura-subcats-group-title">{{ child.title }}</h3>
+              <div class="milaura-subcats-cards">
+                {%- for grandchild in child.links -%}
+                  {%- assign _skip = false -%}
+                  {%- if grandchild.type == 'collection_link' -%}
+                    {%- if grandchild.object == blank or grandchild.object.products_count == 0 -%}
+                      {%- assign _skip = true -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                  {%- unless _skip -%}
+                    <a href="{{ grandchild.url }}" class="milaura-subcats-card">
+                      {%- if grandchild.type == 'collection_link' and grandchild.object.image -%}
+                        <div class="milaura-subcats-card-img">
+                          {{ grandchild.object.image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+                        </div>
+                      {%- endif -%}
+                      <span class="milaura-subcats-card-title">{{ grandchild.title }}</span>
+                      {%- if grandchild.type == 'collection_link' and grandchild.object.products_count > 0 -%}
+                        <span class="milaura-subcats-card-count">{{ grandchild.object.products_count }} produits</span>
+                      {%- endif -%}
+                    </a>
+                  {%- endunless -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- else -%}
+            {%- comment -%} Lien simple au niveau 2 (pas de groupe) {%- endcomment -%}
+            {%- assign _skip = false -%}
+            {%- if child.type == 'collection_link' -%}
+              {%- if child.object == blank or child.object.products_count == 0 -%}
+                {%- assign _skip = true -%}
+              {%- endif -%}
+            {%- endif -%}
+            {%- unless _skip -%}
+              <div class="milaura-subcats-cards milaura-subcats-cards--inline">
+                <a href="{{ child.url }}" class="milaura-subcats-card">
+                  <span class="milaura-subcats-card-title">{{ child.title }}</span>
+                  {%- if child.type == 'collection_link' and child.object.products_count > 0 -%}
+                    <span class="milaura-subcats-card-count">{{ child.object.products_count }} produits</span>
+                  {%- endif -%}
+                </a>
+              </div>
+            {%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+      {%- else -%}
+        {%- comment -%} 2 NIVEAUX : liste simple de sous-collections {%- endcomment -%}
+        <div class="milaura-subcats-cards">
+          {%- for child in parent_link.links -%}
+            {%- assign _skip = false -%}
+            {%- if child.type == 'collection_link' -%}
+              {%- if child.object == blank or child.object.products_count == 0 -%}
+                {%- assign _skip = true -%}
+              {%- endif -%}
+            {%- endif -%}
+            {%- unless _skip -%}
+              <a href="{{ child.url }}" class="milaura-subcats-card">
+                {%- if child.type == 'collection_link' and child.object.image -%}
+                  <div class="milaura-subcats-card-img">
+                    {{ child.object.image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+                  </div>
+                {%- endif -%}
+                <span class="milaura-subcats-card-title">{{ child.title }}</span>
+                {%- if child.type == 'collection_link' and child.object.products_count > 0 -%}
+                  <span class="milaura-subcats-card-count">{{ child.object.products_count }} produits</span>
+                {%- endif -%}
+              </a>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+  <style>
+    .milaura-subcats {
+      padding: 8px 0 16px;
+    }
+
+    .milaura-subcats-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* --- Groupes (3 niveaux) --- */
+    .milaura-subcats-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .milaura-subcats-group-title {
+      font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--milaura-gold-dark, #8F723A);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+      padding-left: 4px;
+    }
+
+    /* --- Grille de cartes --- */
+    .milaura-subcats-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .milaura-subcats-cards--inline {
+      display: inline-flex;
+    }
+
+    /* --- Carte individuelle --- */
+    .milaura-subcats-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      background: rgba(253, 251, 247, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(192, 160, 98, 0.18);
+      border-radius: 14px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .milaura-subcats-card:hover {
+      background: rgba(253, 251, 247, 1);
+      border-color: var(--milaura-gold, #C0A062);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(192, 160, 98, 0.18);
+    }
+
+    .milaura-subcats-card-img {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .milaura-subcats-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .milaura-subcats-card-title {
+      font-family: var(--milaura-font-body, 'Lato', sans-serif);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--milaura-text, #000);
+      white-space: nowrap;
+    }
+
+    .milaura-subcats-card-count {
+      font-family: var(--milaura-font-body, 'Lato', sans-serif);
+      font-size: 0.7rem;
+      color: var(--milaura-text-light, #666);
+      white-space: nowrap;
+    }
+
+    /* --- Mobile : scroll horizontal --- */
+    @media screen and (max-width: 767px) {
+      .milaura-subcats-cards {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+
+      .milaura-subcats-cards::-webkit-scrollbar {
+        display: none;
+      }
+
+      .milaura-subcats-card {
+        padding: 8px 14px;
+        flex-shrink: 0;
+      }
+
+      .milaura-subcats-card-title {
+        font-size: 0.78rem;
+      }
+
+      .milaura-subcats-card-img {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .milaura-subcats-card {
+        transition: none;
+      }
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sous-categories",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu source",
+      "default": "main-menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sous-categories collection"
+    }
+  ]
+}
+{% endschema %}

@@ -26,6 +26,7 @@ Pour chaque template :
 | `08-remboursement.html` | Remboursement de la commande |
 | `09-panier-abandonne.html` | Paiement abandonné |
 | `10-carte-cadeau.html` | Carte-cadeau créée |
+| `11-confirmation-newsletter.html` | Confirmation marketing client (double opt-in newsletter) |
 
 ## Design
 

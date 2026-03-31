@@ -1,0 +1,159 @@
+{%- comment -%}
+  Maillage interne produit — Affiche les collections du produit en pills cliquables.
+  Booste le SEO + aide les agents IA a naviguer entre produits et collections.
+{%- endcomment -%}
+
+{%- if product.collections.size > 0 -%}
+  {%- assign visible_collections = 0 -%}
+  {%- for col in product.collections -%}
+    {%- unless col.handle == 'all' or col.handle == 'recos-pool' or col.handle == 'frontpage' -%}
+      {%- assign visible_collections = visible_collections | plus: 1 -%}
+    {%- endunless -%}
+  {%- endfor -%}
+
+  {%- if visible_collections > 0 -%}
+    <div class="milaura-internal-links" id="MilauraInternalLinks-{{ section.id }}">
+      <div class="milaura-internal-links-inner page-width">
+        <span class="milaura-il-label">{{ section.settings.label | default: 'Retrouvez ce produit dans' }}</span>
+        <div class="milaura-il-pills">
+          {%- for col in product.collections -%}
+            {%- unless col.handle == 'all' or col.handle == 'recos-pool' or col.handle == 'frontpage' -%}
+              <a href="{{ col.url }}" class="milaura-il-pill{% if col.handle contains 'nouveaut' %} milaura-il-pill--new{% endif %}">
+                {{ col.title }}
+              </a>
+            {%- endunless -%}
+          {%- endfor -%}
+
+          {%- comment -%} Lien intention si metafield present et pas deja dans les collections {%- endcomment -%}
+          {%- if product.metafields.milaura.intention_handle != blank -%}
+            {%- assign intention = product.metafields.milaura.intention_handle -%}
+            {%- assign intention_shown = false -%}
+            {%- for col in product.collections -%}
+              {%- if col.handle contains intention -%}
+                {%- assign intention_shown = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- unless intention_shown -%}
+              {%- case intention -%}
+                {%- when 'sommeil' or 'serenite' -%}
+                  <a href="/collections/serenite-sommeil" class="milaura-il-pill milaura-il-pill--intention">Serenite & Sommeil</a>
+                {%- when 'protection' or 'energie' -%}
+                  <a href="/collections/protection-energie" class="milaura-il-pill milaura-il-pill--intention">Protection & Energie</a>
+                {%- when 'amour' -%}
+                  <a href="/collections/amour-relations" class="milaura-il-pill milaura-il-pill--intention">Amour & Relations</a>
+                {%- else -%}
+                  <a href="/collections/{{ intention }}" class="milaura-il-pill milaura-il-pill--intention">{{ intention | replace: '-', ' ' | capitalize }}</a>
+              {%- endcase -%}
+            {%- endunless -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .milaura-internal-links {
+        padding: 12px 0;
+      }
+
+      .milaura-internal-links-inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .milaura-il-label {
+        font-family: var(--milaura-font-body, 'Lato', sans-serif);
+        font-size: 0.78rem;
+        color: var(--milaura-text-light, #333);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        white-space: nowrap;
+      }
+
+      .milaura-il-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .milaura-il-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
+        font-family: var(--milaura-font-body, 'Lato', sans-serif);
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--milaura-gold-dark, #8F723A);
+        text-decoration: none;
+        background: rgba(192, 160, 98, 0.08);
+        border: 1px solid rgba(192, 160, 98, 0.2);
+        border-radius: 50px;
+        transition: all 0.25s ease;
+        white-space: nowrap;
+      }
+
+      .milaura-il-pill:hover {
+        background: rgba(192, 160, 98, 0.18);
+        border-color: rgba(192, 160, 98, 0.4);
+        color: var(--milaura-gold-dark, #8F723A);
+        transform: translateY(-1px);
+      }
+
+      .milaura-il-pill--new {
+        background: linear-gradient(135deg, var(--milaura-gold, #C0A062) 0%, var(--milaura-gold-light, #E6C88B) 100%);
+        color: #fff;
+        border-color: transparent;
+      }
+
+      .milaura-il-pill--new:hover {
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(192, 160, 98, 0.3);
+      }
+
+      .milaura-il-pill--intention {
+        border-style: dashed;
+      }
+
+      @media screen and (max-width: 767px) {
+        .milaura-internal-links-inner {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .milaura-il-pill {
+          font-size: 0.75rem;
+          padding: 5px 12px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .milaura-il-pill {
+          transition: none;
+        }
+      }
+    </style>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Maillage interne produit",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Retrouvez ce produit dans"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maillage interne produit"
+    }
+  ]
+}
+{% endschema %}

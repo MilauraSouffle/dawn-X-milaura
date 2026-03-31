@@ -210,6 +210,11 @@
     margin: 0;
   }
 
+  #MilauraHeroShowcase-{{ section.id }} .hero-title-line {
+    display: block;
+    white-space: nowrap;
+  }
+
   #MilauraHeroShowcase-{{ section.id }} .hero-subtitle {
     font-family: var(--milaura-font-body);
     font-size: {{ section.settings.subtitle_size }}px;
@@ -1238,7 +1243,24 @@
 
             {% if section.settings.title != blank %}
               <div class="hero-title-wrap">
-                <h1 class="hero-title-script">{{ section.settings.title }}</h1>
+                <h1 class="hero-title-script">
+                  {%- if section.settings.title contains '... ' -%}
+                    {%- assign title_parts = section.settings.title | split: '... ' -%}
+                    {%- assign title_sep = '...' -%}
+                  {%- elsif section.settings.title contains '. ' -%}
+                    {%- assign title_parts = section.settings.title | split: '. ' -%}
+                    {%- assign title_sep = '.' -%}
+                  {%- else -%}
+                    {%- assign title_parts = nil -%}
+                  {%- endif -%}
+                  {%- if title_parts and title_parts.size > 1 -%}
+                    {%- for part in title_parts -%}
+                      <span class="hero-title-line">{{ part }}{% unless forloop.last %}{{ title_sep }}{% endunless %}</span>
+                    {%- endfor -%}
+                  {%- else -%}
+                    {{ section.settings.title }}
+                  {%- endif -%}
+                </h1>
               </div>
             {% endif %}
 

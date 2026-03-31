@@ -491,8 +491,93 @@
     endif
   -%}
 
+  {%- liquid
+    assign days_to_add = 30 | times: 86400
+    assign price_valid_until = 'now' | date: '%s' | plus: days_to_add | date: '%Y-%m-%d'
+  -%}
   <script type="application/ld+json">
-    {{ product | structured_data }}
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "description": {{ product.description | strip_html | json }},
+      "url": {{ request.origin | append: product.url | json }},
+      {%- if seo_media -%}
+      "image": [
+        {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
+      ],
+      {%- endif -%}
+      "brand": {
+        "@type": "Brand",
+        "name": {{ product.vendor | json }}
+      },
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      {%- if product.metafields.reviews.rating.value != blank -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ product.metafields.reviews.rating.value }}",
+        "reviewCount": "{{ product.metafields.reviews.rating_count }}"
+      },
+      {%- endif -%}
+      "offers": [
+        {%- for variant in product.variants -%}
+        {
+          "@type": "Offer",
+          "name": {{ variant.title | json }},
+          "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price": "{{ variant.price | divided_by: 100.0 }}",
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "priceValidUntil": "{{ price_valid_until }}",
+          "url": {{ request.origin | append: variant.url | json }},
+          "sku": {{ variant.sku | json }},
+          {%- if variant.barcode.size == 12 -%}
+            "gtin12": {{ variant.barcode | json }},
+          {%- elsif variant.barcode.size == 13 -%}
+            "gtin13": {{ variant.barcode | json }},
+          {%- elsif variant.barcode.size == 14 -%}
+            "gtin14": {{ variant.barcode | json }},
+          {%- endif -%}
+          "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            "shippingRate": {
+              "@type": "MonetaryAmount",
+              "value": {% if variant.price >= 3990 %}"0"{% else %}"4.90"{% endif %},
+              "currency": {{ cart.currency.iso_code | json }}
+            },
+            "shippingDestination": {
+              "@type": "DefinedRegion",
+              "addressCountry": "FR"
+            },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": {
+                "@type": "QuantitativeValue",
+                "minValue": "0",
+                "maxValue": "1",
+                "unitCode": "d"
+              },
+              "transitTime": {
+                "@type": "QuantitativeValue",
+                "minValue": "1",
+                "maxValue": "3",
+                "unitCode": "d"
+              }
+            }
+          },
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": ["CH", "BE", "LU", "FR", "DE", "ES", "IT"],
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": "14",
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/CustomerResponsibility",
+            "itemCondition": "https://schema.org/UnopenedCondition",
+            "description": "Retour à la charge du client, gratuit en cas de défaut. Produit doit être scellé dans son emballage d'origine."
+          }
+        }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
   </script>
 
   {% if product.media.size > 0 %}
