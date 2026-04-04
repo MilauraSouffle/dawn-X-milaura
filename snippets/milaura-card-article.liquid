@@ -1,0 +1,58 @@
+{%- comment -%}
+  Snippet: milaura-card-article
+  Carte article reutilisable - style identique aux cartes produit Milaura
+  Requiert: assets/milaura-card.css + parent .milaura-cards
+
+  Params:
+  - article: l'article
+  - show_image: boolean (defaut: true)
+  - show_date: boolean (defaut: true)
+  - show_excerpt: boolean (defaut: false)
+  - lazy_load: boolean (defaut: true)
+{%- endcomment -%}
+
+{%- if article and article != empty -%}
+  <a href="{{ article.url }}" class="grid__card grid__card--article">
+    {%- if show_image != false and article.image -%}
+      <div class="grid__card-img">
+        <span class="grid__card-badge grid__card-badge--article">Journal</span>
+        <img
+          src="{{ article.image | image_url: width: 600 }}"
+          srcset="{{ article.image | image_url: width: 200 }} 200w,
+                  {{ article.image | image_url: width: 400 }} 400w,
+                  {{ article.image | image_url: width: 600 }} 600w"
+          sizes="(max-width: 380px) 45vw, (max-width: 768px) 48vw, 25vw"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+          {% if lazy_load == false %}loading="eager"{% else %}loading="lazy"{% endif %}
+          width="600"
+          height="600"
+        >
+      </div>
+    {%- elsif show_image != false -%}
+      <div class="grid__card-img">
+        <span class="grid__card-badge grid__card-badge--article">Journal</span>
+        {{ 'lifestyle-1' | placeholder_svg_tag }}
+      </div>
+    {%- endif -%}
+
+    <div class="grid__card-info">
+      {%- if show_date != false -%}
+        <span class="grid__card-vendor">{{ article.published_at | date: '%d %B %Y' }}</span>
+      {%- endif -%}
+      <h3 class="grid__card-title">{{ article.title | truncate: 60 }}</h3>
+      {%- if show_excerpt -%}
+        <p class="grid__card-excerpt">
+          {%- if article.excerpt.size > 0 -%}
+            {{ article.excerpt | strip_html | truncatewords: 18 }}
+          {%- else -%}
+            {{ article.content | strip_html | truncatewords: 18 }}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    </div>
+
+    <div class="grid__card-actions">
+      <span class="grid__card-btn">Lire l'article</span>
+    </div>
+  </a>
+{%- endif -%}
