@@ -1,0 +1,108 @@
+{% style %}
+  #MilauraLPProof-{{ section.id }} {
+    padding: var(--milaura-spacing-sm) var(--milaura-spacing-md);
+  }
+
+  #MilauraLPProof-{{ section.id }} .lp-proof-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: var(--milaura-spacing-sm) var(--milaura-spacing-md);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    text-align: center;
+  }
+
+  #MilauraLPProof-{{ section.id }} .lp-proof-stars {
+    color: var(--milaura-gold);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+
+  #MilauraLPProof-{{ section.id }} .lp-proof-count {
+    font-size: 0.85rem;
+    color: #333;
+    margin: 4px 0 0;
+  }
+
+  #MilauraLPProof-{{ section.id }} .lp-proof-badges {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: var(--milaura-spacing-sm);
+    font-size: 0.7rem;
+    color: #888;
+  }
+
+  @media (min-width: 1024px) {
+    #MilauraLPProof-{{ section.id }} .lp-proof-inner {
+      max-width: 800px;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraLPProof-{{ section.id }}">
+  <div class="lp-proof-inner">
+    <div class="lp-proof-stars">★★★★★</div>
+    <p class="lp-proof-count">
+      <strong>{{ section.settings.rating }}</strong> sur {{ section.settings.review_count }} avis
+    </p>
+    <div class="lp-proof-badges">
+      {%- for block in section.blocks -%}
+        <span {{ block.shopify_attributes }}>{{ block.settings.icon }} {{ block.settings.label }}</span>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "LP Social Proof",
+  "tag": "section",
+  "class": "milaura-lp-social-proof",
+  "settings": [
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Note",
+      "default": "4.8/5"
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Nombre d'avis",
+      "default": "127"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icone (emoji)",
+          "default": "💎"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texte",
+          "default": "Pierres certifiees"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LP Social Proof",
+      "blocks": [
+        { "type": "badge", "settings": { "icon": "💎", "label": "Pierres certifiees" } },
+        { "type": "badge", "settings": { "icon": "✅", "label": "Garantie 30j" } },
+        { "type": "badge", "settings": { "icon": "🔒", "label": "Paiement securise" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

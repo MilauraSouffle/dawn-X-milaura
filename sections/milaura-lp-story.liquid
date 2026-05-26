@@ -1,0 +1,130 @@
+{% style %}
+  #MilauraLPStory-{{ section.id }} {
+    padding: 0 var(--milaura-spacing-md);
+  }
+
+  #MilauraLPStory-{{ section.id }} .lp-story-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: var(--milaura-spacing-md);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  #MilauraLPStory-{{ section.id }} .lp-story-header {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-spacing-sm);
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraLPStory-{{ section.id }} .lp-story-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  #MilauraLPStory-{{ section.id }} .lp-story-avatar-fallback {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--milaura-gold-light), var(--milaura-gold));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  #MilauraLPStory-{{ section.id }} .lp-story-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--milaura-text);
+  }
+
+  #MilauraLPStory-{{ section.id }} .lp-story-title {
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  #MilauraLPStory-{{ section.id }} .lp-story-quote {
+    font-size: 0.85rem;
+    color: #444;
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0;
+  }
+
+  @media (min-width: 1024px) {
+    #MilauraLPStory-{{ section.id }} .lp-story-inner {
+      max-width: 800px;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraLPStory-{{ section.id }}">
+  <div class="lp-story-inner">
+    <div class="lp-story-header">
+      {%- if section.settings.avatar != blank -%}
+        <img
+          class="lp-story-avatar"
+          src="{{ section.settings.avatar | image_url: width: 100 }}"
+          alt="{{ section.settings.name }}"
+          width="50"
+          height="50"
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="lp-story-avatar-fallback">{{ section.settings.name | truncate: 1, '' | upcase }}</div>
+      {%- endif -%}
+      <div>
+        <div class="lp-story-name">{{ section.settings.name }}</div>
+        <div class="lp-story-title">{{ section.settings.role }}</div>
+      </div>
+    </div>
+    <p class="lp-story-quote">"{{ section.settings.quote }}"</p>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "LP Story Fondatrice",
+  "tag": "section",
+  "class": "milaura-lp-story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "avatar",
+      "label": "Photo (ronde)"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Nom",
+      "default": "Karine Allie"
+    },
+    {
+      "type": "text",
+      "id": "role",
+      "label": "Titre",
+      "default": "Fondatrice Mil'Aura"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Citation",
+      "default": "J'ai cree ces bougies comme des compagnons emotionnels. Chaque pierre est selectionnee pour sa vibration, chaque senteur pour son pouvoir d'evocation. C'est la derniere serie. Quand elles seront parties, elles seront parties."
+    }
+  ],
+  "presets": [
+    {
+      "name": "LP Story Fondatrice"
+    }
+  ]
+}
+{% endschema %}

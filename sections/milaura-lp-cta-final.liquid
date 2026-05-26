@@ -1,0 +1,181 @@
+{% style %}
+  #MilauraLPCta-{{ section.id }} {
+    padding: 0 var(--milaura-spacing-md) var(--milaura-spacing-md);
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+    border-radius: 16px;
+    padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
+    text-align: center;
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-headline {
+    font-family: var(--milaura-font-heading);
+    font-size: 1.3rem;
+    color: var(--milaura-gold-light);
+    margin-bottom: var(--milaura-spacing-xs);
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-subtitle {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-price-current {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-price-compare {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through;
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-button {
+    display: block;
+    background: var(--milaura-gold);
+    color: white;
+    padding: 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-button:hover {
+    transform: translateY(-2px);
+  }
+
+  #MilauraLPCta-{{ section.id }} .lp-cta-reassurance {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: var(--milaura-spacing-sm);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (min-width: 1024px) {
+    #MilauraLPCta-{{ section.id }} .lp-cta-inner {
+      max-width: 800px;
+      padding: var(--milaura-spacing-xl);
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraLPCta-{{ section.id }}">
+  <div class="lp-cta-inner">
+    <h2 class="lp-cta-headline">{{ section.settings.headline }}</h2>
+    <p class="lp-cta-subtitle">{{ section.settings.subtitle }}</p>
+
+    {%- assign product = section.settings.product -%}
+    {%- if product != blank -%}
+      <div class="lp-cta-price">
+        <span class="lp-cta-price-current">{{ product.price | money }}</span>
+        {%- if product.compare_at_price > product.price -%}
+          <span class="lp-cta-price-compare">{{ product.compare_at_price | money }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <button
+      type="button"
+      class="lp-cta-button"
+      id="lp-cta-atc-{{ section.id }}"
+      {%- if product != blank and product.selected_or_first_available_variant %}
+        data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+      {%- endif %}
+    >
+      {{ section.settings.cta_text | default: 'Commander maintenant' }}
+    </button>
+
+    <div class="lp-cta-reassurance">
+      <span>🔒 Paiement securise</span>
+      <span>🚚 Livraison 48h</span>
+      <span>✅ Garantie 30j</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    var btn = document.getElementById('lp-cta-atc-{{ section.id }}');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var variantId = this.dataset.variantId;
+      if (!variantId) return;
+      this.disabled = true;
+      this.textContent = 'Ajout en cours...';
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: [{ id: parseInt(variantId), quantity: 1 }] })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function() { window.location.href = '/cart'; })
+      .catch(function() {
+        btn.disabled = false;
+        btn.textContent = '{{ section.settings.cta_text | default: "Commander maintenant" }}';
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "LP CTA Final",
+  "tag": "section",
+  "class": "milaura-lp-cta-final",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Produit"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Titre urgence",
+      "default": "Il n'en reste que 30."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Une fois epuisees, cette collection disparait definitivement."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texte du bouton",
+      "default": "Commander maintenant"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LP CTA Final"
+    }
+  ]
+}
+{% endschema %}
