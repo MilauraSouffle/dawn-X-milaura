@@ -1,0 +1,160 @@
+{% style %}
+  #MilauraLPFaq-{{ section.id }} {
+    padding: 0 var(--milaura-spacing-md);
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    padding: var(--milaura-spacing-md);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 1.1rem;
+    color: var(--milaura-text);
+    text-align: center;
+    margin-bottom: var(--milaura-spacing-md);
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-item {
+    border-bottom: 1px solid #eee;
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-item:last-child {
+    border-bottom: none;
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--milaura-text);
+    font-family: var(--milaura-font-body);
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-icon {
+    color: var(--milaura-gold);
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-question[aria-expanded="true"] .lp-faq-icon {
+    transform: rotate(45deg);
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-answer {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  #MilauraLPFaq-{{ section.id }} .lp-faq-answer.is-open {
+    max-height: 300px;
+    padding-bottom: 12px;
+  }
+
+  @media (min-width: 1024px) {
+    #MilauraLPFaq-{{ section.id }} .lp-faq-inner {
+      max-width: 800px;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraLPFaq-{{ section.id }}">
+  <div class="lp-faq-inner">
+    <h2 class="lp-faq-title">{{ section.settings.title | default: 'Questions frequentes' }}</h2>
+    {%- for block in section.blocks -%}
+      <div class="lp-faq-item" {{ block.shopify_attributes }}>
+        <button
+          class="lp-faq-question"
+          aria-expanded="false"
+          aria-controls="lp-faq-answer-{{ block.id }}"
+        >
+          <span>{{ block.settings.question }}</span>
+          <span class="lp-faq-icon">+</span>
+        </button>
+        <div class="lp-faq-answer" id="lp-faq-answer-{{ block.id }}">
+          {{ block.settings.answer }}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<script>
+  (function() {
+    var container = document.getElementById('MilauraLPFaq-{{ section.id }}');
+    if (!container) return;
+    container.querySelectorAll('.lp-faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var expanded = this.getAttribute('aria-expanded') === 'true';
+        var answerId = this.getAttribute('aria-controls');
+        var answer = document.getElementById(answerId);
+        this.setAttribute('aria-expanded', String(!expanded));
+        if (answer) answer.classList.toggle('is-open', !expanded);
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "LP FAQ Objections",
+  "tag": "section",
+  "class": "milaura-lp-objections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Questions frequentes"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Reponse"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LP FAQ Objections",
+      "blocks": [
+        { "type": "question", "settings": { "question": "Pourquoi c'est la derniere serie ?", "answer": "Mil'Aura se recentre sur les bijoux en pierres naturelles. Ces bougies sont les dernieres de la collection. Une fois le stock epuise, elles ne seront plus reproduites." } },
+        { "type": "question", "settings": { "question": "Les pierres sont-elles authentiques ?", "answer": "Chaque pierre est naturelle, selectionnee a la main et certifiee. Nous travaillons exclusivement avec des fournisseurs ethiques." } },
+        { "type": "question", "settings": { "question": "Satisfait ou rembourse ?", "answer": "Vous disposez de 30 jours pour changer d'avis. Si le produit ne vous convient pas, nous vous remboursons integralement." } },
+        { "type": "question", "settings": { "question": "Combien de temps pour la livraison ?", "answer": "Livraison en 48 a 72h en France metropolitaine. Chaque commande est preparee avec soin dans notre atelier." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
