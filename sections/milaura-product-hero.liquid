@@ -551,15 +551,28 @@
 
   .milaura-trust-cert-wrap {
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .milaura-trust-main-img {
+    width: 110px;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    object-fit: cover;
   }
 
   .milaura-trust-cert-img {
-    width: 110px;
+    width: 80px;
     height: auto;
-    border-radius: 8px;
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    transform: rotate(-1.5deg);
+    border-radius: 6px;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    opacity: 0.9;
   }
 
   .milaura-trust-points {
@@ -652,9 +665,17 @@
       gap: 12px;
     }
 
+    .milaura-trust-cert-wrap {
+      flex-direction: row;
+      gap: 8px;
+    }
+
+    .milaura-trust-main-img {
+      width: 100px;
+    }
+
     .milaura-trust-cert-img {
-      width: 140px;
-      transform: none;
+      width: 65px;
     }
 
     .milaura-trust-point {
@@ -1742,16 +1763,28 @@
         {%- if section.settings.show_social_proof -%}
           <div class="milaura-trust-block">
             <div class="milaura-trust-layout">
-              {%- if section.settings.social_proof_image != blank -%}
+              {%- if section.settings.social_proof_image != blank or section.settings.trust_cert_image != blank -%}
                 <div class="milaura-trust-cert-wrap">
-                  <img
-                    class="milaura-trust-cert-img"
-                    src="{{ section.settings.social_proof_image | image_url: width: 300 }}"
-                    alt="Certificat LFG Paris"
-                    width="120"
-                    height="auto"
-                    loading="lazy"
-                  >
+                  {%- if section.settings.social_proof_image != blank -%}
+                    <img
+                      class="milaura-trust-main-img"
+                      src="{{ section.settings.social_proof_image | image_url: width: 300 }}"
+                      alt="Mil'Aura, nos client(e)s"
+                      width="120"
+                      height="auto"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+                  {%- if section.settings.trust_cert_image != blank -%}
+                    <img
+                      class="milaura-trust-cert-img"
+                      src="{{ section.settings.trust_cert_image | image_url: width: 200 }}"
+                      alt="Certificat LFG Paris"
+                      width="80"
+                      height="auto"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
                 </div>
               {%- endif -%}
               <div class="milaura-trust-points">
@@ -3079,7 +3112,12 @@
     {
       "type": "image_picker",
       "id": "social_proof_image",
-      "label": "Image certificat LFG (rectangle)"
+      "label": "Photo principale (stand salon, Karine...)"
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_cert_image",
+      "label": "Certificat LFG (petit, en dessous)"
     },
     {
       "type": "text",
