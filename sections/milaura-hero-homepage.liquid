@@ -1,0 +1,419 @@
+{% comment %}
+  MILAURA HERO HOMEPAGE
+  Lightweight single-product hero. ~250 lines.
+  Zero JS, mobile-first, 1 CTA, product picker.
+{% endcomment %}
+
+{% style %}
+  #MilauraHeroHome-{{ section.id }} {
+    padding: var(--milaura-spacing-md) var(--milaura-spacing-md) 0;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-badge-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-badge {
+    display: inline-block;
+    background: rgba(192, 160, 98, 0.12);
+    color: var(--milaura-gold-dark);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-stock {
+    font-size: 0.75rem;
+    color: var(--milaura-gold);
+    font-weight: 600;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-visual {
+    position: relative;
+    width: 240px;
+    height: 260px;
+    margin: 0 auto var(--milaura-spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-halo {
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(circle, rgba(192, 160, 98, 0.10) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-img {
+    position: relative;
+    max-width: 180px;
+    max-height: 220px;
+    object-fit: contain;
+    border-radius: var(--milaura-border-radius);
+    filter: drop-shadow(0 16px 32px rgba(192, 160, 98, 0.20));
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-headline {
+    font-family: var(--milaura-font-heading);
+    font-size: 1.6rem;
+    color: var(--milaura-text);
+    line-height: 1.25;
+    margin: 0 0 8px;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-headline span {
+    color: var(--milaura-gold);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-subtitle {
+    font-family: var(--milaura-font-body);
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+    margin: 0 0 var(--milaura-spacing-md);
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-price-now {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--milaura-text);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-price-was {
+    font-size: 0.95rem;
+    color: #aaa;
+    text-decoration: line-through;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-price-save {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+    color: white;
+    padding: 15px 32px;
+    border-radius: 14px;
+    font-family: var(--milaura-font-body);
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(26, 26, 46, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(26, 26, 46, 0.35);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-cta svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-cta:hover svg {
+    transform: translateX(3px);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-trust {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 0.72rem;
+    color: #999;
+    padding-top: var(--milaura-spacing-xs);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-trust span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* --- DESKTOP --- */
+  @media (min-width: 1025px) {
+    #MilauraHeroHome-{{ section.id }} {
+      padding: var(--milaura-spacing-xl) var(--milaura-spacing-lg) var(--milaura-spacing-md);
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-inner {
+      max-width: 1000px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--milaura-spacing-xl);
+      align-items: center;
+      text-align: left;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-content {
+      order: 1;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-visual-col {
+      order: 2;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-badge-row {
+      justify-content: flex-start;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-visual {
+      width: 320px;
+      height: 340px;
+      margin: 0 auto;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-img {
+      max-width: 240px;
+      max-height: 300px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-headline {
+      font-size: 2.2rem;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-subtitle {
+      margin-left: 0;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-price {
+      justify-content: flex-start;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-trust {
+      justify-content: flex-start;
+    }
+  }
+
+  /* --- SMALL MOBILE --- */
+  @media (max-width: 379px) {
+    #MilauraHeroHome-{{ section.id }} .hero-home-headline {
+      font-size: 1.35rem;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-visual {
+      width: 200px;
+      height: 220px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-trust {
+      gap: 12px;
+      font-size: 0.65rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraHeroHome-{{ section.id }} .hero-home-cta,
+    #MilauraHeroHome-{{ section.id }} .hero-home-cta svg {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<div id="MilauraHeroHome-{{ section.id }}">
+  <div class="hero-home-inner">
+    <div class="hero-home-content">
+      {%- if section.settings.badge_text != blank or section.settings.show_stock -%}
+        <div class="hero-home-badge-row">
+          {%- if section.settings.badge_text != blank -%}
+            <span class="hero-home-badge">{{ section.settings.badge_text }}</span>
+          {%- endif -%}
+          {%- if section.settings.show_stock -%}
+            <span class="hero-home-stock">{{ section.settings.stock_count }} restantes</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <h1 class="hero-home-headline">{{ section.settings.headline }}</h1>
+
+      {%- if section.settings.subtitle != blank -%}
+        <p class="hero-home-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+
+      {%- assign product = section.settings.product -%}
+      {%- if product != blank -%}
+        <div class="hero-home-price">
+          <span class="hero-home-price-now">{{ product.price | money }}</span>
+          {%- if product.compare_at_price > product.price -%}
+            <span class="hero-home-price-was">{{ product.compare_at_price | money }}</span>
+            {%- assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+            <span class="hero-home-price-save">-{{ discount }}%</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <a href="{{ section.settings.cta_url | default: product.url | default: '/collections/all' }}" class="hero-home-cta">
+        {{ section.settings.cta_text | default: 'Decouvrir' }}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+
+      <div class="hero-home-trust">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'trust' -%}
+            <span {{ block.shopify_attributes }}>{{ block.settings.icon }} {{ block.settings.label }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="hero-home-visual-col">
+      {%- if product != blank and product.featured_image -%}
+        <div class="hero-home-visual">
+          <div class="hero-home-halo"></div>
+          <img
+            class="hero-home-img"
+            src="{{ product.featured_image | image_url: width: 640 }}"
+            alt="{{ product.title }}"
+            width="320"
+            height="400"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </div>
+      {%- elsif section.settings.image != blank -%}
+        <div class="hero-home-visual">
+          <div class="hero-home-halo"></div>
+          <img
+            class="hero-home-img"
+            src="{{ section.settings.image | image_url: width: 640 }}"
+            alt="{{ section.settings.headline | strip_html }}"
+            width="320"
+            height="400"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero Homepage",
+  "tag": "section",
+  "class": "milaura-hero-homepage",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Produit mis en avant"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image (fallback si pas de produit)"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "headline",
+      "label": "Titre principal",
+      "default": "Votre pierre du moment, <span>selectionnee pour vous.</span>"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Bijoux en pierres naturelles certifiees. Artisanat francais, rituels de reconnexion emotionnelle."
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge (vide = cache)",
+      "default": "Nouveaute"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stock",
+      "label": "Afficher compteur stock",
+      "default": false
+    },
+    {
+      "type": "number",
+      "id": "stock_count",
+      "label": "Stock restant",
+      "default": 30
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texte du bouton",
+      "default": "Decouvrir"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "URL du bouton (vide = lien produit)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Badge confiance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icone (emoji)",
+          "default": "💎"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texte",
+          "default": "Pierres certifiees"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Homepage",
+      "blocks": [
+        { "type": "trust", "settings": { "icon": "🇫🇷", "label": "Artisanat francais" } },
+        { "type": "trust", "settings": { "icon": "💎", "label": "Pierre naturelle certifiee" } },
+        { "type": "trust", "settings": { "icon": "🚚", "label": "Livraison offerte" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
