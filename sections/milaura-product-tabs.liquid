@@ -232,9 +232,10 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40px;
+    height: 35px;
     background: linear-gradient(transparent, rgba(255, 255, 255, 0.95));
     pointer-events: none;
+    transition: opacity 0.3s ease;
   }
 
   .accordion--preview.is-expanded .accordion__content {
@@ -242,27 +243,37 @@
   }
 
   .accordion--preview.is-expanded .accordion__content::after {
-    display: none;
+    opacity: 0;
   }
 
-  .milaura-voir-plus {
-    display: block;
-    width: 100%;
-    padding: 8px 0;
+  .milaura-toggle-desc {
+    display: inline;
     background: none;
     border: none;
-    border-top: 1px solid rgba(192, 160, 98, 0.15);
-    color: var(--milaura-gold-dark, #8F723A);
+    padding: 0;
+    color: var(--milaura-gold, #C0A062);
     font-family: var(--milaura-font-body);
-    font-size: 0.82rem;
+    font-size: inherit;
     font-weight: 600;
     cursor: pointer;
-    text-align: center;
-    margin-top: 4px;
+    text-decoration: none;
   }
 
-  .accordion--preview.is-expanded .milaura-voir-plus {
+  .milaura-toggle-desc:hover {
+    color: var(--milaura-gold-dark, #8F723A);
+    text-decoration: underline;
+  }
+
+  .accordion--preview .milaura-toggle-moins {
     display: none;
+  }
+
+  .accordion--preview.is-expanded .milaura-toggle-plus {
+    display: none;
+  }
+
+  .accordion--preview.is-expanded .milaura-toggle-moins {
+    display: inline;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -384,12 +395,11 @@
               {%- when 'content' -%}
                 {{ block.settings.content }}
             {%- endcase -%}
+            {%- if forloop.first -%}
+              <span class="milaura-toggle-plus milaura-toggle-desc" role="button" tabindex="0" onclick="this.closest('.accordion--preview').classList.add('is-expanded');">Lire la suite →</span>
+              <span class="milaura-toggle-moins milaura-toggle-desc" role="button" tabindex="0" onclick="this.closest('.accordion--preview').classList.remove('is-expanded');">← Replier</span>
+            {%- endif -%}
           </div>
-          {%- if forloop.first -%}
-            <button type="button" class="milaura-voir-plus" onclick="this.closest('.accordion--preview').classList.add('is-expanded');">
-              Voir plus ↓
-            </button>
-          {%- endif -%}
         </details>
       </div>
     {%- endfor -%}
