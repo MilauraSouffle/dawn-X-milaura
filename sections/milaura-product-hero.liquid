@@ -541,30 +541,14 @@
     margin-bottom: 10px;
   }
 
-  .milaura-social-proof-avatars {
-    display: flex;
-    align-items: center;
-  }
-
-  .milaura-avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
+  .milaura-social-proof-img {
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-dark, #8F723A));
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 700;
-    font-family: 'Lato', sans-serif;
-    border: 2.5px solid #fff;
-    margin-left: -8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  }
-
-  .milaura-avatar:first-child {
-    margin-left: 0;
+    object-fit: cover;
+    border: 2.5px solid var(--milaura-gold-light, #E6C88B);
+    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.25);
+    flex-shrink: 0;
   }
 
   .milaura-social-proof-check {
@@ -607,29 +591,29 @@
   .milaura-promo-badge {
     display: inline-block;
     background: linear-gradient(135deg, #1a1a2e, #2d2d44);
-    color: #fff;
-    font-size: 0.8rem;
+    color: var(--milaura-gold-light, #E6C88B);
+    font-size: 0.95rem;
     font-weight: 700;
-    padding: 5px 14px;
+    padding: 6px 16px;
     border-radius: 10px;
     margin-left: 10px;
     vertical-align: middle;
     font-family: 'Lato', sans-serif;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
   }
 
-  /* --- Override Dawn sale badge to match our blue --- */
+  /* --- Override Dawn sale badge to match our blue + gold text --- */
   .milaura-hero-wrapper .badge.price__badge-sale,
   .milaura-hero-wrapper .price__badge-sale {
     background: linear-gradient(135deg, #1a1a2e, #2d2d44) !important;
-    color: #fff !important;
+    color: var(--milaura-gold-light, #E6C88B) !important;
     border: none !important;
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     font-weight: 700;
-    padding: 5px 14px;
+    padding: 6px 16px;
     border-radius: 10px;
     font-family: 'Lato', sans-serif;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
   }
 
   /* --- Payment Icons --- */
@@ -663,10 +647,9 @@
       font-size: 0.85rem;
     }
 
-    .milaura-avatar {
-      width: 36px;
-      height: 36px;
-      font-size: 0.75rem;
+    .milaura-social-proof-img {
+      width: 40px;
+      height: 40px;
     }
 
     .milaura-rating-count {
@@ -1752,11 +1735,16 @@
 
         {%- if section.settings.show_social_proof -%}
           <div class="milaura-social-proof">
-            <div class="milaura-social-proof-avatars">
-              <span class="milaura-avatar">K</span>
-              <span class="milaura-avatar">S</span>
-              <span class="milaura-avatar">M</span>
-            </div>
+            {%- if section.settings.social_proof_image != blank -%}
+              <img
+                class="milaura-social-proof-img"
+                src="{{ section.settings.social_proof_image | image_url: width: 96 }}"
+                alt="Nos client(e)s"
+                width="48"
+                height="48"
+                loading="lazy"
+              >
+            {%- endif -%}
             <span class="milaura-social-proof-check">&#10003;</span>
             <span class="milaura-social-proof-text">{{ section.settings.social_proof_text }}</span>
           </div>
@@ -3067,7 +3055,7 @@
       "type": "text",
       "id": "social_proof_text",
       "label": "Texte social proof",
-      "default": "+500 clientes nous font confiance"
+      "default": "+500 client(e)s nous font confiance"
     },
     {
       "type": "checkbox",
@@ -3079,7 +3067,12 @@
       "type": "text",
       "id": "rating_text",
       "label": "Texte avis",
-      "default": "+500 clientes (boutique, salons, en ligne)"
+      "default": "+500 client(e)s (boutique, salons, en ligne)"
+    },
+    {
+      "type": "image_picker",
+      "id": "social_proof_image",
+      "label": "Photo social proof (ronde, ex: stand salon)"
     },
     {
       "type": "checkbox",
