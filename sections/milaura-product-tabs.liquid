@@ -218,42 +218,31 @@
     display: none;
   }
 
-  /* --- Preview mode: premier accordeon semi-ouvert --- */
-  .accordion--preview .accordion__content {
-    max-height: 70px;
-    overflow: hidden;
-    position: relative;
-    transition: max-height 0.4s ease;
+  /* --- Preview mode: texte tronque + lire la suite inline --- */
+  .milaura-desc-short {
+    display: inline;
   }
 
-  .accordion--preview .accordion__content::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 35px;
-    background: linear-gradient(transparent, rgba(255, 255, 255, 0.95));
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+  .milaura-desc-full {
+    display: none;
   }
 
-  .accordion--preview.is-expanded .accordion__content {
-    max-height: 2000px;
+  .accordion--preview.is-expanded .milaura-desc-short {
+    display: none;
   }
 
-  .accordion--preview.is-expanded .accordion__content::after {
-    opacity: 0;
+  .accordion--preview.is-expanded .milaura-desc-full {
+    display: inline;
   }
 
   .milaura-toggle-desc {
-    display: inline-block;
+    display: inline;
     background: none;
     border: none;
-    padding: 4px 12px 10px;
+    padding: 0;
     color: var(--milaura-gold, #C0A062);
-    font-family: var(--milaura-font-body);
-    font-size: 0.85rem;
+    font-family: inherit;
+    font-size: inherit;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
@@ -261,19 +250,6 @@
 
   .milaura-toggle-desc:hover {
     color: var(--milaura-gold-dark, #8F723A);
-    text-decoration: underline;
-  }
-
-  .accordion--preview .milaura-toggle-moins {
-    display: none;
-  }
-
-  .accordion--preview.is-expanded .milaura-toggle-plus {
-    display: none;
-  }
-
-  .accordion--preview.is-expanded .milaura-toggle-moins {
-    display: inline;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -366,7 +342,12 @@
           <div class="accordion__content rte">
             {%- case block.type -%}
               {%- when 'description' -%}
-                {{ product.description }}
+                {%- if forloop.first -%}
+                  <span class="milaura-desc-short">{{ product.description | strip_html | truncatewords: 25 }} <span class="milaura-toggle-desc" role="button" tabindex="0" onclick="this.closest('.accordion--preview').classList.add('is-expanded');">Lire la suite →</span></span>
+                  <span class="milaura-desc-full">{{ product.description }} <span class="milaura-toggle-desc" role="button" tabindex="0" onclick="this.closest('.accordion--preview').classList.remove('is-expanded');">← Replier</span></span>
+                {%- else -%}
+                  {{ product.description }}
+                {%- endif -%}
               {%- when 'specifications' -%}
                 <div class="specs-list">
                   {%- assign specs_meta = product.metafields.milaura.specifications.value -%}
@@ -396,10 +377,6 @@
                 {{ block.settings.content }}
             {%- endcase -%}
           </div>
-          {%- if forloop.first -%}
-            <span class="milaura-toggle-plus milaura-toggle-desc" role="button" tabindex="0" onclick="this.closest('.accordion--preview').classList.add('is-expanded');">Lire la suite →</span>
-            <span class="milaura-toggle-moins milaura-toggle-desc" role="button" tabindex="0" onclick="this.closest('.accordion--preview').classList.remove('is-expanded');">← Replier</span>
-          {%- endif -%}
         </details>
       </div>
     {%- endfor -%}
