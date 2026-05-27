@@ -319,7 +319,8 @@
       grid-template-areas:
         "gallery header"
         "gallery video-bubble"
-        "gallery actions";
+        "gallery actions"
+        "scratch scratch";
       gap: 16px;
       padding: 0 16px;
       overflow: visible;
@@ -1749,6 +1750,222 @@
       animation: none !important;
     }
   }
+
+  /* ===========================================
+     SCRATCH-TO-REVEAL (Cartes a gratter)
+     =========================================== */
+  .milaura-hero-scratch {
+    grid-area: scratch;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--milaura-beige, #FDFBF7), #F2E8D5);
+    border-radius: 16px;
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .milaura-scratch-header {
+    margin-bottom: 14px;
+  }
+
+  .milaura-scratch-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--milaura-text);
+    margin: 0 0 4px 0;
+  }
+
+  .milaura-scratch-subtitle {
+    font-size: 0.78rem;
+    color: #888;
+    margin: 0;
+  }
+
+  .milaura-scratch-counter {
+    display: inline-block;
+    font-size: 0.72rem;
+    background: rgba(192, 160, 98, 0.1);
+    padding: 3px 10px;
+    border-radius: 8px;
+    color: var(--milaura-gold-dark);
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  .milaura-scratch-cards {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .milaura-scratch-card {
+    width: 120px;
+    height: 140px;
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .milaura-scratch-card-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: white;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    border-radius: 14px;
+    padding: 10px 6px;
+  }
+
+  .milaura-scratch-card-icon {
+    font-size: 2rem;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+
+  .milaura-scratch-card-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.3;
+  }
+
+  .milaura-scratch-card-value {
+    font-size: 0.8rem;
+    color: var(--milaura-gold);
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .milaura-scratch-card canvas {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    z-index: 2;
+    touch-action: none;
+  }
+
+  .milaura-scratch-card.is-revealed canvas {
+    display: none;
+  }
+
+  .milaura-scratch-card.is-revealed .milaura-scratch-card-content {
+    border-color: var(--milaura-gold);
+    background: linear-gradient(135deg, #FFFDF7, #FFF9EC);
+  }
+
+  /* Confetti */
+  @keyframes milauraScratchConfetti {
+    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100px) rotate(720deg); opacity: 0; }
+  }
+
+  .milaura-scratch-confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: milauraScratchConfetti 1.4s ease-out forwards;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Recap */
+  .milaura-scratch-recap {
+    display: none;
+    margin-top: 10px;
+    text-align: center;
+    padding: 10px;
+    background: rgba(192, 160, 98, 0.06);
+    border-radius: 10px;
+  }
+
+  .milaura-scratch-recap.is-visible {
+    display: block;
+  }
+
+  .milaura-scratch-recap-title {
+    font-family: var(--milaura-font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--milaura-text);
+    margin-bottom: 6px;
+  }
+
+  .milaura-scratch-recap-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #666;
+    padding: 2px 0;
+  }
+
+  .milaura-scratch-recap-line .scratch-gift-value {
+    color: var(--milaura-gold);
+    font-weight: 600;
+  }
+
+  .milaura-scratch-recap-total {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(192, 160, 98, 0.15);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--milaura-gold-dark);
+  }
+
+  /* Desktop: larger cards */
+  @media screen and (min-width: 990px) {
+    .milaura-scratch-card {
+      width: 150px;
+      height: 170px;
+    }
+
+    .milaura-scratch-card-icon {
+      font-size: 2rem;
+    }
+
+    .milaura-scratch-card-name {
+      font-size: 0.85rem;
+    }
+
+    .milaura-scratch-card-value {
+      font-size: 0.8rem;
+    }
+
+    .milaura-scratch-cards {
+      gap: 14px;
+    }
+  }
+
+  /* Small mobile: keep 120x140 minimum */
+  @media screen and (max-width: 379px) {
+    .milaura-scratch-card {
+      width: 120px;
+      height: 140px;
+    }
+
+    .milaura-scratch-card-icon {
+      font-size: 1.8rem;
+    }
+
+    .milaura-scratch-cards {
+      gap: 10px;
+    }
+  }
 {% endstyle %}
 
 <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -2401,6 +2618,358 @@
         {%- endif -%}
       </div>
       <!-- Fin GROUPE 3: Actions -->
+
+      <!-- GROUPE 4: SCRATCH-TO-REVEAL (full width) -->
+      {%- if section.settings.show_scratch -%}
+        <div class="milaura-hero-scratch" id="milaura-hero-scratch-{{ section.id }}">
+          <div class="milaura-scratch-header">
+            <h3 class="milaura-scratch-title">{{ section.settings.scratch_title | default: 'Grattez pour decouvrir votre cadeau' }}</h3>
+            <p class="milaura-scratch-subtitle">{{ section.settings.scratch_subtitle | default: 'Un cadeau mystere vous attend avec votre commande' }}</p>
+            <span class="milaura-scratch-counter" id="milaura-scratch-counter-{{ section.id }}">0/0</span>
+          </div>
+          <div class="milaura-scratch-cards" id="milaura-scratch-cards-{{ section.id }}">
+            {%- assign gift_idx = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'gift' -%}
+                <div
+                  class="milaura-scratch-card"
+                  data-gift-index="{{ gift_idx }}"
+                  data-gift-name="{{ block.settings.name }}"
+                  data-gift-value="{{ block.settings.value }}"
+                  data-gift-icon="{{ block.settings.icon }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="milaura-scratch-card-content">
+                    <div class="milaura-scratch-card-icon">{{ block.settings.icon }}</div>
+                    <div class="milaura-scratch-card-name">{{ block.settings.name }}</div>
+                    <div class="milaura-scratch-card-value">{{ block.settings.value }}</div>
+                  </div>
+                </div>
+                {%- assign gift_idx = gift_idx | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="milaura-scratch-recap" id="milaura-scratch-recap-{{ section.id }}"></div>
+        </div>
+
+        <script>
+        (function() {
+          'use strict';
+
+          var sid = '{{ section.id }}';
+          var container = document.getElementById('milaura-hero-scratch-' + sid);
+          if (!container) return;
+
+          /* ===== CONSTANTS ===== */
+          var GOLD_1 = '#E6C88B';
+          var GOLD_2 = '#C0A062';
+          var REVEAL_THRESHOLD = 0.6;
+          var SCRATCH_RADIUS = 22;
+          var CONFETTI_COLORS = ['#C0A062', '#E6C88B', '#D4839E', '#6BAF7B', '#8B7EC8'];
+          var CONFETTI_COUNT = 18;
+          var STORAGE_KEY = 'milaura-scratch-hero-' + sid;
+
+          /* ===== STATE ===== */
+          var revealedGifts = new Set();
+          var gifts = [];
+
+          /* ===== PARSE DOM ===== */
+          var cardEls = container.querySelectorAll('.milaura-scratch-card');
+          var counterEl = document.getElementById('milaura-scratch-counter-' + sid);
+          var recapEl = document.getElementById('milaura-scratch-recap-' + sid);
+
+          cardEls.forEach(function(el) {
+            gifts.push({
+              el: el,
+              index: parseInt(el.dataset.giftIndex, 10),
+              name: el.dataset.giftName,
+              value: el.dataset.giftValue,
+              icon: el.dataset.giftIcon,
+              canvasReady: false
+            });
+          });
+
+          /* ===== SESSION STORAGE ===== */
+          function loadState() {
+            try {
+              var raw = sessionStorage.getItem(STORAGE_KEY);
+              if (raw) return new Set(JSON.parse(raw));
+            } catch (e) { /* ignore */ }
+            return new Set();
+          }
+
+          function saveState() {
+            try {
+              sessionStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(revealedGifts)));
+            } catch (e) { /* ignore */ }
+          }
+
+          revealedGifts = loadState();
+
+          /* ===== INIT CARDS ===== */
+          function initAllCards() {
+            gifts.forEach(function(gift) {
+              var card = gift.el;
+
+              if (revealedGifts.has(gift.index)) {
+                /* Already revealed from session */
+                card.classList.add('is-revealed');
+                showGiftContent(card, gift);
+              } else {
+                /* Ready to scratch */
+                showGiftContent(card, gift);
+                if (!gift.canvasReady) {
+                  initCanvas(card, gift);
+                }
+              }
+            });
+            updateCounter();
+            updateRecap();
+          }
+
+          function showGiftContent(card, gift) {
+            var content = card.querySelector('.milaura-scratch-card-content');
+            content.querySelector('.milaura-scratch-card-icon').textContent = gift.icon;
+            content.querySelector('.milaura-scratch-card-name').textContent = gift.name;
+            var valueEl = content.querySelector('.milaura-scratch-card-value');
+            if (valueEl) valueEl.textContent = gift.value;
+          }
+
+          /* ===== CANVAS SCRATCH ENGINE ===== */
+          function initCanvas(card, gift) {
+            var existing = card.querySelector('canvas');
+            if (existing) existing.remove();
+
+            var canvas = document.createElement('canvas');
+            var w = card.offsetWidth || 120;
+            var h = card.offsetHeight || 140;
+            canvas.width = w;
+            canvas.height = h;
+            canvas.style.width = w + 'px';
+            canvas.style.height = h + 'px';
+            card.appendChild(canvas);
+
+            var ctx = canvas.getContext('2d');
+
+            /* Gold gradient fill */
+            var gradient = ctx.createLinearGradient(0, 0, w, h);
+            gradient.addColorStop(0, GOLD_1);
+            gradient.addColorStop(1, GOLD_2);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, w, h);
+
+            /* Draw "?" hint */
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.font = 'bold 28px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('?', w / 2, h / 2);
+
+            gift.canvasReady = true;
+
+            /* Scratch state */
+            var isScratching = false;
+            var checkPending = false;
+
+            function getPos(e) {
+              var rect = canvas.getBoundingClientRect();
+              var clientX, clientY;
+              if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+              } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+              }
+              return {
+                x: (clientX - rect.left) * (canvas.width / rect.width),
+                y: (clientY - rect.top) * (canvas.height / rect.height)
+              };
+            }
+
+            function scratch(pos) {
+              ctx.globalCompositeOperation = 'destination-out';
+              ctx.beginPath();
+              ctx.arc(pos.x, pos.y, SCRATCH_RADIUS, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.globalCompositeOperation = 'source-over';
+
+              if (!checkPending) {
+                checkPending = true;
+                requestAnimationFrame(function() {
+                  checkPending = false;
+                  checkReveal(card, gift, canvas, ctx);
+                });
+              }
+            }
+
+            function onStart(e) {
+              if (card.classList.contains('is-revealed')) return;
+              isScratching = true;
+              scratch(getPos(e));
+            }
+
+            function onMove(e) {
+              if (!isScratching) return;
+              if (card.classList.contains('is-revealed')) return;
+              e.preventDefault();
+              scratch(getPos(e));
+            }
+
+            function onEnd() {
+              isScratching = false;
+            }
+
+            /* Touch events */
+            canvas.addEventListener('touchstart', onStart, { passive: true });
+            canvas.addEventListener('touchmove', onMove, { passive: false });
+            canvas.addEventListener('touchend', onEnd, { passive: true });
+            canvas.addEventListener('touchcancel', onEnd, { passive: true });
+
+            /* Mouse events */
+            canvas.addEventListener('mousedown', onStart);
+            canvas.addEventListener('mousemove', onMove);
+            canvas.addEventListener('mouseup', onEnd);
+            canvas.addEventListener('mouseleave', onEnd);
+          }
+
+          /* ===== REVEAL CHECK ===== */
+          function checkReveal(card, gift, canvas, ctx) {
+            if (revealedGifts.has(gift.index)) return;
+
+            var w = canvas.width;
+            var h = canvas.height;
+            var imageData;
+            try {
+              imageData = ctx.getImageData(0, 0, w, h);
+            } catch (e) {
+              return;
+            }
+            var pixels = imageData.data;
+            var total = w * h;
+            var transparent = 0;
+
+            /* Sample every 4th pixel for performance */
+            for (var i = 3; i < pixels.length; i += 16) {
+              if (pixels[i] < 10) transparent++;
+            }
+            transparent *= 4;
+
+            if (transparent / total >= REVEAL_THRESHOLD) {
+              revealCard(card, gift);
+            }
+          }
+
+          /* ===== REVEAL CARD ===== */
+          function revealCard(card, gift) {
+            if (revealedGifts.has(gift.index)) return;
+
+            revealedGifts.add(gift.index);
+            saveState();
+
+            card.classList.add('is-revealed');
+            var canvas = card.querySelector('canvas');
+            if (canvas) canvas.remove();
+            gift.canvasReady = false;
+
+            showGiftContent(card, gift);
+            spawnConfetti(card);
+            updateCounter();
+            updateRecap();
+          }
+
+          /* ===== CONFETTI ===== */
+          function spawnConfetti(card) {
+            var rect = card.getBoundingClientRect();
+            var parentRect = container.getBoundingClientRect();
+
+            for (var i = 0; i < CONFETTI_COUNT; i++) {
+              var particle = document.createElement('div');
+              particle.className = 'milaura-scratch-confetti';
+              particle.style.backgroundColor = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+              particle.style.left = (rect.left - parentRect.left + Math.random() * rect.width) + 'px';
+              particle.style.top = (rect.top - parentRect.top + Math.random() * 20 - 10) + 'px';
+              particle.style.animationDuration = (0.8 + Math.random() * 0.8) + 's';
+              particle.style.animationDelay = (Math.random() * 0.3) + 's';
+              container.appendChild(particle);
+
+              (function(p) {
+                p.addEventListener('animationend', function() {
+                  if (p.parentNode) p.parentNode.removeChild(p);
+                });
+                setTimeout(function() {
+                  if (p.parentNode) p.parentNode.removeChild(p);
+                }, 3000);
+              })(particle);
+            }
+          }
+
+          /* ===== COUNTER ===== */
+          function updateCounter() {
+            var total = gifts.length;
+            var revealed = revealedGifts.size;
+            if (counterEl) {
+              counterEl.textContent = revealed + '/' + total + ' revele' + (revealed > 1 ? 's' : '');
+            }
+          }
+
+          /* ===== RECAP ===== */
+          function updateRecap() {
+            if (!recapEl) return;
+
+            /* Only show recap when all gifts are revealed */
+            if (revealedGifts.size < gifts.length) {
+              recapEl.classList.remove('is-visible');
+              return;
+            }
+
+            /* Clear */
+            while (recapEl.firstChild) recapEl.removeChild(recapEl.firstChild);
+
+            /* Title */
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'milaura-scratch-recap-title';
+            titleDiv.textContent = 'Vos cadeaux offerts avec votre commande';
+            recapEl.appendChild(titleDiv);
+
+            /* Each gift */
+            var totalValueNum = 0;
+            gifts.forEach(function(gift) {
+              var line = document.createElement('div');
+              line.className = 'milaura-scratch-recap-line';
+              var nameSpan = document.createElement('span');
+              nameSpan.textContent = gift.icon + ' ' + gift.name;
+              var valSpan = document.createElement('span');
+              valSpan.className = 'scratch-gift-value';
+              valSpan.textContent = gift.value;
+              line.appendChild(nameSpan);
+              line.appendChild(valSpan);
+              recapEl.appendChild(line);
+
+              /* Parse numeric value for total */
+              var match = gift.value.match(/[\d,.]+/);
+              if (match) {
+                totalValueNum += parseFloat(match[0].replace(',', '.'));
+              }
+            });
+
+            /* Total */
+            if (totalValueNum > 0) {
+              var totalDiv = document.createElement('div');
+              totalDiv.className = 'milaura-scratch-recap-total';
+              totalDiv.textContent = 'Valeur totale de vos cadeaux : ' + totalValueNum.toFixed(2).replace('.', ',') + ' €';
+              recapEl.appendChild(totalDiv);
+            }
+
+            recapEl.classList.add('is-visible');
+          }
+
+          /* ===== INIT ===== */
+          initAllCards();
+        })();
+        </script>
+      {%- endif -%}
+
     </div>
     <!-- Fin milaura-hero-wrapper -->
 
@@ -3325,6 +3894,28 @@
     },
     {
       "type": "header",
+      "content": "🎁 Scratch-to-Reveal"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scratch",
+      "label": "Activer les cartes a gratter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "scratch_title",
+      "label": "Titre scratch",
+      "default": "Grattez pour decouvrir votre cadeau"
+    },
+    {
+      "type": "text",
+      "id": "scratch_subtitle",
+      "label": "Sous-titre",
+      "default": "Un cadeau mystere vous attend avec votre commande"
+    },
+    {
+      "type": "header",
       "content": "📐 Espacements"
     },
     {
@@ -3448,6 +4039,30 @@
           "default": "MEILLEURE OFFRE"
         }
       ]
+    },
+    {
+      "type": "gift",
+      "name": "Cadeau scratch",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icone (emoji)",
+          "default": "🎁"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nom du cadeau",
+          "default": "Livraison gratuite"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Valeur",
+          "default": "+9,90 €"
+        }
+      ]
     }
   ],
   "presets": [
@@ -3456,7 +4071,12 @@
       "blocks": [
         { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison offerte dès 39€" } },
         { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
-        { "type": "volume_offer" }
+        { "type": "volume_offer" },
+        { "type": "gift", "settings": { "icon": "📦", "name": "Livraison gratuite", "value": "+9,90 €" } },
+        { "type": "gift", "settings": { "icon": "👜", "name": "Pochon velours", "value": "+14,90 €" } },
+        { "type": "gift", "settings": { "icon": "💎", "name": "Mini mineral", "value": "+12,90 €" } },
+        { "type": "gift", "settings": { "icon": "🪨", "name": "Pierre roulee bonus", "value": "+8,90 €" } },
+        { "type": "gift", "settings": { "icon": "🏷️", "name": "Code -10% prochain achat", "value": "Offert" } }
       ]
     }
   ]
