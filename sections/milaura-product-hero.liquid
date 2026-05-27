@@ -533,58 +533,75 @@
   }
 
   /* --- Social Proof --- */
-  .milaura-social-proof {
+  /* --- Bloc Trust unifie (social proof + certificat) --- */
+  .milaura-trust-block {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(192, 160, 98, 0.2);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    margin-top: 6px;
+  }
+
+  .milaura-trust-top {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
+    gap: 12px;
     margin-bottom: 10px;
   }
 
-  .milaura-social-proof-img {
-    width: 48px;
-    height: 48px;
+  .milaura-trust-photo {
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2.5px solid var(--milaura-gold-light, #E6C88B);
-    box-shadow: 0 2px 8px rgba(192, 160, 98, 0.25);
+    border: 3px solid var(--milaura-gold-light, #E6C88B);
+    box-shadow: 0 3px 12px rgba(192, 160, 98, 0.25);
     flex-shrink: 0;
   }
 
-  .milaura-social-proof-check {
-    color: #2ecc71;
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-left: 4px;
-  }
-
-  .milaura-social-proof-text {
-    font-size: 0.95rem;
-    color: #333;
-    font-family: 'Lato', sans-serif;
-    font-weight: 600;
-  }
-
-  /* --- Rating Row --- */
-  .milaura-rating-row {
+  .milaura-trust-top-text {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
     gap: 6px;
-    margin: 4px 0 8px;
   }
 
-  .milaura-stars {
+  .milaura-trust-check {
+    color: #2ecc71;
+    font-size: 1.3rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .milaura-trust-headline {
+    font-size: 1.05rem;
+    color: #1a1a1a;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .milaura-trust-bottom {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .milaura-trust-stars {
     color: var(--milaura-gold, #C0A062);
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     letter-spacing: 1px;
     line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
   }
 
-  .milaura-rating-count {
-    font-size: 0.8rem;
-    color: #666;
+  .milaura-trust-certif {
+    font-size: 0.82rem;
+    color: #555;
     font-family: 'Lato', sans-serif;
+    line-height: 1.45;
+    margin: 0;
   }
 
   /* --- Promo Badge (notre badge custom) --- */
@@ -633,27 +650,25 @@
 
   /* --- Responsive: center on mobile --- */
   @media screen and (max-width: 749px) {
-    .milaura-social-proof,
-    .milaura-rating-row,
     .milaura-payment-icons {
       justify-content: center;
     }
 
-    .milaura-social-proof {
-      gap: 8px;
+    .milaura-trust-block {
+      padding: 12px 14px;
     }
 
-    .milaura-social-proof-text {
-      font-size: 0.85rem;
+    .milaura-trust-photo {
+      width: 58px;
+      height: 58px;
     }
 
-    .milaura-social-proof-img {
-      width: 40px;
-      height: 40px;
+    .milaura-trust-headline {
+      font-size: 0.95rem;
     }
 
-    .milaura-rating-count {
-      font-size: 0.8rem;
+    .milaura-trust-certif {
+      font-size: 0.78rem;
     }
   }
 
@@ -1734,30 +1749,31 @@
         {%- endif -%}
 
         {%- if section.settings.show_social_proof -%}
-          <div class="milaura-social-proof">
-            {%- if section.settings.social_proof_image != blank -%}
-              <img
-                class="milaura-social-proof-img"
-                src="{{ section.settings.social_proof_image | image_url: width: 96 }}"
-                alt="Nos client(e)s"
-                width="48"
-                height="48"
-                loading="lazy"
-              >
-            {%- endif -%}
-            <span class="milaura-social-proof-check">&#10003;</span>
-            <span class="milaura-social-proof-text">{{ section.settings.social_proof_text }}</span>
+          <div class="milaura-trust-block">
+            <div class="milaura-trust-top">
+              {%- if section.settings.social_proof_image != blank -%}
+                <img
+                  class="milaura-trust-photo"
+                  src="{{ section.settings.social_proof_image | image_url: width: 160 }}"
+                  alt="Nos client(e)s"
+                  width="70"
+                  height="70"
+                  loading="lazy"
+                >
+              {%- endif -%}
+              <div class="milaura-trust-top-text">
+                <span class="milaura-trust-check">&#10003;</span>
+                <span class="milaura-trust-headline">{{ section.settings.social_proof_text }}</span>
+              </div>
+            </div>
+            <div class="milaura-trust-bottom">
+              <div class="milaura-trust-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <p class="milaura-trust-certif">{{ section.settings.trust_description }}</p>
+            </div>
           </div>
         {%- endif -%}
 
         <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
-
-        {%- if section.settings.show_rating -%}
-          <div class="milaura-rating-row">
-            <div class="milaura-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-            <span class="milaura-rating-count">{{ section.settings.rating_text }}</span>
-          </div>
-        {%- endif -%}
 
         <div class="no-js-hidden" id="price-{{ section.id }}" role="status">
           {%- render 'price',
@@ -3058,21 +3074,15 @@
       "default": "+500 client(e)s nous font confiance"
     },
     {
-      "type": "checkbox",
-      "id": "show_rating",
-      "label": "Afficher etoiles",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "rating_text",
-      "label": "Texte avis",
-      "default": "+500 client(e)s (boutique, salons, en ligne)"
-    },
-    {
       "type": "image_picker",
       "id": "social_proof_image",
       "label": "Photo social proof (ronde, ex: stand salon)"
+    },
+    {
+      "type": "textarea",
+      "id": "trust_description",
+      "label": "Texte certificat / garantie (sous les etoiles)",
+      "default": "Chaque piece est selectionnee par Karine et accompagnee d'un certificat d'authenticite delivre par un gemmologue parisien, partenaire de Cartier Paris. Satisfait ou rembourse 30 jours."
     },
     {
       "type": "checkbox",
