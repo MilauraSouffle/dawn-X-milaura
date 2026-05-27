@@ -533,75 +533,62 @@
   }
 
   /* --- Social Proof --- */
-  /* --- Bloc Trust unifie (social proof + certificat) --- */
+  /* --- Bloc Trust unifie (certificat + reassurance) --- */
   .milaura-trust-block {
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(192, 160, 98, 0.2);
+    background: linear-gradient(135deg, rgba(253, 251, 247, 0.95), rgba(242, 232, 213, 0.6));
+    border: 1px solid rgba(192, 160, 98, 0.25);
     border-radius: 16px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
-    margin-top: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+    margin-top: 8px;
   }
 
-  .milaura-trust-top {
+  .milaura-trust-layout {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
+    gap: 16px;
+    align-items: flex-start;
   }
 
-  .milaura-trust-photo {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--milaura-gold-light, #E6C88B);
-    box-shadow: 0 3px 12px rgba(192, 160, 98, 0.25);
+  .milaura-trust-cert-wrap {
     flex-shrink: 0;
   }
 
-  .milaura-trust-top-text {
+  .milaura-trust-cert-img {
+    width: 110px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid rgba(192, 160, 98, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transform: rotate(-1.5deg);
+  }
+
+  .milaura-trust-points {
     display: flex;
-    align-items: center;
-    gap: 6px;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
   }
 
-  .milaura-trust-check {
-    color: #2ecc71;
-    font-size: 1.3rem;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .milaura-trust-headline {
-    font-size: 1.05rem;
-    color: #1a1a1a;
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    line-height: 1.3;
-  }
-
-  .milaura-trust-bottom {
+  .milaura-trust-point {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-  }
-
-  .milaura-trust-stars {
-    color: var(--milaura-gold, #C0A062);
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    line-height: 1;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .milaura-trust-certif {
-    font-size: 0.82rem;
-    color: #555;
     font-family: 'Lato', sans-serif;
-    line-height: 1.45;
-    margin: 0;
+    font-size: 0.85rem;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  .milaura-trust-point .milaura-trust-icon {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+    margin-top: 1px;
+  }
+
+  .milaura-trust-point:first-child {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1a1a1a;
   }
 
   /* --- Promo Badge (notre badge custom) --- */
@@ -655,20 +642,24 @@
     }
 
     .milaura-trust-block {
-      padding: 12px 14px;
+      padding: 12px;
     }
 
-    .milaura-trust-photo {
-      width: 58px;
-      height: 58px;
+    .milaura-trust-layout {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
     }
 
-    .milaura-trust-headline {
-      font-size: 0.95rem;
+    .milaura-trust-cert-img {
+      width: 140px;
+      transform: none;
     }
 
-    .milaura-trust-certif {
-      font-size: 0.78rem;
+    .milaura-trust-point {
+      justify-content: center;
+      font-size: 0.82rem;
     }
   }
 
@@ -1750,25 +1741,37 @@
 
         {%- if section.settings.show_social_proof -%}
           <div class="milaura-trust-block">
-            <div class="milaura-trust-top">
+            <div class="milaura-trust-layout">
               {%- if section.settings.social_proof_image != blank -%}
-                <img
-                  class="milaura-trust-photo"
-                  src="{{ section.settings.social_proof_image | image_url: width: 160 }}"
-                  alt="Nos client(e)s"
-                  width="70"
-                  height="70"
-                  loading="lazy"
-                >
+                <div class="milaura-trust-cert-wrap">
+                  <img
+                    class="milaura-trust-cert-img"
+                    src="{{ section.settings.social_proof_image | image_url: width: 300 }}"
+                    alt="Certificat LFG Paris"
+                    width="120"
+                    height="auto"
+                    loading="lazy"
+                  >
+                </div>
               {%- endif -%}
-              <div class="milaura-trust-top-text">
-                <span class="milaura-trust-check">&#10003;</span>
-                <span class="milaura-trust-headline">{{ section.settings.social_proof_text }}</span>
+              <div class="milaura-trust-points">
+                <div class="milaura-trust-point">
+                  <span class="milaura-trust-icon">&#10003;</span>
+                  <span>{{ section.settings.social_proof_text }}</span>
+                </div>
+                <div class="milaura-trust-point">
+                  <span class="milaura-trust-icon">&#9733;</span>
+                  <span>{{ section.settings.trust_line_karine }}</span>
+                </div>
+                <div class="milaura-trust-point">
+                  <span class="milaura-trust-icon">&#128142;</span>
+                  <span>{{ section.settings.trust_line_lfg }}</span>
+                </div>
+                <div class="milaura-trust-point">
+                  <span class="milaura-trust-icon">&#9989;</span>
+                  <span>{{ section.settings.trust_line_guarantee }}</span>
+                </div>
               </div>
-            </div>
-            <div class="milaura-trust-bottom">
-              <div class="milaura-trust-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-              <p class="milaura-trust-certif">{{ section.settings.trust_description }}</p>
             </div>
           </div>
         {%- endif -%}
@@ -3076,13 +3079,25 @@
     {
       "type": "image_picker",
       "id": "social_proof_image",
-      "label": "Photo social proof (ronde, ex: stand salon)"
+      "label": "Image certificat LFG (rectangle)"
     },
     {
-      "type": "textarea",
-      "id": "trust_description",
-      "label": "Texte certificat / garantie (sous les etoiles)",
-      "default": "Chaque pierre est accompagnee d'un certificat d'authenticite delivre par le LFG Paris (Laboratoire Francais de Gemmologie). Satisfait ou rembourse 30 jours."
+      "type": "text",
+      "id": "trust_line_karine",
+      "label": "Ligne Karine",
+      "default": "Karine selectionne chaque piece avec soin. Qualite et provenance rigoureusement verifiees."
+    },
+    {
+      "type": "text",
+      "id": "trust_line_lfg",
+      "label": "Ligne certificat LFG",
+      "default": "Pierres d'origine certifiees par le LFG Paris (Laboratoire Francais de Gemmologie)."
+    },
+    {
+      "type": "text",
+      "id": "trust_line_guarantee",
+      "label": "Ligne garantie",
+      "default": "Satisfait ou rembourse 30 jours."
     },
     {
       "type": "checkbox",
