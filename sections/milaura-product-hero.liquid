@@ -522,6 +522,136 @@
     color: {{ section.settings.price_color }};
   }
 
+  .milaura-product__price .price-item--sale {
+    font-size: calc({{ section.settings.price_size }}px * 1.15);
+    font-weight: 800;
+  }
+
+  .milaura-product__price .price-item--regular.price-item--last {
+    opacity: 0.6;
+    text-decoration: line-through;
+  }
+
+  /* --- Social Proof --- */
+  .milaura-social-proof {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .milaura-social-proof-avatars {
+    display: flex;
+    align-items: center;
+  }
+
+  .milaura-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-dark, #8F723A));
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+    border: 2px solid #fff;
+    margin-left: -6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  }
+
+  .milaura-avatar:first-child {
+    margin-left: 0;
+  }
+
+  .milaura-social-proof-check {
+    color: #2ecc71;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 2px;
+  }
+
+  .milaura-social-proof-text {
+    font-size: 0.8rem;
+    color: #555;
+    font-family: 'Lato', sans-serif;
+  }
+
+  /* --- Rating Row --- */
+  .milaura-rating-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    margin: 4px 0 8px;
+  }
+
+  .milaura-stars {
+    color: var(--milaura-gold, #C0A062);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .milaura-rating-count {
+    font-size: 0.8rem;
+    color: #666;
+    font-family: 'Lato', sans-serif;
+  }
+
+  /* --- Promo Badge --- */
+  .milaura-promo-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+    font-family: 'Lato', sans-serif;
+  }
+
+  /* --- Payment Icons --- */
+  .milaura-payment-icons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+    opacity: 0.6;
+  }
+
+  .milaura-payment-icon {
+    width: 38px;
+    height: 24px;
+  }
+
+  /* --- Responsive: center on mobile --- */
+  @media screen and (max-width: 749px) {
+    .milaura-social-proof,
+    .milaura-rating-row,
+    .milaura-payment-icons {
+      justify-content: center;
+    }
+
+    .milaura-social-proof {
+      gap: 6px;
+    }
+
+    .milaura-social-proof-text {
+      font-size: 0.75rem;
+    }
+
+    .milaura-rating-count {
+      font-size: 0.75rem;
+    }
+  }
+
   /* ===========================================
      VOLUME BUNDLE - Design Premium 2026
      Cartes avec en-têtes colorés intégrés
@@ -1598,10 +1728,26 @@
           <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
         {%- endif -%}
 
+        {%- if section.settings.show_social_proof -%}
+          <div class="milaura-social-proof">
+            <div class="milaura-social-proof-avatars">
+              <span class="milaura-avatar">K</span>
+              <span class="milaura-avatar">S</span>
+              <span class="milaura-avatar">M</span>
+            </div>
+            <span class="milaura-social-proof-check">&#10003;</span>
+            <span class="milaura-social-proof-text">{{ section.settings.social_proof_text }}</span>
+          </div>
+        {%- endif -%}
+
         <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
 
-        {%- comment -%} Rating badge — sera rempli par Judge.me quand installe {%- endcomment -%}
-        <div id="judgeme-product-rating" class="rating-badge-placeholder"></div>
+        {%- if section.settings.show_rating -%}
+          <div class="milaura-rating-row">
+            <div class="milaura-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <span class="milaura-rating-count">{{ section.settings.rating_text }}</span>
+          </div>
+        {%- endif -%}
 
         <div class="no-js-hidden" id="price-{{ section.id }}" role="status">
           {%- render 'price',
@@ -1610,6 +1756,10 @@
             show_badges: true,
             price_class: 'milaura-product__price'
           -%}
+          {%- if product.compare_at_price > product.price -%}
+            {%- assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+            <span class="milaura-promo-badge">-{{ discount }}%</span>
+          {%- endif -%}
         </div>
       </div>
 
@@ -2151,6 +2301,15 @@
             {%- endif -%}
           {%- endfor -%}
         </div>
+
+        {%- if section.settings.show_payment_icons -%}
+          <div class="milaura-payment-icons">
+            <svg viewBox="0 0 38 24" class="milaura-payment-icon"><rect width="38" height="24" rx="3" fill="#1A1F71"/><text x="19" y="16" text-anchor="middle" fill="white" font-size="8" font-weight="bold">VISA</text></svg>
+            <svg viewBox="0 0 38 24" class="milaura-payment-icon"><rect width="38" height="24" rx="3" fill="#EB001B"/><circle cx="15" cy="12" r="7" fill="#EB001B"/><circle cx="23" cy="12" r="7" fill="#F79E1B"/><path d="M19 6.3a7 7 0 010 11.4 7 7 0 010-11.4z" fill="#FF5F00"/></svg>
+            <svg viewBox="0 0 38 24" class="milaura-payment-icon"><rect width="38" height="24" rx="3" fill="#000"/><text x="19" y="15" text-anchor="middle" fill="white" font-size="7" font-weight="500"> Pay</text></svg>
+            <svg viewBox="0 0 38 24" class="milaura-payment-icon"><rect width="38" height="24" rx="3" fill="#fff" stroke="#ddd"/><text x="19" y="15" text-anchor="middle" fill="#5F6368" font-size="7" font-weight="500">G Pay</text></svg>
+          </div>
+        {%- endif -%}
 
         <!-- Description Extract (Optional) -->
         {%- if section.settings.show_description -%}
@@ -2871,6 +3030,40 @@
       "id": "show_description",
       "default": false,
       "label": "Afficher extrait description"
+    },
+    {
+      "type": "header",
+      "content": "Social Proof & Conversion"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_proof",
+      "label": "Afficher social proof",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "social_proof_text",
+      "label": "Texte social proof",
+      "default": "+500 clientes satisfaites"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Afficher etoiles",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Texte avis",
+      "default": "4.8/5 sur 127 avis"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Afficher icones paiement",
+      "default": true
     },
     {
       "type": "header",
