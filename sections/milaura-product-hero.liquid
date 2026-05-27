@@ -2607,17 +2607,17 @@
             document.getElementById('readMoreLink-{{ section.id }}').addEventListener('click', function (e) {
               e.preventDefault();
               var target = document.getElementById('ProductTabs');
-              if (target) {
-                var headerHeight =
-                  parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80;
-                var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+              if (!target) return;
+              var headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80;
+              var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 10;
+              window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+              setTimeout(function() {
                 var firstTab = target.querySelector('.milaura-tab-btn');
-                if (firstTab && typeof switchTab === 'function') {
-                  var blockId = firstTab.id.replace('tab-', '');
-                  switchTab(blockId);
+                if (firstTab) {
+                  firstTab.click();
+                  target.style.scrollMarginTop = headerHeight + 'px';
                 }
-              }
+              }, 600);
             });
           </script>
         {%- endif -%}
