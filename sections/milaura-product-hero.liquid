@@ -1752,66 +1752,110 @@
   }
 
   /* ===========================================
-     SCRATCH-TO-REVEAL (Cartes a gratter)
+     SCRATCH-TO-REVEAL (Cartes a gratter) - Premium
      =========================================== */
-  .milaura-hero-scratch {
+
+  /* Wrapper grid-area pour le scratch complet */
+  .milaura-scratch-zone {
     grid-area: scratch;
     width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--milaura-beige, #FDFBF7), #F2E8D5);
-    border-radius: 16px;
-    border: 1px solid rgba(192, 160, 98, 0.2);
-    text-align: center;
+  }
+
+  /* Separateur elegant */
+  .milaura-scratch-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px 0;
+    width: 100%;
+  }
+
+  .milaura-scratch-divider::before,
+  .milaura-scratch-divider::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--milaura-gold, #C0A062), transparent);
+  }
+
+  .milaura-scratch-divider-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--milaura-gold, #C0A062);
+    white-space: nowrap;
+  }
+
+  /* Conteneur principal */
+  .milaura-hero-scratch {
+    width: 100%;
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    padding: 20px;
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
   }
 
+  /* Header : titre + badge compteur */
   .milaura-scratch-header {
-    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
   }
 
   .milaura-scratch-title {
-    font-family: var(--milaura-font-heading);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--milaura-text);
-    margin: 0 0 4px 0;
-  }
-
-  .milaura-scratch-subtitle {
-    font-size: 0.78rem;
-    color: #888;
+    color: var(--milaura-text, #000);
     margin: 0;
+    line-height: 1.3;
   }
 
   .milaura-scratch-counter {
     display: inline-block;
-    font-size: 0.72rem;
-    background: rgba(192, 160, 98, 0.1);
-    padding: 3px 10px;
-    border-radius: 8px;
-    color: var(--milaura-gold-dark);
-    margin-top: 8px;
-    font-weight: 600;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #F2E8D5;
+    color: var(--milaura-gold-dark, #8F723A);
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 12px;
   }
 
+  /* Grille des cartes */
   .milaura-scratch-cards {
     display: flex;
     justify-content: center;
-    gap: 14px;
+    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-bottom: 0;
   }
 
+  /* Carte individuelle */
   .milaura-scratch-card {
-    width: 120px;
-    height: 140px;
-    border-radius: 14px;
+    width: 130px;
+    height: 150px;
+    border-radius: 16px;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     cursor: pointer;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
   }
 
   .milaura-scratch-card-content {
@@ -1822,148 +1866,189 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: white;
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: 14px;
-    padding: 10px 6px;
+    background: #fff;
+    border: 1.5px solid rgba(192, 160, 98, 0.2);
+    border-radius: 16px;
+    padding: 10px 8px;
+    transition: border-color 0.3s ease, background 0.3s ease;
   }
 
   .milaura-scratch-card-icon {
-    font-size: 2rem;
+    font-size: 1.8rem;
     margin-bottom: 6px;
     line-height: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
   .milaura-scratch-card-name {
-    font-size: 0.85rem;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
     font-weight: 700;
     color: #333;
     line-height: 1.3;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
   .milaura-scratch-card-value {
-    font-size: 0.8rem;
-    color: var(--milaura-gold);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.75rem;
+    color: var(--milaura-gold, #C0A062);
     margin-top: 4px;
     font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
+  /* Canvas overlay */
   .milaura-scratch-card canvas {
     position: absolute;
     inset: 0;
-    border-radius: 14px;
+    border-radius: 16px;
     z-index: 2;
     touch-action: none;
+    cursor: pointer;
   }
 
+  /* Etat revele */
   .milaura-scratch-card.is-revealed canvas {
     display: none;
   }
 
   .milaura-scratch-card.is-revealed .milaura-scratch-card-content {
-    border-color: var(--milaura-gold);
-    background: linear-gradient(135deg, #FFFDF7, #FFF9EC);
+    border-color: rgba(192, 160, 98, 0.3);
+    background: #fff;
+  }
+
+  .milaura-scratch-card.is-revealed .milaura-scratch-card-icon,
+  .milaura-scratch-card.is-revealed .milaura-scratch-card-name,
+  .milaura-scratch-card.is-revealed .milaura-scratch-card-value {
+    opacity: 1;
+  }
+
+  /* Animation bounce au reveal */
+  @keyframes milauraScratchBounce {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .milaura-scratch-card.is-bouncing {
+    animation: milauraScratchBounce 0.4s ease-out;
   }
 
   /* Confetti */
   @keyframes milauraScratchConfetti {
-    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100px) rotate(720deg); opacity: 0; }
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(120px) rotate(720deg); opacity: 0; }
   }
 
   .milaura-scratch-confetti {
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    animation: milauraScratchConfetti 1.4s ease-out forwards;
+    animation: milauraScratchConfetti 1.2s ease-out forwards;
     pointer-events: none;
     z-index: 10;
   }
 
-  /* Recap */
-  .milaura-scratch-recap {
+  /* Pill de confirmation */
+  .milaura-scratch-pill {
     display: none;
-    margin-top: 10px;
+    margin-top: 16px;
     text-align: center;
-    padding: 10px;
-    background: rgba(192, 160, 98, 0.06);
-    border-radius: 10px;
   }
 
-  .milaura-scratch-recap.is-visible {
+  .milaura-scratch-pill.is-visible {
     display: block;
   }
 
-  .milaura-scratch-recap-title {
-    font-family: var(--milaura-font-heading);
-    font-size: 0.9rem;
+  @keyframes milauraScratchPillIn {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .milaura-scratch-pill-inner {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+    color: #E6C88B;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--milaura-text);
-    margin-bottom: 6px;
+    border-radius: 20px;
+    padding: 8px 16px;
+    animation: milauraScratchPillIn 0.4s ease-out;
   }
 
-  .milaura-scratch-recap-line {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    color: #666;
-    padding: 2px 0;
-  }
-
-  .milaura-scratch-recap-line .scratch-gift-value {
-    color: var(--milaura-gold);
-    font-weight: 600;
-  }
-
-  .milaura-scratch-recap-total {
-    margin-top: 6px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(192, 160, 98, 0.15);
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--milaura-gold-dark);
-  }
-
-  /* Desktop: larger cards */
-  @media screen and (min-width: 990px) {
+  /* Desktop (>= 750px) */
+  @media screen and (min-width: 750px) {
     .milaura-scratch-card {
-      width: 150px;
-      height: 170px;
-    }
-
-    .milaura-scratch-card-icon {
-      font-size: 2rem;
-    }
-
-    .milaura-scratch-card-name {
-      font-size: 0.85rem;
-    }
-
-    .milaura-scratch-card-value {
-      font-size: 0.8rem;
+      width: 130px;
+      height: 150px;
     }
 
     .milaura-scratch-cards {
       gap: 14px;
     }
+
+    .milaura-scratch-divider::before,
+    .milaura-scratch-divider::after {
+      max-width: 120px;
+    }
   }
 
-  /* Small mobile: keep 120x140 minimum */
-  @media screen and (max-width: 379px) {
+  /* Mobile (< 750px) */
+  @media screen and (max-width: 749px) {
     .milaura-scratch-card {
-      width: 120px;
-      height: 140px;
-    }
-
-    .milaura-scratch-card-icon {
-      font-size: 1.8rem;
+      width: 105px;
+      height: 125px;
     }
 
     .milaura-scratch-cards {
       gap: 10px;
+    }
+
+    .milaura-scratch-title {
+      font-size: 1rem;
+    }
+
+    .milaura-scratch-card-icon {
+      font-size: 1.6rem;
+    }
+
+    .milaura-scratch-card-name {
+      font-size: 0.75rem;
+    }
+
+    .milaura-scratch-card-value {
+      font-size: 0.7rem;
+    }
+
+    .milaura-hero-scratch {
+      padding: 16px;
+    }
+  }
+
+  /* Petit mobile (< 380px) */
+  @media screen and (max-width: 379px) {
+    .milaura-scratch-card {
+      width: 95px;
+      height: 115px;
+    }
+
+    .milaura-scratch-cards {
+      gap: 8px;
+    }
+
+    .milaura-scratch-card-icon {
+      font-size: 1.4rem;
+    }
+
+    .milaura-scratch-card-name {
+      font-size: 0.7rem;
     }
   }
 {% endstyle %}
@@ -2619,14 +2704,26 @@
       </div>
       <!-- Fin GROUPE 3: Actions -->
 
-      <!-- GROUPE 4: SCRATCH-TO-REVEAL (full width) -->
+      <!-- GROUPE 4: SCRATCH-TO-REVEAL (full width, premium) -->
       {%- if section.settings.show_scratch -%}
+        {%- assign gift_count = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'gift' -%}
+            {%- assign gift_count = gift_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <div class="milaura-scratch-zone">
+        <div class="milaura-scratch-divider" aria-hidden="true">
+          <span class="milaura-scratch-divider-text">{{ section.settings.scratch_title | default: 'Cadeaux a gratter' }}</span>
+        </div>
+
         <div class="milaura-hero-scratch" id="milaura-hero-scratch-{{ section.id }}">
           <div class="milaura-scratch-header">
-            <h3 class="milaura-scratch-title">{{ section.settings.scratch_title | default: 'Grattez pour decouvrir votre cadeau' }}</h3>
-            <p class="milaura-scratch-subtitle">{{ section.settings.scratch_subtitle | default: 'Un cadeau mystere vous attend avec votre commande' }}</p>
-            <span class="milaura-scratch-counter" id="milaura-scratch-counter-{{ section.id }}">0/0</span>
+            <h3 class="milaura-scratch-title">Vos cadeaux</h3>
+            <span class="milaura-scratch-counter" id="milaura-scratch-counter-{{ section.id }}">0/{{ gift_count }} REVELES</span>
           </div>
+
           <div class="milaura-scratch-cards" id="milaura-scratch-cards-{{ section.id }}">
             {%- assign gift_idx = 0 -%}
             {%- for block in section.blocks -%}
@@ -2649,7 +2746,10 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
-          <div class="milaura-scratch-recap" id="milaura-scratch-recap-{{ section.id }}"></div>
+
+          <div class="milaura-scratch-pill" id="milaura-scratch-pill-{{ section.id }}">
+            <span class="milaura-scratch-pill-inner" id="milaura-scratch-pill-text-{{ section.id }}"></span>
+          </div>
         </div>
 
         <script>
@@ -2663,11 +2763,11 @@
           /* ===== CONSTANTS ===== */
           var GOLD_1 = '#E6C88B';
           var GOLD_2 = '#C0A062';
-          var REVEAL_THRESHOLD = 0.6;
+          var REVEAL_THRESHOLD = 0.55;
           var SCRATCH_RADIUS = 22;
-          var CONFETTI_COLORS = ['#C0A062', '#E6C88B', '#D4839E', '#6BAF7B', '#8B7EC8'];
+          var CONFETTI_COLORS = ['#C0A062', '#E6C88B', '#8F723A', '#D4839E', '#6BA3C7'];
           var CONFETTI_COUNT = 18;
-          var STORAGE_KEY = 'milaura-scratch-hero-' + sid;
+          var STORAGE_KEY = 'milaura-scratch-' + sid;
 
           /* ===== STATE ===== */
           var revealedGifts = new Set();
@@ -2676,7 +2776,8 @@
           /* ===== PARSE DOM ===== */
           var cardEls = container.querySelectorAll('.milaura-scratch-card');
           var counterEl = document.getElementById('milaura-scratch-counter-' + sid);
-          var recapEl = document.getElementById('milaura-scratch-recap-' + sid);
+          var pillEl = document.getElementById('milaura-scratch-pill-' + sid);
+          var pillTextEl = document.getElementById('milaura-scratch-pill-text-' + sid);
 
           cardEls.forEach(function(el) {
             gifts.push({
@@ -2710,24 +2811,25 @@
           function initAllCards() {
             gifts.forEach(function(gift) {
               var card = gift.el;
+              populateContent(card, gift);
 
               if (revealedGifts.has(gift.index)) {
-                /* Already revealed from session */
                 card.classList.add('is-revealed');
-                showGiftContent(card, gift);
-              } else {
-                /* Ready to scratch */
-                showGiftContent(card, gift);
-                if (!gift.canvasReady) {
-                  initCanvas(card, gift);
-                }
+              } else if (!gift.canvasReady) {
+                initCanvas(card, gift);
               }
             });
             updateCounter();
-            updateRecap();
+
+            /* Restore last pill if any gift was revealed */
+            if (revealedGifts.size > 0) {
+              var lastIdx = Math.max.apply(null, Array.from(revealedGifts));
+              var lastGift = gifts[lastIdx];
+              if (lastGift) showPill(lastGift);
+            }
           }
 
-          function showGiftContent(card, gift) {
+          function populateContent(card, gift) {
             var content = card.querySelector('.milaura-scratch-card-content');
             content.querySelector('.milaura-scratch-card-icon').textContent = gift.icon;
             content.querySelector('.milaura-scratch-card-name').textContent = gift.name;
@@ -2741,8 +2843,8 @@
             if (existing) existing.remove();
 
             var canvas = document.createElement('canvas');
-            var w = card.offsetWidth || 120;
-            var h = card.offsetHeight || 140;
+            var w = card.offsetWidth || 130;
+            var h = card.offsetHeight || 150;
             canvas.width = w;
             canvas.height = h;
             canvas.style.width = w + 'px';
@@ -2759,35 +2861,35 @@
             ctx.fillRect(0, 0, w, h);
 
             /* Draw "?" hint */
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-            ctx.font = 'bold 28px sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+            ctx.font = 'bold 2rem sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('?', w / 2, h / 2);
 
             gift.canvasReady = true;
 
-            /* Scratch state */
+            /* Scratch interaction state */
             var isScratching = false;
             var checkPending = false;
 
             function getPos(e) {
               var rect = canvas.getBoundingClientRect();
-              var clientX, clientY;
+              var cx, cy;
               if (e.touches && e.touches.length > 0) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
+                cx = e.touches[0].clientX;
+                cy = e.touches[0].clientY;
               } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
+                cx = e.clientX;
+                cy = e.clientY;
               }
               return {
-                x: (clientX - rect.left) * (canvas.width / rect.width),
-                y: (clientY - rect.top) * (canvas.height / rect.height)
+                x: (cx - rect.left) * (canvas.width / rect.width),
+                y: (cy - rect.top) * (canvas.height / rect.height)
               };
             }
 
-            function scratch(pos) {
+            function doScratch(pos) {
               ctx.globalCompositeOperation = 'destination-out';
               ctx.beginPath();
               ctx.arc(pos.x, pos.y, SCRATCH_RADIUS, 0, Math.PI * 2);
@@ -2806,27 +2908,26 @@
             function onStart(e) {
               if (card.classList.contains('is-revealed')) return;
               isScratching = true;
-              scratch(getPos(e));
+              doScratch(getPos(e));
             }
 
             function onMove(e) {
-              if (!isScratching) return;
-              if (card.classList.contains('is-revealed')) return;
+              if (!isScratching || card.classList.contains('is-revealed')) return;
               e.preventDefault();
-              scratch(getPos(e));
+              doScratch(getPos(e));
             }
 
             function onEnd() {
               isScratching = false;
             }
 
-            /* Touch events */
+            /* Touch */
             canvas.addEventListener('touchstart', onStart, { passive: true });
             canvas.addEventListener('touchmove', onMove, { passive: false });
             canvas.addEventListener('touchend', onEnd, { passive: true });
             canvas.addEventListener('touchcancel', onEnd, { passive: true });
 
-            /* Mouse events */
+            /* Mouse */
             canvas.addEventListener('mousedown', onStart);
             canvas.addEventListener('mousemove', onMove);
             canvas.addEventListener('mouseup', onEnd);
@@ -2842,9 +2943,8 @@
             var imageData;
             try {
               imageData = ctx.getImageData(0, 0, w, h);
-            } catch (e) {
-              return;
-            }
+            } catch (e) { return; }
+
             var pixels = imageData.data;
             var total = w * h;
             var transparent = 0;
@@ -2867,15 +2967,21 @@
             revealedGifts.add(gift.index);
             saveState();
 
-            card.classList.add('is-revealed');
+            /* Remove canvas */
             var canvas = card.querySelector('canvas');
             if (canvas) canvas.remove();
             gift.canvasReady = false;
 
-            showGiftContent(card, gift);
+            /* Reveal with bounce */
+            card.classList.add('is-revealed', 'is-bouncing');
+            card.addEventListener('animationend', function handler() {
+              card.classList.remove('is-bouncing');
+              card.removeEventListener('animationend', handler);
+            });
+
             spawnConfetti(card);
             updateCounter();
-            updateRecap();
+            showPill(gift);
           }
 
           /* ===== CONFETTI ===== */
@@ -2889,8 +2995,8 @@
               particle.style.backgroundColor = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
               particle.style.left = (rect.left - parentRect.left + Math.random() * rect.width) + 'px';
               particle.style.top = (rect.top - parentRect.top + Math.random() * 20 - 10) + 'px';
-              particle.style.animationDuration = (0.8 + Math.random() * 0.8) + 's';
-              particle.style.animationDelay = (Math.random() * 0.3) + 's';
+              particle.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+              particle.style.animationDelay = (Math.random() * 0.25) + 's';
               container.appendChild(particle);
 
               (function(p) {
@@ -2899,7 +3005,7 @@
                 });
                 setTimeout(function() {
                   if (p.parentNode) p.parentNode.removeChild(p);
-                }, 3000);
+                }, 2500);
               })(particle);
             }
           }
@@ -2909,65 +3015,25 @@
             var total = gifts.length;
             var revealed = revealedGifts.size;
             if (counterEl) {
-              counterEl.textContent = revealed + '/' + total + ' revele' + (revealed > 1 ? 's' : '');
+              counterEl.textContent = revealed + '/' + total + ' REVELES';
             }
           }
 
-          /* ===== RECAP ===== */
-          function updateRecap() {
-            if (!recapEl) return;
-
-            /* Only show recap when all gifts are revealed */
-            if (revealedGifts.size < gifts.length) {
-              recapEl.classList.remove('is-visible');
-              return;
-            }
-
-            /* Clear */
-            while (recapEl.firstChild) recapEl.removeChild(recapEl.firstChild);
-
-            /* Title */
-            var titleDiv = document.createElement('div');
-            titleDiv.className = 'milaura-scratch-recap-title';
-            titleDiv.textContent = 'Vos cadeaux offerts avec votre commande';
-            recapEl.appendChild(titleDiv);
-
-            /* Each gift */
-            var totalValueNum = 0;
-            gifts.forEach(function(gift) {
-              var line = document.createElement('div');
-              line.className = 'milaura-scratch-recap-line';
-              var nameSpan = document.createElement('span');
-              nameSpan.textContent = gift.icon + ' ' + gift.name;
-              var valSpan = document.createElement('span');
-              valSpan.className = 'scratch-gift-value';
-              valSpan.textContent = gift.value;
-              line.appendChild(nameSpan);
-              line.appendChild(valSpan);
-              recapEl.appendChild(line);
-
-              /* Parse numeric value for total */
-              var match = gift.value.match(/[\d,.]+/);
-              if (match) {
-                totalValueNum += parseFloat(match[0].replace(',', '.'));
-              }
-            });
-
-            /* Total */
-            if (totalValueNum > 0) {
-              var totalDiv = document.createElement('div');
-              totalDiv.className = 'milaura-scratch-recap-total';
-              totalDiv.textContent = 'Valeur totale de vos cadeaux : ' + totalValueNum.toFixed(2).replace('.', ',') + ' €';
-              recapEl.appendChild(totalDiv);
-            }
-
-            recapEl.classList.add('is-visible');
+          /* ===== PILL ===== */
+          function showPill(gift) {
+            if (!pillEl || !pillTextEl) return;
+            pillTextEl.textContent = '+ ' + gift.name + ' offert avec votre commande';
+            pillEl.classList.remove('is-visible');
+            /* Force reflow for re-animation */
+            void pillEl.offsetWidth;
+            pillEl.classList.add('is-visible');
           }
 
           /* ===== INIT ===== */
           initAllCards();
         })();
         </script>
+        </div><!-- Fin milaura-scratch-zone -->
       {%- endif -%}
 
     </div>
