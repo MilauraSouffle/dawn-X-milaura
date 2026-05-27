@@ -218,6 +218,53 @@
     display: none;
   }
 
+  /* --- Preview mode: premier accordeon semi-ouvert --- */
+  .accordion--preview .accordion__content {
+    max-height: 70px;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.4s ease;
+  }
+
+  .accordion--preview .accordion__content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(transparent, rgba(255, 255, 255, 0.95));
+    pointer-events: none;
+  }
+
+  .accordion--preview.is-expanded .accordion__content {
+    max-height: 2000px;
+  }
+
+  .accordion--preview.is-expanded .accordion__content::after {
+    display: none;
+  }
+
+  .milaura-voir-plus {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    background: none;
+    border: none;
+    border-top: 1px solid rgba(192, 160, 98, 0.15);
+    color: var(--milaura-gold-dark, #8F723A);
+    font-family: var(--milaura-font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .accordion--preview.is-expanded .milaura-voir-plus {
+    display: none;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       transition: none !important;
@@ -293,11 +340,11 @@
     {%- endfor -%}
   </div>
 
-  <!-- Mobile Accordions -->
+  <!-- Accordions -->
   <div class="milaura-accordion-group">
     {%- for block in section.blocks -%}
-      <div class="accordion" {{ block.shopify_attributes }}>
-        <details>
+      <div class="accordion{% if forloop.first %} accordion--preview{% endif %}" {{ block.shopify_attributes }}>
+        <details{% if forloop.first %} open{% endif %}>
           <summary>
             <div class="summary__title">
               {% render 'icon-accordion', icon: 'none' %}
@@ -338,6 +385,11 @@
                 {{ block.settings.content }}
             {%- endcase -%}
           </div>
+          {%- if forloop.first -%}
+            <button type="button" class="milaura-voir-plus" onclick="this.closest('.accordion--preview').classList.add('is-expanded');">
+              Voir plus ↓
+            </button>
+          {%- endif -%}
         </details>
       </div>
     {%- endfor -%}
