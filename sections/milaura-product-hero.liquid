@@ -3418,29 +3418,39 @@
 
           function updateLockedCards() {
             var unlocked = currentUnlockedCount();
+            var stateChanged = false;
             gifts.forEach(function(gift, i) {
               var card = gift.el;
-              if (card.classList.contains('is-revealed')) {
-                /* Une carte revelee reste revelee, on retire juste le verrou eventuel */
-                card.classList.remove('is-locked');
-                return;
-              }
               if (i < unlocked) {
+                /* Carte deverrouillee par le tier courant */
                 if (card.classList.contains('is-locked')) {
                   card.classList.remove('is-locked');
                 }
-                /* Si pas de canvas (carte etait verrouillee), initialiser */
+                /* Si carte deja revelee precedemment, conserver l'etat reveal */
+                if (revealedGifts.has(i)) {
+                  if (!card.classList.contains('is-revealed')) {
+                    card.classList.add('is-revealed');
+                  }
+                  return;
+                }
+                /* Sinon, initialiser le canvas si necessaire */
                 if (!gift.canvasReady && !card.querySelector('canvas')) {
                   initCanvas(card, gift);
                 }
               } else {
+                /* Carte au-dela du tier courant : RESET complet (verrouillee + non revelee) */
+                if (revealedGifts.has(i)) {
+                  revealedGifts.delete(i);
+                  stateChanged = true;
+                }
                 card.classList.add('is-locked');
-                /* Retirer le canvas et l'overlay dore pour les cartes verrouillees non revelees */
+                card.classList.remove('is-revealed');
                 var existingCanvas = card.querySelector('canvas');
                 if (existingCanvas) existingCanvas.remove();
                 gift.canvasReady = false;
               }
             });
+            if (stateChanged) saveState();
             updateCounter();
           }
 
