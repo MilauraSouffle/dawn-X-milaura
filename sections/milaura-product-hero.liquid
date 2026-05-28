@@ -2983,7 +2983,11 @@
         {%- if section.settings.show_bundle -%}
           <div class="milaura-bundle-selector" id="milaura-bundle-selector-{{ section.id }}">
             <div class="milaura-bundle-header">
-              <h3 class="milaura-bundle-title">{{ section.settings.bundle_title | default: 'Choisissez la quantite' }}</h3>
+              {%- assign bundle_title_resolved = section.settings.bundle_title -%}
+              {%- if bundle_title_resolved == blank or bundle_title_resolved == 'Composez votre coffret' -%}
+                {%- assign bundle_title_resolved = 'Choisissez la quantite' -%}
+              {%- endif -%}
+              <h3 class="milaura-bundle-title">{{ bundle_title_resolved }}</h3>
               <p class="milaura-bundle-subtitle">{{ section.settings.bundle_subtitle | default: 'Plus vous commandez, plus vous deverrouillez de cadeaux' }}</p>
             </div>
             <div class="milaura-bundle-tiers">
@@ -4594,7 +4598,7 @@
       "type": "text",
       "id": "bundle_title",
       "label": "Titre du bundle",
-      "default": "Composez votre coffret"
+      "default": "Choisissez la quantite"
     },
     {
       "type": "text",
