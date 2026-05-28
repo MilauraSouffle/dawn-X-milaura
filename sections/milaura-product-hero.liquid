@@ -2287,7 +2287,11 @@
     font-size: 0.8rem;
     font-weight: 600;
     border-radius: 20px;
-    padding: 8px 16px;
+    padding: 10px 18px;
+    line-height: 1.4;
+    max-width: 100%;
+    word-wrap: break-word;
+    box-shadow: 0 6px 18px rgba(26, 26, 46, 0.22);
     animation: milauraScratchPillIn 0.4s ease-out;
   }
 
@@ -3465,21 +3469,28 @@
               pillTextEl.textContent = '';
               return;
             }
-            /* Show the last revealed (and still unlocked) gift in the pill */
+            /* Liste de tous les cadeaux reveles et encore debloques par le tier courant */
             var unlocked = currentUnlockedCount();
-            var lastValidGift = null;
+            var validGifts = [];
             gifts.forEach(function(g, i) {
               if (i < unlocked && revealedGifts.has(i)) {
-                lastValidGift = g;
+                validGifts.push(g.name);
               }
             });
-            if (lastValidGift) {
-              pillTextEl.textContent = '+ ' + lastValidGift.name + ' offert avec votre commande';
-              pillEl.classList.add('is-visible');
-            } else {
+            if (validGifts.length === 0) {
               pillEl.classList.remove('is-visible');
               pillTextEl.textContent = '';
+              return;
             }
+            var label;
+            if (validGifts.length === 1) {
+              label = '+ ' + validGifts[0] + ' offert avec votre commande';
+            } else {
+              /* Listing inline des N cadeaux : "+ Pochon velours + Code -10% + Bracelet Hematite 4mm offerts" */
+              label = validGifts.map(function(n) { return '+ ' + n; }).join('   ') + ' offerts avec votre commande';
+            }
+            pillTextEl.textContent = label;
+            pillEl.classList.add('is-visible');
           }
 
           function bindTierSelector() {
@@ -3790,7 +3801,13 @@
 
             spawnConfetti(card);
             updateCounter();
-            showPill(gift);
+            /* Affiche la liste cumulee de tous les cadeaux reveles + anime */
+            syncPillToState();
+            if (pillEl) {
+              pillEl.classList.remove('is-visible');
+              void pillEl.offsetWidth;
+              pillEl.classList.add('is-visible');
+            }
           }
 
           /* ===== CONFETTI ===== */
