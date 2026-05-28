@@ -614,10 +614,27 @@
     font-weight: 700;
     padding: 6px 16px;
     border-radius: 10px;
-    margin-left: 10px;
     vertical-align: middle;
     font-family: 'Lato', sans-serif;
     letter-spacing: 0.5px;
+  }
+
+  /* --- Prix container : tout en ligne (prix + Promotion + -30%) --- */
+  .milaura-hero-wrapper [id^="price-"] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  .milaura-hero-wrapper [id^="price-"] .price {
+    display: inline-flex;
+    align-items: center;
+  }
+  .milaura-hero-wrapper [id^="price-"] .price__container {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
   }
 
   /* --- Override Dawn sale badge to match our blue + gold text --- */
@@ -2300,28 +2317,40 @@
     font-weight: 700;
   }
 
-  /* Description courte reduite (deplacee sous la galerie) */
-  .milaura-gallery-description {
-    font-size: 0.88rem;
+  /* Info block (apres CTA) : description + badges metafield + bulle social */
+  .milaura-info-block {
+    margin-top: var(--milaura-spacing-md, 18px);
+    padding-top: var(--milaura-spacing-md, 18px);
+    border-top: 1px solid rgba(192, 160, 98, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: var(--milaura-spacing-sm, 12px);
+  }
+  .milaura-info-description {
+    font-size: 0.85rem;
     line-height: 1.55;
     color: var(--milaura-text, #000);
-    margin-top: var(--milaura-spacing-md, 18px);
-    padding: 0 4px;
   }
-  .milaura-gallery-description .read-more-link {
+  .milaura-info-description .read-more-link {
     color: var(--milaura-gold-dark, #8F723A);
     font-weight: 600;
     text-decoration: none;
     border-bottom: 1px solid rgba(143, 114, 58, 0.35);
   }
-  .milaura-gallery-description .read-more-link:hover {
+  .milaura-info-description .read-more-link:hover {
     color: var(--milaura-gold, #C0A062);
     border-bottom-color: var(--milaura-gold, #C0A062);
   }
+  .milaura-info-block .milaura-hero-social {
+    margin-bottom: 0;
+  }
   @media (max-width: 768px) {
-    .milaura-gallery-description {
-      font-size: 0.82rem;
+    .milaura-info-block {
       margin-top: var(--milaura-spacing-sm, 12px);
+      padding-top: var(--milaura-spacing-sm, 12px);
+    }
+    .milaura-info-description {
+      font-size: 0.82rem;
     }
   }
 
@@ -2441,24 +2470,7 @@
 
         {%- comment -%} Trust unified block deplace dans section milaura-product-trust-block (full width, entre sticky-bar et tabs) {%- endcomment -%}
 
-        {%- comment -%} Social proof : etoiles dorees + texte avec mois dynamique FR + nombre editable {%- endcomment -%}
-        {%- if section.settings.show_social_proof -%}
-          {%- assign months_fr = "janvier,fevrier,mars,avril,mai,juin,juillet,aout,septembre,octobre,novembre,decembre" | split: "," -%}
-          {%- assign month_idx = "now" | date: "%-m" | minus: 1 -%}
-          {%- assign month_fr = months_fr[month_idx] -%}
-          {%- assign year_fr = "now" | date: "%Y" -%}
-          {%- assign social_count = section.settings.social_count | default: 127 -%}
-          <div class="milaura-hero-social">
-            <div class="milaura-hero-stars" aria-label="5 etoiles sur 5">
-              <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-            </div>
-            <p class="milaura-hero-social-text">
-              Ce produit a deja fait le bonheur de
-              <strong>+ de {{ social_count }} client(e)s</strong>
-              en {{ month_fr }} {{ year_fr }}
-            </p>
-          </div>
-        {%- endif -%}
+        {%- comment -%} Social proof bubble deplacee dans info-block apres CTA (refonte 2026-05-28). {%- endcomment -%}
 
         <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
 
@@ -2744,75 +2756,7 @@
           </div>
         {%- endif -%}
 
-        {%- comment -%} Badges metafields produit {%- endcomment -%}
-        {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
-        {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
-        {%- assign badge_vertus = product.metafields.milaura.vertus -%}
-        {%- assign badge_quality = product.metafields.milaura.qualite -%}
-        {%- assign has_badges = false -%}
-        {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank -%}
-          {%- assign has_badges = true -%}
-        {%- endif -%}
-
-        {%- if has_badges -%}
-          <div class="milaura-meta-badges">
-            {%- if badge_stone != blank -%}
-              <span class="milaura-meta-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
-                {{ badge_stone }}
-              </span>
-            {%- endif -%}
-            {%- if badge_energy != blank -%}
-              <span class="milaura-meta-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                </svg>
-                {{ badge_energy }}
-              </span>
-            {%- endif -%}
-            {%- if badge_vertus != blank -%}
-              <span class="milaura-meta-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
-                {{ badge_vertus }}
-              </span>
-            {%- endif -%}
-            {%- if badge_quality != blank -%}
-              <span class="milaura-meta-badge milaura-meta-badge--gold">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                {{ badge_quality }}
-              </span>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} Description courte deplacee ici (sous la galerie) - refonte 2026-05-28 {%- endcomment -%}
-        {%- if section.settings.show_description -%}
-          <div class="product__description milaura-gallery-description rte quick-add-hidden">
-            {{ product.description | strip_html | truncatewords: 30 }}
-            <a href="#ProductTabs" class="read-more-link" id="readMoreLink-{{ section.id }}">Lire la suite →</a>
-          </div>
-          <script>
-            (function () {
-              var link = document.getElementById('readMoreLink-{{ section.id }}');
-              if (!link) return;
-              link.addEventListener('click', function (e) {
-                e.preventDefault();
-                var target = document.getElementById('ProductTabs');
-                if (target) {
-                  var headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80;
-                  var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-                  window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                }
-              });
-            })();
-          </script>
-        {%- endif -%}
+        {%- comment -%} Badges metafield + description + bulle social proof deplaces dans info-block apres CTA (refonte 2026-05-28). {%- endcomment -%}
       </div>
 
       <!--
@@ -3067,6 +3011,99 @@
           </button>
           <div class="milaura-hero-cta-reassurance" aria-hidden="true">Paiement securise &middot; Livraison offerte des 39 euros</div>
         {%- endif -%}
+
+        {%- comment -%} ==========================================
+          INFO BLOCK (apres CTA) : description + badges metafield + social proof
+          Refonte 2026-05-28 : ces 3 elements descendent sous le CTA
+          ========================================== {%- endcomment -%}
+        <div class="milaura-info-block">
+          {%- if section.settings.show_description -%}
+            <div class="product__description milaura-info-description rte quick-add-hidden">
+              {{ product.description | strip_html | truncatewords: 30 }}
+              <a href="#ProductTabs" class="read-more-link" id="readMoreLink-{{ section.id }}">Lire la suite →</a>
+            </div>
+            <script>
+              (function () {
+                var link = document.getElementById('readMoreLink-{{ section.id }}');
+                if (!link) return;
+                link.addEventListener('click', function (e) {
+                  e.preventDefault();
+                  var target = document.getElementById('ProductTabs');
+                  if (target) {
+                    var headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80;
+                    var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                  }
+                });
+              })();
+            </script>
+          {%- endif -%}
+
+          {%- comment -%} Badges metafield (stone / energy / vertus / quality) {%- endcomment -%}
+          {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
+          {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
+          {%- assign badge_vertus = product.metafields.milaura.vertus -%}
+          {%- assign badge_quality = product.metafields.milaura.qualite -%}
+          {%- assign has_meta_badges = false -%}
+          {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank -%}
+            {%- assign has_meta_badges = true -%}
+          {%- endif -%}
+          {%- if has_meta_badges -%}
+            <div class="milaura-meta-badges">
+              {%- if badge_stone != blank -%}
+                <span class="milaura-meta-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                  </svg>
+                  {{ badge_stone }}
+                </span>
+              {%- endif -%}
+              {%- if badge_energy != blank -%}
+                <span class="milaura-meta-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                  </svg>
+                  {{ badge_energy }}
+                </span>
+              {%- endif -%}
+              {%- if badge_vertus != blank -%}
+                <span class="milaura-meta-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                  {{ badge_vertus }}
+                </span>
+              {%- endif -%}
+              {%- if badge_quality != blank -%}
+                <span class="milaura-meta-badge milaura-meta-badge--gold">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                  {{ badge_quality }}
+                </span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Bulle social proof (etoiles + mois dynamique FR + nombre editable) {%- endcomment -%}
+          {%- if section.settings.show_social_proof -%}
+            {%- assign months_fr = "janvier,fevrier,mars,avril,mai,juin,juillet,aout,septembre,octobre,novembre,decembre" | split: "," -%}
+            {%- assign month_idx = "now" | date: "%-m" | minus: 1 -%}
+            {%- assign month_fr = months_fr[month_idx] -%}
+            {%- assign year_fr = "now" | date: "%Y" -%}
+            {%- assign social_count = section.settings.social_count | default: 127 -%}
+            <div class="milaura-hero-social">
+              <div class="milaura-hero-stars" aria-label="5 etoiles sur 5">
+                <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              </div>
+              <p class="milaura-hero-social-text">
+                Ce produit a deja fait le bonheur de
+                <strong>+ de {{ social_count }} client(e)s</strong>
+                en {{ month_fr }} {{ year_fr }}
+              </p>
+            </div>
+          {%- endif -%}
+        </div>
       </div>
       <!-- Fin GROUPE 3: Actions -->
 
