@@ -2369,6 +2369,20 @@
     box-shadow: 0 6px 18px rgba(26, 26, 46, 0.18);
   }
 
+  /* Variante : bulle social au-dessus de la galerie (mobile : tout premier element) */
+  .milaura-hero-social--top {
+    order: 0;
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  @media screen and (min-width: 990px) {
+    .milaura-hero-social--top {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      margin-bottom: 4px;
+    }
+  }
+
   .milaura-hero-stars {
     font-size: 1.15rem;
     color: var(--milaura-gold-light, #E6C88B);
@@ -2427,32 +2441,68 @@
     }
   }
 
-  /* CTA bundle-aware */
+  /* CTA bundle-aware : premium gold avec icone panier + shimmer */
   .milaura-hero-cta-bundle {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 14px;
     width: 100%;
-    padding: 16px 24px;
-    margin-top: var(--milaura-spacing-sm);
-    background: linear-gradient(135deg, var(--milaura-gold-dark, #8F723A), var(--milaura-gold, #C0A062));
+    padding: 18px 28px;
+    margin-top: var(--milaura-spacing-md, 18px);
+    background: linear-gradient(135deg, #8F723A 0%, #C0A062 45%, #E6C88B 100%);
     color: white;
     border: none;
-    border-radius: 14px;
+    border-radius: 16px;
     font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     cursor: pointer;
-    box-shadow: var(--milaura-shadow-md, 0 15px 40px rgba(192, 160, 98, 0.25));
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow:
+      0 12px 30px rgba(192, 160, 98, 0.35),
+      0 2px 6px rgba(143, 114, 58, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    isolation: isolate;
+  }
+
+  /* Shimmer band qui glisse au hover */
+  .milaura-hero-cta-bundle::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      transparent 35%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 65%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.9s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .milaura-hero-cta-bundle:hover::before {
+    transform: translateX(100%);
   }
 
   .milaura-hero-cta-bundle:hover {
     transform: translateY(-2px);
-    box-shadow: 0 18px 45px rgba(192, 160, 98, 0.35);
+    box-shadow:
+      0 18px 40px rgba(192, 160, 98, 0.45),
+      0 4px 10px rgba(143, 114, 58, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+
+  .milaura-hero-cta-bundle:active {
+    transform: translateY(0);
   }
 
   .milaura-hero-cta-bundle:disabled {
@@ -2461,31 +2511,57 @@
     transform: none;
   }
 
-  .milaura-cta-separator {
-    opacity: 0.6;
+  .milaura-hero-cta-bundle > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .milaura-cta-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  .milaura-cta-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.15));
+  }
+
+  .milaura-cta-label {
+    flex: 1;
+    text-align: center;
   }
 
   .milaura-cta-price {
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1.15rem;
+    background: rgba(255, 255, 255, 0.22);
+    padding: 6px 14px;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    flex-shrink: 0;
   }
 
-  .milaura-hero-cta-reassurance {
-    text-align: center;
-    font-size: 0.7rem;
-    color: #888;
-    margin-top: 6px;
-  }
+  /* Phrase reassurance sous CTA supprimee (cf user request 2026-05-28) */
+  .milaura-hero-cta-reassurance { display: none; }
 
-  /* Desktop : grid simplifie a 3 rows (header / actions / scratch).
-     La row video-bubble du grid d'origine creait un "trou" entre prix et bundle.
-     On override pour coller header et actions directement. */
+  /* Desktop : grid avec social en haut full width + gallery/header/actions + scratch.
+     Refonte 2026-05-28 : bulle social descend au-dessus de la galerie. */
   @media screen and (min-width: 990px) {
     .milaura-hero-wrapper {
       grid-template-areas:
+        "social  social"
         "gallery header"
         "gallery actions"
         "scratch scratch" !important;
-      grid-template-rows: auto auto auto;
+      grid-template-rows: auto auto auto auto;
       align-items: start;
       row-gap: 12px;
     }
@@ -2560,6 +2636,25 @@
           {%- endif -%}
         </div>
       </div>
+
+      {%- comment -%} Bulle social proof au-dessus de la galerie (refonte 2026-05-28, demande user mobile) {%- endcomment -%}
+      {%- if section.settings.show_social_proof -%}
+        {%- assign months_fr = "janvier,fevrier,mars,avril,mai,juin,juillet,aout,septembre,octobre,novembre,decembre" | split: "," -%}
+        {%- assign month_idx = "now" | date: "%-m" | minus: 1 -%}
+        {%- assign month_fr = months_fr[month_idx] -%}
+        {%- assign year_fr = "now" | date: "%Y" -%}
+        {%- assign social_count = section.settings.social_count | default: 127 -%}
+        <div class="milaura-hero-social milaura-hero-social--top">
+          <div class="milaura-hero-stars" aria-label="5 etoiles sur 5">
+            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+          <p class="milaura-hero-social-text">
+            Ce produit a deja fait le bonheur de
+            <strong>+ de {{ social_count }} client(e)s</strong>
+            en {{ month_fr }} {{ year_fr }}
+          </p>
+        </div>
+      {%- endif -%}
 
       <!--
         ============================================
@@ -3082,11 +3177,15 @@
             id="milaura-hero-cta-bundle-{{ section.id }}"
             data-variant-id="{{ product.selected_or_first_available_variant.id }}"
             aria-label="Ajouter au panier">
+            <span class="milaura-cta-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 7V6a6 6 0 0 1 12 0v1"/>
+                <path d="M4 7h16l-1.5 12.5a2 2 0 0 1-2 1.75H7.5a2 2 0 0 1-2-1.75L4 7z"/>
+              </svg>
+            </span>
             <span class="milaura-cta-label">Ajouter au panier</span>
-            <span class="milaura-cta-separator" aria-hidden="true">&middot;</span>
             <span class="milaura-cta-price" id="milaura-hero-cta-price-{{ section.id }}">{{ section.settings.tier2_price | default: '89,80 €' }}</span>
           </button>
-          <div class="milaura-hero-cta-reassurance" aria-hidden="true">Paiement securise &middot; Livraison offerte des 39 euros</div>
         {%- endif -%}
 
         {%- comment -%} ==========================================
@@ -3162,24 +3261,7 @@
             </div>
           {%- endif -%}
 
-          {%- comment -%} Bulle social proof (etoiles + mois dynamique FR + nombre editable) {%- endcomment -%}
-          {%- if section.settings.show_social_proof -%}
-            {%- assign months_fr = "janvier,fevrier,mars,avril,mai,juin,juillet,aout,septembre,octobre,novembre,decembre" | split: "," -%}
-            {%- assign month_idx = "now" | date: "%-m" | minus: 1 -%}
-            {%- assign month_fr = months_fr[month_idx] -%}
-            {%- assign year_fr = "now" | date: "%Y" -%}
-            {%- assign social_count = section.settings.social_count | default: 127 -%}
-            <div class="milaura-hero-social">
-              <div class="milaura-hero-stars" aria-label="5 etoiles sur 5">
-                <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-              </div>
-              <p class="milaura-hero-social-text">
-                Ce produit a deja fait le bonheur de
-                <strong>+ de {{ social_count }} client(e)s</strong>
-                en {{ month_fr }} {{ year_fr }}
-              </p>
-            </div>
-          {%- endif -%}
+          {%- comment -%} Bulle social proof deplacee au-dessus de la galerie (refonte 2026-05-28) {%- endcomment -%}
         </div>
       </div>
       <!-- Fin GROUPE 3: Actions -->
