@@ -619,48 +619,76 @@
     letter-spacing: 0.5px;
   }
 
-  /* --- Prix : tout en ligne (prix barre, prix sale, Promotion, -30%) --- */
+  /* --- Prix : tout en ligne (prix barre + prix sale + Promotion + -30%) ---
+     IMPORTANT : ne pas forcer display sur .price__regular / .price__sale,
+     Dawn gere le hide automatiquement quand .price--on-sale est present. */
   .milaura-hero-wrapper [id^="price-"] {
-    display: flex !important;
+    display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
     margin-bottom: var(--milaura-spacing-sm, 12px);
   }
   .milaura-hero-wrapper [id^="price-"] > .price {
-    display: inline-flex !important;
+    display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
   }
   .milaura-hero-wrapper [id^="price-"] .price__container {
-    display: inline-flex !important;
+    display: inline-flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
   }
-  .milaura-hero-wrapper [id^="price-"] .price__regular,
+  /* Quand on est en sale, hide .price__regular (Dawn-style) */
+  .milaura-hero-wrapper [id^="price-"] .price--on-sale .price__regular {
+    display: none !important;
+  }
+  /* .price__sale en sale : flex wrap inline */
   .milaura-hero-wrapper [id^="price-"] .price__sale {
-    display: inline-flex !important;
     align-items: center;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
     margin: 0;
   }
   .milaura-hero-wrapper [id^="price-"] .price-item {
     display: inline-block;
     margin: 0;
   }
-  .milaura-hero-wrapper [id^="price-"] .price-item--regular {
-    font-size: 0.9rem;
-    opacity: 0.55;
+  .milaura-hero-wrapper [id^="price-"] .price__sale .price-item--regular {
+    font-size: 1rem;
+    opacity: 0.6;
+  }
+  .milaura-hero-wrapper [id^="price-"] .price__sale s.price-item--regular {
+    font-size: 1rem;
+    opacity: 0.6;
     text-decoration: line-through;
   }
   .milaura-hero-wrapper [id^="price-"] .price-item--sale {
     font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--milaura-gold, #C0A062);
   }
-  .milaura-hero-wrapper [id^="price-"] .badge.price__badge-sale {
+  /* Badges Promotion + -30% inline (a cote du prix) */
+  .milaura-hero-wrapper [id^="price-"] .badge.price__badge-sale,
+  .milaura-hero-wrapper [id^="price-"] .price__badge-sale {
+    display: inline-flex !important;
+    align-items: center;
+    margin: 0 !important;
+    line-height: 1;
+  }
+  .milaura-hero-wrapper [id^="price-"] .milaura-promo-badge {
+    display: inline-flex;
+    align-items: center;
     margin: 0;
+  }
+  /* Hide sold-out badge sauf si sold out */
+  .milaura-hero-wrapper [id^="price-"] .price__badge-sold-out {
+    display: none;
+  }
+  .milaura-hero-wrapper [id^="price-"] .price--sold-out .price__badge-sold-out {
+    display: inline-flex !important;
   }
 
   /* --- Override Dawn sale badge to match our blue + gold text --- */
@@ -2060,25 +2088,24 @@
     margin-left: 12px;
   }
 
-  /* Grille des cartes */
+  /* Grille des cartes : 3 cols comme le bundle tiers au-dessus */
   .milaura-scratch-cards {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     margin-bottom: 0;
   }
 
-  /* Carte individuelle */
+  /* Carte individuelle (taille identique aux tiers du bundle : 130px) */
   .milaura-scratch-card {
-    width: 130px;
-    height: 150px;
-    border-radius: 16px;
+    width: auto;
+    min-height: 130px;
+    border-radius: 14px;
     position: relative;
     overflow: visible;
     cursor: pointer;
-    flex-shrink: 0;
     transition: transform 0.3s ease;
+    aspect-ratio: 1 / 1.1;
   }
 
   .milaura-scratch-card-content {
@@ -2237,13 +2264,8 @@
     animation: milauraScratchPillIn 0.4s ease-out;
   }
 
-  /* Desktop (>= 750px) */
+  /* Desktop (>= 750px) - grid 3 cols, taille auto, ratio carre */
   @media screen and (min-width: 750px) {
-    .milaura-scratch-card {
-      width: 130px;
-      height: 150px;
-    }
-
     .milaura-scratch-cards {
       gap: 14px;
     }
@@ -2254,15 +2276,14 @@
     }
   }
 
-  /* Mobile (< 750px) */
+  /* Mobile (< 750px) - meme taille que les bundle tiers (auto via grid 1fr) */
   @media screen and (max-width: 749px) {
-    .milaura-scratch-card {
-      width: 105px;
-      height: 125px;
+    .milaura-scratch-cards {
+      gap: 8px;
     }
 
-    .milaura-scratch-cards {
-      gap: 10px;
+    .milaura-scratch-card {
+      min-height: 120px;
     }
 
     .milaura-scratch-title {
@@ -2282,19 +2303,18 @@
     }
 
     .milaura-hero-scratch {
-      padding: 16px;
+      padding: 12px;
     }
   }
 
   /* Petit mobile (< 380px) */
   @media screen and (max-width: 379px) {
-    .milaura-scratch-card {
-      width: 95px;
-      height: 115px;
+    .milaura-scratch-cards {
+      gap: 6px;
     }
 
-    .milaura-scratch-cards {
-      gap: 8px;
+    .milaura-scratch-card {
+      min-height: 105px;
     }
 
     .milaura-scratch-card-icon {
