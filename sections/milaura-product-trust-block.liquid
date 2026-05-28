@@ -261,9 +261,13 @@
     {%- endif -%}
 
     {%- if section.settings.show_payment_icons -%}
+      {%- comment -%} Whitelist : Visa, Mastercard, Amex, Apple Pay, Shop Pay, Klarna, CB. Filtre les autres modes (Bancontact, blik, eps, etc.) pour eviter la surcharge visuelle. {%- endcomment -%}
+      {%- assign payment_whitelist = "visa,master,american_express,apple_pay,shop_pay,shopify_pay,klarna,cartes_bancaires,carte_bleue,cb" | split: "," -%}
       <ul class="milaura-payment-icons">
         {%- for type in shop.enabled_payment_types -%}
-          <li class="milaura-payment-icon">{{ type | payment_type_svg_tag }}</li>
+          {%- if payment_whitelist contains type -%}
+            <li class="milaura-payment-icon">{{ type | payment_type_svg_tag }}</li>
+          {%- endif -%}
         {%- endfor -%}
       </ul>
     {%- endif -%}
