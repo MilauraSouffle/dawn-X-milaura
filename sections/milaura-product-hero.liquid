@@ -3262,6 +3262,7 @@
                       data-gift-value="{{ block.settings.value }}"
                       data-gift-icon="{{ block.settings.icon }}"
                       data-gift-variant-id="{{ block.settings.variant_id }}"
+                      data-gift-discount-code="{{ block.settings.discount_code }}"
                       {{ block.shopify_attributes }}
                     >
                       <div class="milaura-scratch-card-content">
@@ -3513,6 +3514,7 @@
             var tierLabel = tierLabelEl ? tierLabelEl.textContent.trim() : '';
             var giftNames = [];
             var giftVariantItems = [];
+            var discountCode = '';
             revealedGifts.forEach(function(idx) {
               var giftCard = container.querySelector('.milaura-scratch-card[data-gift-index="' + idx + '"]');
               if (giftCard) {
@@ -3529,6 +3531,8 @@
                     }
                   });
                 }
+                var code = giftCard.getAttribute('data-gift-discount-code');
+                if (code && !discountCode) discountCode = code.trim();
               }
             });
 
@@ -3557,7 +3561,12 @@
             })
             .then(function(r) {
               if (!r.ok) throw new Error('cart_error');
-              window.location.href = '/cart';
+              /* Si un code promo est associe a une carte revelee, on passe par /discount/CODE qui applique + redirige. */
+              if (discountCode) {
+                window.location.href = '/discount/' + encodeURIComponent(discountCode) + '?redirect=/cart';
+              } else {
+                window.location.href = '/cart';
+              }
             })
             .catch(function() {
               ctaButton.disabled = false;
@@ -5097,6 +5106,12 @@
           "id": "variant_id",
           "label": "Variant ID Shopify du cadeau gratuit (optionnel)",
           "info": "Si rempli, le variant gratuit (0€) est ajoute automatiquement au panier quand le cadeau est revele. Laisser vide pour conserver l'affichage informatif uniquement."
+        },
+        {
+          "type": "text",
+          "id": "discount_code",
+          "label": "Code promo a appliquer (optionnel)",
+          "info": "Si rempli, redirection vers /discount/CODE?redirect=/cart au add-to-cart. Le code doit exister dans Shopify Admin > Discounts. Ex : MILAURASCRATCH10"
         }
       ]
     }
