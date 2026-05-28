@@ -2564,27 +2564,46 @@
   /* Phrase reassurance sous CTA supprimee (cf user request 2026-05-28) */
   .milaura-hero-cta-reassurance { display: none; }
 
-  /* Desktop : grid avec social + badges metafield en haut full width + gallery/header/actions + scratch.
-     Refonte 2026-05-28. */
+  /* Desktop : grid avec social + meta full width + gallery/rightcol (header + actions ensembles).
+     Refonte 2026-05-28 evening : header + actions wrappes ensemble pour eviter le trou vertical. */
   @media screen and (min-width: 990px) {
     .milaura-hero-wrapper {
       grid-template-areas:
-        "social  social"
-        "meta    meta"
-        "gallery header"
-        "gallery actions"
-        "scratch scratch" !important;
-      grid-template-rows: auto auto auto auto auto;
+        "social   social"
+        "meta     meta"
+        "gallery  rightcol" !important;
+      grid-template-rows: auto auto auto !important;
       align-items: start;
       row-gap: 12px;
     }
-    .milaura-hero-header-group {
+
+    .milaura-hero-rightcol {
+      grid-area: rightcol;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
       align-self: start;
+      position: sticky;
+      top: calc(var(--header-height, 80px) + 20px);
     }
+
+    .milaura-hero-header-group {
+      grid-area: auto !important;
+      position: static !important;
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0;
+      text-align: left;
+    }
+
     .milaura-hero-actions-group {
-      align-self: start;
+      grid-area: auto !important;
+      position: static !important;
+      align-self: stretch;
       gap: 12px;
     }
+
     .milaura-video-bubble-wrapper {
       display: none;
     }
@@ -2616,57 +2635,77 @@
     .milaura-gallery-story__description {
       font-family: 'Lato', sans-serif;
       font-size: 0.95rem;
-      line-height: 1.75;
+      line-height: 1.7;
       color: var(--milaura-text, #000);
     }
 
-    .milaura-gallery-story__description > * + * {
-      margin-top: 14px;
-    }
-
     .milaura-gallery-story__description p {
-      margin: 0 0 14px;
+      margin: 0 0 12px;
+      display: inline;
     }
 
-    .milaura-gallery-story__description p:last-child {
-      margin-bottom: 0;
+    .milaura-gallery-story__read-more {
+      display: inline;
+      margin-left: 4px;
+      color: var(--milaura-gold-dark, #8F723A);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(143, 114, 58, 0.4);
+      transition: color 0.18s ease, border-color 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .milaura-gallery-story__read-more:hover {
+      color: var(--milaura-gold, #C0A062);
+      border-bottom-color: var(--milaura-gold, #C0A062);
     }
 
     .milaura-gallery-story__karine {
-      margin-top: 32px;
-      padding-left: 4px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(192, 160, 98, 0.2);
     }
 
-    .milaura-gallery-story__divider {
-      width: 56px;
-      height: 1px;
-      background: linear-gradient(to right, var(--milaura-gold, #C0A062), rgba(192, 160, 98, 0));
-      margin-bottom: 18px;
+    .milaura-gallery-story__karine-img {
+      flex-shrink: 0;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--milaura-gold, #C0A062);
+      box-shadow: 0 6px 18px rgba(192, 160, 98, 0.22);
+    }
+
+    .milaura-gallery-story__karine-content {
+      flex: 1;
+      min-width: 0;
     }
 
     .milaura-gallery-story__quote {
       font-family: 'Playfair Display', serif;
-      font-size: 1.08rem;
+      font-size: 0.98rem;
       font-style: italic;
-      line-height: 1.65;
+      line-height: 1.55;
       color: var(--milaura-text, #000);
-      margin: 0 0 16px;
-      max-width: 92%;
+      margin: 0 0 10px;
     }
 
     .milaura-gallery-story__signature {
       font-family: 'Dancing Script', cursive;
-      font-size: 2.4rem;
+      font-size: 1.9rem;
       line-height: 1;
       color: var(--milaura-gold-dark, #8F723A);
-      margin: 0 0 6px;
+      margin: 0 0 2px;
       transform: rotate(-2deg);
       transform-origin: left center;
     }
 
     .milaura-gallery-story__author {
       font-family: 'Lato', sans-serif;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--milaura-gold-dark, #8F723A);
       letter-spacing: 1.4px;
       text-transform: uppercase;
@@ -2710,35 +2749,7 @@
 <div class="page-width section-{{ section.id }}-padding">
   <product-info id="ProductInfo-{{ section.id }}" data-section="{{ section.id }}" data-url="{{ product.url }}">
     <div class="milaura-hero-wrapper">
-      <!--
-        ============================================
-        GROUPE 1: HEADER
-        ============================================
-      -->
-      <div class="milaura-hero-header-group">
-        {%- if section.settings.show_vendor -%}
-          <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
-        {%- endif -%}
-
-        {%- comment -%} Trust unified block deplace dans section milaura-product-trust-block (full width, entre sticky-bar et tabs) {%- endcomment -%}
-
-        {%- comment -%} Social proof bubble deplacee dans info-block apres CTA (refonte 2026-05-28). {%- endcomment -%}
-
-        <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
-
-        <div class="no-js-hidden" id="price-{{ section.id }}" role="status">
-          {%- render 'price',
-            product: product,
-            use_variant: true,
-            show_badges: true,
-            price_class: 'milaura-product__price'
-          -%}
-          {%- if product.compare_at_price > product.price -%}
-            {%- assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
-            <span class="milaura-promo-badge">-{{ discount }}%</span>
-          {%- endif -%}
-        </div>
-      </div>
+      {%- comment -%} GROUPE 1 HEADER deplace dans .milaura-hero-rightcol (avec actions group) pour eviter le trou vertical sur desktop. Refonte 2026-05-28 evening. {%- endcomment -%}
 
       {%- comment -%} Bulle social proof au-dessus de la galerie (refonte 2026-05-28, demande user mobile).
         Le nombre de client(e)s varie par produit via calcul deterministe base sur product.id (entre 12 et 141). {%- endcomment -%}
@@ -3086,16 +3097,39 @@
         <div class="milaura-gallery-story">
           {%- if section.settings.show_description and product.description != blank -%}
             <div class="milaura-gallery-story__description rte">
-              {{ product.description }}
+              {{ product.description | strip_html | truncatewords: 25 }}
+              <a href="#ProductTabs" class="milaura-gallery-story__read-more" id="readMoreLinkGallery-{{ section.id }}">Lire la suite &rarr;</a>
             </div>
+            <script>
+              (function () {
+                var link = document.getElementById('readMoreLinkGallery-{{ section.id }}');
+                if (!link) return;
+                link.addEventListener('click', function (e) {
+                  e.preventDefault();
+                  var target = document.getElementById('ProductTabs');
+                  if (target) {
+                    var headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80;
+                    var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                  }
+                });
+              })();
+            </script>
           {%- endif -%}
 
           {%- if section.settings.show_karine_block -%}
             <div class="milaura-gallery-story__karine">
-              <div class="milaura-gallery-story__divider" aria-hidden="true"></div>
-              <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Chaque piece passe par mes mains. Avant d'etre un produit, c'est un rituel que je vis chaque jour, et que je vous confie avec sincerite.{%- endif -%}</p>
-              <p class="milaura-gallery-story__signature">Karine</p>
-              <p class="milaura-gallery-story__author">Fondatrice Mil'Aura</p>
+              {%- if section.settings.karine_image != blank -%}
+                <img class="milaura-gallery-story__karine-img"
+                     src="{{ section.settings.karine_image | image_url: width: 220 }}"
+                     alt="Karine, fondatrice Mil'Aura"
+                     width="88" height="88" loading="lazy">
+              {%- endif -%}
+              <div class="milaura-gallery-story__karine-content">
+                <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Je selectionne chaque pierre avec soin. Origine controlee, qualite verifiee avec rigueur, avant d'arriver dans nos ateliers.{%- endif -%}</p>
+                <p class="milaura-gallery-story__signature">Karine</p>
+                <p class="milaura-gallery-story__author">Fondatrice Mil'Aura</p>
+              </div>
             </div>
           {%- endif -%}
         </div>
@@ -3134,10 +3168,45 @@
 
       <!--
         ============================================
-        GROUPE 3: ACTIONS
+        RIGHT COL WRAPPER (HEADER + ACTIONS)
+        Sur desktop : assigne a grid-area: rightcol, flex column.
+        Evite le trou vertical entre header et actions du au row-spanning de la galerie.
+        Refonte 2026-05-28 evening.
         ============================================
       -->
-      <div class="milaura-hero-actions-group">
+      <div class="milaura-hero-rightcol">
+        <!--
+          ============================================
+          GROUPE 1: HEADER (titre + prix + badge promo)
+          ============================================
+        -->
+        <div class="milaura-hero-header-group">
+          {%- if section.settings.show_vendor -%}
+            <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
+          {%- endif -%}
+
+          <h1 class="milaura-product__title">{{ product.title | escape }}</h1>
+
+          <div class="no-js-hidden" id="price-{{ section.id }}" role="status">
+            {%- render 'price',
+              product: product,
+              use_variant: true,
+              show_badges: true,
+              price_class: 'milaura-product__price'
+            -%}
+            {%- if product.compare_at_price > product.price -%}
+              {%- assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
+              <span class="milaura-promo-badge">-{{ discount }}%</span>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <!--
+          ============================================
+          GROUPE 3: ACTIONS (bundle + scratch + CTA)
+          ============================================
+        -->
+        <div class="milaura-hero-actions-group">
         <!-- Note: Variant Picker was here, moved to gallery above -->
 
         <!-- Volume Offer Block -->
@@ -3428,7 +3497,9 @@
           {%- comment -%} Bulle social proof deplacee au-dessus de la galerie (refonte 2026-05-28) {%- endcomment -%}
         </div>
       </div>
-      <!-- Fin GROUPE 3: Actions -->
+        <!-- Fin GROUPE 3: Actions -->
+      </div>
+      <!-- Fin RIGHT COL wrapper -->
 
       <!-- GROUPE 4: SCRATCH-TO-REVEAL (full width, premium) -->
       {%- if section.settings.show_scratch -%}
@@ -4679,19 +4750,25 @@
     },
     {
       "type": "paragraph",
-      "content": "Affiche sous la galerie photo, exploite le vide a gauche et humanise la marque. Cache sur mobile."
+      "content": "Affiche sous la galerie photo : photo Karine ronde + citation vendeur + signature. Exploite le vide a gauche et humanise la marque. Cache sur mobile."
     },
     {
       "type": "checkbox",
       "id": "show_karine_block",
-      "label": "Afficher bloc Karine (citation + signature)",
+      "label": "Afficher bloc Karine (photo + citation + signature)",
       "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "karine_image",
+      "label": "Photo Karine (cercle 88px)",
+      "info": "Photo ronde a gauche de la citation. Carre conseille (1:1). Utilisez la meme que dans Milaura Trust Block pour coherence."
     },
     {
       "type": "textarea",
       "id": "karine_quote",
-      "label": "Citation de Karine",
-      "default": "Chaque piece passe par mes mains. Avant d'etre un produit, c'est un rituel que je vis chaque jour, et que je vous confie avec sincerite."
+      "label": "Citation Karine (texte vendeur)",
+      "default": "Je selectionne chaque pierre avec soin. Origine controlee, qualite verifiee avec rigueur, avant d'arriver dans nos ateliers."
     },
     {
       "type": "header",
