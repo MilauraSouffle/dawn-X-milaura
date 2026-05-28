@@ -2664,13 +2664,16 @@
         </div>
       </div>
 
-      {%- comment -%} Bulle social proof au-dessus de la galerie (refonte 2026-05-28, demande user mobile) {%- endcomment -%}
+      {%- comment -%} Bulle social proof au-dessus de la galerie (refonte 2026-05-28, demande user mobile).
+        Le nombre de client(e)s varie par produit via calcul deterministe base sur product.id (entre 12 et 141). {%- endcomment -%}
       {%- if section.settings.show_social_proof -%}
         {%- assign months_fr = "janvier,fevrier,mars,avril,mai,juin,juillet,aout,septembre,octobre,novembre,decembre" | split: "," -%}
         {%- assign month_idx = "now" | date: "%-m" | minus: 1 -%}
         {%- assign month_fr = months_fr[month_idx] -%}
         {%- assign year_fr = "now" | date: "%Y" -%}
-        {%- assign social_count = section.settings.social_count | default: 127 -%}
+        {%- comment -%} Calcul deterministe : meme produit = meme nombre, varie entre 12 et 141. {%- endcomment -%}
+        {%- assign social_count_raw = product.id | default: 0 | modulo: 130 -%}
+        {%- assign social_count = social_count_raw | plus: 12 -%}
         <div class="milaura-hero-social milaura-hero-social--top">
           <div class="milaura-hero-stars" aria-label="5 etoiles sur 5">
             <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
@@ -3158,23 +3161,55 @@
               <h3 class="milaura-bundle-title">{{ bundle_title_resolved }}</h3>
               <p class="milaura-bundle-subtitle">{{ section.settings.bundle_subtitle | default: 'Plus vous commandez, plus vous deverrouillez de cadeaux' }}</p>
             </div>
+            {%- comment -%} Prix tiers calcules dynamiquement depuis product.price + remises configurables (refonte 2026-05-28). {%- endcomment -%}
+            {%- assign tier2_discount = section.settings.tier2_discount_pct | default: 10 -%}
+            {%- assign tier3_discount = section.settings.tier3_discount_pct | default: 20 -%}
+            {%- assign base_price = product.price -%}
+            {%- assign base_compare = product.compare_at_price | default: product.price -%}
+
+            {%- assign tier1_dyn_price = base_price -%}
+            {%- assign tier1_dyn_compare = base_compare -%}
+
+            {%- assign tier2_total = base_price | times: 2 -%}
+            {%- assign tier2_keep_pct = 100 | minus: tier2_discount -%}
+            {%- assign tier2_dyn_price = tier2_total | times: tier2_keep_pct | divided_by: 100 -%}
+            {%- assign tier2_dyn_compare = base_compare | times: 2 -%}
+
+            {%- assign tier3_total = base_price | times: 3 -%}
+            {%- assign tier3_keep_pct = 100 | minus: tier3_discount -%}
+            {%- assign tier3_dyn_price = tier3_total | times: tier3_keep_pct | divided_by: 100 -%}
+            {%- assign tier3_dyn_compare = base_compare | times: 3 -%}
+
             <div class="milaura-bundle-tiers">
               {%- for i in (1..3) -%}
                 {%- assign label_key = 'tier' | append: i | append: '_label' -%}
                 {%- assign sub_key = 'tier' | append: i | append: '_sub' -%}
-                {%- assign price_key = 'tier' | append: i | append: '_price' -%}
-                {%- assign compare_key = 'tier' | append: i | append: '_compare' -%}
                 {%- assign icon_key = 'tier' | append: i | append: '_icon' -%}
                 {%- assign badge_key = 'tier' | append: i | append: '_badge' -%}
                 {%- assign cards_key = 'tier' | append: i | append: '_cards_unlocked' -%}
                 {%- assign tier_label = section.settings[label_key] -%}
                 {%- assign tier_sub = section.settings[sub_key] -%}
-                {%- assign tier_price = section.settings[price_key] -%}
-                {%- assign tier_compare = section.settings[compare_key] -%}
                 {%- assign tier_icon = section.settings[icon_key] -%}
                 {%- assign tier_badge = section.settings[badge_key] -%}
                 {%- assign tier_cards = section.settings[cards_key] -%}
-                <div class="milaura-bundle-tier" data-tier-index="{{ forloop.index0 }}" data-cards-unlocked="{{ tier_cards | default: 0 }}" role="button" tabindex="0">
+
+                {%- if i == 1 -%}
+                  {%- assign tier_price_cents = tier1_dyn_price -%}
+                  {%- assign tier_compare_cents = tier1_dyn_compare -%}
+                {%- elsif i == 2 -%}
+                  {%- assign tier_price_cents = tier2_dyn_price -%}
+                  {%- assign tier_compare_cents = tier2_dyn_compare -%}
+                {%- else -%}
+                  {%- assign tier_price_cents = tier3_dyn_price -%}
+                  {%- assign tier_compare_cents = tier3_dyn_compare -%}
+                {%- endif -%}
+
+                {%- assign show_compare = false -%}
+                {%- if tier_compare_cents > tier_price_cents -%}
+                  {%- assign show_compare = true -%}
+                {%- endif -%}
+
+                <div class="milaura-bundle-tier" data-tier-index="{{ forloop.index0 }}" data-tier-pieces="{{ i }}" data-tier-price-cents="{{ tier_price_cents }}" data-cards-unlocked="{{ tier_cards | default: 0 }}" role="button" tabindex="0">
                   {%- if tier_badge != blank -%}
                     <span class="milaura-bundle-badge">{{ tier_badge }}</span>
                   {%- endif -%}
@@ -3186,9 +3221,9 @@
                     </div>
                   </div>
                   <div class="milaura-bundle-tier-price">
-                    <div class="milaura-bundle-tier-current">{{ tier_price }}</div>
-                    {%- if tier_compare != blank -%}
-                      <div class="milaura-bundle-tier-compare">{{ tier_compare }}</div>
+                    <div class="milaura-bundle-tier-current">{{ tier_price_cents | money }}</div>
+                    {%- if show_compare -%}
+                      <div class="milaura-bundle-tier-compare">{{ tier_compare_cents | money }}</div>
                     {%- endif -%}
                   </div>
                 </div>
@@ -3257,7 +3292,7 @@
               </svg>
             </span>
             <span class="milaura-cta-label">Ajouter au panier</span>
-            <span class="milaura-cta-price" id="milaura-hero-cta-price-{{ section.id }}">{{ section.settings.tier2_price | default: '89,80 €' }}</span>
+            <span class="milaura-cta-price" id="milaura-hero-cta-price-{{ section.id }}">{{ tier2_dyn_price | money }}</span>
           </button>
         {%- endif -%}
 
@@ -3451,6 +3486,8 @@
 
           function getTierPieces(index) {
             if (!tierEls || !tierEls[index]) return 1;
+            var pieces = parseInt(tierEls[index].getAttribute('data-tier-pieces'), 10);
+            if (!isNaN(pieces) && pieces > 0) return pieces;
             var labelEl = tierEls[index].querySelector('.milaura-bundle-tier-label');
             if (!labelEl) return 1;
             var match = labelEl.textContent.match(/(\d+)/);
@@ -4710,6 +4747,26 @@
       "id": "bundle_title",
       "label": "Titre du bundle",
       "default": "Choisissez la quantite"
+    },
+    {
+      "type": "range",
+      "id": "tier2_discount_pct",
+      "label": "Remise sur Tier 2 (% sur 2x prix produit)",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "tier3_discount_pct",
+      "label": "Remise sur Tier 3 (% sur 3x prix produit)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "%",
+      "default": 20
     },
     {
       "type": "text",
