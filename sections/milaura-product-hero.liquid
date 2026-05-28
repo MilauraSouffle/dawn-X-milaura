@@ -2373,13 +2373,39 @@
   .milaura-hero-social--top {
     order: 0;
     width: 100%;
-    margin-bottom: 12px;
+    margin-top: 14px;
+    margin-bottom: 10px;
   }
   @media screen and (min-width: 990px) {
     .milaura-hero-social--top {
-      grid-column: 1 / -1;
-      grid-row: 1;
+      grid-area: social;
+      margin-top: 0;
       margin-bottom: 4px;
+    }
+  }
+
+  /* Variante : badges metafield entre bulle bleue et galerie (mobile sur 1 ligne, centres) */
+  .milaura-meta-badges--top {
+    order: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin: 4px 0 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .milaura-meta-badges--top::-webkit-scrollbar { display: none; }
+  .milaura-meta-badges--top .milaura-meta-badge {
+    flex-shrink: 0;
+  }
+  @media screen and (min-width: 990px) {
+    .milaura-meta-badges--top {
+      grid-area: meta;
+      margin: 0 0 8px;
     }
   }
 
@@ -2552,16 +2578,17 @@
   /* Phrase reassurance sous CTA supprimee (cf user request 2026-05-28) */
   .milaura-hero-cta-reassurance { display: none; }
 
-  /* Desktop : grid avec social en haut full width + gallery/header/actions + scratch.
-     Refonte 2026-05-28 : bulle social descend au-dessus de la galerie. */
+  /* Desktop : grid avec social + badges metafield en haut full width + gallery/header/actions + scratch.
+     Refonte 2026-05-28. */
   @media screen and (min-width: 990px) {
     .milaura-hero-wrapper {
       grid-template-areas:
         "social  social"
+        "meta    meta"
         "gallery header"
         "gallery actions"
         "scratch scratch" !important;
-      grid-template-rows: auto auto auto auto;
+      grid-template-rows: auto auto auto auto auto;
       align-items: start;
       row-gap: 12px;
     }
@@ -2653,6 +2680,52 @@
             <strong>+ de {{ social_count }} client(e)s</strong>
             en {{ month_fr }} {{ year_fr }}
           </p>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Badges metafield entre bulle bleue et galerie (refonte 2026-05-28, mobile sur 1 ligne) {%- endcomment -%}
+      {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
+      {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
+      {%- assign badge_vertus = product.metafields.milaura.vertus -%}
+      {%- assign badge_quality = product.metafields.milaura.qualite -%}
+      {%- assign has_meta_badges = false -%}
+      {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank -%}
+        {%- assign has_meta_badges = true -%}
+      {%- endif -%}
+      {%- if has_meta_badges -%}
+        <div class="milaura-meta-badges milaura-meta-badges--top">
+          {%- if badge_stone != blank -%}
+            <span class="milaura-meta-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              {{ badge_stone }}
+            </span>
+          {%- endif -%}
+          {%- if badge_energy != blank -%}
+            <span class="milaura-meta-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              {{ badge_energy }}
+            </span>
+          {%- endif -%}
+          {%- if badge_vertus != blank -%}
+            <span class="milaura-meta-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              {{ badge_vertus }}
+            </span>
+          {%- endif -%}
+          {%- if badge_quality != blank -%}
+            <span class="milaura-meta-badge milaura-meta-badge--gold">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              {{ badge_quality }}
+            </span>
+          {%- endif -%}
         </div>
       {%- endif -%}
 
@@ -3215,51 +3288,7 @@
             </script>
           {%- endif -%}
 
-          {%- comment -%} Badges metafield (stone / energy / vertus / quality) {%- endcomment -%}
-          {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
-          {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
-          {%- assign badge_vertus = product.metafields.milaura.vertus -%}
-          {%- assign badge_quality = product.metafields.milaura.qualite -%}
-          {%- assign has_meta_badges = false -%}
-          {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank -%}
-            {%- assign has_meta_badges = true -%}
-          {%- endif -%}
-          {%- if has_meta_badges -%}
-            <div class="milaura-meta-badges">
-              {%- if badge_stone != blank -%}
-                <span class="milaura-meta-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                  </svg>
-                  {{ badge_stone }}
-                </span>
-              {%- endif -%}
-              {%- if badge_energy != blank -%}
-                <span class="milaura-meta-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                  </svg>
-                  {{ badge_energy }}
-                </span>
-              {%- endif -%}
-              {%- if badge_vertus != blank -%}
-                <span class="milaura-meta-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                  </svg>
-                  {{ badge_vertus }}
-                </span>
-              {%- endif -%}
-              {%- if badge_quality != blank -%}
-                <span class="milaura-meta-badge milaura-meta-badge--gold">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                  {{ badge_quality }}
-                </span>
-              {%- endif -%}
-            </div>
-          {%- endif -%}
+          {%- comment -%} Badges metafield deplaces au-dessus de la galerie (entre bulle bleue et photo) - refonte 2026-05-28 {%- endcomment -%}
 
           {%- comment -%} Bulle social proof deplacee au-dessus de la galerie (refonte 2026-05-28) {%- endcomment -%}
         </div>
