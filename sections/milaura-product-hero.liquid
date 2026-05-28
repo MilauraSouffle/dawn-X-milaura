@@ -3261,6 +3261,7 @@
                       data-gift-name="{{ block.settings.name }}"
                       data-gift-value="{{ block.settings.value }}"
                       data-gift-icon="{{ block.settings.icon }}"
+                      data-gift-variant-id="{{ block.settings.variant_id }}"
                       {{ block.shopify_attributes }}
                     >
                       <div class="milaura-scratch-card-content">
@@ -3511,11 +3512,23 @@
             var tierLabelEl = tierEls[selectedTierIndex].querySelector('.milaura-bundle-tier-label');
             var tierLabel = tierLabelEl ? tierLabelEl.textContent.trim() : '';
             var giftNames = [];
+            var giftVariantItems = [];
             revealedGifts.forEach(function(idx) {
               var giftCard = container.querySelector('.milaura-scratch-card[data-gift-index="' + idx + '"]');
               if (giftCard) {
                 var name = giftCard.getAttribute('data-gift-name');
                 if (name) giftNames.push(name);
+                var variantId = parseInt(giftCard.getAttribute('data-gift-variant-id'), 10);
+                if (!isNaN(variantId) && variantId > 0) {
+                  giftVariantItems.push({
+                    id: variantId,
+                    quantity: 1,
+                    properties: {
+                      '_gift': 'true',
+                      'Cadeau Mil’Aura': name || 'Cadeau revele'
+                    }
+                  });
+                }
               }
             });
 
@@ -3524,21 +3537,23 @@
             var originalLabel = labelEl ? labelEl.textContent : 'Ajouter au panier';
             if (labelEl) labelEl.textContent = 'Ajout en cours...';
 
-            var body = {
-              items: [{
-                id: ctaVariantId,
-                quantity: qty,
-                properties: {
-                  'Formule': tierLabel,
-                  'Cadeaux': giftNames.length > 0 ? giftNames.join(', ') : 'Aucun'
-                }
-              }]
-            };
+            var items = [{
+              id: ctaVariantId,
+              quantity: qty,
+              properties: {
+                'Formule': tierLabel,
+                'Cadeaux': giftNames.length > 0 ? giftNames.join(', ') : 'Aucun'
+              }
+            }];
+            /* Ajout des variants gratuits (free gifts) si configures cote section.blocks.gift.variant_id */
+            for (var g = 0; g < giftVariantItems.length; g++) {
+              items.push(giftVariantItems[g]);
+            }
 
             fetch('/cart/add.js', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(body)
+              body: JSON.stringify({ items: items })
             })
             .then(function(r) {
               if (!r.ok) throw new Error('cart_error');
@@ -5076,6 +5091,12 @@
           "id": "value",
           "label": "Valeur",
           "default": "+9,90 €"
+        },
+        {
+          "type": "text",
+          "id": "variant_id",
+          "label": "Variant ID Shopify du cadeau gratuit (optionnel)",
+          "info": "Si rempli, le variant gratuit (0€) est ajoute automatiquement au panier quand le cadeau est revele. Laisser vide pour conserver l'affichage informatif uniquement."
         }
       ]
     }
