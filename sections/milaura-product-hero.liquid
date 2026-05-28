@@ -2228,6 +2228,127 @@
       font-size: 0.7rem;
     }
   }
+
+  /* ============================================
+     SOCIAL PROOF BLOCK + DESCRIPTION COMPACT + CTA BUNDLE-AWARE
+     Refonte 2026-05-28 : col droite simplifiee
+     ============================================ */
+  .milaura-hero-social {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(192, 160, 98, 0.06), rgba(230, 200, 139, 0.04));
+    border-radius: 12px;
+    border: 1px solid rgba(192, 160, 98, 0.15);
+    margin-bottom: var(--milaura-spacing-sm);
+  }
+
+  .milaura-hero-stars {
+    font-size: 1.1rem;
+    color: var(--milaura-gold);
+    letter-spacing: 2px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .milaura-hero-social-text {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--milaura-text);
+    margin: 0;
+  }
+
+  .milaura-hero-social-text strong {
+    color: var(--milaura-gold-dark);
+    font-weight: 700;
+  }
+
+  /* Description courte reduite */
+  .milaura-hero-actions-group .product__description,
+  .milaura-hero-header-group .product__description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  /* CTA bundle-aware */
+  .milaura-hero-cta-bundle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 24px;
+    margin-top: var(--milaura-spacing-sm);
+    background: linear-gradient(135deg, var(--milaura-gold-dark, #8F723A), var(--milaura-gold, #C0A062));
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: var(--milaura-shadow-md, 0 15px 40px rgba(192, 160, 98, 0.25));
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .milaura-hero-cta-bundle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 45px rgba(192, 160, 98, 0.35);
+  }
+
+  .milaura-hero-cta-bundle:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .milaura-cta-separator {
+    opacity: 0.6;
+  }
+
+  .milaura-cta-price {
+    font-weight: 700;
+  }
+
+  .milaura-hero-cta-reassurance {
+    text-align: center;
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 6px;
+  }
+
+  /* Desktop : bottom-align des 2 colonnes */
+  @media screen and (min-width: 990px) {
+    .milaura-hero-wrapper {
+      align-items: end;
+    }
+  }
+
+  /* Mobile : compact + galerie max 60vh */
+  @media screen and (max-width: 768px) {
+    .milaura-hero-social {
+      padding: 10px 14px;
+      gap: 10px;
+    }
+    .milaura-hero-social-text {
+      font-size: 0.75rem;
+    }
+    .milaura-hero-cta-bundle {
+      padding: 14px 20px;
+      font-size: 0.95rem;
+    }
+    .milaura-hero-cta-reassurance {
+      font-size: 0.65rem;
+    }
+    .product__media-wrapper,
+    .milaura-hero-gallery,
+    .product-media-container {
+      max-height: 60vh;
+    }
+  }
 {% endstyle %}
 
 <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -2246,52 +2367,24 @@
           <div class="product__vendor caption-with-letter-spacing">{{ product.vendor }}</div>
         {%- endif -%}
 
+        {%- comment -%} Trust unified block deplace dans section milaura-product-trust-block (full width, entre sticky-bar et tabs) {%- endcomment -%}
+
+        {%- comment -%} Social proof : etoiles dorees + texte avec mois dynamique FR + nombre editable {%- endcomment -%}
         {%- if section.settings.show_social_proof -%}
-          <div class="milaura-trust-block">
-            <div class="milaura-trust-layout">
-              {%- if section.settings.social_proof_image != blank or section.settings.trust_cert_image != blank -%}
-                <div class="milaura-trust-cert-wrap">
-                  {%- if section.settings.social_proof_image != blank -%}
-                    <img
-                      class="milaura-trust-main-img"
-                      src="{{ section.settings.social_proof_image | image_url: width: 300 }}"
-                      alt="Mil'Aura, nos client(e)s"
-                      width="120"
-                      height="auto"
-                      loading="lazy"
-                    >
-                  {%- endif -%}
-                  {%- if section.settings.trust_cert_image != blank -%}
-                    <img
-                      class="milaura-trust-cert-img"
-                      src="{{ section.settings.trust_cert_image | image_url: width: 200 }}"
-                      alt="Certificat LFG Paris"
-                      width="80"
-                      height="auto"
-                      loading="lazy"
-                    >
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
-              <div class="milaura-trust-points">
-                <div class="milaura-trust-point">
-                  <span class="milaura-trust-icon">&#10003;</span>
-                  <span>{{ section.settings.social_proof_text }}</span>
-                </div>
-                <div class="milaura-trust-point">
-                  <span class="milaura-trust-icon">&#9733;</span>
-                  <span>{{ section.settings.trust_line_karine }}</span>
-                </div>
-                <div class="milaura-trust-point">
-                  <span class="milaura-trust-icon">&#128142;</span>
-                  <span>{{ section.settings.trust_line_lfg }}</span>
-                </div>
-                <div class="milaura-trust-point">
-                  <span class="milaura-trust-icon">&#9989;</span>
-                  <span>{{ section.settings.trust_line_guarantee }}</span>
-                </div>
-              </div>
+          {%- assign months_fr = "janvier,fevrier,mars,avril,mai,juin,juillet,aout,septembre,octobre,novembre,decembre" | split: "," -%}
+          {%- assign month_idx = "now" | date: "%-m" | minus: 1 -%}
+          {%- assign month_fr = months_fr[month_idx] -%}
+          {%- assign year_fr = "now" | date: "%Y" -%}
+          {%- assign social_count = section.settings.social_count | default: 127 -%}
+          <div class="milaura-hero-social">
+            <div class="milaura-hero-stars" aria-label="5 etoiles sur 5">
+              <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
             </div>
+            <p class="milaura-hero-social-text">
+              Ce produit a deja fait le bonheur de
+              <strong>+ de {{ social_count }} client(e)s</strong>
+              en {{ month_fr }} {{ year_fr }}
+            </p>
           </div>
         {%- endif -%}
 
@@ -2770,94 +2863,7 @@
           {%- endif -%}
         {%- endfor -%}
 
-        <!-- Buy Buttons (NEW LUXE LAYOUT) -->
-        <div class="milaura-buy-row">
-          {%- if section.settings.show_quantity -%}
-            <quantity-input class="milaura-quantity-capsule">
-              <button class="milaura-quantity-btn" name="minus" type="button">
-                <svg width="12" height="2" viewBox="0 0 12 2" fill="none">
-                  <path d="M0 1H12" stroke="currentColor" stroke-width="1.5"/>
-                </svg>
-              </button>
-              <input
-                class="milaura-quantity-input"
-                type="number"
-                name="quantity"
-                id="Quantity-{{ section.id }}"
-                min="1"
-                value="2"
-                form="{{ 'product-form-' | append: section.id }}"
-              >
-              <button class="milaura-quantity-btn" name="plus" type="button">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M6 0V12M0 6H12" stroke="currentColor" stroke-width="1.5"/>
-                </svg>
-              </button>
-            </quantity-input>
-          {%- endif -%}
-
-          <!-- Add Button -->
-          {%- assign product_form_id = 'product-form-' | append: section.id -%}
-          <product-form class="product-form" style="flex:1;">
-            {%- form 'product',
-              product,
-              id: product_form_id,
-              class: 'form',
-              novalidate: 'novalidate',
-              data-type: 'add-to-cart-form'
-            -%}
-              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-              <button
-                type="submit"
-                name="add"
-                class="milaura-add-btn milaura-btn-gold"
-                {% if product.selected_or_first_available_variant.available == false %}
-                  disabled
-                {% endif %}
-              >
-                <span>
-                  {%- if product.selected_or_first_available_variant.available -%}
-                    Ajouter au panier
-                  {%- else -%}
-                    Rupture de stock
-                  {%- endif -%}
-                </span>
-                <div class="loading__spinner hidden">
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    class="spinner"
-                    viewBox="0 0 66 66"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
-                  </svg>
-                </div>
-              </button>
-            {%- endform -%}
-          </product-form>
-        </div>
-
-        <!-- Trust Badges (Reassurance) -->
-        <div class="milaura-trust-badges">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'trust_badge' -%}
-              <div class="milaura-trust-item">
-                <span class="milaura-trust-icon">{{ block.settings.icon }}</span>
-                <span>{{ block.settings.text }}</span>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-
-        {%- if section.settings.show_payment_icons -%}
-          <ul class="milaura-payment-icons">
-            {%- for type in shop.enabled_payment_types -%}
-              <li class="milaura-payment-icon">{{ type | payment_type_svg_tag }}</li>
-            {%- endfor -%}
-          </ul>
-          </div>
-        {%- endif -%}
+        {%- comment -%} Buy-row (qty picker + product-form ATC) supprime. Le CTA bundle-aware (sous le bundle, dans la col droite) gere l'ajout au panier via /cart/add.js. Trust badges + payment icons deplaces vers section milaura-product-trust-block. {%- endcomment -%}
 
         <!-- Description Extract (Optional) -->
         {%- if section.settings.show_description -%}
@@ -2878,20 +2884,8 @@
             });
           </script>
         {%- endif -%}
-      </div>
-      <!-- Fin GROUPE 3: Actions -->
 
-      <!-- GROUPE 4: SCRATCH-TO-REVEAL (full width, premium) -->
-      {%- if section.settings.show_scratch -%}
-        {%- assign gift_count = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'gift' -%}
-            {%- assign gift_count = gift_count | plus: 1 -%}
-          {%- endif -%}
-        {%- endfor -%}
-
-        <div class="milaura-scratch-zone">
-
+        {%- comment -%} Bundle selector deplace ici depuis GROUPE 4. Le CTA inline tier-aware est juste en dessous. {%- endcomment -%}
         {%- if section.settings.show_bundle -%}
           <div class="milaura-bundle-selector" id="milaura-bundle-selector-{{ section.id }}">
             <div class="milaura-bundle-header">
@@ -2935,7 +2929,34 @@
               {%- endfor -%}
             </div>
           </div>
+
+          <button
+            type="button"
+            class="milaura-hero-cta-bundle"
+            id="milaura-hero-cta-bundle-{{ section.id }}"
+            data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+            aria-label="Ajouter au panier">
+            <span class="milaura-cta-label">Ajouter au panier</span>
+            <span class="milaura-cta-separator" aria-hidden="true">&middot;</span>
+            <span class="milaura-cta-price" id="milaura-hero-cta-price-{{ section.id }}">{{ section.settings.tier2_price | default: '89,80 €' }}</span>
+          </button>
+          <div class="milaura-hero-cta-reassurance" aria-hidden="true">Paiement securise &middot; Livraison offerte des 39 euros</div>
         {%- endif -%}
+      </div>
+      <!-- Fin GROUPE 3: Actions -->
+
+      <!-- GROUPE 4: SCRATCH-TO-REVEAL (full width, premium) -->
+      {%- if section.settings.show_scratch -%}
+        {%- assign gift_count = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'gift' -%}
+            {%- assign gift_count = gift_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <div class="milaura-scratch-zone">
+
+        {%- comment -%} Bundle selector deplace dans GROUPE 3 (col droite) au-dessus de cette section scratch {%- endcomment -%}
 
         <div class="milaura-scratch-divider" aria-hidden="true">
           <span class="milaura-scratch-divider-text">{{ section.settings.scratch_title | default: 'Cadeaux a gratter' }}</span>
@@ -3100,6 +3121,79 @@
             tierEls[i].classList.add('is-selected');
             selectedTierIndex = i;
             updateLockedCards();
+            updateCtaButton();
+          }
+
+          /* ===== CTA BUNDLE-AWARE ===== */
+          var ctaButton = document.getElementById('milaura-hero-cta-bundle-' + sid);
+          var ctaPriceEl = document.getElementById('milaura-hero-cta-price-' + sid);
+          var ctaVariantId = ctaButton ? parseInt(ctaButton.getAttribute('data-variant-id'), 10) : null;
+
+          function updateCtaButton() {
+            if (!ctaPriceEl || !tierEls || tierEls.length === 0) return;
+            var tier = tierEls[selectedTierIndex];
+            if (!tier) return;
+            var priceEl = tier.querySelector('.milaura-bundle-tier-current');
+            if (priceEl && priceEl.textContent) {
+              ctaPriceEl.textContent = priceEl.textContent.trim();
+            }
+          }
+
+          function getTierPieces(index) {
+            if (!tierEls || !tierEls[index]) return 1;
+            var labelEl = tierEls[index].querySelector('.milaura-bundle-tier-label');
+            if (!labelEl) return 1;
+            var match = labelEl.textContent.match(/(\d+)/);
+            return match ? parseInt(match[1], 10) : 1;
+          }
+
+          function bundleAddToCart() {
+            if (!ctaVariantId || !ctaButton) return;
+            var qty = getTierPieces(selectedTierIndex);
+            var tierLabelEl = tierEls[selectedTierIndex].querySelector('.milaura-bundle-tier-label');
+            var tierLabel = tierLabelEl ? tierLabelEl.textContent.trim() : '';
+            var giftNames = [];
+            revealedGifts.forEach(function(idx) {
+              var giftCard = container.querySelector('.milaura-scratch-card[data-gift-index="' + idx + '"]');
+              if (giftCard) {
+                var name = giftCard.getAttribute('data-gift-name');
+                if (name) giftNames.push(name);
+              }
+            });
+
+            ctaButton.disabled = true;
+            var labelEl = ctaButton.querySelector('.milaura-cta-label');
+            var originalLabel = labelEl ? labelEl.textContent : 'Ajouter au panier';
+            if (labelEl) labelEl.textContent = 'Ajout en cours...';
+
+            var body = {
+              items: [{
+                id: ctaVariantId,
+                quantity: qty,
+                properties: {
+                  'Formule': tierLabel,
+                  'Cadeaux': giftNames.length > 0 ? giftNames.join(', ') : 'Aucun'
+                }
+              }]
+            };
+
+            fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(body)
+            })
+            .then(function(r) {
+              if (!r.ok) throw new Error('cart_error');
+              window.location.href = '/cart';
+            })
+            .catch(function() {
+              ctaButton.disabled = false;
+              if (labelEl) labelEl.textContent = originalLabel;
+            });
+          }
+
+          if (ctaButton) {
+            ctaButton.addEventListener('click', bundleAddToCart);
           }
 
           /* ===== INIT CARDS ===== */
@@ -4053,9 +4147,15 @@
       "default": true
     },
     {
+      "type": "number",
+      "id": "social_count",
+      "label": "Nombre de client(e)s a afficher (mois en cours)",
+      "default": 127
+    },
+    {
       "type": "text",
       "id": "social_proof_text",
-      "label": "Texte social proof",
+      "label": "Texte social proof (legacy, non utilise depuis refonte 2026-05-28)",
       "default": "+500 client(e)s nous font confiance"
     },
     {
