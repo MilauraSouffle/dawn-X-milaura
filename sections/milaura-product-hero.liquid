@@ -3454,6 +3454,32 @@
             });
             if (stateChanged) saveState();
             updateCounter();
+            /* Hide / re-show the reveal pill in coherence with the new state */
+            syncPillToState();
+          }
+
+          function syncPillToState() {
+            if (!pillEl || !pillTextEl) return;
+            if (revealedGifts.size === 0) {
+              pillEl.classList.remove('is-visible');
+              pillTextEl.textContent = '';
+              return;
+            }
+            /* Show the last revealed (and still unlocked) gift in the pill */
+            var unlocked = currentUnlockedCount();
+            var lastValidGift = null;
+            gifts.forEach(function(g, i) {
+              if (i < unlocked && revealedGifts.has(i)) {
+                lastValidGift = g;
+              }
+            });
+            if (lastValidGift) {
+              pillTextEl.textContent = '+ ' + lastValidGift.name + ' offert avec votre commande';
+              pillEl.classList.add('is-visible');
+            } else {
+              pillEl.classList.remove('is-visible');
+              pillTextEl.textContent = '';
+            }
           }
 
           function bindTierSelector() {
