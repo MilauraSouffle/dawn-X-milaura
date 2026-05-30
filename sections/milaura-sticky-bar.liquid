@@ -21,13 +21,14 @@
       left: 0;
       width: 100%;
       background: var(--sticky-bg);
-      padding: 12px 24px;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      min-height: 86px;
+      padding: 14px 32px;
+      box-shadow: 0 -8px 28px rgba(0,0,0,0.09);
       z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 24px;
       
       /* État initial : caché vers le bas */
       transform: translateY(101%);
@@ -42,8 +43,35 @@
     /* --- GAUCHE : INFOS PRODUIT --- */
     .sticky-product-info {
       display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      flex: 0 1 420px;
+    }
+
+    .sticky-product-media {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex: 0 0 56px;
+      background: rgba(192, 160, 98, 0.08);
+      border: 1px solid rgba(192, 160, 98, 0.18);
+      box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .sticky-product-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .sticky-product-copy {
+      display: flex;
       flex-direction: column;
       justify-content: center;
+      min-width: 0;
     }
 
     .sticky-title {
@@ -53,6 +81,9 @@
       color: var(--sticky-text);
       margin: 0;
       line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .sticky-price {
@@ -65,88 +96,116 @@
     .sticky-marketing {
       flex: 1;
       text-align: center;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 13px;
+      font-weight: 600;
       color: var(--sticky-text);
-      opacity: 0.8;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      min-width: 180px;
     }
     
     .sticky-marketing span {
-      background: rgba(192, 160, 98, 0.1);
-      padding: 4px 12px;
+      background: rgba(192, 160, 98, 0.12);
+      padding: 7px 14px;
       border-radius: 20px;
-      color: #9A7B4F;
+      color: #8F723A;
+      border: 1px solid rgba(192, 160, 98, 0.18);
+      line-height: 1.2;
     }
 
     /* --- DROITE : BOUTON --- */
     .sticky-btn-wrapper {
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
     }
 
     /* Bouton plus compact dans la sticky bar (ne touche plus les bords) */
     .sticky-btn.milaura-btn-gold {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border: none;
-      padding: 10px 28px;
+      width: auto;
+      min-width: 168px;
+      min-height: 48px;
+      padding: 13px 28px;
       font-size: 13px;
       letter-spacing: 0.5px;
+      line-height: 1;
+      white-space: nowrap;
+      align-self: center;
+    }
+
+    .sticky-btn-label-mobile {
+      display: none;
     }
 
     /* --- MOBILE RESPONSIVE --- */
     @media screen and (max-width: 768px) {
       .milaura-sticky-bar {
-        padding: 10px 16px;
-        gap: 12px;
-        flex-wrap: wrap;
+        min-height: 76px;
+        padding: 11px 12px;
+        gap: 10px;
+        flex-wrap: nowrap;
         bottom: 65px; /* Au-dessus du dock mobile */
       }
 
-      /* Sur mobile, on cache le titre du produit pour gagner de la place, 
-         ou on le garde très petit. Ici je choisis de prioriser le marketing + prix */
-      .sticky-title {
-        display: none;
-      }
-
       .sticky-marketing {
-        width: 100%;
-        order: -1; /* Mettre le marketing tout en haut */
-        font-size: 12px;
-        margin-bottom: 4px;
-        display: none; /* Par défaut caché sur mobile sauf si option cochée */
+        display: none !important;
       }
-      
-      {% if section.settings.show_marketing_mobile %}
-      .sticky-marketing {
-        display: flex;
-      }
-      {% endif %}
 
       .sticky-product-info {
-        flex-direction: row;
+        flex: 1 1 auto;
         align-items: center;
-        gap: 8px;
+        gap: 9px;
+        min-width: 0;
+      }
+
+      .sticky-product-media {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+        border-radius: 9px;
+      }
+
+      .sticky-title {
+        display: block;
+        font-size: 12px;
+        max-width: 38vw;
+        line-height: 1.18;
       }
       
       .sticky-price {
-        font-size: 16px;
+        font-size: 14px;
+        line-height: 1.2;
       }
 
-      .sticky-btn {
-        padding: 10px 20px;
-        font-size: 13px;
-        flex: 1; /* Le bouton prend la place restante */
+      .sticky-btn.milaura-btn-gold {
+        min-width: 92px;
+        min-height: 40px;
+        padding: 10px 13px;
+        font-size: 12px;
+        line-height: 1;
       }
       
       .sticky-btn-wrapper {
-        flex: 1;
+        flex: 0 0 auto;
         display: flex;
       }
       
       .sticky-btn {
-        width: 100%;
+        width: auto;
+      }
+
+      .sticky-btn-label-desktop {
+        display: none;
+      }
+
+      .sticky-btn-label-mobile {
+        display: inline;
       }
     }
   </style>
@@ -155,9 +214,28 @@
     
     <!-- Info Gauche -->
     <div class="sticky-product-info">
-      <h4 class="sticky-title">{{ product.title | truncate: 25 }}</h4>
-      <div id="StickyBarPrice" class="sticky-price">
-        {{ product.selected_or_first_available_variant.price | money }}
+      {%- assign sticky_image = product.featured_image -%}
+      {%- if sticky_image == blank and product.featured_media.preview_image != blank -%}
+        {%- assign sticky_image = product.featured_media.preview_image -%}
+      {%- endif -%}
+      {%- if sticky_image != blank -%}
+        <div class="sticky-product-media">
+          {{
+            sticky_image
+            | image_url: width: 120
+            | image_tag:
+              loading: 'lazy',
+              widths: '80, 120',
+              sizes: '48px',
+              alt: product.title
+          }}
+        </div>
+      {%- endif -%}
+      <div class="sticky-product-copy">
+        <h4 class="sticky-title">{{ product.title | truncate: 42 }}</h4>
+        <div id="StickyBarPrice" class="sticky-price">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </div>
       </div>
     </div>
 
@@ -171,7 +249,8 @@
     <!-- Bouton Droite -->
     <div class="sticky-btn-wrapper">
       <button class="sticky-btn milaura-btn-gold" id="TriggerMainAtc">
-        {{ section.settings.button_text }}
+        <span class="sticky-btn-label-desktop">{{ section.settings.button_text }}</span>
+        <span class="sticky-btn-label-mobile">Ajouter</span>
       </button>
     </div>
 
@@ -309,7 +388,7 @@
       "type": "text",
       "id": "marketing_text",
       "label": "Texte Marketing (Centre)",
-      "default": "🔥 Plus que quelques pièces !",
+      "default": "Petites series preparees a l'atelier",
       "info": "Apparaît entre le prix et le bouton sur Desktop."
     },
     {
