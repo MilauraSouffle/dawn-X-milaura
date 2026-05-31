@@ -2264,7 +2264,7 @@
   /* Carte individuelle : grid 1fr donne la width, height fixe pour matcher bundle tier */
   .milaura-scratch-card {
     width: 100%;
-    height: 124px;
+    height: 130px;
     border-radius: 14px;
     position: relative;
     overflow: hidden;
@@ -2317,6 +2317,10 @@
     font-weight: 600;
     opacity: 0;
     transition: opacity 0.3s ease;
+  }
+
+  .milaura-scratch-card-value:empty {
+    display: none;
   }
 
   /* Canvas overlay */
@@ -2428,7 +2432,7 @@
   /* Pill de confirmation */
   .milaura-scratch-pill {
     display: none;
-    margin-top: 12px;
+    margin-top: 14px;
     text-align: left;
   }
 
@@ -2442,20 +2446,59 @@
   }
 
   .milaura-scratch-pill-inner {
-    display: inline-block;
-    background: #FDF7EA;
-    color: #7A5D27;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: linear-gradient(135deg, #FFF8E8 0%, #E6C88B 100%);
+    color: #1a1a2e;
     font-family: 'Lato', sans-serif;
-    font-size: 0.76rem;
-    font-weight: 700;
-    border-radius: 12px;
-    padding: 9px 12px;
-    line-height: 1.4;
+    font-size: 0.82rem;
+    font-weight: 800;
+    border-radius: 14px;
+    padding: 12px 14px;
+    line-height: 1.32;
     max-width: 100%;
     word-wrap: break-word;
-    border: 1px solid rgba(192, 160, 98, 0.24);
-    box-shadow: 0 4px 14px rgba(192, 160, 98, 0.12);
+    border: 1.5px solid rgba(192, 160, 98, 0.52);
+    box-shadow: 0 8px 22px rgba(192, 160, 98, 0.22);
     animation: milauraScratchPillIn 0.4s ease-out;
+  }
+
+  .milaura-scratch-pill-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    background: #1a1a2e;
+    color: #E6C88B;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    font-size: 1rem;
+    font-weight: 900;
+    box-shadow: 0 4px 12px rgba(26, 26, 46, 0.18);
+  }
+
+  .milaura-scratch-pill-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .milaura-scratch-pill-copy strong {
+    display: block;
+    font-size: 0.86rem;
+    line-height: 1.2;
+  }
+
+  .milaura-scratch-pill-copy span {
+    display: block;
+    color: rgba(26, 26, 46, 0.76);
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.3;
   }
 
   /* Desktop (>= 750px) - grid 3 cols, taille auto, ratio carre */
@@ -2503,7 +2546,7 @@
 
     .milaura-scratch-card {
       min-width: 0;
-      height: clamp(94px, 27vw, 108px);
+      height: 135px;
       border-radius: 12px;
     }
 
@@ -2554,7 +2597,7 @@
     }
 
     .milaura-scratch-card {
-      height: 92px;
+      height: 135px;
     }
 
     .milaura-scratch-card-icon {
@@ -3690,7 +3733,7 @@
             <div class="milaura-hero-scratch" id="milaura-hero-scratch-{{ section.id }}">
               <div class="milaura-scratch-header">
                 <h3 class="milaura-scratch-title">Vos cadeaux</h3>
-                <span class="milaura-scratch-counter" id="milaura-scratch-counter-{{ section.id }}">0/{{ gift_count_inline }} REVELES</span>
+                <span class="milaura-scratch-counter" id="milaura-scratch-counter-{{ section.id }}">0/{{ gift_count_inline }} RÉVÉLÉS</span>
               </div>
 
               <div class="milaura-scratch-cards" id="milaura-scratch-cards-{{ section.id }}">
@@ -3715,7 +3758,7 @@
                           {%- if gift_idx == 2 -%}
                             Gros lot
                           {%- else -%}
-                            Gagne
+                            Gagné
                           {%- endif -%}
                         </div>
                       </div>
@@ -3943,9 +3986,18 @@
               pillTextEl.textContent = '';
               return;
             }
-            pillTextEl.textContent = validGifts.length === 1
-              ? 'Avantage actif : ' + validGifts[0]
-              : 'Avantages actifs : ' + validGifts.join(' + ');
+            var pillTitle = validGifts.length === 1
+              ? 'Bravo, votre cadeau est activé'
+              : 'Bravo, vos ' + validGifts.length + ' cadeaux sont activés';
+            var pillSubtitle = validGifts.length === 1
+              ? 'Il s’applique automatiquement au panier : vous n’avez plus qu’à valider.'
+              : 'Ils s’appliquent automatiquement au panier : vous n’avez plus qu’à valider.';
+            pillTextEl.innerHTML =
+              '<span class="milaura-scratch-pill-icon" aria-hidden="true">✓</span>' +
+              '<span class="milaura-scratch-pill-copy">' +
+                '<strong>' + pillTitle + '</strong>' +
+                '<span>' + pillSubtitle + '</span>' +
+              '</span>';
             pillEl.classList.add('is-visible');
           }
 
@@ -4100,9 +4152,7 @@
 
             /* Restore last pill if any gift was revealed */
             if (revealedGifts.size > 0) {
-              var lastIdx = Math.max.apply(null, Array.from(revealedGifts));
-              var lastGift = gifts[lastIdx];
-              if (lastGift) showPill(lastGift);
+              syncPillToState();
             }
 
             /* Brancher le selecteur de bundle apres l'init initial */
@@ -4268,18 +4318,8 @@
             var total = gifts.length;
             var revealed = revealedGifts.size;
             if (counterEl) {
-              counterEl.textContent = revealed + '/' + total + ' REVELES';
+              counterEl.textContent = revealed + '/' + total + ' RÉVÉLÉS';
             }
-          }
-
-          /* ===== PILL ===== */
-          function showPill(gift) {
-            if (!pillEl || !pillTextEl) return;
-            pillTextEl.textContent = 'Avantage actif : ' + gift.name;
-            pillEl.classList.remove('is-visible');
-            /* Force reflow for re-animation */
-            void pillEl.offsetWidth;
-            pillEl.classList.add('is-visible');
           }
 
           /* ===== INIT ===== */
@@ -5562,7 +5602,7 @@
         { "type": "volume_offer" },
         { "type": "gift", "settings": { "icon": "📦", "name": "Livraison dès 19,90€", "value": "Au lieu de 39€", "discount_code": "MILAURA-LIV19" } },
         { "type": "gift", "settings": { "icon": "🖤", "name": "Bracelet hematite offert", "value": "+14,90 €" } },
-        { "type": "gift", "settings": { "icon": "✨", "name": "-30% sur votre commande", "value": "Non cumulable newsletter", "discount_code": "MILAURA30" } }
+        { "type": "gift", "settings": { "icon": "✨", "name": "-30% sur votre commande", "value": "", "discount_code": "MILAURA30" } }
       ]
     }
   ]
