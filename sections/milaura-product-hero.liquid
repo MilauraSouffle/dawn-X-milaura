@@ -2251,13 +2251,14 @@
   }
 
   .milaura-scratch-confetti {
-    position: absolute;
-    width: 7px;
-    height: 7px;
+    position: fixed;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     animation: milauraScratchConfetti 1.2s ease-out forwards;
     pointer-events: none;
-    z-index: 10;
+    z-index: 2147483000;
+    will-change: transform, opacity;
   }
 
   @keyframes milauraScratchFirework {
@@ -2275,14 +2276,15 @@
   }
 
   .milaura-scratch-firework {
-    position: absolute;
-    width: 8px;
-    height: 8px;
+    position: fixed;
+    width: 9px;
+    height: 9px;
     border-radius: 999px;
     animation: milauraScratchFirework 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     pointer-events: none;
-    z-index: 11;
+    z-index: 2147483001;
     box-shadow: 0 0 12px currentColor;
+    will-change: transform, opacity;
   }
 
   /* Pill de confirmation */
@@ -4138,17 +4140,16 @@
           /* ===== CONFETTI ===== */
           function spawnConfetti(card) {
             var rect = card.getBoundingClientRect();
-            var parentRect = container.getBoundingClientRect();
 
             for (var i = 0; i < CONFETTI_COUNT; i++) {
               var particle = document.createElement('div');
               particle.className = 'milaura-scratch-confetti';
               particle.style.backgroundColor = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
-              particle.style.left = (rect.left - parentRect.left + Math.random() * rect.width) + 'px';
-              particle.style.top = (rect.top - parentRect.top + Math.random() * 20 - 10) + 'px';
+              particle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+              particle.style.top = (rect.top + Math.random() * 20 - 10) + 'px';
               particle.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
               particle.style.animationDelay = (Math.random() * 0.25) + 's';
-              container.appendChild(particle);
+              document.body.appendChild(particle);
 
               (function(p) {
                 p.addEventListener('animationend', function() {
@@ -4163,10 +4164,9 @@
 
           function spawnFirework(card) {
             var rect = card.getBoundingClientRect();
-            var parentRect = container.getBoundingClientRect();
             var colors = ['#C0A062', '#E6C88B', '#D4839E', '#6BA3C7', '#8F723A'];
-            var centerX = rect.left - parentRect.left + rect.width / 2;
-            var centerY = rect.top - parentRect.top + rect.height / 2;
+            var centerX = rect.left + rect.width / 2;
+            var centerY = rect.top + rect.height / 2;
             for (var i = 0; i < 28; i++) {
               var spark = document.createElement('div');
               var angle = (Math.PI * 2 * i) / 28;
@@ -4179,7 +4179,7 @@
               spark.style.setProperty('--spark-x', Math.cos(angle) * distance + 'px');
               spark.style.setProperty('--spark-y', Math.sin(angle) * distance + 'px');
               spark.style.animationDelay = (Math.random() * 0.12) + 's';
-              container.appendChild(spark);
+              document.body.appendChild(spark);
 
               (function(s) {
                 s.addEventListener('animationend', function() {
