@@ -143,6 +143,28 @@
       display: none;
     }
 
+    .sticky-btn-qty {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      min-height: 24px;
+      margin-left: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(26, 26, 46, 0.14);
+      color: #1a1a2e;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .sticky-btn-qty.is-visible {
+      display: inline-flex;
+    }
+
     /* --- MOBILE RESPONSIVE --- */
     @media screen and (max-width: 768px) {
       .milaura-sticky-bar {
@@ -207,6 +229,14 @@
       .sticky-btn-label-mobile {
         display: inline;
       }
+
+      .sticky-btn-qty {
+        min-width: 24px;
+        min-height: 22px;
+        margin-left: 7px;
+        padding: 3px 7px;
+        font-size: 11px;
+      }
     }
   </style>
 
@@ -251,6 +281,7 @@
       <button class="sticky-btn milaura-btn-gold" id="TriggerMainAtc">
         <span class="sticky-btn-label-desktop">{{ section.settings.button_text }}</span>
         <span class="sticky-btn-label-mobile">Ajouter</span>
+        <span class="sticky-btn-qty" id="StickyBarQtyBadge" aria-live="polite"></span>
       </button>
     </div>
 
@@ -260,6 +291,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const stickyBar = document.getElementById('MilauraStickyBarSection');
       const triggerBtn = document.getElementById('TriggerMainAtc');
+      const qtyBadge = document.getElementById('StickyBarQtyBadge');
 
       // Sélecteurs pour trouver le bouton principal dans la page
       // Ordre du plus specifique au plus generique. Le CTA bundle (hero refonte 2026-05-28)
@@ -338,16 +370,55 @@
       }
 
       // 2. Logique de clic
+      function readMainQuantity() {
+        const qtyInput = document.querySelector('.milaura-bundle-qty__input');
+        const qty = qtyInput ? parseInt(qtyInput.value, 10) : 1;
+        return qty && qty > 0 ? Math.min(qty, 9) : 1;
+      }
+
+      function updateStickyQty(quantity) {
+        if (!qtyBadge) return;
+        const qty = quantity || readMainQuantity();
+        if (qty > 1) {
+          qtyBadge.textContent = '×' + qty;
+          qtyBadge.classList.add('is-visible');
+          qtyBadge.removeAttribute('hidden');
+        } else {
+          qtyBadge.textContent = '';
+          qtyBadge.classList.remove('is-visible');
+          qtyBadge.setAttribute('hidden', '');
+        }
+      }
+
+      function setTriggerLabels(text) {
+        if (!triggerBtn) return;
+        const desktopLabel = triggerBtn.querySelector('.sticky-btn-label-desktop');
+        const mobileLabel = triggerBtn.querySelector('.sticky-btn-label-mobile');
+        if (desktopLabel) desktopLabel.textContent = text;
+        if (mobileLabel) mobileLabel.textContent = text;
+      }
+
       if (triggerBtn && mainButton) {
+        const desktopLabel = triggerBtn.querySelector('.sticky-btn-label-desktop');
+        const mobileLabel = triggerBtn.querySelector('.sticky-btn-label-mobile');
+        const originalDesktopText = desktopLabel ? desktopLabel.textContent : triggerBtn.textContent;
+        const originalMobileText = mobileLabel ? mobileLabel.textContent : originalDesktopText;
         triggerBtn.addEventListener('click', (e) => {
           e.preventDefault();
           mainButton.click();
           // Petit feedback visuel
-          const originalText = triggerBtn.textContent;
-          triggerBtn.textContent = 'Ajout...';
-          setTimeout(() => { triggerBtn.textContent = originalText; }, 1000);
+          setTriggerLabels('Ajout...');
+          setTimeout(() => {
+            if (desktopLabel) desktopLabel.textContent = originalDesktopText;
+            if (mobileLabel) mobileLabel.textContent = originalMobileText;
+          }, 1000);
         });
       }
+
+      updateStickyQty();
+      document.addEventListener('milaura:product-quantity-change', function(event) {
+        updateStickyQty(event && event.detail ? event.detail.quantity : null);
+      });
 
       // 3. Mise à jour du prix (si variant change)
       const stickyPrice = document.getElementById('StickyBarPrice');
