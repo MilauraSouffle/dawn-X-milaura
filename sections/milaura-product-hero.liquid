@@ -2856,14 +2856,14 @@
       align-items: flex-end;
       justify-content: center;
       overflow: hidden;
-      padding: 18px 10px calc(10px + env(safe-area-inset-bottom));
+      padding: max(12px, env(safe-area-inset-top)) 10px calc(var(--milaura-active-dock-height, 78px) + 12px + env(safe-area-inset-bottom));
     }
 
     .milaura-gift-popup__card {
       width: min(100%, 430px);
-      max-height: min(82dvh, calc(100dvh - 64px));
-      border-radius: 22px 22px 0 0;
-      padding: 24px 18px calc(18px + env(safe-area-inset-bottom));
+      max-height: calc(100dvh - var(--milaura-active-dock-height, 78px) - 34px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      border-radius: 22px;
+      padding: 22px 18px 18px;
       animation: milauraGiftSheetIn 0.28s cubic-bezier(.2,.8,.2,1);
     }
 
@@ -2876,20 +2876,38 @@
     }
 
     .milaura-gift-popup__burst {
-      width: 52px;
-      height: 52px;
-      margin-bottom: 10px;
-      font-size: 1.45rem;
+      width: 46px;
+      height: 46px;
+      margin-bottom: 8px;
+      font-size: 1.35rem;
     }
 
     .milaura-gift-popup__title {
-      font-size: clamp(1.5rem, 7vw, 1.85rem);
+      font-size: clamp(1.38rem, 6.4vw, 1.7rem);
       line-height: 1.08;
+      margin-bottom: 8px;
     }
 
     .milaura-gift-popup__text {
-      font-size: 0.9rem;
-      line-height: 1.45;
+      font-size: 0.86rem;
+      line-height: 1.4;
+    }
+
+    .milaura-gift-popup__welcome {
+      margin-top: 12px;
+    }
+
+    .milaura-gift-popup__loyalty,
+    .milaura-gift-popup__success {
+      padding: 10px;
+      font-size: 0.78rem;
+      line-height: 1.35;
+    }
+
+    .milaura-gift-popup__status {
+      margin-top: 10px;
+      padding: 9px 11px;
+      font-size: 0.76rem;
     }
 
     .milaura-gift-popup__newsletter-row {
@@ -5043,6 +5061,7 @@
 
           function openGiftPopup(gift) {
             if (!popupEl) return;
+            updatePopupDockOffset();
             var copy = popupCopyForGift(gift);
             if (popupBurstEl) popupBurstEl.textContent = copy.icon;
             if (popupTitleEl) popupTitleEl.textContent = copy.title;
@@ -5063,6 +5082,20 @@
             if (popupCloseEl) popupCloseEl.focus();
           }
 
+          function updatePopupDockOffset() {
+            var fallback = 78;
+            var dock = document.getElementById('milaura-dock');
+            var height = fallback;
+            if (dock) {
+              var styles = window.getComputedStyle(dock);
+              var rect = dock.getBoundingClientRect();
+              if (styles.display !== 'none' && rect.height > 0) {
+                height = Math.ceil(rect.height);
+              }
+            }
+            document.documentElement.style.setProperty('--milaura-active-dock-height', height + 'px');
+          }
+
           function closeGiftPopup() {
             if (!popupEl) return;
             popupEl.hidden = true;
@@ -5079,6 +5112,10 @@
           }
           document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && popupEl && !popupEl.hidden) closeGiftPopup();
+          });
+          window.addEventListener('resize', updatePopupDockOffset);
+          window.addEventListener('orientationchange', function() {
+            window.setTimeout(updatePopupDockOffset, 250);
           });
 
           if (popupNextButton) {
@@ -6242,7 +6279,7 @@
       "type": "text",
       "id": "popup_next_cards_label",
       "label": "Popup - bouton cartes restantes",
-      "default": "Il reste des cartes à gratter"
+      "default": "Il me reste des cartes à gratter"
     },
     {
       "type": "text",
