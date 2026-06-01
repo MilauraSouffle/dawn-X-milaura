@@ -2441,8 +2441,8 @@
   }
 
   .milaura-scratch-card:not(.is-locked):not(.is-revealed)::after {
-    content: '🔓\A {{ section.settings.unlocked_card_label | default: "Carte débloquée" }}';
-    white-space: pre;
+    content: '{{ section.settings.unlocked_card_label | default: "Carte débloquée, grattez ici" }}';
+    white-space: normal;
     position: absolute;
     left: 50%;
     bottom: 12px;
@@ -2697,6 +2697,22 @@
     color: #3e3e48;
   }
 
+  .milaura-gift-popup__status {
+    margin: 14px 0 0;
+    padding: 10px 12px;
+    border-radius: 999px;
+    background: rgba(76, 103, 128, 0.08);
+    color: var(--milaura-blue, #4C6780);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .milaura-gift-popup__status[hidden] {
+    display: none;
+  }
+
   .milaura-gift-popup__welcome {
     display: none;
     margin-top: 18px;
@@ -2827,17 +2843,36 @@
     border: 1px solid rgba(192, 160, 98, 0.24);
   }
 
+  .milaura-gift-popup__primary:disabled,
+  .milaura-gift-popup__secondary:disabled,
+  .milaura-gift-popup__secondary.is-disabled {
+    opacity: 0.54;
+    cursor: wait;
+    pointer-events: none;
+  }
+
   @media screen and (max-width: 749px) {
     .milaura-gift-popup {
-      align-items: center;
-      padding: max(18px, env(safe-area-inset-top)) 14px max(18px, env(safe-area-inset-bottom));
+      align-items: flex-end;
+      justify-content: center;
+      overflow: hidden;
+      padding: 18px 10px calc(10px + env(safe-area-inset-bottom));
     }
 
     .milaura-gift-popup__card {
-      width: min(100%, 360px);
-      max-height: calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-      border-radius: 18px;
-      padding: 22px 18px 18px;
+      width: min(100%, 430px);
+      max-height: min(82dvh, calc(100dvh - 64px));
+      border-radius: 22px 22px 0 0;
+      padding: 24px 18px calc(18px + env(safe-area-inset-bottom));
+      animation: milauraGiftSheetIn 0.28s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .milaura-gift-popup__close {
+      top: 10px;
+      right: 10px;
+      width: 38px;
+      height: 38px;
+      box-shadow: 0 8px 18px rgba(26, 26, 46, 0.12);
     }
 
     .milaura-gift-popup__burst {
@@ -2865,6 +2900,11 @@
       margin-top: 16px;
       gap: 9px;
     }
+  }
+
+  @keyframes milauraGiftSheetIn {
+    0% { transform: translateY(18px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
   }
 
   /* Desktop (>= 750px) - grid 3 cols, taille auto, ratio carre */
@@ -4266,6 +4306,7 @@
                   <p class="milaura-gift-popup__eyebrow">Bravo !</p>
                   <h3 class="milaura-gift-popup__title" id="milaura-gift-popup-title-{{ section.id }}">Vous avez gagné</h3>
                   <p class="milaura-gift-popup__text"></p>
+                  <p class="milaura-gift-popup__status" hidden>Activation de votre cadeau...</p>
                   <div class="milaura-gift-popup__welcome" id="milaura-gift-popup-welcome-{{ section.id }}">
                     <form class="milaura-gift-popup__newsletter" id="milaura-gift-popup-newsletter-{{ section.id }}" method="post" action="/contact#contact_form" accept-charset="UTF-8">
                       <input type="hidden" name="form_type" value="customer">
@@ -4427,6 +4468,7 @@
           var popupBurstEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__burst') : null;
           var popupTitleEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__title') : null;
           var popupTextEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__text') : null;
+          var popupStatusEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__status') : null;
           var popupWelcomeEl = document.getElementById('milaura-gift-popup-welcome-' + sid);
           var popupNewsletterForm = document.getElementById('milaura-gift-popup-newsletter-' + sid);
           var popupNewsletterSuccess = document.getElementById('milaura-gift-popup-success-' + sid);
@@ -4852,12 +4894,12 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, w, h);
 
-            /* Draw "?" hint */
+            /* Draw unlocked hint */
             ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
             ctx.font = 'bold 2rem sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('?', w / 2, h / 2);
+            ctx.fillText('🔓', w / 2, h / 2);
 
             gift.canvasReady = true;
 
@@ -4977,6 +5019,28 @@
             showEl(popupAddButton, !hasRemainingCards);
           }
 
+          function setPopupActivationState(isLoading, didSucceed) {
+            if (popupStatusEl) {
+              if (isLoading) {
+                popupStatusEl.textContent = 'Activation de votre cadeau...';
+                popupStatusEl.hidden = false;
+              } else if (didSucceed) {
+                popupStatusEl.textContent = 'Cadeau activé dans votre panier.';
+                popupStatusEl.hidden = false;
+              } else {
+                popupStatusEl.hidden = true;
+              }
+            }
+            [popupNextButton, popupAddButton].forEach(function(button) {
+              if (!button) return;
+              button.disabled = Boolean(isLoading);
+            });
+            if (popupShopLink) {
+              popupShopLink.classList.toggle('is-disabled', Boolean(isLoading));
+              popupShopLink.setAttribute('aria-disabled', isLoading ? 'true' : 'false');
+            }
+          }
+
           function openGiftPopup(gift) {
             if (!popupEl) return;
             var copy = popupCopyForGift(gift);
@@ -4993,6 +5057,7 @@
               popupNewsletterSuccess.classList.remove('is-visible');
             }
             updatePopupActions();
+            setPopupActivationState(false, false);
             popupEl.hidden = false;
             document.documentElement.classList.add('milaura-gift-popup-open');
             if (popupCloseEl) popupCloseEl.focus();
@@ -5086,8 +5151,19 @@
               void pillEl.offsetWidth;
               pillEl.classList.add('is-visible');
             }
-            activateGift(gift);
             openGiftPopup(gift);
+            setPopupActivationState(true, false);
+            activateGift(gift)
+              .then(function() {
+                return refreshCartProgress();
+              })
+              .then(function() {
+                setPopupActivationState(false, true);
+              })
+              .catch(function(error) {
+                console.warn('MilAura gift activation failed:', error);
+                setPopupActivationState(false, false);
+              });
           }
 
           /* ===== COUNTER ===== */
@@ -6129,7 +6205,7 @@
       "type": "text",
       "id": "unlocked_card_label",
       "label": "Texte sur une carte débloquée",
-      "default": "Carte débloquée"
+      "default": "Carte débloquée, grattez ici"
     },
     {
       "type": "text",
