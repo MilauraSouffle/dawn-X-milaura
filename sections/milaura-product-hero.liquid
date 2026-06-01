@@ -2176,7 +2176,7 @@
     width: 0%;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(90deg, #1a1a2e 0%, #2d2d44 58%, #C0A062 100%);
+    background: linear-gradient(90deg, {{ section.settings.progress_color_start | default: '#4C6780' }} 0%, {{ section.settings.progress_color_mid | default: '#1a1a2e' }} 58%, {{ section.settings.progress_color_end | default: '#C0A062' }} 100%);
     box-shadow: 0 0 12px rgba(26, 26, 46, 0.28);
     transition: width 0.35s ease;
   }
@@ -2441,7 +2441,7 @@
   }
 
   .milaura-scratch-card:not(.is-locked):not(.is-revealed)::after {
-    content: '🔓\A Carte débloquée';
+    content: '🔓\A {{ section.settings.unlocked_card_label | default: "Carte débloquée" }}';
     white-space: pre;
     position: absolute;
     left: 50%;
@@ -2454,8 +2454,8 @@
     min-width: min(86%, 132px);
     padding: 6px 9px;
     border-radius: 999px;
-    background: rgba(26, 26, 46, 0.82);
-    color: #fff;
+    background: {{ section.settings.unlocked_badge_bg | default: '#1a1a2e' }};
+    color: {{ section.settings.unlocked_badge_text | default: '#ffffff' }};
     font-family: 'Lato', sans-serif;
     font-size: 0.64rem;
     font-weight: 900;
@@ -4124,7 +4124,13 @@
 
         {%- comment -%} Description courte deplacee dans GROUPE 2 (col gauche, sous la galerie) - refonte 2026-05-28 {%- endcomment -%}
 
-        {%- comment -%} Bundle selector deplace ici depuis GROUPE 4. Le scratch + CTA inline tier-aware suivent. {%- endcomment -%}
+          {%- comment -%} Bundle selector deplace ici depuis GROUPE 4. Le scratch + CTA inline tier-aware suivent. {%- endcomment -%}
+        {%- assign gift_count_inline = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'gift' -%}
+            {%- assign gift_count_inline = gift_count_inline | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
         {%- if section.settings.show_bundle -%}
           <div class="milaura-bundle-selector" id="milaura-bundle-selector-{{ section.id }}">
             <div class="milaura-bundle-header">
@@ -4161,27 +4167,13 @@
                 {%- assign icon_key = 'tier' | append: i | append: '_icon' -%}
                 {%- assign badge_key = 'tier' | append: i | append: '_badge' -%}
                 {%- assign cards_key = 'tier' | append: i | append: '_cards_unlocked' -%}
-	                {%- assign tier_label = section.settings[label_key] -%}
-	                {%- assign tier_sub = section.settings[sub_key] -%}
-	                {%- assign tier_icon = section.settings[icon_key] -%}
-	                {%- assign tier_badge = section.settings[badge_key] -%}
-	                {%- assign tier_cards = section.settings[cards_key] -%}
-	                {%- if i == 1 -%}
-	                  {%- assign tier_label = '1 produit' -%}
-		                  {%- assign tier_sub = 'Carte bienvenue à gratter' -%}
-	                  {%- assign tier_icon = '✉️' -%}
-		                  {%- assign tier_badge = 'DÉPART' -%}
-                {%- elsif i == 2 -%}
-                  {%- assign tier_label = '2 produits' -%}
-                  {%- assign tier_sub = '2e article au choix' -%}
-                  {%- assign tier_icon = '🎁' -%}
-                  {%- assign tier_badge = 'MEILLEURE OFFRE' -%}
-                {%- else -%}
-                  {%- assign tier_label = '3 produits' -%}
-                  {%- assign tier_sub = '3e article au choix' -%}
-                  {%- assign tier_icon = '✨' -%}
-                  {%- assign tier_badge = 'GROS LOT' -%}
-	                {%- endif -%}
+                {%- assign threshold_key = 'tier' | append: i | append: '_cart_threshold' -%}
+		                {%- assign tier_label = section.settings[label_key] -%}
+		                {%- assign tier_sub = section.settings[sub_key] -%}
+		                {%- assign tier_icon = section.settings[icon_key] -%}
+		                {%- assign tier_badge = section.settings[badge_key] -%}
+		                {%- assign tier_cards = section.settings[cards_key] -%}
+                    {%- assign tier_threshold = section.settings[threshold_key] | default: i -%}
 
 	                {%- if i == 1 -%}
 	                  {%- assign tier_price_cents = tier1_dyn_price -%}
@@ -4191,7 +4183,7 @@
 	                  {%- assign tier_price_cents = tier3_dyn_price -%}
 	                {%- endif -%}
 
-	                <div class="milaura-bundle-tier" data-tier-index="{{ forloop.index0 }}" data-tier-pieces="{{ i }}" data-tier-price-cents="{{ tier_price_cents }}" data-cards-unlocked="{{ tier_cards | default: 0 }}">
+		                <div class="milaura-bundle-tier" data-tier-index="{{ forloop.index0 }}" data-tier-pieces="{{ tier_threshold }}" data-tier-price-cents="{{ tier_price_cents }}" data-cards-unlocked="{{ tier_cards | default: 0 }}">
                   {%- if tier_badge != blank -%}
                     <span class="milaura-bundle-badge">{{ tier_badge }}</span>
                   {%- endif -%}
@@ -4202,10 +4194,10 @@
                       <div class="milaura-bundle-tier-sub">{{ tier_sub }}</div>
                     </div>
                   </div>
-	                  <div class="milaura-bundle-tier-price">
-	                    <div class="milaura-bundle-tier-current">{{ i }}/3</div>
-	                    <div class="milaura-bundle-tier-compare">panier MilAura</div>
-	                  </div>
+		                  <div class="milaura-bundle-tier-price">
+		                    <div class="milaura-bundle-tier-current">{{ tier_cards | default: i }}/{{ gift_count_inline | default: 3 }}</div>
+		                    <div class="milaura-bundle-tier-compare">{{ section.settings.tier_progress_label | default: 'cartes cadeaux' }}</div>
+		                  </div>
                 </div>
 	              {%- endfor -%}
 	            </div>
@@ -4219,16 +4211,9 @@
               </div>
 	          </div>
 
-          {%- comment -%} Scratch cards integrees dans la col droite, entre bundle et CTA (refonte 2026-05-28). {%- endcomment -%}
-          {%- if section.settings.show_scratch -%}
-            {%- assign gift_count_inline = 0 -%}
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'gift' -%}
-                {%- assign gift_count_inline = gift_count_inline | plus: 1 -%}
-              {%- endif -%}
-            {%- endfor -%}
-
-            <div class="milaura-scratch-divider" aria-hidden="true">
+	          {%- comment -%} Scratch cards integrees dans la col droite, entre bundle et CTA (refonte 2026-05-28). {%- endcomment -%}
+	          {%- if section.settings.show_scratch -%}
+	            <div class="milaura-scratch-divider" aria-hidden="true">
               <span class="milaura-scratch-divider-text">{{ section.settings.scratch_title | default: 'Cadeaux à gratter' }}</span>
             </div>
 
@@ -4247,24 +4232,22 @@
                       data-gift-index="{{ gift_idx }}"
                       data-gift-name="{{ block.settings.name }}"
                       data-gift-value="{{ block.settings.value }}"
-                      data-gift-icon="{{ block.settings.icon }}"
-                      data-gift-variant-id="{{ block.settings.variant_id }}"
-                      data-gift-discount-code="{{ block.settings.discount_code }}"
-                      {{ block.shopify_attributes }}
-                    >
+	                      data-gift-icon="{{ block.settings.icon }}"
+	                      data-gift-variant-id="{{ block.settings.variant_id }}"
+	                      data-gift-discount-code="{{ block.settings.discount_code }}"
+                        data-gift-popup-title="{{ block.settings.popup_title | escape }}"
+                        data-gift-popup-text="{{ block.settings.popup_text | escape }}"
+                        data-gift-badge-label="{{ block.settings.badge_label | escape }}"
+                        data-gift-show-newsletter="{{ block.settings.show_newsletter_form }}"
+	                      {{ block.shopify_attributes }}
+	                    >
                         <div class="milaura-scratch-card-content">
                           <div class="milaura-scratch-card-icon">{{ block.settings.icon }}</div>
                           <div class="milaura-scratch-card-name">{{ block.settings.name }}</div>
                           {%- if block.settings.value != blank -%}
                             <div class="milaura-scratch-card-value">{{ block.settings.value }}</div>
                           {%- endif -%}
-                          <div class="milaura-scratch-card-badge">
-                          {%- if gift_idx == 2 -%}
-                            Gros lot
-                          {%- else -%}
-                            Gagné
-                          {%- endif -%}
-                        </div>
+	                          <div class="milaura-scratch-card-badge">{{ block.settings.badge_label | default: 'Gagné' }}</div>
                       </div>
                     </div>
                     {%- assign gift_idx = gift_idx | plus: 1 -%}
@@ -4287,25 +4270,25 @@
                     <form class="milaura-gift-popup__newsletter" id="milaura-gift-popup-newsletter-{{ section.id }}" method="post" action="/contact#contact_form" accept-charset="UTF-8">
                       <input type="hidden" name="form_type" value="customer">
                       <input type="hidden" name="utf8" value="✓">
-                      <input type="hidden" name="contact[tags]" value="newsletter,source:carte-cadeau,offer:bienvenue10">
-                      <div class="milaura-gift-popup__newsletter-row">
-                        <label for="milaura-gift-popup-email-{{ section.id }}" class="visually-hidden">Email</label>
-                        <input id="milaura-gift-popup-email-{{ section.id }}" class="milaura-gift-popup__email" type="email" name="contact[email]" placeholder="votre@email.com" required autocomplete="email">
-                        <button class="milaura-gift-popup__submit" type="submit">Valider</button>
-                      </div>
-                    </form>
-                    <div class="milaura-gift-popup__success" id="milaura-gift-popup-success-{{ section.id }}">
-                      Votre code est débloqué :
-                      <span class="milaura-gift-popup__code">BIENVENUE10</span>
-                    </div>
-                    <p class="milaura-gift-popup__loyalty">
-                      <strong>Déjà cliente ?</strong> Votre avantage fidélité : livraison dès 19,90 € avec le code <strong>MILAURA-LIV19</strong>.
-                    </p>
-                  </div>
-                  <div class="milaura-gift-popup__actions">
-                    <button type="button" class="milaura-gift-popup__secondary" id="milaura-gift-popup-next-{{ section.id }}">Il reste des cartes à gratter</button>
-                    <a href="{{ routes.all_products_collection_url }}" class="milaura-gift-popup__secondary" id="milaura-gift-popup-shop-{{ section.id }}">Continuer mes achats</a>
-                    <button type="button" class="milaura-gift-popup__primary" id="milaura-gift-popup-add-{{ section.id }}">Ajouter au panier</button>
+	                      <input type="hidden" name="contact[tags]" value="{{ section.settings.newsletter_tags }}">
+	                      <div class="milaura-gift-popup__newsletter-row">
+	                        <label for="milaura-gift-popup-email-{{ section.id }}" class="visually-hidden">Email</label>
+	                        <input id="milaura-gift-popup-email-{{ section.id }}" class="milaura-gift-popup__email" type="email" name="contact[email]" placeholder="{{ section.settings.newsletter_email_placeholder }}" required autocomplete="email">
+	                        <button class="milaura-gift-popup__submit" type="submit">{{ section.settings.newsletter_submit_label }}</button>
+	                      </div>
+	                    </form>
+	                    <div class="milaura-gift-popup__success" id="milaura-gift-popup-success-{{ section.id }}">
+	                      {{ section.settings.newsletter_success_text }}
+	                      <span class="milaura-gift-popup__code">{{ section.settings.newsletter_discount_code }}</span>
+	                    </div>
+	                    <p class="milaura-gift-popup__loyalty">
+	                      {{ section.settings.loyalty_popup_text }}
+	                    </p>
+	                  </div>
+	                  <div class="milaura-gift-popup__actions">
+	                    <button type="button" class="milaura-gift-popup__secondary" id="milaura-gift-popup-next-{{ section.id }}">{{ section.settings.popup_next_cards_label }}</button>
+	                    <a href="{{ section.settings.popup_shop_link | default: routes.all_products_collection_url }}" class="milaura-gift-popup__secondary" id="milaura-gift-popup-shop-{{ section.id }}">{{ section.settings.popup_shop_label }}</a>
+	                    <button type="button" class="milaura-gift-popup__primary" id="milaura-gift-popup-add-{{ section.id }}">{{ section.settings.popup_add_label }}</button>
                   </div>
                 </div>
               </div>
@@ -4419,8 +4402,13 @@
           if (!container) return;
 
           /* ===== CONSTANTS ===== */
-          var GOLD_1 = '#E6C88B';
-          var GOLD_2 = '#C0A062';
+          var GOLD_1 = {{ section.settings.scratch_overlay_color_start | default: '#E6C88B' | json }};
+          var GOLD_2 = {{ section.settings.scratch_overlay_color_end | default: '#C0A062' | json }};
+          var PROGRESS_EMPTY_TEXT = {{ section.settings.progress_empty_text | default: 'Cliquez sur Ajouter au panier pour débloquer votre première carte.' | json }};
+          var PROGRESS_ONE_TEXT = {{ section.settings.progress_one_text | default: '1 carte à gratter dispo.' | json }};
+          var PROGRESS_MANY_TEMPLATE = {{ section.settings.progress_many_text | json }};
+          if (!PROGRESS_MANY_TEMPLATE) PROGRESS_MANY_TEMPLATE = '[count] cartes à gratter dispo.';
+          var NEWSLETTER_DISCOUNT_CODE = {{ section.settings.newsletter_discount_code | default: 'BIENVENUE10' | json }};
           var REVEAL_THRESHOLD = 0.55;
           var SCRATCH_RADIUS = 22;
           var STORAGE_KEY = 'milaura-scratch-v4-' + sid;
@@ -4457,6 +4445,9 @@
               icon: el.dataset.giftIcon,
               variantId: parseInt(el.dataset.giftVariantId, 10) || null,
               discountCode: el.dataset.giftDiscountCode,
+              popupTitle: el.dataset.giftPopupTitle,
+              popupText: el.dataset.giftPopupText,
+              showNewsletter: el.dataset.giftShowNewsletter === 'true',
               canvasReady: false
             });
           });
@@ -4472,7 +4463,13 @@
 
           function currentUnlockedCount() {
             if (!tierEls || tierEls.length === 0) return gifts.length;
-            return Math.max(0, Math.min(gifts.length, cartItemCount));
+            var unlocked = 0;
+            tierEls.forEach(function(tier) {
+              var threshold = parseInt(tier.getAttribute('data-tier-pieces'), 10) || 0;
+              var cards = parseInt(tier.getAttribute('data-cards-unlocked'), 10) || 0;
+              if (cartItemCount >= threshold) unlocked = Math.max(unlocked, cards);
+            });
+            return Math.max(0, Math.min(gifts.length, unlocked));
           }
 
           function cartProgressItemCount(cart) {
@@ -4500,13 +4497,13 @@
               progressFillEl.style.width = gifts.length ? ((unlocked / gifts.length) * 100) + '%' : '0%';
             }
             if (progressTextEl) {
-              if (unlocked <= 0) {
-                progressTextEl.textContent = 'Cliquez sur Ajouter au panier pour débloquer votre première carte.';
-              } else if (unlocked === 1) {
-                progressTextEl.textContent = '1 carte à gratter dispo.';
-              } else {
-                progressTextEl.textContent = unlocked + ' cartes à gratter dispo.';
-              }
+	              if (unlocked <= 0) {
+	                progressTextEl.textContent = PROGRESS_EMPTY_TEXT;
+	              } else if (unlocked === 1) {
+	                progressTextEl.textContent = PROGRESS_ONE_TEXT;
+	              } else {
+                progressTextEl.textContent = PROGRESS_MANY_TEMPLATE.replace('[count]', unlocked);
+	              }
             }
           }
 
@@ -4955,28 +4952,14 @@
             }
           }
 
-          function popupCopyForGift(gift) {
-            if (gift.index === 0) {
-              return {
-                title: 'Votre avantage bienvenue est débloqué',
-                text: "Votre avantage fidélité est activé automatiquement. Inscrivez votre email pour recevoir aussi -10 % sur votre première commande.",
-                icon: '✉️',
-                welcome: true
-              };
-            }
-            if (gift.index === 1) {
-              return {
-                title: gift.name || 'Bracelet hématite offert',
-                text: "Vous avez au moins 2 produits MilAura dans votre panier. Votre bracelet cadeau est ajouté automatiquement au panier. Le deuxième article peut être choisi librement dans le catalogue.",
-                icon: gift.icon || '🎁'
-              };
-            }
-            return {
-              title: gift.name || 'Votre meilleur cadeau est débloqué',
-              text: "Votre panier atteint le palier 3 produits MilAura. Le code de votre meilleure offre est appliqué automatiquement pour récompenser un vrai rituel complet.",
-              icon: gift.icon || '✨'
-            };
-          }
+	          function popupCopyForGift(gift) {
+	            return {
+	              title: gift.popupTitle || gift.name || {{ section.settings.popup_fallback_title | default: 'Vous avez gagné' | json }},
+	              text: gift.popupText || gift.value || {{ section.settings.popup_fallback_text | default: 'Votre cadeau est activé automatiquement.' | json }},
+	              icon: gift.icon || '✨',
+	              welcome: gift.showNewsletter
+	            };
+	          }
 
           function nextScratchCard() {
             return container.querySelector('.milaura-scratch-card:not(.is-locked):not(.is-revealed)');
@@ -5066,7 +5049,7 @@
                 body: new FormData(popupNewsletterForm),
                 headers: { 'Accept': 'text/html' }
               }).then(function() {
-                return applyDiscountCode('BIENVENUE10');
+                return applyDiscountCode(NEWSLETTER_DISCOUNT_CODE);
               }).then(function() {
                 try { localStorage.setItem('milauraNewsletterSubscribed', 'true'); } catch (err) {}
                 document.dispatchEvent(new CustomEvent('milaura:newsletter-subscribed'));
@@ -6087,6 +6070,162 @@
       "default": "Plus vous ajoutez d'articles dans votre panier, plus vos cartes à gratter se débloquent et plus vous gagnez de cadeaux."
     },
     {
+      "type": "text",
+      "id": "tier_progress_label",
+      "label": "Libellé sous le compteur des paliers",
+      "default": "cartes cadeaux"
+    },
+    {
+      "type": "header",
+      "content": "🎨 Couleurs bundle cadeau"
+    },
+    {
+      "type": "color",
+      "id": "progress_color_start",
+      "label": "Barre progression - début",
+      "default": "#4C6780"
+    },
+    {
+      "type": "color",
+      "id": "progress_color_mid",
+      "label": "Barre progression - milieu",
+      "default": "#1a1a2e"
+    },
+    {
+      "type": "color",
+      "id": "progress_color_end",
+      "label": "Barre progression - fin",
+      "default": "#C0A062"
+    },
+    {
+      "type": "color",
+      "id": "scratch_overlay_color_start",
+      "label": "Carte à gratter - couleur 1",
+      "default": "#E6C88B"
+    },
+    {
+      "type": "color",
+      "id": "scratch_overlay_color_end",
+      "label": "Carte à gratter - couleur 2",
+      "default": "#C0A062"
+    },
+    {
+      "type": "color",
+      "id": "unlocked_badge_bg",
+      "label": "Badge carte débloquée - fond",
+      "default": "#1a1a2e"
+    },
+    {
+      "type": "color",
+      "id": "unlocked_badge_text",
+      "label": "Badge carte débloquée - texte",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "💬 Textes progression et popup"
+    },
+    {
+      "type": "text",
+      "id": "unlocked_card_label",
+      "label": "Texte sur une carte débloquée",
+      "default": "Carte débloquée"
+    },
+    {
+      "type": "text",
+      "id": "progress_empty_text",
+      "label": "Progression - panier vide",
+      "default": "Cliquez sur Ajouter au panier pour débloquer votre première carte."
+    },
+    {
+      "type": "text",
+      "id": "progress_one_text",
+      "label": "Progression - 1 carte",
+      "default": "1 carte à gratter dispo."
+    },
+    {
+      "type": "text",
+      "id": "progress_many_text",
+      "label": "Progression - plusieurs cartes",
+      "default": "[count] cartes à gratter dispo.",
+      "info": "Gardez [count] pour afficher le nombre."
+    },
+    {
+      "type": "text",
+      "id": "popup_fallback_title",
+      "label": "Popup - titre par défaut",
+      "default": "Vous avez gagné"
+    },
+    {
+      "type": "textarea",
+      "id": "popup_fallback_text",
+      "label": "Popup - texte par défaut",
+      "default": "Votre cadeau est activé automatiquement."
+    },
+    {
+      "type": "text",
+      "id": "popup_next_cards_label",
+      "label": "Popup - bouton cartes restantes",
+      "default": "Il reste des cartes à gratter"
+    },
+    {
+      "type": "text",
+      "id": "popup_shop_label",
+      "label": "Popup - bouton continuer",
+      "default": "Continuer mes achats"
+    },
+    {
+      "type": "url",
+      "id": "popup_shop_link",
+      "label": "Popup - lien continuer mes achats"
+    },
+    {
+      "type": "text",
+      "id": "popup_add_label",
+      "label": "Popup - bouton ajouter au panier",
+      "default": "Ajouter au panier"
+    },
+    {
+      "type": "header",
+      "content": "📧 Newsletter et fidélité"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_discount_code",
+      "label": "Code newsletter affiché et appliqué",
+      "default": "BIENVENUE10"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_tags",
+      "label": "Tags client newsletter",
+      "default": "newsletter,source:carte-cadeau,offer:bienvenue10"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_email_placeholder",
+      "label": "Placeholder email",
+      "default": "votre@email.com"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_submit_label",
+      "label": "Bouton validation email",
+      "default": "Valider"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_success_text",
+      "label": "Texte avant code newsletter",
+      "default": "Votre code est débloqué :"
+    },
+    {
+      "type": "textarea",
+      "id": "loyalty_popup_text",
+      "label": "Texte fidélité popup",
+      "default": "Déjà cliente ? Votre avantage fidélité : livraison dès 19,90 € avec le code MILAURA-LIV19."
+    },
+    {
       "type": "header",
       "content": "── Palier 1 produit ──"
     },
@@ -6123,6 +6262,15 @@
       "type": "text",
       "id": "tier1_badge",
       "label": "Tier 1 - Badge (laisser vide pour masquer)"
+    },
+    {
+      "type": "range",
+      "id": "tier1_cart_threshold",
+      "min": 1,
+      "max": 9,
+      "step": 1,
+      "label": "Tier 1 - Articles panier nécessaires",
+      "default": 1
     },
     {
       "type": "range",
@@ -6175,6 +6323,15 @@
     },
     {
       "type": "range",
+      "id": "tier2_cart_threshold",
+      "min": 1,
+      "max": 9,
+      "step": 1,
+      "label": "Tier 2 - Articles panier nécessaires",
+      "default": 2
+    },
+    {
+      "type": "range",
       "id": "tier2_cards_unlocked",
       "min": 0,
       "max": 3,
@@ -6220,6 +6377,15 @@
       "type": "text",
       "id": "tier3_badge",
       "label": "Tier 3 - Badge (laisser vide pour masquer)"
+    },
+    {
+      "type": "range",
+      "id": "tier3_cart_threshold",
+      "min": 1,
+      "max": 9,
+      "step": 1,
+      "label": "Tier 3 - Articles panier nécessaires",
+      "default": 3
     },
     {
       "type": "range",
@@ -6389,6 +6555,28 @@
           "id": "discount_code",
           "label": "Code promo a appliquer (optionnel)",
           "info": "Si rempli, redirection vers /discount/CODE?redirect=/cart au add-to-cart. Le code doit exister dans Shopify Admin > Discounts. Ex : MILAURASCRATCH10"
+        },
+        {
+          "type": "text",
+          "id": "badge_label",
+          "label": "Badge affiché après grattage",
+          "default": "Gagné"
+        },
+        {
+          "type": "text",
+          "id": "popup_title",
+          "label": "Popup - titre"
+        },
+        {
+          "type": "textarea",
+          "id": "popup_text",
+          "label": "Popup - texte"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_newsletter_form",
+          "label": "Afficher le formulaire newsletter dans ce popup",
+          "default": false
         }
       ]
     }
@@ -6400,9 +6588,9 @@
         { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison offerte dès 39€" } },
         { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
         { "type": "volume_offer" },
-        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-LIV19" } },
-        { "type": "gift", "settings": { "icon": "🖤", "name": "Bracelet hematite offert", "value": "+14,90 €" } },
-        { "type": "gift", "settings": { "icon": "✨", "name": "-30% sur votre commande", "value": "", "discount_code": "MILAURA30" } }
+        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-LIV19", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre avantage fidélité est activé automatiquement. Inscrivez votre email pour recevoir aussi -10 % sur votre première commande.", "show_newsletter_form": true } },
+        { "type": "gift", "settings": { "icon": "🖤", "name": "Bracelet hématite offert", "value": "+14,90 €", "badge_label": "Gagné", "popup_title": "Bracelet hématite offert", "popup_text": "Vous avez au moins 2 produits MilAura dans votre panier. Votre bracelet cadeau est ajouté automatiquement au panier. Le deuxième article peut être choisi librement dans le catalogue." } },
+        { "type": "gift", "settings": { "icon": "✨", "name": "-30% sur votre commande", "value": "", "discount_code": "MILAURA30", "badge_label": "Gros lot", "popup_title": "Votre meilleur cadeau est débloqué", "popup_text": "Votre panier atteint le palier 3 produits MilAura. Le code de votre meilleure offre est appliqué automatiquement pour récompenser un vrai rituel complet." } }
       ]
     }
   ]
