@@ -4052,6 +4052,29 @@
             return match ? parseInt(match[1], 10) : 1;
           }
 
+          function addCartItems(items) {
+            return fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ items: items })
+            }).then(function(r) {
+              if (!r.ok) {
+                return r.json().catch(function() { return {}; }).then(function(data) {
+                  throw new Error(data.description || data.message || 'cart_error');
+                });
+              }
+              return r.json();
+            });
+          }
+
+          function redirectAfterCartAdd(discountCode) {
+            if (discountCode) {
+              window.location.href = '/discount/' + encodeURIComponent(discountCode) + '?redirect=/cart';
+            } else {
+              window.location.href = '/cart';
+            }
+          }
+
           function bundleAddToCart() {
             if (!ctaVariantId || !ctaButton) return;
             var qty = getTierPieces(selectedTierIndex);
@@ -4090,34 +4113,31 @@
             var originalLabel = labelEl ? labelEl.textContent : 'Ajouter au panier';
             if (labelEl) labelEl.textContent = 'Ajout en cours...';
 
-            var items = [{
+            var mainItem = {
               id: ctaVariantId,
               quantity: qty,
               properties: {
                 'Formule': tierLabel,
                 'Cadeaux': giftNames.length > 0 ? giftNames.join(', ') : 'Aucun'
               }
-            }];
-            /* Ajout des variants gratuits (free gifts) si configures cote section.blocks.gift.variant_id */
-            for (var g = 0; g < giftVariantItems.length; g++) {
-              items.push(giftVariantItems[g]);
-            }
+            };
 
-            fetch('/cart/add.js', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ items: items })
-            })
-            .then(function(r) {
-              if (!r.ok) throw new Error('cart_error');
-              /* Si un code promo est associe a une carte revelee, on passe par /discount/CODE qui applique + redirige. */
-              if (discountCode) {
-                window.location.href = '/discount/' + encodeURIComponent(discountCode) + '?redirect=/cart';
-              } else {
-                window.location.href = '/cart';
+            addCartItems([mainItem])
+            .then(function() {
+              if (giftVariantItems.length === 0) {
+                return;
               }
+              /* Les cadeaux ne doivent jamais bloquer l'ajout du produit principal. */
+              return addCartItems(giftVariantItems).catch(function(error) {
+                console.warn('MilAura gift add skipped:', error);
+              });
             })
-            .catch(function() {
+            .then(function() {
+              /* Si un code promo est associe a une carte revelee, on passe par /discount/CODE qui applique + redirige. */
+              redirectAfterCartAdd(discountCode);
+            })
+            .catch(function(error) {
+              console.error('MilAura add to cart failed:', error);
               ctaButton.disabled = false;
               if (labelEl) labelEl.textContent = originalLabel;
             });
