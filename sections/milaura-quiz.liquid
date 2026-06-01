@@ -463,6 +463,17 @@
     box-shadow: 0 10px 40px rgba(var(--profile-accent-rgb), 0.2);
   }
 
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-product-placeholder {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--milaura-beige), #f5f0e8);
+    color: var(--profile-accent);
+    font-size: 3rem;
+  }
+
   #MilauraQuiz-{{ section.id }} .quiz-reveal-product-image {
     width: 100%;
     height: 100%;
@@ -658,6 +669,41 @@
     margin-bottom: var(--milaura-spacing-sm);
   }
 
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-stone-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    margin-bottom: var(--milaura-spacing-sm);
+    overflow: hidden;
+    border-radius: var(--milaura-border-radius-sm);
+    background: linear-gradient(135deg, rgba(var(--profile-accent-rgb), 0.12), rgba(255, 255, 255, 0.76));
+    box-shadow: 0 10px 26px rgba(var(--profile-accent-rgb), 0.16);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-stone-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transform: scale(1.01);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-stone-caption {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    max-width: calc(100% - 24px);
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--profile-accent);
+    font-family: var(--milaura-font-body);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    box-shadow: 0 6px 18px rgba(var(--profile-accent-rgb), 0.14);
+  }
+
   #MilauraQuiz-{{ section.id }} .quiz-reveal-duo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -698,6 +744,22 @@
     font-family: var(--milaura-font-heading);
     color: var(--milaura-text);
     font-size: 1rem;
+    font-weight: 700;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-solution {
+    margin: 0 0 var(--milaura-spacing-sm);
+    padding: 12px 14px;
+    border-radius: var(--milaura-border-radius-sm);
+    background: rgba(var(--profile-accent-rgb), 0.08);
+    color: var(--milaura-text);
+    font-family: var(--milaura-font-body);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-solution strong {
+    color: var(--profile-accent);
     font-weight: 700;
   }
 
@@ -883,6 +945,14 @@
       grid-template-columns: 1fr;
       gap: var(--milaura-spacing-sm);
       margin-top: var(--milaura-spacing-sm);
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-info {
+      order: 1;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-gallery {
+      order: 2;
     }
 
     #MilauraQuiz-{{ section.id }} .quiz-answer-btn,
@@ -1142,11 +1212,16 @@
               <img
                 id="quiz-reveal-product-image-{{ section.id }}"
                 class="quiz-reveal-product-image"
-                src=""
+                src="{{ 'loading-spinner.svg' | asset_url }}"
                 alt=""
                 width="400"
                 height="400"
               >
+              <span
+                id="quiz-reveal-product-placeholder-{{ section.id }}"
+                class="quiz-reveal-product-placeholder"
+                aria-hidden="true"
+              ></span>
             </div>
             <div class="quiz-reveal-product-info" id="quiz-reveal-product-info-{{ section.id }}">
               <h3 class="quiz-reveal-product-title" id="quiz-reveal-product-title-{{ section.id }}"></h3>
@@ -1184,6 +1259,20 @@
             <!-- Bloc 3 : Votre Pierre -->
             <div class="quiz-reveal-duo-block">
               <h4 class="quiz-reveal-duo-title">Votre Pierre</h4>
+              <div class="quiz-reveal-stone-media">
+                <img
+                  id="quiz-reveal-stone-image-{{ section.id }}"
+                  class="quiz-reveal-stone-image"
+                  src="{{ 'milaura-quiz-stone-amour-quartz-rose.webp' | asset_url }}"
+                  alt=""
+                  width="900"
+                  height="675"
+                  loading="lazy"
+                >
+                <span class="quiz-reveal-stone-caption" id="quiz-reveal-stone-caption-{{ section.id }}">
+                  Pierre révélée
+                </span>
+              </div>
               <div class="quiz-reveal-duo-grid" style="grid-template-columns: 1fr;">
                 <div class="quiz-reveal-duo-card">
                   <div class="quiz-reveal-duo-icon">💎</div>
@@ -1191,6 +1280,7 @@
                   <div class="quiz-reveal-duo-name" id="quiz-reveal-stone-{{ section.id }}">-</div>
                 </div>
               </div>
+              <p class="quiz-reveal-solution" id="quiz-reveal-solution-{{ section.id }}"></p>
               <ul class="quiz-reveal-benefits-list" id="quiz-reveal-benefits-{{ section.id }}"></ul>
             </div>
           </div>
@@ -1251,10 +1341,13 @@
         moodLabel: "Système nerveux en surchauffe",
         dashboardTitle: "Votre système nerveux réclame une trêve.",
         description: "Vous êtes la personne « forte ». Celle qui gère, qui encaisse, qui avance. De l'extérieur, tout a l'air sous contrôle. Mais votre corps, lui, raconte une autre histoire. Mâchoires serrées, sommeil agité, souffle court... Vous ne vous reposez pas, vous vous éteignez d'épuisement. Votre problème n'est pas votre capacité à faire, c'est votre capacité à déposer les armes.",
+        solution: "<strong>La Calcédoine bleue</strong> devient votre rappel physique de ralentir avant la surcharge.",
         bullets: "<ul><li>Apaisement immédiat du système nerveux</li><li>Douceur émotionnelle et lâcher-prise</li><li>Sensation de cocon réparateur</li></ul>",
         ritual: "1. " + {{ section.settings.profile_apaisement_ritual_1 | default: "Portez votre pierre. Fermez les yeux, inspirez 3 fois." | json }} + "\n2. " + {{ section.settings.profile_apaisement_ritual_2 | default: "Autorisez-vous à être vulnérable, juste 10 minutes." | json }} + "\n3. " + {{ section.settings.profile_apaisement_ritual_3 | default: "Dites-vous : « Je peux déposer les armes. »" | json }},
         mantra: {{ section.settings.profile_apaisement_mantra | default: "Je peux déposer les armes" | json }},
         stone: "Calcédoine bleue",
+        stoneImage: {% if section.settings.profile_apaisement_stone_image %}{{ section.settings.profile_apaisement_stone_image | image_url: width: 1000 | json }}{% else %}{{ 'milaura-quiz-stone-apaisement-calcedoine.webp' | asset_url | json }}{% endif %},
+        stoneImageAlt: "Calcédoine bleue, pierre révélée par le diagnostic émotionnel Milaura",
         icon: "💙",
         colorAccent: "#6BA3C7",
         colorAccentRgb: "107, 163, 199",
@@ -1289,10 +1382,13 @@
         moodLabel: "Énergie envahie",
         dashboardTitle: "Votre énergie est précieuse, arrêtez de la distribuer.",
         description: "Vous avez une hypersensibilité que vous essayez de cacher. Vous ressentez les ambiances et les intentions des gens avant même qu'ils ne parlent. C'est un don, mais en ce moment, c'est une malédiction : vous vous laissez envahir. Vous finissez vos journées vidé(e) non pas par votre travail, mais par les autres. Vous avez besoin de reconstruire vos frontières.",
+        solution: "<strong>L'Obsidienne noire</strong> vous aide à poser une limite visible, comme un ancrage que vous portez sur vous.",
         bullets: "<ul><li>Bouclier énergétique</li><li>Frontières claires et nettes</li><li>Sanctuaire personnel</li></ul>",
         ritual: "1. " + {{ section.settings.profile_protection_ritual_1 | default: "Portez votre pierre en rentrant chez vous." | json }} + "\n2. " + {{ section.settings.profile_protection_ritual_2 | default: "Imaginez un mur invisible se lever." | json }} + "\n3. " + {{ section.settings.profile_protection_ritual_3 | default: "Dites-vous : « Ici, c'est mon sanctuaire. »" | json }},
         mantra: {{ section.settings.profile_protection_mantra | default: "Je protège mon énergie" | json }},
         stone: "Obsidienne noire",
+        stoneImage: {% if section.settings.profile_protection_stone_image %}{{ section.settings.profile_protection_stone_image | image_url: width: 1000 | json }}{% else %}{{ 'milaura-quiz-stone-protection-obsidienne.webp' | asset_url | json }}{% endif %},
+        stoneImageAlt: "Obsidienne noire, pierre révélée par le diagnostic émotionnel Milaura",
         icon: "🖤",
         colorAccent: "#4A4A4A",
         colorAccentRgb: "74, 74, 74",
@@ -1327,10 +1423,13 @@
         moodLabel: "Mental en sur-contrôle",
         dashboardTitle: "Votre mental est saturé, vous devez couper le flux.",
         description: "Vous n'êtes pas fatigué(e) de la vie, vous êtes fatigué(e) de la gérer. Votre problème n'est pas le chaos, c'est le sur-contrôle. Vous analysez, vous planifiez, vous anticipez les problèmes qui n'existent pas encore. Votre cerveau est comme un navigateur avec 50 onglets ouverts qui ne répond plus. Vous avez perdu la clarté parce que vous avez peur que si vous arrêtez d'y penser, tout s'écroule. Spoiler : le monde continuera de tourner si vous débranchez 10 minutes.",
+        solution: "<strong>L'Améthyste</strong> devient votre signal de clarté, le geste qui vous ramène au présent.",
         bullets: "<ul><li>Déconnexion sélective</li><li>Reset cognitif</li><li>Clarté mentale retrouvée</li></ul>",
         ritual: "1. " + {{ section.settings.profile_serenite_ritual_1 | default: "Eteignez votre telephone. Portez votre pierre." | json }} + "\n2. " + {{ section.settings.profile_serenite_ritual_2 | default: "Profitez des bienfaits de votre pierre, fermez les yeux." | json }} + "\n3. " + {{ section.settings.profile_serenite_ritual_3 | default: "Laissez les pensées passer sans vous y accrocher." | json }},
         mantra: {{ section.settings.profile_serenite_mantra | default: "Je lâche le contrôle" | json }},
         stone: "Améthyste",
+        stoneImage: {% if section.settings.profile_serenite_stone_image %}{{ section.settings.profile_serenite_stone_image | image_url: width: 1000 | json }}{% else %}{{ 'milaura-quiz-stone-serenite-amethyste.webp' | asset_url | json }}{% endif %},
+        stoneImageAlt: "Améthyste, pierre révélée par le diagnostic émotionnel Milaura",
         icon: "💜",
         colorAccent: "#9B7EC8",
         colorAccentRgb: "155, 126, 200",
@@ -1365,10 +1464,13 @@
         moodLabel: "Carence de bienveillance envers soi",
         dashboardTitle: "Vous donnez tout aux autres, mais qui s'occupe de vous ?",
         description: "C'est le paradoxe de votre vie actuelle : vous êtes une source inépuisable de soutien pour vos proches, mais vous êtes d'une dureté implacable avec vous-même. Vous attendez inconsciemment que quelqu'un vienne vous « sauver » ou vous valider, alors que votre cœur a juste besoin de votre propre douceur. Vous êtes en carence de bienveillance envers vous-même.",
+        solution: "<strong>Le Quartz rose</strong> remet la douceur au centre, pas comme une idée vague, comme un bijou que vous touchez quand vous vous oubliez.",
         bullets: "<ul><li>Réparation vibratoire du cœur</li><li>Bienveillance envers soi</li><li>Douceur enveloppante</li></ul>",
         ritual: "1. " + {{ section.settings.profile_amour_ritual_1 | default: "Portez votre pierre. Main sur le coeur." | json }} + "\n2. " + {{ section.settings.profile_amour_ritual_2 | default: "Dites-vous les mots que vous aimeriez entendre de quelqu'un d'autre." | json }} + "\n3. " + {{ section.settings.profile_amour_ritual_3 | default: "Dites-vous : « Je mérite la douceur que je donne aux autres. »" | json }},
         mantra: {{ section.settings.profile_amour_mantra | default: "Je mérite la douceur que je donne aux autres" | json }},
         stone: "Quartz rose",
+        stoneImage: {% if section.settings.profile_amour_stone_image %}{{ section.settings.profile_amour_stone_image | image_url: width: 1000 | json }}{% else %}{{ 'milaura-quiz-stone-amour-quartz-rose.webp' | asset_url | json }}{% endif %},
+        stoneImageAlt: "Quartz rose, pierre révélée par le diagnostic émotionnel Milaura",
         icon: "💗",
         colorAccent: "#D4839E",
         colorAccentRgb: "212, 131, 158",
@@ -1403,10 +1505,13 @@
         moodLabel: "En attente d'un déclic",
         dashboardTitle: "Vous êtes prêt(e) pour le renouveau, il manque juste l'étincelle.",
         description: "Vous n'êtes pas déprimé(e), vous êtes impatient(e). Vous sentez au fond de vos tripes que vous êtes à la fin d'un cycle. L'ancien ne vous convient plus, le nouveau n'est pas encore là. Cette zone d'entre-deux vous rend nerveux(se). Vous cherchez le « truc », l'opportunité, le signe qui va tout débloquer. Spoiler : le blocage n'est pas dehors, c'est juste une peur de sauter.",
+        solution: "<strong>L'Aventurine verte</strong> devient votre feu vert personnel, un rappel discret de passer à l'action.",
         bullets: "<ul><li>Énergie d'action et d'opportunité</li><li>Joie et élan retrouvés</li><li>Feu vert intérieur</li></ul>",
         ritual: "1. " + {{ section.settings.profile_chance_ritual_1 | default: "Portez votre pierre." | json }} + "\n2. " + {{ section.settings.profile_chance_ritual_2 | default: "Visualisez votre objectif comme s'il était déjà réalisé." | json }} + "\n3. " + {{ section.settings.profile_chance_ritual_3 | default: "Souriez. L'énergie suit l'intention." | json }},
         mantra: {{ section.settings.profile_chance_mantra | default: "L'énergie suit l'intention" | json }},
         stone: "Aventurine verte",
+        stoneImage: {% if section.settings.profile_chance_stone_image %}{{ section.settings.profile_chance_stone_image | image_url: width: 1000 | json }}{% else %}{{ 'milaura-quiz-stone-chance-aventurine.webp' | asset_url | json }}{% endif %},
+        stoneImageAlt: "Aventurine verte, pierre révélée par le diagnostic émotionnel Milaura",
         icon: "💚",
         colorAccent: "#6BAF7B",
         colorAccentRgb: "107, 175, 123",
@@ -1724,6 +1829,20 @@
       const stoneEl = container.querySelector('#quiz-reveal-stone-' + sectionId);
       if (stoneEl && profile.stone) stoneEl.textContent = profile.stone;
 
+      const stoneImageEl = container.querySelector('#quiz-reveal-stone-image-' + sectionId);
+      if (stoneImageEl && profile.stoneImage) {
+        stoneImageEl.src = profile.stoneImage;
+        stoneImageEl.alt = profile.stoneImageAlt || profile.stone || '';
+      }
+
+      const stoneCaptionEl = container.querySelector('#quiz-reveal-stone-caption-' + sectionId);
+      if (stoneCaptionEl && profile.stone) {
+        stoneCaptionEl.textContent = profile.stone;
+      }
+
+      const solutionEl = container.querySelector('#quiz-reveal-solution-' + sectionId);
+      if (solutionEl && profile.solution) solutionEl.innerHTML = profile.solution;
+
       const benefitsEl = container.querySelector('#quiz-reveal-benefits-' + sectionId);
       if (benefitsEl && profile.bullets) {
         const tempDiv = document.createElement('div');
@@ -1774,20 +1893,19 @@
         // Image
         var imgEl = container.querySelector('#quiz-reveal-product-image-' + sectionId);
         var wrapEl = container.querySelector('#quiz-reveal-img-wrap-' + sectionId);
+        var placeholderEl = container.querySelector('#quiz-reveal-product-placeholder-' + sectionId);
         if (imgEl) {
           if (prod.featured_image) {
             imgEl.src = prod.featured_image;
             imgEl.alt = prod.title || pt.label;
             imgEl.style.display = '';
             if (wrapEl) wrapEl.style.background = '';
+            if (placeholderEl) placeholderEl.style.display = 'none';
           } else {
             imgEl.style.display = 'none';
-            if (wrapEl) {
-              wrapEl.style.background = 'linear-gradient(135deg, var(--milaura-beige), #f5f0e8)';
-              wrapEl.style.display = 'flex';
-              wrapEl.style.alignItems = 'center';
-              wrapEl.style.justifyContent = 'center';
-              wrapEl.innerHTML = '<span style="font-size:3rem">' + pt.icon + '</span>';
+            if (placeholderEl) {
+              placeholderEl.textContent = pt.icon;
+              placeholderEl.style.display = 'flex';
             }
           }
         }
@@ -2186,6 +2304,11 @@
       "default": "<p>Tu es la personne « forte ». Celle qui gère, qui encaisse, qui avance. Mais ton corps raconte une autre histoire. Mâchoires serrées, sommeil agité, souffle court... Ton problème n'est pas ta capacité à faire, c'est ta capacité à déposer les armes.</p>"
     },
     {
+      "type": "image_picker",
+      "id": "profile_apaisement_stone_image",
+      "label": "Image de la pierre révélée"
+    },
+    {
       "type": "product",
       "id": "profile_apaisement_bracelet_product",
       "label": "Bracelet associe"
@@ -2245,6 +2368,11 @@
       "id": "profile_protection_description",
       "label": "Description",
       "default": "<p>Tu as une hypersensibilité que tu essaies de cacher. Tu ressens les ambiances et les intentions des gens avant même qu'ils ne parlent. C'est un don, mais en ce moment, c'est une malédiction : tu te laisses envahir. Tu as besoin de reconstruire tes frontières.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "profile_protection_stone_image",
+      "label": "Image de la pierre révélée"
     },
     {
       "type": "product",
@@ -2308,6 +2436,11 @@
       "default": "<p>Tu n'es pas fatigué(e) de la vie, tu es fatigué(e) de la gérer. Ton problème n'est pas le chaos, c'est le sur-contrôle. Ton cerveau est comme un navigateur avec 50 onglets ouverts qui ne répond plus. Spoiler : le monde continuera de tourner si tu débranches 10 minutes.</p>"
     },
     {
+      "type": "image_picker",
+      "id": "profile_serenite_stone_image",
+      "label": "Image de la pierre révélée"
+    },
+    {
       "type": "product",
       "id": "profile_serenite_bracelet_product",
       "label": "Bracelet associe"
@@ -2369,6 +2502,11 @@
       "default": "<p>C'est le paradoxe de ta vie actuelle : tu es une source inépuisable de soutien pour tes proches, mais tu es d'une dureté implacable avec toi-même. Tu attends inconsciemment que quelqu'un vienne te valider, alors que ton cœur a juste besoin de ta propre douceur.</p>"
     },
     {
+      "type": "image_picker",
+      "id": "profile_amour_stone_image",
+      "label": "Image de la pierre révélée"
+    },
+    {
       "type": "product",
       "id": "profile_amour_bracelet_product",
       "label": "Bracelet associe"
@@ -2428,6 +2566,11 @@
       "id": "profile_chance_description",
       "label": "Description",
       "default": "<p>Tu n'es pas déprimé(e), tu es impatient(e). Tu sens au fond de tes tripes que tu es à la fin d'un cycle. L'ancien ne te convient plus, le nouveau n'est pas encore là. Spoiler : le blocage n'est pas dehors, c'est juste une peur de sauter.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "profile_chance_stone_image",
+      "label": "Image de la pierre révélée"
     },
     {
       "type": "product",
@@ -2750,7 +2893,7 @@
             "answer_2_profile": "protection",
             "answer_3_label": "Une marche face à la mer. L'horizon, le vent, et aucune pensée complexe.",
             "answer_3_profile": "serenite",
-            "answer_4_label": "Soirée cocon, bougies, douceur... te sentir enfin précieux(se).",
+            "answer_4_label": "Soirée cocon, lumière douce, tendresse... te sentir enfin précieux(se).",
             "answer_4_profile": "amour",
             "answer_5_label": "Un matin de soleil, une valise prête et l'excitation du départ.",
             "answer_5_profile": "chance"
