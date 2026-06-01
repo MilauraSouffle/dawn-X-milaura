@@ -1999,24 +1999,25 @@
 
   .milaura-bundle-header {
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .milaura-bundle-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
+    font-size: 1.34rem;
     font-weight: 600;
     color: var(--milaura-text, #000);
-    margin: 0 0 6px;
+    margin: 0 0 7px;
     line-height: 1.2;
   }
 
   .milaura-bundle-subtitle {
     font-family: 'Lato', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: #555;
-    margin: 0;
-    line-height: 1.4;
+    margin: 0 auto;
+    line-height: 1.38;
+    max-width: 540px;
   }
 
   .milaura-bundle-tiers {
@@ -2153,6 +2154,43 @@
     margin-top: 1px;
   }
 
+  .milaura-cart-progress {
+    margin-top: 14px;
+    padding: 12px 12px 10px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.66);
+    border: 1px solid rgba(26, 26, 46, 0.08);
+  }
+
+  .milaura-cart-progress__track {
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(26, 26, 46, 0.1);
+    box-shadow: inset 0 1px 2px rgba(26, 26, 46, 0.08);
+  }
+
+  .milaura-cart-progress__fill {
+    display: block;
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #1a1a2e 0%, #2d2d44 58%, #C0A062 100%);
+    box-shadow: 0 0 12px rgba(26, 26, 46, 0.28);
+    transition: width 0.35s ease;
+  }
+
+  .milaura-cart-progress__text {
+    margin: 8px 0 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.3;
+    color: #1a1a2e;
+    text-align: center;
+  }
+
   @media screen and (max-width: 749px) {
     .milaura-bundle-tiers {
       gap: 8px;
@@ -2183,10 +2221,18 @@
       padding: 4px 10px;
     }
     .milaura-bundle-title {
-      font-size: 1.35rem;
+      font-size: 1.2rem;
     }
     .milaura-bundle-subtitle {
-      font-size: 0.88rem;
+      font-size: 0.82rem;
+      line-height: 1.32;
+    }
+    .milaura-cart-progress {
+      margin-top: 12px;
+      padding: 10px 10px 9px;
+    }
+    .milaura-cart-progress__text {
+      font-size: 0.72rem;
     }
   }
 
@@ -2521,14 +2567,15 @@
   .milaura-gift-popup {
     position: fixed;
     inset: 0;
-    z-index: 10020;
+    z-index: 2147483000;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 18px;
+    padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
     background: rgba(26, 26, 46, 0.52);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    overflow-y: auto;
   }
 
   .milaura-gift-popup-open {
@@ -2541,6 +2588,7 @@
 
   .milaura-gift-popup__card {
     width: min(420px, 100%);
+    max-height: calc(100dvh - 36px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     background: #fff;
     border-radius: 18px;
     border: 1px solid rgba(230, 200, 139, 0.46);
@@ -2548,7 +2596,8 @@
     padding: 26px 22px 22px;
     position: relative;
     text-align: center;
-    overflow: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .milaura-gift-popup__card::before {
@@ -2572,6 +2621,7 @@
     font-size: 1.4rem;
     line-height: 1;
     cursor: pointer;
+    z-index: 2;
   }
 
   .milaura-gift-popup__burst {
@@ -2650,6 +2700,42 @@
     background: #FDFBF7;
     color: #1a1a2e;
     border: 1px solid rgba(192, 160, 98, 0.24);
+  }
+
+  @media screen and (max-width: 749px) {
+    .milaura-gift-popup {
+      align-items: center;
+      padding: max(18px, env(safe-area-inset-top)) 14px max(18px, env(safe-area-inset-bottom));
+    }
+
+    .milaura-gift-popup__card {
+      width: min(100%, 360px);
+      max-height: calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      border-radius: 18px;
+      padding: 22px 18px 18px;
+    }
+
+    .milaura-gift-popup__burst {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 10px;
+      font-size: 1.45rem;
+    }
+
+    .milaura-gift-popup__title {
+      font-size: clamp(1.5rem, 7vw, 1.85rem);
+      line-height: 1.08;
+    }
+
+    .milaura-gift-popup__text {
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .milaura-gift-popup__actions {
+      margin-top: 16px;
+      gap: 9px;
+    }
   }
 
   /* Desktop (>= 750px) - grid 3 cols, taille auto, ratio carre */
@@ -2916,6 +3002,66 @@
     }
   }
 
+  .milaura-bundle-atc-row {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    margin-top: var(--milaura-spacing-md, 18px);
+  }
+
+  .milaura-bundle-qty {
+    flex: 0 0 104px;
+    display: grid;
+    grid-template-columns: 30px 1fr 30px;
+    align-items: center;
+    min-height: 58px;
+    border-radius: 16px;
+    background: #fff;
+    border: 1px solid rgba(192, 160, 98, 0.34);
+    box-shadow: 0 8px 20px rgba(26, 26, 46, 0.06);
+    overflow: hidden;
+  }
+
+  .milaura-bundle-qty__btn {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color: #1a1a2e;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .milaura-bundle-qty__btn:active {
+    background: rgba(192, 160, 98, 0.12);
+  }
+
+  .milaura-bundle-qty__input {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color: #1a1a2e;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    font-weight: 900;
+    text-align: center;
+    -moz-appearance: textfield;
+  }
+
+  .milaura-bundle-qty__input::-webkit-outer-spin-button,
+  .milaura-bundle-qty__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .milaura-bundle-qty__input:focus {
+    outline: none;
+  }
+
   /* CTA bundle-aware : premium gold avec icone panier + shimmer, texte NOIR */
   .milaura-hero-cta-bundle {
     position: relative;
@@ -2923,9 +3069,11 @@
     align-items: center;
     justify-content: center;
     gap: 14px;
-    width: 100%;
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
     padding: 18px 28px;
-    margin-top: var(--milaura-spacing-md, 18px);
+    margin-top: 0;
     background: linear-gradient(135deg, #8F723A 0%, #C0A062 45%, #E6C88B 100%);
     color: #000000;
     border: none;
@@ -3012,6 +3160,7 @@
   .milaura-cta-label {
     flex: 1;
     text-align: center;
+    white-space: nowrap;
   }
 
   .milaura-cta-price {
@@ -3023,6 +3172,65 @@
     border-radius: 10px;
     backdrop-filter: blur(2px);
     flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .milaura-bundle-atc-row {
+      gap: 8px;
+    }
+
+    .milaura-bundle-qty {
+      flex-basis: 84px;
+      grid-template-columns: 24px 1fr 24px;
+      min-height: 56px;
+      border-radius: 15px;
+    }
+
+    .milaura-bundle-qty__btn {
+      font-size: 1rem;
+    }
+
+    .milaura-bundle-qty__input {
+      font-size: 0.95rem;
+    }
+
+    .milaura-hero-cta-bundle {
+      gap: 8px;
+      padding: 14px 10px;
+      border-radius: 15px;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      min-height: 56px;
+    }
+
+    .milaura-cta-icon {
+      width: 23px;
+      height: 23px;
+    }
+
+    .milaura-cta-price {
+      font-size: 0.9rem;
+      padding: 6px 9px;
+      border-radius: 9px;
+    }
+  }
+
+  @media screen and (max-width: 374px) {
+    .milaura-bundle-qty {
+      flex-basis: 78px;
+      grid-template-columns: 22px 1fr 22px;
+    }
+
+    .milaura-hero-cta-bundle {
+      gap: 6px;
+      padding-inline: 8px;
+      font-size: 0.72rem;
+      letter-spacing: 0.7px;
+    }
+
+    .milaura-cta-icon {
+      display: none;
+    }
   }
 
   /* Phrase reassurance sous CTA supprimee (cf user request 2026-05-28) */
@@ -3193,8 +3401,8 @@
       font-size: 0.75rem;
     }
     .milaura-hero-cta-bundle {
-      padding: 14px 20px;
-      font-size: 0.95rem;
+      padding: 14px 10px;
+      font-size: 0.78rem;
     }
     .milaura-hero-cta-reassurance {
       font-size: 0.65rem;
@@ -3792,11 +4000,15 @@
           <div class="milaura-bundle-selector" id="milaura-bundle-selector-{{ section.id }}">
             <div class="milaura-bundle-header">
               {%- assign bundle_title_resolved = section.settings.bundle_title -%}
-              {%- if bundle_title_resolved == blank or bundle_title_resolved == 'Composez votre coffret' or bundle_title_resolved == 'Choisissez la quantite' -%}
-                {%- assign bundle_title_resolved = 'Vos cadeaux avancent avec votre panier' -%}
+              {%- if bundle_title_resolved == blank or bundle_title_resolved == 'Composez votre coffret' or bundle_title_resolved == 'Choisissez la quantite' or bundle_title_resolved == 'Vos cadeaux avancent avec votre panier' -%}
+                {%- assign bundle_title_resolved = 'Plus vous commandez, plus vous grattez de cartes cadeaux' -%}
               {%- endif -%}
               <h3 class="milaura-bundle-title">{{ bundle_title_resolved }}</h3>
-              <p class="milaura-bundle-subtitle">{{ section.settings.bundle_subtitle | default: "Ajoutez n'importe quel produit MilAura pour avancer. Pas besoin d'acheter plusieurs fois le même article." }}</p>
+              {%- assign bundle_subtitle_resolved = section.settings.bundle_subtitle -%}
+              {%- if bundle_subtitle_resolved == blank or bundle_subtitle_resolved == "Ajoutez n'importe quel produit MilAura pour avancer. Pas besoin d'acheter plusieurs fois le même article." -%}
+                {%- assign bundle_subtitle_resolved = "Plus vous ajoutez d'articles dans votre panier, plus vos cartes à gratter se débloquent et plus vous gagnez de cadeaux." -%}
+              {%- endif -%}
+              <p class="milaura-bundle-subtitle">{{ bundle_subtitle_resolved }}</p>
             </div>
             {%- comment -%} Prix tiers calcules dynamiquement depuis product.price + remises configurables (refonte 2026-05-28). {%- endcomment -%}
             {%- assign tier2_discount = section.settings.tier2_discount_pct | default: 10 -%}
@@ -3866,9 +4078,17 @@
 	                    <div class="milaura-bundle-tier-compare">panier MilAura</div>
 	                  </div>
                 </div>
-              {%- endfor -%}
-            </div>
-          </div>
+	              {%- endfor -%}
+	            </div>
+              <div class="milaura-cart-progress" id="milaura-cart-progress-{{ section.id }}" aria-live="polite">
+                <div class="milaura-cart-progress__track" aria-hidden="true">
+                  <span class="milaura-cart-progress__fill" id="milaura-cart-progress-fill-{{ section.id }}"></span>
+                </div>
+                <p class="milaura-cart-progress__text" id="milaura-cart-progress-text-{{ section.id }}">
+                  Cliquez sur Ajouter au panier pour débloquer votre première carte.
+                </p>
+              </div>
+	          </div>
 
           {%- comment -%} Scratch cards integrees dans la col droite, entre bundle et CTA (refonte 2026-05-28). {%- endcomment -%}
           {%- if section.settings.show_scratch -%}
@@ -3941,22 +4161,40 @@
             </div>
           {%- endif -%}
 
-          <button
-            type="button"
-            class="milaura-hero-cta-bundle"
-            id="milaura-hero-cta-bundle-{{ section.id }}"
-            data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-            aria-label="Ajouter au panier">
-            <span class="milaura-cta-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 7V6a6 6 0 0 1 12 0v1"/>
-                <path d="M4 7h16l-1.5 12.5a2 2 0 0 1-2 1.75H7.5a2 2 0 0 1-2-1.75L4 7z"/>
-              </svg>
-            </span>
-            <span class="milaura-cta-label">Ajouter au panier</span>
-            <span class="milaura-cta-price" id="milaura-hero-cta-price-{{ section.id }}">{{ product.selected_or_first_available_variant.price | money }}</span>
-          </button>
-        {%- endif -%}
+            <div class="milaura-bundle-atc-row">
+              <div class="milaura-bundle-qty" aria-label="Quantité">
+                <button type="button" class="milaura-bundle-qty__btn" data-qty-action="minus" aria-label="Réduire la quantité">−</button>
+                <input
+                  class="milaura-bundle-qty__input"
+                  id="milaura-bundle-qty-{{ section.id }}"
+                  type="number"
+                  inputmode="numeric"
+                  min="1"
+                  max="9"
+                  step="1"
+                  value="1"
+                  aria-label="Quantité à ajouter"
+                >
+                <button type="button" class="milaura-bundle-qty__btn" data-qty-action="plus" aria-label="Augmenter la quantité">+</button>
+              </div>
+              <button
+                type="button"
+                class="milaura-hero-cta-bundle"
+                id="milaura-hero-cta-bundle-{{ section.id }}"
+                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+                data-unit-price-cents="{{ product.selected_or_first_available_variant.price }}"
+                aria-label="Ajouter au panier">
+                <span class="milaura-cta-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 7V6a6 6 0 0 1 12 0v1"/>
+                    <path d="M4 7h16l-1.5 12.5a2 2 0 0 1-2 1.75H7.5a2 2 0 0 1-2-1.75L4 7z"/>
+                  </svg>
+                </span>
+                <span class="milaura-cta-label">Ajouter au panier</span>
+                <span class="milaura-cta-price" id="milaura-hero-cta-price-{{ section.id }}">{{ product.selected_or_first_available_variant.price | money }}</span>
+              </button>
+            </div>
+	        {%- endif -%}
 
         {%- comment -%} ==========================================
           INFO BLOCK (apres CTA) : description + badges metafield + social proof
@@ -4050,6 +4288,8 @@
           var popupBurstEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__burst') : null;
           var popupTitleEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__title') : null;
           var popupTextEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__text') : null;
+          var progressFillEl = document.getElementById('milaura-cart-progress-fill-' + sid);
+          var progressTextEl = document.getElementById('milaura-cart-progress-text-' + sid);
 
           cardEls.forEach(function(el) {
             gifts.push({
@@ -4087,6 +4327,18 @@
               tier.classList.toggle('is-current', cartItemCount === threshold);
               tier.classList.toggle('is-locked', cartItemCount < threshold);
             });
+            if (progressFillEl) {
+              progressFillEl.style.width = gifts.length ? ((unlocked / gifts.length) * 100) + '%' : '0%';
+            }
+            if (progressTextEl) {
+              if (unlocked <= 0) {
+                progressTextEl.textContent = 'Cliquez sur Ajouter au panier pour débloquer votre première carte.';
+              } else if (unlocked === 1) {
+                progressTextEl.textContent = '1 carte à gratter dispo.';
+              } else {
+                progressTextEl.textContent = unlocked + ' cartes à gratter dispo.';
+              }
+            }
           }
 
           function refreshCartProgress() {
@@ -4182,11 +4434,31 @@
           /* ===== CTA BUNDLE-AWARE ===== */
           var ctaButton = document.getElementById('milaura-hero-cta-bundle-' + sid);
           var ctaPriceEl = document.getElementById('milaura-hero-cta-price-' + sid);
+          var qtyInputEl = document.getElementById('milaura-bundle-qty-' + sid);
+          var qtyMinusEl = document.querySelector('[data-qty-action="minus"]');
+          var qtyPlusEl = document.querySelector('[data-qty-action="plus"]');
           var ctaVariantId = ctaButton ? parseInt(ctaButton.getAttribute('data-variant-id'), 10) : null;
+          var unitPriceCents = ctaButton ? parseInt(ctaButton.getAttribute('data-unit-price-cents'), 10) : {{ product.selected_or_first_available_variant.price }};
+
+          function formatPrice(cents) {
+            try {
+              return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: '{{ cart.currency.iso_code | default: shop.currency }}' }).format(cents / 100);
+            } catch (e) {
+              return (cents / 100).toFixed(2).replace('.', ',') + ' €';
+            }
+          }
+
+          function currentQuantity() {
+            var raw = qtyInputEl ? parseInt(qtyInputEl.value, 10) : 1;
+            if (!raw || raw < 1) raw = 1;
+            if (raw > 9) raw = 9;
+            if (qtyInputEl && String(raw) !== qtyInputEl.value) qtyInputEl.value = raw;
+            return raw;
+          }
 
           function updateCtaButton() {
             if (!ctaPriceEl) return;
-            ctaPriceEl.textContent = '{{ product.selected_or_first_available_variant.price | money }}';
+            ctaPriceEl.textContent = formatPrice((unitPriceCents || {{ product.selected_or_first_available_variant.price }}) * currentQuantity());
           }
 
           function addCartItems(items) {
@@ -4215,9 +4487,9 @@
 
             var mainItem = {
               id: ctaVariantId,
-              quantity: 1,
+              quantity: currentQuantity(),
               properties: {
-              'Progression cadeaux': 'Produit ajouté depuis la fiche MilAura'
+                'Progression cadeaux': 'Produit ajouté depuis la fiche MilAura'
               }
             };
 
@@ -4246,6 +4518,24 @@
           if (ctaButton) {
             ctaButton.addEventListener('click', bundleAddToCart);
           }
+          if (qtyMinusEl) {
+            qtyMinusEl.addEventListener('click', function() {
+              if (!qtyInputEl) return;
+              qtyInputEl.value = Math.max(1, currentQuantity() - 1);
+              updateCtaButton();
+            });
+          }
+          if (qtyPlusEl) {
+            qtyPlusEl.addEventListener('click', function() {
+              if (!qtyInputEl) return;
+              qtyInputEl.value = Math.min(9, currentQuantity() + 1);
+              updateCtaButton();
+            });
+          }
+          if (qtyInputEl) {
+            qtyInputEl.addEventListener('input', updateCtaButton);
+            qtyInputEl.addEventListener('change', updateCtaButton);
+          }
 
           /* ===== INIT CARDS ===== */
           function initAllCards() {
@@ -4256,6 +4546,7 @@
               card.classList.remove('is-revealed');
             });
             updateCounter();
+            updateCtaButton();
             bindTierSelector();
             refreshCartProgress();
           }
@@ -5408,7 +5699,7 @@
       "type": "text",
       "id": "bundle_title",
       "label": "Titre du bundle",
-      "default": "Vos cadeaux avancent avec votre panier"
+      "default": "Plus vous commandez, plus vous grattez de cartes cadeaux"
     },
     {
       "type": "range",
@@ -5436,7 +5727,7 @@
       "type": "text",
       "id": "bundle_subtitle",
       "label": "Sous-titre du bundle",
-      "default": "Ajoutez n'importe quel produit MilAura pour avancer. Pas besoin d'acheter plusieurs fois le meme article."
+      "default": "Plus vous ajoutez d'articles dans votre panier, plus vos cartes à gratter se débloquent et plus vous gagnez de cadeaux."
     },
     {
       "type": "header",
@@ -5452,7 +5743,7 @@
       "type": "text",
       "id": "tier1_sub",
       "label": "Tier 1 - Sous-label",
-      "default": "Carte bienvenue a gratter"
+      "default": "Carte bienvenue à gratter"
     },
     {
       "type": "text",
