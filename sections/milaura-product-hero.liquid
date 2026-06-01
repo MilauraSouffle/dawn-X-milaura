@@ -1990,6 +1990,11 @@
   .milaura-bundle-selector {
     width: 100%;
     margin-bottom: 20px;
+    background: linear-gradient(180deg, rgba(255, 252, 245, 0.88), rgba(255, 255, 255, 0.95));
+    border: 1px solid rgba(192, 160, 98, 0.18);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 8px 24px rgba(26, 26, 46, 0.06);
   }
 
   .milaura-bundle-header {
@@ -1999,7 +2004,7 @@
 
   .milaura-bundle-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.55rem;
+    font-size: 1.4rem;
     font-weight: 600;
     color: var(--milaura-text, #000);
     margin: 0 0 6px;
@@ -2018,6 +2023,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+    position: relative;
   }
 
   .milaura-bundle-tier {
@@ -2030,21 +2036,25 @@
     align-items: center;
     justify-content: space-between;
     text-align: center;
-    cursor: pointer;
+    cursor: default;
     position: relative;
     transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     min-height: 130px;
   }
 
-  .milaura-bundle-tier:hover {
-    border-color: rgba(192, 160, 98, 0.4);
-    transform: translateY(-2px);
-  }
-
-  .milaura-bundle-tier.is-selected {
+  .milaura-bundle-tier.is-complete,
+  .milaura-bundle-tier.is-current {
     background: linear-gradient(180deg, #FFFCF5, var(--milaura-beige, #FDFBF7));
     border-color: var(--milaura-gold, #C0A062);
     box-shadow: 0 6px 18px rgba(192, 160, 98, 0.18);
+  }
+
+  .milaura-bundle-tier.is-current {
+    transform: translateY(-2px);
+  }
+
+  .milaura-bundle-tier.is-locked {
+    opacity: 0.7;
   }
 
   .milaura-bundle-badge {
@@ -2086,7 +2096,8 @@
     transition: background 0.2s ease;
   }
 
-  .milaura-bundle-tier.is-selected .milaura-bundle-tier-icon {
+  .milaura-bundle-tier.is-complete .milaura-bundle-tier-icon,
+  .milaura-bundle-tier.is-current .milaura-bundle-tier-icon {
     background: #fff;
     box-shadow: 0 2px 6px rgba(192, 160, 98, 0.18);
   }
@@ -2126,6 +2137,12 @@
     font-weight: 800;
     color: var(--milaura-text, #000);
     line-height: 1.1;
+  }
+
+  .milaura-bundle-tier-current::before {
+    content: 'Palier ';
+    font-weight: 600;
+    color: var(--milaura-gold-dark, #8F723A);
   }
 
   .milaura-bundle-tier-compare {
@@ -2499,6 +2516,140 @@
     font-size: 0.74rem;
     font-weight: 700;
     line-height: 1.3;
+  }
+
+  .milaura-gift-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 10020;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(26, 26, 46, 0.52);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .milaura-gift-popup-open {
+    overflow: hidden;
+  }
+
+  .milaura-gift-popup[hidden] {
+    display: none;
+  }
+
+  .milaura-gift-popup__card {
+    width: min(420px, 100%);
+    background: #fff;
+    border-radius: 18px;
+    border: 1px solid rgba(230, 200, 139, 0.46);
+    box-shadow: 0 24px 80px rgba(26, 26, 46, 0.28);
+    padding: 26px 22px 22px;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .milaura-gift-popup__card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 7px;
+    background: linear-gradient(90deg, #C0A062, #E6C88B, #1a1a2e);
+  }
+
+  .milaura-gift-popup__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 999px;
+    background: #fff;
+    color: #1a1a2e;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .milaura-gift-popup__burst {
+    width: 74px;
+    height: 74px;
+    margin: 2px auto 14px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, #FFF7DE 0%, #E6C88B 64%, #C0A062 100%);
+    color: #1a1a2e;
+    font-size: 2rem;
+    box-shadow: 0 14px 32px rgba(192, 160, 98, 0.28);
+    animation: milauraGiftPop 0.42s ease-out;
+  }
+
+  @keyframes milauraGiftPop {
+    0% { opacity: 0; transform: scale(0.78) rotate(-8deg); }
+    70% { opacity: 1; transform: scale(1.06) rotate(3deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+  }
+
+  .milaura-gift-popup__eyebrow {
+    margin: 0 0 6px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  .milaura-gift-popup__title {
+    margin: 0 0 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.95rem;
+    line-height: 1.08;
+    color: #1a1a2e;
+  }
+
+  .milaura-gift-popup__text {
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.96rem;
+    line-height: 1.55;
+    color: #3e3e48;
+  }
+
+  .milaura-gift-popup__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .milaura-gift-popup__primary,
+  .milaura-gift-popup__secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    border-radius: 999px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  .milaura-gift-popup__primary {
+    background: #1a1a2e;
+    color: #E6C88B;
+  }
+
+  .milaura-gift-popup__secondary {
+    background: #FDFBF7;
+    color: #1a1a2e;
+    border: 1px solid rgba(192, 160, 98, 0.24);
   }
 
   /* Desktop (>= 750px) - grid 3 cols, taille auto, ratio carre */
@@ -3641,30 +3792,26 @@
           <div class="milaura-bundle-selector" id="milaura-bundle-selector-{{ section.id }}">
             <div class="milaura-bundle-header">
               {%- assign bundle_title_resolved = section.settings.bundle_title -%}
-              {%- if bundle_title_resolved == blank or bundle_title_resolved == 'Composez votre coffret' -%}
-                {%- assign bundle_title_resolved = 'Choisissez la quantite' -%}
+              {%- if bundle_title_resolved == blank or bundle_title_resolved == 'Composez votre coffret' or bundle_title_resolved == 'Choisissez la quantite' -%}
+                {%- assign bundle_title_resolved = 'Vos cadeaux avancent avec votre panier' -%}
               {%- endif -%}
               <h3 class="milaura-bundle-title">{{ bundle_title_resolved }}</h3>
-              <p class="milaura-bundle-subtitle">{{ section.settings.bundle_subtitle | default: 'Plus vous commandez, plus vous deverrouillez de cadeaux' }}</p>
+              <p class="milaura-bundle-subtitle">Ajoutez n'importe quel produit MilAura pour avancer. Pas besoin d'acheter plusieurs fois le meme article.</p>
             </div>
             {%- comment -%} Prix tiers calcules dynamiquement depuis product.price + remises configurables (refonte 2026-05-28). {%- endcomment -%}
             {%- assign tier2_discount = section.settings.tier2_discount_pct | default: 10 -%}
             {%- assign tier3_discount = section.settings.tier3_discount_pct | default: 20 -%}
             {%- assign base_price = product.price -%}
-            {%- assign base_compare = product.compare_at_price | default: product.price -%}
 
             {%- assign tier1_dyn_price = base_price -%}
-            {%- assign tier1_dyn_compare = base_compare -%}
 
             {%- assign tier2_total = base_price | times: 2 -%}
             {%- assign tier2_keep_pct = 100 | minus: tier2_discount -%}
             {%- assign tier2_dyn_price = tier2_total | times: tier2_keep_pct | divided_by: 100 -%}
-            {%- assign tier2_dyn_compare = base_compare | times: 2 -%}
 
             {%- assign tier3_total = base_price | times: 3 -%}
             {%- assign tier3_keep_pct = 100 | minus: tier3_discount -%}
             {%- assign tier3_dyn_price = tier3_total | times: tier3_keep_pct | divided_by: 100 -%}
-            {%- assign tier3_dyn_compare = base_compare | times: 3 -%}
 
             <div class="milaura-bundle-tiers">
               {%- for i in (1..3) -%}
@@ -3673,29 +3820,37 @@
                 {%- assign icon_key = 'tier' | append: i | append: '_icon' -%}
                 {%- assign badge_key = 'tier' | append: i | append: '_badge' -%}
                 {%- assign cards_key = 'tier' | append: i | append: '_cards_unlocked' -%}
-                {%- assign tier_label = section.settings[label_key] -%}
-                {%- assign tier_sub = section.settings[sub_key] -%}
-                {%- assign tier_icon = section.settings[icon_key] -%}
-                {%- assign tier_badge = section.settings[badge_key] -%}
-                {%- assign tier_cards = section.settings[cards_key] -%}
+	                {%- assign tier_label = section.settings[label_key] -%}
+	                {%- assign tier_sub = section.settings[sub_key] -%}
+	                {%- assign tier_icon = section.settings[icon_key] -%}
+	                {%- assign tier_badge = section.settings[badge_key] -%}
+	                {%- assign tier_cards = section.settings[cards_key] -%}
+	                {%- if i == 1 -%}
+	                  {%- assign tier_label = '1 produit' -%}
+	                  {%- assign tier_sub = 'Carte bienvenue a gratter' -%}
+	                  {%- assign tier_icon = '✉️' -%}
+	                  {%- assign tier_badge = 'DEPART' -%}
+	                {%- elsif i == 2 -%}
+	                  {%- assign tier_label = '2 produits' -%}
+	                  {%- assign tier_sub = "N'importe quel 2e produit" -%}
+	                  {%- assign tier_icon = '🎁' -%}
+	                  {%- assign tier_badge = 'MEILLEURE OFFRE' -%}
+	                {%- else -%}
+	                  {%- assign tier_label = '3 produits' -%}
+	                  {%- assign tier_sub = "N'importe quel 3e produit" -%}
+	                  {%- assign tier_icon = '✨' -%}
+	                  {%- assign tier_badge = 'GROS LOT' -%}
+	                {%- endif -%}
 
-                {%- if i == 1 -%}
-                  {%- assign tier_price_cents = tier1_dyn_price -%}
-                  {%- assign tier_compare_cents = tier1_dyn_compare -%}
-                {%- elsif i == 2 -%}
-                  {%- assign tier_price_cents = tier2_dyn_price -%}
-                  {%- assign tier_compare_cents = tier2_dyn_compare -%}
-                {%- else -%}
-                  {%- assign tier_price_cents = tier3_dyn_price -%}
-                  {%- assign tier_compare_cents = tier3_dyn_compare -%}
-                {%- endif -%}
+	                {%- if i == 1 -%}
+	                  {%- assign tier_price_cents = tier1_dyn_price -%}
+	                {%- elsif i == 2 -%}
+	                  {%- assign tier_price_cents = tier2_dyn_price -%}
+	                {%- else -%}
+	                  {%- assign tier_price_cents = tier3_dyn_price -%}
+	                {%- endif -%}
 
-                {%- assign show_compare = false -%}
-                {%- if tier_compare_cents > tier_price_cents -%}
-                  {%- assign show_compare = true -%}
-                {%- endif -%}
-
-                <div class="milaura-bundle-tier" data-tier-index="{{ forloop.index0 }}" data-tier-pieces="{{ i }}" data-tier-price-cents="{{ tier_price_cents }}" data-cards-unlocked="{{ tier_cards | default: 0 }}" role="button" tabindex="0">
+	                <div class="milaura-bundle-tier" data-tier-index="{{ forloop.index0 }}" data-tier-pieces="{{ i }}" data-tier-price-cents="{{ tier_price_cents }}" data-cards-unlocked="{{ tier_cards | default: 0 }}">
                   {%- if tier_badge != blank -%}
                     <span class="milaura-bundle-badge">{{ tier_badge }}</span>
                   {%- endif -%}
@@ -3706,12 +3861,10 @@
                       <div class="milaura-bundle-tier-sub">{{ tier_sub }}</div>
                     </div>
                   </div>
-                  <div class="milaura-bundle-tier-price">
-                    <div class="milaura-bundle-tier-current">{{ tier_price_cents | money }}</div>
-                    {%- if show_compare -%}
-                      <div class="milaura-bundle-tier-compare">{{ tier_compare_cents | money }}</div>
-                    {%- endif -%}
-                  </div>
+	                  <div class="milaura-bundle-tier-price">
+	                    <div class="milaura-bundle-tier-current">{{ i }}/3</div>
+	                    <div class="milaura-bundle-tier-compare">panier MilAura</div>
+	                  </div>
                 </div>
               {%- endfor -%}
             </div>
@@ -3771,6 +3924,20 @@
               <div class="milaura-scratch-pill" id="milaura-scratch-pill-{{ section.id }}">
                 <span class="milaura-scratch-pill-inner" id="milaura-scratch-pill-text-{{ section.id }}"></span>
               </div>
+
+              <div class="milaura-gift-popup" id="milaura-gift-popup-{{ section.id }}" hidden>
+                <div class="milaura-gift-popup__card" role="dialog" aria-modal="true" aria-labelledby="milaura-gift-popup-title-{{ section.id }}">
+                  <button type="button" class="milaura-gift-popup__close" aria-label="Fermer">×</button>
+                  <div class="milaura-gift-popup__burst" aria-hidden="true">✨</div>
+                  <p class="milaura-gift-popup__eyebrow">Bravo !</p>
+                  <h3 class="milaura-gift-popup__title" id="milaura-gift-popup-title-{{ section.id }}">Vous avez gagne</h3>
+                  <p class="milaura-gift-popup__text"></p>
+                  <div class="milaura-gift-popup__actions">
+                    <a href="{{ routes.all_products_collection_url }}" class="milaura-gift-popup__secondary">Continuer mes achats</a>
+                    <a href="{{ routes.cart_url }}" class="milaura-gift-popup__primary">Voir mon panier</a>
+                  </div>
+                </div>
+              </div>
             </div>
           {%- endif -%}
 
@@ -3787,7 +3954,7 @@
               </svg>
             </span>
             <span class="milaura-cta-label">Ajouter au panier</span>
-            <span class="milaura-cta-price" id="milaura-hero-cta-price-{{ section.id }}">{{ tier2_dyn_price | money }}</span>
+            <span class="milaura-cta-price" id="milaura-hero-cta-price-{{ section.id }}">{{ product.selected_or_first_available_variant.price | money }}</span>
           </button>
         {%- endif -%}
 
@@ -3878,6 +4045,11 @@
           var counterEl = document.getElementById('milaura-scratch-counter-' + sid);
           var pillEl = document.getElementById('milaura-scratch-pill-' + sid);
           var pillTextEl = document.getElementById('milaura-scratch-pill-text-' + sid);
+          var popupEl = document.getElementById('milaura-gift-popup-' + sid);
+          var popupCloseEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__close') : null;
+          var popupBurstEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__burst') : null;
+          var popupTitleEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__title') : null;
+          var popupTextEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__text') : null;
 
           cardEls.forEach(function(el) {
             gifts.push({
@@ -3886,49 +4058,54 @@
               name: el.dataset.giftName,
               value: el.dataset.giftValue,
               icon: el.dataset.giftIcon,
+              discountCode: el.dataset.giftDiscountCode,
               canvasReady: false
             });
           });
 
-          /* ===== SESSION STORAGE ===== */
-          function loadState() {
-            try {
-              var raw = sessionStorage.getItem(STORAGE_KEY);
-              if (raw) {
-                var arr = JSON.parse(raw);
-                var filtered = arr.filter(function(i) { return i >= 0 && i < gifts.length; });
-                return new Set(filtered);
-              }
-            } catch (e) { /* ignore */ }
-            return new Set();
-          }
+          try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+          revealedGifts = new Set();
 
-          function saveState() {
-            try {
-              sessionStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(revealedGifts)));
-            } catch (e) { /* ignore */ }
-          }
-
-          revealedGifts = loadState();
-
-          /* ===== BUNDLE TIER SELECTOR ===== */
-          var DEFAULT_TIER_INDEX = 1; /* 2 Unites par defaut */
+          /* ===== CART PROGRESSION ===== */
           var bundleEl = document.getElementById('milaura-bundle-selector-' + sid);
           var tierEls = bundleEl ? bundleEl.querySelectorAll('.milaura-bundle-tier') : [];
-          var selectedTierIndex = DEFAULT_TIER_INDEX;
+          var selectedTierIndex = 0;
+          var cartItemCount = 0;
 
           function currentUnlockedCount() {
             if (!tierEls || tierEls.length === 0) return gifts.length;
-            var tier = tierEls[selectedTierIndex];
-            if (!tier) return 0;
-            var raw = parseInt(tier.getAttribute('data-cards-unlocked'), 10);
-            if (isNaN(raw)) return 0;
-            return raw;
+            return Math.max(0, Math.min(gifts.length, cartItemCount));
+          }
+
+          function updateProgressFromCart() {
+            if (!tierEls || tierEls.length === 0) return;
+            var unlocked = currentUnlockedCount();
+            selectedTierIndex = Math.max(0, Math.min(tierEls.length - 1, unlocked > 0 ? unlocked - 1 : 0));
+            tierEls.forEach(function(tier, i) {
+              var threshold = parseInt(tier.getAttribute('data-tier-pieces'), 10) || (i + 1);
+              tier.classList.toggle('is-complete', cartItemCount >= threshold);
+              tier.classList.toggle('is-current', cartItemCount === threshold);
+              tier.classList.toggle('is-locked', cartItemCount < threshold);
+            });
+          }
+
+          function refreshCartProgress() {
+            return fetch('/cart.js')
+              .then(function(r) { return r.ok ? r.json() : null; })
+              .then(function(cart) {
+                cartItemCount = cart && typeof cart.item_count === 'number' ? cart.item_count : 0;
+                updateProgressFromCart();
+                updateLockedCards();
+              })
+              .catch(function() {
+                cartItemCount = 0;
+                updateProgressFromCart();
+                updateLockedCards();
+              });
           }
 
           function updateLockedCards() {
             var unlocked = currentUnlockedCount();
-            var stateChanged = false;
             gifts.forEach(function(gift, i) {
               var card = gift.el;
               if (i < unlocked) {
@@ -3949,10 +4126,7 @@
                 }
               } else {
                 /* Carte au-dela du tier courant : RESET complet (verrouillee + non revelee) */
-                if (revealedGifts.has(i)) {
-                  revealedGifts.delete(i);
-                  stateChanged = true;
-                }
+                if (revealedGifts.has(i)) revealedGifts.delete(i);
                 card.classList.add('is-locked');
                 card.classList.remove('is-revealed');
                 var existingCanvas = card.querySelector('canvas');
@@ -3960,7 +4134,6 @@
                 gift.canvasReady = false;
               }
             });
-            if (stateChanged) saveState();
             updateCounter();
             /* Hide / re-show the reveal pill in coherence with the new state */
             syncPillToState();
@@ -3990,8 +4163,8 @@
               ? 'Bravo, votre cadeau est activé'
               : 'Bravo, vos ' + validGifts.length + ' cadeaux sont activés';
             var pillSubtitle = validGifts.length === 1
-              ? 'Il s’applique automatiquement au panier : vous n’avez plus qu’à valider.'
-              : 'Ils s’appliquent automatiquement au panier : vous n’avez plus qu’à valider.';
+              ? 'Votre carte reste visible ici comme rappel pendant vos achats.'
+              : 'Vos cartes restent visibles ici comme rappel pendant vos achats.';
             pillTextEl.innerHTML =
               '<span class="milaura-scratch-pill-icon" aria-hidden="true">✓</span>' +
               '<span class="milaura-scratch-pill-copy">' +
@@ -4003,28 +4176,7 @@
 
           function bindTierSelector() {
             if (!tierEls || tierEls.length === 0) return;
-            tierEls.forEach(function(tier, i) {
-              tier.addEventListener('click', function() {
-                selectTier(i);
-              });
-              tier.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  selectTier(i);
-                }
-              });
-            });
-            /* Selection par defaut */
-            selectTier(DEFAULT_TIER_INDEX);
-          }
-
-          function selectTier(i) {
-            if (i < 0 || i >= tierEls.length) return;
-            tierEls.forEach(function(t) { t.classList.remove('is-selected'); });
-            tierEls[i].classList.add('is-selected');
-            selectedTierIndex = i;
-            updateLockedCards();
-            updateCtaButton();
+            updateProgressFromCart();
           }
 
           /* ===== CTA BUNDLE-AWARE ===== */
@@ -4033,23 +4185,8 @@
           var ctaVariantId = ctaButton ? parseInt(ctaButton.getAttribute('data-variant-id'), 10) : null;
 
           function updateCtaButton() {
-            if (!ctaPriceEl || !tierEls || tierEls.length === 0) return;
-            var tier = tierEls[selectedTierIndex];
-            if (!tier) return;
-            var priceEl = tier.querySelector('.milaura-bundle-tier-current');
-            if (priceEl && priceEl.textContent) {
-              ctaPriceEl.textContent = priceEl.textContent.trim();
-            }
-          }
-
-          function getTierPieces(index) {
-            if (!tierEls || !tierEls[index]) return 1;
-            var pieces = parseInt(tierEls[index].getAttribute('data-tier-pieces'), 10);
-            if (!isNaN(pieces) && pieces > 0) return pieces;
-            var labelEl = tierEls[index].querySelector('.milaura-bundle-tier-label');
-            if (!labelEl) return 1;
-            var match = labelEl.textContent.match(/(\d+)/);
-            return match ? parseInt(match[1], 10) : 1;
+            if (!ctaPriceEl) return;
+            ctaPriceEl.textContent = '{{ product.selected_or_first_available_variant.price | money }}';
           }
 
           function addCartItems(items) {
@@ -4067,46 +4204,9 @@
             });
           }
 
-          function redirectAfterCartAdd(discountCode) {
-            if (discountCode) {
-              window.location.href = '/discount/' + encodeURIComponent(discountCode) + '?redirect=/cart';
-            } else {
-              window.location.href = '/cart';
-            }
-          }
-
           function bundleAddToCart() {
             if (!ctaVariantId || !ctaButton) return;
-            var qty = getTierPieces(selectedTierIndex);
-            var tierLabelEl = tierEls[selectedTierIndex].querySelector('.milaura-bundle-tier-label');
-            var tierLabel = tierLabelEl ? tierLabelEl.textContent.trim() : '';
-            var giftNames = [];
-            var giftVariantItems = [];
-            var discountCode = '';
-            var discountPriority = -1;
-            revealedGifts.forEach(function(idx) {
-              var giftCard = container.querySelector('.milaura-scratch-card[data-gift-index="' + idx + '"]');
-              if (giftCard) {
-                var name = giftCard.getAttribute('data-gift-name');
-                if (name) giftNames.push(name);
-                var variantId = parseInt(giftCard.getAttribute('data-gift-variant-id'), 10);
-                if (!isNaN(variantId) && variantId > 0) {
-                  giftVariantItems.push({
-                    id: variantId,
-                    quantity: 1,
-                    properties: {
-                      '_gift': 'true',
-                      'Cadeau Mil’Aura': name || 'Cadeau revele'
-                    }
-                  });
-                }
-                var code = giftCard.getAttribute('data-gift-discount-code');
-                if (code && idx > discountPriority) {
-                  discountCode = code.trim();
-                  discountPriority = idx;
-                }
-              }
-            });
+            if (ctaButton.disabled) return;
 
             ctaButton.disabled = true;
             var labelEl = ctaButton.querySelector('.milaura-cta-label');
@@ -4115,26 +4215,26 @@
 
             var mainItem = {
               id: ctaVariantId,
-              quantity: qty,
+              quantity: 1,
               properties: {
-                'Formule': tierLabel,
-                'Cadeaux': giftNames.length > 0 ? giftNames.join(', ') : 'Aucun'
+                'Progression cadeaux': 'Produit ajoute depuis la fiche MilAura'
               }
             };
 
             addCartItems([mainItem])
             .then(function() {
-              if (giftVariantItems.length === 0) {
-                return;
-              }
-              /* Les cadeaux ne doivent jamais bloquer l'ajout du produit principal. */
-              return addCartItems(giftVariantItems).catch(function(error) {
-                console.warn('MilAura gift add skipped:', error);
-              });
+              return refreshCartProgress();
             })
             .then(function() {
-              /* Si un code promo est associe a une carte revelee, on passe par /discount/CODE qui applique + redirige. */
-              redirectAfterCartAdd(discountCode);
+              if (labelEl) labelEl.textContent = 'Ajoute - grattez votre carte';
+              var firstUnlocked = container.querySelector('.milaura-scratch-card:not(.is-locked):not(.is-revealed)');
+              if (firstUnlocked) {
+                firstUnlocked.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+              window.setTimeout(function() {
+                ctaButton.disabled = false;
+                if (labelEl) labelEl.textContent = originalLabel;
+              }, 1800);
             })
             .catch(function(error) {
               console.error('MilAura add to cart failed:', error);
@@ -4149,34 +4249,15 @@
 
           /* ===== INIT CARDS ===== */
           function initAllCards() {
-            var hasTiers = tierEls && tierEls.length > 0;
-            var unlocked = hasTiers ? (parseInt(tierEls[DEFAULT_TIER_INDEX].getAttribute('data-cards-unlocked'), 10) || 0) : gifts.length;
             gifts.forEach(function(gift, i) {
               var card = gift.el;
               populateContent(card, gift);
-
-              if (revealedGifts.has(gift.index)) {
-                card.classList.add('is-revealed');
-                return;
-              }
-              /* Si tiers actifs et carte au-dela de l'unlock, verrouiller */
-              if (hasTiers && i >= unlocked) {
-                card.classList.add('is-locked');
-                return;
-              }
-              if (!gift.canvasReady) {
-                initCanvas(card, gift);
-              }
+              card.classList.add('is-locked');
+              card.classList.remove('is-revealed');
             });
             updateCounter();
-
-            /* Restore last pill if any gift was revealed */
-            if (revealedGifts.size > 0) {
-              syncPillToState();
-            }
-
-            /* Brancher le selecteur de bundle apres l'init initial */
             bindTierSelector();
+            refreshCartProgress();
           }
 
           function populateContent(card, gift) {
@@ -4256,13 +4337,13 @@
             }
 
             function onStart(e) {
-              if (card.classList.contains('is-revealed')) return;
+              if (card.classList.contains('is-revealed') || card.classList.contains('is-locked')) return;
               isScratching = true;
               doScratch(getPos(e));
             }
 
             function onMove(e) {
-              if (!isScratching || card.classList.contains('is-revealed')) return;
+              if (!isScratching || card.classList.contains('is-revealed') || card.classList.contains('is-locked')) return;
               e.preventDefault();
               doScratch(getPos(e));
             }
@@ -4310,12 +4391,62 @@
             }
           }
 
+          function popupCopyForGift(gift) {
+            if (gift.index === 0) {
+              return {
+                title: 'Votre avantage bienvenue est debloque',
+                text: "Inscrivez-vous a la newsletter pour recevoir -10% sur votre premiere commande. Deja cliente ? Votre carte active aussi l'avantage fidelite : livraison des 19,90 EUR au lieu de 39,90 EUR avec le code indique.",
+                icon: '✉️'
+              };
+            }
+            if (gift.index === 1) {
+              return {
+                title: gift.name || 'Bracelet hematite offert',
+                text: "Vous avez au moins 2 produits MilAura dans votre panier. Le deuxieme peut etre n'importe quel bijou, pierre, bougie ou rituel du site : pas besoin de choisir deux fois le meme article.",
+                icon: gift.icon || '🎁'
+              };
+            }
+            return {
+              title: gift.name || 'Votre meilleur cadeau est debloque',
+              text: "Votre panier atteint le palier 3 produits MilAura. C'est le moment ou l'offre la plus forte s'active pour recompenser un vrai rituel complet.",
+              icon: gift.icon || '✨'
+            };
+          }
+
+          function openGiftPopup(gift) {
+            if (!popupEl) return;
+            var copy = popupCopyForGift(gift);
+            if (popupBurstEl) popupBurstEl.textContent = copy.icon;
+            if (popupTitleEl) popupTitleEl.textContent = copy.title;
+            if (popupTextEl) popupTextEl.textContent = copy.text;
+            popupEl.hidden = false;
+            document.documentElement.classList.add('milaura-gift-popup-open');
+            if (popupCloseEl) popupCloseEl.focus();
+          }
+
+          function closeGiftPopup() {
+            if (!popupEl) return;
+            popupEl.hidden = true;
+            document.documentElement.classList.remove('milaura-gift-popup-open');
+          }
+
+          if (popupCloseEl) {
+            popupCloseEl.addEventListener('click', closeGiftPopup);
+          }
+          if (popupEl) {
+            popupEl.addEventListener('click', function(e) {
+              if (e.target === popupEl) closeGiftPopup();
+            });
+          }
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && popupEl && !popupEl.hidden) closeGiftPopup();
+          });
+
           /* ===== REVEAL CARD ===== */
           function revealCard(card, gift) {
             if (revealedGifts.has(gift.index)) return;
 
             revealedGifts.add(gift.index);
-            saveState();
 
             /* Remove canvas */
             var canvas = card.querySelector('canvas');
@@ -4331,6 +4462,7 @@
               void pillEl.offsetWidth;
               pillEl.classList.add('is-visible');
             }
+            openGiftPopup(gift);
           }
 
           /* ===== COUNTER ===== */
@@ -5276,7 +5408,7 @@
       "type": "text",
       "id": "bundle_title",
       "label": "Titre du bundle",
-      "default": "Choisissez la quantite"
+      "default": "Vos cadeaux avancent avec votre panier"
     },
     {
       "type": "range",
@@ -5304,23 +5436,23 @@
       "type": "text",
       "id": "bundle_subtitle",
       "label": "Sous-titre du bundle",
-      "default": "Plus vous commandez, plus vous deverrouillez de cadeaux"
+      "default": "Ajoutez n'importe quel produit MilAura pour avancer. Pas besoin d'acheter plusieurs fois le meme article."
     },
     {
       "type": "header",
-      "content": "── Tier 1 (1 Unite) ──"
+      "content": "── Palier 1 produit ──"
     },
     {
       "type": "text",
       "id": "tier1_label",
       "label": "Tier 1 - Label",
-      "default": "1 Unite"
+      "default": "1 produit"
     },
     {
       "type": "text",
       "id": "tier1_sub",
       "label": "Tier 1 - Sous-label",
-      "default": "Livraison offerte"
+      "default": "Carte bienvenue a gratter"
     },
     {
       "type": "text",
@@ -5337,7 +5469,7 @@
       "type": "text",
       "id": "tier1_icon",
       "label": "Tier 1 - Icone (emoji)",
-      "default": "📦"
+      "default": "✉️"
     },
     {
       "type": "text",
@@ -5355,19 +5487,19 @@
     },
     {
       "type": "header",
-      "content": "── Tier 2 (2 Unites) ──"
+      "content": "── Palier 2 produits ──"
     },
     {
       "type": "text",
       "id": "tier2_label",
       "label": "Tier 2 - Label",
-      "default": "2 Unites"
+      "default": "2 produits"
     },
     {
       "type": "text",
       "id": "tier2_sub",
       "label": "Tier 2 - Sous-label",
-      "default": "+ 2 cadeaux a gratter"
+      "default": "N'importe quel 2e produit"
     },
     {
       "type": "text",
@@ -5404,19 +5536,19 @@
     },
     {
       "type": "header",
-      "content": "── Tier 3 (3 Unites) ──"
+      "content": "── Palier 3 produits ──"
     },
     {
       "type": "text",
       "id": "tier3_label",
       "label": "Tier 3 - Label",
-      "default": "3 Unites"
+      "default": "3 produits"
     },
     {
       "type": "text",
       "id": "tier3_sub",
       "label": "Tier 3 - Sous-label",
-      "default": "+ 3 cadeaux a gratter"
+      "default": "N'importe quel 3e produit"
     },
     {
       "type": "text",
@@ -5620,7 +5752,7 @@
         { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison offerte dès 39€" } },
         { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
         { "type": "volume_offer" },
-        { "type": "gift", "settings": { "icon": "📦", "name": "Livraison dès 19,90€", "value": "Au lieu de 39€", "discount_code": "MILAURA-LIV19" } },
+        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "-10% newsletter ou livraison fidelite", "discount_code": "MILAURA-LIV19" } },
         { "type": "gift", "settings": { "icon": "🖤", "name": "Bracelet hematite offert", "value": "+14,90 €" } },
         { "type": "gift", "settings": { "icon": "✨", "name": "-30% sur votre commande", "value": "", "discount_code": "MILAURA30" } }
       ]
