@@ -4394,15 +4394,87 @@
             return Math.max(0, Math.min(gifts.length, unlocked));
           }
 
+          function isMilAuraGiftCartItem(item) {
+            if (!item) return false;
+            var props = item.properties || {};
+            return props._milaura_gift === 'true' ||
+              (item.handle && item.handle.indexOf('cadeau-') === 0) ||
+              (item.product_title && item.product_title.indexOf('Cadeau -') === 0);
+          }
+
           function cartProgressItemCount(cart) {
             if (!cart || !cart.items) return 0;
             return cart.items.reduce(function(total, item) {
-              var props = item.properties || {};
-              var isGift = props._milaura_gift === 'true' ||
-                (item.handle && item.handle.indexOf('cadeau-') === 0) ||
-                (item.product_title && item.product_title.indexOf('Cadeau -') === 0);
-              return isGift ? total : total + item.quantity;
+              return isMilAuraGiftCartItem(item) ? total : total + item.quantity;
             }, 0);
+          }
+
+          function requiredCartCountForGift(gift) {
+            if (!gift) return 1;
+            var fallback = Math.max(1, (parseInt(gift.index, 10) || 0) + 1);
+            var required = null;
+            if (tierEls && tierEls.length) {
+              tierEls.forEach(function(tier) {
+                var threshold = parseInt(tier.getAttribute('data-tier-pieces'), 10) || 0;
+                var cards = parseInt(tier.getAttribute('data-cards-unlocked'), 10) || 0;
+                if (threshold > 0 && cards > gift.index) {
+                  required = required === null ? threshold : Math.min(required, threshold);
+                }
+              });
+            }
+            return required || fallback;
+          }
+
+          function minPaidItemsForGiftCartItem(item) {
+            var props = item && item.properties ? item.properties : {};
+            var explicit = parseInt(props._milaura_gift_min_paid_items, 10);
+            if (explicit > 0) return explicit;
+            var matchingGift = gifts.find(function(gift) {
+              return gift.variantId && item && item.variant_id === gift.variantId;
+            });
+            if (matchingGift) return requiredCartCountForGift(matchingGift);
+            return 1;
+          }
+
+          function removeCartLine(itemKey) {
+            return fetch('/cart/change.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: itemKey, quantity: 0 })
+            }).then(function(r) { return r.ok ? r.json() : null; });
+          }
+
+          function cleanupIneligibleCartGifts(cart) {
+            if (!cart || !cart.items) return Promise.resolve({ cart: cart, removed: false });
+            var paidCount = cartProgressItemCount(cart);
+            var ineligibleGifts = cart.items.filter(function(item) {
+              return isMilAuraGiftCartItem(item) && paidCount < minPaidItemsForGiftCartItem(item);
+            });
+            if (!ineligibleGifts.length) {
+              return Promise.resolve({ cart: cart, removed: false });
+            }
+            return ineligibleGifts.reduce(function(promise, item) {
+              return promise.then(function() { return removeCartLine(item.key); });
+            }, Promise.resolve())
+            .then(fetchCart)
+            .then(function(nextCart) {
+              return { cart: nextCart || cart, removed: true };
+            });
+          }
+
+          function cleanupRevealedGiftsForCart(cart) {
+            var paidCount = cartProgressItemCount(cart);
+            gifts.forEach(function(gift) {
+              if (paidCount < requiredCartCountForGift(gift) && revealedGifts.has(gift.index)) {
+                revealedGifts.delete(gift.index);
+              }
+            });
+          }
+
+          function cartContainsGiftVariant(cart, gift) {
+            return Boolean(cart && cart.items && gift && gift.variantId && cart.items.some(function(item) {
+              return item.variant_id === gift.variantId;
+            }));
           }
 
           function updateProgressFromCart() {
@@ -4433,7 +4505,12 @@
             return fetch('/cart.js')
               .then(function(r) { return r.ok ? r.json() : null; })
               .then(function(cart) {
+                return cleanupIneligibleCartGifts(cart);
+              })
+              .then(function(result) {
+                var cart = result ? result.cart : null;
                 cartItemCount = cartProgressItemCount(cart);
+                cleanupRevealedGiftsForCart(cart);
                 if (cart) updateCartSurfaces(cart);
                 updateProgressFromCart();
                 updateLockedCards();
@@ -4611,11 +4688,16 @@
 
           function addGiftVariantIfNeeded(gift) {
             if (!gift || !gift.variantId) return Promise.resolve({ type: 'gift', skipped: true });
+            var requiredPaidItems = requiredCartCountForGift(gift);
             return fetchCart()
-              .then(function(cart) {
-                var alreadyInCart = cart && cart.items && cart.items.some(function(item) {
-                  return item.variant_id === gift.variantId;
-                });
+              .then(cleanupIneligibleCartGifts)
+              .then(function(result) {
+                var cart = result ? result.cart : null;
+                var paidItemCount = cartProgressItemCount(cart);
+                if (paidItemCount < requiredPaidItems) {
+                  throw new Error('gift_threshold_not_met');
+                }
+                var alreadyInCart = cartContainsGiftVariant(cart, gift);
                 if (alreadyInCart) {
                   return { type: 'gift', alreadyInCart: true, gift: gift };
                 }
@@ -4625,7 +4707,8 @@
                   properties: {
                     'Cadeau MilAura': gift.name || 'Cadeau offert',
                     'Statut': 'Offert',
-                    '_milaura_gift': 'true'
+                    '_milaura_gift': 'true',
+                    '_milaura_gift_min_paid_items': String(requiredPaidItems)
                   }
                 }]).then(function() {
                   return { type: 'gift', added: true, gift: gift };

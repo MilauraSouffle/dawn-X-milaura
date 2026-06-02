@@ -657,6 +657,7 @@
   if (!section) return;
 
   let debounceTimer;
+  const FALLBACK_HEMATITE_GIFT_VARIANT_ID = 53142713925979;
 
   // Quantity buttons
   section.addEventListener('click', function(e) {
@@ -700,6 +701,65 @@
     }, 300);
   }
 
+  function isMilAuraGiftItem(item) {
+    if (!item) return false;
+    const props = item.properties || {};
+    return props._milaura_gift === 'true' ||
+      (item.handle && item.handle.indexOf('cadeau-') === 0) ||
+      (item.product_title && item.product_title.indexOf('Cadeau -') === 0);
+  }
+
+  function paidItemCount(cart) {
+    if (!cart || !cart.items) return 0;
+    return cart.items.reduce(function(total, item) {
+      return isMilAuraGiftItem(item) ? total : total + item.quantity;
+    }, 0);
+  }
+
+  function minPaidItemsForGift(item) {
+    const props = item && item.properties ? item.properties : {};
+    const explicit = parseInt(props._milaura_gift_min_paid_items, 10);
+    if (explicit > 0) return explicit;
+    if (item && item.variant_id === FALLBACK_HEMATITE_GIFT_VARIANT_ID) return 2;
+    return 1;
+  }
+
+  function removeCartLine(itemKey) {
+    return fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: itemKey,
+        quantity: 0
+      })
+    }).then(response => response.json());
+  }
+
+  function cleanupIneligibleGifts(cart) {
+    const cartPromise = cart
+      ? Promise.resolve(cart)
+      : fetch('/cart.js').then(response => response.json());
+
+    return cartPromise.then(function(currentCart) {
+      const paidCount = paidItemCount(currentCart);
+      const ineligibleGifts = (currentCart.items || []).filter(function(item) {
+        return isMilAuraGiftItem(item) && paidCount < minPaidItemsForGift(item);
+      });
+
+      if (!ineligibleGifts.length) return false;
+
+      return ineligibleGifts.reduce(function(promise, item) {
+        return promise.then(function() {
+          return removeCartLine(item.key);
+        });
+      }, Promise.resolve()).then(function() {
+        return true;
+      });
+    });
+  }
+
   function updateCart(itemKey, quantity) {
     const item = section.querySelector('[data-item-key="' + itemKey + '"]');
     if (item) item.classList.add('is-loading');
@@ -715,7 +775,8 @@
       })
     })
     .then(response => response.json())
-    .then(data => {
+    .then(data => cleanupIneligibleGifts(data))
+    .then(() => {
       // Reload page to reflect changes (simpler than partial DOM update)
       window.location.reload();
     })
@@ -724,6 +785,12 @@
       if (item) item.classList.remove('is-loading');
     });
   }
+
+  cleanupIneligibleGifts().then(function(removedGift) {
+    if (removedGift) window.location.reload();
+  }).catch(function(error) {
+    console.error('Error cleaning gift cart items:', error);
+  });
 })();
 </script>
 
