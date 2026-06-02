@@ -1116,11 +1116,13 @@
                   id="quiz-reveal-stone-image-{{ section.id }}"
                   class="quiz-reveal-stone-image"
                   src="{{ 'milaura-quiz-stone-amour-quartz-rose.webp' | asset_url }}"
-                  alt=""
-                  width="900"
-                  height="900"
-                  loading="lazy"
-                >
+	                  alt=""
+	                  width="900"
+	                  height="900"
+	                  loading="eager"
+	                  fetchpriority="high"
+	                  decoding="async"
+	                >
                 <span class="quiz-reveal-stone-caption" id="quiz-reveal-stone-caption-{{ section.id }}">
                   Pierre révélée
                 </span>
@@ -1481,6 +1483,7 @@
     }
 
     function goToQuestions() {
+      preloadStoneImages();
       currentQuestionIndex = 0;
       scores = {
         apaisement: 0,
@@ -1495,6 +1498,7 @@
     }
 
     function goToTransition() {
+      preloadStoneImages();
       goToState(QuizState.TRANSITION);
       const duration = {{ section.settings.transition_duration_ms | default: 3000 }};
       setTimeout(() => {
@@ -1642,6 +1646,23 @@
       chance: 'aventurine-verte'
     };
 
+    let stoneImagesPreloaded = false;
+
+    function preloadStoneImages() {
+      if (stoneImagesPreloaded) return;
+      stoneImagesPreloaded = true;
+
+      profiles.forEach(profileId => {
+        const profile = profileData[profileId];
+        if (!profile || !profile.stoneImage) return;
+
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = profile.stoneImage;
+        if (img.decode) img.decode().catch(function() {});
+      });
+    }
+
     function displayResults() {
       const results = calculateResults();
       const winnerProfile = results.winnerProfile;
@@ -1666,6 +1687,9 @@
 
       const stoneImageEl = container.querySelector('#quiz-reveal-stone-image-' + sectionId);
       if (stoneImageEl && profile.stoneImage) {
+        stoneImageEl.loading = 'eager';
+        stoneImageEl.decoding = 'async';
+        if ('fetchPriority' in stoneImageEl) stoneImageEl.fetchPriority = 'high';
         stoneImageEl.src = profile.stoneImage;
         stoneImageEl.alt = profile.stoneImageAlt || profile.stone || '';
       }
