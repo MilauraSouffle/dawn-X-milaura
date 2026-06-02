@@ -1330,3 +1330,35 @@ class CartPerformance {
     );
   }
 }
+
+(function () {
+  if (window.__milauraBundleQtyFallback) return;
+  window.__milauraBundleQtyFallback = true;
+
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+    if (!target || !target.closest) return;
+
+    var button = target.closest('[data-milaura-qty-plus], [data-milaura-qty-minus]');
+    if (!button) return;
+
+    var capsule = button.closest('.milaura-bundle-qty');
+    var input = capsule ? capsule.querySelector('.milaura-bundle-qty__input') : null;
+    if (!input) return;
+
+    var before = parseInt(input.value, 10);
+    if (!Number.isFinite(before) || before < 1) before = 1;
+
+    var delta = button.hasAttribute('data-milaura-qty-plus') ? 1 : -1;
+
+    window.setTimeout(function () {
+      var after = parseInt(input.value, 10);
+      if (Number.isFinite(after) && after !== before) return;
+
+      var next = Math.max(1, before + delta);
+      input.value = String(next);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }, 0);
+  });
+})();
