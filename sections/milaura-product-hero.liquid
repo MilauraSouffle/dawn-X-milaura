@@ -3161,6 +3161,17 @@
     margin-top: var(--milaura-spacing-md, 18px);
   }
 
+  .milaura-bundle-atc-row .milaura-bundle-qty {
+    align-self: stretch;
+    flex: 0 0 104px !important;
+    width: 104px !important;
+    min-width: 104px !important;
+    max-width: 104px !important;
+    height: auto !important;
+    min-height: 64px !important;
+    border-radius: 16px !important;
+  }
+
   /* CTA bundle-aware : premium gold avec icone panier + shimmer, texte NOIR */
   .milaura-hero-cta-bundle {
     position: relative;
@@ -3278,6 +3289,15 @@
       gap: 8px;
     }
 
+    .milaura-bundle-atc-row .milaura-bundle-qty {
+      flex-basis: 92px !important;
+      width: 92px !important;
+      min-width: 92px !important;
+      max-width: 92px !important;
+      min-height: 56px !important;
+      border-radius: 15px !important;
+    }
+
     .milaura-hero-cta-bundle {
       gap: 8px;
       padding: 14px 10px;
@@ -3300,6 +3320,13 @@
   }
 
   @media screen and (max-width: 374px) {
+    .milaura-bundle-atc-row .milaura-bundle-qty {
+      flex-basis: 84px !important;
+      width: 84px !important;
+      min-width: 84px !important;
+      max-width: 84px !important;
+    }
+
     .milaura-hero-cta-bundle {
       gap: 6px;
       padding-inline: 8px;
@@ -4070,7 +4097,7 @@
           {%- endif -%}
         {%- endfor -%}
 
-        {%- comment -%} Buy-row (qty picker + product-form ATC) supprime. Le CTA bundle-aware (sous le bundle, dans la col droite) gere l'ajout au panier via /cart/add.js. Trust badges + payment icons deplaces vers section milaura-product-trust-block. {%- endcomment -%}
+        {%- comment -%} Buy-row Dawn supprime. Le CTA bundle-aware gere l'ajout au panier via /cart/add.js, avec un selecteur quantite custom. Trust badges + payment icons deplaces vers section milaura-product-trust-block. {%- endcomment -%}
 
         {%- comment -%} Description courte deplacee dans GROUPE 2 (col gauche, sous la galerie) - refonte 2026-05-28 {%- endcomment -%}
 
@@ -4235,6 +4262,20 @@
           {%- endif -%}
 
             <div class="milaura-bundle-atc-row">
+              {%- if section.settings.show_quantity -%}
+                <div class="milaura-quantity-capsule milaura-bundle-qty" aria-label="Quantité">
+                  <button type="button" class="milaura-quantity-btn" data-milaura-qty-minus aria-label="Diminuer la quantité">-</button>
+                  <input
+                    type="number"
+                    class="milaura-quantity-input milaura-bundle-qty__input"
+                    id="milaura-bundle-qty-{{ section.id }}"
+                    value="1"
+                    min="1"
+                    inputmode="numeric"
+                    aria-label="Quantité">
+                  <button type="button" class="milaura-quantity-btn" data-milaura-qty-plus aria-label="Augmenter la quantité">+</button>
+                </div>
+              {%- endif -%}
               <button
                 type="button"
                 class="milaura-hero-cta-bundle"
@@ -4602,6 +4643,9 @@
           var ctaPriceEl = document.getElementById('milaura-hero-cta-price-' + sid);
           var ctaVariantId = ctaButton ? parseInt(ctaButton.getAttribute('data-variant-id'), 10) : null;
           var unitPriceCents = ctaButton ? parseInt(ctaButton.getAttribute('data-unit-price-cents'), 10) : {{ product.selected_or_first_available_variant.price }};
+          var qtyInputEl = document.getElementById('milaura-bundle-qty-' + sid);
+          var qtyMinusBtn = container.querySelector('[data-milaura-qty-minus]');
+          var qtyPlusBtn = container.querySelector('[data-milaura-qty-plus]');
 
           function formatPrice(cents) {
             try {
@@ -4611,11 +4655,26 @@
             }
           }
 
+          function getSelectedQuantity() {
+            var raw = qtyInputEl ? parseInt(qtyInputEl.value, 10) : 1;
+            if (!Number.isFinite(raw) || raw < 1) return 1;
+            return raw;
+          }
+
+          function setSelectedQuantity(value) {
+            var next = parseInt(value, 10);
+            if (!Number.isFinite(next) || next < 1) next = 1;
+            if (qtyInputEl) qtyInputEl.value = String(next);
+            updateCtaButton();
+          }
+
           function updateCtaButton() {
-            if (!ctaPriceEl) return;
-            ctaPriceEl.textContent = formatPrice(unitPriceCents || {{ product.selected_or_first_available_variant.price }});
+            var quantity = getSelectedQuantity();
+            if (ctaPriceEl) {
+              ctaPriceEl.textContent = formatPrice((unitPriceCents || {{ product.selected_or_first_available_variant.price }}) * quantity);
+            }
             document.dispatchEvent(new CustomEvent('milaura:product-quantity-change', {
-              detail: { quantity: 1 }
+              detail: { quantity: quantity }
             }));
           }
 
@@ -4753,7 +4812,7 @@
 
             var mainItem = {
               id: ctaVariantId,
-              quantity: 1,
+              quantity: getSelectedQuantity(),
               properties: {
                 'Progression cadeaux': 'Produit ajouté depuis la fiche MilAura'
               }
@@ -4783,6 +4842,25 @@
 
           if (ctaButton) {
             ctaButton.addEventListener('click', bundleAddToCart);
+          }
+          if (qtyMinusBtn) {
+            qtyMinusBtn.addEventListener('click', function() {
+              setSelectedQuantity(getSelectedQuantity() - 1);
+            });
+          }
+          if (qtyPlusBtn) {
+            qtyPlusBtn.addEventListener('click', function() {
+              setSelectedQuantity(getSelectedQuantity() + 1);
+            });
+          }
+          if (qtyInputEl) {
+            qtyInputEl.addEventListener('change', function() {
+              setSelectedQuantity(qtyInputEl.value);
+            });
+            qtyInputEl.addEventListener('blur', function() {
+              setSelectedQuantity(qtyInputEl.value);
+            });
+            qtyInputEl.addEventListener('input', updateCtaButton);
           }
           updateCtaButton();
 

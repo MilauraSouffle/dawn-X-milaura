@@ -395,11 +395,24 @@
         });
       }
 
-      if (qtyBadge) {
-        qtyBadge.textContent = '';
-        qtyBadge.classList.remove('is-visible');
-        qtyBadge.setAttribute('hidden', '');
+      function updateQtyBadge(quantity) {
+        if (!qtyBadge) return;
+        const nextQuantity = Number.parseInt(quantity, 10);
+        if (Number.isFinite(nextQuantity) && nextQuantity > 1) {
+          qtyBadge.textContent = 'x' + nextQuantity;
+          qtyBadge.classList.add('is-visible');
+          qtyBadge.removeAttribute('hidden');
+        } else {
+          qtyBadge.textContent = '';
+          qtyBadge.classList.remove('is-visible');
+          qtyBadge.setAttribute('hidden', '');
+        }
       }
+
+      document.addEventListener('milaura:product-quantity-change', (event) => {
+        updateQtyBadge(event.detail && event.detail.quantity);
+      });
+      updateQtyBadge(1);
 
       // 3. Mise à jour du prix (si variant change)
       const stickyPrice = document.getElementById('StickyBarPrice');
