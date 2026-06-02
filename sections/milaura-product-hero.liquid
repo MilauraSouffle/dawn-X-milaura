@@ -2594,18 +2594,27 @@
     position: fixed;
     inset: 0;
     z-index: 2147483000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
-    background: rgba(26, 26, 46, 0.52);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    overflow-y: auto;
+    background: rgba(13, 17, 28, 0.58);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    overflow: hidden;
   }
 
   .milaura-gift-popup-open {
     overflow: hidden;
+  }
+
+  .milaura-gift-popup-open #milaura-dock,
+  .milaura-gift-popup-open #MilauraStickyBarSection,
+  .milaura-gift-popup-open #milaura-popup-overlay,
+  .milaura-gift-popup-open #milaura-bubble-trigger,
+  .milaura-gift-popup-open #milaura-bubble-label {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .milaura-gift-popup[hidden] {
@@ -2613,208 +2622,153 @@
   }
 
   .milaura-gift-popup__card {
-    width: min(420px, 100%);
+    width: min(456px, 100%);
     max-height: calc(100dvh - 36px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-    background: #fff;
+    background:
+      linear-gradient(180deg, rgba(255, 251, 241, 0.98), #ffffff 42%),
+      #ffffff;
+    border: 1px solid rgba(230, 200, 139, 0.54);
     border-radius: 18px;
-    border: 1px solid rgba(230, 200, 139, 0.46);
-    box-shadow: 0 24px 80px rgba(26, 26, 46, 0.28);
-    padding: 26px 22px 22px;
+    box-shadow: 0 28px 90px rgba(13, 17, 28, 0.34);
+    color: #1a1a2e;
+    overflow: hidden;
     position: relative;
-    text-align: center;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    outline: none;
   }
 
-  .milaura-gift-popup__card::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto;
-    height: 7px;
-    background: linear-gradient(90deg, #C0A062, #E6C88B, #1a1a2e);
+  .milaura-gift-popup__handle {
+    display: none;
+  }
+
+  .milaura-gift-popup__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    max-height: inherit;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .milaura-gift-popup__close {
     position: absolute;
     top: 12px;
     right: 12px;
-    width: 34px;
-    height: 34px;
-    border: 1px solid rgba(192, 160, 98, 0.25);
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(26, 26, 46, 0.12);
     border-radius: 999px;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.92);
     color: #1a1a2e;
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     line-height: 1;
     cursor: pointer;
     z-index: 2;
+    box-shadow: 0 10px 26px rgba(26, 26, 46, 0.12);
+  }
+
+  .milaura-gift-popup__reward {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    padding-right: 36px;
   }
 
   .milaura-gift-popup__burst {
-    width: 74px;
-    height: 74px;
-    margin: 2px auto 14px;
-    border-radius: 999px;
-    display: flex;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle, #FFF7DE 0%, #E6C88B 64%, #C0A062 100%);
+    background: linear-gradient(135deg, #fff6d7 0%, #e6c88b 58%, #b8944f 100%);
     color: #1a1a2e;
     font-size: 2rem;
     box-shadow: 0 14px 32px rgba(192, 160, 98, 0.28);
-    animation: milauraGiftPop 0.42s ease-out;
+    animation: milauraGiftPop 0.34s cubic-bezier(.2,.8,.2,1);
   }
 
   @keyframes milauraGiftPop {
-    0% { opacity: 0; transform: scale(0.78) rotate(-8deg); }
-    70% { opacity: 1; transform: scale(1.06) rotate(3deg); }
-    100% { opacity: 1; transform: scale(1) rotate(0); }
+    0% { opacity: 0; transform: scale(0.86) translateY(4px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
   }
 
   .milaura-gift-popup__eyebrow {
-    margin: 0 0 6px;
+    margin: 0 0 5px;
     font-family: 'Lato', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
+    letter-spacing: 1.2px;
     color: var(--milaura-gold-dark, #8F723A);
   }
 
   .milaura-gift-popup__title {
-    margin: 0 0 10px;
+    margin: 0;
     font-family: 'Playfair Display', serif;
-    font-size: 1.95rem;
-    line-height: 1.08;
+    font-size: clamp(1.55rem, 3vw, 2rem);
+    line-height: 1.05;
     color: #1a1a2e;
   }
 
   .milaura-gift-popup__text {
     margin: 0;
     font-family: 'Lato', sans-serif;
-    font-size: 0.96rem;
-    line-height: 1.55;
+    font-size: 0.95rem;
+    line-height: 1.5;
     color: #3e3e48;
   }
 
   .milaura-gift-popup__status {
-    margin: 14px 0 0;
-    padding: 10px 12px;
-    border-radius: 999px;
-    background: rgba(76, 103, 128, 0.08);
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(76, 103, 128, 0.09);
+    border: 1px solid rgba(76, 103, 128, 0.18);
     color: var(--milaura-blue, #4C6780);
     font-family: 'Lato', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 900;
-    line-height: 1.2;
+    line-height: 1.35;
   }
 
   .milaura-gift-popup__status[hidden] {
     display: none;
   }
 
-  .milaura-gift-popup__welcome {
-    display: none;
-    margin-top: 18px;
-    text-align: left;
+  .milaura-gift-popup__status.is-success {
+    background: rgba(48, 116, 79, 0.09);
+    border-color: rgba(48, 116, 79, 0.22);
+    color: #2e714d;
   }
 
-  .milaura-gift-popup__welcome.is-visible {
-    display: block;
+  .milaura-gift-popup__status.is-error {
+    background: rgba(138, 64, 52, 0.09);
+    border-color: rgba(138, 64, 52, 0.2);
+    color: #8a4034;
   }
 
-  .milaura-gift-popup__newsletter {
-    display: grid;
-    gap: 9px;
-  }
-
-  .milaura-gift-popup__newsletter-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 8px;
-  }
-
-  .milaura-gift-popup__email {
-    min-width: 0;
-    min-height: 44px;
-    padding: 0 14px;
-    border: 1px solid rgba(192, 160, 98, 0.28);
-    border-radius: 999px;
-    background: #fff;
-    font-family: 'Lato', sans-serif;
-    font-size: 0.9rem;
-    color: #1a1a2e;
-  }
-
-  .milaura-gift-popup__email:focus {
-    outline: 2px solid rgba(76, 103, 128, 0.24);
-    outline-offset: 2px;
-    border-color: var(--milaura-blue, #4C6780);
-  }
-
-  .milaura-gift-popup__submit {
-    min-height: 44px;
-    padding: 0 16px;
-    border: 0;
-    border-radius: 999px;
-    background: var(--milaura-blue, #4C6780);
-    color: #fff;
-    font-family: 'Lato', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 900;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-
-  .milaura-gift-popup__success {
-    display: none;
-    margin-top: 10px;
-    padding: 12px;
-    border-radius: 14px;
-    background: rgba(76, 103, 128, 0.08);
-    border: 1px solid rgba(76, 103, 128, 0.18);
-    font-family: 'Lato', sans-serif;
-    font-size: 0.88rem;
-    color: #1a1a2e;
-    text-align: center;
-  }
-
-  .milaura-gift-popup__success.is-visible {
-    display: block;
-  }
-
-  .milaura-gift-popup__code {
-    display: inline-block;
-    margin-top: 6px;
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: #1a1a2e;
-    color: #E6C88B;
-    font-weight: 900;
-    letter-spacing: 0.8px;
-  }
-
-  .milaura-gift-popup__loyalty {
-    margin: 12px 0 0;
-    padding: 12px;
+  .milaura-gift-popup__note {
+    margin: 0;
+    padding: 12px 14px;
     border-radius: 14px;
     background: #FDFBF7;
-    border: 1px solid rgba(192, 160, 98, 0.24);
+    border: 1px solid rgba(192, 160, 98, 0.22);
     font-family: 'Lato', sans-serif;
-    font-size: 0.84rem;
+    font-size: 0.82rem;
     line-height: 1.45;
-    color: #3e3e48;
+    color: rgba(26, 26, 46, 0.78);
   }
 
-  .milaura-gift-popup__loyalty strong {
-    color: #1a1a2e;
+  .milaura-gift-popup__note[hidden] {
+    display: none;
   }
 
   .milaura-gift-popup__actions {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 9px;
   }
 
   .milaura-gift-popup__primary,
@@ -2822,14 +2776,22 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 44px;
+    min-height: 46px;
+    padding: 0 18px;
     border-radius: 999px;
     font-family: 'Lato', sans-serif;
     font-size: 0.86rem;
     font-weight: 900;
+    line-height: 1.1;
     text-decoration: none;
     border: 0;
     cursor: pointer;
+    letter-spacing: 0;
+  }
+
+  .milaura-gift-popup__primary[hidden],
+  .milaura-gift-popup__secondary[hidden] {
+    display: none;
   }
 
   .milaura-gift-popup__primary {
@@ -2838,9 +2800,9 @@
   }
 
   .milaura-gift-popup__secondary {
-    background: #FDFBF7;
+    background: rgba(255, 255, 255, 0.72);
     color: #1a1a2e;
-    border: 1px solid rgba(192, 160, 98, 0.24);
+    border: 1px solid rgba(192, 160, 98, 0.28);
   }
 
   .milaura-gift-popup__primary:disabled,
@@ -2853,70 +2815,72 @@
 
   @media screen and (max-width: 749px) {
     .milaura-gift-popup {
-      align-items: flex-end;
-      justify-content: center;
-      overflow: hidden;
-      padding: max(12px, env(safe-area-inset-top)) 10px calc(var(--milaura-active-dock-height, 78px) + 12px + env(safe-area-inset-bottom));
+      align-items: end;
+      place-items: end center;
+      padding: max(10px, env(safe-area-inset-top)) 8px max(10px, env(safe-area-inset-bottom));
     }
 
     .milaura-gift-popup__card {
       width: min(100%, 430px);
-      max-height: calc(100dvh - var(--milaura-active-dock-height, 78px) - 34px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-      border-radius: 22px;
-      padding: 22px 18px 18px;
+      max-height: calc(100dvh - 26px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      border-radius: 24px;
       animation: milauraGiftSheetIn 0.28s cubic-bezier(.2,.8,.2,1);
     }
 
+    .milaura-gift-popup__handle {
+      display: block;
+      width: 42px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(26, 26, 46, 0.16);
+      margin: 10px auto 0;
+    }
+
+    .milaura-gift-popup__body {
+      gap: 13px;
+      padding: 16px 16px 18px;
+    }
+
     .milaura-gift-popup__close {
-      top: 10px;
-      right: 10px;
+      top: 12px;
+      right: 12px;
       width: 38px;
       height: 38px;
       box-shadow: 0 8px 18px rgba(26, 26, 46, 0.12);
     }
 
+    .milaura-gift-popup__reward {
+      grid-template-columns: 52px minmax(0, 1fr);
+      gap: 12px;
+      padding-right: 42px;
+    }
+
     .milaura-gift-popup__burst {
-      width: 46px;
-      height: 46px;
-      margin-bottom: 8px;
-      font-size: 1.35rem;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      font-size: 1.55rem;
     }
 
     .milaura-gift-popup__title {
-      font-size: clamp(1.38rem, 6.4vw, 1.7rem);
+      font-size: clamp(1.28rem, 5.6vw, 1.62rem);
       line-height: 1.08;
-      margin-bottom: 8px;
     }
 
     .milaura-gift-popup__text {
       font-size: 0.86rem;
-      line-height: 1.4;
+      line-height: 1.42;
     }
 
-    .milaura-gift-popup__welcome {
-      margin-top: 12px;
-    }
-
-    .milaura-gift-popup__loyalty,
-    .milaura-gift-popup__success {
-      padding: 10px;
-      font-size: 0.78rem;
-      line-height: 1.35;
-    }
-
-    .milaura-gift-popup__status {
-      margin-top: 10px;
-      padding: 9px 11px;
+    .milaura-gift-popup__status,
+    .milaura-gift-popup__note {
+      padding: 10px 12px;
       font-size: 0.76rem;
-    }
-
-    .milaura-gift-popup__newsletter-row {
-      grid-template-columns: 1fr;
+      line-height: 1.34;
     }
 
     .milaura-gift-popup__actions {
-      margin-top: 16px;
-      gap: 9px;
+      gap: 8px;
     }
   }
 
@@ -3197,58 +3161,6 @@
     margin-top: var(--milaura-spacing-md, 18px);
   }
 
-  .milaura-bundle-qty {
-    flex: 0 0 104px;
-    display: grid;
-    grid-template-columns: 30px 1fr 30px;
-    align-items: center;
-    min-height: 58px;
-    border-radius: 16px;
-    background: #fff;
-    border: 1px solid rgba(192, 160, 98, 0.34);
-    box-shadow: 0 8px 20px rgba(26, 26, 46, 0.06);
-    overflow: hidden;
-  }
-
-  .milaura-bundle-qty__btn {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    background: transparent;
-    color: #1a1a2e;
-    font-family: 'Lato', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 900;
-    cursor: pointer;
-  }
-
-  .milaura-bundle-qty__btn:active {
-    background: rgba(192, 160, 98, 0.12);
-  }
-
-  .milaura-bundle-qty__input {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    background: transparent;
-    color: #1a1a2e;
-    font-family: 'Lato', sans-serif;
-    font-size: 1rem;
-    font-weight: 900;
-    text-align: center;
-    -moz-appearance: textfield;
-  }
-
-  .milaura-bundle-qty__input::-webkit-outer-spin-button,
-  .milaura-bundle-qty__input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .milaura-bundle-qty__input:focus {
-    outline: none;
-  }
-
   /* CTA bundle-aware : premium gold avec icone panier + shimmer, texte NOIR */
   .milaura-hero-cta-bundle {
     position: relative;
@@ -3366,21 +3278,6 @@
       gap: 8px;
     }
 
-    .milaura-bundle-qty {
-      flex-basis: 84px;
-      grid-template-columns: 24px 1fr 24px;
-      min-height: 56px;
-      border-radius: 15px;
-    }
-
-    .milaura-bundle-qty__btn {
-      font-size: 1rem;
-    }
-
-    .milaura-bundle-qty__input {
-      font-size: 0.95rem;
-    }
-
     .milaura-hero-cta-bundle {
       gap: 8px;
       padding: 14px 10px;
@@ -3403,11 +3300,6 @@
   }
 
   @media screen and (max-width: 374px) {
-    .milaura-bundle-qty {
-      flex-basis: 78px;
-      grid-template-columns: 22px 1fr 22px;
-    }
-
     .milaura-hero-cta-bundle {
       gap: 6px;
       padding-inline: 8px;
@@ -4296,9 +4188,8 @@
                         data-gift-popup-title="{{ block.settings.popup_title | escape }}"
                         data-gift-popup-text="{{ block.settings.popup_text | escape }}"
                         data-gift-badge-label="{{ block.settings.badge_label | escape }}"
-                        data-gift-show-newsletter="{{ block.settings.show_newsletter_form }}"
 	                      {{ block.shopify_attributes }}
-	                    >
+		                    >
                         <div class="milaura-scratch-card-content">
                           <div class="milaura-scratch-card-icon">{{ block.settings.icon }}</div>
                           <div class="milaura-scratch-card-name">{{ block.settings.name }}</div>
@@ -4318,36 +4209,25 @@
               </div>
 
               <div class="milaura-gift-popup" id="milaura-gift-popup-{{ section.id }}" hidden>
-                <div class="milaura-gift-popup__card" role="dialog" aria-modal="true" aria-labelledby="milaura-gift-popup-title-{{ section.id }}">
+                <div class="milaura-gift-popup__card" role="dialog" aria-modal="true" aria-labelledby="milaura-gift-popup-title-{{ section.id }}" aria-describedby="milaura-gift-popup-text-{{ section.id }}" tabindex="-1">
+                  <span class="milaura-gift-popup__handle" aria-hidden="true"></span>
                   <button type="button" class="milaura-gift-popup__close" aria-label="Fermer">×</button>
-                  <div class="milaura-gift-popup__burst" aria-hidden="true">✨</div>
-                  <p class="milaura-gift-popup__eyebrow">Bravo !</p>
-                  <h3 class="milaura-gift-popup__title" id="milaura-gift-popup-title-{{ section.id }}">Vous avez gagné</h3>
-                  <p class="milaura-gift-popup__text"></p>
-                  <p class="milaura-gift-popup__status" hidden>Activation de votre cadeau...</p>
-                  <div class="milaura-gift-popup__welcome" id="milaura-gift-popup-welcome-{{ section.id }}">
-                    <form class="milaura-gift-popup__newsletter" id="milaura-gift-popup-newsletter-{{ section.id }}" method="post" action="/contact#contact_form" accept-charset="UTF-8">
-                      <input type="hidden" name="form_type" value="customer">
-                      <input type="hidden" name="utf8" value="✓">
-	                      <input type="hidden" name="contact[tags]" value="{{ section.settings.newsletter_tags }}">
-	                      <div class="milaura-gift-popup__newsletter-row">
-	                        <label for="milaura-gift-popup-email-{{ section.id }}" class="visually-hidden">Email</label>
-	                        <input id="milaura-gift-popup-email-{{ section.id }}" class="milaura-gift-popup__email" type="email" name="contact[email]" placeholder="{{ section.settings.newsletter_email_placeholder }}" required autocomplete="email">
-	                        <button class="milaura-gift-popup__submit" type="submit">{{ section.settings.newsletter_submit_label }}</button>
-	                      </div>
-	                    </form>
-	                    <div class="milaura-gift-popup__success" id="milaura-gift-popup-success-{{ section.id }}">
-	                      {{ section.settings.newsletter_success_text }}
-	                      <span class="milaura-gift-popup__code">{{ section.settings.newsletter_discount_code }}</span>
-	                    </div>
-	                    <p class="milaura-gift-popup__loyalty">
-	                      {{ section.settings.loyalty_popup_text }}
-	                    </p>
-	                  </div>
-	                  <div class="milaura-gift-popup__actions">
-	                    <button type="button" class="milaura-gift-popup__secondary" id="milaura-gift-popup-next-{{ section.id }}">{{ section.settings.popup_next_cards_label }}</button>
-	                    <a href="{{ section.settings.popup_shop_link | default: routes.all_products_collection_url }}" class="milaura-gift-popup__secondary" id="milaura-gift-popup-shop-{{ section.id }}">{{ section.settings.popup_shop_label }}</a>
-	                    <button type="button" class="milaura-gift-popup__primary" id="milaura-gift-popup-add-{{ section.id }}">{{ section.settings.popup_add_label }}</button>
+                  <div class="milaura-gift-popup__body">
+                    <div class="milaura-gift-popup__reward">
+                      <div class="milaura-gift-popup__burst" aria-hidden="true">✨</div>
+                      <div>
+                        <p class="milaura-gift-popup__eyebrow">Carte révélée</p>
+                        <h3 class="milaura-gift-popup__title" id="milaura-gift-popup-title-{{ section.id }}">Vous avez gagné</h3>
+                      </div>
+                    </div>
+                    <p class="milaura-gift-popup__text" id="milaura-gift-popup-text-{{ section.id }}"></p>
+                    <p class="milaura-gift-popup__status" hidden>Activation de votre cadeau...</p>
+                    <p class="milaura-gift-popup__note" hidden></p>
+                    <div class="milaura-gift-popup__actions">
+                      <button type="button" class="milaura-gift-popup__primary" id="milaura-gift-popup-next-{{ section.id }}">{{ section.settings.popup_next_cards_label }}</button>
+                      <a href="{{ routes.cart_url }}" class="milaura-gift-popup__primary" id="milaura-gift-popup-cart-{{ section.id }}">Voir mon panier</a>
+                      <a href="{{ section.settings.popup_shop_link | default: routes.all_products_collection_url }}" class="milaura-gift-popup__secondary" id="milaura-gift-popup-shop-{{ section.id }}">{{ section.settings.popup_shop_label }}</a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4355,21 +4235,6 @@
           {%- endif -%}
 
             <div class="milaura-bundle-atc-row">
-              <div class="milaura-bundle-qty" aria-label="Quantité">
-                <button type="button" class="milaura-bundle-qty__btn" data-qty-action="minus" aria-label="Réduire la quantité">−</button>
-                <input
-                  class="milaura-bundle-qty__input"
-                  id="milaura-bundle-qty-{{ section.id }}"
-                  type="number"
-                  inputmode="numeric"
-                  min="1"
-                  max="9"
-                  step="1"
-                  value="1"
-                  aria-label="Quantité à ajouter"
-                >
-                <button type="button" class="milaura-bundle-qty__btn" data-qty-action="plus" aria-label="Augmenter la quantité">+</button>
-              </div>
               <button
                 type="button"
                 class="milaura-hero-cta-bundle"
@@ -4467,10 +4332,9 @@
           var PROGRESS_ONE_TEXT = {{ section.settings.progress_one_text | default: '1 carte à gratter dispo.' | json }};
           var PROGRESS_MANY_TEMPLATE = {{ section.settings.progress_many_text | json }};
           if (!PROGRESS_MANY_TEMPLATE) PROGRESS_MANY_TEMPLATE = '[count] cartes à gratter dispo.';
-          var NEWSLETTER_DISCOUNT_CODE = {{ section.settings.newsletter_discount_code | default: 'BIENVENUE10' | json }};
+          var CUSTOMER_LOGGED_IN = {% if customer %}true{% else %}false{% endif %};
           var REVEAL_THRESHOLD = 0.55;
           var SCRATCH_RADIUS = 22;
-          var STORAGE_KEY = 'milaura-scratch-v4-' + sid;
 
           /* ===== STATE ===== */
           var revealedGifts = new Set();
@@ -4482,17 +4346,16 @@
           var pillEl = document.getElementById('milaura-scratch-pill-' + sid);
           var pillTextEl = document.getElementById('milaura-scratch-pill-text-' + sid);
           var popupEl = document.getElementById('milaura-gift-popup-' + sid);
+          var popupCardEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__card') : null;
           var popupCloseEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__close') : null;
           var popupBurstEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__burst') : null;
           var popupTitleEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__title') : null;
           var popupTextEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__text') : null;
           var popupStatusEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__status') : null;
-          var popupWelcomeEl = document.getElementById('milaura-gift-popup-welcome-' + sid);
-          var popupNewsletterForm = document.getElementById('milaura-gift-popup-newsletter-' + sid);
-          var popupNewsletterSuccess = document.getElementById('milaura-gift-popup-success-' + sid);
+          var popupNoteEl = popupEl ? popupEl.querySelector('.milaura-gift-popup__note') : null;
           var popupNextButton = document.getElementById('milaura-gift-popup-next-' + sid);
+          var popupCartLink = document.getElementById('milaura-gift-popup-cart-' + sid);
           var popupShopLink = document.getElementById('milaura-gift-popup-shop-' + sid);
-          var popupAddButton = document.getElementById('milaura-gift-popup-add-' + sid);
           var progressFillEl = document.getElementById('milaura-cart-progress-fill-' + sid);
           var progressTextEl = document.getElementById('milaura-cart-progress-text-' + sid);
 
@@ -4507,12 +4370,11 @@
               discountCode: el.dataset.giftDiscountCode,
               popupTitle: el.dataset.giftPopupTitle,
               popupText: el.dataset.giftPopupText,
-              showNewsletter: el.dataset.giftShowNewsletter === 'true',
               canvasReady: false
             });
           });
 
-          try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+          try { sessionStorage.removeItem('milaura-scratch-v4-' + sid); } catch (e) { /* ignore */ }
           revealedGifts = new Set();
 
           /* ===== CART PROGRESSION ===== */
@@ -4661,9 +4523,6 @@
           /* ===== CTA BUNDLE-AWARE ===== */
           var ctaButton = document.getElementById('milaura-hero-cta-bundle-' + sid);
           var ctaPriceEl = document.getElementById('milaura-hero-cta-price-' + sid);
-          var qtyInputEl = document.getElementById('milaura-bundle-qty-' + sid);
-          var qtyMinusEl = document.querySelector('[data-qty-action="minus"]');
-          var qtyPlusEl = document.querySelector('[data-qty-action="plus"]');
           var ctaVariantId = ctaButton ? parseInt(ctaButton.getAttribute('data-variant-id'), 10) : null;
           var unitPriceCents = ctaButton ? parseInt(ctaButton.getAttribute('data-unit-price-cents'), 10) : {{ product.selected_or_first_available_variant.price }};
 
@@ -4675,20 +4534,11 @@
             }
           }
 
-          function currentQuantity() {
-            var raw = qtyInputEl ? parseInt(qtyInputEl.value, 10) : 1;
-            if (!raw || raw < 1) raw = 1;
-            if (raw > 9) raw = 9;
-            if (qtyInputEl && String(raw) !== qtyInputEl.value) qtyInputEl.value = raw;
-            return raw;
-          }
-
           function updateCtaButton() {
             if (!ctaPriceEl) return;
-            var qty = currentQuantity();
-            ctaPriceEl.textContent = formatPrice((unitPriceCents || {{ product.selected_or_first_available_variant.price }}) * qty);
+            ctaPriceEl.textContent = formatPrice(unitPriceCents || {{ product.selected_or_first_available_variant.price }});
             document.dispatchEvent(new CustomEvent('milaura:product-quantity-change', {
-              detail: { quantity: qty }
+              detail: { quantity: 1 }
             }));
           }
 
@@ -4744,7 +4594,7 @@
           }
 
           function applyDiscountCode(code) {
-            if (!code) return Promise.resolve();
+            if (!code) return Promise.resolve({ type: 'discount', skipped: true });
             return fetch('/discount/' + encodeURIComponent(code) + '?redirect=/cart', {
               method: 'GET',
               credentials: 'include'
@@ -4754,31 +4604,35 @@
                 'Code promo MilAura': code
               });
             })
-            .catch(function() { return null; });
+            .then(function() {
+              return { type: 'discount', code: code };
+            });
           }
 
           function addGiftVariantIfNeeded(gift) {
-            if (!gift || !gift.variantId) return Promise.resolve();
+            if (!gift || !gift.variantId) return Promise.resolve({ type: 'gift', skipped: true });
             return fetchCart()
               .then(function(cart) {
                 var alreadyInCart = cart && cart.items && cart.items.some(function(item) {
                   return item.variant_id === gift.variantId;
                 });
-                if (alreadyInCart) return null;
+                if (alreadyInCart) {
+                  return { type: 'gift', alreadyInCart: true, gift: gift };
+                }
                 return addCartItems([{
                   id: gift.variantId,
                   quantity: 1,
                   properties: {
                     'Cadeau MilAura': gift.name || 'Cadeau offert',
+                    'Statut': 'Offert',
                     '_milaura_gift': 'true'
                   }
-                }]);
+                }]).then(function() {
+                  return { type: 'gift', added: true, gift: gift };
+                });
               })
-              .then(function() {
-                return refreshCartProgress();
-              })
-              .catch(function(error) {
-                console.warn('MilAura gift auto-add failed:', error);
+              .then(function(result) {
+                return refreshCartProgress().then(function() { return result; });
               });
           }
 
@@ -4786,8 +4640,8 @@
             var tasks = [];
             if (gift && gift.variantId) tasks.push(addGiftVariantIfNeeded(gift));
             if (gift && gift.discountCode) tasks.push(applyDiscountCode(gift.discountCode));
-            if (!tasks.length) return Promise.resolve();
-            return Promise.all(tasks).then(function() {});
+            if (!tasks.length) return Promise.resolve([]);
+            return Promise.all(tasks);
           }
 
           function addCartItems(items) {
@@ -4816,7 +4670,7 @@
 
             var mainItem = {
               id: ctaVariantId,
-              quantity: currentQuantity(),
+              quantity: 1,
               properties: {
                 'Progression cadeaux': 'Produit ajouté depuis la fiche MilAura'
               }
@@ -4846,24 +4700,6 @@
 
           if (ctaButton) {
             ctaButton.addEventListener('click', bundleAddToCart);
-          }
-          if (qtyMinusEl) {
-            qtyMinusEl.addEventListener('click', function() {
-              if (!qtyInputEl) return;
-              qtyInputEl.value = Math.max(1, currentQuantity() - 1);
-              updateCtaButton();
-            });
-          }
-          if (qtyPlusEl) {
-            qtyPlusEl.addEventListener('click', function() {
-              if (!qtyInputEl) return;
-              qtyInputEl.value = Math.min(9, currentQuantity() + 1);
-              updateCtaButton();
-            });
-          }
-          if (qtyInputEl) {
-            qtyInputEl.addEventListener('input', updateCtaButton);
-            qtyInputEl.addEventListener('change', updateCtaButton);
           }
           updateCtaButton();
 
@@ -5012,14 +4848,13 @@
             }
           }
 
-	          function popupCopyForGift(gift) {
-	            return {
-	              title: gift.popupTitle || gift.name || {{ section.settings.popup_fallback_title | default: 'Vous avez gagné' | json }},
-	              text: gift.popupText || gift.value || {{ section.settings.popup_fallback_text | default: 'Votre cadeau est activé automatiquement.' | json }},
-	              icon: gift.icon || '✨',
-	              welcome: gift.showNewsletter
-	            };
-	          }
+          function popupCopyForGift(gift) {
+            return {
+              title: gift.popupTitle || gift.name || {{ section.settings.popup_fallback_title | default: 'Vous avez gagné' | json }},
+              text: gift.popupText || gift.value || {{ section.settings.popup_fallback_text | default: 'Votre cadeau est activé automatiquement.' | json }},
+              icon: gift.icon || '✨'
+            };
+          }
 
           function nextScratchCard() {
             return container.querySelector('.milaura-scratch-card:not(.is-locked):not(.is-revealed)');
@@ -5033,67 +4868,95 @@
           function updatePopupActions() {
             var hasRemainingCards = Boolean(nextScratchCard());
             showEl(popupNextButton, hasRemainingCards);
+            showEl(popupCartLink, true);
             showEl(popupShopLink, !hasRemainingCards);
-            showEl(popupAddButton, !hasRemainingCards);
+            if (popupNextButton) {
+              popupNextButton.classList.toggle('milaura-gift-popup__primary', hasRemainingCards);
+              popupNextButton.classList.toggle('milaura-gift-popup__secondary', !hasRemainingCards);
+            }
+            if (popupCartLink) {
+              popupCartLink.classList.toggle('milaura-gift-popup__primary', !hasRemainingCards);
+              popupCartLink.classList.toggle('milaura-gift-popup__secondary', hasRemainingCards);
+            }
           }
 
-          function setPopupActivationState(isLoading, didSucceed) {
-            if (popupStatusEl) {
-              if (isLoading) {
-                popupStatusEl.textContent = 'Activation de votre cadeau...';
-                popupStatusEl.hidden = false;
-              } else if (didSucceed) {
-                popupStatusEl.textContent = 'Cadeau activé dans votre panier.';
-                popupStatusEl.hidden = false;
-              } else {
-                popupStatusEl.hidden = true;
-              }
+          function setPopupActivationState(state, message) {
+            if (!popupStatusEl) return;
+            popupStatusEl.classList.remove('is-success', 'is-error');
+            if (!state) {
+              popupStatusEl.hidden = true;
+              popupStatusEl.textContent = '';
+            } else {
+              popupStatusEl.hidden = false;
+              popupStatusEl.textContent = message || '';
+              if (state === 'success') popupStatusEl.classList.add('is-success');
+              if (state === 'error') popupStatusEl.classList.add('is-error');
             }
-            [popupNextButton, popupAddButton].forEach(function(button) {
+            [popupNextButton].forEach(function(button) {
               if (!button) return;
-              button.disabled = Boolean(isLoading);
+              button.disabled = state === 'loading';
             });
-            if (popupShopLink) {
-              popupShopLink.classList.toggle('is-disabled', Boolean(isLoading));
-              popupShopLink.setAttribute('aria-disabled', isLoading ? 'true' : 'false');
+            if (popupCartLink) {
+              popupCartLink.classList.toggle('is-disabled', state === 'loading');
+              popupCartLink.setAttribute('aria-disabled', state === 'loading' ? 'true' : 'false');
             }
+            if (popupShopLink) {
+              popupShopLink.classList.toggle('is-disabled', state === 'loading');
+              popupShopLink.setAttribute('aria-disabled', state === 'loading' ? 'true' : 'false');
+            }
+          }
+
+          function popupNoteForGift(gift) {
+            if (!gift) return '';
+            if (gift.variantId) {
+              return 'Le cadeau apparaît comme une ligne panier à 0 €. Si vous ne le voyez pas, ouvrez le panier pour forcer la synchronisation.';
+            }
+            if (gift.discountCode) {
+              if (CUSTOMER_LOGGED_IN) {
+                return 'Votre compte MilAura est connecté. Le code est préparé et sera vérifié au checkout selon les conditions Shopify.';
+              }
+              return 'Déjà cliente ? Connectez-vous au checkout pour retrouver vos informations. Le code est préparé automatiquement, sans inscription dans cette fenêtre.';
+            }
+            return '';
+          }
+
+          function activationLoadingMessage(gift) {
+            if (gift && gift.variantId) return 'Ajout du cadeau offert au panier...';
+            if (gift && gift.discountCode) return 'Préparation du code ' + gift.discountCode + '...';
+            return 'Activation de votre cadeau...';
+          }
+
+          function activationSuccessMessage(gift, results) {
+            if (!gift) return 'Cadeau activé.';
+            var giftResult = (results || []).find(function(result) { return result && result.type === 'gift'; });
+            var discountResult = (results || []).find(function(result) { return result && result.type === 'discount'; });
+            if (giftResult && giftResult.alreadyInCart) return 'Ce cadeau est déjà dans votre panier à 0 €.';
+            if (giftResult && giftResult.added) return 'Cadeau ajouté au panier à 0 €. Vous pouvez le vérifier dans votre panier.';
+            if (discountResult && discountResult.code) return 'Code ' + discountResult.code + ' préparé. Il sera vérifié au checkout.';
+            return 'Cadeau activé.';
           }
 
           function openGiftPopup(gift) {
             if (!popupEl) return;
-            updatePopupDockOffset();
+            var newsletterPopup = document.getElementById('milaura-popup-overlay');
+            if (newsletterPopup && newsletterPopup.classList.contains('active')) {
+              newsletterPopup.classList.remove('active');
+              document.body.style.overflow = '';
+            }
             var copy = popupCopyForGift(gift);
             if (popupBurstEl) popupBurstEl.textContent = copy.icon;
             if (popupTitleEl) popupTitleEl.textContent = copy.title;
             if (popupTextEl) popupTextEl.textContent = copy.text;
-            if (popupWelcomeEl) {
-              popupWelcomeEl.classList.toggle('is-visible', Boolean(copy.welcome));
-            }
-            if (popupNewsletterForm && copy.welcome) {
-              popupNewsletterForm.style.display = '';
-            }
-            if (popupNewsletterSuccess) {
-              popupNewsletterSuccess.classList.remove('is-visible');
+            if (popupNoteEl) {
+              var note = popupNoteForGift(gift);
+              popupNoteEl.textContent = note;
+              popupNoteEl.hidden = !note;
             }
             updatePopupActions();
-            setPopupActivationState(false, false);
+            setPopupActivationState(null, '');
             popupEl.hidden = false;
             document.documentElement.classList.add('milaura-gift-popup-open');
-            if (popupCloseEl) popupCloseEl.focus();
-          }
-
-          function updatePopupDockOffset() {
-            var fallback = 78;
-            var dock = document.getElementById('milaura-dock');
-            var height = fallback;
-            if (dock) {
-              var styles = window.getComputedStyle(dock);
-              var rect = dock.getBoundingClientRect();
-              if (styles.display !== 'none' && rect.height > 0) {
-                height = Math.ceil(rect.height);
-              }
-            }
-            document.documentElement.style.setProperty('--milaura-active-dock-height', height + 'px');
+            if (popupCardEl) popupCardEl.focus();
           }
 
           function closeGiftPopup() {
@@ -5113,10 +4976,6 @@
           document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && popupEl && !popupEl.hidden) closeGiftPopup();
           });
-          window.addEventListener('resize', updatePopupDockOffset);
-          window.addEventListener('orientationchange', function() {
-            window.setTimeout(updatePopupDockOffset, 250);
-          });
 
           if (popupNextButton) {
             popupNextButton.addEventListener('click', function() {
@@ -5125,46 +4984,6 @@
               if (nextCard) {
                 nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
               }
-            });
-          }
-
-          if (popupAddButton && ctaButton) {
-            popupAddButton.addEventListener('click', function() {
-              closeGiftPopup();
-              ctaButton.click();
-            });
-          }
-
-          if (popupNewsletterForm) {
-            popupNewsletterForm.addEventListener('submit', function(e) {
-              e.preventDefault();
-              var emailInput = popupNewsletterForm.querySelector('input[type="email"]');
-              if (!emailInput || !emailInput.value) return;
-              var submitButton = popupNewsletterForm.querySelector('button[type="submit"]');
-              var originalSubmit = submitButton ? submitButton.textContent : 'Valider';
-              if (submitButton) {
-                submitButton.disabled = true;
-                submitButton.textContent = 'Envoi...';
-              }
-              fetch('/contact#contact_form', {
-                method: 'POST',
-                body: new FormData(popupNewsletterForm),
-                headers: { 'Accept': 'text/html' }
-              }).then(function() {
-                return applyDiscountCode(NEWSLETTER_DISCOUNT_CODE);
-              }).then(function() {
-                try { localStorage.setItem('milauraNewsletterSubscribed', 'true'); } catch (err) {}
-                document.dispatchEvent(new CustomEvent('milaura:newsletter-subscribed'));
-                popupNewsletterForm.style.display = 'none';
-                if (popupNewsletterSuccess) popupNewsletterSuccess.classList.add('is-visible');
-              }).catch(function() {
-                if (popupNewsletterSuccess) popupNewsletterSuccess.classList.add('is-visible');
-              }).finally(function() {
-                if (submitButton) {
-                  submitButton.disabled = false;
-                  submitButton.textContent = originalSubmit;
-                }
-              });
             });
           }
 
@@ -5189,17 +5008,18 @@
               pillEl.classList.add('is-visible');
             }
             openGiftPopup(gift);
-            setPopupActivationState(true, false);
+            setPopupActivationState('loading', activationLoadingMessage(gift));
             activateGift(gift)
-              .then(function() {
-                return refreshCartProgress();
+              .then(function(results) {
+                return refreshCartProgress().then(function() { return results; });
               })
-              .then(function() {
-                setPopupActivationState(false, true);
+              .then(function(results) {
+                setPopupActivationState('success', activationSuccessMessage(gift, results));
+                updatePopupActions();
               })
               .catch(function(error) {
                 console.warn('MilAura gift activation failed:', error);
-                setPopupActivationState(false, false);
+                setPopupActivationState('error', 'Activation impossible pour le moment. Le cadeau reste révélé, mais Shopify a refusé l’ajout automatique.');
               });
           }
 
@@ -6293,52 +6113,6 @@
       "label": "Popup - lien continuer mes achats"
     },
     {
-      "type": "text",
-      "id": "popup_add_label",
-      "label": "Popup - bouton ajouter au panier",
-      "default": "Ajouter au panier"
-    },
-    {
-      "type": "header",
-      "content": "📧 Newsletter et fidélité"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_discount_code",
-      "label": "Code newsletter affiché et appliqué",
-      "default": "BIENVENUE10"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_tags",
-      "label": "Tags client newsletter",
-      "default": "newsletter,source:carte-cadeau,offer:bienvenue10"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_email_placeholder",
-      "label": "Placeholder email",
-      "default": "votre@email.com"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_submit_label",
-      "label": "Bouton validation email",
-      "default": "Valider"
-    },
-    {
-      "type": "text",
-      "id": "newsletter_success_text",
-      "label": "Texte avant code newsletter",
-      "default": "Votre code est débloqué :"
-    },
-    {
-      "type": "textarea",
-      "id": "loyalty_popup_text",
-      "label": "Texte fidélité popup",
-      "default": "Déjà cliente ? Votre avantage fidélité : livraison dès 19,90 € avec le code MILAURA-LIV19."
-    },
-    {
       "type": "header",
       "content": "── Palier 1 produit ──"
     },
@@ -6549,7 +6323,7 @@
           "type": "text",
           "id": "text",
           "label": "Texte",
-          "default": "Livraison offerte"
+          "default": "Avantage livraison"
         }
       ]
     },
@@ -6655,7 +6429,7 @@
           "type": "text",
           "id": "value",
           "label": "Valeur",
-          "default": "Au lieu de 39€"
+          "default": "Code préparé"
         },
         {
           "type": "text",
@@ -6684,12 +6458,6 @@
           "type": "textarea",
           "id": "popup_text",
           "label": "Popup - texte"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_newsletter_form",
-          "label": "Afficher le formulaire newsletter dans ce popup",
-          "default": false
         }
       ]
     }
@@ -6698,10 +6466,10 @@
     {
       "name": "Milaura Hero Premium",
       "blocks": [
-        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison offerte dès 39€" } },
+        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Avantage livraison dès 19,90€" } },
         { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
         { "type": "volume_offer" },
-        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-LIV19", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre avantage fidélité est activé automatiquement. Inscrivez votre email pour recevoir aussi -10 % sur votre première commande.", "show_newsletter_form": true } },
+        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-LIV19", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre code livraison est préparé automatiquement. Il sera vérifié au checkout selon les conditions Shopify." } },
         { "type": "gift", "settings": { "icon": "🖤", "name": "Bracelet hématite offert", "value": "+14,90 €", "badge_label": "Gagné", "popup_title": "Bracelet hématite offert", "popup_text": "Vous avez au moins 2 produits MilAura dans votre panier. Votre bracelet cadeau est ajouté automatiquement au panier. Le deuxième article peut être choisi librement dans le catalogue." } },
         { "type": "gift", "settings": { "icon": "✨", "name": "-30% sur votre commande", "value": "", "discount_code": "MILAURA30", "badge_label": "Gros lot", "popup_title": "Votre meilleur cadeau est débloqué", "popup_text": "Votre panier atteint le palier 3 produits MilAura. Le code de votre meilleure offre est appliqué automatiquement pour récompenser un vrai rituel complet." } }
       ]

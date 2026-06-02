@@ -196,7 +196,7 @@
     border-radius: 50px;
     background: rgba(255, 255, 255, 0.8);
     font-family: 'Lato', sans-serif;
-    font-size: 0.9rem;
+    font-size: 16px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
@@ -452,6 +452,9 @@
 
   function canShow() {
     if (window.milauraIsCustomer) return false;
+    if (document.documentElement.classList.contains('milaura-gift-popup-open')) return false;
+    var scratchPopup = document.querySelector('.milaura-gift-popup');
+    if (scratchPopup && !scratchPopup.hidden) return false;
     return !isSubscribed() && !isDismissed() && !popupShown;
   }
 
@@ -541,6 +544,7 @@
   var isHomepage = (pageTemplate === 'index');
   var isProduct = (pageTemplate === 'product');
   var isCollection = (pageTemplate === 'collection');
+  var productTriggerEnabled = {{ section.settings.enable_product_trigger | default: false | json }};
 
   /* Trigger 1: Homepage = simple delay (configurable, default 30s) */
   if (isHomepage) {
@@ -548,8 +552,8 @@
     setTimeout(function() { showPopup(); }, homepageDelay);
   }
 
-  /* Trigger 2: Product page = 30s OR exit-intent (desktop) */
-  if (isProduct) {
+  /* Trigger 2: Product page = optional 30s OR exit-intent (desktop) */
+  if (isProduct && productTriggerEnabled) {
     setTimeout(function() { showPopup(); }, 30000);
 
     if (window.innerWidth > 768) {
@@ -697,6 +701,12 @@
     {
       "type": "header",
       "content": "Triggers"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_product_trigger",
+      "label": "Afficher automatiquement sur les pages produit",
+      "default": false
     },
     {
       "type": "range",

@@ -7,8 +7,12 @@
 
 {%- liquid
   assign free_shipping_threshold = section.settings.free_shipping_threshold | times: 100
+  assign free_shipping_enabled = true
+  if section.settings.free_shipping_threshold <= 0
+    assign free_shipping_enabled = false
+  endif
   assign is_free_shipping = false
-  if cart.total_price >= free_shipping_threshold
+  if free_shipping_enabled and cart.total_price >= free_shipping_threshold
     assign is_free_shipping = true
   endif
 -%}
@@ -321,10 +325,10 @@
               <div class="milaura-summary__line milaura-summary__line--shipping {% if is_free_shipping %}is-free{% endif %}">
                 <span class="milaura-summary__label">Livraison</span>
                 <span class="milaura-summary__value">
-                  {%- if is_free_shipping -%}
+                  {%- if free_shipping_enabled and is_free_shipping -%}
                     Gratuite
                   {%- else -%}
-                    Calculee a la prochaine etape
+                    Calculee au checkout
                   {%- endif -%}
                 </span>
               </div>
@@ -485,13 +489,13 @@
     {
       "type": "range",
       "id": "free_shipping_threshold",
-      "label": "Seuil livraison gratuite",
+      "label": "Seuil avantage livraison",
       "min": 0,
       "max": 100,
       "step": 1,
       "unit": "€",
-      "default": 39,
-      "info": "Mettre 0 pour desactiver"
+      "default": 0,
+      "info": "Mettre 0 pour ne pas annoncer d'avantage livraison dans le panier."
     }
   ],
   "blocks": [

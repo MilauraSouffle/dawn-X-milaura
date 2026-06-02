@@ -370,26 +370,6 @@
       }
 
       // 2. Logique de clic
-      function readMainQuantity() {
-        const qtyInput = document.querySelector('.milaura-bundle-qty__input');
-        const qty = qtyInput ? parseInt(qtyInput.value, 10) : 1;
-        return qty && qty > 0 ? Math.min(qty, 9) : 1;
-      }
-
-      function updateStickyQty(quantity) {
-        if (!qtyBadge) return;
-        const qty = quantity || readMainQuantity();
-        if (qty > 1) {
-          qtyBadge.textContent = '×' + qty;
-          qtyBadge.classList.add('is-visible');
-          qtyBadge.removeAttribute('hidden');
-        } else {
-          qtyBadge.textContent = '';
-          qtyBadge.classList.remove('is-visible');
-          qtyBadge.setAttribute('hidden', '');
-        }
-      }
-
       function setTriggerLabels(text) {
         if (!triggerBtn) return;
         const desktopLabel = triggerBtn.querySelector('.sticky-btn-label-desktop');
@@ -415,10 +395,11 @@
         });
       }
 
-      updateStickyQty();
-      document.addEventListener('milaura:product-quantity-change', function(event) {
-        updateStickyQty(event && event.detail ? event.detail.quantity : null);
-      });
+      if (qtyBadge) {
+        qtyBadge.textContent = '';
+        qtyBadge.classList.remove('is-visible');
+        qtyBadge.setAttribute('hidden', '');
+      }
 
       // 3. Mise à jour du prix (si variant change)
       const stickyPrice = document.getElementById('StickyBarPrice');
