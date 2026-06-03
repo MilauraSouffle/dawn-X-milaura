@@ -1,328 +1,610 @@
 {% comment %}
   MILAURA HERO HOMEPAGE
-  Lightweight single-product hero. ~250 lines.
-  Zero JS, mobile-first, 1 CTA, product picker.
+  Mobile-first product hero for the featured weekly stone.
+  No JavaScript. Product, copy, benefits and trust badges stay editable.
 {% endcomment %}
+
+{%- assign product = section.settings.product -%}
+{%- assign hero_image = section.settings.image -%}
+{%- if hero_image == blank and product != blank and product.featured_image -%}
+  {%- assign hero_image = product.featured_image -%}
+{%- endif -%}
+{%- assign cta_url = section.settings.cta_url | default: product.url | default: '/collections/bijoux-pierres-naturelles' -%}
+{%- assign hero_label = section.settings.pretitle | default: section.settings.headline | strip_html | escape -%}
 
 {% style %}
   #MilauraHeroHome-{{ section.id }} {
-    padding: var(--milaura-spacing-md) var(--milaura-spacing-md) 0;
+    --hero-ink: #10232c;
+    --hero-muted: #315461;
+    --hero-aqua: #9de7ee;
+    --hero-aqua-strong: #49afc6;
+    --hero-aqua-deep: #1e718c;
+    --hero-pearl: #fbfff9;
+    --hero-cream: #fff4df;
+    --hero-gold: #c0a062;
+    --hero-gold-soft: #f1d59a;
+    --hero-line: rgba(255, 255, 255, 0.55);
+    --hero-shadow: 0 28px 70px rgba(16, 35, 44, 0.24);
+    position: relative;
+    overflow: hidden;
+    color: var(--hero-ink);
+    background:
+      linear-gradient(135deg, rgba(255, 246, 223, 0.88) 0%, rgba(150, 226, 234, 0.86) 37%, rgba(58, 171, 199, 0.92) 72%, rgba(26, 106, 136, 0.96) 100%);
+    letter-spacing: 0;
+    isolation: isolate;
+  }
+
+  #MilauraHeroHome-{{ section.id }}::before,
+  #MilauraHeroHome-{{ section.id }}::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  #MilauraHeroHome-{{ section.id }}::before {
+    background:
+      linear-gradient(116deg, rgba(255, 255, 255, 0.82) 0 13%, transparent 13% 100%),
+      linear-gradient(151deg, transparent 0 48%, rgba(255, 255, 255, 0.28) 48% 52%, transparent 52% 100%),
+      repeating-linear-gradient(168deg, rgba(255, 255, 255, 0.16) 0 1px, transparent 1px 28px);
+    opacity: 0.72;
+  }
+
+  #MilauraHeroHome-{{ section.id }}::after {
+    background:
+      linear-gradient(180deg, transparent 0 64%, rgba(255, 244, 223, 0.64) 64% 100%),
+      linear-gradient(92deg, transparent 0 62%, rgba(16, 35, 44, 0.18) 62% 100%);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-shell {
+    min-height: calc(100svh - var(--header-height-mobile, 80px) - 56px);
+    padding: 18px 16px 24px;
+    display: grid;
+    align-items: stretch;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-inner {
-    max-width: 600px;
+    width: min(100%, 1180px);
     margin: 0 auto;
-    text-align: center;
+    display: grid;
+    grid-template-rows: minmax(258px, 1fr) auto;
+    gap: 14px;
   }
 
-  #MilauraHeroHome-{{ section.id }} .hero-home-badge-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: var(--milaura-spacing-sm);
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-badge {
-    display: inline-block;
-    background: rgba(192, 160, 98, 0.12);
-    color: var(--milaura-gold-dark);
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 5px 14px;
-    border-radius: 20px;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-stock {
-    font-size: 0.75rem;
-    color: var(--milaura-gold);
-    font-weight: 600;
+  #MilauraHeroHome-{{ section.id }} .hero-home-visual-col {
+    position: relative;
+    min-height: 258px;
+    display: grid;
+    place-items: center;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-visual {
     position: relative;
-    width: 240px;
-    height: 260px;
-    margin: 0 auto var(--milaura-spacing-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: min(100%, 350px);
+    aspect-ratio: 1 / 0.92;
+    display: grid;
+    place-items: center;
   }
 
-  #MilauraHeroHome-{{ section.id }} .hero-home-halo {
+  #MilauraHeroHome-{{ section.id }} .hero-home-visual::before {
+    content: "";
     position: absolute;
-    inset: -20px;
-    background: radial-gradient(circle, rgba(192, 160, 98, 0.10) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
+    width: 86%;
+    height: 58%;
+    left: 7%;
+    bottom: 2%;
+    background:
+      linear-gradient(180deg, rgba(255, 248, 229, 0.94), rgba(211, 177, 111, 0.45)),
+      repeating-linear-gradient(90deg, rgba(16, 35, 44, 0.08) 0 1px, transparent 1px 13px);
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 8px;
+    transform: perspective(540px) rotateX(58deg) rotateZ(-7deg);
+    box-shadow: 0 24px 48px rgba(16, 35, 44, 0.20);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-visual::after {
+    content: "";
+    position: absolute;
+    width: 64%;
+    height: 1px;
+    right: 1%;
+    top: 17%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.86), transparent);
+    transform: rotate(-10deg);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-img {
     position: relative;
-    max-width: 180px;
-    max-height: 220px;
-    object-fit: contain;
-    border-radius: var(--milaura-border-radius);
-    filter: drop-shadow(0 16px 32px rgba(192, 160, 98, 0.20));
+    z-index: 2;
+    width: min(86%, 305px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: var(--hero-shadow);
+    transform: rotate(-5deg);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-stone-tag {
+    position: absolute;
+    z-index: 3;
+    right: 0;
+    bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.84);
+    color: var(--hero-ink);
+    font: 700 0.72rem/1 var(--milaura-font-body);
+    box-shadow: 0 12px 28px rgba(16, 35, 44, 0.16);
+    backdrop-filter: blur(14px);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-stone-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--hero-aqua), #ffffff 48%, var(--hero-gold-soft));
+    border: 1px solid rgba(16, 35, 44, 0.12);
+    flex: 0 0 auto;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-content {
+    position: relative;
+    z-index: 2;
+    align-self: end;
+    padding: 0 0 2px;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-badge,
+  #MilauraHeroHome-{{ section.id }} .hero-home-stock {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(16, 35, 44, 0.13);
+    background: rgba(255, 255, 255, 0.58);
+    color: var(--hero-ink);
+    font: 800 0.68rem/1 var(--milaura-font-body);
+    text-transform: uppercase;
+    backdrop-filter: blur(14px);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-pretitle {
+    margin: 0 0 4px;
+    max-width: 18rem;
+    color: var(--hero-ink);
+    font: 700 1.05rem/1.25 var(--milaura-font-body);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-headline {
+    margin: 0;
+    color: var(--hero-ink);
     font-family: var(--milaura-font-heading);
-    font-size: 1.6rem;
-    color: var(--milaura-text);
-    line-height: 1.25;
-    margin: 0 0 8px;
+    font-size: 3.35rem;
+    font-weight: 600;
+    line-height: 0.94;
+    text-wrap: balance;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-headline span {
-    color: var(--milaura-gold);
+    color: var(--hero-aqua-deep);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-subtitle {
-    font-family: var(--milaura-font-body);
+    max-width: 34rem;
+    margin: 12px 0 0;
+    color: var(--hero-muted);
+    font: 500 0.95rem/1.48 var(--milaura-font-body);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-benefits {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 7px;
+    margin: 14px 0 0;
+    padding: 0;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-benefits li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    align-items: center;
+    gap: 9px;
+    min-height: 38px;
+    color: var(--hero-ink);
+    font: 800 0.84rem/1.15 var(--milaura-font-body);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-benefit-icon {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.42);
+    box-shadow: 0 8px 18px rgba(16, 35, 44, 0.10);
     font-size: 0.9rem;
-    color: #666;
-    line-height: 1.5;
-    margin: 0 0 var(--milaura-spacing-md);
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    margin-top: 16px;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-price {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: var(--milaura-spacing-sm);
+    align-items: baseline;
+    gap: 8px;
+    color: var(--hero-ink);
+    font-family: var(--milaura-font-body);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-price-now {
-    font-size: 1.4rem;
+    font-size: 1.12rem;
+    font-weight: 900;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-price-label {
+    color: var(--hero-muted);
+    font-size: 0.78rem;
     font-weight: 700;
-    color: var(--milaura-text);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-price-was {
-    font-size: 0.95rem;
-    color: #aaa;
-    text-decoration: line-through;
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-price-save {
-    font-size: 0.65rem;
+    color: rgba(16, 35, 44, 0.48);
+    font-size: 0.86rem;
     font-weight: 700;
-    color: white;
-    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
-    padding: 3px 10px;
-    border-radius: 10px;
+    text-decoration: line-through;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-cta {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
-    color: white;
-    padding: 15px 32px;
-    border-radius: 14px;
-    font-family: var(--milaura-font-body);
-    font-weight: 700;
-    font-size: 1rem;
+    justify-content: center;
+    gap: 10px;
+    min-height: 54px;
+    width: min(100%, 360px);
+    padding: 15px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.62);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255, 246, 225, 0.98), rgba(242, 205, 137, 0.98));
+    color: #2c210f;
+    font: 900 0.96rem/1 var(--milaura-font-body);
     text-decoration: none;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 8px 24px rgba(26, 26, 46, 0.25);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 16px 34px rgba(50, 80, 90, 0.22);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    margin-bottom: var(--milaura-spacing-sm);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(26, 26, 46, 0.35);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 20px 42px rgba(50, 80, 90, 0.28);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-cta:focus-visible {
+    outline: 3px solid rgba(16, 35, 44, 0.62);
+    outline-offset: 4px;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-cta svg {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.2s ease;
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-cta:hover svg {
-    transform: translateX(3px);
+    width: 17px;
+    height: 17px;
+    flex: 0 0 auto;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-trust {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 0.72rem;
-    color: #999;
-    padding-top: var(--milaura-spacing-xs);
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    margin-top: 13px;
+    color: rgba(16, 35, 44, 0.82);
+    font: 800 0.72rem/1.2 var(--milaura-font-body);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-trust span {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
   }
 
-  /* --- DESKTOP --- */
-  @media (min-width: 1025px) {
-    #MilauraHeroHome-{{ section.id }} {
-      padding: var(--milaura-spacing-xl) var(--milaura-spacing-lg) var(--milaura-spacing-md);
+  @media (max-width: 379px) {
+    #MilauraHeroHome-{{ section.id }} .hero-home-shell {
+      min-height: calc(100svh - var(--header-height-mobile, 80px) - 42px);
+      padding-left: 13px;
+      padding-right: 13px;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-inner {
-      max-width: 1000px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--milaura-spacing-xl);
+      grid-template-rows: minmax(228px, 1fr) auto;
+      gap: 10px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-headline {
+      font-size: 2.78rem;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-subtitle {
+      font-size: 0.86rem;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-benefits li {
+      min-height: 34px;
+      font-size: 0.78rem;
+    }
+  }
+
+  @media (max-height: 740px) and (max-width: 767px) {
+    #MilauraHeroHome-{{ section.id }} .hero-home-shell {
+      min-height: auto;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-inner {
+      grid-template-rows: minmax(212px, auto) auto;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-benefits {
+      gap: 4px;
+      margin-top: 10px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    #MilauraHeroHome-{{ section.id }} .hero-home-shell {
+      min-height: calc(100svh - var(--header-height-tablet, 88px) - 64px);
+      padding: 34px 32px 40px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-inner {
+      grid-template-columns: minmax(0, 0.94fr) minmax(360px, 1.06fr);
+      grid-template-rows: 1fr;
       align-items: center;
-      text-align: left;
+      gap: 32px;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-content {
       order: 1;
+      align-self: center;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-visual-col {
       order: 2;
-    }
-
-    #MilauraHeroHome-{{ section.id }} .hero-home-badge-row {
-      justify-content: flex-start;
+      min-height: 470px;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-visual {
-      width: 320px;
-      height: 340px;
-      margin: 0 auto;
+      width: min(100%, 540px);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-img {
-      max-width: 240px;
-      max-height: 300px;
+      width: min(83%, 455px);
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-stone-tag {
+      right: 4%;
+      bottom: 30px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-pretitle {
+      max-width: 28rem;
+      font-size: 1.22rem;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline {
-      font-size: 2.2rem;
+      font-size: 4.85rem;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-subtitle {
-      margin-left: 0;
+      font-size: 1.02rem;
     }
 
-    #MilauraHeroHome-{{ section.id }} .hero-home-price {
-      justify-content: flex-start;
+    #MilauraHeroHome-{{ section.id }} .hero-home-benefits {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 610px;
     }
 
-    #MilauraHeroHome-{{ section.id }} .hero-home-trust {
-      justify-content: flex-start;
+    #MilauraHeroHome-{{ section.id }} .hero-home-benefits li {
+      grid-template-columns: 36px 1fr;
+      gap: 9px;
+      min-height: 54px;
+      padding-right: 8px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-benefit-icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-action-row {
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-cta {
+      width: auto;
+      min-width: 236px;
     }
   }
 
-  /* --- SMALL MOBILE --- */
-  @media (max-width: 379px) {
-    #MilauraHeroHome-{{ section.id }} .hero-home-headline {
-      font-size: 1.35rem;
+  @media (min-width: 1100px) {
+    #MilauraHeroHome-{{ section.id }} .hero-home-shell {
+      min-height: calc(100svh - var(--header-height-desktop, 110px) - 72px);
+      padding: 42px 56px 54px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-inner {
+      grid-template-columns: minmax(410px, 0.88fr) minmax(520px, 1.12fr);
+      gap: 46px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-visual-col {
+      min-height: 590px;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-visual {
-      width: 200px;
-      height: 220px;
+      width: min(100%, 680px);
     }
 
-    #MilauraHeroHome-{{ section.id }} .hero-home-trust {
-      gap: 12px;
-      font-size: 0.65rem;
+    #MilauraHeroHome-{{ section.id }} .hero-home-img {
+      width: min(84%, 560px);
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-stone-tag {
+      right: 7%;
+      bottom: 42px;
+      min-height: 42px;
+      padding: 9px 15px;
+      font-size: 0.78rem;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-headline {
+      font-size: 5.95rem;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-subtitle {
+      max-width: 31rem;
+    }
+  }
+
+  @media (min-width: 1400px) {
+    #MilauraHeroHome-{{ section.id }} .hero-home-shell {
+      padding-left: 70px;
+      padding-right: 70px;
+    }
+
+    #MilauraHeroHome-{{ section.id }} .hero-home-headline {
+      font-size: 6.35rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #MilauraHeroHome-{{ section.id }} .hero-home-cta,
-    #MilauraHeroHome-{{ section.id }} .hero-home-cta svg {
+    #MilauraHeroHome-{{ section.id }} .hero-home-cta {
       transition: none;
     }
   }
 {% endstyle %}
 
-<div id="MilauraHeroHome-{{ section.id }}">
-  <div class="hero-home-inner">
-    <div class="hero-home-content">
-      {%- if section.settings.badge_text != blank or section.settings.show_stock -%}
-        <div class="hero-home-badge-row">
-          {%- if section.settings.badge_text != blank -%}
-            <span class="hero-home-badge">{{ section.settings.badge_text }}</span>
+<div id="MilauraHeroHome-{{ section.id }}" aria-label="{{ hero_label }}">
+  <div class="hero-home-shell">
+    <div class="hero-home-inner">
+      <div class="hero-home-content">
+        {%- if section.settings.badge_text != blank or section.settings.show_stock -%}
+          <div class="hero-home-badge-row">
+            {%- if section.settings.badge_text != blank -%}
+              <span class="hero-home-badge">{{ section.settings.badge_text }}</span>
+            {%- endif -%}
+            {%- if section.settings.show_stock -%}
+              <span class="hero-home-stock">{{ section.settings.stock_count }} restantes</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.pretitle != blank -%}
+          <p class="hero-home-pretitle">{{ section.settings.pretitle }}</p>
+        {%- endif -%}
+
+        <h1 class="hero-home-headline">{{ section.settings.headline }}</h1>
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="hero-home-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+
+        <ul class="hero-home-benefits" aria-label="Bienfaits de la pierre">
+          {%- if section.settings.benefit_1_text != blank -%}
+            <li>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_1_icon }}</span>
+              <span>{{ section.settings.benefit_1_text }}</span>
+            </li>
           {%- endif -%}
-          {%- if section.settings.show_stock -%}
-            <span class="hero-home-stock">{{ section.settings.stock_count }} restantes</span>
+          {%- if section.settings.benefit_2_text != blank -%}
+            <li>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_2_icon }}</span>
+              <span>{{ section.settings.benefit_2_text }}</span>
+            </li>
           {%- endif -%}
+          {%- if section.settings.benefit_3_text != blank -%}
+            <li>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_3_icon }}</span>
+              <span>{{ section.settings.benefit_3_text }}</span>
+            </li>
+          {%- endif -%}
+        </ul>
+
+        <div class="hero-home-action-row">
+          {%- if product != blank -%}
+            <div class="hero-home-price" aria-label="Prix">
+              <span class="hero-home-price-label">{{ section.settings.price_label }}</span>
+              <span class="hero-home-price-now">{{ product.price | money }}</span>
+              {%- if product.compare_at_price > product.price -%}
+                <span class="hero-home-price-was">{{ product.compare_at_price | money }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <a href="{{ cta_url }}" class="hero-home-cta">
+            <span>{{ section.settings.cta_text | default: 'Decouvrir' }}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14"></path>
+              <path d="m13 6 6 6-6 6"></path>
+            </svg>
+          </a>
         </div>
-      {%- endif -%}
 
-      <h1 class="hero-home-headline">{{ section.settings.headline }}</h1>
-
-      {%- if section.settings.subtitle != blank -%}
-        <p class="hero-home-subtitle">{{ section.settings.subtitle }}</p>
-      {%- endif -%}
-
-      {%- assign product = section.settings.product -%}
-      {%- if product != blank -%}
-        <div class="hero-home-price">
-          <span class="hero-home-price-now">{{ product.price | money }}</span>
-          {%- if product.compare_at_price > product.price -%}
-            <span class="hero-home-price-was">{{ product.compare_at_price | money }}</span>
-            {%- assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price -%}
-            <span class="hero-home-price-save">-{{ discount }}%</span>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-
-      <a href="{{ section.settings.cta_url | default: product.url | default: '/collections/all' }}" class="hero-home-cta">
-        {{ section.settings.cta_text | default: 'Decouvrir' }}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-
-      <div class="hero-home-trust">
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'trust' -%}
-            <span {{ block.shopify_attributes }}>{{ block.settings.icon }} {{ block.settings.label }}</span>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- if section.blocks.size > 0 -%}
+          <div class="hero-home-trust">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'trust' -%}
+                <span {{ block.shopify_attributes }}>{{ block.settings.icon }} {{ block.settings.label }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       </div>
-    </div>
 
-    <div class="hero-home-visual-col">
-      {%- if product != blank and product.featured_image -%}
-        <div class="hero-home-visual">
-          <div class="hero-home-halo"></div>
-          <img
-            class="hero-home-img"
-            src="{{ product.featured_image | image_url: width: 640 }}"
-            alt="{{ product.title }}"
-            width="320"
-            height="400"
-            loading="eager"
-            fetchpriority="high"
-          >
-        </div>
-      {%- elsif section.settings.image != blank -%}
-        <div class="hero-home-visual">
-          <div class="hero-home-halo"></div>
-          <img
-            class="hero-home-img"
-            src="{{ section.settings.image | image_url: width: 640 }}"
-            alt="{{ section.settings.headline | strip_html }}"
-            width="320"
-            height="400"
-            loading="eager"
-            fetchpriority="high"
-          >
-        </div>
-      {%- endif -%}
+      <div class="hero-home-visual-col">
+        {%- if hero_image != blank -%}
+          <div class="hero-home-visual">
+            <img
+              class="hero-home-img"
+              src="{{ hero_image | image_url: width: 1180 }}"
+              alt="{{ product.title | default: section.settings.headline | strip_html | escape }}"
+              width="590"
+              height="590"
+              loading="eager"
+              fetchpriority="high"
+            >
+            {%- if section.settings.product_note != blank -%}
+              <span class="hero-home-stone-tag">
+                <span class="hero-home-stone-dot" aria-hidden="true"></span>
+                {{ section.settings.product_note }}
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
     </div>
   </div>
 </div>
@@ -344,22 +626,76 @@
       "label": "Image (fallback si pas de produit)"
     },
     {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge (vide = cache)",
+      "default": "Produit de l'ete"
+    },
+    {
+      "type": "text",
+      "id": "pretitle",
+      "label": "Accroche courte",
+      "default": "La pierre de l'ete est arrivee chez MilAura"
+    },
+    {
       "type": "inline_richtext",
       "id": "headline",
       "label": "Titre principal",
-      "default": "Votre pierre du moment, <span>selectionnee pour vous.</span>"
+      "default": "Aigue-marine"
     },
     {
       "type": "text",
       "id": "subtitle",
       "label": "Sous-titre",
-      "default": "Bijoux en pierres naturelles certifiees. Artisanat francais, rituels de reconnexion emotionnelle."
+      "default": "Une bague en argent 925 et aigue-marine AA, pensee pour ramener calme, clarte et legerete dans vos journees."
     },
     {
       "type": "text",
-      "id": "badge_text",
-      "label": "Badge (vide = cache)",
-      "default": "Nouveaute"
+      "id": "benefit_1_icon",
+      "label": "Icone benefice 1",
+      "default": "✦"
+    },
+    {
+      "type": "text",
+      "id": "benefit_1_text",
+      "label": "Benefice 1",
+      "default": "Apaise le mental"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2_icon",
+      "label": "Icone benefice 2",
+      "default": "✧"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2_text",
+      "label": "Benefice 2",
+      "default": "Clarifie les pensees"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3_icon",
+      "label": "Icone benefice 3",
+      "default": "☼"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3_text",
+      "label": "Benefice 3",
+      "default": "Allege la charge mentale"
+    },
+    {
+      "type": "text",
+      "id": "product_note",
+      "label": "Pastille visuelle produit",
+      "default": "Aigue-marine AA"
+    },
+    {
+      "type": "text",
+      "id": "price_label",
+      "label": "Label prix",
+      "default": "Bague"
     },
     {
       "type": "checkbox",
@@ -377,7 +713,7 @@
       "type": "text",
       "id": "cta_text",
       "label": "Texte du bouton",
-      "default": "Decouvrir"
+      "default": "Decouvrir la bague"
     },
     {
       "type": "url",
@@ -393,14 +729,14 @@
         {
           "type": "text",
           "id": "icon",
-          "label": "Icone (emoji)",
+          "label": "Icone",
           "default": "💎"
         },
         {
           "type": "text",
           "id": "label",
           "label": "Texte",
-          "default": "Pierres certifiees"
+          "default": "Pierre naturelle certifiee"
         }
       ]
     }
@@ -409,9 +745,9 @@
     {
       "name": "Hero Homepage",
       "blocks": [
-        { "type": "trust", "settings": { "icon": "🇫🇷", "label": "Artisanat francais" } },
-        { "type": "trust", "settings": { "icon": "💎", "label": "Pierre naturelle certifiee" } },
-        { "type": "trust", "settings": { "icon": "🚚", "label": "Livraison offerte" } }
+        { "type": "trust", "settings": { "icon": "💎", "label": "Aigue-marine AA" } },
+        { "type": "trust", "settings": { "icon": "🇫🇷", "label": "Selection MilAura" } },
+        { "type": "trust", "settings": { "icon": "🚚", "label": "Livraison offerte des 19,90€" } }
       ]
     }
   ]
