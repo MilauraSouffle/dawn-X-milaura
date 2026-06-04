@@ -1,0 +1,90 @@
+{%- comment -%}
+  MILAURA CART DRAWER REWARDS PROMPT
+  Rappel non bloquant vers les cartes du panier.
+{%- endcomment -%}
+
+{%- if cart.item_count > 0 -%}
+  {%- liquid
+    assign paid_item_count = 0
+    for item in cart.items
+      assign is_milaura_gift = false
+      if item.product.tags contains 'milaura-gift' or item.product.title contains 'Cadeau -'
+        assign is_milaura_gift = true
+      endif
+      for property in item.properties
+        if property.first == '_milaura_gift' and property.last == 'true'
+          assign is_milaura_gift = true
+        endif
+      endfor
+      unless is_milaura_gift
+        assign paid_item_count = paid_item_count | plus: item.quantity
+      endunless
+    endfor
+
+    assign unlocked_cards = 0
+    if paid_item_count >= 1
+      assign unlocked_cards = 1
+    endif
+    if paid_item_count >= 2
+      assign unlocked_cards = 2
+    endif
+    if paid_item_count >= 3
+      assign unlocked_cards = 3
+    endif
+  -%}
+
+  <div class="milaura-cart-drawer-rewards">
+    <div class="milaura-cart-drawer-rewards__copy">
+      <p class="milaura-cart-drawer-rewards__title">Vos cartes vous attendent</p>
+      <p class="milaura-cart-drawer-rewards__text">
+        {{ unlocked_cards }}/3 carte{% if unlocked_cards > 1 %}s{% endif %} débloquée{% if unlocked_cards > 1 %}s{% endif %} dans votre panier.
+      </p>
+    </div>
+    <a href="{{ routes.cart_url }}" class="milaura-cart-drawer-rewards__link">
+      Révéler
+    </a>
+  </div>
+
+  <style>
+    .milaura-cart-drawer-rewards {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0;
+      margin: 12px 0 4px;
+      border-top: 1px solid rgba(192, 160, 98, 0.2);
+      border-bottom: 1px solid rgba(192, 160, 98, 0.2);
+    }
+
+    .milaura-cart-drawer-rewards__copy {
+      min-width: 0;
+    }
+
+    .milaura-cart-drawer-rewards__title {
+      margin: 0 0 3px;
+      font-family: var(--font-heading-family, 'Playfair Display'), serif;
+      font-size: 1rem;
+      line-height: 1.2;
+      color: var(--milaura-text, #000);
+    }
+
+    .milaura-cart-drawer-rewards__text {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.35;
+      color: var(--milaura-text-light, #666);
+    }
+
+    .milaura-cart-drawer-rewards__link {
+      flex: 0 0 auto;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #1a1a2e;
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+  </style>
+{%- endif -%}

@@ -1,0 +1,805 @@
+{%- comment -%}
+  MILAURA CART REWARDS
+  Cartes a gratter panier. Non bloquant pour le paiement.
+{%- endcomment -%}
+
+{%- if cart.item_count > 0 -%}
+  {%- liquid
+    assign paid_item_count = 0
+    assign gift_2_variant_id_num = section.settings.gift_2_variant_id | plus: 0
+    assign gift_2_in_cart = false
+    assign card_1_attribute = ''
+    assign card_3_attribute = ''
+
+    for attribute in cart.attributes
+      if attribute.first == 'Carte MilAura 1'
+        assign card_1_attribute = attribute.last
+      endif
+      if attribute.first == 'Carte MilAura 3'
+        assign card_3_attribute = attribute.last
+      endif
+    endfor
+
+    for item in cart.items
+      assign is_milaura_gift = false
+      if item.product.tags contains 'milaura-gift' or item.product.title contains 'Cadeau -'
+        assign is_milaura_gift = true
+      endif
+      for property in item.properties
+        if property.first == '_milaura_gift' and property.last == 'true'
+          assign is_milaura_gift = true
+        endif
+      endfor
+
+      if is_milaura_gift
+        if gift_2_variant_id_num > 0 and item.variant_id == gift_2_variant_id_num
+          assign gift_2_in_cart = true
+        endif
+      else
+        assign paid_item_count = paid_item_count | plus: item.quantity
+      endif
+    endfor
+
+    assign unlocked_cards = 0
+    if paid_item_count >= 1
+      assign unlocked_cards = 1
+    endif
+    if paid_item_count >= 2
+      assign unlocked_cards = 2
+    endif
+    if paid_item_count >= 3
+      assign unlocked_cards = 3
+    endif
+
+    assign card_1_active = false
+    assign card_2_active = gift_2_in_cart
+    assign card_3_active = false
+    if card_1_attribute == section.settings.gift_1_discount_code
+      assign card_1_active = true
+    endif
+    if card_3_attribute == section.settings.gift_3_discount_code
+      assign card_3_active = true
+    endif
+  -%}
+
+  {%- style -%}
+    #MilauraCartRewards-{{ section.id }} {
+      padding: var(--milaura-spacing-md) 0 var(--milaura-spacing-lg);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__panel {
+      padding: 18px;
+      border: 1px solid rgba(192, 160, 98, 0.22);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255, 252, 245, 0.94), rgba(255, 255, 255, 0.98));
+      box-shadow: 0 12px 30px rgba(26, 26, 46, 0.06);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__header {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__eyebrow {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--milaura-gold-dark, #8F723A);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__title {
+      margin: 0;
+      font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+      font-size: clamp(1.45rem, 5vw, 2rem);
+      line-height: 1.12;
+      color: var(--milaura-text, #000);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__subtitle {
+      max-width: 660px;
+      margin: 0 auto;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--milaura-text-light, #666);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__statusline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: fit-content;
+      margin: 6px auto 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(26, 26, 46, 0.06);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #1a1a2e;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward {
+      position: relative;
+      min-height: 192px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 16px 14px 14px;
+      overflow: hidden;
+      border: 1px solid rgba(26, 26, 46, 0.12);
+      border-radius: 8px;
+      background: #fff;
+      color: inherit;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-featured {
+      border: 2px solid var(--milaura-gold, #C0A062);
+      background: linear-gradient(180deg, #fffaf0, #ffffff);
+      box-shadow: 0 12px 26px rgba(192, 160, 98, 0.16);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked {
+      cursor: default;
+      opacity: 0.64;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed {
+      border-color: rgba(76, 175, 80, 0.42);
+      box-shadow: 0 10px 24px rgba(76, 175, 80, 0.1);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(26, 26, 46, 0.08);
+      font-size: 0.62rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #1a1a2e;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-featured .milaura-cart-reward__badge {
+      background: #1a1a2e;
+      color: var(--milaura-gold-light, #E6C88B);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__step {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: #1a1a2e;
+      color: #fff;
+      font-weight: 900;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__name {
+      margin: 0;
+      font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+      font-size: 1.08rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--milaura-text, #000);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__value {
+      margin: 0;
+      font-size: 0.84rem;
+      font-weight: 900;
+      color: var(--milaura-gold-dark, #8F723A);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__hint,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__status {
+      margin: 0;
+      font-size: 0.78rem;
+      line-height: 1.35;
+      color: var(--milaura-text-light, #666);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__status {
+      min-height: 2.1em;
+      font-weight: 800;
+      color: #1a1a2e;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__status.is-success {
+      color: #2e7d32;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__status.is-error {
+      color: #9f2f2f;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__note {
+      margin: 14px 0 0;
+      padding-top: 12px;
+      border-top: 1px solid rgba(192, 160, 98, 0.18);
+      font-size: 0.82rem;
+      line-height: 1.4;
+      text-align: center;
+      color: var(--milaura-text-light, #666);
+    }
+
+    @media screen and (max-width: 749px) {
+      #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__panel {
+        padding: 15px;
+      }
+
+      #MilauraCartRewards-{{ section.id }} .milaura-cart-rewards__grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      #MilauraCartRewards-{{ section.id }} .milaura-cart-reward {
+        min-height: 168px;
+      }
+    }
+  {%- endstyle -%}
+
+  <section
+    id="MilauraCartRewards-{{ section.id }}"
+    class="milaura-cart-rewards"
+    data-section-id="{{ section.id }}"
+    data-paid-count="{{ paid_item_count }}"
+  >
+    <div class="page-width">
+      <div class="milaura-cart-rewards__panel">
+        <div class="milaura-cart-rewards__header">
+          <p class="milaura-cart-rewards__eyebrow">{{ section.settings.eyebrow }}</p>
+          <h2 class="milaura-cart-rewards__title">{{ section.settings.title }}</h2>
+          <p class="milaura-cart-rewards__subtitle">{{ section.settings.subtitle }}</p>
+          <p class="milaura-cart-rewards__statusline">
+            {{ paid_item_count }} produit{% if paid_item_count > 1 %}s{% endif %} dans votre panier · {{ unlocked_cards }}/3 carte{% if unlocked_cards > 1 %}s{% endif %} débloquée{% if unlocked_cards > 1 %}s{% endif %}
+          </p>
+        </div>
+
+        <div class="milaura-cart-rewards__grid" aria-label="Cartes cadeaux MilAura">
+          <button
+            type="button"
+            class="milaura-cart-reward{% if paid_item_count < 1 %} is-locked{% endif %}{% if card_1_active %} is-active{% endif %}"
+            data-milaura-reward-card
+            data-reward-index="1"
+            data-threshold="1"
+            data-discount-code="{{ section.settings.gift_1_discount_code | escape }}"
+            data-unlocked="{% if paid_item_count >= 1 %}true{% else %}false{% endif %}"
+            data-active="{% if card_1_active %}true{% else %}false{% endif %}"
+            aria-disabled="{% if paid_item_count >= 1 %}false{% else %}true{% endif %}"
+          >
+            <span class="milaura-cart-reward__badge">{% if paid_item_count >= 1 %}Débloquée{% else %}1 produit{% endif %}</span>
+            <span class="milaura-cart-reward__step">1</span>
+            <span class="milaura-cart-reward__name">{{ section.settings.gift_1_name }}</span>
+            <span class="milaura-cart-reward__value">{{ section.settings.gift_1_value }}</span>
+            <span class="milaura-cart-reward__hint">{{ section.settings.gift_1_hint }}</span>
+            <span class="milaura-cart-reward__status" data-reward-status>
+              {%- if card_1_active -%}Avantage préparé pour le paiement.{%- elsif paid_item_count >= 1 -%}Grattez pour révéler.{%- else -%}Ajoutez un produit MilAura.{%- endif -%}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            class="milaura-cart-reward is-featured{% if paid_item_count < 2 %} is-locked{% endif %}{% if card_2_active %} is-active{% endif %}"
+            data-milaura-reward-card
+            data-reward-index="2"
+            data-threshold="2"
+            data-variant-id="{{ section.settings.gift_2_variant_id | escape }}"
+            data-unlocked="{% if paid_item_count >= 2 %}true{% else %}false{% endif %}"
+            data-active="{% if card_2_active %}true{% else %}false{% endif %}"
+            aria-disabled="{% if paid_item_count >= 2 %}false{% else %}true{% endif %}"
+          >
+            <span class="milaura-cart-reward__badge">{% if paid_item_count >= 2 %}Le bon choix{% else %}2 produits{% endif %}</span>
+            <span class="milaura-cart-reward__step">2</span>
+            <span class="milaura-cart-reward__name">{{ section.settings.gift_2_name }}</span>
+            <span class="milaura-cart-reward__value">{{ section.settings.gift_2_value }}</span>
+            <span class="milaura-cart-reward__hint">{{ section.settings.gift_2_hint }}</span>
+            <span class="milaura-cart-reward__status" data-reward-status>
+              {%- if card_2_active -%}Cadeau déjà dans votre panier.{%- elsif paid_item_count >= 2 -%}Grattez pour révéler.{%- else -%}Ajoutez un second produit au choix.{%- endif -%}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            class="milaura-cart-reward{% if paid_item_count < 3 %} is-locked{% endif %}{% if card_3_active %} is-active{% endif %}"
+            data-milaura-reward-card
+            data-reward-index="3"
+            data-threshold="3"
+            data-discount-code="{{ section.settings.gift_3_discount_code | escape }}"
+            data-unlocked="{% if paid_item_count >= 3 %}true{% else %}false{% endif %}"
+            data-active="{% if card_3_active %}true{% else %}false{% endif %}"
+            aria-disabled="{% if paid_item_count >= 3 %}false{% else %}true{% endif %}"
+          >
+            <span class="milaura-cart-reward__badge">{% if paid_item_count >= 3 %}Gros lot{% else %}3 produits{% endif %}</span>
+            <span class="milaura-cart-reward__step">3</span>
+            <span class="milaura-cart-reward__name">{{ section.settings.gift_3_name }}</span>
+            <span class="milaura-cart-reward__value">{{ section.settings.gift_3_value }}</span>
+            <span class="milaura-cart-reward__hint">{{ section.settings.gift_3_hint }}</span>
+            <span class="milaura-cart-reward__status" data-reward-status>
+              {%- if card_3_active -%}Meilleure remise préparée pour le paiement.{%- elsif paid_item_count >= 3 -%}Grattez pour révéler.{%- else -%}Ajoutez un troisième produit au choix.{%- endif -%}
+            </span>
+          </button>
+        </div>
+
+        <p class="milaura-cart-rewards__note">{{ section.settings.note }}</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function() {
+      var root = document.getElementById('MilauraCartRewards-{{ section.id }}');
+      if (!root) return;
+
+      var STORAGE_KEY = 'milaura-cart-rewards-v1';
+      var SCRATCH_THRESHOLD = 0.48;
+      var SCRATCH_RADIUS = 28;
+      var paidCount = parseInt(root.getAttribute('data-paid-count'), 10) || 0;
+      var cards = Array.prototype.slice.call(root.querySelectorAll('[data-milaura-reward-card]'));
+      var revealed = readRevealedCards();
+
+      function readRevealedCards() {
+        try {
+          var raw = sessionStorage.getItem(STORAGE_KEY);
+          var parsed = raw ? JSON.parse(raw) : [];
+          return new Set(Array.isArray(parsed) ? parsed : []);
+        } catch (e) {
+          return new Set();
+        }
+      }
+
+      function persistRevealedCards() {
+        try {
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(revealed)));
+        } catch (e) {
+          /* ignore */
+        }
+      }
+
+      function setStatus(card, message, state) {
+        var status = card.querySelector('[data-reward-status]');
+        if (!status) return;
+        status.textContent = message || '';
+        status.classList.remove('is-success', 'is-error');
+        if (state === 'success') status.classList.add('is-success');
+        if (state === 'error') status.classList.add('is-error');
+      }
+
+      function isMilAuraGiftItem(item) {
+        if (!item) return false;
+        var props = item.properties || {};
+        return props._milaura_gift === 'true' ||
+          (item.handle && item.handle.indexOf('cadeau-') === 0) ||
+          (item.product_title && item.product_title.indexOf('Cadeau -') === 0);
+      }
+
+      function paidItemCount(cart) {
+        if (!cart || !cart.items) return 0;
+        return cart.items.reduce(function(total, item) {
+          return isMilAuraGiftItem(item) ? total : total + item.quantity;
+        }, 0);
+      }
+
+      function fetchCart() {
+        return fetch('/cart.js').then(function(response) {
+          return response.ok ? response.json() : null;
+        });
+      }
+
+      function addGiftVariant(card) {
+        var variantId = parseInt(card.getAttribute('data-variant-id'), 10);
+        var threshold = parseInt(card.getAttribute('data-threshold'), 10) || 1;
+        if (!variantId) return Promise.resolve({ type: 'gift', skipped: true });
+
+        return fetchCart().then(function(cart) {
+          if (paidItemCount(cart) < threshold) {
+            throw new Error('threshold_not_met');
+          }
+          var alreadyInCart = cart && cart.items && cart.items.some(function(item) {
+            return item.variant_id === variantId;
+          });
+          if (alreadyInCart) {
+            return { type: 'gift', alreadyInCart: true };
+          }
+          return fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              items: [{
+                id: variantId,
+                quantity: 1,
+                properties: {
+                  'Cadeau MilAura': 'Bracelet hématite offert',
+                  'Statut': 'Offert',
+                  '_milaura_gift': 'true',
+                  '_milaura_gift_min_paid_items': String(threshold)
+                }
+              }]
+            })
+          }).then(function(response) {
+            if (!response.ok) {
+              return response.json().catch(function() { return {}; }).then(function(data) {
+                throw new Error(data.description || data.message || 'cart_error');
+              });
+            }
+            return { type: 'gift', added: true };
+          });
+        });
+      }
+
+      function applyDiscountCode(card) {
+        var code = card.getAttribute('data-discount-code');
+        var rewardIndex = card.getAttribute('data-reward-index');
+        if (!code) return Promise.resolve({ type: 'discount', skipped: true });
+
+        return fetch('/discount/' + encodeURIComponent(code) + '?redirect=/cart', {
+          method: 'GET',
+          credentials: 'include'
+        })
+        .then(function() {
+          var attributes = {};
+          attributes['Code promo MilAura'] = code;
+          attributes['Carte MilAura ' + rewardIndex] = code;
+          return fetch('/cart/update.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ attributes: attributes })
+          });
+        })
+        .then(function() {
+          return { type: 'discount', code: code };
+        });
+      }
+
+      function activateReward(card) {
+        var tasks = [];
+        if (card.getAttribute('data-variant-id')) tasks.push(addGiftVariant(card));
+        if (card.getAttribute('data-discount-code')) tasks.push(applyDiscountCode(card));
+
+        if (!tasks.length) {
+          setStatus(card, 'Carte révélée.', 'success');
+          return;
+        }
+
+        card.disabled = true;
+        setStatus(card, 'Activation dans votre panier...', null);
+
+        Promise.all(tasks)
+          .then(function(results) {
+            card.setAttribute('data-active', 'true');
+            card.classList.add('is-active');
+            var giftResult = results.find(function(result) { return result && result.type === 'gift'; });
+            var discountResult = results.find(function(result) { return result && result.type === 'discount'; });
+            if (giftResult && giftResult.alreadyInCart) {
+              setStatus(card, 'Cadeau déjà dans votre panier.', 'success');
+            } else if (giftResult && giftResult.added) {
+              setStatus(card, 'Cadeau ajouté au panier.', 'success');
+            } else if (discountResult && discountResult.code) {
+              setStatus(card, 'Remise préparée pour le paiement.', 'success');
+            } else {
+              setStatus(card, 'Avantage activé.', 'success');
+            }
+            window.setTimeout(function() {
+              window.location.reload();
+            }, 900);
+          })
+          .catch(function(error) {
+            console.warn('MilAura reward activation failed:', error);
+            revealed.delete(card.getAttribute('data-reward-index'));
+            persistRevealedCards();
+            card.disabled = false;
+            setStatus(card, 'Activation impossible pour le moment. Vous pouvez continuer votre commande.', 'error');
+          });
+      }
+
+      function activeMessageForCard(card) {
+        if (card.getAttribute('data-variant-id')) {
+          return 'Cadeau déjà dans votre panier.';
+        }
+        if (card.getAttribute('data-reward-index') === '3') {
+          return 'Meilleure remise préparée pour le paiement.';
+        }
+        return 'Avantage déjà activé.';
+      }
+
+      function revealCard(card, shouldActivate) {
+        var index = card.getAttribute('data-reward-index');
+        if (card.classList.contains('is-locked')) return;
+        if (card.classList.contains('is-revealed') && shouldActivate) return;
+
+        var canvas = card.querySelector('canvas');
+        if (canvas) canvas.remove();
+
+        card.classList.add('is-revealed');
+        revealed.add(index);
+        persistRevealedCards();
+
+        if (shouldActivate) {
+          activateReward(card);
+        } else if (card.getAttribute('data-active') === 'true') {
+          setStatus(card, activeMessageForCard(card), 'success');
+        }
+      }
+
+      function initCanvas(card) {
+        var canvas = document.createElement('canvas');
+        canvas.className = 'milaura-cart-reward__canvas';
+        card.appendChild(canvas);
+
+        function sizeCanvas() {
+          var rect = card.getBoundingClientRect();
+          var ratio = window.devicePixelRatio || 1;
+          canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+          canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+          canvas.style.width = rect.width + 'px';
+          canvas.style.height = rect.height + 'px';
+          var ctx = canvas.getContext('2d');
+          ctx.scale(ratio, ratio);
+          paintOverlay(ctx, rect.width, rect.height);
+          return ctx;
+        }
+
+        function paintOverlay(ctx, width, height) {
+          var gradient = ctx.createLinearGradient(0, 0, width, height);
+          gradient.addColorStop(0, '#E6C88B');
+          gradient.addColorStop(1, '#C0A062');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.74)';
+          ctx.font = '700 16px Lato, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('Grattez ici', width / 2, height / 2);
+        }
+
+        var ctx = sizeCanvas();
+        var scratching = false;
+        var checkPending = false;
+
+        function position(event) {
+          var rect = canvas.getBoundingClientRect();
+          return {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+          };
+        }
+
+        function scratch(pos) {
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, SCRATCH_RADIUS, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalCompositeOperation = 'source-over';
+
+          if (!checkPending) {
+            checkPending = true;
+            requestAnimationFrame(function() {
+              checkPending = false;
+              checkReveal(card, canvas, ctx);
+            });
+          }
+        }
+
+        canvas.addEventListener('pointerdown', function(event) {
+          scratching = true;
+          canvas.setPointerCapture(event.pointerId);
+          scratch(position(event));
+        });
+
+        canvas.addEventListener('pointermove', function(event) {
+          if (!scratching) return;
+          event.preventDefault();
+          scratch(position(event));
+        });
+
+        canvas.addEventListener('pointerup', function(event) {
+          scratching = false;
+          try { canvas.releasePointerCapture(event.pointerId); } catch (e) { /* ignore */ }
+        });
+
+        canvas.addEventListener('pointercancel', function() {
+          scratching = false;
+        });
+
+        window.addEventListener('resize', function() {
+          if (!card.classList.contains('is-revealed') && canvas.isConnected) {
+            ctx = sizeCanvas();
+          }
+        });
+      }
+
+      function checkReveal(card, canvas, ctx) {
+        if (card.classList.contains('is-revealed')) return;
+        var width = canvas.width;
+        var height = canvas.height;
+        var imageData;
+        try {
+          imageData = ctx.getImageData(0, 0, width, height);
+        } catch (e) {
+          return;
+        }
+
+        var pixels = imageData.data;
+        var transparent = 0;
+        var total = width * height;
+        for (var i = 3; i < pixels.length; i += 24) {
+          if (pixels[i] < 10) transparent += 6;
+        }
+
+        if (transparent / total >= SCRATCH_THRESHOLD) {
+          revealCard(card, true);
+        }
+      }
+
+      cards.forEach(function(card) {
+        var index = card.getAttribute('data-reward-index');
+        var isUnlocked = card.getAttribute('data-unlocked') === 'true';
+        var isActive = card.getAttribute('data-active') === 'true';
+
+        if (!isUnlocked) return;
+        card.classList.remove('is-locked');
+        if (isActive) {
+          revealCard(card, false);
+        } else {
+          initCanvas(card);
+        }
+
+        card.addEventListener('keydown', function(event) {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          revealCard(card, true);
+        });
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Milaura Cart Rewards",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "Vos avantages MilAura"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Vos cartes à gratter"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Grattez uniquement les cartes débloquées par vos produits. Les cadeaux et remises s'ajoutent ici, sans interrompre votre passage au paiement."
+    },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "Note",
+      "default": "Vos avantages restent réservés pendant cette session panier. Vous pouvez finaliser votre commande maintenant ou continuer à choisir librement dans le catalogue MilAura."
+    },
+    {
+      "type": "header",
+      "content": "Carte 1"
+    },
+    {
+      "type": "text",
+      "id": "gift_1_name",
+      "label": "Nom",
+      "default": "Avantage bienvenue"
+    },
+    {
+      "type": "text",
+      "id": "gift_1_value",
+      "label": "Valeur",
+      "default": "Livraison préparée"
+    },
+    {
+      "type": "text",
+      "id": "gift_1_hint",
+      "label": "Texte",
+      "default": "Votre première carte accompagne votre panier dès le premier produit."
+    },
+    {
+      "type": "text",
+      "id": "gift_1_discount_code",
+      "label": "Code remise",
+      "default": "MILAURA-LIV19"
+    },
+    {
+      "type": "header",
+      "content": "Carte 2"
+    },
+    {
+      "type": "text",
+      "id": "gift_2_name",
+      "label": "Nom",
+      "default": "Bracelet hématite offert"
+    },
+    {
+      "type": "text",
+      "id": "gift_2_value",
+      "label": "Valeur",
+      "default": "+14,90 €"
+    },
+    {
+      "type": "text",
+      "id": "gift_2_hint",
+      "label": "Texte",
+      "default": "Ajoutez un second produit au choix pour débloquer le cadeau le plus naturel."
+    },
+    {
+      "type": "text",
+      "id": "gift_2_variant_id",
+      "label": "Variant cadeau",
+      "default": "53142713925979"
+    },
+    {
+      "type": "header",
+      "content": "Carte 3"
+    },
+    {
+      "type": "text",
+      "id": "gift_3_name",
+      "label": "Nom",
+      "default": "Meilleure remise MilAura"
+    },
+    {
+      "type": "text",
+      "id": "gift_3_value",
+      "label": "Valeur",
+      "default": "-30% sur votre commande"
+    },
+    {
+      "type": "text",
+      "id": "gift_3_hint",
+      "label": "Texte",
+      "default": "Pour un panier complet, choisi librement, sans acheter le même produit en double."
+    },
+    {
+      "type": "text",
+      "id": "gift_3_discount_code",
+      "label": "Code remise",
+      "default": "MILAURA30"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura Cart Rewards"
+    }
+  ]
+}
+{% endschema %}
