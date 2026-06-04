@@ -1,7 +1,8 @@
 {% comment %}
   MILAURA HERO HOMEPAGE
   Mobile-first product hero for the featured weekly stone.
-  No JavaScript. Product, copy, benefits and trust badges stay editable.
+  Product, copy, benefits and trust badges stay editable.
+  A small scroll hook hides the gift bubble while the hero is in view.
 {% endcomment %}
 
 {%- assign product = section.settings.product -%}
@@ -592,32 +593,57 @@
 
   #MilauraHeroHome-{{ section.id }} .hero-home-top-hook {
     position: absolute;
-    z-index: 4;
-    top: clamp(150px, 22svh, 190px);
-    left: 18px;
-    right: 18px;
-    display: inline-flex;
+    z-index: 5;
+    top: clamp(74px, 12svh, 112px);
+    left: 16px;
+    right: 16px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 10px;
-    width: fit-content;
-    max-width: calc(100% - 36px);
-    min-height: 34px;
-    padding: 0 0 0 11px;
-    border: 0;
-    border-left: 2px solid rgba(194, 161, 94, 0.78);
-    border-radius: 0;
-    background: transparent;
+    gap: 13px;
+    width: auto;
+    min-height: clamp(116px, 17svh, 152px);
+    padding: 13px 17px 13px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.70);
+    border-radius: 22px;
+    background:
+      linear-gradient(135deg, rgba(255, 249, 230, 0.96), rgba(241, 210, 151, 0.90) 44%, rgba(238, 216, 235, 0.88) 100%),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.42), transparent);
     color: rgba(7, 29, 37, 0.88);
-    box-shadow: none;
-    backdrop-filter: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.82),
+      0 22px 46px rgba(93, 64, 26, 0.16);
+    backdrop-filter: blur(18px);
+    overflow: hidden;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-top-hook::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 17px;
+    pointer-events: none;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-top-hook::after {
+    content: "";
+    position: absolute;
+    top: -42%;
+    bottom: -42%;
+    left: -40%;
+    width: 38%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.58), transparent);
+    transform: skewX(-18deg);
+    animation: hero-banner-sheen-{{ section.id }} 5.8s ease-in-out infinite;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-top-logo {
     display: block;
-    width: 34px;
+    width: clamp(58px, 16vw, 76px);
     height: auto;
     flex: 0 0 auto;
-    filter: drop-shadow(0 6px 12px rgba(7, 29, 37, 0.14));
+    filter: drop-shadow(0 10px 16px rgba(93, 64, 26, 0.20));
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-top-wordmark {
@@ -626,11 +652,27 @@
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-top-copy {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-top-line {
     display: block;
-    max-width: 18rem;
-    font: 900 0.62rem/1.08 var(--milaura-font-body);
-    letter-spacing: 0.08em;
+    color: rgba(8, 35, 43, 0.76);
+    font: 950 clamp(0.72rem, 2.9vw, 0.86rem)/1.06 var(--milaura-font-body);
+    letter-spacing: 0.10em;
     text-transform: uppercase;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-top-brand {
+    display: block;
+    color: #b28a38;
+    font: 800 clamp(1.62rem, 8.3vw, 2.35rem)/0.92 var(--milaura-font-heading);
+    letter-spacing: 0;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.70), 0 12px 22px rgba(100, 70, 22, 0.18);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-picture {
@@ -661,12 +703,12 @@
   #MilauraHeroHome-{{ section.id }} .hero-home-product-callout {
     position: absolute;
     z-index: 4;
-    top: calc(var(--header-height-mobile, 118px) + 72px);
-    right: 14px;
+    top: calc(var(--header-height-mobile, 118px) + 190px);
+    right: 10px;
     display: grid;
     justify-items: center;
-    gap: 5px;
-    width: clamp(96px, 30vw, 132px);
+    gap: 7px;
+    width: clamp(136px, 39vw, 170px);
     color: var(--hero-ink);
     pointer-events: none;
   }
@@ -709,15 +751,15 @@
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-stone-name {
-    color: #08232c;
-    font: 950 0.62rem/1.02 var(--milaura-font-body);
-    letter-spacing: 0.14em;
+    color: #b18a3a;
+    font: 950 clamp(0.78rem, 3.1vw, 0.98rem)/1.02 var(--milaura-font-body);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-stone-material {
-    color: rgba(8, 35, 43, 0.76);
-    font: 850 0.67rem/1.08 var(--milaura-font-body);
+    color: #b18a3a;
+    font: 850 clamp(0.82rem, 3.2vw, 1rem)/1.08 var(--milaura-font-body);
     letter-spacing: 0.02em;
   }
 
@@ -731,6 +773,20 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.82), transparent);
     transform: skewX(-16deg);
     animation: hero-stone-sheen-{{ section.id }} 4.8s ease-in-out infinite;
+  }
+
+  @keyframes hero-banner-sheen-{{ section.id }} {
+    0%, 62% {
+      left: -40%;
+      opacity: 0;
+    }
+    70% {
+      opacity: 1;
+    }
+    92%, 100% {
+      left: 118%;
+      opacity: 0;
+    }
   }
 
   @keyframes hero-stone-sheen-{{ section.id }} {
@@ -748,13 +804,17 @@
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-content {
-    width: min(100%, 420px);
+    width: 100%;
     padding: 0;
     color: var(--hero-ink);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-badge-row,
-  #MilauraHeroHome-{{ section.id }} .hero-home-benefits {
+  #MilauraHeroHome-{{ section.id }} .hero-home-benefits,
+  #MilauraHeroHome-{{ section.id }} .hero-home-pretitle,
+  #MilauraHeroHome-{{ section.id }} .hero-home-subtitle,
+  #MilauraHeroHome-{{ section.id }} .hero-home-price,
+  #MilauraHeroHome-{{ section.id }} .hero-home-trust {
     display: none;
   }
 
@@ -772,7 +832,7 @@
     gap: 0;
     color: #071d25;
     font-family: var(--milaura-font-body);
-    font-size: clamp(3.05rem, 16vw, 4.65rem);
+    font-size: clamp(2.88rem, 15.1vw, 4.32rem);
     font-weight: 500;
     line-height: 0.94;
     letter-spacing: 0;
@@ -807,62 +867,28 @@
   #MilauraHeroHome-{{ section.id }} .hero-home-action-row {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 22px;
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-price {
-    order: 2;
-    color: rgba(7, 29, 37, 0.88);
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-price-label {
-    color: rgba(7, 29, 37, 0.70);
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-price-now {
-    font-size: 1rem;
+    gap: 0;
+    margin-top: 18px;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-cta {
     order: 1;
-    width: min(100%, 294px);
-    min-height: 52px;
-    justify-self: start;
+    width: min(100%, 330px);
+    min-height: 58px;
+    justify-self: center;
     padding: 15px 22px;
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-trust {
-    display: flex;
-    margin-top: 16px;
-    gap: 8px;
-    color: rgba(7, 29, 37, 0.82);
-    font-size: 0.72rem;
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-trust span {
-    min-height: 30px;
-    padding: 8px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.62);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.42);
-    backdrop-filter: blur(12px);
-  }
-
-  #MilauraHeroHome-{{ section.id }} .hero-home-trust span:nth-child(n+3) {
-    display: none;
   }
 
   body:has(#MilauraHeroHome-{{ section.id }}) #milaura-bubble-label {
     display: none !important;
   }
 
-  body:has(#MilauraHeroHome-{{ section.id }}) #milaura-bubble-trigger {
-    bottom: calc(var(--milaura-active-dock-height, 84px) + 124px + env(safe-area-inset-bottom)) !important;
-    right: 15px !important;
+  body.milaura-hero-home-visible #milaura-bubble-trigger,
+  body.milaura-hero-home-visible #milaura-bubble-label {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: scale(0.92) !important;
   }
 
   @media (max-width: 379px) {
@@ -874,10 +900,6 @@
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline {
       font-size: clamp(2.72rem, 15vw, 3.4rem);
-    }
-
-    #MilauraHeroHome-{{ section.id }} .hero-home-subtitle {
-      font-size: 0.9rem;
     }
   }
 
@@ -912,15 +934,6 @@
       mask-image: none;
     }
 
-    body:has(#MilauraHeroHome-{{ section.id }}) #milaura-bubble-label {
-      display: block !important;
-    }
-
-    body:has(#MilauraHeroHome-{{ section.id }}) #milaura-bubble-trigger {
-      bottom: clamp(36px, 4.8vw, 72px) !important;
-      right: clamp(34px, 4.8vw, 78px) !important;
-    }
-
     #MilauraHeroHome-{{ section.id }} .hero-home-top-hook {
       display: none;
     }
@@ -951,24 +964,14 @@
       font-size: clamp(4.4rem, 7.8vw, 8.2rem);
     }
 
-    #MilauraHeroHome-{{ section.id }} .hero-home-subtitle {
-      max-width: 31rem;
-      font-size: 1.08rem;
-    }
-
     #MilauraHeroHome-{{ section.id }} .hero-home-action-row {
-      grid-template-columns: auto 1fr;
-      align-items: center;
+      grid-template-columns: 1fr;
       margin-top: 28px;
     }
 
-    #MilauraHeroHome-{{ section.id }} .hero-home-price {
-      order: 2;
-    }
-
     #MilauraHeroHome-{{ section.id }} .hero-home-cta {
-      width: auto;
-      min-width: 236px;
+      width: min(100%, 330px);
+      min-width: 0;
     }
   }
 
@@ -1000,7 +1003,10 @@
       {%- else -%}
         <span class="hero-home-top-wordmark">MilAura</span>
       {%- endif -%}
-      <span class="hero-home-top-copy">{{ section.settings.top_hook_text }}</span>
+      <span class="hero-home-top-copy">
+        <span class="hero-home-top-line">{{ section.settings.top_hook_text }}</span>
+        <span class="hero-home-top-brand">{{ section.settings.top_hook_brand }}</span>
+      </span>
     </div>
 
     <div class="hero-home-inner">
@@ -1125,6 +1131,34 @@
   </div>
 </div>
 
+<script>
+  (() => {
+    const hero = document.getElementById('MilauraHeroHome-{{ section.id }}');
+    if (!hero) return;
+
+    let ticking = false;
+    const updateGiftBubble = () => {
+      const rect = hero.getBoundingClientRect();
+      const hideBubble = rect.top < window.innerHeight && rect.bottom > window.innerHeight * 0.18;
+      document.body.classList.toggle('milaura-hero-home-visible', hideBubble);
+      ticking = false;
+    };
+
+    const requestUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateGiftBubble);
+    };
+
+    updateGiftBubble();
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+    document.addEventListener('shopify:section:unload', () => {
+      document.body.classList.remove('milaura-hero-home-visible');
+    }, { once: true });
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Hero Homepage",
@@ -1156,8 +1190,14 @@
     {
       "type": "text",
       "id": "top_hook_text",
-      "label": "Hook haut mobile",
+      "label": "Hook haut mobile ligne 1",
       "default": "Votre bijou de l'ete"
+    },
+    {
+      "type": "text",
+      "id": "top_hook_brand",
+      "label": "Hook haut mobile ligne 2",
+      "default": "par MilAura"
     },
     {
       "type": "inline_richtext",
