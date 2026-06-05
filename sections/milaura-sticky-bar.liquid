@@ -11,6 +11,10 @@
     assign reward_threshold_2_cents = section.settings.reward_threshold_2 | default: 50 | times: 100
     assign reward_threshold_3_cents = section.settings.reward_threshold_3 | default: 80 | times: 100
     assign product_price_cents = product.selected_or_first_available_variant.price
+    assign sticky_reward_logo = settings.favicon
+    if sticky_reward_logo == blank
+      assign sticky_reward_logo = settings.logo
+    endif
   -%}
   <style>
     #shopify-section-{{ section.id }} {
@@ -184,10 +188,27 @@
     .sticky-reward__mark--three { left: 100%; }
 
     .sticky-reward__mark.is-unlocked {
-      background: var(--sticky-ink);
-      color: var(--milaura-gold-light, #E6C88B);
-      box-shadow: 0 8px 20px rgba(26, 26, 46, 0.18);
+      background:
+        radial-gradient(circle at 35% 24%, rgba(255, 255, 255, 0.88), transparent 32%),
+        linear-gradient(135deg, #FFF4CF, #D8B568 58%, #A67828);
+      color: var(--sticky-ink);
+      border-color: rgba(143, 114, 58, 0.48);
+      box-shadow: 0 8px 20px rgba(192, 160, 98, 0.28);
       transform: translate(-50%, -50%) scale(1.04);
+    }
+
+    .sticky-reward__logo {
+      width: 17px;
+      height: 17px;
+      display: block;
+      object-fit: contain;
+    }
+
+    .sticky-reward__fallback-mark {
+      font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
+      font-size: 0.7rem;
+      font-weight: 900;
+      line-height: 1;
     }
 
     .sticky-reward__steps {
@@ -401,9 +422,27 @@
       </div>
       <div class="sticky-reward__rail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
         <span class="sticky-reward__fill" id="StickyRewardFill"></span>
-        <span class="sticky-reward__mark sticky-reward__mark--one" data-sticky-reward-mark="1" aria-hidden="true">M</span>
-        <span class="sticky-reward__mark sticky-reward__mark--two" data-sticky-reward-mark="2" aria-hidden="true">M</span>
-        <span class="sticky-reward__mark sticky-reward__mark--three" data-sticky-reward-mark="3" aria-hidden="true">M</span>
+        <span class="sticky-reward__mark sticky-reward__mark--one" data-sticky-reward-mark="1" aria-hidden="true">
+          {%- if sticky_reward_logo != blank -%}
+            {{ sticky_reward_logo | image_url: width: 48 | image_tag: class: 'sticky-reward__logo', loading: 'lazy', widths: '32, 48', sizes: '18px', alt: '' }}
+          {%- else -%}
+            <span class="sticky-reward__fallback-mark">M</span>
+          {%- endif -%}
+        </span>
+        <span class="sticky-reward__mark sticky-reward__mark--two" data-sticky-reward-mark="2" aria-hidden="true">
+          {%- if sticky_reward_logo != blank -%}
+            {{ sticky_reward_logo | image_url: width: 48 | image_tag: class: 'sticky-reward__logo', loading: 'lazy', widths: '32, 48', sizes: '18px', alt: '' }}
+          {%- else -%}
+            <span class="sticky-reward__fallback-mark">M</span>
+          {%- endif -%}
+        </span>
+        <span class="sticky-reward__mark sticky-reward__mark--three" data-sticky-reward-mark="3" aria-hidden="true">
+          {%- if sticky_reward_logo != blank -%}
+            {{ sticky_reward_logo | image_url: width: 48 | image_tag: class: 'sticky-reward__logo', loading: 'lazy', widths: '32, 48', sizes: '18px', alt: '' }}
+          {%- else -%}
+            <span class="sticky-reward__fallback-mark">M</span>
+          {%- endif -%}
+        </span>
       </div>
       <div class="sticky-reward__steps" aria-hidden="true">
         <span>20 €</span>
@@ -469,19 +508,21 @@
       // Trouver le footer pour masquer la sticky bar quand on y arrive
       const footer = document.querySelector('footer') || document.querySelector('.footer') || document.querySelector('#shopify-section-footer');
       const stickyBarHeight = stickyBar ? stickyBar.offsetHeight : 80;
+      const stickyAlwaysMobile = window.matchMedia ? window.matchMedia('(max-width: 768px)') : null;
 
       // 1. Logique d'affichage (Scroll)
       if (stickyBar && mainButton) {
         const handleScroll = () => {
           const rect = mainButton.getBoundingClientRect();
           const footerRect = footer ? footer.getBoundingClientRect() : null;
+          const shouldShowAlways = stickyAlwaysMobile && stickyAlwaysMobile.matches;
 
           // Vérifier si le footer est visible (entre dans le viewport)
           const footerVisible = footerRect && footerRect.top < window.innerHeight;
 
           // Le bouton est-il passé au-dessus de l'écran ? (top < 0)
           // On ajoute une marge de sécurité (ex: -50px) pour être sûr qu'il est bien sorti
-          if (rect.top < -50 && !footerVisible) {
+          if ((shouldShowAlways || rect.top < -50) && !footerVisible) {
             stickyBar.classList.add('is-visible');
           } else {
             stickyBar.classList.remove('is-visible');
@@ -505,6 +546,11 @@
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
+        if (stickyAlwaysMobile && typeof stickyAlwaysMobile.addEventListener === 'function') {
+          stickyAlwaysMobile.addEventListener('change', handleScroll);
+        } else if (stickyAlwaysMobile && typeof stickyAlwaysMobile.addListener === 'function') {
+          stickyAlwaysMobile.addListener(handleScroll);
+        }
         // Check initial
         handleScroll();
       } else {
@@ -620,10 +666,14 @@
 
       function updateRewardMeter() {
         if (!stickyBar || !rewardLabel || !rewardHint || !rewardFill) return;
+        const actualSubtotal = Math.max(0, paidCartSubtotalCents);
         const projectedSubtotal = paidCartSubtotalCents + (productPriceCents * Math.max(1, currentQuantity));
-        const unlocked = unlockedCardsForAmount(projectedSubtotal);
-        const next = nextThreshold(projectedSubtotal);
-        const percent = progressPercent(projectedSubtotal);
+        const unlocked = unlockedCardsForAmount(actualSubtotal);
+        const projectedUnlocked = unlockedCardsForAmount(projectedSubtotal);
+        const projectedGain = Math.max(0, projectedUnlocked - unlocked);
+        const actualNext = nextThreshold(actualSubtotal);
+        const projectedNext = nextThreshold(projectedSubtotal);
+        const percent = progressPercent(actualSubtotal);
 
         rewardFill.style.width = percent + '%';
         if (rewardRail) rewardRail.setAttribute('aria-valuenow', String(percent));
@@ -633,17 +683,31 @@
         });
 
         if (unlocked >= 3) {
-          rewardLabel.textContent = '3 cartes MilAura débloquées';
-          rewardHint.textContent = 'Surprise de l’été prête';
+          rewardLabel.textContent = '3 cartes MilAura dans votre panier';
+          rewardHint.textContent = 'À gratter dans le panier';
         } else if (unlocked === 2) {
-          rewardLabel.textContent = '2 cartes MilAura prêtes';
-          rewardHint.textContent = next ? 'Encore ' + formatMoney(next.remaining) + ' pour la Surprise été' : 'À gratter dans le panier';
+          rewardLabel.textContent = '2 cartes MilAura dans votre panier';
+          rewardHint.textContent = projectedGain > 0
+            ? 'Ce produit débloque la Surprise été'
+            : (actualNext ? 'Encore ' + formatMoney(actualNext.remaining) + ' pour la Surprise été' : 'À gratter dans le panier');
         } else if (unlocked === 1) {
-          rewardLabel.textContent = '1 carte MilAura prête';
-          rewardHint.textContent = next ? 'Encore ' + formatMoney(next.remaining) + ' pour la carte suivante' : 'À gratter dans le panier';
+          rewardLabel.textContent = '1 carte MilAura dans votre panier';
+          rewardHint.textContent = projectedGain > 0
+            ? 'Ce produit débloque la carte suivante'
+            : (actualNext ? 'Encore ' + formatMoney(actualNext.remaining) + ' pour la suivante' : 'À gratter dans le panier');
         } else {
-          rewardLabel.textContent = 'Votre carte MilAura vous attend';
-          rewardHint.textContent = next ? 'Encore ' + formatMoney(next.remaining) + ' pour la première carte' : 'À gratter dans le panier';
+          if (projectedUnlocked >= 2) {
+            rewardLabel.textContent = 'Ce produit débloque ' + projectedUnlocked + ' cartes MilAura';
+            rewardHint.textContent = 'Ajoutez-le au panier, elles vous y attendront';
+          } else if (projectedUnlocked === 1) {
+            rewardLabel.textContent = 'Ce produit débloque votre 1re carte MilAura';
+            rewardHint.textContent = 'Ajoutez-le au panier, elle vous y attendra';
+          } else {
+            rewardLabel.textContent = 'Votre première carte MilAura se prépare';
+            rewardHint.textContent = projectedNext
+              ? 'Encore ' + formatMoney(projectedNext.remaining) + ' après ajout de ce produit'
+              : (actualNext ? 'Encore ' + formatMoney(actualNext.remaining) + ' pour la première carte' : 'À gratter dans le panier');
+          }
         }
       }
 

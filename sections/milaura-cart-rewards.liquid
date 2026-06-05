@@ -12,6 +12,7 @@
     assign reward_threshold_2_label = reward_threshold_2_cents | money_without_trailing_zeros | remove: '€' | strip | append: ' €'
     assign reward_threshold_3_label = reward_threshold_3_cents | money_without_trailing_zeros | remove: '€' | strip | append: ' €'
     assign paid_cart_cents = 0
+    assign paid_cart_signature = ''
     assign gift_2_variant_id_num = section.settings.gift_2_variant_id | plus: 0
     assign gift_2_in_cart = false
     assign card_1_attribute = ''
@@ -43,6 +44,7 @@
         endif
       else
         assign paid_cart_cents = paid_cart_cents | plus: item.original_line_price
+        assign paid_cart_signature = paid_cart_signature | append: item.variant_id | append: ':' | append: item.quantity | append: ';'
       endif
     endfor
 
@@ -59,14 +61,53 @@
       assign unlocked_cards = 3
     endif
 
-    assign card_1_active = false
-    assign card_2_active = gift_2_in_cart
-    assign card_3_active = false
-    if card_1_attribute == section.settings.gift_1_discount_code
-      assign card_1_active = true
+    assign stale_reward_indexes = ''
+    assign card_1_code_matched = false
+    assign card_3_code_matched = false
+    assign card_1_discount_applied = false
+    assign card_3_discount_applied = false
+    if card_1_attribute == section.settings.gift_1_discount_code and section.settings.gift_1_discount_code != blank
+      assign card_1_code_matched = true
     endif
-    if card_3_attribute == section.settings.gift_3_discount_code
+    if card_3_attribute == section.settings.gift_3_discount_code and section.settings.gift_3_discount_code != blank
+      assign card_3_code_matched = true
+    endif
+    for discount_application in cart.cart_level_discount_applications
+      if discount_application.title == section.settings.gift_1_discount_code and section.settings.gift_1_discount_code != blank
+        assign card_1_discount_applied = true
+      endif
+      if discount_application.title == section.settings.gift_3_discount_code and section.settings.gift_3_discount_code != blank
+        assign card_3_discount_applied = true
+      endif
+    endfor
+
+    assign card_1_active = false
+    assign card_2_active = false
+    assign card_3_active = false
+    if card_1_code_matched or card_1_discount_applied
+      assign card_1_reward_applied = true
+    else
+      assign card_1_reward_applied = false
+    endif
+    if card_3_code_matched or card_3_discount_applied
+      assign card_3_reward_applied = true
+    else
+      assign card_3_reward_applied = false
+    endif
+    if card_1_reward_applied and paid_cart_cents >= reward_threshold_1_cents
+      assign card_1_active = true
+    elsif card_1_reward_applied
+      assign stale_reward_indexes = stale_reward_indexes | append: '1,'
+    endif
+    if gift_2_in_cart and paid_cart_cents >= reward_threshold_2_cents
+      assign card_2_active = true
+    elsif gift_2_in_cart
+      assign stale_reward_indexes = stale_reward_indexes | append: '2,'
+    endif
+    if card_3_reward_applied and paid_cart_cents >= reward_threshold_3_cents
       assign card_3_active = true
+    elsif card_3_reward_applied
+      assign stale_reward_indexes = stale_reward_indexes | append: '3,'
     endif
   -%}
 
@@ -266,7 +307,19 @@
       color: #1a1a2e;
       font-size: 0.88rem;
       font-weight: 900;
-      z-index: 2;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__lock-svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__name {
@@ -316,7 +369,11 @@
       inset: 0;
       width: 100%;
       height: 100%;
+      display: block;
       touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
       cursor: grab;
       z-index: 3;
     }
@@ -354,6 +411,8 @@
     class="milaura-cart-rewards"
     data-section-id="{{ section.id }}"
     data-paid-subtotal-cents="{{ paid_cart_cents }}"
+    data-cart-signature="{{ paid_cart_signature | escape }}"
+    data-stale-reward-indexes="{{ stale_reward_indexes | escape }}"
   >
     <div class="page-width">
       <div class="milaura-cart-rewards__panel">
@@ -444,9 +503,14 @@
       var root = document.getElementById('MilauraCartRewards-{{ section.id }}');
       if (!root) return;
 
-      var STORAGE_KEY = 'milaura-cart-rewards-v1';
+      var CART_SIGNATURE = root.getAttribute('data-cart-signature') || 'cart';
+      var CART_SUBTOTAL = root.getAttribute('data-paid-subtotal-cents') || '0';
+      var STORAGE_KEY = 'milaura-cart-rewards-v2:' + CART_SIGNATURE + ':' + CART_SUBTOTAL;
+      var CLEAR_STORAGE_KEY = STORAGE_KEY + ':stale-clear';
       var SCRATCH_THRESHOLD = 0.48;
       var SCRATCH_RADIUS = 28;
+      var OPEN_LOCK_ICON = '<svg class="milaura-cart-reward__lock-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V8a5 5 0 0 1 9.8-1.4"></path></svg>';
+      var CLOSED_LOCK_ICON = '<svg class="milaura-cart-reward__lock-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V8a5 5 0 0 1 10 0v3"></path></svg>';
       var cards = Array.prototype.slice.call(root.querySelectorAll('[data-milaura-reward-card]'));
       var revealed = readRevealedCards();
 
@@ -477,6 +541,12 @@
         if (state === 'error') status.classList.add('is-error');
       }
 
+      function setLockIcon(card, isOpen) {
+        var lock = card.querySelector('.milaura-cart-reward__lock');
+        if (!lock) return;
+        lock.innerHTML = isOpen ? OPEN_LOCK_ICON : CLOSED_LOCK_ICON;
+      }
+
       function isMilAuraGiftItem(item) {
         if (!item) return false;
         var props = item.properties || {};
@@ -496,6 +566,59 @@
       function fetchCart() {
         return fetch('/cart.js').then(function(response) {
           return response.ok ? response.json() : null;
+        });
+      }
+
+      function removeCartLine(itemKey) {
+        if (!itemKey) return Promise.resolve(null);
+        return fetch('/cart/change.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: itemKey, quantity: 0 })
+        }).then(function(response) {
+          return response.ok ? response.json() : null;
+        });
+      }
+
+      function clearStaleRewardState(staleCards) {
+        if (!staleCards.length) return Promise.resolve(false);
+        var staleIndexes = staleCards.map(function(card) {
+          return card.getAttribute('data-reward-index');
+        });
+        var attributes = { 'Code promo MilAura': '' };
+        staleIndexes.forEach(function(index) {
+          attributes['Carte MilAura ' + index] = '';
+        });
+
+        var hasDiscountCard = staleCards.some(function(card) {
+          return Boolean(card.getAttribute('data-discount-code'));
+        });
+        var staleVariantIds = staleCards
+          .map(function(card) { return parseInt(card.getAttribute('data-variant-id'), 10); })
+          .filter(function(variantId) { return Number.isFinite(variantId) && variantId > 0; });
+
+        var payload = { attributes: attributes };
+        if (hasDiscountCard) payload.discount = '';
+
+        return fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+        .then(function() {
+          if (!staleVariantIds.length) return null;
+          return fetchCart().then(function(cart) {
+            var staleGiftLines = (cart && cart.items ? cart.items : []).filter(function(item) {
+              return staleVariantIds.indexOf(item.variant_id) !== -1 && isMilAuraGiftItem(item);
+            });
+            return staleGiftLines.reduce(function(promise, item) {
+              return promise.then(function() { return removeCartLine(item.key); });
+            }, Promise.resolve());
+          });
+        })
+        .then(function() {
+          try { sessionStorage.setItem(CLEAR_STORAGE_KEY, '1'); } catch (e) { /* ignore */ }
+          return true;
         });
       }
 
@@ -545,19 +668,16 @@
         var rewardIndex = card.getAttribute('data-reward-index');
         if (!code) return Promise.resolve({ type: 'discount', skipped: true });
 
-        return fetch('/discount/' + encodeURIComponent(code) + '?redirect=/cart', {
-          method: 'GET',
-          credentials: 'include'
-        })
-        .then(function() {
-          var attributes = {};
-          attributes['Code promo MilAura'] = code;
-          attributes['Carte MilAura ' + rewardIndex] = code;
-          return fetch('/cart/update.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ attributes: attributes })
-          });
+        var attributes = {};
+        attributes['Code promo MilAura'] = code;
+        attributes['Carte MilAura ' + rewardIndex] = code;
+        return fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            discount: code,
+            attributes: attributes
+          })
         })
         .then(function() {
           return { type: 'discount', code: code };
@@ -624,6 +744,7 @@
         if (canvas) canvas.remove();
 
         card.classList.add('is-revealed');
+        setLockIcon(card, true);
         revealed.add(index);
         persistRevealedCards();
 
@@ -658,11 +779,18 @@
           gradient.addColorStop(1, '#C0A062');
           ctx.fillStyle = gradient;
           ctx.fillRect(0, 0, width, height);
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.74)';
-          ctx.font = '700 16px Lato, sans-serif';
+          ctx.fillStyle = 'rgba(26, 26, 46, 0.16)';
+          ctx.beginPath();
+          ctx.arc(width / 2, height / 2 - 19, 19, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+          ctx.font = '700 22px Lato, sans-serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText('Grattez ici', width / 2, height / 2);
+          ctx.fillText('🔓', width / 2, height / 2 - 20);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.82)';
+          ctx.font = '800 16px Lato, sans-serif';
+          ctx.fillText('Grattez ici', width / 2, height / 2 + 18);
         }
 
         var ctx = sizeCanvas();
@@ -671,9 +799,12 @@
 
         function position(event) {
           var rect = canvas.getBoundingClientRect();
+          var source = event;
+          if (event.touches && event.touches.length) source = event.touches[0];
+          if (event.changedTouches && event.changedTouches.length) source = event.changedTouches[0];
           return {
-            x: event.clientX - rect.left,
-            y: event.clientY - rect.top
+            x: source.clientX - rect.left,
+            y: source.clientY - rect.top
           };
         }
 
@@ -694,8 +825,9 @@
         }
 
         canvas.addEventListener('pointerdown', function(event) {
+          event.preventDefault();
           scratching = true;
-          canvas.setPointerCapture(event.pointerId);
+          try { canvas.setPointerCapture(event.pointerId); } catch (e) { /* ignore */ }
           scratch(position(event));
         });
 
@@ -713,6 +845,26 @@
         canvas.addEventListener('pointercancel', function() {
           scratching = false;
         });
+
+        canvas.addEventListener('touchstart', function(event) {
+          event.preventDefault();
+          scratching = true;
+          scratch(position(event));
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', function(event) {
+          if (!scratching) return;
+          event.preventDefault();
+          scratch(position(event));
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', function() {
+          scratching = false;
+        }, { passive: true });
+
+        canvas.addEventListener('touchcancel', function() {
+          scratching = false;
+        }, { passive: true });
 
         window.addEventListener('resize', function() {
           if (!card.classList.contains('is-revealed') && canvas.isConnected) {
@@ -744,16 +896,46 @@
         }
       }
 
+      var staleCards = [];
+      var staleFromLiquid = (root.getAttribute('data-stale-reward-indexes') || '')
+        .split(',')
+        .map(function(index) { return index.trim(); })
+        .filter(Boolean);
+      cards.forEach(function(card) {
+        var index = card.getAttribute('data-reward-index');
+        var isActive = card.getAttribute('data-active') === 'true';
+        if (staleFromLiquid.indexOf(index) !== -1 || (isActive && !revealed.has(index))) {
+          staleCards.push(card);
+        }
+      });
+
+      if (staleCards.length) {
+        var alreadyCleared = false;
+        try { alreadyCleared = sessionStorage.getItem(CLEAR_STORAGE_KEY) === '1'; } catch (e) { /* ignore */ }
+        if (!alreadyCleared) {
+          clearStaleRewardState(staleCards).then(function(changed) {
+            if (changed) window.location.reload();
+          });
+          return;
+        }
+      }
+
       cards.forEach(function(card) {
         var index = card.getAttribute('data-reward-index');
         var isUnlocked = card.getAttribute('data-unlocked') === 'true';
         var isActive = card.getAttribute('data-active') === 'true';
 
-        if (!isUnlocked) return;
+        if (!isUnlocked) {
+          setLockIcon(card, false);
+          return;
+        }
         card.classList.remove('is-locked');
-        if (isActive) {
+        if (isActive && revealed.has(index)) {
           revealCard(card, false);
         } else {
+          card.setAttribute('data-active', 'false');
+          card.classList.remove('is-active', 'is-revealed');
+          setLockIcon(card, true);
           initCanvas(card);
         }
 
