@@ -2,15 +2,23 @@
   MILAURA STICKY BAR
   Barre d'ajout au panier flottante.
   S'affiche uniquement quand le bouton principal n'est plus visible (scroll vers le bas).
-  Inclut un espace marketing pour la conversion.
+  Version reward meter : progression cartes panier + CTA conserve.
 {% endcomment %}
 
 {%- if section.settings.enable_sticky_bar -%}
+  {%- liquid
+    assign reward_threshold_1_cents = section.settings.reward_threshold_1 | default: 20 | times: 100
+    assign reward_threshold_2_cents = section.settings.reward_threshold_2 | default: 50 | times: 100
+    assign reward_threshold_3_cents = section.settings.reward_threshold_3 | default: 80 | times: 100
+    assign product_price_cents = product.selected_or_first_available_variant.price
+  -%}
   <style>
     #shopify-section-{{ section.id }} {
       --sticky-bg: {{ section.settings.bg_color }};
       --sticky-text: {{ section.settings.text_color }};
       --sticky-gold: var(--milaura-gold, #C0A062);
+      --sticky-ink: #1a1a2e;
+      --sticky-cream: #fffaf0;
       z-index: 999;
       position: relative;
     }
@@ -20,33 +28,35 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: var(--sticky-bg);
-      min-height: 86px;
-      padding: 14px 32px;
-      box-shadow: 0 -8px 28px rgba(0,0,0,0.09);
+      min-height: 104px;
+      padding: 14px 28px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 250, 240, 0.98)),
+        var(--sticky-bg);
+      box-shadow:
+        0 -18px 42px rgba(26, 26, 46, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86);
       z-index: 9999;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(210px, 360px) minmax(320px, 1fr) auto;
       align-items: center;
-      justify-content: space-between;
-      gap: 24px;
+      gap: 20px;
       
-      /* État initial : caché vers le bas */
       transform: translateY(101%);
       transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      border-top: 1px solid rgba(192, 160, 98, 0.2);
+      border-top: 1px solid rgba(192, 160, 98, 0.26);
+      backdrop-filter: blur(18px);
     }
 
     .milaura-sticky-bar.is-visible {
       transform: translateY(0);
     }
 
-    /* --- GAUCHE : INFOS PRODUIT --- */
     .sticky-product-info {
       display: flex;
       align-items: center;
       gap: 14px;
       min-width: 0;
-      flex: 0 1 420px;
     }
 
     .sticky-product-media {
@@ -92,37 +102,111 @@
       font-weight: 700;
     }
 
-    /* --- CENTRE : MARKETING TEXT (L'espace vide comblé) --- */
-    .sticky-marketing {
-      flex: 1;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--sticky-text);
+    .sticky-reward {
+      display: grid;
+      gap: 9px;
+      min-width: 0;
+      padding: 12px 14px;
+      border: 1px solid rgba(192, 160, 98, 0.22);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 8% 18%, rgba(230, 200, 139, 0.28), transparent 28%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(253, 251, 247, 0.78));
+    }
+
+    .sticky-reward__top {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .sticky-reward__label {
+      margin: 0;
+      color: var(--sticky-ink);
+      font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
+      font-size: 1.02rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .sticky-reward__hint {
+      margin: 0;
+      color: var(--milaura-gold-dark, #8F723A);
+      font-size: 0.78rem;
+      font-weight: 900;
+      line-height: 1.2;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .sticky-reward__rail {
+      position: relative;
+      height: 11px;
+      border-radius: 999px;
+      background: rgba(26, 26, 46, 0.08);
+      box-shadow: inset 0 1px 2px rgba(26, 26, 46, 0.08);
+    }
+
+    .sticky-reward__fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0%;
+      border-radius: inherit;
+      background:
+        linear-gradient(90deg, #D8B568 0%, #F5D994 54%, #B78A35 100%);
+      box-shadow: 0 0 18px rgba(192, 160, 98, 0.36);
+      transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .sticky-reward__mark {
+      position: absolute;
+      top: 50%;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      min-width: 180px;
-    }
-    
-    .sticky-marketing span {
-      background: rgba(192, 160, 98, 0.12);
-      padding: 7px 14px;
-      border-radius: 20px;
-      color: #8F723A;
-      border: 1px solid rgba(192, 160, 98, 0.18);
-      line-height: 1.2;
+      border-radius: 50%;
+      border: 1px solid rgba(192, 160, 98, 0.36);
+      background: #fff;
+      color: rgba(26, 26, 46, 0.46);
+      font-size: 0.66rem;
+      font-weight: 900;
+      transform: translate(-50%, -50%);
+      transition: background 220ms ease, color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+      z-index: 2;
     }
 
-    /* --- DROITE : BOUTON --- */
+    .sticky-reward__mark--one { left: 25%; }
+    .sticky-reward__mark--two { left: 62.5%; }
+    .sticky-reward__mark--three { left: 100%; }
+
+    .sticky-reward__mark.is-unlocked {
+      background: var(--sticky-ink);
+      color: var(--milaura-gold-light, #E6C88B);
+      box-shadow: 0 8px 20px rgba(26, 26, 46, 0.18);
+      transform: translate(-50%, -50%) scale(1.04);
+    }
+
+    .sticky-reward__steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      color: rgba(26, 26, 46, 0.58);
+      font-size: 0.68rem;
+      font-weight: 800;
+      line-height: 1;
+      text-align: center;
+    }
+
     .sticky-btn-wrapper {
-      flex-shrink: 0;
       display: flex;
       align-items: center;
+      justify-content: flex-end;
     }
 
-    /* Bouton plus compact dans la sticky bar (ne touche plus les bords) */
     .sticky-btn.milaura-btn-gold {
       display: inline-flex;
       align-items: center;
@@ -168,19 +252,25 @@
     /* --- MOBILE RESPONSIVE --- */
     @media screen and (max-width: 768px) {
       .milaura-sticky-bar {
-        min-height: 76px;
-        padding: 11px 12px;
-        gap: 10px;
-        flex-wrap: nowrap;
+        min-height: 118px;
+        padding: 9px 10px 10px;
+        gap: 9px 10px;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+          "reward reward"
+          "product button";
         bottom: 65px; /* Au-dessus du dock mobile */
       }
 
-      .sticky-marketing {
-        display: none !important;
+      .sticky-reward {
+        grid-area: reward;
+        gap: 7px;
+        padding: 9px 10px;
+        border-radius: 15px;
       }
 
       .sticky-product-info {
-        flex: 1 1 auto;
+        grid-area: product;
         align-items: center;
         gap: 9px;
         min-width: 0;
@@ -205,6 +295,34 @@
         line-height: 1.2;
       }
 
+      .sticky-reward__top {
+        gap: 8px;
+      }
+
+      .sticky-reward__label {
+        font-size: 0.92rem;
+      }
+
+      .sticky-reward__hint {
+        font-size: 0.68rem;
+        max-width: 46vw;
+        white-space: normal;
+      }
+
+      .sticky-reward__rail {
+        height: 9px;
+      }
+
+      .sticky-reward__mark {
+        width: 24px;
+        height: 24px;
+        font-size: 0.58rem;
+      }
+
+      .sticky-reward__steps {
+        font-size: 0.6rem;
+      }
+
       .sticky-btn.milaura-btn-gold {
         min-width: 92px;
         min-height: 40px;
@@ -214,7 +332,7 @@
       }
       
       .sticky-btn-wrapper {
-        flex: 0 0 auto;
+        grid-area: button;
         display: flex;
       }
       
@@ -240,7 +358,14 @@
     }
   </style>
 
-  <div id="MilauraStickyBarSection" class="milaura-sticky-bar">
+  <div
+    id="MilauraStickyBarSection"
+    class="milaura-sticky-bar"
+    data-product-price-cents="{{ product_price_cents }}"
+    data-reward-threshold-1="{{ reward_threshold_1_cents }}"
+    data-reward-threshold-2="{{ reward_threshold_2_cents }}"
+    data-reward-threshold-3="{{ reward_threshold_3_cents }}"
+  >
     
     <!-- Info Gauche -->
     <div class="sticky-product-info">
@@ -269,12 +394,23 @@
       </div>
     </div>
 
-    <!-- Marketing Centre -->
-    {% if section.settings.marketing_text != blank %}
-      <div class="sticky-marketing">
-        <span>{{ section.settings.marketing_text }}</span>
+    <div class="sticky-reward" aria-live="polite">
+      <div class="sticky-reward__top">
+        <p class="sticky-reward__label" id="StickyRewardLabel">Votre carte MilAura vous attend</p>
+        <p class="sticky-reward__hint" id="StickyRewardHint">À gratter dans le panier</p>
       </div>
-    {% endif %}
+      <div class="sticky-reward__rail" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="sticky-reward__fill" id="StickyRewardFill"></span>
+        <span class="sticky-reward__mark sticky-reward__mark--one" data-sticky-reward-mark="1" aria-hidden="true">M</span>
+        <span class="sticky-reward__mark sticky-reward__mark--two" data-sticky-reward-mark="2" aria-hidden="true">M</span>
+        <span class="sticky-reward__mark sticky-reward__mark--three" data-sticky-reward-mark="3" aria-hidden="true">M</span>
+      </div>
+      <div class="sticky-reward__steps" aria-hidden="true">
+        <span>20 €</span>
+        <span>50 €</span>
+        <span>80 €</span>
+      </div>
+    </div>
 
     <!-- Bouton Droite -->
     <div class="sticky-btn-wrapper">
@@ -292,6 +428,19 @@
       const stickyBar = document.getElementById('MilauraStickyBarSection');
       const triggerBtn = document.getElementById('TriggerMainAtc');
       const qtyBadge = document.getElementById('StickyBarQtyBadge');
+      const rewardLabel = document.getElementById('StickyRewardLabel');
+      const rewardHint = document.getElementById('StickyRewardHint');
+      const rewardFill = document.getElementById('StickyRewardFill');
+      const rewardRail = stickyBar ? stickyBar.querySelector('.sticky-reward__rail') : null;
+      const rewardMarks = stickyBar ? Array.from(stickyBar.querySelectorAll('[data-sticky-reward-mark]')) : [];
+      const rewardThresholds = stickyBar ? [
+        parseInt(stickyBar.dataset.rewardThreshold1, 10) || 2000,
+        parseInt(stickyBar.dataset.rewardThreshold2, 10) || 5000,
+        parseInt(stickyBar.dataset.rewardThreshold3, 10) || 8000
+      ] : [2000, 5000, 8000];
+      const productPriceCents = stickyBar ? (parseInt(stickyBar.dataset.productPriceCents, 10) || 0) : 0;
+      let currentQuantity = 1;
+      let paidCartSubtotalCents = 0;
 
       // Sélecteurs pour trouver le bouton principal dans la page
       // Ordre du plus specifique au plus generique. Le CTA bundle (hero refonte 2026-05-28)
@@ -410,9 +559,116 @@
       }
 
       document.addEventListener('milaura:product-quantity-change', (event) => {
-        updateQtyBadge(event.detail && event.detail.quantity);
+        currentQuantity = Number.parseInt(event.detail && event.detail.quantity, 10) || 1;
+        updateQtyBadge(currentQuantity);
+        updateRewardMeter();
       });
       updateQtyBadge(1);
+
+      function formatMoney(cents) {
+        try {
+          return new Intl.NumberFormat('fr-FR', {
+            style: 'currency',
+            currency: '{{ cart.currency.iso_code | default: shop.currency }}',
+            maximumFractionDigits: 2
+          }).format(cents / 100);
+        } catch (e) {
+          return (cents / 100).toFixed(2).replace('.', ',') + ' €';
+        }
+      }
+
+      function isMilAuraGiftItem(item) {
+        if (!item) return false;
+        const props = item.properties || {};
+        return props._milaura_gift === 'true' ||
+          (item.handle && item.handle.indexOf('cadeau-') === 0) ||
+          (item.product_title && item.product_title.indexOf('Cadeau -') === 0);
+      }
+
+      function paidSubtotalCents(cart) {
+        if (!cart || !cart.items) return 0;
+        return cart.items.reduce(function(total, item) {
+          if (isMilAuraGiftItem(item)) return total;
+          return total + (Number(item.original_line_price || item.final_line_price || item.line_price || 0) || 0);
+        }, 0);
+      }
+
+      function unlockedCardsForAmount(cents) {
+        if (cents >= rewardThresholds[2]) return 3;
+        if (cents >= rewardThresholds[1]) return 2;
+        if (cents >= rewardThresholds[0]) return 1;
+        return 0;
+      }
+
+      function progressPercent(cents) {
+        const max = rewardThresholds[2] || 8000;
+        return Math.max(0, Math.min(100, Math.round((cents / max) * 100)));
+      }
+
+      function nextThreshold(cents) {
+        for (let i = 0; i < rewardThresholds.length; i += 1) {
+          if (cents < rewardThresholds[i]) {
+            return {
+              index: i + 1,
+              amount: rewardThresholds[i],
+              remaining: rewardThresholds[i] - cents
+            };
+          }
+        }
+        return null;
+      }
+
+      function updateRewardMeter() {
+        if (!stickyBar || !rewardLabel || !rewardHint || !rewardFill) return;
+        const projectedSubtotal = paidCartSubtotalCents + (productPriceCents * Math.max(1, currentQuantity));
+        const unlocked = unlockedCardsForAmount(projectedSubtotal);
+        const next = nextThreshold(projectedSubtotal);
+        const percent = progressPercent(projectedSubtotal);
+
+        rewardFill.style.width = percent + '%';
+        if (rewardRail) rewardRail.setAttribute('aria-valuenow', String(percent));
+        rewardMarks.forEach(function(mark) {
+          const index = parseInt(mark.getAttribute('data-sticky-reward-mark'), 10);
+          mark.classList.toggle('is-unlocked', index <= unlocked);
+        });
+
+        if (unlocked >= 3) {
+          rewardLabel.textContent = '3 cartes MilAura débloquées';
+          rewardHint.textContent = 'Surprise de l’été prête';
+        } else if (unlocked === 2) {
+          rewardLabel.textContent = '2 cartes MilAura prêtes';
+          rewardHint.textContent = next ? 'Encore ' + formatMoney(next.remaining) + ' pour la Surprise été' : 'À gratter dans le panier';
+        } else if (unlocked === 1) {
+          rewardLabel.textContent = '1 carte MilAura prête';
+          rewardHint.textContent = next ? 'Encore ' + formatMoney(next.remaining) + ' pour la carte suivante' : 'À gratter dans le panier';
+        } else {
+          rewardLabel.textContent = 'Votre carte MilAura vous attend';
+          rewardHint.textContent = next ? 'Encore ' + formatMoney(next.remaining) + ' pour la première carte' : 'À gratter dans le panier';
+        }
+      }
+
+      function refreshRewardCartState(cart) {
+        if (cart) {
+          paidCartSubtotalCents = paidSubtotalCents(cart);
+          updateRewardMeter();
+          return;
+        }
+        fetch('/cart.js')
+          .then(function(response) { return response.ok ? response.json() : null; })
+          .then(function(nextCart) {
+            paidCartSubtotalCents = paidSubtotalCents(nextCart);
+            updateRewardMeter();
+          })
+          .catch(updateRewardMeter);
+      }
+
+      document.addEventListener('cart:updated', function(event) {
+        refreshRewardCartState(event.detail);
+      });
+      window.addEventListener('cart:updated', function(event) {
+        refreshRewardCartState(event.detail);
+      });
+      refreshRewardCartState();
 
       // 3. Mise à jour du prix (si variant change)
       const stickyPrice = document.getElementById('StickyBarPrice');
@@ -454,7 +710,37 @@
       "id": "marketing_text",
       "label": "Texte Marketing (Centre)",
       "default": "Petites series preparees a l'atelier",
-      "info": "Apparaît entre le prix et le bouton sur Desktop."
+      "info": "Historique. La sticky affiche maintenant la progression des cartes."
+    },
+    {
+      "type": "range",
+      "id": "reward_threshold_1",
+      "label": "Palier carte 1",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "€",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "reward_threshold_2",
+      "label": "Palier carte 2",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "€",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "reward_threshold_3",
+      "label": "Palier carte 3",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "€",
+      "default": 80
     },
     {
       "type": "checkbox",

@@ -716,6 +716,22 @@
     }, 0);
   }
 
+  function paidSubtotalCents(cart) {
+    if (!cart || !cart.items) return 0;
+    return cart.items.reduce(function(total, item) {
+      if (isMilAuraGiftItem(item)) return total;
+      return total + (Number(item.original_line_price || item.final_line_price || item.line_price || 0) || 0);
+    }, 0);
+  }
+
+  function minPaidCentsForGift(item) {
+    const props = item && item.properties ? item.properties : {};
+    const explicit = parseInt(props._milaura_gift_min_paid_cents, 10);
+    if (explicit > 0) return explicit;
+    if (item && item.variant_id === FALLBACK_HEMATITE_GIFT_VARIANT_ID) return 5000;
+    return 0;
+  }
+
   function minPaidItemsForGift(item) {
     const props = item && item.properties ? item.properties : {};
     const explicit = parseInt(props._milaura_gift_min_paid_items, 10);
@@ -744,8 +760,12 @@
 
     return cartPromise.then(function(currentCart) {
       const paidCount = paidItemCount(currentCart);
+      const paidSubtotal = paidSubtotalCents(currentCart);
       const ineligibleGifts = (currentCart.items || []).filter(function(item) {
-        return isMilAuraGiftItem(item) && paidCount < minPaidItemsForGift(item);
+        if (!isMilAuraGiftItem(item)) return false;
+        const requiredCents = minPaidCentsForGift(item);
+        if (requiredCents > 0) return paidSubtotal < requiredCents;
+        return paidCount < minPaidItemsForGift(item);
       });
 
       if (!ineligibleGifts.length) return false;

@@ -5,7 +5,10 @@
 
 {%- if cart.item_count > 0 -%}
   {%- liquid
-    assign paid_item_count = 0
+    assign threshold_1_cents = 2000
+    assign threshold_2_cents = 5000
+    assign threshold_3_cents = 8000
+    assign paid_cart_cents = 0
     for item in cart.items
       assign is_milaura_gift = false
       if item.product.tags contains 'milaura-gift' or item.product.title contains 'Cadeau -'
@@ -17,19 +20,27 @@
         endif
       endfor
       unless is_milaura_gift
-        assign paid_item_count = paid_item_count | plus: item.quantity
+        assign paid_cart_cents = paid_cart_cents | plus: item.original_line_price
       endunless
     endfor
 
     assign unlocked_cards = 0
-    if paid_item_count >= 1
+    if paid_cart_cents >= threshold_1_cents
       assign unlocked_cards = 1
     endif
-    if paid_item_count >= 2
+    if paid_cart_cents >= threshold_2_cents
       assign unlocked_cards = 2
     endif
-    if paid_item_count >= 3
+    if paid_cart_cents >= threshold_3_cents
       assign unlocked_cards = 3
+    endif
+    assign next_remaining = 0
+    if unlocked_cards == 0
+      assign next_remaining = threshold_1_cents | minus: paid_cart_cents
+    elsif unlocked_cards == 1
+      assign next_remaining = threshold_2_cents | minus: paid_cart_cents
+    elsif unlocked_cards == 2
+      assign next_remaining = threshold_3_cents | minus: paid_cart_cents
     endif
   -%}
 
@@ -37,7 +48,13 @@
     <div class="milaura-cart-drawer-rewards__copy">
       <p class="milaura-cart-drawer-rewards__title">Vos cartes vous attendent</p>
       <p class="milaura-cart-drawer-rewards__text">
-        {{ unlocked_cards }}/3 carte{% if unlocked_cards > 1 %}s{% endif %} débloquée{% if unlocked_cards > 1 %}s{% endif %} dans votre panier.
+        {%- if unlocked_cards >= 3 -%}
+          3/3 cartes débloquées. La Surprise de l'été est prête.
+        {%- elsif unlocked_cards > 0 -%}
+          {{ unlocked_cards }}/3 carte{% if unlocked_cards > 1 %}s{% endif %} débloquée{% if unlocked_cards > 1 %}s{% endif %}. Encore {{ next_remaining | money_without_trailing_zeros | remove: '€' | strip }} € pour la suivante.
+        {%- else -%}
+          Encore {{ next_remaining | money_without_trailing_zeros | remove: '€' | strip }} € pour votre première carte.
+        {%- endif -%}
       </p>
     </div>
     <a href="{{ routes.cart_url }}" class="milaura-cart-drawer-rewards__link">
