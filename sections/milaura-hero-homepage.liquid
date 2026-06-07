@@ -11,13 +11,17 @@
   {%- assign hero_image = product.featured_image -%}
 {%- endif -%}
 {%- assign cta_url = section.settings.cta_url | default: product.url | default: '/collections/bijoux-pierres-naturelles' -%}
+{%- assign cta_text = section.settings.cta_text | default: 'Découvrir cette création' -%}
 {%- assign hero_label = section.settings.pretitle | default: section.settings.headline | strip_html | escape -%}
-{%- assign headline_line_1 = 'MilAura' -%}
-{%- assign headline_line_2 = 'Qui sera la plus belle' -%}
-{%- assign headline_line_3 = 'sur la plage cet &eacute;t&eacute; ?' -%}
-{%- assign top_hook_kicker = 'S&eacute;lection estivale 2026' -%}
-{%- assign top_hook_text = 'Le bijou de' -%}
-{%- assign top_hook_highlight = "l'&eacute;t&eacute;" -%}
+{%- assign headline_line_1 = section.settings.headline_line_1 | default: 'MilAura' -%}
+{%- assign headline_line_2 = section.settings.headline_line_2 | default: 'Qui sera la plus belle' -%}
+{%- assign headline_line_3 = section.settings.headline_line_3 | default: 'sur la plage cet été ?' -%}
+{%- assign top_hook_kicker = section.settings.top_hook_kicker | default: 'Sélection estivale 2026' -%}
+{%- assign top_hook_text = section.settings.top_hook_text | default: 'Le bijou de' -%}
+{%- assign top_hook_highlight = section.settings.top_hook_highlight | default: "l'été" -%}
+{%- assign top_hook_brand_prefix = section.settings.top_hook_brand_prefix | default: 'par' -%}
+{%- assign product_note = section.settings.product_note | default: 'Aigue Marine Grade AA' -%}
+{%- assign product_material_note = section.settings.product_material_note | default: 'Argent rhodié 925' -%}
 
 {% style %}
   #MilauraHeroHome-{{ section.id }} {
@@ -32,6 +36,153 @@
     --hero-gold-soft: #f1d59a;
     --hero-line: rgba(255, 255, 255, 0.55);
     --hero-shadow: 0 28px 70px rgba(16, 35, 44, 0.24);
+    --hero-bg-solid: {{ section.settings.color_hero_background | default: '#bceff1' }};
+    --hero-text-ink: {{ section.settings.color_hero_text | default: '#071d25' }};
+    --hero-script-ink: {{ section.settings.color_script_text | default: '#54305d' }};
+    --hero-banner-wordmark: {{ section.settings.color_banner_wordmark | default: '#b28a38' }};
+    --hero-top-line-color: {{ section.settings.color_top_line | default: 'rgba(8, 35, 43, 0.86)' }};
+    --hero-top-brand-color: {{ section.settings.color_top_brand | default: 'rgba(8, 35, 43, 0.78)' }};
+    --hero-pill-ink: {{ section.settings.color_pill_text | default: '#54305d' }};
+    --hero-product-gold: {{ section.settings.color_product_text | default: '#b18a3a' }};
+    --hero-highlight-start: {{ section.settings.color_highlight_start | default: '#53dce8' }};
+    --hero-highlight-end: {{ section.settings.color_highlight_end | default: '#f5d27e' }};
+    --hero-headline-accent-background: {{ section.settings.headline_accent_background | default: 'linear-gradient(135deg, rgba(83, 220, 232, 0.76), rgba(245, 210, 126, 0.82))' }};
+    --hero-section-overlap-mobile: {{ section.settings.section_overlap_mobile | default: 'var(--milaura-hero-overlap-mobile, 306px)' }};
+    --hero-section-overlap-tablet: {{ section.settings.section_overlap_tablet | default: 'var(--header-height-tablet, 132px)' }};
+    --hero-section-overlap-desktop: {{ section.settings.section_overlap_desktop | default: 'var(--header-height-desktop, 166px)' }};
+    --hero-shell-mobile-padding: {{ section.settings.shell_mobile_padding | default: 'calc(var(--header-height-mobile, 118px) + 22px) 18px calc(104px + env(safe-area-inset-bottom))' }};
+    --hero-shell-small-padding: {{ section.settings.shell_small_padding | default: 'calc(var(--header-height-mobile, 118px) + 22px) 14px calc(96px + env(safe-area-inset-bottom))' }};
+    --hero-shell-tablet-padding: {{ section.settings.shell_tablet_padding | default: 'calc(var(--header-height-tablet, 132px) + 48px) 48px 74px' }};
+    --hero-shell-desktop-padding: {{ section.settings.shell_desktop_padding | default: 'calc(var(--header-height-desktop, 166px) + 46px) 70px 76px' }};
+    --hero-image-mobile-object-position: {{ section.settings.image_mobile_object_position | default: 'center top' }};
+    --hero-image-mobile-transform: {{ section.settings.image_mobile_transform | default: 'translateY(150px) scale(1.01)' }};
+    --hero-image-mobile-mask-stop: {{ section.settings.image_mobile_mask_stop | default: '142px' }};
+    --hero-image-tablet-object-position: {{ section.settings.image_tablet_object_position | default: 'left center' }};
+    --hero-image-desktop-object-position: {{ section.settings.image_desktop_object_position | default: 'left top' }};
+    --hero-image-desktop-transform: {{ section.settings.image_desktop_transform | default: 'translateY(42px)' }};
+    --hero-image-desktop-height: {{ section.settings.image_desktop_height | default: 'calc(100% + 72px)' }};
+    --hero-top-hook-mobile-min-height: {{ section.settings.top_hook_mobile_min_height | default: 'calc(var(--header-height-mobile, 80px) + clamp(76px, 10svh, 92px))' }};
+    --hero-top-hook-mobile-padding: {{ section.settings.top_hook_mobile_padding | default: 'calc(var(--header-height-mobile, 80px) + 6px) 96px 10px 24px' }};
+    --hero-top-logo-mobile-right: {{ section.settings.top_logo_mobile_right | default: 'clamp(12px, 4vw, 24px)' }};
+    --hero-top-logo-mobile-bottom: {{ section.settings.top_logo_mobile_bottom | default: 'calc(-1 * clamp(50px, 11.6vw, 68px))' }};
+    --hero-top-logo-mobile-width: {{ section.settings.top_logo_mobile_width | default: 'clamp(78px, 22vw, 104px)' }};
+    --hero-top-kicker-mobile-font-size: {{ section.settings.top_kicker_mobile_font_size | default: '28px' }};
+    --hero-top-kicker-mobile-transform: {{ section.settings.top_kicker_mobile_transform | default: 'translate(22px, -34px)' }};
+    --hero-top-phrase-mobile-margin-top: {{ section.settings.top_phrase_mobile_margin_top | default: '-28px' }};
+    --hero-top-brand-mobile-transform: {{ section.settings.top_brand_mobile_transform | default: 'translateX(44px)' }};
+    --hero-top-hook-desktop-min-height: {{ section.settings.top_hook_desktop_min_height | default: 'calc(var(--header-height-desktop, 166px) + clamp(20px, 1.9svh, 28px))' }};
+    --hero-top-hook-desktop-padding: {{ section.settings.top_hook_desktop_padding | default: 'calc(var(--header-height-desktop, 166px) - 30px) clamp(108px, 8vw, 172px) 2px' }};
+    --hero-top-hook-desktop-before-inset: {{ section.settings.top_hook_desktop_before_inset | default: 'calc(var(--header-height-desktop, 166px) - 31px) clamp(70px, 6vw, 132px) 3px' }};
+    --hero-top-logo-desktop-right: {{ section.settings.top_logo_desktop_right | default: 'clamp(36px, 4.2vw, 78px)' }};
+    --hero-top-logo-desktop-bottom: {{ section.settings.top_logo_desktop_bottom | default: 'calc(-1 * clamp(38px, 4.3vw, 58px))' }};
+    --hero-top-logo-desktop-width: {{ section.settings.top_logo_desktop_width | default: 'clamp(82px, 5.8vw, 108px)' }};
+    --hero-top-wordmark-desktop-right: {{ section.settings.top_wordmark_desktop_right | default: 'clamp(42px, 4.5vw, 84px)' }};
+    --hero-top-wordmark-desktop-bottom: {{ section.settings.top_wordmark_desktop_bottom | default: '-20px' }};
+    --hero-top-copy-desktop-gap: {{ section.settings.top_copy_desktop_gap | default: 'clamp(14px, 1.6vw, 28px)' }};
+    --hero-top-copy-desktop-width: {{ section.settings.top_copy_desktop_width | default: 'min(100%, 1120px)' }};
+    --hero-top-kicker-desktop-font-size: {{ section.settings.top_kicker_desktop_font_size | default: 'clamp(1.62rem, 1.7vw, 2.15rem)' }};
+    --hero-top-icon-desktop-size: {{ section.settings.top_icon_desktop_size | default: '15px' }};
+    --hero-top-phrase-desktop-font-size: {{ section.settings.top_phrase_desktop_font_size | default: 'clamp(1.78rem, 2vw, 2.58rem)' }};
+    --hero-top-brand-desktop-right: {{ section.settings.top_brand_desktop_right | default: 'clamp(138px, 10vw, 220px)' }};
+    --hero-top-brand-desktop-bottom: {{ section.settings.top_brand_desktop_bottom | default: '8px' }};
+    --hero-top-brand-desktop-font-size: {{ section.settings.top_brand_desktop_font_size | default: 'clamp(0.68rem, 0.62vw, 0.78rem)' }};
+    --hero-top-brand-name-desktop-font-size: {{ section.settings.top_brand_name_desktop_font_size | default: 'clamp(1.52rem, 1.35vw, 1.92rem)' }};
+    --hero-inner-desktop-columns: {{ section.settings.inner_desktop_columns | default: 'minmax(520px, 1.02fr) minmax(440px, 0.66fr)' }};
+    --hero-inner-desktop-gap: {{ section.settings.inner_desktop_gap | default: '54px' }};
+    --hero-product-mobile-top: {{ section.settings.product_mobile_top | default: 'calc(var(--header-height-mobile, 118px) + clamp(258px, 31svh, 318px))' }};
+    --hero-product-mobile-right: {{ section.settings.product_mobile_right | default: 'clamp(0px, 1.4vw, 8px)' }};
+    --hero-product-mobile-width: {{ section.settings.product_mobile_width | default: 'clamp(162px, 45vw, 202px)' }};
+    --hero-product-small-top: {{ section.settings.product_small_top | default: 'calc(var(--header-height-mobile, 118px) + clamp(248px, 30svh, 298px))' }};
+    --hero-product-small-width: {{ section.settings.product_small_width | default: 'clamp(148px, 44vw, 174px)' }};
+    --hero-product-tablet-right: {{ section.settings.product_tablet_right | default: 'clamp(28px, 5vw, 92px)' }};
+    --hero-product-tablet-top: {{ section.settings.product_tablet_top | default: 'calc(var(--header-height-tablet, 132px) + clamp(322px, 39svh, 430px))' }};
+    --hero-product-tablet-width: {{ section.settings.product_tablet_width | default: 'clamp(176px, 16vw, 238px)' }};
+    --hero-product-desktop-right: {{ section.settings.product_desktop_right | default: 'clamp(46px, 4.8vw, 96px)' }};
+    --hero-product-desktop-top: {{ section.settings.product_desktop_top | default: 'calc(var(--header-height-desktop, 166px) + clamp(206px, 24svh, 300px))' }};
+    --hero-product-desktop-width: {{ section.settings.product_desktop_width | default: 'clamp(392px, 28vw, 512px)' }};
+    --hero-ring-mobile-transform: {{ section.settings.ring_mobile_transform | default: 'rotate(6deg)' }};
+    --hero-ring-tablet-transform: {{ section.settings.ring_tablet_transform | default: 'rotate(7deg)' }};
+    --hero-headline-mobile-top: {{ section.settings.headline_mobile_top | default: 'calc(var(--header-height-mobile, 118px) + clamp(122px, 15svh, 154px))' }};
+    --hero-headline-mobile-right: {{ section.settings.headline_mobile_right | default: 'clamp(-8px, -1vw, 2px)' }};
+    --hero-headline-mobile-width: {{ section.settings.headline_mobile_width | default: 'clamp(188px, 52vw, 218px)' }};
+    --hero-headline-mobile-font-size: {{ section.settings.headline_mobile_font_size | default: 'clamp(1.28rem, 5.5vw, 1.58rem)' }};
+    --hero-headline-script-mobile-font-size: {{ section.settings.headline_script_mobile_font_size | default: 'clamp(2.42rem, 10.6vw, 3.12rem)' }};
+    --hero-headline-accent-mobile-font-size: {{ section.settings.headline_accent_mobile_font_size | default: 'clamp(1.22rem, 5.2vw, 1.48rem)' }};
+    --hero-headline-small-top: {{ section.settings.headline_small_top | default: 'calc(var(--header-height-mobile, 118px) + clamp(116px, 14.5svh, 142px))' }};
+    --hero-headline-small-right: {{ section.settings.headline_small_right | default: '-6px' }};
+    --hero-headline-small-width: {{ section.settings.headline_small_width | default: 'clamp(172px, 49vw, 194px)' }};
+    --hero-headline-small-font-size: {{ section.settings.headline_small_font_size | default: 'clamp(1.08rem, 4.7vw, 1.22rem)' }};
+    --hero-headline-script-small-font-size: {{ section.settings.headline_script_small_font_size | default: 'clamp(2.1rem, 9.2vw, 2.46rem)' }};
+    --hero-headline-accent-small-font-size: {{ section.settings.headline_accent_small_font_size | default: 'clamp(1.02rem, 4.48vw, 1.18rem)' }};
+    --hero-headline-tablet-top: {{ section.settings.headline_tablet_top | default: 'calc(var(--header-height-tablet, 132px) + clamp(88px, 12svh, 128px))' }};
+    --hero-headline-tablet-right: {{ section.settings.headline_tablet_right | default: 'clamp(54px, 8vw, 128px)' }};
+    --hero-headline-tablet-width: {{ section.settings.headline_tablet_width | default: 'clamp(250px, 24vw, 318px)' }};
+    --hero-headline-tablet-min-height: {{ section.settings.headline_tablet_min_height | default: 'clamp(144px, 13vw, 174px)' }};
+    --hero-headline-tablet-font-size: {{ section.settings.headline_tablet_font_size | default: 'clamp(1.65rem, 1.95vw, 2.25rem)' }};
+    --hero-headline-script-tablet-font-size: {{ section.settings.headline_script_tablet_font_size | default: 'clamp(4.3rem, 5vw, 5.8rem)' }};
+    --hero-headline-accent-tablet-font-size: {{ section.settings.headline_accent_tablet_font_size | default: 'clamp(1.68rem, 1.95vw, 2.24rem)' }};
+    --hero-headline-desktop-top: {{ section.settings.headline_desktop_top | default: 'calc(var(--header-height-desktop, 166px) + clamp(76px, 10svh, 118px))' }};
+    --hero-headline-desktop-right: {{ section.settings.headline_desktop_right | default: 'clamp(112px, 10vw, 202px)' }};
+    --hero-headline-desktop-width: {{ section.settings.headline_desktop_width | default: 'clamp(340px, 29vw, 520px)' }};
+    --hero-headline-desktop-min-height: {{ section.settings.headline_desktop_min_height | default: 'clamp(164px, 13vw, 218px)' }};
+    --hero-headline-desktop-font-size: {{ section.settings.headline_desktop_font_size | default: 'clamp(1.82rem, 2.05vw, 2.42rem)' }};
+    --hero-headline-script-desktop-font-size: {{ section.settings.headline_script_desktop_font_size | default: 'clamp(4.82rem, 5.25vw, 6.18rem)' }};
+    --hero-headline-accent-desktop-font-size: {{ section.settings.headline_accent_desktop_font_size | default: 'clamp(1.82rem, 2.05vw, 2.42rem)' }};
+    --hero-cta-mobile-min-width: {{ section.settings.cta_mobile_min_width | default: '188px' }};
+    --hero-cta-mobile-min-height: {{ section.settings.cta_mobile_min_height | default: '56px' }};
+    --hero-cta-mobile-padding: {{ section.settings.cta_mobile_padding | default: '15px 30px' }};
+    --hero-cta-mobile-font-size: {{ section.settings.cta_mobile_font_size | default: '22px' }};
+    --hero-cta-tablet-bottom: {{ section.settings.cta_tablet_bottom | default: 'calc(34px + env(safe-area-inset-bottom))' }};
+    --hero-cta-tablet-min-width: {{ section.settings.cta_tablet_min_width | default: '286px' }};
+    --hero-cta-tablet-min-height: {{ section.settings.cta_tablet_min_height | default: '66px' }};
+    --hero-cta-tablet-padding: {{ section.settings.cta_tablet_padding | default: '18px 44px' }};
+    --hero-cta-tablet-font-size: {{ section.settings.cta_tablet_font_size | default: '24px' }};
+    --hero-cta-desktop-bottom: {{ section.settings.cta_desktop_bottom | default: 'calc(42px + env(safe-area-inset-bottom))' }};
+    --hero-cta-desktop-min-width: {{ section.settings.cta_desktop_min_width | default: '318px' }};
+    --hero-cta-desktop-min-height: {{ section.settings.cta_desktop_min_height | default: '72px' }};
+    --hero-cta-desktop-padding: {{ section.settings.cta_desktop_padding | default: '20px 48px' }};
+    --hero-cta-desktop-font-size: {{ section.settings.cta_desktop_font_size | default: '26px' }};
+    --hero-note-mobile-max-width: {{ section.settings.note_mobile_max_width | default: '142px' }};
+    --hero-note-mobile-padding: {{ section.settings.note_mobile_padding | default: '6px 9px' }};
+    --hero-note-mobile-font-size: {{ section.settings.note_mobile_font_size | default: 'clamp(0.55rem, 2vw, 0.67rem)' }};
+    --hero-note-small-max-width: {{ section.settings.note_small_max_width | default: '128px' }};
+    --hero-note-small-padding: {{ section.settings.note_small_padding | default: '5px 8px' }};
+    --hero-note-small-font-size: {{ section.settings.note_small_font_size | default: '0.53rem' }};
+    --hero-stone-note-mobile-top: {{ section.settings.stone_note_mobile_top | default: '18%' }};
+    --hero-stone-note-mobile-right: {{ section.settings.stone_note_mobile_right | default: '68%' }};
+    --hero-stone-note-mobile-line-width: {{ section.settings.stone_note_mobile_line_width | default: '54px' }};
+    --hero-stone-note-mobile-line-angle: {{ section.settings.stone_note_mobile_line_angle | default: '13deg' }};
+    --hero-metal-note-mobile-right: {{ section.settings.metal_note_mobile_right | default: '72%' }};
+    --hero-metal-note-mobile-bottom: {{ section.settings.metal_note_mobile_bottom | default: '22%' }};
+    --hero-metal-note-mobile-dot-left: {{ section.settings.metal_note_mobile_dot_left | default: 'calc(100% + 32px)' }};
+    --hero-metal-note-mobile-dot-top: {{ section.settings.metal_note_mobile_dot_top | default: 'calc(50% - 50px)' }};
+    --hero-metal-note-mobile-line-top: {{ section.settings.metal_note_mobile_line_top | default: '38%' }};
+    --hero-metal-note-mobile-line-width: {{ section.settings.metal_note_mobile_line_width | default: '50px' }};
+    --hero-metal-note-mobile-line-angle: {{ section.settings.metal_note_mobile_line_angle | default: '-58deg' }};
+    --hero-stone-note-tablet-dot-left: {{ section.settings.stone_note_tablet_dot_left | default: 'calc(100% + 46px)' }};
+    --hero-stone-note-tablet-dot-top: {{ section.settings.stone_note_tablet_dot_top | default: 'calc(50% - 4px)' }};
+    --hero-stone-note-tablet-line-width: {{ section.settings.stone_note_tablet_line_width | default: '52px' }};
+    --hero-stone-note-tablet-line-angle: {{ section.settings.stone_note_tablet_line_angle | default: '0deg' }};
+    --hero-metal-note-tablet-top: {{ section.settings.metal_note_tablet_top | default: '42%' }};
+    --hero-metal-note-tablet-right: {{ section.settings.metal_note_tablet_right | default: '84%' }};
+    --hero-metal-note-tablet-dot-left: {{ section.settings.metal_note_tablet_dot_left | default: 'calc(100% + 38px)' }};
+    --hero-metal-note-tablet-dot-top: {{ section.settings.metal_note_tablet_dot_top | default: 'calc(50% - 12px)' }};
+    --hero-metal-note-tablet-line-top: {{ section.settings.metal_note_tablet_line_top | default: '45%' }};
+    --hero-metal-note-tablet-line-width: {{ section.settings.metal_note_tablet_line_width | default: '42px' }};
+    --hero-metal-note-tablet-line-angle: {{ section.settings.metal_note_tablet_line_angle | default: '-16deg' }};
+    --hero-stone-note-desktop-top: {{ section.settings.stone_note_desktop_top | default: '16%' }};
+    --hero-stone-note-desktop-right: {{ section.settings.stone_note_desktop_right | default: '61%' }};
+    --hero-stone-note-desktop-dot-left: {{ section.settings.stone_note_desktop_dot_left | default: 'calc(100% + 40px)' }};
+    --hero-stone-note-desktop-dot-top: {{ section.settings.stone_note_desktop_dot_top | default: 'calc(50% - 5px)' }};
+    --hero-stone-note-desktop-line-width: {{ section.settings.stone_note_desktop_line_width | default: '46px' }};
+    --hero-stone-note-desktop-line-angle: {{ section.settings.stone_note_desktop_line_angle | default: '-2deg' }};
+    --hero-metal-note-desktop-top: {{ section.settings.metal_note_desktop_top | default: '38%' }};
+    --hero-metal-note-desktop-right: {{ section.settings.metal_note_desktop_right | default: '74%' }};
+    --hero-metal-note-desktop-dot-left: {{ section.settings.metal_note_desktop_dot_left | default: 'calc(100% + 32px)' }};
+    --hero-metal-note-desktop-dot-top: {{ section.settings.metal_note_desktop_dot_top | default: 'calc(50% - 10px)' }};
+    --hero-metal-note-desktop-line-top: {{ section.settings.metal_note_desktop_line_top | default: '46%' }};
+    --hero-metal-note-desktop-line-width: {{ section.settings.metal_note_desktop_line_width | default: '38px' }};
+    --hero-metal-note-desktop-line-angle: {{ section.settings.metal_note_desktop_line_angle | default: '-10deg' }};
     position: relative;
     overflow: hidden;
     color: var(--hero-ink);
@@ -545,7 +696,7 @@
   }
 
   #shopify-section-{{ section.id }}.milaura-hero-homepage {
-    margin-top: calc(-1 * var(--milaura-hero-overlap-mobile, 306px)) !important;
+    margin-top: calc(-1 * var(--hero-section-overlap-mobile)) !important;
     overflow: hidden;
   }
 
@@ -555,7 +706,7 @@
 
   #MilauraHeroHome-{{ section.id }} {
     min-height: 100svh;
-    background: #bceff1;
+    background: var(--hero-bg-solid);
   }
 
   #MilauraHeroHome-{{ section.id }}::before {
@@ -578,7 +729,7 @@
     position: relative;
     z-index: 2;
     min-height: 100svh;
-    padding: calc(var(--header-height-mobile, 118px) + 22px) 18px calc(104px + env(safe-area-inset-bottom));
+    padding: var(--hero-shell-mobile-padding);
     display: grid;
     align-items: end;
   }
@@ -617,8 +768,8 @@
     justify-items: center;
     gap: 0;
     width: 100vw;
-    min-height: calc(var(--header-height-mobile, 80px) + clamp(76px, 10svh, 92px));
-    padding: calc(var(--header-height-mobile, 80px) + 6px) 96px 10px 24px;
+    min-height: var(--hero-top-hook-mobile-min-height);
+    padding: var(--hero-top-hook-mobile-padding);
     border-top: 0;
     border-right: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.66);
@@ -657,9 +808,9 @@
     display: block;
     position: absolute;
     z-index: 4;
-    right: clamp(12px, 4vw, 24px);
-    bottom: calc(-1 * clamp(50px, 11.6vw, 68px));
-    width: clamp(78px, 22vw, 104px);
+    right: var(--hero-top-logo-mobile-right);
+    bottom: var(--hero-top-logo-mobile-bottom);
+    width: var(--hero-top-logo-mobile-width);
     height: auto;
     filter: drop-shadow(0 14px 18px rgba(93, 64, 26, 0.24));
   }
@@ -669,7 +820,7 @@
     z-index: 4;
     right: 22px;
     bottom: -18px;
-    color: #b28a38;
+    color: var(--hero-banner-wordmark);
     font: 500 1.5rem/1 var(--milaura-font-script);
     letter-spacing: 0;
   }
@@ -690,12 +841,12 @@
     align-items: center;
     justify-content: center;
     gap: 7px;
-    color: #071d25;
-    font: 500 28px/0.9 var(--milaura-font-script);
+    color: var(--hero-text-ink);
+    font: 500 var(--hero-top-kicker-mobile-font-size)/0.9 var(--milaura-font-script);
     letter-spacing: 0;
     text-transform: none;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.68);
-    transform: translate(22px, -34px);
+    transform: var(--hero-top-kicker-mobile-transform);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-top-kicker::before {
@@ -714,7 +865,7 @@
     align-items: baseline;
     justify-content: center;
     gap: 5px;
-    margin-top: -28px;
+    margin-top: var(--hero-top-phrase-mobile-margin-top);
     width: fit-content;
     max-width: none;
     white-space: nowrap;
@@ -726,7 +877,7 @@
 
   #MilauraHeroHome-{{ section.id }} .hero-home-top-line {
     display: inline;
-    color: rgba(8, 35, 43, 0.86);
+    color: var(--hero-top-line-color);
     font: italic 500 32px/0.96 var(--milaura-font-heading);
     letter-spacing: 0.02em;
   }
@@ -739,8 +890,8 @@
     margin-top: 0;
     padding: 0.03em 0.16em 0.09em;
     border-radius: 12px;
-    background: linear-gradient(135deg, #53dce8, #f5d27e);
-    color: #071d25;
+    background: linear-gradient(135deg, var(--hero-highlight-start), var(--hero-highlight-end));
+    color: var(--hero-text-ink);
     font: italic 700 32px/0.92 var(--milaura-font-heading);
     letter-spacing: 0.02em;
     box-shadow: 0 16px 34px rgba(28, 110, 125, 0.18);
@@ -758,15 +909,15 @@
     justify-content: center;
     gap: 7px;
     margin-top: -1px;
-    color: rgba(8, 35, 43, 0.78);
+    color: var(--hero-top-brand-color);
     font: 800 clamp(0.68rem, 2.55vw, 0.82rem)/1 var(--milaura-font-body);
     letter-spacing: 0;
     text-transform: uppercase;
-    transform: translateX(44px);
+    transform: var(--hero-top-brand-mobile-transform);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-top-brand-name {
-    color: #54305d;
+    color: var(--hero-script-ink);
     font: 500 clamp(1.76rem, 8.2vw, 2.36rem)/0.82 var(--milaura-font-script);
     text-transform: none;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.78), 0 10px 18px rgba(60, 27, 70, 0.18);
@@ -800,23 +951,23 @@
     max-width: none;
     aspect-ratio: auto;
     object-fit: cover;
-    object-position: center top;
+    object-position: var(--hero-image-mobile-object-position);
     border-radius: 0;
     box-shadow: none;
-    transform: translateY(150px) scale(1.01);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 142px, #000 100%);
-    mask-image: linear-gradient(180deg, transparent 0, #000 142px, #000 100%);
+    transform: var(--hero-image-mobile-transform);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 var(--hero-image-mobile-mask-stop), #000 100%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 var(--hero-image-mobile-mask-stop), #000 100%);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-product-callout {
     position: absolute;
     z-index: 5;
-    top: calc(var(--header-height-mobile, 118px) + clamp(258px, 31svh, 318px));
-    right: clamp(0px, 1.4vw, 8px);
+    top: var(--hero-product-mobile-top);
+    right: var(--hero-product-mobile-right);
     display: grid;
     justify-items: center;
     gap: 7px;
-    width: clamp(162px, 45vw, 202px);
+    width: var(--hero-product-mobile-width);
     color: var(--hero-ink);
     pointer-events: none;
   }
@@ -843,7 +994,7 @@
     width: 100%;
     height: auto;
     filter: drop-shadow(0 18px 24px rgba(8, 35, 43, 0.24));
-    transform: rotate(6deg);
+    transform: var(--hero-ring-mobile-transform);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-stone-dot {
@@ -864,15 +1015,15 @@
     display: inline-flex;
     align-items: center;
     width: max-content;
-    max-width: 142px;
+    max-width: var(--hero-note-mobile-max-width);
     min-height: 28px;
-    padding: 6px 9px;
+    padding: var(--hero-note-mobile-padding);
     border: 1px solid rgba(178, 190, 198, 0.72);
     border-radius: 999px;
     background:
       linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(224, 233, 238, 0.86) 52%, rgba(248, 250, 250, 0.90));
-    color: #54305d;
-    font: 900 clamp(0.55rem, 2vw, 0.67rem)/1.04 var(--milaura-font-body);
+    color: var(--hero-pill-ink);
+    font: 900 var(--hero-note-mobile-font-size)/1.04 var(--milaura-font-body);
     letter-spacing: 0.035em;
     text-transform: uppercase;
     text-align: center;
@@ -903,46 +1054,46 @@
   #MilauraHeroHome-{{ section.id }} .hero-home-feature-note::after {
     left: calc(100% - 1px);
     top: 50%;
-    width: 54px;
+    width: var(--hero-stone-note-mobile-line-width);
     height: 1px;
     background: linear-gradient(90deg, rgba(99, 114, 124, 0.76), rgba(99, 114, 124, 0.24));
     transform-origin: left center;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--stone {
-    top: 18%;
-    right: 68%;
+    top: var(--hero-stone-note-mobile-top);
+    right: var(--hero-stone-note-mobile-right);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--stone::after {
-    transform: rotate(13deg);
+    transform: rotate(var(--hero-stone-note-mobile-line-angle));
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal {
-    right: 72%;
-    bottom: 22%;
+    right: var(--hero-metal-note-mobile-right);
+    bottom: var(--hero-metal-note-mobile-bottom);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal::before {
-    left: calc(100% + 32px);
-    top: calc(50% - 50px);
+    left: var(--hero-metal-note-mobile-dot-left);
+    top: var(--hero-metal-note-mobile-dot-top);
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal::after {
-    top: 38%;
-    width: 50px;
-    transform: rotate(-58deg);
+    top: var(--hero-metal-note-mobile-line-top);
+    width: var(--hero-metal-note-mobile-line-width);
+    transform: rotate(var(--hero-metal-note-mobile-line-angle));
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-stone-name {
-    color: #b18a3a;
+    color: var(--hero-product-gold);
     font: 950 clamp(0.78rem, 3.1vw, 0.98rem)/1.02 var(--milaura-font-body);
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-stone-material {
-    color: #b18a3a;
+    color: var(--hero-product-gold);
     font: 850 clamp(0.82rem, 3.2vw, 1rem)/1.08 var(--milaura-font-body);
     letter-spacing: 0.02em;
   }
@@ -1026,23 +1177,23 @@
   #MilauraHeroHome-{{ section.id }} .hero-home-headline {
     position: absolute;
     z-index: 6;
-    top: calc(var(--header-height-mobile, 118px) + clamp(122px, 15svh, 154px));
-    right: clamp(-8px, -1vw, 2px);
+    top: var(--hero-headline-mobile-top);
+    right: var(--hero-headline-mobile-right);
     display: grid;
     justify-self: auto;
     align-content: center;
     justify-items: center;
     gap: 2px;
-    width: clamp(188px, 52vw, 218px);
+    width: var(--hero-headline-mobile-width);
     min-height: auto;
     max-width: 218px;
     padding: 6px 8px 7px;
     border: 0;
     border-radius: 0;
     background: transparent;
-    color: #071d25;
+    color: var(--hero-text-ink);
     font-family: var(--milaura-font-heading);
-    font-size: clamp(1.28rem, 5.5vw, 1.58rem);
+    font-size: var(--hero-headline-mobile-font-size);
     font-style: italic;
     font-weight: 600;
     line-height: 0.98;
@@ -1070,8 +1221,8 @@
 
   #MilauraHeroHome-{{ section.id }} .hero-home-headline span:first-child {
     width: fit-content;
-    color: #54305d;
-    font: 700 clamp(2.42rem, 10.6vw, 3.12rem)/0.82 var(--milaura-font-script);
+    color: var(--hero-script-ink);
+    font: 700 var(--hero-headline-script-mobile-font-size)/0.82 var(--milaura-font-script);
     letter-spacing: 0;
     -webkit-text-stroke: 0.18px rgba(255, 255, 255, 0.72);
     text-shadow:
@@ -1091,10 +1242,10 @@
     margin-top: 1px;
     padding: 0.04em 0.18em 0.10em;
     border-radius: 12px;
-    background: linear-gradient(135deg, rgba(83, 220, 232, 0.76), rgba(245, 210, 126, 0.82));
-    color: #071d25;
+    background: var(--hero-headline-accent-background);
+    color: var(--hero-text-ink);
     font-family: var(--milaura-font-heading);
-    font-size: clamp(1.22rem, 5.2vw, 1.48rem);
+    font-size: var(--hero-headline-accent-mobile-font-size);
     font-weight: 700;
     line-height: 0.92;
     box-shadow: 0 16px 34px rgba(28, 110, 125, 0.18);
@@ -1119,12 +1270,12 @@
   #MilauraHeroHome-{{ section.id }} .hero-home-cta {
     order: 1;
     width: auto;
-    min-width: 188px;
-    min-height: 56px;
+    min-width: var(--hero-cta-mobile-min-width);
+    min-height: var(--hero-cta-mobile-min-height);
     justify-self: center;
-    padding: 15px 30px;
+    padding: var(--hero-cta-mobile-padding);
     gap: 0;
-    font: 700 22px/0.9 var(--milaura-font-script) !important;
+    font: 700 var(--hero-cta-mobile-font-size)/0.9 var(--milaura-font-script) !important;
   }
 
   #MilauraHeroHome-{{ section.id }} .hero-home-cta span {
@@ -1149,47 +1300,45 @@
 
   @media (max-width: 379px) {
     #MilauraHeroHome-{{ section.id }} .hero-home-shell {
-      padding-left: 14px;
-      padding-right: 14px;
-      padding-bottom: calc(96px + env(safe-area-inset-bottom));
+      padding: var(--hero-shell-small-padding);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline {
-      top: calc(var(--header-height-mobile, 118px) + clamp(116px, 14.5svh, 142px));
-      right: -6px;
-      width: clamp(172px, 49vw, 194px);
+      top: var(--hero-headline-small-top);
+      right: var(--hero-headline-small-right);
+      width: var(--hero-headline-small-width);
       max-width: 194px;
       padding: 12px 13px 13px 14px;
-      font-size: clamp(1.08rem, 4.7vw, 1.22rem);
+      font-size: var(--hero-headline-small-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline span:first-child {
-      font-size: clamp(2.1rem, 9.2vw, 2.46rem);
+      font-size: var(--hero-headline-script-small-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline .hero-home-headline-accent {
-      font-size: clamp(1.02rem, 4.48vw, 1.18rem);
+      font-size: var(--hero-headline-accent-small-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-product-callout {
-      top: calc(var(--header-height-mobile, 118px) + clamp(248px, 30svh, 298px));
-      width: clamp(148px, 44vw, 174px);
+      top: var(--hero-product-small-top);
+      width: var(--hero-product-small-width);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note {
-      max-width: 128px;
-      padding: 5px 8px;
-      font-size: 0.53rem;
+      max-width: var(--hero-note-small-max-width);
+      padding: var(--hero-note-small-padding);
+      font-size: var(--hero-note-small-font-size);
     }
   }
 
   @media (min-width: 768px) {
     #shopify-section-{{ section.id }}.milaura-hero-homepage {
-      margin-top: calc(-1 * var(--header-height-tablet, 132px)) !important;
+      margin-top: calc(-1 * var(--hero-section-overlap-tablet)) !important;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-shell {
-      padding: calc(var(--header-height-tablet, 132px) + 48px) 48px 74px;
+      padding: var(--hero-shell-tablet-padding);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-inner {
@@ -1209,7 +1358,7 @@
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-img {
-      object-position: left center;
+      object-position: var(--hero-image-tablet-object-position);
       transform: none;
       -webkit-mask-image: none;
       mask-image: none;
@@ -1221,16 +1370,16 @@
 
     #MilauraHeroHome-{{ section.id }} .hero-home-product-callout {
       position: absolute;
-      right: clamp(28px, 5vw, 92px);
-      top: calc(var(--header-height-tablet, 132px) + clamp(322px, 39svh, 430px));
+      right: var(--hero-product-tablet-right);
+      top: var(--hero-product-tablet-top);
       bottom: auto;
-      width: clamp(176px, 16vw, 238px);
+      width: var(--hero-product-tablet-width);
       gap: 8px;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-ring-cutout {
       filter: drop-shadow(0 24px 34px rgba(8, 35, 43, 0.20));
-      transform: rotate(7deg);
+      transform: var(--hero-ring-tablet-transform);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-stone-name {
@@ -1243,17 +1392,17 @@
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline {
       position: absolute;
-      top: calc(var(--header-height-tablet, 132px) + clamp(88px, 12svh, 128px));
-      right: clamp(54px, 8vw, 128px);
-      width: clamp(250px, 24vw, 318px);
-      min-height: clamp(144px, 13vw, 174px);
+      top: var(--hero-headline-tablet-top);
+      right: var(--hero-headline-tablet-right);
+      width: var(--hero-headline-tablet-width);
+      min-height: var(--hero-headline-tablet-min-height);
       max-width: 318px;
       padding: 18px 20px;
-      font-size: clamp(1.65rem, 1.95vw, 2.25rem);
+      font-size: var(--hero-headline-tablet-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline span:first-child {
-      font-size: clamp(4.3rem, 5vw, 5.8rem);
+      font-size: var(--hero-headline-script-tablet-font-size);
       font-weight: 500;
       -webkit-text-stroke: 0;
       text-shadow: 0 10px 18px rgba(60, 27, 70, 0.22);
@@ -1264,34 +1413,34 @@
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline .hero-home-headline-accent {
-      font-size: clamp(1.68rem, 1.95vw, 2.24rem);
+      font-size: var(--hero-headline-accent-tablet-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--stone::before {
-      left: calc(100% + 46px);
-      top: calc(50% - 4px);
+      left: var(--hero-stone-note-tablet-dot-left);
+      top: var(--hero-stone-note-tablet-dot-top);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--stone::after {
-      width: 52px;
-      transform: rotate(0deg);
+      width: var(--hero-stone-note-tablet-line-width);
+      transform: rotate(var(--hero-stone-note-tablet-line-angle));
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal {
-      top: 42%;
-      right: 84%;
+      top: var(--hero-metal-note-tablet-top);
+      right: var(--hero-metal-note-tablet-right);
       bottom: auto;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal::before {
-      left: calc(100% + 38px);
-      top: calc(50% - 12px);
+      left: var(--hero-metal-note-tablet-dot-left);
+      top: var(--hero-metal-note-tablet-dot-top);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal::after {
-      top: 45%;
-      width: 42px;
-      transform: rotate(-16deg);
+      top: var(--hero-metal-note-tablet-line-top);
+      width: var(--hero-metal-note-tablet-line-width);
+      transform: rotate(var(--hero-metal-note-tablet-line-angle));
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-action-row {
@@ -1299,7 +1448,7 @@
       z-index: 7;
       top: auto;
       right: auto;
-      bottom: calc(34px + env(safe-area-inset-bottom));
+      bottom: var(--hero-cta-tablet-bottom);
       left: 50%;
       width: auto;
       grid-template-columns: 1fr;
@@ -1309,10 +1458,10 @@
 
     #MilauraHeroHome-{{ section.id }} .hero-home-cta {
       width: auto;
-      min-width: 286px;
-      min-height: 66px;
-      padding: 18px 44px;
-      font: 700 24px/0.9 var(--milaura-font-script) !important;
+      min-width: var(--hero-cta-tablet-min-width);
+      min-height: var(--hero-cta-tablet-min-height);
+      padding: var(--hero-cta-tablet-padding);
+      font: 700 var(--hero-cta-tablet-font-size)/0.9 var(--milaura-font-script) !important;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-cta span {
@@ -1322,13 +1471,13 @@
 
   @media (min-width: 1100px) {
     #shopify-section-{{ section.id }}.milaura-hero-homepage {
-      margin-top: calc(-1 * var(--header-height-desktop, 166px)) !important;
+      margin-top: calc(-1 * var(--hero-section-overlap-desktop)) !important;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-hook {
       display: grid;
-      min-height: calc(var(--header-height-desktop, 166px) + clamp(20px, 1.9svh, 28px));
-      padding: calc(var(--header-height-desktop, 166px) - 30px) clamp(108px, 8vw, 172px) 2px;
+      min-height: var(--hero-top-hook-desktop-min-height);
+      padding: var(--hero-top-hook-desktop-padding);
       background:
         linear-gradient(103deg, rgba(255, 250, 232, 0.92), rgba(239, 205, 139, 0.84) 44%, rgba(240, 216, 237, 0.72) 100%),
         linear-gradient(90deg, rgba(255, 255, 255, 0.36), transparent 68%);
@@ -1339,20 +1488,20 @@
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-hook::before {
-      inset: calc(var(--header-height-desktop, 166px) - 31px) clamp(70px, 6vw, 132px) 3px;
+      inset: var(--hero-top-hook-desktop-before-inset);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-logo {
       display: block;
-      right: clamp(36px, 4.2vw, 78px);
-      bottom: calc(-1 * clamp(38px, 4.3vw, 58px));
-      width: clamp(82px, 5.8vw, 108px);
+      right: var(--hero-top-logo-desktop-right);
+      bottom: var(--hero-top-logo-desktop-bottom);
+      width: var(--hero-top-logo-desktop-width);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-wordmark {
       display: block;
-      right: clamp(42px, 4.5vw, 84px);
-      bottom: -20px;
+      right: var(--hero-top-wordmark-desktop-right);
+      bottom: var(--hero-top-wordmark-desktop-bottom);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-copy {
@@ -1360,19 +1509,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: clamp(14px, 1.6vw, 28px);
-      width: min(100%, 1120px);
+      gap: var(--hero-top-copy-desktop-gap);
+      width: var(--hero-top-copy-desktop-width);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-kicker {
       transform: none;
       white-space: nowrap;
-      font-size: clamp(1.62rem, 1.7vw, 2.15rem);
+      font-size: var(--hero-top-kicker-desktop-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-kicker::before {
-      width: 15px;
-      height: 15px;
+      width: var(--hero-top-icon-desktop-size);
+      height: var(--hero-top-icon-desktop-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-phrase {
@@ -1383,106 +1532,106 @@
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-line,
     #MilauraHeroHome-{{ section.id }} .hero-home-top-highlight {
-      font-size: clamp(1.78rem, 2vw, 2.58rem);
+      font-size: var(--hero-top-phrase-desktop-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-brand {
       position: absolute;
-      right: clamp(138px, 10vw, 220px);
-      bottom: 8px;
+      right: var(--hero-top-brand-desktop-right);
+      bottom: var(--hero-top-brand-desktop-bottom);
       z-index: 5;
       margin-top: 0;
       transform: none;
       white-space: nowrap;
-      font-size: clamp(0.68rem, 0.62vw, 0.78rem);
+      font-size: var(--hero-top-brand-desktop-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-top-brand-name {
-      font-size: clamp(1.52rem, 1.35vw, 1.92rem);
+      font-size: var(--hero-top-brand-name-desktop-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-shell {
-      padding: calc(var(--header-height-desktop, 166px) + 46px) 70px 76px;
+      padding: var(--hero-shell-desktop-padding);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-img {
-      height: calc(100% + 72px);
-      object-position: left top;
-      transform: translateY(42px);
+      height: var(--hero-image-desktop-height);
+      object-position: var(--hero-image-desktop-object-position);
+      transform: var(--hero-image-desktop-transform);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-inner {
-      grid-template-columns: minmax(520px, 1.02fr) minmax(440px, 0.66fr);
-      gap: 54px;
+      grid-template-columns: var(--hero-inner-desktop-columns);
+      gap: var(--hero-inner-desktop-gap);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-product-callout {
-      right: clamp(46px, 4.8vw, 96px);
-      top: calc(var(--header-height-desktop, 166px) + clamp(206px, 24svh, 300px));
-      width: clamp(392px, 28vw, 512px);
+      right: var(--hero-product-desktop-right);
+      top: var(--hero-product-desktop-top);
+      width: var(--hero-product-desktop-width);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline {
-      top: calc(var(--header-height-desktop, 166px) + clamp(76px, 10svh, 118px));
-      right: clamp(112px, 10vw, 202px);
-      width: clamp(340px, 29vw, 520px);
-      min-height: clamp(164px, 13vw, 218px);
+      top: var(--hero-headline-desktop-top);
+      right: var(--hero-headline-desktop-right);
+      width: var(--hero-headline-desktop-width);
+      min-height: var(--hero-headline-desktop-min-height);
       max-width: 520px;
-      font-size: clamp(1.82rem, 2.05vw, 2.42rem);
+      font-size: var(--hero-headline-desktop-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline span:first-child {
-      font-size: clamp(4.82rem, 5.25vw, 6.18rem);
+      font-size: var(--hero-headline-script-desktop-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-headline .hero-home-headline-accent {
-      font-size: clamp(1.82rem, 2.05vw, 2.42rem);
+      font-size: var(--hero-headline-accent-desktop-font-size);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--stone {
-      top: 16%;
-      right: 61%;
+      top: var(--hero-stone-note-desktop-top);
+      right: var(--hero-stone-note-desktop-right);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--stone::before {
-      left: calc(100% + 40px);
-      top: calc(50% - 5px);
+      left: var(--hero-stone-note-desktop-dot-left);
+      top: var(--hero-stone-note-desktop-dot-top);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--stone::after {
-      width: 46px;
-      transform: rotate(-2deg);
+      width: var(--hero-stone-note-desktop-line-width);
+      transform: rotate(var(--hero-stone-note-desktop-line-angle));
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal {
-      top: 38%;
-      right: 74%;
+      top: var(--hero-metal-note-desktop-top);
+      right: var(--hero-metal-note-desktop-right);
       bottom: auto;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal::before {
-      left: calc(100% + 32px);
-      top: calc(50% - 10px);
+      left: var(--hero-metal-note-desktop-dot-left);
+      top: var(--hero-metal-note-desktop-dot-top);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-feature-note--metal::after {
-      top: 46%;
-      width: 38px;
-      transform: rotate(-10deg);
+      top: var(--hero-metal-note-desktop-line-top);
+      width: var(--hero-metal-note-desktop-line-width);
+      transform: rotate(var(--hero-metal-note-desktop-line-angle));
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-action-row {
-      bottom: calc(42px + env(safe-area-inset-bottom));
+      bottom: var(--hero-cta-desktop-bottom);
       left: 50%;
       right: auto;
       transform: translateX(-50%);
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-cta {
-      min-width: 318px;
-      min-height: 72px;
-      padding: 20px 48px;
-      font: 700 26px/0.9 var(--milaura-font-script) !important;
+      min-width: var(--hero-cta-desktop-min-width);
+      min-height: var(--hero-cta-desktop-min-height);
+      padding: var(--hero-cta-desktop-padding);
+      font: 700 var(--hero-cta-desktop-font-size)/0.9 var(--milaura-font-script) !important;
     }
 
     #MilauraHeroHome-{{ section.id }} .hero-home-cta span {
@@ -1515,7 +1664,7 @@
           {%- endif -%}
         </span>
         <span class="hero-home-top-brand">
-          <span class="hero-home-top-brand-prefix">par</span>
+          <span class="hero-home-top-brand-prefix">{{ top_hook_brand_prefix }}</span>
           <span class="hero-home-top-brand-name">{{ top_hook_brand_name }}</span>
         </span>
         {%- if section.settings.top_hook_meta != blank -%}
@@ -1584,7 +1733,7 @@
           {%- endif -%}
 
           <a href="{{ cta_url }}" class="hero-home-cta">
-            <span>D&eacute;couvrir cette cr&eacute;ation</span>
+            <span>{{ cta_text }}</span>
           </a>
         </div>
 
@@ -1600,33 +1749,65 @@
       </div>
 
       <div class="hero-home-visual-col">
-        {%- if hero_image != blank -%}
+        {%- if hero_image != blank or section.settings.hero_image_desktop != blank or section.settings.hero_image_mobile != blank -%}
           <div class="hero-home-visual">
             <picture class="hero-home-picture">
-              <source media="(min-width: 768px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.png' | asset_url }}">
-              <source media="(max-width: 767px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-mobile-v5-clean.png' | asset_url }}">
-              <img
-                class="hero-home-img"
-                src="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.png' | asset_url }}"
-                alt="{{ section.settings.image_alt | default: product.title | default: section.settings.headline | strip_html | escape }}"
-                width="1672"
-                height="941"
-                loading="eager"
-                fetchpriority="high"
-              >
+              {%- if section.settings.hero_image_desktop != blank -%}
+                <source media="(min-width: 768px)" srcset="{{ section.settings.hero_image_desktop | image_url: width: 2000 }}">
+              {%- else -%}
+                <source media="(min-width: 768px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.png' | asset_url }}">
+              {%- endif -%}
+              {%- if section.settings.hero_image_mobile != blank -%}
+                <source media="(max-width: 767px)" srcset="{{ section.settings.hero_image_mobile | image_url: width: 1200 }}">
+              {%- else -%}
+                <source media="(max-width: 767px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-mobile-v5-clean.png' | asset_url }}">
+              {%- endif -%}
+              {%- if section.settings.hero_image_desktop != blank -%}
+                <img
+                  class="hero-home-img"
+                  src="{{ section.settings.hero_image_desktop | image_url: width: 2000 }}"
+                  alt="{{ section.settings.image_alt | default: product.title | default: section.settings.headline | strip_html | escape }}"
+                  width="1672"
+                  height="941"
+                  loading="eager"
+                  fetchpriority="high"
+                >
+              {%- else -%}
+                <img
+                  class="hero-home-img"
+                  src="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.png' | asset_url }}"
+                  alt="{{ section.settings.image_alt | default: product.title | default: section.settings.headline | strip_html | escape }}"
+                  width="1672"
+                  height="941"
+                  loading="eager"
+                  fetchpriority="high"
+                >
+              {%- endif -%}
             </picture>
             <div class="hero-home-product-callout">
-              <img
-                class="hero-home-ring-cutout"
-                src="{{ 'milaura-aigue-marine-ring-cutout-v1.webp' | asset_url }}"
-                alt=""
-                width="1122"
-                height="1402"
-                loading="eager"
-                aria-hidden="true"
-              >
-              <span class="hero-home-feature-note hero-home-feature-note--stone">Aigue Marine Grade AA</span>
-              <span class="hero-home-feature-note hero-home-feature-note--metal">Argent rhodi&eacute; 925</span>
+              {%- if section.settings.ring_cutout_image != blank -%}
+                <img
+                  class="hero-home-ring-cutout"
+                  src="{{ section.settings.ring_cutout_image | image_url: width: 1200 }}"
+                  alt=""
+                  width="1122"
+                  height="1402"
+                  loading="eager"
+                  aria-hidden="true"
+                >
+              {%- else -%}
+                <img
+                  class="hero-home-ring-cutout"
+                  src="{{ 'milaura-aigue-marine-ring-cutout-v1.webp' | asset_url }}"
+                  alt=""
+                  width="1122"
+                  height="1402"
+                  loading="eager"
+                  aria-hidden="true"
+                >
+              {%- endif -%}
+              <span class="hero-home-feature-note hero-home-feature-note--stone">{{ product_note }}</span>
+              <span class="hero-home-feature-note hero-home-feature-note--metal">{{ product_material_note }}</span>
             </div>
           </div>
         {%- endif -%}
@@ -1680,6 +1861,21 @@
       "label": "Image (fallback si pas de produit)"
     },
     {
+      "type": "image_picker",
+      "id": "hero_image_desktop",
+      "label": "Image hero desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mobile",
+      "label": "Image hero mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_cutout_image",
+      "label": "Image bague detouree"
+    },
+    {
       "type": "text",
       "id": "badge_text",
       "label": "Badge (vide = cache)",
@@ -1695,19 +1891,25 @@
       "type": "text",
       "id": "top_hook_kicker",
       "label": "Hook haut mobile ligne selection",
-      "default": "Selection ete 2026"
+      "default": "Sélection estivale 2026"
     },
     {
       "type": "text",
       "id": "top_hook_text",
       "label": "Hook haut mobile ligne 1",
-      "default": "Votre bijou de l'ete"
+      "default": "Le bijou de"
     },
     {
       "type": "text",
       "id": "top_hook_highlight",
       "label": "Hook haut mobile mot surligne",
-      "default": "de l'ete"
+      "default": "l'été"
+    },
+    {
+      "type": "text",
+      "id": "top_hook_brand_prefix",
+      "label": "Hook haut prefixe marque",
+      "default": "par"
     },
     {
       "type": "text",
@@ -1719,7 +1921,7 @@
       "type": "text",
       "id": "top_hook_meta",
       "label": "Hook haut mobile preuve produit",
-      "default": "Aigue-marine AA | Argent rhodie 925"
+      "default": "Aigue-marine AA | Argent rhodié 925"
     },
     {
       "type": "inline_richtext",
@@ -1731,19 +1933,19 @@
       "type": "text",
       "id": "headline_line_1",
       "label": "Titre ligne 1",
-      "default": "Je suis"
+      "default": "MilAura"
     },
     {
       "type": "text",
       "id": "headline_line_2",
       "label": "Titre ligne 2",
-      "default": "la bague"
+      "default": "Qui sera la plus belle"
     },
     {
       "type": "text",
       "id": "headline_line_3",
       "label": "Titre ligne 3",
-      "default": "de l'ete"
+      "default": "sur la plage cet été ?"
     },
     {
       "type": "text",
@@ -1797,13 +1999,13 @@
       "type": "text",
       "id": "product_note",
       "label": "Libelle produit ligne 1",
-      "default": "AIGUE MARINE"
+      "default": "Aigue Marine Grade AA"
     },
     {
       "type": "text",
       "id": "product_material_note",
       "label": "Libelle produit ligne 2",
-      "default": "Argent rhodie 925"
+      "default": "Argent rhodié 925"
     },
     {
       "type": "text",
@@ -1827,12 +2029,926 @@
       "type": "text",
       "id": "cta_text",
       "label": "Texte du bouton",
-      "default": "Decouvrir cette creation"
+      "default": "Découvrir cette création"
     },
     {
       "type": "url",
       "id": "cta_url",
       "label": "URL du bouton (vide = lien produit)"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "color_hero_background",
+      "label": "Fond principal",
+      "default": "#bceff1"
+    },
+    {
+      "type": "color",
+      "id": "color_hero_text",
+      "label": "Texte principal",
+      "default": "#071d25"
+    },
+    {
+      "type": "color",
+      "id": "color_script_text",
+      "label": "Texte script MilAura",
+      "default": "#54305d"
+    },
+    {
+      "type": "color",
+      "id": "color_banner_wordmark",
+      "label": "Wordmark bandeau",
+      "default": "#b28a38"
+    },
+    {
+      "type": "text",
+      "id": "color_top_line",
+      "label": "Couleur ligne bandeau",
+      "default": "rgba(8, 35, 43, 0.86)"
+    },
+    {
+      "type": "text",
+      "id": "color_top_brand",
+      "label": "Couleur prefixe marque",
+      "default": "rgba(8, 35, 43, 0.78)"
+    },
+    {
+      "type": "color",
+      "id": "color_pill_text",
+      "label": "Texte pills produit",
+      "default": "#54305d"
+    },
+    {
+      "type": "color",
+      "id": "color_product_text",
+      "label": "Texte produit dore",
+      "default": "#b18a3a"
+    },
+    {
+      "type": "color",
+      "id": "color_highlight_start",
+      "label": "Surlignage debut",
+      "default": "#53dce8"
+    },
+    {
+      "type": "color",
+      "id": "color_highlight_end",
+      "label": "Surlignage fin",
+      "default": "#f5d27e"
+    },
+    {
+      "type": "text",
+      "id": "headline_accent_background",
+      "label": "Fond titre accent",
+      "default": "linear-gradient(135deg, rgba(83, 220, 232, 0.76), rgba(245, 210, 126, 0.82))"
+    },
+    {
+      "type": "header",
+      "content": "Layout avance"
+    },
+    {
+      "type": "paragraph",
+      "content": "Ces champs acceptent des valeurs CSS completes afin de conserver les calc(), clamp(), svh et env() du rendu valide."
+    },
+    {
+      "type": "text",
+      "id": "section_overlap_mobile",
+      "label": "Overlap section mobile",
+      "default": "var(--milaura-hero-overlap-mobile, 306px)"
+    },
+    {
+      "type": "text",
+      "id": "section_overlap_tablet",
+      "label": "Overlap section tablette",
+      "default": "var(--header-height-tablet, 132px)"
+    },
+    {
+      "type": "text",
+      "id": "section_overlap_desktop",
+      "label": "Overlap section desktop",
+      "default": "var(--header-height-desktop, 166px)"
+    },
+    {
+      "type": "text",
+      "id": "shell_mobile_padding",
+      "label": "Padding shell mobile",
+      "default": "calc(var(--header-height-mobile, 118px) + 22px) 18px calc(104px + env(safe-area-inset-bottom))"
+    },
+    {
+      "type": "text",
+      "id": "shell_small_padding",
+      "label": "Padding shell petit mobile",
+      "default": "calc(var(--header-height-mobile, 118px) + 22px) 14px calc(96px + env(safe-area-inset-bottom))"
+    },
+    {
+      "type": "text",
+      "id": "shell_tablet_padding",
+      "label": "Padding shell tablette",
+      "default": "calc(var(--header-height-tablet, 132px) + 48px) 48px 74px"
+    },
+    {
+      "type": "text",
+      "id": "shell_desktop_padding",
+      "label": "Padding shell desktop",
+      "default": "calc(var(--header-height-desktop, 166px) + 46px) 70px 76px"
+    },
+    {
+      "type": "text",
+      "id": "inner_desktop_columns",
+      "label": "Colonnes desktop",
+      "default": "minmax(520px, 1.02fr) minmax(440px, 0.66fr)"
+    },
+    {
+      "type": "text",
+      "id": "inner_desktop_gap",
+      "label": "Gap desktop",
+      "default": "54px"
+    },
+    {
+      "type": "header",
+      "content": "Image fond"
+    },
+    {
+      "type": "text",
+      "id": "image_mobile_object_position",
+      "label": "Position image mobile",
+      "default": "center top"
+    },
+    {
+      "type": "text",
+      "id": "image_mobile_transform",
+      "label": "Transform image mobile",
+      "default": "translateY(150px) scale(1.01)"
+    },
+    {
+      "type": "text",
+      "id": "image_mobile_mask_stop",
+      "label": "Stop masque image mobile",
+      "default": "142px"
+    },
+    {
+      "type": "text",
+      "id": "image_tablet_object_position",
+      "label": "Position image tablette",
+      "default": "left center"
+    },
+    {
+      "type": "text",
+      "id": "image_desktop_object_position",
+      "label": "Position image desktop",
+      "default": "left top"
+    },
+    {
+      "type": "text",
+      "id": "image_desktop_transform",
+      "label": "Transform image desktop",
+      "default": "translateY(42px)"
+    },
+    {
+      "type": "text",
+      "id": "image_desktop_height",
+      "label": "Hauteur image desktop",
+      "default": "calc(100% + 72px)"
+    },
+    {
+      "type": "header",
+      "content": "Bandeau"
+    },
+    {
+      "type": "text",
+      "id": "top_hook_mobile_min_height",
+      "label": "Hauteur bandeau mobile",
+      "default": "calc(var(--header-height-mobile, 80px) + clamp(76px, 10svh, 92px))"
+    },
+    {
+      "type": "text",
+      "id": "top_hook_mobile_padding",
+      "label": "Padding bandeau mobile",
+      "default": "calc(var(--header-height-mobile, 80px) + 6px) 96px 10px 24px"
+    },
+    {
+      "type": "text",
+      "id": "top_logo_mobile_right",
+      "label": "Logo mobile droite",
+      "default": "clamp(12px, 4vw, 24px)"
+    },
+    {
+      "type": "text",
+      "id": "top_logo_mobile_bottom",
+      "label": "Logo mobile bas",
+      "default": "calc(-1 * clamp(50px, 11.6vw, 68px))"
+    },
+    {
+      "type": "text",
+      "id": "top_logo_mobile_width",
+      "label": "Logo mobile largeur",
+      "default": "clamp(78px, 22vw, 104px)"
+    },
+    {
+      "type": "text",
+      "id": "top_kicker_mobile_font_size",
+      "label": "Kicker mobile taille",
+      "default": "28px"
+    },
+    {
+      "type": "text",
+      "id": "top_kicker_mobile_transform",
+      "label": "Kicker mobile transform",
+      "default": "translate(22px, -34px)"
+    },
+    {
+      "type": "text",
+      "id": "top_phrase_mobile_margin_top",
+      "label": "Phrase mobile marge haut",
+      "default": "-28px"
+    },
+    {
+      "type": "text",
+      "id": "top_brand_mobile_transform",
+      "label": "Marque mobile transform",
+      "default": "translateX(44px)"
+    },
+    {
+      "type": "text",
+      "id": "top_hook_desktop_min_height",
+      "label": "Hauteur bandeau desktop",
+      "default": "calc(var(--header-height-desktop, 166px) + clamp(20px, 1.9svh, 28px))"
+    },
+    {
+      "type": "text",
+      "id": "top_hook_desktop_padding",
+      "label": "Padding bandeau desktop",
+      "default": "calc(var(--header-height-desktop, 166px) - 30px) clamp(108px, 8vw, 172px) 2px"
+    },
+    {
+      "type": "text",
+      "id": "top_hook_desktop_before_inset",
+      "label": "Inset trait bandeau desktop",
+      "default": "calc(var(--header-height-desktop, 166px) - 31px) clamp(70px, 6vw, 132px) 3px"
+    },
+    {
+      "type": "text",
+      "id": "top_logo_desktop_right",
+      "label": "Logo desktop droite",
+      "default": "clamp(36px, 4.2vw, 78px)"
+    },
+    {
+      "type": "text",
+      "id": "top_logo_desktop_bottom",
+      "label": "Logo desktop bas",
+      "default": "calc(-1 * clamp(38px, 4.3vw, 58px))"
+    },
+    {
+      "type": "text",
+      "id": "top_logo_desktop_width",
+      "label": "Logo desktop largeur",
+      "default": "clamp(82px, 5.8vw, 108px)"
+    },
+    {
+      "type": "text",
+      "id": "top_wordmark_desktop_right",
+      "label": "Wordmark desktop droite",
+      "default": "clamp(42px, 4.5vw, 84px)"
+    },
+    {
+      "type": "text",
+      "id": "top_wordmark_desktop_bottom",
+      "label": "Wordmark desktop bas",
+      "default": "-20px"
+    },
+    {
+      "type": "text",
+      "id": "top_copy_desktop_gap",
+      "label": "Bandeau desktop gap",
+      "default": "clamp(14px, 1.6vw, 28px)"
+    },
+    {
+      "type": "text",
+      "id": "top_copy_desktop_width",
+      "label": "Bandeau desktop largeur texte",
+      "default": "min(100%, 1120px)"
+    },
+    {
+      "type": "text",
+      "id": "top_kicker_desktop_font_size",
+      "label": "Kicker desktop taille",
+      "default": "clamp(1.62rem, 1.7vw, 2.15rem)"
+    },
+    {
+      "type": "text",
+      "id": "top_icon_desktop_size",
+      "label": "Icone soleil desktop",
+      "default": "15px"
+    },
+    {
+      "type": "text",
+      "id": "top_phrase_desktop_font_size",
+      "label": "Phrase desktop taille",
+      "default": "clamp(1.78rem, 2vw, 2.58rem)"
+    },
+    {
+      "type": "text",
+      "id": "top_brand_desktop_right",
+      "label": "Marque desktop droite",
+      "default": "clamp(138px, 10vw, 220px)"
+    },
+    {
+      "type": "text",
+      "id": "top_brand_desktop_bottom",
+      "label": "Marque desktop bas",
+      "default": "8px"
+    },
+    {
+      "type": "text",
+      "id": "top_brand_desktop_font_size",
+      "label": "Prefixe marque desktop taille",
+      "default": "clamp(0.68rem, 0.62vw, 0.78rem)"
+    },
+    {
+      "type": "text",
+      "id": "top_brand_name_desktop_font_size",
+      "label": "Nom marque desktop taille",
+      "default": "clamp(1.52rem, 1.35vw, 1.92rem)"
+    },
+    {
+      "type": "header",
+      "content": "Produit detoure"
+    },
+    {
+      "type": "text",
+      "id": "product_mobile_top",
+      "label": "Produit mobile haut",
+      "default": "calc(var(--header-height-mobile, 118px) + clamp(258px, 31svh, 318px))"
+    },
+    {
+      "type": "text",
+      "id": "product_mobile_right",
+      "label": "Produit mobile droite",
+      "default": "clamp(0px, 1.4vw, 8px)"
+    },
+    {
+      "type": "text",
+      "id": "product_mobile_width",
+      "label": "Produit mobile largeur",
+      "default": "clamp(162px, 45vw, 202px)"
+    },
+    {
+      "type": "text",
+      "id": "product_small_top",
+      "label": "Produit petit mobile haut",
+      "default": "calc(var(--header-height-mobile, 118px) + clamp(248px, 30svh, 298px))"
+    },
+    {
+      "type": "text",
+      "id": "product_small_width",
+      "label": "Produit petit mobile largeur",
+      "default": "clamp(148px, 44vw, 174px)"
+    },
+    {
+      "type": "text",
+      "id": "product_tablet_right",
+      "label": "Produit tablette droite",
+      "default": "clamp(28px, 5vw, 92px)"
+    },
+    {
+      "type": "text",
+      "id": "product_tablet_top",
+      "label": "Produit tablette haut",
+      "default": "calc(var(--header-height-tablet, 132px) + clamp(322px, 39svh, 430px))"
+    },
+    {
+      "type": "text",
+      "id": "product_tablet_width",
+      "label": "Produit tablette largeur",
+      "default": "clamp(176px, 16vw, 238px)"
+    },
+    {
+      "type": "text",
+      "id": "product_desktop_right",
+      "label": "Produit desktop droite",
+      "default": "clamp(46px, 4.8vw, 96px)"
+    },
+    {
+      "type": "text",
+      "id": "product_desktop_top",
+      "label": "Produit desktop haut",
+      "default": "calc(var(--header-height-desktop, 166px) + clamp(206px, 24svh, 300px))"
+    },
+    {
+      "type": "text",
+      "id": "product_desktop_width",
+      "label": "Produit desktop largeur",
+      "default": "clamp(392px, 28vw, 512px)"
+    },
+    {
+      "type": "text",
+      "id": "ring_mobile_transform",
+      "label": "Bague mobile rotation",
+      "default": "rotate(6deg)"
+    },
+    {
+      "type": "text",
+      "id": "ring_tablet_transform",
+      "label": "Bague tablette rotation",
+      "default": "rotate(7deg)"
+    },
+    {
+      "type": "header",
+      "content": "Titre et CTA"
+    },
+    {
+      "type": "text",
+      "id": "headline_mobile_top",
+      "label": "Titre mobile haut",
+      "default": "calc(var(--header-height-mobile, 118px) + clamp(122px, 15svh, 154px))"
+    },
+    {
+      "type": "text",
+      "id": "headline_mobile_right",
+      "label": "Titre mobile droite",
+      "default": "clamp(-8px, -1vw, 2px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_mobile_width",
+      "label": "Titre mobile largeur",
+      "default": "clamp(188px, 52vw, 218px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_mobile_font_size",
+      "label": "Titre mobile taille",
+      "default": "clamp(1.28rem, 5.5vw, 1.58rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_script_mobile_font_size",
+      "label": "MilAura mobile taille",
+      "default": "clamp(2.42rem, 10.6vw, 3.12rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_accent_mobile_font_size",
+      "label": "Accent mobile taille",
+      "default": "clamp(1.22rem, 5.2vw, 1.48rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_small_top",
+      "label": "Titre petit mobile haut",
+      "default": "calc(var(--header-height-mobile, 118px) + clamp(116px, 14.5svh, 142px))"
+    },
+    {
+      "type": "text",
+      "id": "headline_small_right",
+      "label": "Titre petit mobile droite",
+      "default": "-6px"
+    },
+    {
+      "type": "text",
+      "id": "headline_small_width",
+      "label": "Titre petit mobile largeur",
+      "default": "clamp(172px, 49vw, 194px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_small_font_size",
+      "label": "Titre petit mobile taille",
+      "default": "clamp(1.08rem, 4.7vw, 1.22rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_script_small_font_size",
+      "label": "MilAura petit mobile taille",
+      "default": "clamp(2.1rem, 9.2vw, 2.46rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_accent_small_font_size",
+      "label": "Accent petit mobile taille",
+      "default": "clamp(1.02rem, 4.48vw, 1.18rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_tablet_top",
+      "label": "Titre tablette haut",
+      "default": "calc(var(--header-height-tablet, 132px) + clamp(88px, 12svh, 128px))"
+    },
+    {
+      "type": "text",
+      "id": "headline_tablet_right",
+      "label": "Titre tablette droite",
+      "default": "clamp(54px, 8vw, 128px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_tablet_width",
+      "label": "Titre tablette largeur",
+      "default": "clamp(250px, 24vw, 318px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_tablet_min_height",
+      "label": "Titre tablette hauteur min",
+      "default": "clamp(144px, 13vw, 174px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_tablet_font_size",
+      "label": "Titre tablette taille",
+      "default": "clamp(1.65rem, 1.95vw, 2.25rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_script_tablet_font_size",
+      "label": "MilAura tablette taille",
+      "default": "clamp(4.3rem, 5vw, 5.8rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_accent_tablet_font_size",
+      "label": "Accent tablette taille",
+      "default": "clamp(1.68rem, 1.95vw, 2.24rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_desktop_top",
+      "label": "Titre desktop haut",
+      "default": "calc(var(--header-height-desktop, 166px) + clamp(76px, 10svh, 118px))"
+    },
+    {
+      "type": "text",
+      "id": "headline_desktop_right",
+      "label": "Titre desktop droite",
+      "default": "clamp(112px, 10vw, 202px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_desktop_width",
+      "label": "Titre desktop largeur",
+      "default": "clamp(340px, 29vw, 520px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_desktop_min_height",
+      "label": "Titre desktop hauteur min",
+      "default": "clamp(164px, 13vw, 218px)"
+    },
+    {
+      "type": "text",
+      "id": "headline_desktop_font_size",
+      "label": "Titre desktop taille",
+      "default": "clamp(1.82rem, 2.05vw, 2.42rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_script_desktop_font_size",
+      "label": "MilAura desktop taille",
+      "default": "clamp(4.82rem, 5.25vw, 6.18rem)"
+    },
+    {
+      "type": "text",
+      "id": "headline_accent_desktop_font_size",
+      "label": "Accent desktop taille",
+      "default": "clamp(1.82rem, 2.05vw, 2.42rem)"
+    },
+    {
+      "type": "text",
+      "id": "cta_mobile_min_width",
+      "label": "CTA mobile largeur min",
+      "default": "188px"
+    },
+    {
+      "type": "text",
+      "id": "cta_mobile_min_height",
+      "label": "CTA mobile hauteur min",
+      "default": "56px"
+    },
+    {
+      "type": "text",
+      "id": "cta_mobile_padding",
+      "label": "CTA mobile padding",
+      "default": "15px 30px"
+    },
+    {
+      "type": "text",
+      "id": "cta_mobile_font_size",
+      "label": "CTA mobile taille",
+      "default": "22px"
+    },
+    {
+      "type": "text",
+      "id": "cta_tablet_bottom",
+      "label": "CTA tablette bas",
+      "default": "calc(34px + env(safe-area-inset-bottom))"
+    },
+    {
+      "type": "text",
+      "id": "cta_tablet_min_width",
+      "label": "CTA tablette largeur min",
+      "default": "286px"
+    },
+    {
+      "type": "text",
+      "id": "cta_tablet_min_height",
+      "label": "CTA tablette hauteur min",
+      "default": "66px"
+    },
+    {
+      "type": "text",
+      "id": "cta_tablet_padding",
+      "label": "CTA tablette padding",
+      "default": "18px 44px"
+    },
+    {
+      "type": "text",
+      "id": "cta_tablet_font_size",
+      "label": "CTA tablette taille",
+      "default": "24px"
+    },
+    {
+      "type": "text",
+      "id": "cta_desktop_bottom",
+      "label": "CTA desktop bas",
+      "default": "calc(42px + env(safe-area-inset-bottom))"
+    },
+    {
+      "type": "text",
+      "id": "cta_desktop_min_width",
+      "label": "CTA desktop largeur min",
+      "default": "318px"
+    },
+    {
+      "type": "text",
+      "id": "cta_desktop_min_height",
+      "label": "CTA desktop hauteur min",
+      "default": "72px"
+    },
+    {
+      "type": "text",
+      "id": "cta_desktop_padding",
+      "label": "CTA desktop padding",
+      "default": "20px 48px"
+    },
+    {
+      "type": "text",
+      "id": "cta_desktop_font_size",
+      "label": "CTA desktop taille",
+      "default": "26px"
+    },
+    {
+      "type": "header",
+      "content": "Pills produit"
+    },
+    {
+      "type": "text",
+      "id": "note_mobile_max_width",
+      "label": "Pill mobile largeur max",
+      "default": "142px"
+    },
+    {
+      "type": "text",
+      "id": "note_mobile_padding",
+      "label": "Pill mobile padding",
+      "default": "6px 9px"
+    },
+    {
+      "type": "text",
+      "id": "note_mobile_font_size",
+      "label": "Pill mobile taille texte",
+      "default": "clamp(0.55rem, 2vw, 0.67rem)"
+    },
+    {
+      "type": "text",
+      "id": "note_small_max_width",
+      "label": "Pill petit mobile largeur max",
+      "default": "128px"
+    },
+    {
+      "type": "text",
+      "id": "note_small_padding",
+      "label": "Pill petit mobile padding",
+      "default": "5px 8px"
+    },
+    {
+      "type": "text",
+      "id": "note_small_font_size",
+      "label": "Pill petit mobile taille texte",
+      "default": "0.53rem"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_mobile_top",
+      "label": "Pill pierre mobile haut",
+      "default": "18%"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_mobile_right",
+      "label": "Pill pierre mobile droite",
+      "default": "68%"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_mobile_line_width",
+      "label": "Trait pierre mobile longueur",
+      "default": "54px"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_mobile_line_angle",
+      "label": "Trait pierre mobile angle",
+      "default": "13deg"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_mobile_right",
+      "label": "Pill metal mobile droite",
+      "default": "72%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_mobile_bottom",
+      "label": "Pill metal mobile bas",
+      "default": "22%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_mobile_dot_left",
+      "label": "Point metal mobile gauche",
+      "default": "calc(100% + 32px)"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_mobile_dot_top",
+      "label": "Point metal mobile haut",
+      "default": "calc(50% - 50px)"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_mobile_line_top",
+      "label": "Trait metal mobile haut",
+      "default": "38%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_mobile_line_width",
+      "label": "Trait metal mobile longueur",
+      "default": "50px"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_mobile_line_angle",
+      "label": "Trait metal mobile angle",
+      "default": "-58deg"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_tablet_dot_left",
+      "label": "Point pierre tablette gauche",
+      "default": "calc(100% + 46px)"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_tablet_dot_top",
+      "label": "Point pierre tablette haut",
+      "default": "calc(50% - 4px)"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_tablet_line_width",
+      "label": "Trait pierre tablette longueur",
+      "default": "52px"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_tablet_line_angle",
+      "label": "Trait pierre tablette angle",
+      "default": "0deg"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_tablet_top",
+      "label": "Pill metal tablette haut",
+      "default": "42%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_tablet_right",
+      "label": "Pill metal tablette droite",
+      "default": "84%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_tablet_dot_left",
+      "label": "Point metal tablette gauche",
+      "default": "calc(100% + 38px)"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_tablet_dot_top",
+      "label": "Point metal tablette haut",
+      "default": "calc(50% - 12px)"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_tablet_line_top",
+      "label": "Trait metal tablette haut",
+      "default": "45%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_tablet_line_width",
+      "label": "Trait metal tablette longueur",
+      "default": "42px"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_tablet_line_angle",
+      "label": "Trait metal tablette angle",
+      "default": "-16deg"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_desktop_top",
+      "label": "Pill pierre desktop haut",
+      "default": "16%"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_desktop_right",
+      "label": "Pill pierre desktop droite",
+      "default": "61%"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_desktop_dot_left",
+      "label": "Point pierre desktop gauche",
+      "default": "calc(100% + 40px)"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_desktop_dot_top",
+      "label": "Point pierre desktop haut",
+      "default": "calc(50% - 5px)"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_desktop_line_width",
+      "label": "Trait pierre desktop longueur",
+      "default": "46px"
+    },
+    {
+      "type": "text",
+      "id": "stone_note_desktop_line_angle",
+      "label": "Trait pierre desktop angle",
+      "default": "-2deg"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_desktop_top",
+      "label": "Pill metal desktop haut",
+      "default": "38%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_desktop_right",
+      "label": "Pill metal desktop droite",
+      "default": "74%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_desktop_dot_left",
+      "label": "Point metal desktop gauche",
+      "default": "calc(100% + 32px)"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_desktop_dot_top",
+      "label": "Point metal desktop haut",
+      "default": "calc(50% - 10px)"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_desktop_line_top",
+      "label": "Trait metal desktop haut",
+      "default": "46%"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_desktop_line_width",
+      "label": "Trait metal desktop longueur",
+      "default": "38px"
+    },
+    {
+      "type": "text",
+      "id": "metal_note_desktop_line_angle",
+      "label": "Trait metal desktop angle",
+      "default": "-10deg"
     }
   ],
   "blocks": [
