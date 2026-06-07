@@ -43,7 +43,14 @@
           assign gift_2_in_cart = true
         endif
       else
-        assign paid_cart_cents = paid_cart_cents | plus: item.original_line_price
+        assign item_paid_line_price = item.final_line_price
+        if item_paid_line_price == blank
+          assign item_paid_line_price = item.line_price
+        endif
+        if item_paid_line_price == blank
+          assign item_paid_line_price = item.original_line_price
+        endif
+        assign paid_cart_cents = paid_cart_cents | plus: item_paid_line_price
         assign paid_cart_signature = paid_cart_signature | append: item.variant_id | append: ':' | append: item.quantity | append: ';'
       endif
     endfor
@@ -514,8 +521,8 @@
 
       var CART_SIGNATURE = root.getAttribute('data-cart-signature') || 'cart';
       var CART_SUBTOTAL = root.getAttribute('data-paid-subtotal-cents') || '0';
-      var STORAGE_KEY = 'milaura-cart-rewards-v2:' + CART_SIGNATURE + ':' + CART_SUBTOTAL;
-      var CLEAR_STORAGE_KEY = STORAGE_KEY + ':stale-clear';
+      var STORAGE_KEY = 'milaura-cart-rewards-v3';
+      var CLEAR_STORAGE_KEY = STORAGE_KEY + ':stale-clear:' + CART_SIGNATURE + ':' + CART_SUBTOTAL;
       var SCRATCH_THRESHOLD = 0.48;
       var SCRATCH_RADIUS = 28;
       var OPEN_LOCK_ICON = '<svg class="milaura-cart-reward__lock-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V8a5 5 0 0 1 9.8-1.4"></path></svg>';
@@ -568,13 +575,93 @@
         if (!cart || !cart.items) return 0;
         return cart.items.reduce(function(total, item) {
           if (isMilAuraGiftItem(item)) return total;
-          return total + (Number(item.original_line_price || item.final_line_price || item.line_price || 0) || 0);
+          return total + paidLinePriceCents(item);
         }, 0);
+      }
+
+      function paidLinePriceCents(item) {
+        if (!item) return 0;
+        if (item.final_line_price !== undefined && item.final_line_price !== null) {
+          return Number(item.final_line_price) || 0;
+        }
+        if (item.line_price !== undefined && item.line_price !== null) {
+          return Number(item.line_price) || 0;
+        }
+        return Number(item.original_line_price || 0) || 0;
       }
 
       function fetchCart() {
         return fetch('/cart.js').then(function(response) {
           return response.ok ? response.json() : null;
+        });
+      }
+
+      function normalizeDiscountCode(code) {
+        return String(code || '').trim().toUpperCase();
+      }
+
+      function uniqueDiscountCodes(codes) {
+        var seen = {};
+        return codes.filter(function(code) {
+          var normalized = normalizeDiscountCode(code);
+          if (!normalized || seen[normalized]) return false;
+          seen[normalized] = true;
+          return true;
+        });
+      }
+
+      function discountPriorityForCard(card) {
+        return parseInt(card && card.getAttribute('data-reward-index'), 10) || 0;
+      }
+
+      function bestDiscountCodeFromCards(excludedIndexes, extraCard) {
+        var excluded = excludedIndexes || [];
+        var candidates = [];
+        cards.forEach(function(card) {
+          var index = card.getAttribute('data-reward-index');
+          if (excluded.indexOf(index) !== -1) return;
+          if (card.getAttribute('data-active') !== 'true') return;
+          if (card.getAttribute('data-discount-code')) candidates.push(card);
+        });
+        if (extraCard && extraCard.getAttribute('data-discount-code')) candidates.push(extraCard);
+        candidates.sort(function(a, b) {
+          return discountPriorityForCard(b) - discountPriorityForCard(a);
+        });
+        return candidates.length ? candidates[0].getAttribute('data-discount-code') : '';
+      }
+
+      function discountCodeAccepted(cart, code) {
+        if (!cart || !code) return false;
+        var target = normalizeDiscountCode(code);
+        var discountCodes = Array.isArray(cart.discount_codes) ? cart.discount_codes : [];
+        var matchingCode = discountCodes.find(function(discount) {
+          return normalizeDiscountCode(discount && discount.code) === target;
+        });
+        if (matchingCode) return matchingCode.applicable !== false;
+
+        var cartLevelApplications = Array.isArray(cart.cart_level_discount_applications) ? cart.cart_level_discount_applications : [];
+        return cartLevelApplications.some(function(application) {
+          return normalizeDiscountCode((application && (application.title || application.code)) || '') === target;
+        });
+      }
+
+      function discountAffectsCartTotal(cart) {
+        if (!cart) return false;
+        if ((Number(cart.total_discount || 0) || 0) > 0) return true;
+        return (cart.items || []).some(function(item) {
+          return (Number(item.total_discount || item.line_level_total_discount || 0) || 0) > 0;
+        });
+      }
+
+      function refreshActiveDiscountCards(activeCards) {
+        var bestCode = bestDiscountCodeFromCards([], null);
+        if (!bestCode) return fetchCart();
+        return fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ discount: bestCode })
+        }).then(function(response) {
+          return response.ok ? response.json() : fetchCart();
         });
       }
 
@@ -608,6 +695,11 @@
 
         var payload = { attributes: attributes };
         if (hasDiscountCard) payload.discount = '';
+        if (hasDiscountCard) {
+          var remainingDiscountCode = bestDiscountCodeFromCards(staleIndexes, null);
+          attributes['Code promo MilAura'] = remainingDiscountCode;
+          payload.discount = remainingDiscountCode;
+        }
 
         return fetch('/cart/update.js', {
           method: 'POST',
@@ -677,19 +769,53 @@
         var rewardIndex = card.getAttribute('data-reward-index');
         if (!code) return Promise.resolve({ type: 'discount', skipped: true });
 
+        var discountPayload = bestDiscountCodeFromCards([rewardIndex], card);
         var attributes = {};
-        attributes['Code promo MilAura'] = code;
+        attributes['Code promo MilAura'] = discountPayload;
         attributes['Carte MilAura ' + rewardIndex] = code;
         return fetch('/cart/update.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            discount: code,
+            discount: discountPayload,
             attributes: attributes
           })
         })
-        .then(function() {
-          return { type: 'discount', code: code };
+        .then(function(response) {
+          return response.json().catch(function() { return {}; }).then(function(cart) {
+            if (!response.ok) {
+              throw new Error((cart && (cart.description || cart.message)) || 'discount_update_failed');
+            }
+            if (normalizeDiscountCode(discountPayload) !== normalizeDiscountCode(code)) {
+              return {
+                type: 'discount',
+                code: code,
+                superseded: true,
+                affectsCartTotal: discountAffectsCartTotal(cart)
+              };
+            }
+            if (!discountCodeAccepted(cart, code)) {
+              var restoreDiscounts = bestDiscountCodeFromCards([rewardIndex], null);
+              var clearAttributes = {};
+              clearAttributes['Carte MilAura ' + rewardIndex] = '';
+              clearAttributes['Code promo MilAura'] = restoreDiscounts;
+              return fetch('/cart/update.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  discount: restoreDiscounts,
+                  attributes: clearAttributes
+                })
+              }).then(function() {
+                throw new Error('discount_not_applicable');
+              });
+            }
+            return {
+              type: 'discount',
+              code: code,
+              affectsCartTotal: discountAffectsCartTotal(cart)
+            };
+          });
         });
       }
 
@@ -716,8 +842,10 @@
               setStatus(card, 'Cadeau déjà dans votre panier.', 'success');
             } else if (giftResult && giftResult.added) {
               setStatus(card, 'Cadeau ajouté au panier.', 'success');
+            } else if (discountResult && discountResult.superseded) {
+              setStatus(card, 'Carte révélée, meilleure remise conservée.', 'success');
             } else if (discountResult && discountResult.code) {
-              setStatus(card, 'Remise préparée pour le paiement.', 'success');
+              setStatus(card, discountResult.affectsCartTotal ? 'Remise appliquée au panier.' : 'Code accepté pour le paiement.', 'success');
             } else {
               setStatus(card, 'Avantage activé.', 'success');
             }
@@ -730,7 +858,7 @@
             revealed.delete(card.getAttribute('data-reward-index'));
             persistRevealedCards();
             card.disabled = false;
-            setStatus(card, 'Activation impossible pour le moment. Vous pouvez continuer votre commande.', 'error');
+            setStatus(card, error && error.message === 'discount_not_applicable' ? 'Code non accepté par Shopify pour ce panier.' : 'Activation impossible pour le moment. Vous pouvez continuer votre commande.', 'error');
           });
       }
 
@@ -738,10 +866,24 @@
         if (card.getAttribute('data-variant-id')) {
           return 'Cadeau déjà dans votre panier.';
         }
+        if (card.getAttribute('data-discount-code') && discountPriorityForCard(card) < activeDiscountPriority()) {
+          return 'Carte révélée, meilleure remise conservée.';
+        }
         if (card.getAttribute('data-reward-index') === '3') {
-          return 'Meilleure remise préparée pour le paiement.';
+          return 'Meilleure remise activée dans votre panier.';
+        }
+        if (card.getAttribute('data-discount-code')) {
+          return 'Remise déjà activée.';
         }
         return 'Avantage déjà activé.';
+      }
+
+      function activeDiscountPriority() {
+        return cards.reduce(function(priority, card) {
+          if (card.getAttribute('data-active') !== 'true') return priority;
+          if (!card.getAttribute('data-discount-code')) return priority;
+          return Math.max(priority, discountPriorityForCard(card));
+        }, 0);
       }
 
       function revealCard(card, shouldActivate) {
@@ -913,7 +1055,7 @@
       cards.forEach(function(card) {
         var index = card.getAttribute('data-reward-index');
         var isActive = card.getAttribute('data-active') === 'true';
-        if (staleFromLiquid.indexOf(index) !== -1 || (isActive && !revealed.has(index))) {
+        if (staleFromLiquid.indexOf(index) !== -1) {
           staleCards.push(card);
         }
       });
@@ -929,7 +1071,8 @@
         }
       }
 
-      cards.forEach(function(card) {
+      function initialiseCards() {
+        cards.forEach(function(card) {
         var index = card.getAttribute('data-reward-index');
         var isUnlocked = card.getAttribute('data-unlocked') === 'true';
         var isActive = card.getAttribute('data-active') === 'true';
@@ -939,7 +1082,7 @@
           return;
         }
         card.classList.remove('is-locked');
-        if (isActive && revealed.has(index)) {
+        if (isActive) {
           revealCard(card, false);
         } else {
           card.setAttribute('data-active', 'false');
@@ -953,7 +1096,34 @@
           event.preventDefault();
           revealCard(card, true);
         });
+        });
+      }
+
+      var activeDiscountCards = cards.filter(function(card) {
+        return card.getAttribute('data-active') === 'true' && Boolean(card.getAttribute('data-discount-code'));
       });
+      if (activeDiscountCards.length) {
+        refreshActiveDiscountCards(activeDiscountCards).then(function(cart) {
+          var bestActiveCode = bestDiscountCodeFromCards([], null);
+          var rejectedCards = cart ? activeDiscountCards.filter(function(card) {
+            var code = card.getAttribute('data-discount-code');
+            if (normalizeDiscountCode(code) !== normalizeDiscountCode(bestActiveCode)) return false;
+            return !discountCodeAccepted(cart, card.getAttribute('data-discount-code'));
+          }) : [];
+          if (!rejectedCards.length) {
+            initialiseCards();
+            return;
+          }
+          clearStaleRewardState(rejectedCards).then(function(changed) {
+            if (changed) window.location.reload();
+          });
+        }).catch(function() {
+          initialiseCards();
+        });
+        return;
+      }
+
+      initialiseCards();
     })();
   </script>
 {%- endif -%}
@@ -1048,7 +1218,7 @@
       "type": "text",
       "id": "gift_1_discount_code",
       "label": "Code remise",
-      "default": "MILAURA-LIV19"
+      "default": "MILAURA-CARTE10"
     },
     {
       "type": "header",

@@ -20,7 +20,14 @@
         endif
       endfor
       unless is_milaura_gift
-        assign paid_cart_cents = paid_cart_cents | plus: item.original_line_price
+        assign item_paid_line_price = item.final_line_price
+        if item_paid_line_price == blank
+          assign item_paid_line_price = item.line_price
+        endif
+        if item_paid_line_price == blank
+          assign item_paid_line_price = item.original_line_price
+        endif
+        assign paid_cart_cents = paid_cart_cents | plus: item_paid_line_price
       endunless
     endfor
 

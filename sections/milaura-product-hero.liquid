@@ -4868,7 +4868,13 @@
             if (!cart || !cart.items) return 0;
             return cart.items.reduce(function(total, item) {
               if (isMilAuraGiftCartItem(item)) return total;
-              return total + (Number(item.original_line_price || item.final_line_price || item.line_price || 0) || 0);
+              if (item.final_line_price !== undefined && item.final_line_price !== null) {
+                return total + (Number(item.final_line_price) || 0);
+              }
+              if (item.line_price !== undefined && item.line_price !== null) {
+                return total + (Number(item.line_price) || 0);
+              }
+              return total + (Number(item.original_line_price || 0) || 0);
             }, 0);
           }
 
@@ -7236,7 +7242,7 @@
         { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Avantage livraison dès 19,90€" } },
         { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
         { "type": "volume_offer" },
-        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-LIV19", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre avantage livraison est préparé automatiquement. Il sera vérifié au moment du paiement selon les conditions Shopify." } },
+        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-CARTE10", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre remise de 10% est préparée automatiquement. Elle sera appliquée selon les conditions Shopify." } },
         { "type": "gift", "settings": { "icon": "🖤", "name": "Carte sélection", "value": "Cadeau MilAura", "badge_label": "Gagné", "popup_title": "Votre cadeau MilAura est débloqué", "popup_text": "Votre panier atteint le palier 50 €. Votre cadeau MilAura est ajouté automatiquement au panier." } },
         { "type": "gift", "settings": { "icon": "✨", "name": "Surprise de l'été", "value": "", "discount_code": "MILAURA30", "badge_label": "Surprise été", "popup_title": "Votre meilleur cadeau est débloqué", "popup_text": "Votre panier atteint le palier 80 €. Votre meilleure attention MilAura est préparée automatiquement pour le paiement." } }
       ]
