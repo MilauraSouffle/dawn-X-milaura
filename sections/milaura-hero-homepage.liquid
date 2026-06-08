@@ -22,6 +22,11 @@
 {%- assign top_hook_brand_prefix = section.settings.top_hook_brand_prefix | default: 'par' -%}
 {%- assign product_note = section.settings.product_note | default: 'Aigue Marine Grade AA' -%}
 {%- assign product_material_note = section.settings.product_material_note | default: 'Argent rhodié 925' -%}
+{%- assign hero_slide_blocks = section.blocks | where: 'type', 'hero_slide' -%}
+{%- assign slider_enabled = false -%}
+{%- if section.settings.enable_slider and hero_slide_blocks.size > 0 -%}
+  {%- assign slider_enabled = true -%}
+{%- endif -%}
 
 {% style %}
   #MilauraHeroHome-{{ section.id }} {
@@ -190,6 +195,76 @@
       linear-gradient(180deg, rgba(137, 226, 235, 0.98) 0%, rgba(89, 199, 217, 0.96) 38%, rgba(203, 232, 221, 0.94) 62%, rgba(246, 221, 171, 0.94) 84%, var(--milaura-surface-warm, #fff7e8) 100%);
     letter-spacing: 0;
     isolation: isolate;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slider-track {
+    position: relative;
+    z-index: 1;
+    min-height: inherit;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slide {
+    display: none;
+    min-height: inherit;
+    position: relative;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slide.is-active {
+    display: block;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slider-controls {
+    position: absolute;
+    z-index: 5;
+    right: clamp(18px, 4vw, 58px);
+    bottom: calc(22px + env(safe-area-inset-bottom));
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(255, 252, 244, 0.76);
+    box-shadow: 0 18px 40px rgba(16, 35, 44, 0.16);
+    backdrop-filter: blur(18px);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slider-btn,
+  #MilauraHeroHome-{{ section.id }} .hero-home-slider-dot {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    color: var(--hero-text-ink);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slider-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: inline-grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.78);
+    font: 700 1.6rem/1 var(--milaura-font-body);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slider-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slider-dot {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(84, 48, 93, 0.28);
+  }
+
+  #MilauraHeroHome-{{ section.id }} .hero-home-slider-dot[aria-current="true"] {
+    width: 24px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--hero-highlight-start), var(--hero-highlight-end));
   }
 
   #MilauraHeroHome-{{ section.id }}::before,
@@ -1640,23 +1715,136 @@
   }
 {% endstyle %}
 
-{% render 'milaura-hero-slide',
-  section: section,
-  product: product,
-  hero_image: hero_image,
-  cta_url: cta_url,
-  cta_text: cta_text,
-  hero_label: hero_label,
-  headline_line_1: headline_line_1,
-  headline_line_2: headline_line_2,
-  headline_line_3: headline_line_3,
-  top_hook_kicker: top_hook_kicker,
-  top_hook_text: top_hook_text,
-  top_hook_highlight: top_hook_highlight,
-  top_hook_brand_prefix: top_hook_brand_prefix,
-  product_note: product_note,
-  product_material_note: product_material_note
-%}
+{%- if slider_enabled -%}
+  <div
+    id="MilauraHeroHome-{{ section.id }}"
+    class="hero-home-slider"
+    aria-roledescription="carousel"
+    aria-label="{{ section.settings.slider_label | default: hero_label | escape }}"
+    data-hero-slider
+    data-autoplay="{{ section.settings.slider_autoplay }}"
+    data-interval="{{ section.settings.slider_interval | default: 6 | times: 1000 }}"
+  >
+    <div class="hero-home-slider-track">
+      {%- for block in hero_slide_blocks -%}
+        {%- liquid
+          assign slide_product = block.settings.product | default: product
+          assign slide_hero_image = block.settings.image
+          if slide_hero_image == blank
+            assign slide_hero_image = hero_image
+          endif
+          if slide_hero_image == blank and slide_product != blank and slide_product.featured_image
+            assign slide_hero_image = slide_product.featured_image
+          endif
+
+          assign slide_cta_url = block.settings.cta_url | default: slide_product.url | default: cta_url
+          assign slide_cta_text = block.settings.cta_text | default: cta_text
+          assign slide_hero_label = block.settings.pretitle | default: block.settings.headline | default: hero_label | strip_html | escape
+          assign slide_headline_line_1 = block.settings.headline_line_1 | default: headline_line_1
+          assign slide_headline_line_2 = block.settings.headline_line_2 | default: headline_line_2
+          assign slide_headline_line_3 = block.settings.headline_line_3 | default: headline_line_3
+          assign slide_top_hook_kicker = block.settings.top_hook_kicker | default: top_hook_kicker
+          assign slide_top_hook_text = block.settings.top_hook_text | default: top_hook_text
+          assign slide_top_hook_highlight = block.settings.top_hook_highlight | default: top_hook_highlight
+          assign slide_top_hook_brand_prefix = block.settings.top_hook_brand_prefix | default: top_hook_brand_prefix
+          assign slide_product_note = block.settings.product_note | default: product_note
+          assign slide_product_material_note = block.settings.product_material_note | default: product_material_note
+          assign slide_class = 'hero-home-slide'
+          assign slide_hidden = true
+          if forloop.first
+            assign slide_class = slide_class | append: ' is-active'
+            assign slide_hidden = false
+          endif
+          assign slide_aria_label = forloop.index | append: ' / ' | append: hero_slide_blocks.size
+        -%}
+        {% render 'milaura-hero-slide',
+          section: section,
+          nested_slide: true,
+          slide_block: block,
+          slide_class: slide_class,
+          slide_role: 'group',
+          slide_roledescription: 'slide',
+          slide_aria_label: slide_aria_label,
+          slide_hidden: slide_hidden,
+          product: slide_product,
+          hero_image: slide_hero_image,
+          hero_image_desktop: block.settings.hero_image_desktop,
+          hero_image_mobile: block.settings.hero_image_mobile,
+          ring_cutout_image: block.settings.ring_cutout_image,
+          cta_url: slide_cta_url,
+          cta_text: slide_cta_text,
+          hero_label: slide_hero_label,
+          headline: block.settings.headline,
+          headline_line_1: slide_headline_line_1,
+          headline_line_2: slide_headline_line_2,
+          headline_line_3: slide_headline_line_3,
+          top_hook_kicker: slide_top_hook_kicker,
+          top_hook_text: slide_top_hook_text,
+          top_hook_highlight: slide_top_hook_highlight,
+          top_hook_brand_prefix: slide_top_hook_brand_prefix,
+          top_hook_brand: block.settings.top_hook_brand,
+          top_hook_meta: block.settings.top_hook_meta,
+          badge_text: block.settings.badge_text,
+          pretitle: block.settings.pretitle,
+          image_alt: block.settings.image_alt,
+          subtitle: block.settings.subtitle,
+          benefit_1_icon: block.settings.benefit_1_icon,
+          benefit_1_text: block.settings.benefit_1_text,
+          benefit_2_icon: block.settings.benefit_2_icon,
+          benefit_2_text: block.settings.benefit_2_text,
+          benefit_3_icon: block.settings.benefit_3_icon,
+          benefit_3_text: block.settings.benefit_3_text,
+          product_note: slide_product_note,
+          product_material_note: slide_product_material_note,
+          price_label: block.settings.price_label,
+          show_stock: block.settings.show_stock,
+          stock_count: block.settings.stock_count
+        %}
+      {%- endfor -%}
+    </div>
+
+    {%- if hero_slide_blocks.size > 1 -%}
+      <div class="hero-home-slider-controls" aria-label="Navigation du hero">
+        <button type="button" class="hero-home-slider-btn" aria-label="Slide precedente" data-hero-slider-prev>
+          <span aria-hidden="true">‹</span>
+        </button>
+        <div class="hero-home-slider-dots" role="tablist" aria-label="Slides hero">
+          {%- for block in hero_slide_blocks -%}
+            <button
+              type="button"
+              class="hero-home-slider-dot"
+              aria-label="Afficher le slide {{ forloop.index }}"
+              aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+              data-hero-slider-dot
+              data-slide-index="{{ forloop.index0 }}"
+            ></button>
+          {%- endfor -%}
+        </div>
+        <button type="button" class="hero-home-slider-btn" aria-label="Slide suivante" data-hero-slider-next>
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+    {%- endif -%}
+  </div>
+{%- else -%}
+  {% render 'milaura-hero-slide',
+    section: section,
+    product: product,
+    hero_image: hero_image,
+    cta_url: cta_url,
+    cta_text: cta_text,
+    hero_label: hero_label,
+    headline_line_1: headline_line_1,
+    headline_line_2: headline_line_2,
+    headline_line_3: headline_line_3,
+    top_hook_kicker: top_hook_kicker,
+    top_hook_text: top_hook_text,
+    top_hook_highlight: top_hook_highlight,
+    top_hook_brand_prefix: top_hook_brand_prefix,
+    product_note: product_note,
+    product_material_note: product_material_note
+  %}
+{%- endif -%}
 
 <script>
   (() => {
@@ -1683,6 +1871,67 @@
     document.addEventListener('shopify:section:unload', () => {
       document.body.classList.remove('milaura-hero-home-visible');
     }, { once: true });
+
+    const slider = hero.matches('[data-hero-slider]') ? hero : null;
+    if (!slider) return;
+
+    const slides = Array.from(slider.querySelectorAll('[data-hero-slide]'));
+    if (slides.length < 2) return;
+
+    const dots = Array.from(slider.querySelectorAll('[data-hero-slider-dot]'));
+    const previous = slider.querySelector('[data-hero-slider-prev]');
+    const next = slider.querySelector('[data-hero-slider-next]');
+    let current = Math.max(0, slides.findIndex((slide) => slide.classList.contains('is-active')));
+    let timer = null;
+
+    const setSlide = (index) => {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === current;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+      });
+      dots.forEach((dot, dotIndex) => {
+        dot.setAttribute('aria-current', dotIndex === current ? 'true' : 'false');
+      });
+    };
+
+    const stopAutoplay = () => {
+      if (!timer) return;
+      window.clearInterval(timer);
+      timer = null;
+    };
+
+    const startAutoplay = () => {
+      if (slider.dataset.autoplay !== 'true') return;
+      const interval = Number(slider.dataset.interval || 6000);
+      if (!Number.isFinite(interval) || interval < 3000) return;
+      stopAutoplay();
+      timer = window.setInterval(() => setSlide(current + 1), interval);
+    };
+
+    previous?.addEventListener('click', () => {
+      stopAutoplay();
+      setSlide(current - 1);
+      startAutoplay();
+    });
+    next?.addEventListener('click', () => {
+      stopAutoplay();
+      setSlide(current + 1);
+      startAutoplay();
+    });
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        stopAutoplay();
+        setSlide(Number(dot.dataset.slideIndex || 0));
+        startAutoplay();
+      });
+    });
+    slider.addEventListener('mouseenter', stopAutoplay);
+    slider.addEventListener('mouseleave', startAutoplay);
+    document.addEventListener('shopify:section:unload', stopAutoplay, { once: true });
+    setSlide(current);
+    startAutoplay();
   })();
 </script>
 
@@ -1716,6 +1965,38 @@
       "type": "image_picker",
       "id": "ring_cutout_image",
       "label": "Image bague detouree"
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Activer les slides hero",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "slider_label",
+      "label": "Label accessibilite slider",
+      "default": "Selection MilAura"
+    },
+    {
+      "type": "checkbox",
+      "id": "slider_autoplay",
+      "label": "Autoplay slider",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "slider_interval",
+      "label": "Intervalle autoplay",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 6
     },
     {
       "type": "text",
@@ -2794,6 +3075,195 @@
     }
   ],
   "blocks": [
+    {
+      "type": "hero_slide",
+      "name": "Slide hero",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produit du slide"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image fallback du slide"
+        },
+        {
+          "type": "image_picker",
+          "id": "hero_image_desktop",
+          "label": "Image hero desktop"
+        },
+        {
+          "type": "image_picker",
+          "id": "hero_image_mobile",
+          "label": "Image hero mobile"
+        },
+        {
+          "type": "image_picker",
+          "id": "ring_cutout_image",
+          "label": "Image bague detouree"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge (vide = cache)"
+        },
+        {
+          "type": "text",
+          "id": "pretitle",
+          "label": "Accroche courte"
+        },
+        {
+          "type": "text",
+          "id": "top_hook_kicker",
+          "label": "Hook haut ligne selection",
+          "default": "Sélection estivale 2026"
+        },
+        {
+          "type": "text",
+          "id": "top_hook_text",
+          "label": "Hook haut ligne 1",
+          "default": "Le bijou de"
+        },
+        {
+          "type": "text",
+          "id": "top_hook_highlight",
+          "label": "Hook haut mot surligne",
+          "default": "l'été"
+        },
+        {
+          "type": "text",
+          "id": "top_hook_brand_prefix",
+          "label": "Hook haut prefixe marque",
+          "default": "par"
+        },
+        {
+          "type": "text",
+          "id": "top_hook_brand",
+          "label": "Hook haut marque",
+          "default": "par MilAura"
+        },
+        {
+          "type": "text",
+          "id": "top_hook_meta",
+          "label": "Hook haut preuve produit"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "headline",
+          "label": "Titre principal",
+          "default": "Aigue-marine"
+        },
+        {
+          "type": "text",
+          "id": "headline_line_1",
+          "label": "Titre ligne 1",
+          "default": "MilAura"
+        },
+        {
+          "type": "text",
+          "id": "headline_line_2",
+          "label": "Titre ligne 2",
+          "default": "Qui sera la plus belle"
+        },
+        {
+          "type": "text",
+          "id": "headline_line_3",
+          "label": "Titre ligne 3",
+          "default": "sur la plage cet été ?"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Texte alternatif image campagne",
+          "default": "Chloe porte la bague Aigue-marine MilAura"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sous-titre"
+        },
+        {
+          "type": "text",
+          "id": "benefit_1_icon",
+          "label": "Icone benefice 1",
+          "default": "✦"
+        },
+        {
+          "type": "text",
+          "id": "benefit_1_text",
+          "label": "Benefice 1",
+          "default": "Apaise le mental"
+        },
+        {
+          "type": "text",
+          "id": "benefit_2_icon",
+          "label": "Icone benefice 2",
+          "default": "✧"
+        },
+        {
+          "type": "text",
+          "id": "benefit_2_text",
+          "label": "Benefice 2",
+          "default": "Clarifie les pensees"
+        },
+        {
+          "type": "text",
+          "id": "benefit_3_icon",
+          "label": "Icone benefice 3",
+          "default": "☼"
+        },
+        {
+          "type": "text",
+          "id": "benefit_3_text",
+          "label": "Benefice 3",
+          "default": "Allege la charge mentale"
+        },
+        {
+          "type": "text",
+          "id": "product_note",
+          "label": "Libelle produit ligne 1",
+          "default": "Aigue Marine Grade AA"
+        },
+        {
+          "type": "text",
+          "id": "product_material_note",
+          "label": "Libelle produit ligne 2",
+          "default": "Argent rhodié 925"
+        },
+        {
+          "type": "text",
+          "id": "price_label",
+          "label": "Label prix",
+          "default": "Bague"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_stock",
+          "label": "Afficher compteur stock",
+          "default": false
+        },
+        {
+          "type": "number",
+          "id": "stock_count",
+          "label": "Stock restant",
+          "default": 30
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Texte du bouton",
+          "default": "Découvrir cette création"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "URL du bouton"
+        }
+      ]
+    },
     {
       "type": "trust",
       "name": "Badge confiance",
