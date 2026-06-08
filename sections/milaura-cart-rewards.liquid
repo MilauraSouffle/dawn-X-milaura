@@ -610,24 +610,20 @@
         });
       }
 
-      function discountPriorityForCard(card) {
-        return parseInt(card && card.getAttribute('data-reward-index'), 10) || 0;
-      }
-
-      function bestDiscountCodeFromCards(excludedIndexes, extraCard) {
+      function discountPayloadFromCards(excludedIndexes, extraCard) {
         var excluded = excludedIndexes || [];
-        var candidates = [];
+        var codes = [];
         cards.forEach(function(card) {
           var index = card.getAttribute('data-reward-index');
           if (excluded.indexOf(index) !== -1) return;
           if (card.getAttribute('data-active') !== 'true') return;
-          if (card.getAttribute('data-discount-code')) candidates.push(card);
+          var code = card.getAttribute('data-discount-code');
+          if (code) codes.push(code);
         });
-        if (extraCard && extraCard.getAttribute('data-discount-code')) candidates.push(extraCard);
-        candidates.sort(function(a, b) {
-          return discountPriorityForCard(b) - discountPriorityForCard(a);
-        });
-        return candidates.length ? candidates[0].getAttribute('data-discount-code') : '';
+        if (extraCard && extraCard.getAttribute('data-discount-code')) {
+          codes.push(extraCard.getAttribute('data-discount-code'));
+        }
+        return uniqueDiscountCodes(codes).join(',');
       }
 
       function discountCodeAccepted(cart, code) {
@@ -654,12 +650,12 @@
       }
 
       function refreshActiveDiscountCards(activeCards) {
-        var bestCode = bestDiscountCodeFromCards([], null);
-        if (!bestCode) return fetchCart();
+        var activeCodes = discountPayloadFromCards([], null);
+        if (!activeCodes) return fetchCart();
         return fetch('/cart/update.js', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ discount: bestCode })
+          body: JSON.stringify({ discount: activeCodes })
         }).then(function(response) {
           return response.ok ? response.json() : fetchCart();
         });
@@ -696,9 +692,9 @@
         var payload = { attributes: attributes };
         if (hasDiscountCard) payload.discount = '';
         if (hasDiscountCard) {
-          var remainingDiscountCode = bestDiscountCodeFromCards(staleIndexes, null);
-          attributes['Code promo MilAura'] = remainingDiscountCode;
-          payload.discount = remainingDiscountCode;
+          var remainingDiscountCodes = discountPayloadFromCards(staleIndexes, null);
+          attributes['Code promo MilAura'] = remainingDiscountCodes;
+          payload.discount = remainingDiscountCodes;
         }
 
         return fetch('/cart/update.js', {
@@ -769,7 +765,7 @@
         var rewardIndex = card.getAttribute('data-reward-index');
         if (!code) return Promise.resolve({ type: 'discount', skipped: true });
 
-        var discountPayload = bestDiscountCodeFromCards([rewardIndex], card);
+        var discountPayload = discountPayloadFromCards([rewardIndex], card);
         var attributes = {};
         attributes['Code promo MilAura'] = discountPayload;
         attributes['Carte MilAura ' + rewardIndex] = code;
@@ -786,16 +782,8 @@
             if (!response.ok) {
               throw new Error((cart && (cart.description || cart.message)) || 'discount_update_failed');
             }
-            if (normalizeDiscountCode(discountPayload) !== normalizeDiscountCode(code)) {
-              return {
-                type: 'discount',
-                code: code,
-                superseded: true,
-                affectsCartTotal: discountAffectsCartTotal(cart)
-              };
-            }
             if (!discountCodeAccepted(cart, code)) {
-              var restoreDiscounts = bestDiscountCodeFromCards([rewardIndex], null);
+              var restoreDiscounts = discountPayloadFromCards([rewardIndex], null);
               var clearAttributes = {};
               clearAttributes['Carte MilAura ' + rewardIndex] = '';
               clearAttributes['Code promo MilAura'] = restoreDiscounts;
@@ -842,8 +830,6 @@
               setStatus(card, 'Cadeau déjà dans votre panier.', 'success');
             } else if (giftResult && giftResult.added) {
               setStatus(card, 'Cadeau ajouté au panier.', 'success');
-            } else if (discountResult && discountResult.superseded) {
-              setStatus(card, 'Carte révélée, meilleure remise conservée.', 'success');
             } else if (discountResult && discountResult.code) {
               setStatus(card, discountResult.affectsCartTotal ? 'Remise appliquée au panier.' : 'Code accepté pour le paiement.', 'success');
             } else {
@@ -866,24 +852,16 @@
         if (card.getAttribute('data-variant-id')) {
           return 'Cadeau déjà dans votre panier.';
         }
-        if (card.getAttribute('data-discount-code') && discountPriorityForCard(card) < activeDiscountPriority()) {
-          return 'Carte révélée, meilleure remise conservée.';
-        }
         if (card.getAttribute('data-reward-index') === '3') {
-          return 'Meilleure remise activée dans votre panier.';
+          return 'Remise -30% appliquée au panier.';
+        }
+        if (card.getAttribute('data-reward-index') === '1') {
+          return 'Livraison offerte ajoutée.';
         }
         if (card.getAttribute('data-discount-code')) {
-          return 'Remise déjà activée.';
+          return 'Avantage déjà activé.';
         }
         return 'Avantage déjà activé.';
-      }
-
-      function activeDiscountPriority() {
-        return cards.reduce(function(priority, card) {
-          if (card.getAttribute('data-active') !== 'true') return priority;
-          if (!card.getAttribute('data-discount-code')) return priority;
-          return Math.max(priority, discountPriorityForCard(card));
-        }, 0);
       }
 
       function revealCard(card, shouldActivate) {
@@ -1104,10 +1082,7 @@
       });
       if (activeDiscountCards.length) {
         refreshActiveDiscountCards(activeDiscountCards).then(function(cart) {
-          var bestActiveCode = bestDiscountCodeFromCards([], null);
           var rejectedCards = cart ? activeDiscountCards.filter(function(card) {
-            var code = card.getAttribute('data-discount-code');
-            if (normalizeDiscountCode(code) !== normalizeDiscountCode(bestActiveCode)) return false;
             return !discountCodeAccepted(cart, card.getAttribute('data-discount-code'));
           }) : [];
           if (!rejectedCards.length) {
@@ -1206,19 +1181,19 @@
       "type": "text",
       "id": "gift_1_value",
       "label": "Valeur",
-      "default": "Une attention MilAura"
+      "default": "Livraison offerte"
     },
     {
       "type": "text",
       "id": "gift_1_hint",
       "label": "Texte",
-      "default": "Dès 20 € d'achat, votre première carte apparaît dans le panier."
+      "default": "Dès 20 € d'achat, votre livraison offerte se débloque."
     },
     {
       "type": "text",
       "id": "gift_1_discount_code",
       "label": "Code remise",
-      "default": "MILAURA-CARTE10"
+      "default": "MILAURA-LIV19"
     },
     {
       "type": "header",

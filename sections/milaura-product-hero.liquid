@@ -298,6 +298,71 @@
     color: var(--milaura-gold);
   }
 
+  .milaura-meta-badge__marquee-copy {
+    display: none;
+  }
+
+  @keyframes milauraVertusMarquee {
+    to {
+      transform: translateX(calc(-50% - 12px));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .milaura-meta-badges--product {
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .milaura-meta-badges--product .milaura-meta-badge--vertus {
+      max-width: min(100%, calc(100vw - 32px));
+      overflow: hidden;
+      box-sizing: border-box;
+      justify-content: flex-start;
+    }
+
+    .milaura-meta-badge--vertus .milaura-meta-badge__marquee {
+      display: block;
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 18px), transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 18px), transparent 100%);
+    }
+
+    .milaura-meta-badge--vertus .milaura-meta-badge__marquee-inner {
+      display: inline-flex;
+      width: max-content;
+      gap: 24px;
+      animation: milauraVertusMarquee 18s linear infinite;
+    }
+
+    .milaura-meta-badge--vertus .milaura-meta-badge__marquee-copy {
+      display: inline;
+    }
+  }
+
+  @media screen and (max-width: 749px) and (prefers-reduced-motion: reduce) {
+    .milaura-meta-badge--vertus .milaura-meta-badge__marquee {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .milaura-meta-badge--vertus .milaura-meta-badge__marquee::-webkit-scrollbar {
+      display: none;
+    }
+
+    .milaura-meta-badge--vertus .milaura-meta-badge__marquee-inner {
+      animation: none;
+      transform: none;
+    }
+
+    .milaura-meta-badge--vertus .milaura-meta-badge__marquee-copy {
+      display: none;
+    }
+  }
+
   @media screen and (max-width: 480px) {
     .milaura-meta-badges--product {
       gap: 6px;
@@ -4408,11 +4473,16 @@
               {%- endif -%}
               {%- if badge_vertus != blank and shown_meta_badges < 3 -%}
                 {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
-                <span class="milaura-meta-badge">
+                <span class="milaura-meta-badge milaura-meta-badge--vertus">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                   </svg>
-                  {{ badge_vertus }}
+                  <span class="milaura-meta-badge__marquee">
+                    <span class="milaura-meta-badge__marquee-inner">
+                      <span>{{ badge_vertus }}</span>
+                      <span class="milaura-meta-badge__marquee-copy" aria-hidden="true">{{ badge_vertus }}</span>
+                    </span>
+                  </span>
                 </span>
               {%- endif -%}
               {%- if badge_quality != blank and shown_meta_badges < 3 -%}
@@ -7242,7 +7312,7 @@
         { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Avantage livraison dès 19,90€" } },
         { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
         { "type": "volume_offer" },
-        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-CARTE10", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre remise de 10% est préparée automatiquement. Elle sera appliquée selon les conditions Shopify." } },
+        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-LIV19", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre livraison offerte se débloque automatiquement. Elle sera appliquée selon les conditions Shopify." } },
         { "type": "gift", "settings": { "icon": "🖤", "name": "Carte sélection", "value": "Cadeau MilAura", "badge_label": "Gagné", "popup_title": "Votre cadeau MilAura est débloqué", "popup_text": "Votre panier atteint le palier 50 €. Votre cadeau MilAura est ajouté automatiquement au panier." } },
         { "type": "gift", "settings": { "icon": "✨", "name": "Surprise de l'été", "value": "", "discount_code": "MILAURA30", "badge_label": "Surprise été", "popup_title": "Votre meilleur cadeau est débloqué", "popup_text": "Votre panier atteint le palier 80 €. Votre meilleure attention MilAura est préparée automatiquement pour le paiement." } }
       ]
