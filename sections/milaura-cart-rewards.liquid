@@ -118,6 +118,30 @@
     endif
   -%}
 
+  {%- capture milaura_reward_closed_lock_icon -%}
+    <svg class="milaura-cart-reward__step-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <rect x="4" y="10.5" width="16" height="10" rx="2.8"></rect>
+      <path d="M7.5 10.5V7.8a4.5 4.5 0 0 1 9 0v2.7"></path>
+      <path d="M12 14.3v2.5"></path>
+    </svg>
+  {%- endcapture -%}
+
+  {%- capture milaura_reward_open_lock_icon -%}
+    <svg class="milaura-cart-reward__step-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <rect x="4" y="10.5" width="16" height="10" rx="2.8"></rect>
+      <path d="M7.5 10.5V7.8a4.5 4.5 0 0 1 8.1-2.7"></path>
+      <path d="M12 14.3v2.5"></path>
+    </svg>
+  {%- endcapture -%}
+
+  {%- capture milaura_reward_brand_logo -%}
+    {%- if settings.logo != blank -%}
+      {{ settings.logo | image_url: width: 160 | image_tag: class: 'milaura-cart-reward__logo-img', alt: 'MilAura', loading: 'lazy' }}
+    {%- else -%}
+      <span class="milaura-cart-reward__logo-text">MilAura</span>
+    {%- endif -%}
+  {%- endcapture -%}
+
   {%- style -%}
     #MilauraCartRewards-{{ section.id }} {
       padding: var(--milaura-spacing-md) 0 var(--milaura-spacing-lg);
@@ -361,6 +385,17 @@
       z-index: 2;
     }
 
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__step-svg {
+      width: 21px;
+      height: 21px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__lock {
       position: absolute;
       top: 10px;
@@ -390,6 +425,10 @@
       stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__lock {
+      display: none;
     }
 
     #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__name {
@@ -439,6 +478,150 @@
 
     #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__status.is-error {
       color: #9f2f2f;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__reveal {
+      display: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked {
+      min-height: 186px;
+      justify-content: center;
+      gap: 13px;
+      padding: 24px 24px 21px;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked .milaura-cart-reward__badge,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked .milaura-cart-reward__lock,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked .milaura-cart-reward__name,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked .milaura-cart-reward__value,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked .milaura-cart-reward__hint {
+      display: none;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked .milaura-cart-reward__step {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto;
+      border-color: rgba(255, 255, 255, 0.48);
+      background: rgba(255, 255, 255, 0.52);
+      color: rgba(26, 26, 46, 0.72);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.46),
+        0 12px 26px rgba(26, 26, 46, 0.14);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked .milaura-cart-reward__step-svg {
+      width: 31px;
+      height: 31px;
+      stroke-width: 1.8;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-locked .milaura-cart-reward__status {
+      max-width: 315px;
+      min-height: 0;
+      margin: 0 auto;
+      padding: 0;
+      border-top: 0;
+      color: rgba(26, 26, 46, 0.78);
+      font-size: 0.9rem;
+      font-weight: 850;
+      line-height: 1.38;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward:not(.is-locked):not(.is-revealed) .milaura-cart-reward__step {
+      width: 46px;
+      height: 46px;
+      color: #1a1a2e;
+      background: rgba(255, 255, 255, 0.62);
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed {
+      justify-content: center;
+      gap: 10px;
+      padding: 22px 20px 19px;
+      cursor: default;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed .milaura-cart-reward__badge,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed .milaura-cart-reward__lock,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed .milaura-cart-reward__step,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed .milaura-cart-reward__name,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed .milaura-cart-reward__value,
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed .milaura-cart-reward__hint {
+      display: none;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed .milaura-cart-reward__reveal {
+      display: grid;
+      place-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__reveal-logo {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2px;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__logo-img {
+      width: auto;
+      max-width: 118px;
+      max-height: 34px;
+      object-fit: contain;
+      display: block;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__logo-text {
+      font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+      font-size: 1.22rem;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__won {
+      display: inline-flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+      color: #1a1a2e;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__won strong {
+      color: var(--milaura-gold-dark, #8F723A);
+      font-weight: 950;
+      letter-spacing: 0.05em;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__prize {
+      max-width: 100%;
+      color: #1a1a2e;
+      font-size: clamp(1.02rem, 1.6vw, 1.22rem);
+      font-weight: 950;
+      line-height: 1.12;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-wrap: balance;
+    }
+
+    #MilauraCartRewards-{{ section.id }} .milaura-cart-reward.is-revealed .milaura-cart-reward__status {
+      max-width: 360px;
+      min-height: 0;
+      margin: 2px auto 0;
+      padding: 0;
+      border-top: 0;
+      color: rgba(26, 26, 46, 0.68);
+      font-size: 0.82rem;
+      font-weight: 750;
+      line-height: 1.36;
     }
 
     #MilauraCartRewards-{{ section.id }} .milaura-cart-reward__canvas {
@@ -542,12 +725,17 @@
           >
             <span class="milaura-cart-reward__badge">{% if paid_cart_cents >= reward_threshold_1_cents %}Débloquée{% else %}Dès {{ reward_threshold_1_label }}{% endif %}</span>
             <span class="milaura-cart-reward__lock" aria-hidden="true">{% if paid_cart_cents >= reward_threshold_1_cents %}🔓{% else %}🔒{% endif %}</span>
-            <span class="milaura-cart-reward__step">M</span>
+            <span class="milaura-cart-reward__step" aria-hidden="true">{% if paid_cart_cents >= reward_threshold_1_cents %}{{ milaura_reward_open_lock_icon }}{% else %}{{ milaura_reward_closed_lock_icon }}{% endif %}</span>
             <span class="milaura-cart-reward__name">{{ section.settings.gift_1_name }}</span>
             <span class="milaura-cart-reward__value">{{ section.settings.gift_1_value }}</span>
             <span class="milaura-cart-reward__hint">{{ section.settings.gift_1_hint }}</span>
+            <span class="milaura-cart-reward__reveal">
+              <span class="milaura-cart-reward__reveal-logo">{{ milaura_reward_brand_logo }}</span>
+              <span class="milaura-cart-reward__won"><strong>BRAVO</strong>, vous avez gagné</span>
+              <span class="milaura-cart-reward__prize">Frais de port offert</span>
+            </span>
             <span class="milaura-cart-reward__status" data-reward-status>
-              {%- if card_1_active -%}Livraison offerte ajoutée.{%- elsif paid_cart_cents >= reward_threshold_1_cents -%}Grattez votre carte surprise.{%- else -%}Atteignez {{ reward_threshold_1_label }} de panier.{%- endif -%}
+              {%- if card_1_active -%}Les frais de port offerts sont automatiquement ajoutés à votre panier.{%- elsif paid_cart_cents >= reward_threshold_1_cents -%}Grattez votre carte surprise.{%- else -%}Ajoutez {{ reward_threshold_1_label }} de produits à votre panier pour débloquer cette carte.{%- endif -%}
             </span>
           </button>
 
@@ -564,12 +752,17 @@
           >
             <span class="milaura-cart-reward__badge">{% if paid_cart_cents >= reward_threshold_2_cents %}Débloquée{% else %}Dès {{ reward_threshold_2_label }}{% endif %}</span>
             <span class="milaura-cart-reward__lock" aria-hidden="true">{% if paid_cart_cents >= reward_threshold_2_cents %}🔓{% else %}🔒{% endif %}</span>
-            <span class="milaura-cart-reward__step">M</span>
+            <span class="milaura-cart-reward__step" aria-hidden="true">{% if paid_cart_cents >= reward_threshold_2_cents %}{{ milaura_reward_open_lock_icon }}{% else %}{{ milaura_reward_closed_lock_icon }}{% endif %}</span>
             <span class="milaura-cart-reward__name">{{ section.settings.gift_2_name }}</span>
             <span class="milaura-cart-reward__value">{{ section.settings.gift_2_value }}</span>
             <span class="milaura-cart-reward__hint">{{ section.settings.gift_2_hint }}</span>
+            <span class="milaura-cart-reward__reveal">
+              <span class="milaura-cart-reward__reveal-logo">{{ milaura_reward_brand_logo }}</span>
+              <span class="milaura-cart-reward__won"><strong>BRAVO</strong>, vous avez gagné</span>
+              <span class="milaura-cart-reward__prize">Cadeau MilAura offert</span>
+            </span>
             <span class="milaura-cart-reward__status" data-reward-status>
-              {%- if card_2_active -%}Cadeau déjà dans votre panier.{%- elsif paid_cart_cents >= reward_threshold_2_cents -%}Grattez votre carte surprise.{%- else -%}Atteignez {{ reward_threshold_2_label }} de panier.{%- endif -%}
+              {%- if card_2_active -%}Votre cadeau MilAura est automatiquement ajouté à votre panier.{%- elsif paid_cart_cents >= reward_threshold_2_cents -%}Grattez votre carte surprise.{%- else -%}Ajoutez {{ reward_threshold_2_label }} de produits à votre panier pour débloquer cette carte.{%- endif -%}
             </span>
           </button>
 
@@ -586,12 +779,17 @@
           >
             <span class="milaura-cart-reward__badge">{% if paid_cart_cents >= reward_threshold_3_cents %}Surprise été{% else %}Dès {{ reward_threshold_3_label }}{% endif %}</span>
             <span class="milaura-cart-reward__lock" aria-hidden="true">{% if paid_cart_cents >= reward_threshold_3_cents %}🔓{% else %}🔒{% endif %}</span>
-            <span class="milaura-cart-reward__step">M</span>
+            <span class="milaura-cart-reward__step" aria-hidden="true">{% if paid_cart_cents >= reward_threshold_3_cents %}{{ milaura_reward_open_lock_icon }}{% else %}{{ milaura_reward_closed_lock_icon }}{% endif %}</span>
             <span class="milaura-cart-reward__name">{{ section.settings.gift_3_name }}</span>
             <span class="milaura-cart-reward__value">{{ section.settings.gift_3_value }}</span>
             <span class="milaura-cart-reward__hint">{{ section.settings.gift_3_hint }}</span>
+            <span class="milaura-cart-reward__reveal">
+              <span class="milaura-cart-reward__reveal-logo">{{ milaura_reward_brand_logo }}</span>
+              <span class="milaura-cart-reward__won"><strong>BRAVO</strong>, vous avez gagné</span>
+              <span class="milaura-cart-reward__prize">30 % de remise</span>
+            </span>
             <span class="milaura-cart-reward__status" data-reward-status>
-              {%- if card_3_active -%}Remise -30% appliquée au panier.{%- elsif paid_cart_cents >= reward_threshold_3_cents -%}Grattez votre carte surprise.{%- else -%}Atteignez {{ reward_threshold_3_label }} de panier.{%- endif -%}
+              {%- if card_3_active -%}Votre remise -30 % est automatiquement ajoutée à votre panier.{%- elsif paid_cart_cents >= reward_threshold_3_cents -%}Grattez votre carte surprise.{%- else -%}Ajoutez {{ reward_threshold_3_label }} de produits à votre panier pour débloquer cette carte.{%- endif -%}
             </span>
           </button>
         </div>
@@ -610,8 +808,8 @@
       var CART_SUBTOTAL = root.getAttribute('data-paid-subtotal-cents') || '0';
       var STORAGE_KEY = 'milaura-cart-rewards-v3';
       var CLEAR_STORAGE_KEY = STORAGE_KEY + ':stale-clear:' + CART_SIGNATURE + ':' + CART_SUBTOTAL;
-      var SCRATCH_THRESHOLD = 0.48;
-      var SCRATCH_RADIUS = 28;
+      var SCRATCH_THRESHOLD = 0.36;
+      var SCRATCH_RADIUS = 34;
       var OPEN_LOCK_ICON = '<svg class="milaura-cart-reward__lock-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V8a5 5 0 0 1 9.8-1.4"></path></svg>';
       var CLOSED_LOCK_ICON = '<svg class="milaura-cart-reward__lock-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V8a5 5 0 0 1 10 0v3"></path></svg>';
       var cards = Array.prototype.slice.call(root.querySelectorAll('[data-milaura-reward-card]'));
@@ -900,7 +1098,7 @@
         if (card.getAttribute('data-discount-code')) tasks.push(applyDiscountCode(card));
 
         if (!tasks.length) {
-          setStatus(card, 'Carte révélée.', 'success');
+          setStatus(card, activeMessageForCard(card), 'success');
           return;
         }
 
@@ -913,12 +1111,8 @@
             card.classList.add('is-active');
             var giftResult = results.find(function(result) { return result && result.type === 'gift'; });
             var discountResult = results.find(function(result) { return result && result.type === 'discount'; });
-            if (giftResult && giftResult.alreadyInCart) {
-              setStatus(card, 'Cadeau déjà dans votre panier.', 'success');
-            } else if (giftResult && giftResult.added) {
-              setStatus(card, 'Cadeau ajouté au panier.', 'success');
-            } else if (discountResult && discountResult.code) {
-              setStatus(card, discountResult.affectsCartTotal ? 'Remise appliquée au panier.' : 'Code accepté pour le paiement.', 'success');
+            if (giftResult || discountResult) {
+              setStatus(card, activeMessageForCard(card), 'success');
             } else {
               setStatus(card, 'Avantage activé.', 'success');
             }
@@ -937,13 +1131,13 @@
 
       function activeMessageForCard(card) {
         if (card.getAttribute('data-variant-id')) {
-          return 'Cadeau déjà dans votre panier.';
+          return 'Votre cadeau MilAura est automatiquement ajouté à votre panier.';
         }
         if (card.getAttribute('data-reward-index') === '3') {
-          return 'Remise -30% appliquée au panier.';
+          return 'Votre remise -30 % est automatiquement ajoutée à votre panier.';
         }
         if (card.getAttribute('data-reward-index') === '1') {
-          return 'Livraison offerte ajoutée.';
+          return 'Les frais de port offerts sont automatiquement ajoutés à votre panier.';
         }
         if (card.getAttribute('data-discount-code')) {
           return 'Avantage déjà activé.';
@@ -1041,11 +1235,7 @@
           ctx.beginPath();
           ctx.arc(width / 2, sealY, 17, 0, Math.PI * 2);
           ctx.stroke();
-          ctx.fillStyle = 'rgba(26, 26, 46, 0.52)';
-          ctx.font = '900 18px Lato, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('M', width / 2, sealY + 1);
+          drawCanvasLock(ctx, width / 2, sealY, true);
           ctx.restore();
 
           var pillWidth = Math.min(width - 42, 196);
@@ -1065,8 +1255,32 @@
           ctx.textBaseline = 'middle';
           ctx.fillText('GRATTEZ ICI', width / 2, pillY + 19);
           ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
-          ctx.font = '700 10px Lato, sans-serif';
-          ctx.fillText('CARTE SURPRISE MILAURA', width / 2, pillY + 33);
+          ctx.font = '800 9px Lato, sans-serif';
+          ctx.fillText('VOTRE CARTE SURPRISE MILAURA', width / 2, pillY + 33);
+          ctx.restore();
+        }
+
+        function drawCanvasLock(ctx, x, y, isOpen) {
+          ctx.save();
+          ctx.strokeStyle = 'rgba(26, 26, 46, 0.58)';
+          ctx.lineWidth = 2.2;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          roundedRect(ctx, x - 10, y - 2, 20, 15, 4);
+          ctx.stroke();
+          ctx.beginPath();
+          if (isOpen) {
+            ctx.moveTo(x - 7, y - 3);
+            ctx.bezierCurveTo(x - 11, y - 16, x + 4, y - 21, x + 10, y - 10);
+          } else {
+            ctx.moveTo(x - 7, y - 3);
+            ctx.bezierCurveTo(x - 7, y - 16, x + 7, y - 16, x + 7, y - 3);
+          }
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(x, y + 4);
+          ctx.lineTo(x, y + 7);
+          ctx.stroke();
           ctx.restore();
         }
 
@@ -1088,6 +1302,7 @@
         var ctx = sizeCanvas();
         var scratching = false;
         var checkPending = false;
+        var lastScratchPos = null;
 
         function position(event) {
           var rect = canvas.getBoundingClientRect();
@@ -1102,10 +1317,22 @@
 
         function scratch(pos) {
           ctx.globalCompositeOperation = 'destination-out';
-          ctx.beginPath();
-          ctx.arc(pos.x, pos.y, SCRATCH_RADIUS, 0, Math.PI * 2);
-          ctx.fill();
+          if (lastScratchPos) {
+            var dx = pos.x - lastScratchPos.x;
+            var dy = pos.y - lastScratchPos.y;
+            var distance = Math.sqrt((dx * dx) + (dy * dy));
+            var steps = Math.max(1, Math.ceil(distance / (SCRATCH_RADIUS * 0.55)));
+            for (var step = 1; step <= steps; step += 1) {
+              eraseAt({
+                x: lastScratchPos.x + (dx * step / steps),
+                y: lastScratchPos.y + (dy * step / steps)
+              });
+            }
+          } else {
+            eraseAt(pos);
+          }
           ctx.globalCompositeOperation = 'source-over';
+          lastScratchPos = pos;
 
           if (!checkPending) {
             checkPending = true;
@@ -1116,9 +1343,16 @@
           }
         }
 
+        function eraseAt(pos) {
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, SCRATCH_RADIUS, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
         canvas.addEventListener('pointerdown', function(event) {
           event.preventDefault();
           scratching = true;
+          lastScratchPos = null;
           try { canvas.setPointerCapture(event.pointerId); } catch (e) { /* ignore */ }
           scratch(position(event));
         });
@@ -1131,16 +1365,19 @@
 
         canvas.addEventListener('pointerup', function(event) {
           scratching = false;
+          lastScratchPos = null;
           try { canvas.releasePointerCapture(event.pointerId); } catch (e) { /* ignore */ }
         });
 
         canvas.addEventListener('pointercancel', function() {
           scratching = false;
+          lastScratchPos = null;
         });
 
         canvas.addEventListener('touchstart', function(event) {
           event.preventDefault();
           scratching = true;
+          lastScratchPos = null;
           scratch(position(event));
         }, { passive: false });
 
@@ -1152,10 +1389,12 @@
 
         canvas.addEventListener('touchend', function() {
           scratching = false;
+          lastScratchPos = null;
         }, { passive: true });
 
         canvas.addEventListener('touchcancel', function() {
           scratching = false;
+          lastScratchPos = null;
         }, { passive: true });
 
         window.addEventListener('resize', function() {
