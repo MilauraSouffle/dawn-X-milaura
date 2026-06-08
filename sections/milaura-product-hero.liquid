@@ -326,39 +326,40 @@
       flex: 1 1 auto;
       min-width: 0;
       overflow: hidden;
+      text-overflow: ellipsis;
       -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 18px), transparent 100%);
       mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 18px), transparent 100%);
     }
 
-    .milaura-meta-badge--vertus .milaura-meta-badge__marquee-inner {
+    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee-inner {
       display: inline-flex;
       width: max-content;
       gap: 24px;
       animation: milauraVertusMarquee 18s linear infinite;
     }
 
-    .milaura-meta-badge--vertus .milaura-meta-badge__marquee-copy {
+    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee-copy {
       display: inline;
     }
   }
 
   @media screen and (max-width: 749px) and (prefers-reduced-motion: reduce) {
-    .milaura-meta-badge--vertus .milaura-meta-badge__marquee {
+    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
 
-    .milaura-meta-badge--vertus .milaura-meta-badge__marquee::-webkit-scrollbar {
+    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee::-webkit-scrollbar {
       display: none;
     }
 
-    .milaura-meta-badge--vertus .milaura-meta-badge__marquee-inner {
+    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee-inner {
       animation: none;
       transform: none;
     }
 
-    .milaura-meta-badge--vertus .milaura-meta-badge__marquee-copy {
+    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee-copy {
       display: none;
     }
   }
@@ -4473,7 +4474,8 @@
               {%- endif -%}
               {%- if badge_vertus != blank and shown_meta_badges < 3 -%}
                 {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
-                <span class="milaura-meta-badge milaura-meta-badge--vertus">
+                {%- assign badge_vertus_size = badge_vertus | strip_html | size -%}
+                <span class="milaura-meta-badge milaura-meta-badge--vertus{% if badge_vertus_size > 36 %} milaura-meta-badge--vertus-scroll{% endif %}">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                   </svg>
@@ -4663,18 +4665,18 @@
           >
             <div class="milaura-reward-preview__inner">
               <div class="milaura-reward-preview__copy">
-                <p class="milaura-reward-preview__eyebrow">Dans votre panier</p>
-                <h3 class="milaura-reward-preview__title">{{ section.settings.bundle_title | default: 'Votre carte MilAura vous attend' }}</h3>
-                <p class="milaura-reward-preview__text">{{ section.settings.bundle_subtitle | default: 'Ajoutez ce produit au panier. Votre attention sera à gratter juste après.' }}</p>
+                <p class="milaura-reward-preview__eyebrow">Cartes surprises MilAura</p>
+                <h3 class="milaura-reward-preview__title">{{ section.settings.bundle_title | default: 'Découvrez vos cadeaux en grattant les cartes surprises MilAura' }}</h3>
+                <p class="milaura-reward-preview__text">{{ section.settings.bundle_subtitle | default: 'Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 20 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte, cadeau et remise.' }}</p>
                 <p class="milaura-reward-preview__status" data-reward-preview-status>
                   {%- if projected_cards >= 3 -%}
-                    Avec ce produit : 3 cartes à gratter.
+                    Avec ce produit : 3 cartes surprises débloquées.
                   {%- elsif projected_cards > 1 -%}
-                    Avec ce produit : {{ projected_cards }} cartes à gratter.
+                    Avec ce produit : {{ projected_cards }} cartes surprises débloquées.
                   {%- elsif projected_cards == 1 -%}
-                    Avec ce produit : 1 carte à gratter.
+                    Avec ce produit : 1 carte surprise débloquée.
                   {%- else -%}
-                    Dès {{ reward_threshold_1_cents | money_without_trailing_zeros | remove: '€' | strip }} € d'achat, votre première carte apparaît.
+                    Dès {{ reward_threshold_1_cents | money_without_trailing_zeros | remove: '€' | strip }} € d'achat, votre première carte surprise se débloque.
                   {%- endif -%}
                 </p>
               </div>
@@ -4714,7 +4716,7 @@
                   <span class="milaura-cart-progress__fill" id="milaura-cart-progress-fill-{{ section.id }}"></span>
                 </div>
                 <p class="milaura-cart-progress__text" id="milaura-cart-progress-text-{{ section.id }}">
-                  Cliquez sur Ajouter au panier pour débloquer votre première carte.
+                  Ajoutez ce produit au panier pour débloquer votre première carte surprise.
                 </p>
               </div>
               <div class="milaura-gift-popup" id="milaura-gift-popup-{{ section.id }}" hidden>
@@ -4774,8 +4776,8 @@
               </button>
             </div>
             <div class="milaura-cart-confirm" id="milaura-cart-confirm-{{ section.id }}" hidden>
-              <p class="milaura-cart-confirm__text">Produit ajouté. Vos cartes vous attendent dans le panier.</p>
-              <a href="{{ routes.cart_url }}" class="milaura-cart-confirm__link">Révéler mes cartes</a>
+              <p class="milaura-cart-confirm__text">Produit ajouté. Vos cartes surprises vous attendent dans le panier.</p>
+              <a href="{{ routes.cart_url }}" class="milaura-cart-confirm__link">Gratter mes cartes</a>
             </div>
 	        {%- endif -%}
 
@@ -4853,10 +4855,10 @@
           /* ===== CONSTANTS ===== */
           var GOLD_1 = {{ section.settings.scratch_overlay_color_start | default: '#E6C88B' | json }};
           var GOLD_2 = {{ section.settings.scratch_overlay_color_end | default: '#C0A062' | json }};
-          var PROGRESS_EMPTY_TEXT = {{ section.settings.progress_empty_text | default: 'Cliquez sur Ajouter au panier pour débloquer votre première carte.' | json }};
-          var PROGRESS_ONE_TEXT = {{ section.settings.progress_one_text | default: '1 carte à gratter dispo.' | json }};
+          var PROGRESS_EMPTY_TEXT = {{ section.settings.progress_empty_text | default: 'Ajoutez ce produit au panier pour débloquer votre première carte surprise.' | json }};
+          var PROGRESS_ONE_TEXT = {{ section.settings.progress_one_text | default: '1 carte surprise prête dans le panier.' | json }};
           var PROGRESS_MANY_TEMPLATE = {{ section.settings.progress_many_text | json }};
-          if (!PROGRESS_MANY_TEMPLATE) PROGRESS_MANY_TEMPLATE = '[count] cartes à gratter dispo.';
+          if (!PROGRESS_MANY_TEMPLATE) PROGRESS_MANY_TEMPLATE = '[count] cartes surprises prêtes dans le panier.';
           var CUSTOMER_LOGGED_IN = {% if customer %}true{% else %}false{% endif %};
           var REVEAL_THRESHOLD = 0.55;
           var SCRATCH_RADIUS = 22;
@@ -5227,19 +5229,19 @@
 
             if (!rewardPreviewStatusEl) return;
             if (unlocked >= 3) {
-              rewardPreviewStatusEl.textContent = 'Avec ce produit : 3 cartes à gratter.';
+              rewardPreviewStatusEl.textContent = 'Avec ce produit : 3 cartes surprises débloquées.';
             } else if (unlocked === 2) {
               rewardPreviewStatusEl.textContent = next
-                ? 'Avec ce produit : 2 cartes à gratter. Encore ' + formatPrice(next.remaining) + ' pour la Surprise été.'
-                : 'Avec ce produit : 2 cartes à gratter.';
+                ? 'Avec ce produit : 2 cartes surprises débloquées. Encore ' + formatPrice(next.remaining) + ' pour la Surprise été.'
+                : 'Avec ce produit : 2 cartes surprises débloquées.';
             } else if (unlocked === 1) {
               rewardPreviewStatusEl.textContent = next
-                ? 'Avec ce produit : 1 carte à gratter. Encore ' + formatPrice(next.remaining) + ' pour la suivante.'
-                : 'Avec ce produit : 1 carte à gratter.';
+                ? 'Avec ce produit : 1 carte surprise débloquée. Encore ' + formatPrice(next.remaining) + ' pour la suivante.'
+                : 'Avec ce produit : 1 carte surprise débloquée.';
             } else {
               rewardPreviewStatusEl.textContent = next
-                ? 'Encore ' + formatPrice(next.remaining) + ' pour votre première carte.'
-                : 'Votre première carte MilAura vous attend.';
+                ? 'Encore ' + formatPrice(next.remaining) + ' pour votre première carte surprise.'
+                : 'Votre première carte surprise MilAura vous attend.';
             }
           }
 
@@ -5726,9 +5728,9 @@
             }
             if (gift.discountCode) {
               if (CUSTOMER_LOGGED_IN) {
-                return 'Votre compte MilAura est connecté. Le code est préparé et sera vérifié au moment du paiement selon les conditions Shopify.';
+                return 'Votre compte MilAura est connecté. Le code sera vérifié au moment du paiement selon les conditions Shopify.';
               }
-              return 'Déjà cliente ? Connectez-vous au moment du paiement pour retrouver vos informations. Le code est préparé automatiquement, sans inscription dans cette fenêtre.';
+              return 'Déjà cliente ? Connectez-vous au moment du paiement pour retrouver vos informations. Le code est transmis automatiquement, sans inscription dans cette fenêtre.';
             }
             return '';
           }
@@ -5745,7 +5747,7 @@
             var discountResult = (results || []).find(function(result) { return result && result.type === 'discount'; });
             if (giftResult && giftResult.alreadyInCart) return 'Ce cadeau est déjà dans votre panier à 0 €.';
             if (giftResult && giftResult.added) return 'Cadeau ajouté au panier à 0 €. Vous pouvez le vérifier dans votre panier.';
-            if (discountResult && discountResult.code) return 'Code ' + discountResult.code + ' préparé. Il sera vérifié au moment du paiement.';
+            if (discountResult && discountResult.code) return 'Code ' + discountResult.code + ' enregistré. Il sera vérifié au moment du paiement.';
             return 'Cadeau activé.';
           }
 
@@ -6763,7 +6765,7 @@
       "type": "text",
       "id": "scratch_title",
       "label": "Titre scratch",
-      "default": "Grattez votre carte MilAura"
+      "default": "Grattez votre carte surprise MilAura"
     },
     {
       "type": "text",
@@ -6785,7 +6787,7 @@
       "type": "text",
       "id": "bundle_title",
       "label": "Titre de la preview",
-      "default": "Votre carte MilAura vous attend"
+      "default": "Découvrez vos cadeaux en grattant les cartes surprises MilAura"
     },
     {
       "type": "range",
@@ -6813,7 +6815,7 @@
       "type": "text",
       "id": "bundle_subtitle",
       "label": "Sous-titre de la preview",
-      "default": "Ajoutez ce produit au panier. Votre attention sera à gratter juste après."
+      "default": "Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 20 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte, cadeau et remise."
     },
     {
       "type": "range",
@@ -6905,25 +6907,25 @@
       "type": "text",
       "id": "unlocked_card_label",
       "label": "Texte sur une carte débloquée",
-      "default": "Carte débloquée, grattez ici"
+      "default": "Carte surprise débloquée, grattez ici"
     },
     {
       "type": "text",
       "id": "progress_empty_text",
       "label": "Progression - panier vide",
-      "default": "Ajoutez ce produit au panier pour préparer votre première carte."
+      "default": "Ajoutez ce produit au panier pour débloquer votre première carte surprise."
     },
     {
       "type": "text",
       "id": "progress_one_text",
       "label": "Progression - 1 carte",
-      "default": "1 carte prête dans le panier."
+      "default": "1 carte surprise prête dans le panier."
     },
     {
       "type": "text",
       "id": "progress_many_text",
       "label": "Progression - plusieurs cartes",
-      "default": "[count] cartes prêtes dans le panier.",
+      "default": "[count] cartes surprises prêtes dans le panier.",
       "info": "Gardez [count] pour afficher le nombre."
     },
     {
@@ -7272,7 +7274,7 @@
           "type": "text",
           "id": "value",
           "label": "Valeur",
-          "default": "Code préparé"
+          "default": "Code enregistré"
         },
         {
           "type": "text",
@@ -7314,7 +7316,7 @@
         { "type": "volume_offer" },
         { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-LIV19", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre livraison offerte se débloque automatiquement. Elle sera appliquée selon les conditions Shopify." } },
         { "type": "gift", "settings": { "icon": "🖤", "name": "Carte sélection", "value": "Cadeau MilAura", "badge_label": "Gagné", "popup_title": "Votre cadeau MilAura est débloqué", "popup_text": "Votre panier atteint le palier 50 €. Votre cadeau MilAura est ajouté automatiquement au panier." } },
-        { "type": "gift", "settings": { "icon": "✨", "name": "Surprise de l'été", "value": "", "discount_code": "MILAURA30", "badge_label": "Surprise été", "popup_title": "Votre meilleur cadeau est débloqué", "popup_text": "Votre panier atteint le palier 80 €. Votre meilleure attention MilAura est préparée automatiquement pour le paiement." } }
+        { "type": "gift", "settings": { "icon": "✨", "name": "Surprise de l'été", "value": "", "discount_code": "MILAURA30", "badge_label": "Surprise été", "popup_title": "Votre meilleur cadeau est débloqué", "popup_text": "Votre panier atteint le palier 80 €. Grattez votre carte dans le panier pour appliquer la remise MilAura." } }
       ]
     }
   ]
