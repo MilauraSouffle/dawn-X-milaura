@@ -1,0 +1,175 @@
+<div id="MilauraHeroHome-{{ section.id }}" aria-label="{{ hero_label }}">
+  <div class="hero-home-shell">
+    <div class="hero-home-top-hook">
+      {%- assign top_hook_brand_name = section.settings.top_hook_brand | remove_first: 'par ' | remove_first: 'Par ' | remove_first: 'BY ' | remove_first: 'By ' | remove_first: 'by ' | replace: "Mil'Aura", 'MilAura' | replace: "Mil’Aura", 'MilAura' | strip -%}
+      {%- if settings.logo != blank -%}
+        {{ settings.logo | image_url: width: 110 | image_tag:
+          class: 'hero-home-top-logo',
+          loading: 'eager',
+          alt: 'MilAura'
+        }}
+      {%- else -%}
+        <span class="hero-home-top-wordmark">MilAura</span>
+      {%- endif -%}
+      <span class="hero-home-top-copy">
+        {%- if top_hook_kicker != blank -%}
+          <span class="hero-home-top-kicker">{{ top_hook_kicker }}</span>
+        {%- endif -%}
+        <span class="hero-home-top-phrase">
+          <span class="hero-home-top-line">{{ top_hook_text }}</span>
+          {%- if top_hook_highlight != blank -%}
+            <span class="hero-home-top-highlight">{{ top_hook_highlight }}</span>
+          {%- endif -%}
+        </span>
+        <span class="hero-home-top-brand">
+          <span class="hero-home-top-brand-prefix">{{ top_hook_brand_prefix }}</span>
+          <span class="hero-home-top-brand-name">{{ top_hook_brand_name }}</span>
+        </span>
+        {%- if section.settings.top_hook_meta != blank -%}
+          <span class="hero-home-top-meta">{{ section.settings.top_hook_meta }}</span>
+        {%- endif -%}
+      </span>
+    </div>
+
+    <div class="hero-home-inner">
+      <div class="hero-home-content">
+        {%- if section.settings.badge_text != blank or section.settings.show_stock -%}
+          <div class="hero-home-badge-row">
+            {%- if section.settings.badge_text != blank -%}
+              <span class="hero-home-badge">{{ section.settings.badge_text }}</span>
+            {%- endif -%}
+            {%- if section.settings.show_stock -%}
+              <span class="hero-home-stock">{{ section.settings.stock_count }} restantes</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.pretitle != blank -%}
+          <p class="hero-home-pretitle">{{ section.settings.pretitle }}</p>
+        {%- endif -%}
+
+        <h1 class="hero-home-headline">
+          <span>{{ headline_line_1 }}</span>
+          <span>{{ headline_line_2 }}</span>
+          <span class="hero-home-headline-accent">{{ headline_line_3 }}</span>
+        </h1>
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="hero-home-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+
+        <ul class="hero-home-benefits" aria-label="Bienfaits de la pierre">
+          {%- if section.settings.benefit_1_text != blank -%}
+            <li>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_1_icon }}</span>
+              <span>{{ section.settings.benefit_1_text }}</span>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.benefit_2_text != blank -%}
+            <li>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_2_icon }}</span>
+              <span>{{ section.settings.benefit_2_text }}</span>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.benefit_3_text != blank -%}
+            <li>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_3_icon }}</span>
+              <span>{{ section.settings.benefit_3_text }}</span>
+            </li>
+          {%- endif -%}
+        </ul>
+
+        <div class="hero-home-action-row">
+          {%- if product != blank -%}
+            <div class="hero-home-price" aria-label="Prix">
+              <span class="hero-home-price-label">{{ section.settings.price_label }}</span>
+              <span class="hero-home-price-now">{{ product.price | money }}</span>
+              {%- if product.compare_at_price > product.price -%}
+                <span class="hero-home-price-was">{{ product.compare_at_price | money }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <a href="{{ cta_url }}" class="hero-home-cta">
+            <span>{{ cta_text }}</span>
+          </a>
+        </div>
+
+        {%- if section.blocks.size > 0 -%}
+          <div class="hero-home-trust">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'trust' -%}
+                <span {{ block.shopify_attributes }}>{{ block.settings.icon }} {{ block.settings.label }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="hero-home-visual-col">
+        {%- if hero_image != blank or section.settings.hero_image_desktop != blank or section.settings.hero_image_mobile != blank -%}
+          <div class="hero-home-visual">
+            <picture class="hero-home-picture">
+              {%- if section.settings.hero_image_desktop != blank -%}
+                <source media="(min-width: 768px)" srcset="{{ section.settings.hero_image_desktop | image_url: width: 2000 }}">
+              {%- else -%}
+                <source media="(min-width: 768px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.png' | asset_url }}">
+              {%- endif -%}
+              {%- if section.settings.hero_image_mobile != blank -%}
+                <source media="(max-width: 767px)" srcset="{{ section.settings.hero_image_mobile | image_url: width: 1200 }}">
+              {%- else -%}
+                <source media="(max-width: 767px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-mobile-v5-clean.png' | asset_url }}">
+              {%- endif -%}
+              {%- if section.settings.hero_image_desktop != blank -%}
+                <img
+                  class="hero-home-img"
+                  src="{{ section.settings.hero_image_desktop | image_url: width: 2000 }}"
+                  alt="{{ section.settings.image_alt | default: product.title | default: section.settings.headline | strip_html | escape }}"
+                  width="1672"
+                  height="941"
+                  loading="eager"
+                  fetchpriority="high"
+                >
+              {%- else -%}
+                <img
+                  class="hero-home-img"
+                  src="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.png' | asset_url }}"
+                  alt="{{ section.settings.image_alt | default: product.title | default: section.settings.headline | strip_html | escape }}"
+                  width="1672"
+                  height="941"
+                  loading="eager"
+                  fetchpriority="high"
+                >
+              {%- endif -%}
+            </picture>
+            <div class="hero-home-product-callout">
+              {%- if section.settings.ring_cutout_image != blank -%}
+                <img
+                  class="hero-home-ring-cutout"
+                  src="{{ section.settings.ring_cutout_image | image_url: width: 1200 }}"
+                  alt=""
+                  width="1122"
+                  height="1402"
+                  loading="eager"
+                  aria-hidden="true"
+                >
+              {%- else -%}
+                <img
+                  class="hero-home-ring-cutout"
+                  src="{{ 'milaura-aigue-marine-ring-cutout-v1.webp' | asset_url }}"
+                  alt=""
+                  width="1122"
+                  height="1402"
+                  loading="eager"
+                  aria-hidden="true"
+                >
+              {%- endif -%}
+              <span class="hero-home-feature-note hero-home-feature-note--stone">{{ product_note }}</span>
+              <span class="hero-home-feature-note hero-home-feature-note--metal">{{ product_material_note }}</span>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
