@@ -1,7 +1,69 @@
-<div id="MilauraHeroHome-{{ section.id }}" aria-label="{{ hero_label }}">
+{%- liquid
+  assign hero_slide_id = ''
+  unless nested_slide
+    assign hero_slide_id = 'MilauraHeroHome-' | append: section.id
+    if hero_id != blank
+      assign hero_slide_id = hero_id
+    endif
+  endunless
+
+  assign hero_slide_class = slide_class | default: ''
+  assign hero_slide_label = slide_aria_label | default: hero_label
+  assign top_hook_brand_value = top_hook_brand | default: section.settings.top_hook_brand
+  assign top_hook_brand_name = top_hook_brand_value | remove_first: 'par ' | remove_first: 'Par ' | remove_first: 'BY ' | remove_first: 'By ' | remove_first: 'by ' | replace: "Mil'Aura", 'MilAura' | replace: "Mil’Aura", 'MilAura' | strip
+
+  assign top_hook_meta_value = top_hook_meta
+  if top_hook_meta_value == nil
+    assign top_hook_meta_value = section.settings.top_hook_meta
+  endif
+
+  assign hero_badge_text = badge_text
+  if hero_badge_text == nil
+    assign hero_badge_text = section.settings.badge_text
+  endif
+
+  assign hero_show_stock = show_stock
+  if hero_show_stock == nil
+    assign hero_show_stock = section.settings.show_stock
+  endif
+
+  assign hero_stock_count = stock_count | default: section.settings.stock_count
+  assign hero_pretitle = pretitle
+  if hero_pretitle == nil
+    assign hero_pretitle = section.settings.pretitle
+  endif
+
+  assign hero_subtitle = subtitle
+  if hero_subtitle == nil
+    assign hero_subtitle = section.settings.subtitle
+  endif
+
+  assign hero_benefit_1_icon = benefit_1_icon | default: section.settings.benefit_1_icon
+  assign hero_benefit_1_text = benefit_1_text | default: section.settings.benefit_1_text
+  assign hero_benefit_2_icon = benefit_2_icon | default: section.settings.benefit_2_icon
+  assign hero_benefit_2_text = benefit_2_text | default: section.settings.benefit_2_text
+  assign hero_benefit_3_icon = benefit_3_icon | default: section.settings.benefit_3_icon
+  assign hero_benefit_3_text = benefit_3_text | default: section.settings.benefit_3_text
+  assign hero_price_label = price_label | default: section.settings.price_label
+  assign hero_headline = headline | default: section.settings.headline
+  assign hero_image_alt = image_alt | default: section.settings.image_alt | default: product.title | default: hero_headline | strip_html | escape
+  assign hero_image_desktop_value = hero_image_desktop
+  if hero_image_desktop_value == nil
+    assign hero_image_desktop_value = section.settings.hero_image_desktop
+  endif
+  assign hero_image_mobile_value = hero_image_mobile
+  if hero_image_mobile_value == nil
+    assign hero_image_mobile_value = section.settings.hero_image_mobile
+  endif
+  assign ring_cutout_image_value = ring_cutout_image
+  if ring_cutout_image_value == nil
+    assign ring_cutout_image_value = section.settings.ring_cutout_image
+  endif
+-%}
+
+<div{% if hero_slide_id != blank %} id="{{ hero_slide_id }}"{% endif %}{% if hero_slide_class != blank %} class="{{ hero_slide_class }}"{% endif %}{% if slide_role != blank %} role="{{ slide_role }}"{% endif %}{% if slide_roledescription != blank %} aria-roledescription="{{ slide_roledescription }}"{% endif %} aria-label="{{ hero_slide_label }}"{% if slide_hidden %} aria-hidden="true"{% endif %}{% if slide_block != blank %} {{ slide_block.shopify_attributes }}{% endif %}{% if nested_slide %} data-hero-slide{% endif %}>
   <div class="hero-home-shell">
     <div class="hero-home-top-hook">
-      {%- assign top_hook_brand_name = section.settings.top_hook_brand | remove_first: 'par ' | remove_first: 'Par ' | remove_first: 'BY ' | remove_first: 'By ' | remove_first: 'by ' | replace: "Mil'Aura", 'MilAura' | replace: "Mil’Aura", 'MilAura' | strip -%}
       {%- if settings.logo != blank -%}
         {{ settings.logo | image_url: width: 110 | image_tag:
           class: 'hero-home-top-logo',
@@ -25,27 +87,27 @@
           <span class="hero-home-top-brand-prefix">{{ top_hook_brand_prefix }}</span>
           <span class="hero-home-top-brand-name">{{ top_hook_brand_name }}</span>
         </span>
-        {%- if section.settings.top_hook_meta != blank -%}
-          <span class="hero-home-top-meta">{{ section.settings.top_hook_meta }}</span>
+        {%- if top_hook_meta_value != blank -%}
+          <span class="hero-home-top-meta">{{ top_hook_meta_value }}</span>
         {%- endif -%}
       </span>
     </div>
 
     <div class="hero-home-inner">
       <div class="hero-home-content">
-        {%- if section.settings.badge_text != blank or section.settings.show_stock -%}
+        {%- if hero_badge_text != blank or hero_show_stock -%}
           <div class="hero-home-badge-row">
-            {%- if section.settings.badge_text != blank -%}
-              <span class="hero-home-badge">{{ section.settings.badge_text }}</span>
+            {%- if hero_badge_text != blank -%}
+              <span class="hero-home-badge">{{ hero_badge_text }}</span>
             {%- endif -%}
-            {%- if section.settings.show_stock -%}
-              <span class="hero-home-stock">{{ section.settings.stock_count }} restantes</span>
+            {%- if hero_show_stock -%}
+              <span class="hero-home-stock">{{ hero_stock_count }} restantes</span>
             {%- endif -%}
           </div>
         {%- endif -%}
 
-        {%- if section.settings.pretitle != blank -%}
-          <p class="hero-home-pretitle">{{ section.settings.pretitle }}</p>
+        {%- if hero_pretitle != blank -%}
+          <p class="hero-home-pretitle">{{ hero_pretitle }}</p>
         {%- endif -%}
 
         <h1 class="hero-home-headline">
@@ -54,27 +116,27 @@
           <span class="hero-home-headline-accent">{{ headline_line_3 }}</span>
         </h1>
 
-        {%- if section.settings.subtitle != blank -%}
-          <p class="hero-home-subtitle">{{ section.settings.subtitle }}</p>
+        {%- if hero_subtitle != blank -%}
+          <p class="hero-home-subtitle">{{ hero_subtitle }}</p>
         {%- endif -%}
 
         <ul class="hero-home-benefits" aria-label="Bienfaits de la pierre">
-          {%- if section.settings.benefit_1_text != blank -%}
+          {%- if hero_benefit_1_text != blank -%}
             <li>
-              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_1_icon }}</span>
-              <span>{{ section.settings.benefit_1_text }}</span>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ hero_benefit_1_icon }}</span>
+              <span>{{ hero_benefit_1_text }}</span>
             </li>
           {%- endif -%}
-          {%- if section.settings.benefit_2_text != blank -%}
+          {%- if hero_benefit_2_text != blank -%}
             <li>
-              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_2_icon }}</span>
-              <span>{{ section.settings.benefit_2_text }}</span>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ hero_benefit_2_icon }}</span>
+              <span>{{ hero_benefit_2_text }}</span>
             </li>
           {%- endif -%}
-          {%- if section.settings.benefit_3_text != blank -%}
+          {%- if hero_benefit_3_text != blank -%}
             <li>
-              <span class="hero-home-benefit-icon" aria-hidden="true">{{ section.settings.benefit_3_icon }}</span>
-              <span>{{ section.settings.benefit_3_text }}</span>
+              <span class="hero-home-benefit-icon" aria-hidden="true">{{ hero_benefit_3_icon }}</span>
+              <span>{{ hero_benefit_3_text }}</span>
             </li>
           {%- endif -%}
         </ul>
@@ -82,7 +144,7 @@
         <div class="hero-home-action-row">
           {%- if product != blank -%}
             <div class="hero-home-price" aria-label="Prix">
-              <span class="hero-home-price-label">{{ section.settings.price_label }}</span>
+              <span class="hero-home-price-label">{{ hero_price_label }}</span>
               <span class="hero-home-price-now">{{ product.price | money }}</span>
               {%- if product.compare_at_price > product.price -%}
                 <span class="hero-home-price-was">{{ product.compare_at_price | money }}</span>
@@ -107,24 +169,24 @@
       </div>
 
       <div class="hero-home-visual-col">
-        {%- if hero_image != blank or section.settings.hero_image_desktop != blank or section.settings.hero_image_mobile != blank -%}
+        {%- if hero_image != blank or hero_image_desktop_value != blank or hero_image_mobile_value != blank -%}
           <div class="hero-home-visual">
             <picture class="hero-home-picture">
-              {%- if section.settings.hero_image_desktop != blank -%}
-                <source media="(min-width: 768px)" srcset="{{ section.settings.hero_image_desktop | image_url: width: 2000 }}">
+              {%- if hero_image_desktop_value != blank -%}
+                <source media="(min-width: 768px)" srcset="{{ hero_image_desktop_value | image_url: width: 2000 }}">
               {%- else -%}
                 <source media="(min-width: 768px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.png' | asset_url }}">
               {%- endif -%}
-              {%- if section.settings.hero_image_mobile != blank -%}
-                <source media="(max-width: 767px)" srcset="{{ section.settings.hero_image_mobile | image_url: width: 1200 }}">
+              {%- if hero_image_mobile_value != blank -%}
+                <source media="(max-width: 767px)" srcset="{{ hero_image_mobile_value | image_url: width: 1200 }}">
               {%- else -%}
                 <source media="(max-width: 767px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-mobile-v5-clean.png' | asset_url }}">
               {%- endif -%}
-              {%- if section.settings.hero_image_desktop != blank -%}
+              {%- if hero_image_desktop_value != blank -%}
                 <img
                   class="hero-home-img"
-                  src="{{ section.settings.hero_image_desktop | image_url: width: 2000 }}"
-                  alt="{{ section.settings.image_alt | default: product.title | default: section.settings.headline | strip_html | escape }}"
+                  src="{{ hero_image_desktop_value | image_url: width: 2000 }}"
+                  alt="{{ hero_image_alt }}"
                   width="1672"
                   height="941"
                   loading="eager"
@@ -134,7 +196,7 @@
                 <img
                   class="hero-home-img"
                   src="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.png' | asset_url }}"
-                  alt="{{ section.settings.image_alt | default: product.title | default: section.settings.headline | strip_html | escape }}"
+                  alt="{{ hero_image_alt }}"
                   width="1672"
                   height="941"
                   loading="eager"
@@ -143,10 +205,10 @@
               {%- endif -%}
             </picture>
             <div class="hero-home-product-callout">
-              {%- if section.settings.ring_cutout_image != blank -%}
+              {%- if ring_cutout_image_value != blank -%}
                 <img
                   class="hero-home-ring-cutout"
-                  src="{{ section.settings.ring_cutout_image | image_url: width: 1200 }}"
+                  src="{{ ring_cutout_image_value | image_url: width: 1200 }}"
                   alt=""
                   width="1122"
                   height="1402"
