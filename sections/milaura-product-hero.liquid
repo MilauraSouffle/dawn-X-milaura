@@ -3767,11 +3767,11 @@
     appearance: none;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    justify-content: flex-start;
+    gap: 10px;
     width: 100%;
-    min-height: 44px;
-    padding: 10px 12px;
+    min-height: 70px;
+    padding: 8px 10px;
     border: 1px solid rgba(26, 26, 46, 0.14);
     border-radius: 8px;
     background: #ffffff;
@@ -3783,6 +3783,36 @@
     text-align: left;
     cursor: pointer;
     transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .milaura-variant-option__image-wrap {
+    flex: 0 0 54px;
+    width: 54px;
+    height: 54px;
+    overflow: hidden;
+    border: 1px solid rgba(192, 160, 98, 0.18);
+    border-radius: 8px;
+    background: var(--milaura-beige, #FDFBF7);
+  }
+
+  .milaura-variant-option__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .milaura-variant-option__body {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .milaura-variant-option__title {
+    display: block;
   }
 
   .milaura-variant-option:hover {
@@ -3804,7 +3834,6 @@
   }
 
   .milaura-variant-option__status {
-    flex-shrink: 0;
     font-size: 0.72rem;
     font-weight: 900;
     color: var(--milaura-gold, #C0A062);
@@ -3820,6 +3849,19 @@
       align-items: flex-start;
       flex-direction: column;
       min-height: 62px;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .milaura-variant-option {
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 62px;
+      padding: 10px 12px;
+    }
+
+    .milaura-variant-option__image-wrap {
+      display: none;
     }
   }
 
@@ -4885,6 +4927,13 @@
                 </p>
                 <div class="milaura-variant-picker__options" role="radiogroup" aria-label="{{ product.options.first | default: 'Choisir une variante' | escape }}">
                   {%- for variant in product.variants -%}
+                    {%- assign variant_image = variant.featured_media.preview_image -%}
+                    {%- unless variant_image -%}
+                      {%- assign variant_image = variant.featured_image -%}
+                    {%- endunless -%}
+                    {%- unless variant_image -%}
+                      {%- assign variant_image = product.featured_image -%}
+                    {%- endunless -%}
                     <button
                       type="button"
                       class="milaura-variant-option{% if variant.id == product.selected_or_first_available_variant.id %} is-selected{% endif %}{% unless variant.available %} is-disabled{% endunless %}"
@@ -4894,13 +4943,20 @@
                       data-variant-id="{{ variant.id }}"
                       {% unless variant.available %}disabled aria-disabled="true"{% endunless %}
                     >
-                      <span>{{ variant.title }}</span>
-                      <span class="milaura-variant-option__status">
-                        {%- if variant.available -%}
-                          Choisir
-                        {%- else -%}
-                          Épuisé
-                        {%- endif -%}
+                      {%- if variant_image -%}
+                        <span class="milaura-variant-option__image-wrap" aria-hidden="true">
+                          {{ variant_image | image_url: width: 140 | image_tag: class: 'milaura-variant-option__image', loading: 'lazy', widths: '54, 108, 140', sizes: '(max-width: 989px) 54px, 1px', alt: '' }}
+                        </span>
+                      {%- endif -%}
+                      <span class="milaura-variant-option__body">
+                        <span class="milaura-variant-option__title">{{ variant.title }}</span>
+                        <span class="milaura-variant-option__status">
+                          {%- if variant.available -%}
+                            Choisir
+                          {%- else -%}
+                            Épuisé
+                          {%- endif -%}
+                        </span>
                       </span>
                     </button>
                   {%- endfor -%}
