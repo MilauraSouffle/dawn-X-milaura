@@ -58,14 +58,14 @@
 
           <div class="milaura-product-cta-final__price-wrapper">
             {%- if show_promo -%}
-              <span class="milaura-product-cta-final__price milaura-product-cta-final__price--sale">
+              <span class="milaura-product-cta-final__price milaura-product-cta-final__price--sale" data-cta-final-price>
                 {{ current_variant.price | money }}
               </span>
               <span class="milaura-product-cta-final__price milaura-product-cta-final__price--compare">
                 {{ current_variant.compare_at_price | money }}
               </span>
             {%- else -%}
-              <span class="milaura-product-cta-final__price">
+              <span class="milaura-product-cta-final__price" data-cta-final-price>
                 {{ current_variant.price | money }}
               </span>
             {%- endif -%}
@@ -76,7 +76,7 @@
       {%- comment -%} CTA {%- endcomment -%}
       {%- assign cta_form_id = 'MilauraCtaFinalForm-' | append: section.id -%}
       {%- form 'product', product, id: cta_form_id, class: 'milaura-product-cta-final__form' -%}
-        <input type="hidden" name="id" value="{{ current_variant.id }}">
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-cta-final-variant-id>
         <input type="hidden" name="quantity" value="1">
 
         <button
@@ -85,6 +85,8 @@
           class="milaura-product-cta-final__cta milaura-btn-gold"
           {% if stock_level == 'out_of_stock' %}disabled{% endif %}
           data-cta-final-add
+          data-cta-final-default-text="{{ section.settings.button_text | default: 'Ajouter au panier' | escape }}"
+          data-cta-final-sold-out-text="{{ section.settings.button_text_sold_out | default: 'Rupture de stock' | escape }}"
         >
           {% if stock_level == 'out_of_stock' %}
             {{ section.settings.button_text_sold_out | default: 'Rupture de stock' }}
@@ -312,6 +314,36 @@
   if (!section) return;
 
   const form = section.querySelector('.milaura-product-cta-final__form');
+
+  function formatPrice(cents) {
+    try {
+      return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: '{{ cart.currency.iso_code | default: shop.currency }}' }).format(cents / 100);
+    } catch (error) {
+      return (cents / 100).toFixed(2).replace('.', ',') + ' €';
+    }
+  }
+
+  document.addEventListener('milaura:variant-change', function(event) {
+    const variant = event.detail && event.detail.variant;
+    if (!variant || !form) return;
+
+    const variantInput = form.querySelector('[data-cta-final-variant-id]');
+    const priceEl = section.querySelector('[data-cta-final-price]');
+    const submitBtn = form.querySelector('[data-cta-final-add]');
+
+    if (variantInput) {
+      variantInput.value = variant.id;
+    }
+    if (priceEl) {
+      priceEl.textContent = formatPrice(variant.price);
+    }
+    if (submitBtn) {
+      const defaultText = submitBtn.getAttribute('data-cta-final-default-text') || 'Ajouter au panier';
+      const soldOutText = submitBtn.getAttribute('data-cta-final-sold-out-text') || 'Rupture de stock';
+      submitBtn.disabled = variant.available === false;
+      submitBtn.textContent = variant.available === false ? soldOutText : defaultText;
+    }
+  });
 
   if (form) {
     form.addEventListener('submit', function(e) {

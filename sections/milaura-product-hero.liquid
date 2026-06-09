@@ -2618,13 +2618,15 @@
     overflow: visible;
     border-radius: 999px;
     background: rgba(26, 26, 46, 0.08);
+    box-shadow: inset 0 1px 2px rgba(26, 26, 46, 0.08);
   }
 
   .milaura-reward-preview__fill {
-    display: block;
-    width: 0%;
     position: absolute;
     inset: 3px auto 3px 0;
+    display: block;
+    width: 0%;
+    height: auto;
     border-radius: inherit;
     background: linear-gradient(90deg, #D8B568, #F7DCA5, #B78A35);
     transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -2638,12 +2640,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(192, 160, 98, 0.38);
-    border-radius: 999px;
-    background: #fffdf8;
-    color: rgba(26, 26, 46, 0.58);
+    border: 1px solid rgba(192, 160, 98, 0.36);
+    border-radius: 50%;
+    background: #fff;
+    color: rgba(26, 26, 46, 0.52);
     font-family: 'Lato', sans-serif;
-    font-size: 0.62rem;
+    font-size: 0.52rem;
     font-weight: 900;
     line-height: 1;
     transform: translate(-50%, -50%);
@@ -2651,10 +2653,12 @@
   }
 
   .milaura-reward-preview__mark.is-unlocked {
-    border-color: rgba(26, 26, 46, 0.9);
-    background: #1a1a2e;
-    color: #F7DCA5;
-    box-shadow: 0 0 0 3px rgba(247, 220, 165, 0.22);
+    background:
+      radial-gradient(circle at 35% 24%, rgba(255, 255, 255, 0.88), transparent 32%),
+      linear-gradient(135deg, #FFF4CF, #D8B568 58%, #A67828);
+    color: #1a1a2e;
+    border-color: rgba(143, 114, 58, 0.48);
+    box-shadow: 0 5px 14px rgba(192, 160, 98, 0.24);
   }
 
   .milaura-cart-confirm {
@@ -3724,6 +3728,101 @@
     border-radius: 16px !important;
   }
 
+  .milaura-variant-picker {
+    margin: 0 0 14px;
+    padding: 12px;
+    border: 1px solid rgba(192, 160, 98, 0.22);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  .milaura-variant-picker__label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 8px;
+    font-family: var(--milaura-font-body, inherit);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: #1a1a1a;
+    text-transform: uppercase;
+  }
+
+  .milaura-variant-picker__selected {
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--milaura-gold, #C0A062);
+    text-transform: none;
+  }
+
+  .milaura-variant-picker__options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .milaura-variant-option {
+    appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid rgba(26, 26, 46, 0.14);
+    border-radius: 8px;
+    background: #ffffff;
+    color: #1a1a1a;
+    font-family: var(--milaura-font-body, inherit);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .milaura-variant-option:hover {
+    border-color: rgba(192, 160, 98, 0.65);
+    box-shadow: 0 4px 14px rgba(192, 160, 98, 0.14);
+  }
+
+  .milaura-variant-option.is-selected {
+    border-color: var(--milaura-gold, #C0A062);
+    background: linear-gradient(135deg, rgba(255, 253, 248, 1), rgba(244, 235, 216, 0.72));
+    box-shadow: inset 0 0 0 1px rgba(192, 160, 98, 0.16), 0 6px 18px rgba(192, 160, 98, 0.12);
+  }
+
+  .milaura-variant-option.is-disabled,
+  .milaura-variant-option:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .milaura-variant-option__status {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 900;
+    color: var(--milaura-gold, #C0A062);
+    text-transform: uppercase;
+  }
+
+  @media screen and (min-width: 750px) {
+    .milaura-variant-picker__options {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .milaura-variant-option {
+      align-items: flex-start;
+      flex-direction: column;
+      min-height: 62px;
+    }
+  }
+
   /* CTA bundle-aware : premium gold avec icone panier + shimmer, texte NOIR */
   .milaura-hero-cta-bundle {
     position: relative;
@@ -4776,6 +4875,39 @@
             </div>
           {%- endif -%}
 
+            {%- unless product.has_only_default_variant -%}
+              <div class="milaura-variant-picker" data-milaura-variant-picker>
+                <p class="milaura-variant-picker__label">
+                  <span>{{ product.options.first | default: 'Modèle' }}</span>
+                  <span class="milaura-variant-picker__selected" data-milaura-variant-selected-label>
+                    {{ product.selected_or_first_available_variant.title }}
+                  </span>
+                </p>
+                <div class="milaura-variant-picker__options" role="radiogroup" aria-label="{{ product.options.first | default: 'Choisir une variante' | escape }}">
+                  {%- for variant in product.variants -%}
+                    <button
+                      type="button"
+                      class="milaura-variant-option{% if variant.id == product.selected_or_first_available_variant.id %} is-selected{% endif %}{% unless variant.available %} is-disabled{% endunless %}"
+                      role="radio"
+                      aria-checked="{% if variant.id == product.selected_or_first_available_variant.id %}true{% else %}false{% endif %}"
+                      data-milaura-variant-option
+                      data-variant-id="{{ variant.id }}"
+                      {% unless variant.available %}disabled aria-disabled="true"{% endunless %}
+                    >
+                      <span>{{ variant.title }}</span>
+                      <span class="milaura-variant-option__status">
+                        {%- if variant.available -%}
+                          Choisir
+                        {%- else -%}
+                          Épuisé
+                        {%- endif -%}
+                      </span>
+                    </button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endunless -%}
+
             <div class="milaura-bundle-atc-row">
               <div class="milaura-quantity-capsule milaura-bundle-qty" aria-label="Quantité">
                 <button type="button" class="milaura-quantity-btn" data-milaura-qty-minus aria-label="Diminuer la quantité">-</button>
@@ -5204,6 +5336,11 @@
             parseInt(rewardPreviewEl.getAttribute('data-reward-threshold-3'), 10) || 8000
           ] : [2000, 5000, 8000];
           var previewCartSubtotalCents = 0;
+          var productVariants = {{ product.variants | json }};
+          var productUrl = {{ product.url | json }};
+          var variantPickerEl = document.querySelector('[data-milaura-variant-picker]');
+          var variantOptionEls = variantPickerEl ? Array.prototype.slice.call(variantPickerEl.querySelectorAll('[data-milaura-variant-option]')) : [];
+          var variantSelectedLabelEl = variantPickerEl ? variantPickerEl.querySelector('[data-milaura-variant-selected-label]') : null;
 
           function formatPrice(cents) {
             try {
@@ -5211,6 +5348,139 @@
             } catch (e) {
               return (cents / 100).toFixed(2).replace('.', ',') + ' €';
             }
+          }
+
+          function findVariantById(variantId) {
+            var numericId = parseInt(variantId, 10);
+            if (!Array.isArray(productVariants)) return null;
+            return productVariants.find(function(variant) {
+              return parseInt(variant.id, 10) === numericId;
+            }) || null;
+          }
+
+          function variantMediaId(variant) {
+            if (!variant) return null;
+            if (variant.featured_media && variant.featured_media.id) return variant.featured_media.id;
+            if (variant.featured_image && variant.featured_image.id) return variant.featured_image.id;
+            return null;
+          }
+
+          function updateVariantPicker(variant) {
+            if (!variant || !variantOptionEls.length) return;
+            variantOptionEls.forEach(function(optionEl) {
+              var isSelected = parseInt(optionEl.getAttribute('data-variant-id'), 10) === parseInt(variant.id, 10);
+              optionEl.classList.toggle('is-selected', isSelected);
+              optionEl.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+              var statusEl = optionEl.querySelector('.milaura-variant-option__status');
+              if (statusEl && !optionEl.disabled) {
+                statusEl.textContent = isSelected ? 'Sélectionné' : 'Choisir';
+              }
+            });
+            if (variantSelectedLabelEl) {
+              variantSelectedLabelEl.textContent = variant.title || '';
+            }
+          }
+
+          function updateHeroPrice(variant) {
+            if (!variant) return;
+            var priceRoot = document.getElementById('price-' + sid);
+            if (!priceRoot) return;
+            var priceBlock = priceRoot.querySelector('.price');
+            var regularPrice = priceRoot.querySelector('.price__regular .price-item--regular');
+            var salePrice = priceRoot.querySelector('.price__sale .price-item--sale');
+            var comparePrice = priceRoot.querySelector('.price__sale s.price-item--regular');
+            var compareAt = parseInt(variant.compare_at_price, 10) || 0;
+            var price = parseInt(variant.price, 10) || 0;
+            var hasSale = compareAt > price;
+
+            if (priceBlock) {
+              priceBlock.classList.toggle('price--on-sale', hasSale);
+              priceBlock.classList.toggle('price--sold-out', variant.available === false);
+            }
+            if (regularPrice) regularPrice.textContent = formatPrice(hasSale ? compareAt : price);
+            if (salePrice) salePrice.textContent = formatPrice(price);
+            if (comparePrice) comparePrice.textContent = hasSale ? formatPrice(compareAt) : '';
+          }
+
+          function syncFinalCtas(variant) {
+            if (!variant) return;
+            document.querySelectorAll('[data-cta-final-variant-id]').forEach(function(input) {
+              input.value = variant.id;
+              input.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+            document.querySelectorAll('[data-cta-final-price]').forEach(function(priceEl) {
+              priceEl.textContent = formatPrice(variant.price);
+            });
+            document.querySelectorAll('[data-cta-final-add]').forEach(function(button) {
+              var defaultText = button.getAttribute('data-cta-final-default-text') || 'Ajouter au panier';
+              var soldOutText = button.getAttribute('data-cta-final-sold-out-text') || 'Rupture de stock';
+              if (variant.available === false) {
+                button.disabled = true;
+                button.textContent = soldOutText;
+              } else {
+                button.disabled = false;
+                button.textContent = defaultText;
+              }
+            });
+          }
+
+          function focusVariantMedia(variant) {
+            var mediaId = variantMediaId(variant);
+            if (!mediaId) return;
+            var sliderComp = document.querySelector('.milaura-hero-gallery-column slider-component');
+            var mediaList = sliderComp ? sliderComp.querySelector('[id^="Slider-"]') : null;
+            var targetSlide = sliderComp ? sliderComp.querySelector('[data-media-id="' + sid + '-' + mediaId + '"]') : null;
+            if (!mediaList || !targetSlide) return;
+
+            mediaList.scrollTo({ left: targetSlide.offsetLeft, behavior: 'smooth' });
+            var slides = Array.prototype.slice.call(sliderComp.querySelectorAll('.product__media-item'));
+            var slideIndex = slides.indexOf(targetSlide);
+            if (slideIndex < 0) return;
+            sliderComp.querySelectorAll('.slider-counter__link--dots, .milaura-thumb-strip__item').forEach(function(el) {
+              var index = parseInt(el.getAttribute('data-slide-index'), 10);
+              el.classList.toggle('slider-counter__link--active', index === slideIndex);
+              el.classList.toggle('is-active', index === slideIndex);
+            });
+          }
+
+          function setSelectedVariant(variant, options) {
+            if (!variant || !ctaButton) return;
+            var shouldUpdateUrl = !options || options.updateUrl !== false;
+            var shouldDispatch = !options || options.dispatch !== false;
+
+            ctaVariantId = parseInt(variant.id, 10) || ctaVariantId;
+            unitPriceCents = parseInt(variant.price, 10) || unitPriceCents;
+            ctaButton.setAttribute('data-variant-id', String(ctaVariantId));
+            ctaButton.setAttribute('data-unit-price-cents', String(unitPriceCents));
+            ctaButton.disabled = variant.available === false;
+
+            updateVariantPicker(variant);
+            updateHeroPrice(variant);
+            syncFinalCtas(variant);
+            updateCtaButton();
+            focusVariantMedia(variant);
+
+            if (shouldUpdateUrl && window.history && productUrl) {
+              window.history.replaceState({}, '', productUrl + '?variant=' + variant.id);
+            }
+            if (shouldDispatch) {
+              document.dispatchEvent(new CustomEvent('milaura:variant-change', {
+                detail: { variant: variant, sectionId: sid }
+              }));
+            }
+          }
+
+          function bindVariantPicker() {
+            if (!variantOptionEls.length) return;
+            variantOptionEls.forEach(function(optionEl) {
+              optionEl.addEventListener('click', function() {
+                if (optionEl.disabled) return;
+                var variant = findVariantById(optionEl.getAttribute('data-variant-id'));
+                if (variant) setSelectedVariant(variant);
+              });
+            });
+            var initialVariant = findVariantById(ctaVariantId);
+            if (initialVariant) setSelectedVariant(initialVariant, { updateUrl: false, dispatch: false });
           }
 
           function getSelectedQuantity() {
@@ -5254,7 +5524,6 @@
               var lock = card.querySelector('.milaura-reward-preview__lock');
               if (lock) lock.textContent = isUnlocked ? '🔓' : '🔒';
             });
-
             rewardPreviewMarks.forEach(function(mark) {
               var index = parseInt(mark.getAttribute('data-reward-preview-mark'), 10);
               mark.classList.toggle('is-unlocked', index <= unlocked);
@@ -5542,6 +5811,7 @@
             });
             qtyInputEl.addEventListener('input', updateCtaButton);
           }
+          bindVariantPicker();
           updateCtaButton();
           restoreRecentCartConfirm();
           document.addEventListener('cart:updated', function(event) {
