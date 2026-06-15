@@ -243,6 +243,12 @@
     box-shadow: none !important;
   }
 
+  .milaura-product-cta-final__cta.is-duo-blocked {
+    opacity: 0.58;
+    cursor: not-allowed;
+    filter: grayscale(0.12);
+  }
+
   .milaura-product-cta-final__badges {
     display: flex;
     flex-direction: column;
@@ -315,6 +321,36 @@
 
   const form = section.querySelector('.milaura-product-cta-final__form');
 
+  function getDuoApi() {
+    return window.MilauraDuoBracelets && typeof window.MilauraDuoBracelets.requestValidSelection === 'function'
+      ? window.MilauraDuoBracelets
+      : null;
+  }
+
+  function setDuoBlocked(blocked) {
+    if (!form) return;
+    const submitBtn = form.querySelector('[data-cta-final-add]');
+    if (!submitBtn || submitBtn.disabled) return;
+    submitBtn.classList.toggle('is-duo-blocked', blocked);
+    submitBtn.setAttribute('aria-disabled', blocked ? 'true' : 'false');
+  }
+
+  function syncDuoPropertyInputs(properties) {
+    if (!form || !properties) return;
+    form.querySelectorAll('[data-milaura-duo-property]').forEach(function(input) {
+      input.remove();
+    });
+    Object.keys(properties).forEach(function(name) {
+      if (!Object.prototype.hasOwnProperty.call(properties, name)) return;
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'properties[' + name + ']';
+      input.value = properties[name];
+      input.setAttribute('data-milaura-duo-property', '');
+      form.appendChild(input);
+    });
+  }
+
   function formatPrice(cents) {
     try {
       return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: '{{ cart.currency.iso_code | default: shop.currency }}' }).format(cents / 100);
@@ -342,12 +378,38 @@
       const soldOutText = submitBtn.getAttribute('data-cta-final-sold-out-text') || 'Rupture de stock';
       submitBtn.disabled = variant.available === false;
       submitBtn.textContent = variant.available === false ? soldOutText : defaultText;
+      const duoApi = getDuoApi();
+      if (duoApi && typeof duoApi.getSelection === 'function') {
+        const duoState = duoApi.getSelection();
+        setDuoBlocked(duoState && duoState.valid === false);
+      }
     }
   });
+
+  document.addEventListener('milaura:duo-selection-change', function(event) {
+    const detail = event.detail || {};
+    setDuoBlocked(detail.valid === false);
+  });
+
+  const initialDuoApi = getDuoApi();
+  if (initialDuoApi && typeof initialDuoApi.getSelection === 'function') {
+    const initialDuoState = initialDuoApi.getSelection();
+    setDuoBlocked(initialDuoState && initialDuoState.valid === false);
+  }
 
   if (form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+
+      const duoApi = getDuoApi();
+      if (duoApi) {
+        const duoResult = duoApi.requestValidSelection();
+        if (!duoResult || duoResult.valid === false) {
+          setDuoBlocked(true);
+          return;
+        }
+        syncDuoPropertyInputs(duoResult.properties || {});
+      }
 
       const formData = new FormData(form);
 

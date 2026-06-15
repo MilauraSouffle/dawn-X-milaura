@@ -4,6 +4,21 @@
 {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign milaura_duo_bracelets_enabled = false
+  assign milaura_duo_match_tag = section.settings.duo_bracelets_tag | default: 'duo bracelets' | strip
+  assign milaura_duo_match_handle = section.settings.duo_bracelets_handle_fragment | default: 'duo-bracelets' | strip
+
+  unless section.settings.show_duo_bracelets_selector == false
+    if milaura_duo_match_tag != blank and product.tags contains milaura_duo_match_tag
+      assign milaura_duo_bracelets_enabled = true
+    endif
+    if milaura_duo_match_handle != blank and product.handle contains milaura_duo_match_handle
+      assign milaura_duo_bracelets_enabled = true
+    endif
+  endunless
+-%}
+
 {%- comment %}
   Metafield badges removed - keeping only variant bubbles
   Original metafields (scent_notes, stone_benefits) can still be used
@@ -3840,6 +3855,109 @@
     text-transform: uppercase;
   }
 
+  .milaura-duo-picker {
+    scroll-margin-top: 110px;
+  }
+
+  .milaura-duo-picker.has-error {
+    border-color: rgba(168, 63, 46, 0.45);
+    box-shadow: 0 0 0 1px rgba(168, 63, 46, 0.12);
+  }
+
+  .milaura-duo-help {
+    margin: -2px 0 10px;
+    font-family: var(--milaura-font-body, inherit);
+    font-size: 0.84rem;
+    line-height: 1.35;
+    color: rgba(26, 26, 26, 0.72);
+  }
+
+  .milaura-duo-option {
+    cursor: default;
+  }
+
+  .milaura-duo-option__main {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .milaura-duo-option__qty {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    border: 1px solid rgba(192, 160, 98, 0.22);
+    border-radius: 999px;
+    background: rgba(253, 251, 247, 0.92);
+  }
+
+  .milaura-duo-qty-btn {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(192, 160, 98, 0.28);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--milaura-text, #1a1a1a);
+    font-family: var(--milaura-font-body, inherit);
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+  }
+
+  .milaura-duo-qty-btn:hover:not(:disabled),
+  .milaura-duo-qty-btn:focus-visible {
+    border-color: var(--milaura-gold, #C0A062);
+    background: var(--milaura-beige, #FDFBF7);
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  .milaura-duo-qty-btn:disabled {
+    opacity: 0.36;
+    cursor: not-allowed;
+  }
+
+  .milaura-duo-option__value {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    font-family: var(--milaura-font-body, inherit);
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: var(--milaura-text, #1a1a1a);
+  }
+
+  .milaura-duo-picker__message {
+    margin: 10px 0 0;
+    font-family: var(--milaura-font-body, inherit);
+    font-size: 0.84rem;
+    font-weight: 800;
+    line-height: 1.35;
+    color: var(--milaura-gold-dark, #8F723A);
+  }
+
+  .milaura-duo-picker.has-error .milaura-duo-picker__message {
+    color: #A83F2E;
+  }
+
+  .milaura-hero-cta-bundle.is-duo-blocked {
+    opacity: 0.58;
+    cursor: not-allowed;
+    filter: grayscale(0.12);
+  }
+
   @media screen and (min-width: 750px) {
     .milaura-variant-picker__options {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3849,6 +3967,11 @@
       align-items: flex-start;
       flex-direction: column;
       min-height: 62px;
+    }
+
+    .milaura-duo-option__main {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 
@@ -4964,6 +5087,57 @@
               </div>
             {%- endunless -%}
 
+            {%- if milaura_duo_bracelets_enabled -%}
+              {%- liquid
+                assign milaura_duo_option_1 = section.settings.duo_bracelets_option_1 | default: 'Tricolore classique'
+                assign milaura_duo_option_2 = section.settings.duo_bracelets_option_2 | default: 'Tricolore alterné'
+                assign milaura_duo_option_3 = section.settings.duo_bracelets_option_3 | default: 'Tricolore & Onyx'
+                assign milaura_duo_options = milaura_duo_option_1 | append: '||' | append: milaura_duo_option_2 | append: '||' | append: milaura_duo_option_3 | split: '||'
+              -%}
+              <div
+                class="milaura-variant-picker milaura-duo-picker"
+                id="milaura-duo-picker-{{ section.id }}"
+                data-milaura-duo-picker
+                data-required-count="2"
+              >
+                <p class="milaura-variant-picker__label">
+                  <span>{{ section.settings.duo_bracelets_title | default: 'Choisissez vos 2 bracelets' }}</span>
+                  <span class="milaura-variant-picker__selected" data-milaura-duo-count>0/2</span>
+                </p>
+                <p class="milaura-duo-help">
+                  {{ section.settings.duo_bracelets_help | default: 'Sélectionnez au moins 2 bracelets pour ajouter ce duo au panier.' }}
+                </p>
+                <div class="milaura-variant-picker__options milaura-duo-picker__options" role="group" aria-label="{{ section.settings.duo_bracelets_title | default: 'Choisissez vos 2 bracelets' | escape }}">
+                  {%- for duo_option in milaura_duo_options -%}
+                    {%- assign duo_option_name = duo_option | strip -%}
+                    {%- if duo_option_name != blank -%}
+                      <div
+                        class="milaura-variant-option milaura-duo-option"
+                        data-milaura-duo-option
+                        data-duo-model="{{ duo_option_name | escape }}"
+                        data-duo-count="0"
+                      >
+                        <span class="milaura-duo-option__main">
+                          <span class="milaura-variant-option__body">
+                            <span class="milaura-variant-option__title">{{ duo_option_name }}</span>
+                            <span class="milaura-variant-option__status" data-milaura-duo-status>Choisir</span>
+                          </span>
+                          <span class="milaura-duo-option__qty" aria-label="Quantité {{ duo_option_name | escape }}">
+                            <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-minus aria-label="Retirer {{ duo_option_name | escape }}" disabled>-</button>
+                            <span class="milaura-duo-option__value" data-milaura-duo-value aria-live="polite">0</span>
+                            <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-plus aria-label="Ajouter {{ duo_option_name | escape }}">+</button>
+                          </span>
+                        </span>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                <p class="milaura-duo-picker__message" id="milaura-duo-message-{{ section.id }}" data-milaura-duo-message role="status" aria-live="polite">
+                  Sélectionnez 2 bracelets pour composer votre duo.
+                </p>
+              </div>
+            {%- endif -%}
+
             <div class="milaura-bundle-atc-row">
               <div class="milaura-quantity-capsule milaura-bundle-qty" aria-label="Quantité">
                 <button type="button" class="milaura-quantity-btn" data-milaura-qty-minus aria-label="Diminuer la quantité">-</button>
@@ -5397,6 +5571,12 @@
           var variantPickerEl = document.querySelector('[data-milaura-variant-picker]');
           var variantOptionEls = variantPickerEl ? Array.prototype.slice.call(variantPickerEl.querySelectorAll('[data-milaura-variant-option]')) : [];
           var variantSelectedLabelEl = variantPickerEl ? variantPickerEl.querySelector('[data-milaura-variant-selected-label]') : null;
+          var duoPickerEl = document.getElementById('milaura-duo-picker-' + sid);
+          var duoEnabled = Boolean(duoPickerEl);
+          var duoRequiredCount = duoPickerEl ? (parseInt(duoPickerEl.getAttribute('data-required-count'), 10) || 2) : 0;
+          var duoOptionEls = duoPickerEl ? Array.prototype.slice.call(duoPickerEl.querySelectorAll('[data-milaura-duo-option]')) : [];
+          var duoCountEl = duoPickerEl ? duoPickerEl.querySelector('[data-milaura-duo-count]') : null;
+          var duoMessageEl = duoPickerEl ? duoPickerEl.querySelector('[data-milaura-duo-message]') : null;
 
           function formatPrice(cents) {
             try {
@@ -5592,6 +5772,177 @@
             if (initialVariant) setSelectedVariant(initialVariant, { updateUrl: false, dispatch: false });
           }
 
+          function getDuoOptionCount(optionEl) {
+            if (!optionEl) return 0;
+            var count = parseInt(optionEl.getAttribute('data-duo-count'), 10);
+            return Number.isFinite(count) && count > 0 ? count : 0;
+          }
+
+          function getDuoTotal() {
+            if (!duoEnabled) return 0;
+            return duoOptionEls.reduce(function(total, optionEl) {
+              return total + getDuoOptionCount(optionEl);
+            }, 0);
+          }
+
+          function getDuoSelections() {
+            var selections = [];
+            if (!duoEnabled) return selections;
+            duoOptionEls.forEach(function(optionEl) {
+              var model = optionEl.getAttribute('data-duo-model') || '';
+              var count = getDuoOptionCount(optionEl);
+              for (var i = 0; i < count; i += 1) {
+                selections.push(model);
+              }
+            });
+            return selections.slice(0, duoRequiredCount);
+          }
+
+          function duoSelectionMessage(total) {
+            var remaining = Math.max(duoRequiredCount - total, 0);
+            if (remaining === 0) return 'Votre duo est prêt.';
+            if (remaining === 1) return 'Sélectionnez encore 1 bracelet pour composer votre duo.';
+            return 'Sélectionnez ' + remaining + ' bracelets pour composer votre duo.';
+          }
+
+          function getDuoLineItemProperties() {
+            var selections = getDuoSelections();
+            if (!duoEnabled || selections.length < duoRequiredCount) return {};
+            return {
+              'Bracelet 1': selections[0],
+              'Bracelet 2': selections[1]
+            };
+          }
+
+          function isDuoReady() {
+            return !duoEnabled || getDuoTotal() >= duoRequiredCount;
+          }
+
+          function syncDuoCtaState() {
+            if (!duoEnabled || !ctaButton) return;
+            var blocked = !isDuoReady();
+            ctaButton.classList.toggle('is-duo-blocked', blocked);
+            ctaButton.setAttribute('aria-disabled', blocked ? 'true' : 'false');
+            if (duoMessageEl) {
+              ctaButton.setAttribute('aria-describedby', duoMessageEl.id || 'milaura-duo-picker-' + sid);
+            }
+          }
+
+          function dispatchDuoSelectionChange() {
+            if (!duoEnabled) return;
+            document.dispatchEvent(new CustomEvent('milaura:duo-selection-change', {
+              detail: {
+                valid: isDuoReady(),
+                total: getDuoTotal(),
+                required: duoRequiredCount,
+                selections: getDuoSelections(),
+                properties: getDuoLineItemProperties(),
+                sectionId: sid
+              }
+            }));
+          }
+
+          function updateDuoPicker(options) {
+            if (!duoEnabled) return;
+            var total = getDuoTotal();
+            var maxReached = total >= duoRequiredCount;
+            duoOptionEls.forEach(function(optionEl) {
+              var count = getDuoOptionCount(optionEl);
+              var selected = count > 0;
+              var minusBtn = optionEl.querySelector('[data-milaura-duo-minus]');
+              var plusBtn = optionEl.querySelector('[data-milaura-duo-plus]');
+              var valueEl = optionEl.querySelector('[data-milaura-duo-value]');
+              var statusEl = optionEl.querySelector('[data-milaura-duo-status]');
+
+              optionEl.classList.toggle('is-selected', selected);
+              optionEl.setAttribute('aria-label', (optionEl.getAttribute('data-duo-model') || '') + ', quantité ' + count);
+              if (minusBtn) minusBtn.disabled = count <= 0;
+              if (plusBtn) plusBtn.disabled = maxReached;
+              if (valueEl) valueEl.textContent = String(count);
+              if (statusEl) statusEl.textContent = selected ? 'Sélectionné' : 'Choisir';
+            });
+            if (duoCountEl) duoCountEl.textContent = total + '/' + duoRequiredCount;
+            if (duoMessageEl) duoMessageEl.textContent = duoSelectionMessage(total);
+            duoPickerEl.classList.toggle('has-error', Boolean(options && options.error) && !isDuoReady());
+            syncDuoCtaState();
+            dispatchDuoSelectionChange();
+          }
+
+          function setDuoOptionCount(optionEl, nextCount) {
+            if (!duoEnabled || !optionEl) return;
+            var current = getDuoOptionCount(optionEl);
+            var otherTotal = getDuoTotal() - current;
+            var next = parseInt(nextCount, 10);
+            if (!Number.isFinite(next) || next < 0) next = 0;
+            next = Math.min(next, Math.max(duoRequiredCount - otherTotal, 0));
+            optionEl.setAttribute('data-duo-count', String(next));
+            updateDuoPicker();
+          }
+
+          function showDuoValidationError() {
+            if (!duoEnabled || !duoPickerEl) return;
+            updateDuoPicker({ error: true });
+            duoPickerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            var focusTarget = duoPickerEl.querySelector('[data-milaura-duo-plus]:not(:disabled)') || duoPickerEl.querySelector('[data-milaura-duo-minus]:not(:disabled)');
+            if (focusTarget) {
+              window.setTimeout(function() {
+                focusTarget.focus({ preventScroll: true });
+              }, 350);
+            }
+          }
+
+          function validateDuoSelection() {
+            if (!duoEnabled || isDuoReady()) return true;
+            showDuoValidationError();
+            return false;
+          }
+
+          function bindDuoPicker() {
+            if (!duoEnabled) return;
+            duoOptionEls.forEach(function(optionEl) {
+              var minusBtn = optionEl.querySelector('[data-milaura-duo-minus]');
+              var plusBtn = optionEl.querySelector('[data-milaura-duo-plus]');
+              if (minusBtn) {
+                minusBtn.addEventListener('click', function(event) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setDuoOptionCount(optionEl, getDuoOptionCount(optionEl) - 1);
+                });
+              }
+              if (plusBtn) {
+                plusBtn.addEventListener('click', function(event) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  setDuoOptionCount(optionEl, getDuoOptionCount(optionEl) + 1);
+                });
+              }
+              optionEl.addEventListener('click', function(event) {
+                if (event.target && event.target.closest && event.target.closest('button')) return;
+                setDuoOptionCount(optionEl, getDuoOptionCount(optionEl) + 1);
+              });
+            });
+            updateDuoPicker();
+            window.MilauraDuoBracelets = {
+              requestValidSelection: function() {
+                if (!validateDuoSelection()) return { valid: false };
+                return {
+                  valid: true,
+                  selections: getDuoSelections(),
+                  properties: getDuoLineItemProperties()
+                };
+              },
+              getSelection: function() {
+                return {
+                  valid: isDuoReady(),
+                  total: getDuoTotal(),
+                  required: duoRequiredCount,
+                  selections: getDuoSelections(),
+                  properties: getDuoLineItemProperties()
+                };
+              }
+            };
+          }
+
           function getSelectedQuantity() {
             var raw = qtyInputEl ? parseInt(qtyInputEl.value, 10) : 1;
             if (!Number.isFinite(raw) || raw < 1) return 1;
@@ -5673,6 +6024,7 @@
               ctaPriceEl.textContent = formatPrice((unitPriceCents || {{ product.selected_or_first_available_variant.price }}) * quantity);
             }
             updateRewardPreview();
+            syncDuoCtaState();
             document.dispatchEvent(new CustomEvent('milaura:product-quantity-change', {
               detail: { quantity: quantity }
             }));
@@ -5857,18 +6209,24 @@
           function bundleAddToCart() {
             if (!ctaVariantId || !ctaButton) return;
             if (ctaButton.disabled) return;
+            if (!validateDuoSelection()) return;
 
             ctaButton.disabled = true;
             var labelEl = ctaButton.querySelector('.milaura-cta-label');
             var originalLabel = labelEl ? labelEl.textContent : 'Ajouter au panier';
             if (labelEl) labelEl.textContent = 'Ajout en cours...';
+            var itemProperties = {
+              'Avantages panier': 'Produit ajouté depuis la fiche MilAura'
+            };
+            var duoProperties = getDuoLineItemProperties();
+            Object.keys(duoProperties).forEach(function(key) {
+              itemProperties[key] = duoProperties[key];
+            });
 
             var mainItem = {
               id: ctaVariantId,
               quantity: getSelectedQuantity(),
-              properties: {
-                'Avantages panier': 'Produit ajouté depuis la fiche MilAura'
-              }
+              properties: itemProperties
             };
 
             addCartItems([mainItem])
@@ -5921,6 +6279,7 @@
             qtyInputEl.addEventListener('input', updateCtaButton);
           }
           bindVariantPicker();
+          bindDuoPicker();
           updateCtaButton();
           restoreRecentCartConfirm();
           document.addEventListener('cart:updated', function(event) {
@@ -7232,6 +7591,59 @@
       "id": "bundle_subtitle",
       "label": "Sous-titre de la preview",
       "default": "Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 20 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte, cadeau et remise."
+    },
+    {
+      "type": "header",
+      "content": "Duo bracelets"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_duo_bracelets_selector",
+      "label": "Activer le sélecteur obligatoire duo bracelets",
+      "default": true,
+      "info": "S'affiche seulement si le produit porte le tag ou le fragment de handle configuré ci-dessous."
+    },
+    {
+      "type": "text",
+      "id": "duo_bracelets_tag",
+      "label": "Tag produit déclencheur",
+      "default": "duo bracelets"
+    },
+    {
+      "type": "text",
+      "id": "duo_bracelets_handle_fragment",
+      "label": "Fragment de handle déclencheur",
+      "default": "duo-bracelets"
+    },
+    {
+      "type": "text",
+      "id": "duo_bracelets_title",
+      "label": "Titre du sélecteur",
+      "default": "Choisissez vos 2 bracelets"
+    },
+    {
+      "type": "text",
+      "id": "duo_bracelets_help",
+      "label": "Texte d'aide",
+      "default": "Sélectionnez au moins 2 bracelets pour ajouter ce duo au panier."
+    },
+    {
+      "type": "text",
+      "id": "duo_bracelets_option_1",
+      "label": "Modèle 1",
+      "default": "Tricolore classique"
+    },
+    {
+      "type": "text",
+      "id": "duo_bracelets_option_2",
+      "label": "Modèle 2",
+      "default": "Tricolore alterné"
+    },
+    {
+      "type": "text",
+      "id": "duo_bracelets_option_3",
+      "label": "Modèle 3",
+      "default": "Tricolore & Onyx"
     },
     {
       "type": "range",
