@@ -5,16 +5,20 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign milaura_duo_bracelets_enabled = false
-  assign milaura_duo_match_tag = section.settings.duo_bracelets_tag | default: 'duo bracelets' | strip
-  assign milaura_duo_match_handle = section.settings.duo_bracelets_handle_fragment | default: 'duo-bracelets' | strip
+  assign milaura_composition_enabled = false
+  assign milaura_composition_metafield = product.metafields.milaura.composition_enabled.value
+  assign milaura_composition_required_qty = product.metafields.milaura.composition_required_qty.value | default: section.settings.composition_required_qty | default: 2 | plus: 0
+  assign milaura_composition_title = product.metafields.milaura.composition_title.value | default: section.settings.composition_title | default: 'Composez votre offre'
+  assign milaura_composition_help = product.metafields.milaura.composition_help.value | default: section.settings.composition_help | default: 'Sélectionnez les modèles à ajouter à cette offre.'
+  assign milaura_composition_options_custom = product.metafields.milaura.composition_option_source.value
 
-  unless section.settings.show_duo_bracelets_selector == false
-    if milaura_duo_match_tag != blank and product.tags contains milaura_duo_match_tag
-      assign milaura_duo_bracelets_enabled = true
-    endif
-    if milaura_duo_match_handle != blank and product.handle contains milaura_duo_match_handle
-      assign milaura_duo_bracelets_enabled = true
+  if milaura_composition_required_qty < 1
+    assign milaura_composition_required_qty = 2
+  endif
+
+  unless section.settings.show_composition_selector == false
+    if milaura_composition_metafield == true or milaura_composition_metafield == 'true'
+      assign milaura_composition_enabled = true
     endif
   endunless
 -%}
@@ -5087,53 +5091,95 @@
               </div>
             {%- endunless -%}
 
-            {%- if milaura_duo_bracelets_enabled -%}
-              {%- liquid
-                assign milaura_duo_option_1 = section.settings.duo_bracelets_option_1 | default: 'Tricolore classique'
-                assign milaura_duo_option_2 = section.settings.duo_bracelets_option_2 | default: 'Tricolore alterné'
-                assign milaura_duo_option_3 = section.settings.duo_bracelets_option_3 | default: 'Tricolore & Onyx'
-                assign milaura_duo_options = milaura_duo_option_1 | append: '||' | append: milaura_duo_option_2 | append: '||' | append: milaura_duo_option_3 | split: '||'
-              -%}
+            {%- if milaura_composition_enabled -%}
               <div
                 class="milaura-variant-picker milaura-duo-picker"
                 id="milaura-duo-picker-{{ section.id }}"
                 data-milaura-duo-picker
-                data-required-count="2"
+                data-required-count="{{ milaura_composition_required_qty }}"
               >
                 <p class="milaura-variant-picker__label">
-                  <span>{{ section.settings.duo_bracelets_title | default: 'Choisissez vos 2 bracelets' }}</span>
-                  <span class="milaura-variant-picker__selected" data-milaura-duo-count>0/2</span>
+                  <span>{{ milaura_composition_title }}</span>
+                  <span class="milaura-variant-picker__selected" data-milaura-duo-count>0/{{ milaura_composition_required_qty }}</span>
                 </p>
                 <p class="milaura-duo-help">
-                  {{ section.settings.duo_bracelets_help | default: 'Sélectionnez au moins 2 bracelets pour ajouter ce duo au panier.' }}
+                  {{ milaura_composition_help }}
                 </p>
-                <div class="milaura-variant-picker__options milaura-duo-picker__options" role="group" aria-label="{{ section.settings.duo_bracelets_title | default: 'Choisissez vos 2 bracelets' | escape }}">
-                  {%- for duo_option in milaura_duo_options -%}
-                    {%- assign duo_option_name = duo_option | strip -%}
-                    {%- if duo_option_name != blank -%}
+                <div class="milaura-variant-picker__options milaura-duo-picker__options" role="group" aria-label="{{ milaura_composition_title | escape }}">
+                  {%- if milaura_composition_options_custom != blank -%}
+                    {%- for composition_option in milaura_composition_options_custom -%}
+                      {%- assign composition_option_name = composition_option | strip -%}
+                      {%- if composition_option_name != blank -%}
+                        <div
+                          class="milaura-variant-option milaura-duo-option"
+                          data-milaura-duo-option
+                          data-duo-model="{{ composition_option_name | escape }}"
+                          data-duo-count="0"
+                        >
+                          <span class="milaura-duo-option__main">
+                            <span class="milaura-variant-option__body">
+                              <span class="milaura-variant-option__title">{{ composition_option_name }}</span>
+                              <span class="milaura-variant-option__status" data-milaura-duo-status>Choisir</span>
+                            </span>
+                            <span class="milaura-duo-option__qty" aria-label="Quantité {{ composition_option_name | escape }}">
+                              <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-minus aria-label="Retirer {{ composition_option_name | escape }}" disabled>-</button>
+                              <span class="milaura-duo-option__value" data-milaura-duo-value aria-live="polite">0</span>
+                              <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-plus aria-label="Ajouter {{ composition_option_name | escape }}">+</button>
+                            </span>
+                          </span>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- elsif product.has_only_default_variant == false -%}
+                    {%- for variant in product.variants -%}
+                      {%- assign composition_option_name = variant.title | strip -%}
+                      {%- if composition_option_name != blank and composition_option_name != 'Default Title' -%}
+                        <div
+                          class="milaura-variant-option milaura-duo-option"
+                          data-milaura-duo-option
+                          data-duo-model="{{ composition_option_name | escape }}"
+                          data-duo-count="0"
+                        >
+                          <span class="milaura-duo-option__main">
+                            <span class="milaura-variant-option__body">
+                              <span class="milaura-variant-option__title">{{ composition_option_name }}</span>
+                              <span class="milaura-variant-option__status" data-milaura-duo-status>Choisir</span>
+                            </span>
+                            <span class="milaura-duo-option__qty" aria-label="Quantité {{ composition_option_name | escape }}">
+                              <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-minus aria-label="Retirer {{ composition_option_name | escape }}" disabled>-</button>
+                              <span class="milaura-duo-option__value" data-milaura-duo-value aria-live="polite">0</span>
+                              <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-plus aria-label="Ajouter {{ composition_option_name | escape }}">+</button>
+                            </span>
+                          </span>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- else -%}
+                    {%- assign composition_option_name = product.title | strip -%}
+                    {%- if composition_option_name != blank -%}
                       <div
                         class="milaura-variant-option milaura-duo-option"
                         data-milaura-duo-option
-                        data-duo-model="{{ duo_option_name | escape }}"
+                        data-duo-model="{{ composition_option_name | escape }}"
                         data-duo-count="0"
                       >
                         <span class="milaura-duo-option__main">
                           <span class="milaura-variant-option__body">
-                            <span class="milaura-variant-option__title">{{ duo_option_name }}</span>
+                            <span class="milaura-variant-option__title">{{ composition_option_name }}</span>
                             <span class="milaura-variant-option__status" data-milaura-duo-status>Choisir</span>
                           </span>
-                          <span class="milaura-duo-option__qty" aria-label="Quantité {{ duo_option_name | escape }}">
-                            <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-minus aria-label="Retirer {{ duo_option_name | escape }}" disabled>-</button>
+                          <span class="milaura-duo-option__qty" aria-label="Quantité {{ composition_option_name | escape }}">
+                            <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-minus aria-label="Retirer {{ composition_option_name | escape }}" disabled>-</button>
                             <span class="milaura-duo-option__value" data-milaura-duo-value aria-live="polite">0</span>
-                            <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-plus aria-label="Ajouter {{ duo_option_name | escape }}">+</button>
+                            <button type="button" class="milaura-duo-qty-btn" data-milaura-duo-plus aria-label="Ajouter {{ composition_option_name | escape }}">+</button>
                           </span>
                         </span>
                       </div>
                     {%- endif -%}
-                  {%- endfor -%}
+                  {%- endif -%}
                 </div>
                 <p class="milaura-duo-picker__message" id="milaura-duo-message-{{ section.id }}" data-milaura-duo-message role="status" aria-live="polite">
-                  Sélectionnez 2 bracelets pour composer votre duo.
+                  Sélectionnez {{ milaura_composition_required_qty }} choix pour composer votre offre.
                 </p>
               </div>
             {%- endif -%}
@@ -5800,18 +5846,18 @@
 
           function duoSelectionMessage(total) {
             var remaining = Math.max(duoRequiredCount - total, 0);
-            if (remaining === 0) return 'Votre duo est prêt.';
-            if (remaining === 1) return 'Sélectionnez encore 1 bracelet pour composer votre duo.';
-            return 'Sélectionnez ' + remaining + ' bracelets pour composer votre duo.';
+            if (remaining === 0) return 'Votre offre est prête.';
+            if (remaining === 1) return 'Sélectionnez encore 1 choix pour composer votre offre.';
+            return 'Sélectionnez ' + remaining + ' choix pour composer votre offre.';
           }
 
           function getDuoLineItemProperties() {
             var selections = getDuoSelections();
             if (!duoEnabled || selections.length < duoRequiredCount) return {};
-            return {
-              'Bracelet 1': selections[0],
-              'Bracelet 2': selections[1]
-            };
+            return selections.reduce(function(properties, selection, index) {
+              properties['Choix ' + (index + 1)] = selection;
+              return properties;
+            }, {});
           }
 
           function isDuoReady() {
@@ -5922,7 +5968,7 @@
               });
             });
             updateDuoPicker();
-            window.MilauraDuoBracelets = {
+            var compositionApi = {
               requestValidSelection: function() {
                 if (!validateDuoSelection()) return { valid: false };
                 return {
@@ -5941,6 +5987,8 @@
                 };
               }
             };
+            window.MilauraProductComposition = compositionApi;
+            window.MilauraDuoBracelets = compositionApi;
           }
 
           function getSelectedQuantity() {
@@ -7594,56 +7642,39 @@
     },
     {
       "type": "header",
-      "content": "Duo bracelets"
+      "content": "Composition produit"
     },
     {
       "type": "checkbox",
-      "id": "show_duo_bracelets_selector",
-      "label": "Activer le sélecteur obligatoire duo bracelets",
+      "id": "show_composition_selector",
+      "label": "Activer le moteur de composition produit",
       "default": true,
-      "info": "S'affiche seulement si le produit porte le tag ou le fragment de handle configuré ci-dessous."
+      "info": "Le bloc s'affiche seulement sur les produits dont le metafield milaura.composition_enabled vaut true."
+    },
+    {
+      "type": "paragraph",
+      "content": "Configuration fiche par fiche via metafields produit : composition_title, composition_help, composition_required_qty et composition_option_source. Si composition_option_source est vide, les titres des variants du produit sont utilisés."
     },
     {
       "type": "text",
-      "id": "duo_bracelets_tag",
-      "label": "Tag produit déclencheur",
-      "default": "duo bracelets"
+      "id": "composition_title",
+      "label": "Titre fallback",
+      "default": "Composez votre offre"
     },
     {
       "type": "text",
-      "id": "duo_bracelets_handle_fragment",
-      "label": "Fragment de handle déclencheur",
-      "default": "duo-bracelets"
+      "id": "composition_help",
+      "label": "Texte d'aide fallback",
+      "default": "Sélectionnez les modèles à ajouter à cette offre."
     },
     {
-      "type": "text",
-      "id": "duo_bracelets_title",
-      "label": "Titre du sélecteur",
-      "default": "Choisissez vos 2 bracelets"
-    },
-    {
-      "type": "text",
-      "id": "duo_bracelets_help",
-      "label": "Texte d'aide",
-      "default": "Sélectionnez au moins 2 bracelets pour ajouter ce duo au panier."
-    },
-    {
-      "type": "text",
-      "id": "duo_bracelets_option_1",
-      "label": "Modèle 1",
-      "default": "Tricolore classique"
-    },
-    {
-      "type": "text",
-      "id": "duo_bracelets_option_2",
-      "label": "Modèle 2",
-      "default": "Tricolore alterné"
-    },
-    {
-      "type": "text",
-      "id": "duo_bracelets_option_3",
-      "label": "Modèle 3",
-      "default": "Tricolore & Onyx"
+      "type": "range",
+      "id": "composition_required_qty",
+      "label": "Nombre de choix fallback",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2
     },
     {
       "type": "range",
