@@ -1,0 +1,534 @@
+{% comment %}
+  MILAURA RETRACTATION
+  Page publique pour exercer le droit legal de retractation.
+{% endcomment %}
+
+<section
+  id="MilauraRetractation-{{ section.id }}"
+  class="milaura-retractation"
+  data-section-id="{{ section.id }}"
+>
+  <div class="milaura-retractation__inner page-width">
+    <header class="milaura-retractation__hero">
+      <p class="milaura-retractation__eyebrow">{{ section.settings.kicker }}</p>
+      <span class="milaura-retractation__legal-tag">Renoncer au contrat ici</span>
+      <h1>{{ section.settings.heading }}</h1>
+      <p class="milaura-retractation__intro">{{ section.settings.intro }}</p>
+    </header>
+
+    <div class="milaura-retractation__layout">
+      <div class="milaura-retractation__form-panel">
+        {% if section.settings.form_endpoint_url == blank %}
+          <div class="milaura-retractation__notice milaura-retractation__notice--warning" role="status">
+            <strong>Endpoint a connecter.</strong>
+            <span>Renseignez l'URL de réception du formulaire dans les réglages de cette section avant mise en ligne.</span>
+          </div>
+        {% endif %}
+
+        <form
+          class="milaura-retractation__form"
+          method="post"
+          action="{{ section.settings.form_endpoint_url | escape }}"
+          data-milaura-retractation-form
+          data-endpoint="{{ section.settings.form_endpoint_url | escape }}"
+        >
+          <input type="hidden" name="page_url" value="{{ canonical_url }}">
+          <input type="hidden" name="source" value="milaura.fr/pages/retractation">
+          <input type="hidden" name="user_agent" value="">
+
+          <div class="milaura-retractation__field-grid">
+            <div class="milaura-retractation__field">
+              <label for="RetFirstName-{{ section.id }}">Prénom</label>
+              <input id="RetFirstName-{{ section.id }}" name="first_name" type="text" autocomplete="given-name" required>
+            </div>
+            <div class="milaura-retractation__field">
+              <label for="RetLastName-{{ section.id }}">Nom</label>
+              <input id="RetLastName-{{ section.id }}" name="last_name" type="text" autocomplete="family-name" required>
+            </div>
+          </div>
+
+          <div class="milaura-retractation__field-grid">
+            <div class="milaura-retractation__field">
+              <label for="RetEmail-{{ section.id }}">Email de commande</label>
+              <input id="RetEmail-{{ section.id }}" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="milaura-retractation__field">
+              <label for="RetReceiptEmail-{{ section.id }}">Email pour recevoir l'accusé</label>
+              <input id="RetReceiptEmail-{{ section.id }}" name="receipt_email" type="email" autocomplete="email" required>
+            </div>
+          </div>
+
+          <div class="milaura-retractation__field-grid">
+            <div class="milaura-retractation__field">
+              <label for="RetOrderName-{{ section.id }}">Numéro de commande</label>
+              <input id="RetOrderName-{{ section.id }}" name="order_name" type="text" placeholder="#1001" required>
+            </div>
+            <div class="milaura-retractation__field">
+              <label for="RetOrderDate-{{ section.id }}">Date de commande</label>
+              <input id="RetOrderDate-{{ section.id }}" name="order_date" type="date">
+            </div>
+          </div>
+
+          <div class="milaura-retractation__field-grid">
+            <div class="milaura-retractation__field">
+              <label for="RetReceivedDate-{{ section.id }}">Date de réception</label>
+              <input id="RetReceivedDate-{{ section.id }}" name="received_date" type="date">
+            <span class="milaura-retractation__hint">Pour les biens, le délai légal se compte en principe à partir de la réception.</span>
+            </div>
+            <div class="milaura-retractation__field">
+              <label for="RetScope-{{ section.id }}">Type de rétractation</label>
+              <select id="RetScope-{{ section.id }}" name="scope" required>
+                <option value="">Choisir</option>
+                <option value="total">Commande complète</option>
+                <option value="partielle">Une partie de la commande</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="milaura-retractation__field">
+            <label for="RetProducts-{{ section.id }}">Produit(s) concerné(s)</label>
+            <textarea id="RetProducts-{{ section.id }}" name="products" rows="4" placeholder="Nom du produit, variante, quantité..." required></textarea>
+          </div>
+
+          <div class="milaura-retractation__field">
+            <label for="RetMessage-{{ section.id }}">Message complémentaire</label>
+            <textarea id="RetMessage-{{ section.id }}" name="message" rows="3" placeholder="Facultatif. Aucune justification n'est demandée."></textarea>
+          </div>
+
+          <div class="milaura-retractation__consent">
+            <input id="RetConfirm-{{ section.id }}" type="checkbox" required>
+            <label for="RetConfirm-{{ section.id }}">Je confirme vouloir exercer mon droit de rétractation pour le contrat identifié ci-dessus.</label>
+          </div>
+
+          <button
+            type="submit"
+            class="milaura-retractation__submit"
+            {% if section.settings.form_endpoint_url == blank %}disabled{% endif %}
+          >
+            Confirmer la rétractation
+          </button>
+
+          <div class="milaura-retractation__status" data-milaura-retractation-status role="status" aria-live="polite"></div>
+        </form>
+      </div>
+
+      <aside class="milaura-retractation__side" aria-label="Informations utiles">
+        <div class="milaura-retractation__side-block">
+          <h2>{{ section.settings.side_title }}</h2>
+          <p>{{ section.settings.side_text }}</p>
+        </div>
+        <div class="milaura-retractation__steps">
+          <div>
+            <span>1</span>
+            <p>Vous envoyez votre déclaration en ligne.</p>
+          </div>
+          <div>
+            <span>2</span>
+            <p>Vous recevez un accusé de réception horodaté par email.</p>
+          </div>
+          <div>
+            <span>3</span>
+            <p>MilAura vous indique les étapes pratiques pour le retour si nécessaire.</p>
+          </div>
+        </div>
+        <p class="milaura-retractation__small">
+          Le droit de rétractation légal est distinct d'une demande d'échange, de garantie ou de service après-vente.
+        </p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  #MilauraRetractation-{{ section.id }} {
+    --ret-ink: #181510;
+    --ret-muted: #665f55;
+    --ret-gold: #c0a062;
+    --ret-gold-dark: #8f723a;
+    --ret-sage: #6f7f67;
+    --ret-surface: #fffdfa;
+    --ret-line: rgba(192, 160, 98, 0.24);
+    background: #fdfbf7;
+    color: var(--ret-ink);
+    padding: clamp(32px, 7vw, 72px) 0;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__inner {
+    max-width: 1180px;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__hero {
+    max-width: 760px;
+    margin: 0 auto clamp(28px, 5vw, 48px);
+    text-align: center;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__eyebrow,
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__legal-tag {
+    margin: 0 0 12px;
+    color: var(--ret-gold-dark);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__legal-tag {
+    display: inline-flex;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    border: 1px solid var(--ret-line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--ret-sage);
+  }
+
+  #MilauraRetractation-{{ section.id }} h1 {
+    margin: 0;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: clamp(2rem, 5vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: 0;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__intro {
+    margin: 18px auto 0;
+    max-width: 680px;
+    color: var(--ret-muted);
+    font-size: clamp(1rem, 2.6vw, 1.16rem);
+    line-height: 1.72;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+    gap: clamp(20px, 4vw, 34px);
+    align-items: start;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__form-panel,
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__side {
+    background: var(--ret-surface);
+    border: 1px solid var(--ret-line);
+    border-radius: 8px;
+    box-shadow: 0 18px 44px rgba(56, 43, 20, 0.08);
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__form-panel {
+    padding: clamp(18px, 4vw, 32px);
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  #MilauraRetractation-{{ section.id }} label {
+    color: var(--ret-ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  #MilauraRetractation-{{ section.id }} input,
+  #MilauraRetractation-{{ section.id }} select,
+  #MilauraRetractation-{{ section.id }} textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid rgba(102, 95, 85, 0.2);
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--ret-ink);
+    font: inherit;
+    letter-spacing: 0;
+  }
+
+  #MilauraRetractation-{{ section.id }} textarea {
+    min-height: 108px;
+    resize: vertical;
+  }
+
+  #MilauraRetractation-{{ section.id }} input:focus,
+  #MilauraRetractation-{{ section.id }} select:focus,
+  #MilauraRetractation-{{ section.id }} textarea:focus {
+    outline: 3px solid rgba(192, 160, 98, 0.22);
+    border-color: var(--ret-gold);
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__hint,
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__small {
+    color: var(--ret-muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__consent {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    margin: 4px 0 18px;
+    color: var(--ret-muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__consent input {
+    width: 18px;
+    min-height: 18px;
+    margin: 2px 0 0;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__submit {
+    width: 100%;
+    min-height: 54px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--ret-ink);
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+    letter-spacing: 0;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__submit:hover:not(:disabled) {
+    background: var(--ret-gold-dark);
+    box-shadow: 0 12px 24px rgba(143, 114, 58, 0.22);
+    transform: translateY(-1px);
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__status,
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__notice {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__notice {
+    margin-top: 0;
+    margin-bottom: 18px;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__notice--warning,
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__status[data-state="error"] {
+    background: #fff5e6;
+    border: 1px solid rgba(143, 114, 58, 0.28);
+    color: #654817;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__status[data-state="success"] {
+    background: #edf5ec;
+    border: 1px solid rgba(111, 127, 103, 0.3);
+    color: #34442f;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__status:empty {
+    display: none;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__side {
+    padding: clamp(18px, 3vw, 26px);
+    position: sticky;
+    top: 18px;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__side h2 {
+    margin: 0 0 10px;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__side p {
+    color: var(--ret-muted);
+    line-height: 1.65;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__steps {
+    display: grid;
+    gap: 12px;
+    margin: 22px 0;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__steps div {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__steps span {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ret-line);
+    border-radius: 50%;
+    color: var(--ret-gold-dark);
+    font-weight: 800;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__steps p {
+    margin: 4px 0 0;
+    font-size: 0.94rem;
+  }
+
+  @media screen and (max-width: 900px) {
+    #MilauraRetractation-{{ section.id }} .milaura-retractation__layout {
+      grid-template-columns: 1fr;
+    }
+
+    #MilauraRetractation-{{ section.id }} .milaura-retractation__side {
+      position: static;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    #MilauraRetractation-{{ section.id }} .milaura-retractation__field-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraRetractation-{{ section.id }} .milaura-retractation__submit {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('MilauraRetractation-{{ section.id }}');
+    if (!root) return;
+
+    var form = root.querySelector('[data-milaura-retractation-form]');
+    var status = root.querySelector('[data-milaura-retractation-status]');
+    if (!form || !status) return;
+
+    var endpoint = form.getAttribute('data-endpoint');
+    var submit = form.querySelector('.milaura-retractation__submit');
+    var userAgentField = form.querySelector('input[name="user_agent"]');
+
+    if (userAgentField) {
+      userAgentField.value = window.navigator.userAgent || '';
+    }
+
+    if (!endpoint) return;
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      var formData = new FormData(form);
+      status.removeAttribute('data-state');
+      status.textContent = 'Envoi de votre demande...';
+
+      if (submit) {
+        submit.disabled = true;
+      }
+
+      fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json'
+        }
+      })
+        .then(function (response) {
+          return response.json().then(function (data) {
+            if (!response.ok || !data.ok) {
+              throw new Error(data.error || "La demande n'a pas pu être envoyée.");
+            }
+            return data;
+          });
+        })
+        .then(function (data) {
+          status.setAttribute('data-state', 'success');
+          status.textContent = "Votre rétractation a bien été transmise. Référence: " + data.reference + ". Un accusé de réception vient d'être envoyé par email.";
+          form.reset();
+        })
+        .catch(function (error) {
+          status.setAttribute('data-state', 'error');
+          status.textContent = "Impossible d'envoyer la demande pour le moment. Vous pouvez nous contacter à contact@milaura.fr.";
+        })
+        .finally(function () {
+          if (submit) {
+            submit.disabled = false;
+          }
+        });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Milaura rétractation",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Droit légal de rétractation"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Exercer mon droit de rétractation"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "Vous pouvez déclarer en ligne votre volonté de vous rétracter pour une commande passée sur MilAura.fr. Aucune justification n'est demandée."
+    },
+    {
+      "type": "url",
+      "id": "form_endpoint_url",
+      "label": "Endpoint du formulaire"
+    },
+    {
+      "type": "text",
+      "id": "side_title",
+      "label": "Titre information",
+      "default": "Comment cela se passe"
+    },
+    {
+      "type": "textarea",
+      "id": "side_text",
+      "label": "Texte information",
+      "default": "Après validation du formulaire, vous recevez un accusé de réception sur support durable avec le contenu de votre déclaration, sa date et son heure d'envoi."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Milaura rétractation"
+    }
+  ]
+}
+{% endschema %}
