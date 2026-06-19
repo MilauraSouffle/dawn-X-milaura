@@ -445,6 +445,12 @@
       }
 
       var formData = new FormData(form);
+      var payload = {};
+
+      formData.forEach(function (value, key) {
+        payload[key] = value;
+      });
+
       status.removeAttribute('data-state');
       status.textContent = 'Envoi de votre demande...';
 
@@ -454,9 +460,10 @@
 
       fetch(endpoint, {
         method: 'POST',
-        body: formData,
+        body: JSON.stringify(payload),
         headers: {
-          Accept: 'application/json'
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
         }
       })
         .then(function (response) {
