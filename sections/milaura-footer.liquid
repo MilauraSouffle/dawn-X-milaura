@@ -4,6 +4,9 @@
   Style Vision OS glassmorphism
 {% endcomment %}
 
+{%- assign milaura_withdrawal_url = section.settings.withdrawal_link_url | default: '/pages/retractation' -%}
+{%- assign milaura_withdrawal_label = section.settings.withdrawal_link_label | default: 'Exercer mon droit de rétractation' -%}
+
 <footer id="MilauraFooter-{{ section.id }}" class="milaura-footer">
   <div class="milaura-footer-container page-width">
     {%- comment -%} Carte principale avec bords arrondis style Milaura {%- endcomment -%}
@@ -139,6 +142,13 @@
                   <li>
                     <a href="{{ block.settings.contact_page }}" class="milaura-footer-link milaura-footer-contact-page-link">
                       {{ block.settings.contact_page_label | default: 'Page contact →' }}
+                    </a>
+                  </li>
+                {%- endif -%}
+                {%- if milaura_withdrawal_url != blank -%}
+                  <li>
+                    <a href="{{ milaura_withdrawal_url }}" class="milaura-footer-link milaura-footer-contact-page-link">
+                      {{ milaura_withdrawal_label }}
                     </a>
                   </li>
                 {%- endif -%}
@@ -297,6 +307,9 @@
             {%- endif -%}
             {%- if shop.refund_policy -%}
               <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a></li>
+            {%- endif -%}
+            {%- if milaura_withdrawal_url != blank -%}
+              <li><a href="{{ milaura_withdrawal_url }}">{{ milaura_withdrawal_label }}</a></li>
             {%- endif -%}
             {%- if shop.shipping_policy -%}
               <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title }}</a></li>
@@ -1348,6 +1361,17 @@
       "id": "show_policy_links",
       "label": "Afficher liens legaux",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "withdrawal_link_label",
+      "label": "Label lien retractation",
+      "default": "Exercer mon droit de rétractation"
+    },
+    {
+      "type": "url",
+      "id": "withdrawal_link_url",
+      "label": "URL lien retractation"
     },
     {
       "type": "checkbox",
