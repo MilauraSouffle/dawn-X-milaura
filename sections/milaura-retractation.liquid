@@ -1,6 +1,6 @@
 {% comment %}
-  MILAURA RETRACTATION
-  Page publique pour exercer le droit legal de retractation.
+  MILAURA RETOUR PRODUIT
+  Page publique pour demander un retour produit et exercer le droit legal de retractation.
 {% endcomment %}
 
 <section
@@ -11,7 +11,7 @@
   <div class="milaura-retractation__inner page-width">
     <header class="milaura-retractation__hero">
       <p class="milaura-retractation__eyebrow">{{ section.settings.kicker }}</p>
-      <span class="milaura-retractation__legal-tag">Renoncer au contrat ici</span>
+      <span class="milaura-retractation__legal-tag">Inclut le droit légal de rétractation</span>
       <h1>{{ section.settings.heading }}</h1>
       <p class="milaura-retractation__intro">{{ section.settings.intro }}</p>
     </header>
@@ -39,33 +39,64 @@
           <div class="milaura-retractation__field-grid">
             <div class="milaura-retractation__field">
               <label for="RetFirstName-{{ section.id }}">Prénom</label>
-              <input id="RetFirstName-{{ section.id }}" name="first_name" type="text" autocomplete="given-name" required>
+              <input id="RetFirstName-{{ section.id }}" name="first_name" type="text" autocomplete="given-name" value="{{ customer.first_name | escape }}" required>
             </div>
             <div class="milaura-retractation__field">
               <label for="RetLastName-{{ section.id }}">Nom</label>
-              <input id="RetLastName-{{ section.id }}" name="last_name" type="text" autocomplete="family-name" required>
+              <input id="RetLastName-{{ section.id }}" name="last_name" type="text" autocomplete="family-name" value="{{ customer.last_name | escape }}" required>
             </div>
           </div>
 
           <div class="milaura-retractation__field-grid">
             <div class="milaura-retractation__field">
               <label for="RetEmail-{{ section.id }}">Email de commande</label>
-              <input id="RetEmail-{{ section.id }}" name="email" type="email" autocomplete="email" required>
+              <input id="RetEmail-{{ section.id }}" name="email" type="email" autocomplete="email" value="{{ customer.email | escape }}" required>
             </div>
             <div class="milaura-retractation__field">
               <label for="RetReceiptEmail-{{ section.id }}">Email pour recevoir l'accusé</label>
-              <input id="RetReceiptEmail-{{ section.id }}" name="receipt_email" type="email" autocomplete="email" required>
+              <input id="RetReceiptEmail-{{ section.id }}" name="receipt_email" type="email" autocomplete="email" value="{{ customer.email | escape }}" required>
             </div>
           </div>
 
           <div class="milaura-retractation__field-grid">
             <div class="milaura-retractation__field">
-              <label for="RetOrderName-{{ section.id }}">Numéro de commande</label>
-              <input id="RetOrderName-{{ section.id }}" name="order_name" type="text" placeholder="#1001" required>
+              {%- if customer and customer.orders_count > 0 -%}
+                <label for="RetOrderPicker-{{ section.id }}">Commande concernée</label>
+                <select id="RetOrderPicker-{{ section.id }}" data-order-picker required>
+                  <option value="">Choisir une commande</option>
+                  {%- paginate customer.orders by 20 -%}
+                    {%- for order in customer.orders -%}
+                      <option
+                        value="{{ order.name | escape }}"
+                        data-order-date="{{ order.created_at | date: '%Y-%m-%d' }}"
+                      >
+                        {{ order.name }} - {{ order.created_at | date: '%d/%m/%Y' }} - {{ order.total_price | money }}
+                      </option>
+                    {%- endfor -%}
+                  {%- endpaginate -%}
+                  <option value="manual">Autre commande</option>
+                </select>
+                <input type="hidden" name="order_name" data-order-name-field>
+                <span class="milaura-retractation__hint">Nous affichons les commandes disponibles sur ce compte client.</span>
+              {%- else -%}
+                <label for="RetOrderName-{{ section.id }}">Numéro de commande</label>
+                <input id="RetOrderName-{{ section.id }}" name="order_name" type="text" placeholder="#1001" required>
+                {%- unless customer -%}
+                  <span class="milaura-retractation__hint">
+                    Connectez-vous à votre compte pour retrouver vos commandes automatiquement, ou saisissez le numéro manuellement.
+                  </span>
+                {%- endunless -%}
+              {%- endif -%}
             </div>
+            {%- if customer and customer.orders_count > 0 -%}
+              <div class="milaura-retractation__field milaura-retractation__manual-order" data-manual-order hidden>
+                <label for="RetManualOrder-{{ section.id }}">Numéro de commande</label>
+                <input id="RetManualOrder-{{ section.id }}" type="text" placeholder="#1001" data-manual-order-input>
+              </div>
+            {%- endif -%}
             <div class="milaura-retractation__field">
               <label for="RetOrderDate-{{ section.id }}">Date de commande</label>
-              <input id="RetOrderDate-{{ section.id }}" name="order_date" type="date">
+              <input id="RetOrderDate-{{ section.id }}" name="order_date" type="date" data-order-date-field>
             </div>
           </div>
 
@@ -76,7 +107,7 @@
             <span class="milaura-retractation__hint">Pour les biens, le délai légal se compte en principe à partir de la réception.</span>
             </div>
             <div class="milaura-retractation__field">
-              <label for="RetScope-{{ section.id }}">Type de rétractation</label>
+              <label for="RetScope-{{ section.id }}">Retour demandé</label>
               <select id="RetScope-{{ section.id }}" name="scope" required>
                 <option value="">Choisir</option>
                 <option value="total">Commande complète</option>
@@ -86,18 +117,18 @@
           </div>
 
           <div class="milaura-retractation__field">
-            <label for="RetProducts-{{ section.id }}">Produit(s) concerné(s)</label>
+            <label for="RetProducts-{{ section.id }}">Article(s) concerné(s)</label>
             <textarea id="RetProducts-{{ section.id }}" name="products" rows="4" placeholder="Nom du produit, variante, quantité..." required></textarea>
           </div>
 
           <div class="milaura-retractation__field">
             <label for="RetMessage-{{ section.id }}">Message complémentaire</label>
-            <textarea id="RetMessage-{{ section.id }}" name="message" rows="3" placeholder="Facultatif. Aucune justification n'est demandée."></textarea>
+            <textarea id="RetMessage-{{ section.id }}" name="message" rows="3" placeholder="Facultatif pour un retour légal. Utile si le produit est abîmé, incomplet ou incorrect."></textarea>
           </div>
 
           <div class="milaura-retractation__consent">
             <input id="RetConfirm-{{ section.id }}" type="checkbox" required>
-            <label for="RetConfirm-{{ section.id }}">Je confirme vouloir exercer mon droit de rétractation pour le contrat identifié ci-dessus.</label>
+            <label for="RetConfirm-{{ section.id }}">Je confirme vouloir demander un retour produit pour la commande indiquée. Si ma demande relève du droit légal de rétractation, cette déclaration vaut exercice de ce droit.</label>
           </div>
 
           <button
@@ -105,7 +136,7 @@
             class="milaura-retractation__submit"
             {% if section.settings.form_endpoint_url == blank %}disabled{% endif %}
           >
-            Confirmer la rétractation
+            Demander le retour
           </button>
 
           <div class="milaura-retractation__status" data-milaura-retractation-status role="status" aria-live="polite"></div>
@@ -120,7 +151,7 @@
         <div class="milaura-retractation__steps">
           <div>
             <span>1</span>
-            <p>Vous envoyez votre déclaration en ligne.</p>
+            <p>Vous envoyez votre demande de retour en ligne.</p>
           </div>
           <div>
             <span>2</span>
@@ -128,11 +159,15 @@
           </div>
           <div>
             <span>3</span>
-            <p>MilAura vous indique les étapes pratiques pour le retour si nécessaire.</p>
+            <p>MilAura confirme les étapes pratiques si un renvoi est nécessaire.</p>
           </div>
         </div>
+        <div class="milaura-retractation__rule-box">
+          <strong>Frais et exclusions</strong>
+          <span>Pour un retour de confort ou une rétractation, les frais de renvoi restent à votre charge, sauf erreur MilAura ou produit défectueux. Les créations nettement personnalisées peuvent être exclues si cela est indiqué sur la fiche produit.</span>
+        </div>
         <p class="milaura-retractation__small">
-          Le droit de rétractation légal est distinct d'une demande d'échange, de garantie ou de service après-vente.
+          Le retour produit inclut le droit légal de rétractation sous 14 jours. Il reste distinct d'une demande d'échange, de garantie ou de service après-vente.
         </p>
       </aside>
     </div>
@@ -271,6 +306,10 @@
     line-height: 1.55;
   }
 
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__manual-order[hidden] {
+    display: none;
+  }
+
   #MilauraRetractation-{{ section.id }} .milaura-retractation__consent {
     display: grid;
     grid-template-columns: 20px minmax(0, 1fr);
@@ -393,6 +432,26 @@
     font-size: 0.94rem;
   }
 
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__rule-box {
+    display: grid;
+    gap: 6px;
+    margin: 18px 0;
+    padding: 14px;
+    border: 1px solid rgba(111, 127, 103, 0.24);
+    border-radius: 8px;
+    background: rgba(111, 127, 103, 0.08);
+    color: var(--ret-muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  #MilauraRetractation-{{ section.id }} .milaura-retractation__rule-box strong {
+    color: var(--ret-ink);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
   @media screen and (max-width: 900px) {
     #MilauraRetractation-{{ section.id }} .milaura-retractation__layout {
       grid-template-columns: 1fr;
@@ -429,6 +488,11 @@
     var endpoint = form.getAttribute('data-endpoint');
     var submit = form.querySelector('.milaura-retractation__submit');
     var userAgentField = form.querySelector('input[name="user_agent"]');
+    var orderPicker = form.querySelector('[data-order-picker]');
+    var orderNameField = form.querySelector('[data-order-name-field]');
+    var orderDateField = form.querySelector('[data-order-date-field]');
+    var manualOrder = form.querySelector('[data-manual-order]');
+    var manualOrderInput = form.querySelector('[data-manual-order-input]');
 
     if (userAgentField) {
       userAgentField.value = window.navigator.userAgent || '';
@@ -436,8 +500,60 @@
 
     if (!endpoint) return;
 
+    function syncOrderFields() {
+      if (!orderPicker || !orderNameField) return;
+
+      var selectedOption = orderPicker.options[orderPicker.selectedIndex];
+      var isManual = orderPicker.value === 'manual';
+      var manualValue = manualOrderInput ? manualOrderInput.value.trim() : '';
+
+      if (manualOrder) {
+        manualOrder.hidden = !isManual;
+      }
+
+      if (manualOrderInput) {
+        manualOrderInput.required = isManual;
+        if (!isManual) {
+          manualOrderInput.setCustomValidity('');
+        }
+      }
+
+      orderNameField.value = isManual ? manualValue : orderPicker.value;
+
+      if (orderDateField && selectedOption && selectedOption.dataset.orderDate && !isManual) {
+        orderDateField.value = selectedOption.dataset.orderDate;
+      } else if (orderDateField && isManual) {
+        orderDateField.value = '';
+      }
+    }
+
+    if (orderPicker) {
+      orderPicker.addEventListener('change', syncOrderFields);
+      syncOrderFields();
+    }
+
+    if (manualOrderInput) {
+      manualOrderInput.addEventListener('input', syncOrderFields);
+    }
+
     form.addEventListener('submit', function (event) {
       event.preventDefault();
+
+      syncOrderFields();
+
+      if (orderPicker) {
+        orderPicker.setCustomValidity('');
+        if (!orderPicker.value) {
+          orderPicker.setCustomValidity('Choisissez une commande.');
+        }
+      }
+
+      if (manualOrderInput) {
+        manualOrderInput.setCustomValidity('');
+        if (orderPicker && orderPicker.value === 'manual' && !manualOrderInput.value.trim()) {
+          manualOrderInput.setCustomValidity('Indiquez le numéro de commande.');
+        }
+      }
 
       if (!form.checkValidity()) {
         form.reportValidity();
@@ -476,8 +592,9 @@
         })
         .then(function (data) {
           status.setAttribute('data-state', 'success');
-          status.textContent = "Votre rétractation a bien été transmise. Référence: " + data.reference + ". Un accusé de réception vient d'être envoyé par email.";
+          status.textContent = "Votre demande de retour a bien été transmise. Référence: " + data.reference + ". Un accusé de réception vient d'être envoyé par email.";
           form.reset();
+          syncOrderFields();
         })
         .catch(function (error) {
           status.setAttribute('data-state', 'error');
@@ -494,25 +611,25 @@
 
 {% schema %}
 {
-  "name": "Milaura rétractation",
+  "name": "Milaura retour produit",
   "settings": [
     {
       "type": "text",
       "id": "kicker",
       "label": "Kicker",
-      "default": "Droit légal de rétractation"
+      "default": "Retour produit"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Titre",
-      "default": "Exercer mon droit de rétractation"
+      "default": "Demander un retour produit"
     },
     {
       "type": "textarea",
       "id": "intro",
       "label": "Introduction",
-      "default": "Vous pouvez déclarer en ligne votre volonté de vous rétracter pour une commande passée sur MilAura.fr. Aucune justification n'est demandée."
+      "default": "Sélectionnez votre commande ou saisissez son numéro, puis indiquez les articles concernés. Le formulaire couvre aussi le droit légal de rétractation sous 14 jours."
     },
     {
       "type": "url",
@@ -523,18 +640,18 @@
       "type": "text",
       "id": "side_title",
       "label": "Titre information",
-      "default": "Comment cela se passe"
+      "default": "Comment se passe le retour"
     },
     {
       "type": "textarea",
       "id": "side_text",
       "label": "Texte information",
-      "default": "Après validation du formulaire, vous recevez un accusé de réception sur support durable avec le contenu de votre déclaration, sa date et son heure d'envoi."
+      "default": "Après validation du formulaire, vous recevez un accusé de réception sur support durable avec le contenu de votre demande, sa date et son heure d'envoi."
     }
   ],
   "presets": [
     {
-      "name": "Milaura rétractation"
+      "name": "Milaura retour produit"
     }
   ]
 }
