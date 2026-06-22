@@ -1562,8 +1562,20 @@ section.milaura-section {
    ================================================ */
 
 #shopify-pc__banner {
-  position: relative !important;
+  position: fixed !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: max(16px, env(safe-area-inset-bottom)) !important;
+  left: 50% !important;
+  z-index: 2147483000 !important;
+  box-sizing: border-box !important;
+  width: min(440px, calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
+  max-height: min(70vh, 560px) !important;
+  padding: 30px 24px 22px !important;
   overflow: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
   isolation: isolate !important;
   background:
     radial-gradient(circle at 10% 0%, rgba(192, 160, 98, 0.18), transparent 32%),
@@ -1576,6 +1588,8 @@ section.milaura-section {
   box-shadow: 0 18px 50px rgba(28, 24, 18, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.45) inset !important;
   color: #201a12 !important;
   text-align: left !important;
+  transform: translateX(-50%) !important;
+  animation: milaura-cookie-slide-up 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both !important;
 }
 
 #shopify-pc__banner::before {
@@ -1583,7 +1597,7 @@ section.milaura-section {
   position: absolute !important;
   top: 18px !important;
   right: 22px !important;
-  z-index: -1 !important;
+  z-index: 0 !important;
   width: 54px !important;
   height: 54px !important;
   border-radius: 999px !important;
@@ -1596,6 +1610,7 @@ section.milaura-section {
     -16px 18px 0 -22px rgba(143, 114, 58, 0.65),
     0 10px 24px rgba(143, 114, 58, 0.16) !important;
   opacity: 0.82 !important;
+  pointer-events: none !important;
 }
 
 #shopify-pc__banner::after {
@@ -1604,12 +1619,16 @@ section.milaura-section {
   left: 0 !important;
   right: 0 !important;
   top: 0 !important;
+  z-index: 0 !important;
   height: 4px !important;
   background: linear-gradient(90deg, rgba(192, 160, 98, 0), rgba(192, 160, 98, 0.82), rgba(192, 160, 98, 0)) !important;
+  pointer-events: none !important;
 }
 
 #shopify-pc__banner h2 {
   position: relative !important;
+  z-index: 1 !important;
+  margin-top: 0 !important;
   margin-bottom: 10px !important;
   padding-right: 56px !important;
   font-family: var(--milaura-font-heading, 'Playfair Display'), serif !important;
@@ -1634,6 +1653,8 @@ section.milaura-section {
 }
 
 #shopify-pc__banner p {
+  position: relative !important;
+  z-index: 1 !important;
   max-width: 58ch !important;
   margin-bottom: 16px !important;
   font-family: var(--milaura-font-body, 'Lato'), sans-serif !important;
@@ -1673,7 +1694,13 @@ section.milaura-section {
 }
 
 #shopify-pc__banner button {
+  position: relative !important;
+  z-index: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   min-height: 44px !important;
+  padding: 11px 18px !important;
   border-radius: 999px !important;
   font-family: var(--milaura-font-body, 'Lato'), sans-serif !important;
   font-weight: 800 !important;
@@ -1710,6 +1737,11 @@ section.milaura-section {
 
 #shopify-pc__banner button[class*="manage-prefs"],
 #shopify-pc__banner a[class*="manage-prefs"] {
+  position: relative !important;
+  z-index: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   background: transparent !important;
   border: 1px solid rgba(192, 160, 98, 0.24) !important;
   border-radius: 999px !important;
@@ -1726,10 +1758,42 @@ section.milaura-section {
   outline-offset: 3px !important;
 }
 
+@keyframes milaura-cookie-slide-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(calc(100% + 24px));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes milaura-cookie-mobile-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media screen and (max-width: 749px) {
   #shopify-pc__banner {
+    top: auto !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    max-height: min(70vh, 620px) !important;
+    padding: 28px 18px max(20px, env(safe-area-inset-bottom)) !important;
     border-radius: 18px 18px 0 0 !important;
     text-align: left !important;
+    transform: none !important;
+    animation: milaura-cookie-mobile-slide-up 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both !important;
   }
 
   #shopify-pc__banner::before {
@@ -1748,6 +1812,7 @@ section.milaura-section {
   #shopify-pc__banner p {
     font-size: 0.88rem !important;
     line-height: 1.48 !important;
+    margin-bottom: 14px !important;
   }
 
   #shopify-pc__banner .milaura-cookie-benefits {
@@ -1758,6 +1823,21 @@ section.milaura-section {
     min-height: 28px !important;
     padding: 5px 9px !important;
     font-size: 0.7rem !important;
+  }
+
+  #shopify-pc__banner button,
+  #shopify-pc__banner button[class*="manage-prefs"],
+  #shopify-pc__banner a[class*="manage-prefs"] {
+    width: 100% !important;
+    min-height: 43px !important;
+    margin-top: 8px !important;
+    text-align: center !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #shopify-pc__banner {
+    animation: none !important;
   }
 }
 
