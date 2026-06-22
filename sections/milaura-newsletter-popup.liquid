@@ -449,15 +449,82 @@
   }
 
   var pageCount = getPageCount();
+  var cookieAwareNewsletterDelay = 12000;
+  var cookieAwareNewsletterPending = false;
+  var cookieAwareNewsletterObserver = null;
+  var cookieAwareNewsletterInterval = null;
+  var cookieAwareNewsletterDelayTimer = null;
+
+  function isCookieBannerVisible() {
+    var cookieBanner = document.getElementById('shopify-pc__banner');
+    if (!cookieBanner) return false;
+    var bannerRect = cookieBanner.getBoundingClientRect();
+    return bannerRect.width > 0 && bannerRect.height > 0;
+  }
+
+  function clearCookieAwareNewsletterWait() {
+    if (cookieAwareNewsletterObserver) {
+      cookieAwareNewsletterObserver.disconnect();
+      cookieAwareNewsletterObserver = null;
+    }
+    if (cookieAwareNewsletterInterval) {
+      clearInterval(cookieAwareNewsletterInterval);
+      cookieAwareNewsletterInterval = null;
+    }
+    if (cookieAwareNewsletterDelayTimer) {
+      clearTimeout(cookieAwareNewsletterDelayTimer);
+      cookieAwareNewsletterDelayTimer = null;
+    }
+  }
+
+  function runCookieAwareNewsletterCheck() {
+    if (!cookieAwareNewsletterPending) return;
+    if (isCookieBannerVisible()) return;
+
+    clearCookieAwareNewsletterWait();
+    cookieAwareNewsletterDelayTimer = setTimeout(function() {
+      cookieAwareNewsletterDelayTimer = null;
+      cookieAwareNewsletterPending = false;
+      if (isCookieBannerVisible()) {
+        scheduleNewsletterAfterCookies();
+        return;
+      }
+      showPopup();
+    }, cookieAwareNewsletterDelay);
+  }
+
+  function scheduleNewsletterAfterCookies() {
+    if (popupShown || cookieAwareNewsletterPending || isSubscribed() || isDismissed()) return;
+    cookieAwareNewsletterPending = true;
+
+    if (window.MutationObserver) {
+      cookieAwareNewsletterObserver = new MutationObserver(runCookieAwareNewsletterCheck);
+      cookieAwareNewsletterObserver.observe(document.body, {
+        attributes: true,
+        childList: true,
+        subtree: true
+      });
+    }
+
+    cookieAwareNewsletterInterval = setInterval(runCookieAwareNewsletterCheck, 1000);
+    runCookieAwareNewsletterCheck();
+  }
 
   function canShow() {
     if (window.milauraIsCustomer) return false;
     if (document.documentElement.classList.contains('milaura-gift-popup-open')) return false;
     var scratchPopup = document.querySelector('.milaura-gift-popup');
     if (scratchPopup && !scratchPopup.hidden) return false;
-    var cookieBanner = document.getElementById('shopify-pc__banner');
-    if (cookieBanner && cookieBanner.getBoundingClientRect().height > 0) return false;
+    if (isCookieBannerVisible()) return false;
     return !isSubscribed() && !isDismissed() && !popupShown;
+  }
+
+  function showPopupWhenReady() {
+    if (isCookieBannerVisible()) {
+      scheduleNewsletterAfterCookies();
+      return;
+    }
+    showPopup();
   }
 
   /* --- Show popup --- */
@@ -551,17 +618,17 @@
   /* Trigger 1: Homepage = simple delay (configurable, default 30s) */
   if (isHomepage) {
     var homepageDelay = {{ section.settings.homepage_delay | default: 30 }} * 1000;
-    setTimeout(function() { showPopup(); }, homepageDelay);
+    setTimeout(function() { showPopupWhenReady(); }, homepageDelay);
   }
 
   /* Trigger 2: Product page = optional 30s OR exit-intent (desktop) */
   if (isProduct && productTriggerEnabled) {
-    setTimeout(function() { showPopup(); }, 30000);
+    setTimeout(function() { showPopupWhenReady(); }, 30000);
 
     if (window.innerWidth > 768) {
       document.addEventListener('mouseout', function exitHandler(e) {
-        if (e.clientY <= 0 && canShow()) {
-          showPopup();
+        if (e.clientY <= 0 && !popupShown) {
+          showPopupWhenReady();
           document.removeEventListener('mouseout', exitHandler);
         }
       });
@@ -574,7 +641,7 @@
       var scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
       if (scrollPercent >= 80) {
         window.removeEventListener('scroll', checkScrollCollection);
-        showPopup();
+        showPopupWhenReady();
       }
     }
     window.addEventListener('scroll', checkScrollCollection, { passive: true });
@@ -582,12 +649,12 @@
 
   /* Trigger 4: Page-count = 3+ pages vues, montrer apres 15s */
   if (pageCount >= 3 && !isHomepage && !isProduct && !isCollection) {
-    setTimeout(function() { showPopup(); }, 15000);
+    setTimeout(function() { showPopupWhenReady(); }, 15000);
   }
 
   /* Trigger 5: Post-quiz (any page) */
   document.addEventListener('milaura:quiz-result', function() {
-    setTimeout(function() { showPopup(); }, 2000);
+    setTimeout(function() { showPopupWhenReady(); }, 2000);
   });
 
   /* Listen for subscription from bubble */
