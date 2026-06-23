@@ -763,6 +763,20 @@
       <nav class="benefits-nav" role="tablist" aria-label="Sélecteur de besoins">
         {%- for block in section.blocks -%}
           {%- assign prod = block.settings.product -%}
+          {%- assign stone_key = block.settings.stone_name | handleize -%}
+          {%- assign optimized_stone_mobile_asset = blank -%}
+          {%- case stone_key -%}
+            {%- when 'amethyste' -%}
+              {%- assign optimized_stone_mobile_asset = 'milaura-benefit-amethyste-mobile.webp' -%}
+            {%- when 'quartz-rose' -%}
+              {%- assign optimized_stone_mobile_asset = 'milaura-benefit-quartz-rose-mobile.webp' -%}
+            {%- when 'citrine' -%}
+              {%- assign optimized_stone_mobile_asset = 'milaura-benefit-citrine-mobile.webp' -%}
+            {%- when 'tourmaline-noire' -%}
+              {%- assign optimized_stone_mobile_asset = 'milaura-benefit-tourmaline-mobile.webp' -%}
+            {%- when 'aventurine-verte' -%}
+              {%- assign optimized_stone_mobile_asset = 'milaura-benefit-aventurine-mobile.webp' -%}
+          {%- endcase -%}
           <div class="benefit-accordion-item" data-accordion-index="{{ forloop.index0 }}">
             <button
               type="button"
@@ -796,7 +810,17 @@
             <!-- Contenu accordéon (mobile uniquement) -->
             <div class="benefit-accordion-content" id="accordion-{{ block.id }}">
               <div class="benefit-accordion-inner">
-                {%- if block.settings.stone_image != blank -%}
+                {%- if optimized_stone_mobile_asset != blank -%}
+                  <img
+                    src="{{ optimized_stone_mobile_asset | asset_url }}"
+                    alt="{{ block.settings.stone_name }}"
+                    class="benefit-mobile-image"
+                    loading="lazy"
+                    decoding="async"
+                    width="640"
+                    height="427"
+                  >
+                {%- elsif block.settings.stone_image != blank -%}
                   <img
                     src="{{ block.settings.stone_image | image_url: width: 640 }}"
                     alt="{{ block.settings.stone_name }}"
@@ -852,13 +876,33 @@
       <div class="benefits-content" id="benefits-content-{{ section.id }}">
         {%- for block in section.blocks -%}
           {%- assign prod = block.settings.product -%}
+          {%- assign stone_key = block.settings.stone_name | handleize -%}
+          {%- assign optimized_stone_desktop_asset = blank -%}
+          {%- case stone_key -%}
+            {%- when 'amethyste' -%}
+              {%- assign optimized_stone_desktop_asset = 'milaura-benefit-amethyste-desktop.webp' -%}
+            {%- when 'quartz-rose' -%}
+              {%- assign optimized_stone_desktop_asset = 'milaura-benefit-quartz-rose-desktop.webp' -%}
+            {%- when 'citrine' -%}
+              {%- assign optimized_stone_desktop_asset = 'milaura-benefit-citrine-desktop.webp' -%}
+            {%- when 'tourmaline-noire' -%}
+              {%- assign optimized_stone_desktop_asset = 'milaura-benefit-tourmaline-desktop.webp' -%}
+            {%- when 'aventurine-verte' -%}
+              {%- assign optimized_stone_desktop_asset = 'milaura-benefit-aventurine-desktop.webp' -%}
+          {%- endcase -%}
+          {%- assign desktop_stone_src = blank -%}
+          {%- if optimized_stone_desktop_asset != blank -%}
+            {%- assign desktop_stone_src = optimized_stone_desktop_asset | asset_url -%}
+          {%- elsif block.settings.stone_image != blank -%}
+            {%- assign desktop_stone_src = block.settings.stone_image | image_url: width: 1100 -%}
+          {%- endif -%}
           <div
             id="benefit-{{ block.id }}"
             class="benefit-card {% if forloop.first %}is-active{% endif %}"
             role="tabpanel"
             aria-labelledby="benefit-btn-{{ block.id }}"
             tabindex="0"
-            data-bg-image="{{ block.settings.stone_image | image_url: width: 1100 }}"
+            data-bg-image="{{ desktop_stone_src }}"
           >
             <div class="benefit-info-box">
               {%- if block.settings.is_bestseller -%}
