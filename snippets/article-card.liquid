@@ -41,6 +41,10 @@
         style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
       >
         {%- if show_image == true and article.image -%}
+          {%- assign article_card_max_width = article.image.src.width -%}
+          {%- if article_card_max_width > 1000 -%}
+            {%- assign article_card_max_width = 1000 -%}
+          {%- endif -%}
           <div class="article-card__image-wrapper card__media">
             <div
               class="article-card__image media media--hover-effect"
@@ -51,13 +55,11 @@
               {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
               <img
                 srcset="
-                  {%- if article.image.src.width >= 165 -%}{{ article.image.src | image_url: width: 165 }} 165w,{%- endif -%}
-                  {%- if article.image.src.width >= 360 -%}{{ article.image.src | image_url: width: 360 }} 360w,{%- endif -%}
-                  {%- if article.image.src.width >= 533 -%}{{ article.image.src | image_url: width: 533 }} 533w,{%- endif -%}
-                  {%- if article.image.src.width >= 720 -%}{{ article.image.src | image_url: width: 720 }} 720w,{%- endif -%}
-                  {%- if article.image.src.width >= 1000 -%}{{ article.image.src | image_url: width: 1000 }} 1000w,{%- endif -%}
-                  {%- if article.image.src.width >= 1500 -%}{{ article.image.src | image_url: width: 1500 }} 1500w,{%- endif -%}
-                  {{ article.image.src | image_url }} {{ article.image.src.width }}w
+                  {%- if article_card_max_width > 165 -%}{{ article.image.src | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if article_card_max_width > 360 -%}{{ article.image.src | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if article_card_max_width > 533 -%}{{ article.image.src | image_url: width: 533 }} 533w,{%- endif -%}
+                  {%- if article_card_max_width > 720 -%}{{ article.image.src | image_url: width: 720 }} 720w,{%- endif -%}
+                  {{ article.image.src | image_url: width: article_card_max_width }} {{ article_card_max_width }}w
                 "
                 src="{{ article.image.src | image_url: width: 533 }}"
                 sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)"
@@ -66,6 +68,7 @@
                 {% unless lazy_load == false %}
                   loading="lazy"
                 {% endunless %}
+                decoding="async"
                 width="{{ article.image.width }}"
                 height="{{ article.image.height }}"
               >
