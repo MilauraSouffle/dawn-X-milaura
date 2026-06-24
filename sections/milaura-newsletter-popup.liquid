@@ -477,9 +477,30 @@
   var cookieAwareNewsletterInterval = null;
   var cookieAwareNewsletterDelayTimer = null;
   var cookiePrivacyReadyUntil = Date.now() + 30000;
+  var cookiePrivacyApiRequested = false;
 
   function getCustomerPrivacy() {
     return window.Shopify && window.Shopify.customerPrivacy ? window.Shopify.customerPrivacy : null;
+  }
+
+  function requestCustomerPrivacyApi() {
+    if (cookiePrivacyApiRequested || getCustomerPrivacy()) return;
+    if (!window.Shopify || typeof window.Shopify.loadFeatures !== 'function') return;
+
+    cookiePrivacyApiRequested = true;
+    try {
+      window.Shopify.loadFeatures(
+        [
+          {
+            name: 'consent-tracking-api',
+            version: '0.1'
+          }
+        ],
+        function(error) {
+          if (!error) runCookieAwareNewsletterCheck();
+        }
+      );
+    } catch(e) {}
   }
 
   function isCookieBannerVisible() {
@@ -497,6 +518,7 @@
       try { return customerPrivacy.shouldShowBanner(); } catch(e) { return true; }
     }
 
+    requestCustomerPrivacyApi();
     return Date.now() < cookiePrivacyReadyUntil;
   }
 
