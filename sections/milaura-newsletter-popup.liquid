@@ -225,6 +225,26 @@
     box-shadow: 0 4px 16px rgba(192, 160, 98, 0.35);
   }
 
+  .milaura-popup-submit:disabled {
+    cursor: wait;
+    opacity: 0.72;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .milaura-popup-error {
+    margin: 10px 0 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.74rem;
+    line-height: 1.4;
+    color: #9f4a3a;
+    text-align: left;
+  }
+
+  .milaura-popup-error[hidden] {
+    display: none;
+  }
+
   /* --- Succes --- */
   .milaura-popup-success {
     display: none;
@@ -377,10 +397,12 @@
         <input type="hidden" name="utf8" value="✓">
         <input type="hidden" name="contact[tags]" value="newsletter,rituel,source:popup" id="milaura-popup-tags">
         <input type="hidden" name="contact[note]" id="milaura-popup-note" value="">
+        <input type="hidden" name="contact[accepts_marketing]" value="true">
         <label for="milaura-popup-email" class="visually-hidden">Email</label>
         <input type="email" id="milaura-popup-email" name="contact[email]" class="milaura-popup-email" placeholder="{{ section.settings.email_placeholder | default: 'votre@email.com' }}" required autocomplete="email">
         <button type="submit" class="milaura-popup-submit">{{ section.settings.btn_label | default: 'Recevoir mon rituel gratuit' }}</button>
       </form>
+      <p class="milaura-popup-error" id="milaura-popup-error" role="alert" hidden>Inscription impossible pour le moment. Verifiez votre email ou reessayez dans un instant.</p>
       <p class="milaura-popup-legal">{{ section.settings.legal_text | default: "En vous inscrivant, vous acceptez de recevoir nos emails. Desabonnement en un clic." }}</p>
     </div>
 
@@ -571,39 +593,80 @@
 
   /* --- Form submission --- */
   var form = document.getElementById('milaura-popup-form');
+  var submitError = document.getElementById('milaura-popup-error');
+
+  function clearSubmitError() {
+    if (!submitError) return;
+    submitError.hidden = true;
+    submitError.textContent = '';
+  }
+
+  function showSubmitError(message) {
+    if (!submitError) return;
+    submitError.textContent = message || 'Inscription impossible pour le moment. Verifiez votre email ou reessayez dans un instant.';
+    submitError.hidden = false;
+  }
+
+  function setSubmitState(isSubmitting) {
+    if (!form) return;
+    var submitBtn = form.querySelector('button[type="submit"]');
+    if (!submitBtn) return;
+    submitBtn.disabled = isSubmitting;
+    submitBtn.setAttribute('aria-busy', isSubmitting ? 'true' : 'false');
+  }
+
+  function hasSubmitErrors(html) {
+    if (!html || typeof DOMParser === 'undefined') return false;
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    return !!doc.querySelector('.form__message, .errors, .field--error, .form-status-list');
+  }
+
+  function showSubmitSuccess() {
+    try { localStorage.setItem('milauraNewsletterSubscribed', 'true'); } catch(e) {}
+    document.dispatchEvent(new CustomEvent('milaura:newsletter-subscribed', { detail: { source: 'popup' } }));
+
+    var mainContent = document.getElementById('milaura-popup-main');
+    var successEl = document.getElementById('milaura-popup-success');
+    if (mainContent) mainContent.style.display = 'none';
+    if (successEl) successEl.classList.add('active');
+
+    var result = getQuizResult();
+    if (!result || !result.profile) {
+      var quizCta = document.getElementById('milaura-popup-quiz-cta');
+      if (quizCta) quizCta.style.display = 'inline-block';
+    }
+
+    setTimeout(closePopup, 4000);
+  }
+
   if (form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       var emailInput = form.querySelector('input[type="email"]');
-      if (!emailInput || !emailInput.value) return;
+      if (!emailInput || !emailInput.value || !emailInput.checkValidity()) {
+        if (form.reportValidity) form.reportValidity();
+        return;
+      }
 
+      clearSubmitError();
+      setSubmitState(true);
       var formData = new FormData(form);
 
       fetch('/contact#contact_form', {
         method: 'POST',
         body: formData,
-        headers: { 'Accept': 'text/html' }
-      }).then(function() {
-        try { localStorage.setItem('milauraNewsletterSubscribed', 'true'); } catch(e) {}
-        document.dispatchEvent(new CustomEvent('milaura:newsletter-subscribed'));
-
-        /* Show success */
-        var mainContent = document.getElementById('milaura-popup-main');
-        var successEl = document.getElementById('milaura-popup-success');
-        if (mainContent) mainContent.style.display = 'none';
-        if (successEl) successEl.classList.add('active');
-
-        /* Show quiz CTA only if no quiz done */
-        var result = getQuizResult();
-        if (!result || !result.profile) {
-          var quizCta = document.getElementById('milaura-popup-quiz-cta');
-          if (quizCta) quizCta.style.display = 'inline-block';
-        }
-
-        /* Auto-close after 4s */
-        setTimeout(closePopup, 4000);
+        headers: { 'Accept': 'text/html' },
+        credentials: 'same-origin'
+      }).then(function(response) {
+        if (!response.ok) throw new Error('newsletter_submit_' + response.status);
+        return response.text();
+      }).then(function(html) {
+        if (hasSubmitErrors(html)) throw new Error('newsletter_submit_error');
+        setSubmitState(false);
+        showSubmitSuccess();
       }).catch(function() {
-        form.submit();
+        setSubmitState(false);
+        showSubmitError('Inscription impossible pour le moment. Verifiez votre email ou reessayez dans un instant.');
       });
     });
   }
@@ -657,8 +720,9 @@
     setTimeout(function() { showPopupWhenReady(); }, 2000);
   });
 
-  /* Listen for subscription from bubble */
-  document.addEventListener('milaura:newsletter-subscribed', function() {
+  /* Listen for subscription from another capture surface */
+  document.addEventListener('milaura:newsletter-subscribed', function(event) {
+    if (event.detail && event.detail.source === 'popup') return;
     if (overlay.classList.contains('active')) closePopup();
   });
 
