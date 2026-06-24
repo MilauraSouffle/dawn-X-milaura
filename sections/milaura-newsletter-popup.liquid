@@ -483,6 +483,21 @@
     return window.Shopify && window.Shopify.customerPrivacy ? window.Shopify.customerPrivacy : null;
   }
 
+  function hasCookieConsentDecision(customerPrivacy) {
+    if (!customerPrivacy || typeof customerPrivacy.currentVisitorConsent !== 'function') return false;
+
+    try {
+      var consent = customerPrivacy.currentVisitorConsent();
+      if (!consent) return false;
+      return consent.marketing !== '' ||
+        consent.analytics !== '' ||
+        consent.preferences !== '' ||
+        consent.sale_of_data !== '';
+    } catch(e) {
+      return false;
+    }
+  }
+
   function requestCustomerPrivacyApi() {
     if (cookiePrivacyApiRequested || getCustomerPrivacy()) return;
     if (!window.Shopify || typeof window.Shopify.loadFeatures !== 'function') return;
@@ -514,8 +529,12 @@
     if (isCookieBannerVisible()) return true;
 
     var customerPrivacy = getCustomerPrivacy();
-    if (customerPrivacy && typeof customerPrivacy.shouldShowBanner === 'function') {
-      try { return customerPrivacy.shouldShowBanner(); } catch(e) { return true; }
+    if (customerPrivacy) {
+      if (hasCookieConsentDecision(customerPrivacy)) return false;
+      if (typeof customerPrivacy.shouldShowBanner === 'function') {
+        try { return customerPrivacy.shouldShowBanner(); } catch(e) { return true; }
+      }
+      return false;
     }
 
     requestCustomerPrivacyApi();
