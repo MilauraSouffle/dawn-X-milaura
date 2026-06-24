@@ -392,16 +392,14 @@
 
       <p class="milaura-popup-retention" style="font-family:'Lato',sans-serif;font-size:0.8rem;color:var(--milaura-gold-dark,#8F723A);font-style:italic;margin:0 0 16px 0;line-height:1.4;">{{ section.settings.retention_text | default: "Et dans 30 jours, un rappel pour rafraichir votre quiz et decouvrir votre nouvelle pierre du moment." }}</p>
 
-      <form class="milaura-popup-form" id="milaura-popup-form" method="post" action="/contact#contact_form" accept-charset="UTF-8">
-        <input type="hidden" name="form_type" value="customer">
-        <input type="hidden" name="utf8" value="✓">
+      {% form 'customer', class: 'milaura-popup-form', id: 'milaura-popup-form' %}
         <input type="hidden" name="contact[tags]" value="newsletter,rituel,source:popup" id="milaura-popup-tags">
         <input type="hidden" name="contact[note]" id="milaura-popup-note" value="">
         <input type="hidden" name="contact[accepts_marketing]" value="true">
         <label for="milaura-popup-email" class="visually-hidden">Email</label>
         <input type="email" id="milaura-popup-email" name="contact[email]" class="milaura-popup-email" placeholder="{{ section.settings.email_placeholder | default: 'votre@email.com' }}" required autocomplete="email">
         <button type="submit" class="milaura-popup-submit">{{ section.settings.btn_label | default: 'Recevoir mon rituel gratuit' }}</button>
-      </form>
+      {% endform %}
       <p class="milaura-popup-error" id="milaura-popup-error" role="alert" hidden>Inscription impossible pour le moment. Verifiez votre email ou reessayez dans un instant.</p>
       <p class="milaura-popup-legal">{{ section.settings.legal_text | default: "En vous inscrivant, vous acceptez de recevoir nos emails. Desabonnement en un clic." }}</p>
     </div>
@@ -742,7 +740,7 @@
       setSubmitState(true);
       var formData = new FormData(form);
 
-      fetch('/contact#contact_form', {
+      fetch(form.action, {
         method: 'POST',
         body: formData,
         headers: { 'Accept': 'text/html' },
