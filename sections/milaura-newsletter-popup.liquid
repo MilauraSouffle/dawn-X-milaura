@@ -476,8 +476,9 @@
   var cookieAwareNewsletterObserver = null;
   var cookieAwareNewsletterInterval = null;
   var cookieAwareNewsletterDelayTimer = null;
-  var cookiePrivacyReadyUntil = Date.now() + 30000;
+  var cookiePrivacyReadyUntil = 0;
   var cookiePrivacyApiRequested = false;
+  var cookiePrivacyWaitStarted = false;
 
   function getCustomerPrivacy() {
     return window.Shopify && window.Shopify.customerPrivacy ? window.Shopify.customerPrivacy : null;
@@ -498,8 +499,15 @@
     }
   }
 
+  function startCookiePrivacyWait() {
+    if (cookiePrivacyWaitStarted) return;
+    cookiePrivacyWaitStarted = true;
+    cookiePrivacyReadyUntil = Date.now() + 30000;
+  }
+
   function requestCustomerPrivacyApi() {
     if (cookiePrivacyApiRequested || getCustomerPrivacy()) return;
+    startCookiePrivacyWait();
     if (!window.Shopify || typeof window.Shopify.loadFeatures !== 'function') return;
 
     cookiePrivacyApiRequested = true;
@@ -546,6 +554,7 @@
     overlay.classList.remove('active');
     document.body.style.overflow = '';
     popupShown = false;
+    scheduleNewsletterAfterCookies();
   }
 
   function clearCookieAwareNewsletterWait() {
@@ -615,6 +624,26 @@
     }
     showPopup();
   }
+
+  function watchCookieBannerCollision() {
+    if (window.MutationObserver && document.body) {
+      var collisionObserver = new MutationObserver(function() {
+        if (isCookieBannerVisible()) hidePopupForCookieBanner();
+      });
+      collisionObserver.observe(document.body, {
+        attributes: true,
+        childList: true,
+        subtree: true
+      });
+    }
+
+    document.addEventListener('visitorConsentCollected', function() {
+      runCookieAwareNewsletterCheck();
+    });
+  }
+
+  requestCustomerPrivacyApi();
+  watchCookieBannerCollision();
 
   /* --- Show popup --- */
   function showPopup() {
