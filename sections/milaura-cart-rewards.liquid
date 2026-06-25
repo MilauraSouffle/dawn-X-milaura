@@ -707,11 +707,11 @@
           <h2 class="milaura-cart-rewards__title">{{ section.settings.title }}</h2>
           <p class="milaura-cart-rewards__subtitle">{{ section.settings.subtitle }}</p>
           <p class="milaura-cart-rewards__statusline">
-            {{ paid_cart_label }} dans votre panier · {{ unlocked_cards }}/3 carte{% if unlocked_cards > 1 %}s{% endif %} surprise{% if unlocked_cards > 1 %}s{% endif %} débloquée{% if unlocked_cards > 1 %}s{% endif %}
+            {{ paid_cart_label }} dans votre panier · {{ unlocked_cards }}/3 avantage{% if unlocked_cards > 1 %}s{% endif %} débloqué{% if unlocked_cards > 1 %}s{% endif %}
           </p>
         </div>
 
-        <div class="milaura-cart-rewards__grid" aria-label="Cartes surprises MilAura">
+        <div class="milaura-cart-rewards__grid" aria-label="Avantages MilAura">
           <button
             type="button"
             class="milaura-cart-reward{% if paid_cart_cents < reward_threshold_1_cents %} is-locked{% endif %}{% if card_1_active %} is-active{% endif %}"
@@ -732,10 +732,10 @@
             <span class="milaura-cart-reward__reveal">
               <span class="milaura-cart-reward__reveal-logo">{{ milaura_reward_brand_logo }}</span>
               <span class="milaura-cart-reward__won">Votre avantage MilAura</span>
-              <span class="milaura-cart-reward__prize">Livraison offerte au paiement</span>
+              <span class="milaura-cart-reward__prize">Livraison offerte</span>
             </span>
             <span class="milaura-cart-reward__status" data-reward-status>
-              {%- if card_1_active -%}Les frais de port offerts seront appliqués au paiement.{%- elsif paid_cart_cents >= reward_threshold_1_cents -%}Grattez votre carte surprise.{%- else -%}Atteignez {{ reward_threshold_1_label }} de panier pour débloquer cette carte.{%- endif -%}
+              {%- if card_1_active -%}Livraison offerte activée.{%- elsif paid_cart_cents >= reward_threshold_1_cents -%}Activez votre avantage livraison.{%- else -%}Atteignez {{ reward_threshold_1_label }} de panier pour débloquer cet avantage.{%- endif -%}
             </span>
           </button>
 
@@ -762,7 +762,7 @@
               <span class="milaura-cart-reward__prize">Cadeau MilAura offert</span>
             </span>
             <span class="milaura-cart-reward__status" data-reward-status>
-              {%- if card_2_active -%}Votre cadeau MilAura est dans votre panier.{%- elsif paid_cart_cents >= reward_threshold_2_cents -%}Grattez votre carte surprise.{%- else -%}Atteignez {{ reward_threshold_2_label }} de panier pour débloquer cette carte.{%- endif -%}
+              {%- if card_2_active -%}Votre cadeau MilAura est dans votre panier.{%- elsif paid_cart_cents >= reward_threshold_2_cents -%}Activez votre cadeau MilAura.{%- else -%}Atteignez {{ reward_threshold_2_label }} de panier pour débloquer cet avantage.{%- endif -%}
             </span>
           </button>
 
@@ -789,7 +789,7 @@
               <span class="milaura-cart-reward__prize">30 % de remise</span>
             </span>
             <span class="milaura-cart-reward__status" data-reward-status>
-              {%- if card_3_active -%}Votre remise est appliquée au panier.{%- elsif paid_cart_cents >= reward_threshold_3_cents -%}Grattez votre carte surprise.{%- else -%}Atteignez {{ reward_threshold_3_label }} de panier pour débloquer cette carte.{%- endif -%}
+              {%- if card_3_active -%}Votre remise est appliquée au panier.{%- elsif paid_cart_cents >= reward_threshold_3_cents -%}Activez votre remise MilAura.{%- else -%}Atteignez {{ reward_threshold_3_label }} de panier pour débloquer cet avantage.{%- endif -%}
             </span>
           </button>
         </div>
@@ -1137,7 +1137,7 @@
           return 'Votre remise est appliquée au panier.';
         }
         if (card.getAttribute('data-reward-index') === '1') {
-          return 'Les frais de port offerts seront appliqués au paiement.';
+          return 'Livraison offerte activée.';
         }
         if (card.getAttribute('data-discount-code')) {
           return 'Avantage déjà activé.';
@@ -1253,7 +1253,7 @@
           ctx.font = '900 14px Lato, sans-serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText('GRATTEZ ICI', width / 2, pillY + 19);
+          ctx.fillText('ACTIVEZ', width / 2, pillY + 19);
           ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
           ctx.font = '800 9px Lato, sans-serif';
           ctx.fillText('VOTRE CARTE SURPRISE MILAURA', width / 2, pillY + 33);
@@ -1521,19 +1521,19 @@
       "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Vos cartes surprises MilAura"
+      "default": "Vos avantages MilAura"
     },
     {
       "type": "textarea",
       "id": "subtitle",
       "label": "Sous-titre",
-      "default": "Grattez les cartes débloquées par votre panier pour révéler livraison offerte, cadeau et remise."
+      "default": "Livraison offerte, cadeau et remise se débloquent selon le montant de votre panier."
     },
     {
       "type": "textarea",
       "id": "note",
       "label": "Note",
-      "default": "Les cartes se débloquent aux paliers 20 €, 50 € et 80 €, selon le montant des produits MilAura hors cadeaux et frais de port. Les surprises se cumulent dans votre panier."
+      "default": "Les avantages se débloquent aux paliers 20 €, 50 € et 80 €, selon le montant des produits MilAura hors cadeaux et frais de port. Ils se cumulent dans votre panier."
     },
     {
       "type": "header",
@@ -1645,7 +1645,7 @@
       "type": "text",
       "id": "gift_3_hint",
       "label": "Texte",
-      "default": "Dès 80 € d'achat, la carte la plus précieuse est prête à gratter."
+      "default": "Dès 80 € d'achat, votre plus belle attention MilAura se débloque."
     },
     {
       "type": "text",

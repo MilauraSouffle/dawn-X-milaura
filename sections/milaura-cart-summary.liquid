@@ -21,6 +21,12 @@
       assign shipping_reward_active = true
     endif
   endfor
+  assign shipping_display_free = false
+  if free_shipping_enabled and is_free_shipping
+    assign shipping_display_free = true
+  elsif shipping_reward_active
+    assign shipping_display_free = true
+  endif
 -%}
 
 {%- style -%}
@@ -66,6 +72,13 @@
 
   #MilauraCartSummary-{{ section.id }} .milaura-summary__line--shipping.is-free {
     color: #4CAF50;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__shipping-note {
+    margin-top: -4px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--milaura-text-light, #666666);
   }
 
   #MilauraCartSummary-{{ section.id }} .milaura-summary__line--total {
@@ -148,13 +161,99 @@
     font-size: 16px;
   }
 
-  #MilauraCartSummary-{{ section.id }} .milaura-summary__note {
-    max-width: 520px;
-    margin: 0 auto;
-    text-align: center;
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__trust {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__trust-item {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 9px;
+    align-items: start;
+    min-width: 0;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__trust-icon {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(192, 160, 98, 0.24);
+    color: var(--milaura-gold-dark, #8F723A);
+    background: rgba(192, 160, 98, 0.08);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__trust-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__trust-title {
+    display: block;
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.25;
+    font-weight: 800;
+    color: var(--milaura-text, #000000);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__trust-text {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 1.3;
     color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payments {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 10px;
+    padding-top: 4px;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payment-label {
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0;
+    color: var(--milaura-text-light, #666666);
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payment-icons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payment-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+  }
+
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__payment-icon svg {
+    display: block;
+    width: 38px;
+    height: 24px;
   }
 
   /* Cart discounts display */
@@ -253,8 +352,9 @@
       flex-direction: column;
     }
 
-    #MilauraCartSummary-{{ section.id }} .milaura-summary__note {
-      font-size: 12px;
+    #MilauraCartSummary-{{ section.id }} .milaura-summary__trust {
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
   }
 
@@ -312,21 +412,26 @@
                 </div>
               {%- endif -%}
 
-              <div class="milaura-summary__line milaura-summary__line--shipping {% if is_free_shipping %}is-free{% endif %}">
+              <div class="milaura-summary__line milaura-summary__line--shipping {% if shipping_display_free %}is-free{% endif %}">
                 <span class="milaura-summary__label">Livraison</span>
                 <span class="milaura-summary__value">
-                  {%- if free_shipping_enabled and is_free_shipping -%}
-                    Gratuite
-                  {%- elsif shipping_reward_active -%}
-                    Offerte au paiement
+                  {%- if shipping_display_free -%}
+                    Offert
                   {%- else -%}
-                    Choix au paiement
+                    Selon adresse
                   {%- endif -%}
                 </span>
               </div>
+              <div class="milaura-summary__shipping-note">
+                {%- if shipping_display_free -%}
+                  Carte livraison activée.
+                {%- else -%}
+                  Transporteur choisi après saisie de l'adresse.
+                {%- endif -%}
+              </div>
 
               <div class="milaura-summary__line milaura-summary__line--total">
-                <span class="milaura-summary__label">Total</span>
+                <span class="milaura-summary__label">Total estimé</span>
                 <span class="milaura-summary__value">{{ cart.total_price | money_with_currency }}</span>
               </div>
             </div>
@@ -369,9 +474,48 @@
               {{ section.settings.checkout_text | default: 'Passer commande' }}
             </button>
 
-            <p class="milaura-summary__note">
-              Paiement sécurisé. Avantages MilAura appliqués au paiement.
-            </p>
+            <div class="milaura-summary__trust" aria-label="Réassurance MilAura">
+              <div class="milaura-summary__trust-item">
+                <span class="milaura-summary__trust-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M14 18V6H3v12h11Z"></path><path d="M14 9h4l3 4v5h-7V9Z"></path><circle cx="7" cy="18" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>
+                </span>
+                <span>
+                  <span class="milaura-summary__trust-title">Expédiée aujourd'hui</span>
+                  <span class="milaura-summary__trust-text">Commande validée avant 14h</span>
+                </span>
+              </div>
+
+              <div class="milaura-summary__trust-item">
+                <span class="milaura-summary__trust-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+                </span>
+                <span>
+                  <span class="milaura-summary__trust-title">Paiement sécurisé</span>
+                  <span class="milaura-summary__trust-text">CB, PayPal, Apple Pay, Shop Pay</span>
+                </span>
+              </div>
+
+              <div class="milaura-summary__trust-item">
+                <span class="milaura-summary__trust-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 21s7-4.4 7-11V5l-7-3-7 3v5c0 6.6 7 11 7 11Z"></path><path d="m9 12 2 2 4-5"></path></svg>
+                </span>
+                <span>
+                  <span class="milaura-summary__trust-title">Préparée à Metz</span>
+                  <span class="milaura-summary__trust-text">Par Karine</span>
+                </span>
+              </div>
+            </div>
+
+            {%- unless shop.enabled_payment_types == empty -%}
+              <div class="milaura-summary__payments" aria-label="Moyens de paiement acceptés">
+                <span class="milaura-summary__payment-label">Moyens de paiement acceptés</span>
+                <ul class="milaura-summary__payment-icons" role="list">
+                  {%- for type in shop.enabled_payment_types -%}
+                    <li class="milaura-summary__payment-icon">{{ type | payment_type_svg_tag }}</li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endunless -%}
 
           </div>
         </div>
@@ -383,7 +527,7 @@
   <div id="MilauraStickyCheckout-{{ section.id }}" class="milaura-sticky-checkout" aria-hidden="true">
     <div class="milaura-sticky__inner">
       <span class="milaura-sticky__total">
-        Total<span class="milaura-sticky__total-amount">{{ cart.total_price | money_with_currency }}</span>
+        Total estimé<span class="milaura-sticky__total-amount">{{ cart.total_price | money_with_currency }}</span>
       </span>
       <button
         type="submit"
