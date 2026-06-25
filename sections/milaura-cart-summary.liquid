@@ -15,6 +15,12 @@
   if free_shipping_enabled and cart.total_price >= free_shipping_threshold
     assign is_free_shipping = true
   endif
+  assign shipping_reward_active = false
+  for attribute in cart.attributes
+    if attribute.first == 'Carte MilAura 1' and attribute.last != blank
+      assign shipping_reward_active = true
+    endif
+  endfor
 -%}
 
 {%- style -%}
@@ -142,25 +148,13 @@
     font-size: 16px;
   }
 
-  /* Trust badges */
-  #MilauraCartSummary-{{ section.id }} .milaura-summary__badges {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--milaura-spacing-md);
-    padding: var(--milaura-spacing-sm) 0;
-  }
-
-  #MilauraCartSummary-{{ section.id }} .milaura-summary__badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  #MilauraCartSummary-{{ section.id }} .milaura-summary__note {
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
     font-size: 13px;
+    line-height: 1.5;
     color: var(--milaura-text-light, #666666);
-  }
-
-  #MilauraCartSummary-{{ section.id }} .milaura-summary__badge-icon {
-    font-size: 16px;
   }
 
   /* Cart discounts display */
@@ -259,11 +253,7 @@
       flex-direction: column;
     }
 
-    #MilauraCartSummary-{{ section.id }} .milaura-summary__badges {
-      gap: var(--milaura-spacing-sm);
-    }
-
-    #MilauraCartSummary-{{ section.id }} .milaura-summary__badge {
+    #MilauraCartSummary-{{ section.id }} .milaura-summary__note {
       font-size: 12px;
     }
   }
@@ -327,8 +317,10 @@
                 <span class="milaura-summary__value">
                   {%- if free_shipping_enabled and is_free_shipping -%}
                     Gratuite
+                  {%- elsif shipping_reward_active -%}
+                    Offerte au paiement
                   {%- else -%}
-                    Calculee au checkout
+                    Choix au paiement
                   {%- endif -%}
                 </span>
               </div>
@@ -342,14 +334,14 @@
             {%- comment -%} Discount code input {%- endcomment -%}
             <div class="milaura-summary__discount">
               <label class="milaura-summary__discount-label" for="discount-code-{{ section.id }}">
-                Code promo
+                Code promo ou carte MilAura
               </label>
               <div class="milaura-summary__discount-form">
                 <input
                   type="text"
                   id="discount-code-{{ section.id }}"
                   class="milaura-summary__discount-input"
-                  placeholder="Entrer votre code"
+                  placeholder="Votre code"
                   data-discount-input
                 >
                 <button
@@ -363,7 +355,7 @@
             </div>
           </div>
 
-          {%- comment -%} Right column: checkout + badges + payments {%- endcomment -%}
+          {%- comment -%} Right column: checkout + reassurance {%- endcomment -%}
           <div class="milaura-summary__right">
 
             {%- comment -%} Checkout button {%- endcomment -%}
@@ -377,19 +369,9 @@
               {{ section.settings.checkout_text | default: 'Passer commande' }}
             </button>
 
-            {%- comment -%} Trust badges {%- endcomment -%}
-            {%- if section.blocks.size > 0 -%}
-              <div class="milaura-summary__badges">
-                {%- for block in section.blocks -%}
-                  {%- if block.type == 'trust_badge' -%}
-                    <div class="milaura-summary__badge" {{ block.shopify_attributes }}>
-                      <span class="milaura-summary__badge-icon">{{ block.settings.icon }}</span>
-                      <span>{{ block.settings.text }}</span>
-                    </div>
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-            {%- endif -%}
+            <p class="milaura-summary__note">
+              Paiement sécurisé. Avantages MilAura appliqués au paiement.
+            </p>
 
           </div>
         </div>
@@ -498,35 +480,9 @@
       "info": "Mettre 0 pour ne pas annoncer d'avantage livraison dans le panier."
     }
   ],
-  "blocks": [
-    {
-      "type": "trust_badge",
-      "name": "Badge confiance",
-      "limit": 4,
-      "settings": [
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "Icone (emoji)",
-          "default": "🚚"
-        },
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Texte",
-          "default": "Livraison rapide"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "Milaura Cart Summary",
-      "blocks": [
-        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison rapide" } },
-        { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Paiement securise" } },
-        { "type": "trust_badge", "settings": { "icon": "💝", "text": "Garantie 30 jours" } }
-      ]
+      "name": "Milaura Cart Summary"
     }
   ]
 }
