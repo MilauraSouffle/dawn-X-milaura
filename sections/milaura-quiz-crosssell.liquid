@@ -1,13 +1,17 @@
 {% comment %}
   MILAURA QUIZ CROSSSELL
-  Cross-sell par pierre — lit localStorage.milauraLastResult.stoneHandle
-  Liquid rend tous les produits cachés (data-stone-handle), JS filtre
+  Cross-sell rituel pour le diagnostic emotionnel
+  Peut filtrer par pierre, mais sert surtout a proposer des produits de rituel et de rechargement
   Carrousel doré + dots (clone du style crosssell existant)
 {% endcomment %}
 
 {%- liquid
-  assign source = section.settings.source_collection
+  assign source_collection = section.settings.source_collection
+  if source_collection == blank
+    assign source_collection = collections['rituels-bien-etre']
+  endif
   assign max_products = section.settings.products_to_show | default: 6
+  assign filter_by_stone = section.settings.filter_by_stone
 -%}
 
 {% style %}
@@ -358,10 +362,10 @@
   <div class="qcs-carousel-wrap">
     <div class="qcs-carousel">
       {%- assign shown = 0 -%}
-      {%- for product in collections[source].products limit: 50 -%}
+      {%- for product in source_collection.products limit: 50 -%}
         {%- if shown >= max_products -%}{%- break -%}{%- endif -%}
         {%- assign stone = product.metafields.milaura.stone_handle | default: '' -%}
-        {%- if stone == blank -%}{%- continue -%}{%- endif -%}
+        {%- if filter_by_stone and stone == blank -%}{%- continue -%}{%- endif -%}
         {%- assign shown = shown | plus: 1 -%}
         {%- assign variant = product.selected_or_first_available_variant -%}
 
@@ -409,13 +413,14 @@
   var carousel = root.querySelector('.qcs-carousel');
   var allCards = Array.from(carousel.querySelectorAll('.qcs-card'));
   var dotsContainer = root.querySelector('#qcs-dots-' + sectionId);
+  var filterByStone = {{ section.settings.filter_by_stone | json }};
 
   function filterAndShow(stoneHandle) {
-    if (!stoneHandle || !allCards.length) return;
+    if (!allCards.length) return;
 
     var matchCount = 0;
     allCards.forEach(function(card) {
-      if (card.dataset.stoneHandle === stoneHandle) {
+      if (!filterByStone || card.dataset.stoneHandle === stoneHandle) {
         card.classList.add('is-match');
         matchCount++;
       } else {
@@ -486,10 +491,25 @@
     });
   }
 
-  // Only show when quiz result is displayed (not on page load)
+  function renderFromStorage() {
+    try {
+      var raw = localStorage.getItem('milauraLastResult');
+      if (!raw) return;
+      var data = JSON.parse(raw);
+      if (data && data.profileId) filterAndShow(data.stoneHandle);
+    } catch(e) {}
+  }
+
+  // Show when quiz result is displayed.
   window.addEventListener('milaura:quiz-result', function(e) {
-    if (e.detail && e.detail.stoneHandle) filterAndShow(e.detail.stoneHandle);
+    if (e.detail && e.detail.profileId) filterAndShow(e.detail.stoneHandle);
   });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderFromStorage);
+  } else {
+    renderFromStorage();
+  }
 })();
 </script>
 
@@ -506,7 +526,14 @@
       "type": "collection",
       "id": "source_collection",
       "label": "Collection source",
-      "info": "Collection contenant les produits filtrables par pierre (metafield milaura.stone_handle)."
+      "info": "Collection rituels ou produits filtrables par pierre."
+    },
+    {
+      "type": "checkbox",
+      "id": "filter_by_stone",
+      "label": "Filtrer par pierre",
+      "default": false,
+      "info": "Active le filtre via le metafield milaura.stone_handle. Laissez désactivé pour une collection rituel commune."
     },
     {
       "type": "range",
@@ -526,13 +553,13 @@
       "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Les créations qui résonnent avec ta pierre"
+      "default": "Pour accompagner votre pierre"
     },
     {
       "type": "textarea",
       "id": "subtitle",
       "label": "Sous-titre",
-      "default": "Sélectionnées selon ton profil émotionnel"
+      "default": "Purification, rechargement et rituels bien-être pour prolonger votre diagnostic."
     },
     {
       "type": "header",
@@ -578,7 +605,7 @@
       "type": "text",
       "id": "button_text",
       "label": "Texte du bouton",
-      "default": "Voir le produit"
+      "default": "Découvrir ce rituel"
     }
   ],
   "presets": [

@@ -2817,6 +2817,7 @@
 
     function goToQuestions() {
       preloadStoneImages();
+      clearResultUrl();
       currentQuestionIndex = 0;
       scores = {
         apaisement: 0,
@@ -2979,6 +2980,14 @@
       chance: 'aventurine-verte'
     };
 
+    const intentionMap = {
+      apaisement: 'Apaiser le système nerveux',
+      protection: 'Protéger son énergie',
+      serenite: 'Retrouver la clarté',
+      amour: 'Recevoir sa propre douceur',
+      chance: "Créer l'élan du prochain pas"
+    };
+
     let stoneImagesPreloaded = false;
 
     function preloadStoneImages() {
@@ -3005,6 +3014,69 @@
         "Aventurine verte": "l’Aventurine verte"
       };
       return articles[stone] || "votre pierre";
+    }
+
+    function getQuizResultPath() {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('show', 'result');
+        return url.pathname + url.search + url.hash;
+      } catch(e) {
+        return '/pages/diagnostic-emotionnel?show=result';
+      }
+    }
+
+    function syncResultUrl() {
+      try {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get('show') === 'result') return;
+        url.searchParams.set('show', 'result');
+        window.history.replaceState({ milauraQuizState: 'result' }, '', url.toString());
+      } catch(e) {}
+    }
+
+    function clearResultUrl() {
+      try {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get('show') !== 'result') return;
+        url.searchParams.delete('show');
+        window.history.replaceState({ milauraQuizState: 'intro' }, '', url.pathname + url.search + url.hash);
+      } catch(e) {}
+    }
+
+    function restoreScoresFromStoredResult(storedData) {
+      scores = {
+        apaisement: 0,
+        protection: 0,
+        serenite: 0,
+        amour: 0,
+        chance: 0
+      };
+
+      if (storedData && storedData.scores) {
+        profiles.forEach(function(profileId) {
+          scores[profileId] = Number(storedData.scores[profileId] || 0);
+        });
+      }
+
+      var hasScore = profiles.some(function(profileId) { return scores[profileId] > 0; });
+      if (!hasScore && storedData && profiles.includes(storedData.profileId)) {
+        scores[storedData.profileId] = 1;
+      }
+
+      question7Answer = storedData && profiles.includes(storedData.profileId) ? storedData.profileId : question7Answer;
+    }
+
+    function serializeProduct(product) {
+      if (!product) return null;
+      return {
+        title: product.title || '',
+        url: product.url || (product.handle ? '/products/' + product.handle : ''),
+        price: product.price || '',
+        featured_image: product.featured_image || null,
+        handle: product.handle || null,
+        variant_id: product.variant_id || null
+      };
     }
 
     function getProductReason(tabKey, profile) {
@@ -3119,6 +3191,7 @@
         bougie: { data: profile.bougieProduct, label: 'Bougie', ctaLabel: 'Découvrir ma bougie' },
         collier: { data: profile.collierProduct, label: 'Collier', ctaLabel: 'Découvrir mon collier' }
       };
+      var currentProductTab = null;
 
       // Masquer les onglets sans produit assigne
       const tabsContainer = container.querySelector('#quiz-reveal-product-tabs-' + sectionId);
@@ -3156,6 +3229,7 @@
         var pt = productTypes[tabKey];
         if (!pt || !pt.data) return;
         var prod = pt.data;
+        currentProductTab = tabKey;
 
         // Image
         var imgEl = container.querySelector('#quiz-reveal-product-image-' + sectionId);
@@ -3227,30 +3301,81 @@
       // === INVITATION COMPTE ===
       const accountInviteEl = container.querySelector('#quiz-reveal-account-invite-' + sectionId);
       if (accountInviteEl) {
-        accountInviteEl.style.display = isCustomerLoggedIn ? 'none' : '';
+        var accountTextEl = accountInviteEl.querySelector('.quiz-reveal-account-text');
+        var accountLinkEl = accountInviteEl.querySelector('.quiz-reveal-account-link');
+        accountInviteEl.style.display = '';
+        if (isCustomerLoggedIn) {
+          if (accountTextEl) accountTextEl.textContent = 'Votre diagnostic est sauvegardé dans votre espace MilAura';
+          if (accountLinkEl) {
+            accountLinkEl.href = {{ routes.account_url | json }};
+            accountLinkEl.textContent = 'Voir mon espace compte';
+          }
+        } else {
+          if (accountTextEl) accountTextEl.textContent = 'Créez votre compte pour retrouver ce diagnostic dans votre espace MilAura';
+          if (accountLinkEl) {
+            accountLinkEl.href = {{ routes.account_register_url | json }};
+            accountLinkEl.textContent = 'Créer mon compte';
+          }
+        }
       }
 
       // === STOCKAGE LOCAL (enrichi pour sections downstream) ===
+      var productsForStorage = {};
+      var productReasonsForStorage = {};
+      Object.keys(productTypes).forEach(function(tabKey) {
+        productsForStorage[tabKey] = serializeProduct(productTypes[tabKey].data);
+        productReasonsForStorage[tabKey] = getProductReason(tabKey, profile);
+      });
+
       const storageData = {
+        schemaVersion: 2,
         profileId: winnerProfile,
         profileName: profile.displayName || profile.label,
+        moodLabel: profile.moodLabel || null,
+        dashboardTitle: profile.dashboardTitle || null,
+        description: profile.description || null,
         stone: profile.stone,
         stoneHandle: stoneHandleMap[winnerProfile] || null,
+        stoneImage: profile.stoneImage || null,
+        stoneImageAlt: profile.stoneImageAlt || profile.stone || '',
+        intention: intentionMap[winnerProfile] || null,
+        benefits: Array.isArray(profile.benefits) ? profile.benefits.slice(0, 3) : [],
         mantra: profile.mantra || null,
         ritual: profile.ritual || null,
         profileAccent: profile.colorAccent || '#C0A062',
         profileAccentRgb: profile.colorAccentRgb || '192, 160, 98',
         scores: results.scores,
         percentages: results.percentages,
+        products: productsForStorage,
+        productReasons: productReasonsForStorage,
+        selectedProductType: currentProductTab || firstTab || null,
+        resultUrl: getQuizResultPath(),
         braceletHandle: profile.braceletProduct ? profile.braceletProduct.handle : null,
         braceletTitle: profile.braceletProduct ? profile.braceletProduct.title : null,
         timestamp: Date.now()
       };
       localStorage.setItem('milauraLastResult', JSON.stringify(storageData));
+      syncResultUrl();
 
       // Aussi sauvegarder en cookie (30 jours) pour persistance cross-session
       try {
-        var cookieData = encodeURIComponent(JSON.stringify(storageData));
+        var compactStorageData = {
+          schemaVersion: storageData.schemaVersion,
+          profileId: storageData.profileId,
+          profileName: storageData.profileName,
+          stone: storageData.stone,
+          stoneHandle: storageData.stoneHandle,
+          intention: storageData.intention,
+          mantra: storageData.mantra,
+          ritual: storageData.ritual,
+          profileAccent: storageData.profileAccent,
+          profileAccentRgb: storageData.profileAccentRgb,
+          scores: storageData.scores,
+          percentages: storageData.percentages,
+          resultUrl: storageData.resultUrl,
+          timestamp: storageData.timestamp
+        };
+        var cookieData = encodeURIComponent(JSON.stringify(compactStorageData));
         var expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
         document.cookie = 'milauraLastResult=' + cookieData + '; expires=' + expires + '; path=/; SameSite=Lax';
       } catch(e) {}
@@ -3314,7 +3439,7 @@
               hasUserInteracted = true; // Activer le scroll
               // Recharger les résultats depuis localStorage
               const storedData = JSON.parse(localStorage.getItem('milauraLastResult'));
-              scores = storedData.scores;
+              restoreScoresFromStoredResult(storedData);
               displayResults();
               goToState(QuizState.RESULT);
             });
@@ -3364,7 +3489,7 @@
         if (stored) {
           try {
             const storedData = JSON.parse(stored);
-            scores = storedData.scores;
+            restoreScoresFromStoredResult(storedData);
             hasUserInteracted = true;
             displayResults();
             goToState(QuizState.RESULT);
