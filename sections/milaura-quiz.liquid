@@ -1763,6 +1763,7 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-benefit-pill {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1792,11 +1793,48 @@
     transform: translateY(-1px);
   }
 
+  #MilauraQuiz-{{ section.id }} .quiz-benefit-pill.active::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 8px solid rgba(155, 126, 200, 0.78);
+    transform: translateX(-50%);
+    filter: drop-shadow(0 1px 0 rgba(var(--profile-accent-rgb), 0.5));
+  }
+
+  @keyframes quizBenefitPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits:not(.has-interacted) .quiz-benefit-pill:not(.active) {
+    animation: quizBenefitPulse 2.6s ease-in-out infinite;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits:not(.has-interacted) .quiz-benefit-pill:not(.active):nth-of-type(2) {
+    animation-delay: 0.6s;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits:not(.has-interacted) .quiz-benefit-pill:not(.active):nth-of-type(3) {
+    animation-delay: 1.2s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits:not(.has-interacted) .quiz-benefit-pill:not(.active) {
+      animation: none;
+    }
+  }
+
   #MilauraQuiz-{{ section.id }} .quiz-benefit-popover {
     position: relative;
     max-width: 560px;
-    margin: 12px auto 0;
-    padding: 16px 42px 16px 16px;
+    margin: 16px auto 0;
+    padding: 18px 22px;
     border: 1px solid rgba(var(--profile-accent-rgb), 0.22);
     border-radius: 18px;
     background:
@@ -2034,9 +2072,9 @@
       z-index: 2;
       max-height: none;
       max-width: 560px;
-      margin: 12px auto 0;
+      margin: 16px auto 0;
       overflow: visible;
-      padding: 14px 38px 14px 14px;
+      padding: 16px 18px;
       border-radius: 20px;
       box-shadow: 0 22px 60px rgba(58, 35, 64, 0.22);
     }
@@ -2271,7 +2309,6 @@
                 aria-live="polite"
                 hidden
               >
-                <button type="button" class="quiz-benefit-popover-close" aria-label="Fermer">×</button>
                 <p class="quiz-benefit-popover-title" id="quiz-benefit-popover-title-{{ section.id }}"></p>
                 <p class="quiz-benefit-popover-text" id="quiz-benefit-popover-text-{{ section.id }}"></p>
               </div>
@@ -3023,26 +3060,31 @@
         stoneImageEl.alt = profile.stoneImageAlt || profile.stone || '';
       }
 
-      // === BENEFICES INTERACTIFS DE LA PIERRE ===
+      // === BENEFICES INTERACTIFS DE LA PIERRE (tabs always-on) ===
       const benefitsEl = container.querySelector('#quiz-reveal-benefits-' + sectionId);
       const benefitPopoverEl = container.querySelector('#quiz-benefit-popover-' + sectionId);
       const benefitPopoverTitleEl = container.querySelector('#quiz-benefit-popover-title-' + sectionId);
       const benefitPopoverTextEl = container.querySelector('#quiz-benefit-popover-text-' + sectionId);
-      const benefitPopoverCloseEl = benefitPopoverEl ? benefitPopoverEl.querySelector('.quiz-benefit-popover-close') : null;
 
-      function closeBenefitPopover() {
-        if (!benefitPopoverEl) return;
-        benefitPopoverEl.hidden = true;
-        if (benefitsEl) {
-          benefitsEl.querySelectorAll('.quiz-benefit-pill').forEach(function(btn) {
-            btn.classList.remove('active');
-            btn.setAttribute('aria-expanded', 'false');
-          });
-        }
+      function activateBenefit(btn, benefit) {
+        if (!benefitsEl) return;
+        benefitsEl.querySelectorAll('.quiz-benefit-pill').forEach(function(other) {
+          other.classList.remove('active');
+          other.setAttribute('aria-expanded', 'false');
+        });
+        if (benefitPopoverTitleEl) benefitPopoverTitleEl.textContent = benefit.title || '';
+        if (benefitPopoverTextEl) benefitPopoverTextEl.textContent = benefit.text || '';
+        if (benefitPopoverEl) benefitPopoverEl.hidden = false;
+        btn.classList.add('active');
+        btn.setAttribute('aria-expanded', 'true');
       }
+
+      var firstBenefitBtn = null;
+      var firstBenefitData = null;
 
       if (benefitsEl) {
         benefitsEl.innerHTML = '';
+        benefitsEl.classList.remove('has-interacted');
         const benefits = Array.isArray(profile.benefits) ? profile.benefits.slice(0, 3) : [];
         benefits.forEach(function(benefit, index) {
           const btn = document.createElement('button');
@@ -3052,24 +3094,24 @@
           btn.setAttribute('aria-expanded', 'false');
           btn.setAttribute('aria-controls', 'quiz-benefit-popover-' + sectionId);
           btn.addEventListener('click', function() {
-            const isActive = btn.classList.contains('active');
-            closeBenefitPopover();
-            if (isActive) return;
-            if (benefitPopoverTitleEl) benefitPopoverTitleEl.textContent = benefit.title || '';
-            if (benefitPopoverTextEl) benefitPopoverTextEl.textContent = benefit.text || '';
-            if (benefitPopoverEl) benefitPopoverEl.hidden = false;
-            btn.classList.add('active');
-            btn.setAttribute('aria-expanded', 'true');
+            if (btn.classList.contains('active')) return;
+            activateBenefit(btn, benefit);
+            benefitsEl.classList.add('has-interacted');
           });
-          if (index === 0) btn.classList.add('is-primary');
+          if (index === 0) {
+            btn.classList.add('is-primary');
+            firstBenefitBtn = btn;
+            firstBenefitData = benefit;
+          }
           benefitsEl.appendChild(btn);
         });
       }
 
-      if (benefitPopoverCloseEl) {
-        benefitPopoverCloseEl.onclick = closeBenefitPopover;
+      if (firstBenefitBtn && firstBenefitData) {
+        activateBenefit(firstBenefitBtn, firstBenefitData);
+      } else if (benefitPopoverEl) {
+        benefitPopoverEl.hidden = true;
       }
-      closeBenefitPopover();
 
       // === SYSTEME D'ONGLETS PRODUIT (Bracelet/Bougie/Collier) ===
       const productTypes = {
