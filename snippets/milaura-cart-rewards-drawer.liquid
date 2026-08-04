@@ -1,17 +1,21 @@
 {%- comment -%}
   MilAura cart drawer rewards.
-  Deterministic progress only. Reward activation is handled separately once
-  codes, margins and gift variants have been validated.
+  Progression 30 / 50 / 80. Les avantages sont synchronises par
+  milaura-cart-rewards-auto.js a partir du sous-total marchand d'origine.
 {%- endcomment -%}
 
 {%- if settings.milaura_cart_rewards_enabled and cart.item_count > 0 -%}
   {%- liquid
-    assign threshold_1_cents = settings.milaura_reward_threshold_1 | default: 20 | times: 100
+    assign threshold_1_cents = settings.milaura_reward_threshold_1 | default: 30 | times: 100
     assign threshold_2_cents = settings.milaura_reward_threshold_2 | default: 50 | times: 100
     assign threshold_3_cents = settings.milaura_reward_threshold_3 | default: 80 | times: 100
-    assign reward_label_1 = settings.milaura_reward_label_1 | default: 'Avantage livraison'
-    assign reward_label_2 = settings.milaura_reward_label_2 | default: 'Cadeau MilAura'
-    assign reward_label_3 = settings.milaura_reward_label_3 | default: 'Surprise MilAura'
+    assign reward_label_1 = settings.milaura_reward_label_1 | default: 'Surprise offerte'
+    assign reward_label_2 = settings.milaura_reward_label_2 | default: 'Livraison offerte'
+    assign reward_label_3 = settings.milaura_reward_label_3 | default: '-15 % sur la commande'
+    assign reward_logo = settings.favicon
+    if reward_logo == blank
+      assign reward_logo = settings.logo
+    endif
     assign paid_cart_cents = 0
 
     for item in cart.items
@@ -25,12 +29,12 @@
         endif
       endfor
       unless is_milaura_gift
-        assign item_paid_line_price = item.final_line_price
+        assign item_paid_line_price = item.original_line_price
         if item_paid_line_price == blank
           assign item_paid_line_price = item.line_price
         endif
         if item_paid_line_price == blank
-          assign item_paid_line_price = item.original_line_price
+          assign item_paid_line_price = item.final_line_price
         endif
         assign paid_cart_cents = paid_cart_cents | plus: item_paid_line_price
       endunless
@@ -102,16 +106,34 @@
         class="milaura-drawer-rewards__mark{% if unlocked_rewards >= 1 %} is-reached{% elsif unlocked_rewards == 0 %} is-next{% endif %}"
         style="left: {{ mark_1_percent }}%;"
         aria-hidden="true"
-      >{% if unlocked_rewards >= 1 %}✓{% else %}M{% endif %}</span>
+      >
+        {%- if reward_logo != blank -%}
+          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
+        {%- else -%}
+          <span class="milaura-drawer-rewards__fallback">M</span>
+        {%- endif -%}
+      </span>
       <span
         class="milaura-drawer-rewards__mark{% if unlocked_rewards >= 2 %} is-reached{% elsif unlocked_rewards == 1 %} is-next{% endif %}"
         style="left: {{ mark_2_percent }}%;"
         aria-hidden="true"
-      >{% if unlocked_rewards >= 2 %}✓{% else %}M{% endif %}</span>
+      >
+        {%- if reward_logo != blank -%}
+          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
+        {%- else -%}
+          <span class="milaura-drawer-rewards__fallback">M</span>
+        {%- endif -%}
+      </span>
       <span
         class="milaura-drawer-rewards__mark milaura-drawer-rewards__mark--last{% if unlocked_rewards >= 3 %} is-reached{% elsif unlocked_rewards == 2 %} is-next{% endif %}"
         aria-hidden="true"
-      >{% if unlocked_rewards >= 3 %}✓{% else %}M{% endif %}</span>
+      >
+        {%- if reward_logo != blank -%}
+          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
+        {%- else -%}
+          <span class="milaura-drawer-rewards__fallback">M</span>
+        {%- endif -%}
+      </span>
     </div>
 
     <ol class="milaura-drawer-rewards__steps">
@@ -129,6 +151,19 @@
       </li>
     </ol>
 
-    <p class="milaura-drawer-rewards__note">Progression calculée hors cadeaux déjà offerts.</p>
+    <p class="milaura-drawer-rewards__note">Progression calculée hors cadeaux, avant avantages MilAura.</p>
   </section>
+{%- endif -%}
+
+{%- if settings.milaura_cart_rewards_auto_enabled -%}
+  <div
+    id="MilauraCartRewardsConfig"
+    hidden
+    data-threshold-gift="{{ settings.milaura_reward_threshold_1 | default: 30 | times: 100 }}"
+    data-threshold-shipping="{{ settings.milaura_reward_threshold_2 | default: 50 | times: 100 }}"
+    data-threshold-discount="{{ settings.milaura_reward_threshold_3 | default: 80 | times: 100 }}"
+    data-gift-variant-id="{{ settings.milaura_reward_gift_variant_id | default: '53142713925979' | escape }}"
+    data-shipping-code="{{ settings.milaura_reward_shipping_code | default: 'MILAURA-LIV50' | escape }}"
+    data-discount-code="{{ settings.milaura_reward_order_code | default: 'MILAURA15' | escape }}"
+  ></div>
 {%- endif -%}
