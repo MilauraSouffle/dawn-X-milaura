@@ -7,9 +7,11 @@
 
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'milaura-cart-drawer-v3.css' | asset_url | stylesheet_tag }}
 
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'milaura-cart-rewards-auto.js' | asset_url }}" defer="defer"></script>
 
 <style>
   .drawer {
@@ -32,16 +34,6 @@
           <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
             <div class="cart-drawer__empty-content">
               <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
-              <button
-                class="drawer__close"
-                type="button"
-                onclick="this.closest('cart-drawer').close()"
-                aria-label="{{ 'accessibility.close' | t }}"
-              >
-                <span class="svg-wrapper">
-                  {{- 'icon-close.svg' | inline_asset_content -}}
-                </span>
-              </button>
               <a href="{{ routes.all_products_collection_url }}" class="button">
                 {{ 'general.continue_shopping' | t }}
               </a>
@@ -64,16 +56,18 @@
       <div class="drawer__header">
         <h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
         <button
-          class="drawer__close"
+          class="milaura-drawer-continue"
           type="button"
           onclick="this.closest('cart-drawer').close()"
-          aria-label="{{ 'accessibility.close' | t }}"
         >
-          <span class="svg-wrapper">
-            {{- 'icon-close.svg' | inline_asset_content -}}
-          </span>
+          <span aria-hidden="true">←</span>
+          Retour à la boutique
         </button>
       </div>
+
+      <!-- Progression immediately visible, before cart contents -->
+      {% render 'milaura-cart-rewards-drawer' %}
+
       <cart-drawer-items
         {% if cart == empty %}
           class=" is-empty"
@@ -118,9 +112,20 @@
 
                   <tbody role="rowgroup">
                     {%- for item in cart.items -%}
+                      {%- liquid
+                        assign is_milaura_gift = false
+                        if item.product.tags contains 'milaura-gift' or item.product.title contains 'Cadeau -'
+                          assign is_milaura_gift = true
+                        endif
+                        for property in item.properties
+                          if property.first == '_milaura_gift' and property.last == 'true'
+                            assign is_milaura_gift = true
+                          endif
+                        endfor
+                      -%}
                       <tr
                         id="CartDrawer-Item-{{ item.index | plus: 1 }}"
-                        class="cart-item{% if item.parent_relationship.parent != null %} cart-item__nested-line{% endif %}"
+                        class="cart-item{% if item.parent_relationship.parent != null %} cart-item__nested-line{% endif %}{% if is_milaura_gift %} milaura-cart-item--gift{% endif %}"
                         role="row"
                         {% if item.parent_relationship.parent != null %}
                           aria-label="{{- 'products.product.nested_label' | t: title: item.product.title, parent_title: item.parent_relationship.parent.title | escape -}}"
@@ -139,6 +144,7 @@
                               src="{{ item.image | image_url: width: 300 }}"
                               alt="{{ item.image.alt | escape }}"
                               loading="lazy"
+                              decoding="async"
                               width="150"
                               height="{{ 150 | divided_by: item.image.aspect_ratio | ceil }}"
                             >
@@ -153,6 +159,10 @@
                           <a href="{{ item.url }}" class="cart-item__name h4 break">
                             {{- item.product.title | escape -}}
                           </a>
+
+                          {%- if is_milaura_gift -%}
+                            <p class="milaura-cart-gift-badge">Offert avec votre commande</p>
+                          {%- endif -%}
 
                           {%- if item.original_price != item.final_price -%}
                             <div class="cart-item__discounted-prices">
@@ -194,7 +204,12 @@
 
                               {%- for property in item.properties -%}
                                 {%- assign property_first_char = property.first | slice: 0 -%}
-                                {%- if property.last != blank and property_first_char != '_' -%}
+                                {%- if property.last != blank
+                                  and property_first_char != '_'
+                                  and property.first != 'Avantages panier'
+                                  and property.first != 'Cadeau MilAura'
+                                  and property.first != 'Statut'
+                                -%}
                                   <div class="product-option">
                                     <dt>{{ property.first }}:</dt>
                                     <dd>
@@ -236,7 +251,9 @@
                         <td class="cart-item__totals right" role="cell" headers="CartDrawer-ColumnTotal">
                           {%- render 'loading-spinner' -%}
                           <div class="cart-item__price-wrapper">
-                            {%- if item.original_line_price != item.final_line_price -%}
+                            {%- if is_milaura_gift -%}
+                              <span class="milaura-cart-gift-price">Offert</span>
+                            {%- elsif item.original_line_price != item.final_line_price -%}
                               <div class="cart-item__discounted-prices">
                                 <span class="visually-hidden">
                                   {{ 'products.product.price.regular_price' | t }}
@@ -278,6 +295,9 @@
                           role="cell"
                           headers="CartDrawer-ColumnQuantity"
                         >
+                          {%- if is_milaura_gift -%}
+                            <span class="milaura-cart-gift-qty">1 cadeau</span>
+                          {%- endif -%}
                           <quantity-popover>
                             <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
                               <div class="quantity-popover-container{% if has_qty_rules or has_vol_pricing %} quantity-popover-container--hover{% endif %}">
@@ -473,6 +493,9 @@
           </div>
           <div id="CartDrawer-CartErrors" role="alert"></div>
         </form>
+
+        <!-- Recommendations stay in the scrollable cart area -->
+        {% render 'milaura-cart-recos' %}
       </cart-drawer-items>
       <div class="drawer__footer">
         {%- if settings.show_cart_note -%}
@@ -559,9 +582,6 @@
           </small>
         </div>
 
-        <!-- Milaura Cart Recommendations -->
-        {% render 'milaura-cart-recos' %}
-
         <!-- CTAs -->
 
         <div class="cart__ctas" {{ block.shopify_attributes }}>
@@ -575,7 +595,7 @@
               disabled
             {% endif %}
           >
-            {{ 'sections.cart.checkout' | t }}
+            Paiement sécurisé · {{ cart.total_price | money }}
           </button>
         </div>
       </div>

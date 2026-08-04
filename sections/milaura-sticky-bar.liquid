@@ -1,16 +1,24 @@
 {% comment %}
   MILAURA STICKY BAR
   Barre d'ajout au panier flottante.
-  S'affiche uniquement quand le bouton principal n'est plus visible (scroll vers le bas).
-  Inclut un espace marketing pour la conversion.
+  Mobile : CTA conserve pendant la decouverte de la fiche produit.
+  Desktop : s'affiche quand le bouton principal n'est plus visible.
 {% endcomment %}
 
 {%- if section.settings.enable_sticky_bar -%}
+  {%- liquid
+    assign sticky_image = product.featured_image
+    if sticky_image == blank and product.featured_media.preview_image != blank
+      assign sticky_image = product.featured_media.preview_image
+    endif
+  -%}
   <style>
     #shopify-section-{{ section.id }} {
       --sticky-bg: {{ section.settings.bg_color }};
       --sticky-text: {{ section.settings.text_color }};
       --sticky-gold: var(--milaura-gold, #C0A062);
+      --sticky-ink: #1a1a2e;
+      --sticky-cream: #fffaf0;
       z-index: 999;
       position: relative;
     }
@@ -20,30 +28,60 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: var(--sticky-bg);
-      padding: 12px 24px;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      min-height: 84px;
+      padding: 12px 28px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 250, 240, 0.98)),
+        var(--sticky-bg);
+      box-shadow:
+        0 -18px 42px rgba(26, 26, 46, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86);
       z-index: 9999;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(210px, 1fr) auto;
       align-items: center;
-      justify-content: space-between;
       gap: 20px;
       
-      /* État initial : caché vers le bas */
       transform: translateY(101%);
       transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      border-top: 1px solid rgba(192, 160, 98, 0.2);
+      border-top: 1px solid rgba(192, 160, 98, 0.26);
+      backdrop-filter: blur(18px);
     }
 
     .milaura-sticky-bar.is-visible {
       transform: translateY(0);
     }
 
-    /* --- GAUCHE : INFOS PRODUIT --- */
     .sticky-product-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .sticky-product-media {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex: 0 0 56px;
+      background: rgba(192, 160, 98, 0.08);
+      border: 1px solid rgba(192, 160, 98, 0.18);
+      box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .sticky-product-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .sticky-product-copy {
       display: flex;
       flex-direction: column;
       justify-content: center;
+      min-width: 0;
     }
 
     .sticky-title {
@@ -53,6 +91,9 @@
       color: var(--sticky-text);
       margin: 0;
       line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .sticky-price {
@@ -61,117 +102,160 @@
       font-weight: 700;
     }
 
-    /* --- CENTRE : MARKETING TEXT (L'espace vide comblé) --- */
-    .sticky-marketing {
-      flex: 1;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--sticky-text);
-      opacity: 0.8;
+    .sticky-btn-wrapper {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    
-    .sticky-marketing span {
-      background: rgba(192, 160, 98, 0.1);
-      padding: 4px 12px;
-      border-radius: 20px;
-      color: #9A7B4F;
+      justify-content: flex-end;
     }
 
-    /* --- DROITE : BOUTON --- */
-    .sticky-btn-wrapper {
-      flex-shrink: 0;
-    }
-
-    /* Bouton plus compact dans la sticky bar (ne touche plus les bords) */
     .sticky-btn.milaura-btn-gold {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border: none;
-      padding: 10px 28px;
+      width: auto;
+      min-width: 168px;
+      min-height: 48px;
+      padding: 13px 28px;
       font-size: 13px;
       letter-spacing: 0.5px;
+      line-height: 1;
+      white-space: nowrap;
+      align-self: center;
+    }
+
+    .sticky-btn-label-mobile {
+      display: none;
+    }
+
+    .sticky-btn-qty {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      min-height: 24px;
+      margin-left: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(26, 26, 46, 0.14);
+      color: #1a1a2e;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .sticky-btn-qty.is-visible {
+      display: inline-flex;
     }
 
     /* --- MOBILE RESPONSIVE --- */
     @media screen and (max-width: 768px) {
       .milaura-sticky-bar {
-        padding: 10px 16px;
-        gap: 12px;
-        flex-wrap: wrap;
+        min-height: 62px;
+        padding: 9px 10px;
+        gap: 10px;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: "product button";
         bottom: 65px; /* Au-dessus du dock mobile */
       }
 
-      /* Sur mobile, on cache le titre du produit pour gagner de la place, 
-         ou on le garde très petit. Ici je choisis de prioriser le marketing + prix */
-      .sticky-title {
-        display: none;
-      }
-
-      .sticky-marketing {
-        width: 100%;
-        order: -1; /* Mettre le marketing tout en haut */
-        font-size: 12px;
-        margin-bottom: 4px;
-        display: none; /* Par défaut caché sur mobile sauf si option cochée */
-      }
-      
-      {% if section.settings.show_marketing_mobile %}
-      .sticky-marketing {
-        display: flex;
-      }
-      {% endif %}
-
       .sticky-product-info {
-        flex-direction: row;
+        grid-area: product;
         align-items: center;
-        gap: 8px;
+        gap: 9px;
+        min-width: 0;
+      }
+
+      .sticky-product-media {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+        border-radius: 9px;
+      }
+
+      .sticky-title {
+        display: block;
+        font-size: 12px;
+        max-width: 38vw;
+        line-height: 1.18;
       }
       
       .sticky-price {
-        font-size: 16px;
+        font-size: 14px;
+        line-height: 1.2;
       }
 
-      .sticky-btn {
-        padding: 10px 20px;
-        font-size: 13px;
-        flex: 1; /* Le bouton prend la place restante */
+      .sticky-btn.milaura-btn-gold {
+        min-width: 92px;
+        min-height: 40px;
+        padding: 10px 13px;
+        font-size: 12px;
+        line-height: 1;
       }
       
       .sticky-btn-wrapper {
-        flex: 1;
+        grid-area: button;
         display: flex;
       }
       
       .sticky-btn {
-        width: 100%;
+        width: auto;
+      }
+
+      .sticky-btn-label-desktop {
+        display: none;
+      }
+
+      .sticky-btn-label-mobile {
+        display: inline;
+      }
+
+      .sticky-btn-qty {
+        min-width: 24px;
+        min-height: 22px;
+        margin-left: 7px;
+        padding: 3px 7px;
+        font-size: 11px;
       }
     }
   </style>
 
-  <div id="MilauraStickyBarSection" class="milaura-sticky-bar">
+  <div
+    id="MilauraStickyBarSection"
+    class="milaura-sticky-bar"
+  >
     
     <!-- Info Gauche -->
     <div class="sticky-product-info">
-      <h4 class="sticky-title">{{ product.title | truncate: 25 }}</h4>
-      <div id="StickyBarPrice" class="sticky-price">
-        {{ product.selected_or_first_available_variant.price | money }}
+      {%- if sticky_image != blank -%}
+        <div class="sticky-product-media">
+          {{
+            sticky_image
+            | image_url: width: 120
+            | image_tag:
+              loading: 'lazy',
+              widths: '80, 120',
+              sizes: '48px',
+              alt: product.title
+          }}
+        </div>
+      {%- endif -%}
+      <div class="sticky-product-copy">
+        <h4 class="sticky-title">{{ product.title | truncate: 42 }}</h4>
+        <div id="StickyBarPrice" class="sticky-price">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </div>
       </div>
     </div>
-
-    <!-- Marketing Centre -->
-    {% if section.settings.marketing_text != blank %}
-      <div class="sticky-marketing">
-        <span>{{ section.settings.marketing_text }}</span>
-      </div>
-    {% endif %}
 
     <!-- Bouton Droite -->
     <div class="sticky-btn-wrapper">
       <button class="sticky-btn milaura-btn-gold" id="TriggerMainAtc">
-        {{ section.settings.button_text }}
+        <span class="sticky-btn-label-desktop">{{ section.settings.button_text }}</span>
+        <span class="sticky-btn-label-mobile">Ajouter</span>
+        <span class="sticky-btn-qty" id="StickyBarQtyBadge" aria-live="polite"></span>
       </button>
     </div>
 
@@ -181,10 +265,13 @@
     document.addEventListener('DOMContentLoaded', function() {
       const stickyBar = document.getElementById('MilauraStickyBarSection');
       const triggerBtn = document.getElementById('TriggerMainAtc');
+      const qtyBadge = document.getElementById('StickyBarQtyBadge');
 
       // Sélecteurs pour trouver le bouton principal dans la page
-      // On cherche large pour être sûr de le trouver (Hero, Product Form standard, etc.)
+      // Ordre du plus specifique au plus generique. Le CTA bundle (hero refonte 2026-05-28)
+      // doit etre prioritaire car c'est celui qui pilote l'ajout au panier + free gifts.
       const mainButtonSelectors = [
+        '.milaura-hero-cta-bundle',
         '.milaura-add-btn',
         'button[name="add"]',
         '.product-form__submit',
@@ -206,20 +293,21 @@
 
       // Trouver le footer pour masquer la sticky bar quand on y arrive
       const footer = document.querySelector('footer') || document.querySelector('.footer') || document.querySelector('#shopify-section-footer');
-      const stickyBarHeight = stickyBar ? stickyBar.offsetHeight : 80;
+      const stickyAlwaysMobile = window.matchMedia ? window.matchMedia('(max-width: 768px)') : null;
 
       // 1. Logique d'affichage (Scroll)
       if (stickyBar && mainButton) {
         const handleScroll = () => {
           const rect = mainButton.getBoundingClientRect();
           const footerRect = footer ? footer.getBoundingClientRect() : null;
+          const shouldShowAlways = stickyAlwaysMobile && stickyAlwaysMobile.matches;
 
           // Vérifier si le footer est visible (entre dans le viewport)
           const footerVisible = footerRect && footerRect.top < window.innerHeight;
 
           // Le bouton est-il passé au-dessus de l'écran ? (top < 0)
           // On ajoute une marge de sécurité (ex: -50px) pour être sûr qu'il est bien sorti
-          if (rect.top < -50 && !footerVisible) {
+          if ((shouldShowAlways || rect.top < -50) && !footerVisible) {
             stickyBar.classList.add('is-visible');
           } else {
             stickyBar.classList.remove('is-visible');
@@ -243,6 +331,11 @@
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
+        if (stickyAlwaysMobile && typeof stickyAlwaysMobile.addEventListener === 'function') {
+          stickyAlwaysMobile.addEventListener('change', handleScroll);
+        } else if (stickyAlwaysMobile && typeof stickyAlwaysMobile.addListener === 'function') {
+          stickyAlwaysMobile.addListener(handleScroll);
+        }
         // Check initial
         handleScroll();
       } else {
@@ -257,16 +350,49 @@
       }
 
       // 2. Logique de clic
+      function setTriggerLabels(text) {
+        if (!triggerBtn) return;
+        const desktopLabel = triggerBtn.querySelector('.sticky-btn-label-desktop');
+        const mobileLabel = triggerBtn.querySelector('.sticky-btn-label-mobile');
+        if (desktopLabel) desktopLabel.textContent = text;
+        if (mobileLabel) mobileLabel.textContent = text;
+      }
+
       if (triggerBtn && mainButton) {
+        const desktopLabel = triggerBtn.querySelector('.sticky-btn-label-desktop');
+        const mobileLabel = triggerBtn.querySelector('.sticky-btn-label-mobile');
+        const originalDesktopText = desktopLabel ? desktopLabel.textContent : triggerBtn.textContent;
+        const originalMobileText = mobileLabel ? mobileLabel.textContent : originalDesktopText;
         triggerBtn.addEventListener('click', (e) => {
           e.preventDefault();
           mainButton.click();
           // Petit feedback visuel
-          const originalText = triggerBtn.textContent;
-          triggerBtn.textContent = 'Ajout...';
-          setTimeout(() => { triggerBtn.textContent = originalText; }, 1000);
+          setTriggerLabels('Ajout...');
+          setTimeout(() => {
+            if (desktopLabel) desktopLabel.textContent = originalDesktopText;
+            if (mobileLabel) mobileLabel.textContent = originalMobileText;
+          }, 1000);
         });
       }
+
+      function updateQtyBadge(quantity) {
+        if (!qtyBadge) return;
+        const nextQuantity = Number.parseInt(quantity, 10);
+        if (Number.isFinite(nextQuantity) && nextQuantity > 1) {
+          qtyBadge.textContent = 'x' + nextQuantity;
+          qtyBadge.classList.add('is-visible');
+          qtyBadge.removeAttribute('hidden');
+        } else {
+          qtyBadge.textContent = '';
+          qtyBadge.classList.remove('is-visible');
+          qtyBadge.setAttribute('hidden', '');
+        }
+      }
+
+      document.addEventListener('milaura:product-quantity-change', (event) => {
+        updateQtyBadge(event.detail && event.detail.quantity);
+      });
+      updateQtyBadge(1);
 
       // 3. Mise à jour du prix (si variant change)
       const stickyPrice = document.getElementById('StickyBarPrice');
@@ -302,20 +428,6 @@
       "id": "button_text",
       "label": "Texte du bouton",
       "default": "Ajouter au panier"
-    },
-    {
-      "type": "text",
-      "id": "marketing_text",
-      "label": "Texte Marketing (Centre)",
-      "default": "🔥 Plus que quelques pièces !",
-      "info": "Apparaît entre le prix et le bouton sur Desktop."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_marketing_mobile",
-      "label": "Afficher le marketing sur mobile",
-      "default": false,
-      "info": "Peut prendre de la place verticalement."
     },
     {
       "type": "header",
