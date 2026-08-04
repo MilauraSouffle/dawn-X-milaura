@@ -293,21 +293,18 @@
 
       // Trouver le footer pour masquer la sticky bar quand on y arrive
       const footer = document.querySelector('footer') || document.querySelector('.footer') || document.querySelector('#shopify-section-footer');
-      const stickyAlwaysMobile = window.matchMedia ? window.matchMedia('(max-width: 768px)') : null;
 
       // 1. Logique d'affichage (Scroll)
       if (stickyBar && mainButton) {
         const handleScroll = () => {
           const rect = mainButton.getBoundingClientRect();
           const footerRect = footer ? footer.getBoundingClientRect() : null;
-          const shouldShowAlways = stickyAlwaysMobile && stickyAlwaysMobile.matches;
 
           // Vérifier si le footer est visible (entre dans le viewport)
           const footerVisible = footerRect && footerRect.top < window.innerHeight;
 
-          // Le bouton est-il passé au-dessus de l'écran ? (top < 0)
-          // On ajoute une marge de sécurité (ex: -50px) pour être sûr qu'il est bien sorti
-          if ((shouldShowAlways || rect.top < -50) && !footerVisible) {
+          // Afficher la sticky uniquement après la disparition complète du CTA principal.
+          if (rect.bottom <= 0 && !footerVisible) {
             stickyBar.classList.add('is-visible');
           } else {
             stickyBar.classList.remove('is-visible');
@@ -331,11 +328,6 @@
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
-        if (stickyAlwaysMobile && typeof stickyAlwaysMobile.addEventListener === 'function') {
-          stickyAlwaysMobile.addEventListener('change', handleScroll);
-        } else if (stickyAlwaysMobile && typeof stickyAlwaysMobile.addListener === 'function') {
-          stickyAlwaysMobile.addListener(handleScroll);
-        }
         // Check initial
         handleScroll();
       } else {

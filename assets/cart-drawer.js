@@ -5,24 +5,105 @@ class CartDrawer extends HTMLElement {
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
     this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
     this.setHeaderCartIconAccessibility();
+    this.setQuickAddAccessibility();
   }
 
   setHeaderCartIconAccessibility() {
-    const cartLink = document.querySelector('#cart-icon-bubble');
-    if (!cartLink) return;
+    const milauraCartLinks = document.querySelectorAll(
+      '.nav-cart-icon, .nav-mobile-icon[aria-label="Panier"], .milaura-dock a[href$="/cart"]'
+    );
+    const cartLinks = milauraCartLinks.length
+      ? Array.from(milauraCartLinks)
+      : [document.querySelector('#cart-icon-bubble')].filter(Boolean);
 
-    cartLink.setAttribute('role', 'button');
-    cartLink.setAttribute('aria-haspopup', 'dialog');
-    cartLink.addEventListener('click', (event) => {
-      event.preventDefault();
-      this.open(cartLink);
-    });
-    cartLink.addEventListener('keydown', (event) => {
-      if (event.code.toUpperCase() === 'SPACE') {
+    cartLinks.forEach((cartLink) => {
+      cartLink.setAttribute('role', 'button');
+      cartLink.setAttribute('aria-haspopup', 'dialog');
+      cartLink.addEventListener('click', (event) => {
         event.preventDefault();
         this.open(cartLink);
-      }
+      });
+      cartLink.addEventListener('keydown', (event) => {
+        if (event.code.toUpperCase() === 'SPACE') {
+          event.preventDefault();
+          this.open(cartLink);
+        }
+      });
     });
+  }
+
+  setQuickAddAccessibility() {
+    document.addEventListener(
+      'click',
+      (event) => {
+        const quickAddButton = event.target.closest('[data-quick-add]');
+        if (!quickAddButton || quickAddButton.dataset.milauraQuickAddPending === 'true') return;
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        this.quickAdd(quickAddButton);
+      },
+      true
+    );
+  }
+
+  async quickAdd(button) {
+    const variantId = Number.parseInt(button.dataset.productId, 10);
+    if (!variantId) return;
+
+    const originalContent = button.innerHTML;
+    button.dataset.milauraQuickAddPending = 'true';
+    button.setAttribute('aria-busy', 'true');
+    button.style.pointerEvents = 'none';
+    button.textContent = 'Ajout...';
+
+    try {
+      const payload = {
+        items: [{ id: variantId, quantity: 1 }],
+        sections: this.getSectionsToRender().map((section) => section.id),
+        sections_url: window.location.pathname,
+      };
+      const response = await fetch(window.routes?.cart_add_url || '/cart/add.js', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+      if (!response.ok || data.status) {
+        throw new Error(data.description || data.message || `cart_add_${response.status}`);
+      }
+
+      this.setActiveElement(button);
+      this.renderContents(data);
+      button.textContent = 'Ajouté';
+
+      const cart = await fetch(window.routes?.cart_url ? `${window.routes.cart_url}.js` : '/cart.js', {
+        credentials: 'same-origin',
+      }).then((cartResponse) => cartResponse.json());
+
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      window.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      if (typeof window.milauraCartToast === 'function') window.milauraCartToast('Ajouté au panier');
+    } catch (error) {
+      console.error('MilAura quick add failed:', error);
+      button.textContent = 'Réessayer';
+    } finally {
+      window.setTimeout(() => {
+        button.innerHTML = originalContent;
+        button.style.pointerEvents = '';
+        button.removeAttribute('aria-busy');
+        delete button.dataset.milauraQuickAddPending;
+      }, 1400);
+    }
+  }
+
+  setEmptyState(isEmpty) {
+    this.classList.toggle('is-empty', isEmpty);
+    this.querySelector('cart-drawer-items')?.classList.toggle('is-empty', isEmpty);
   }
 
   open(triggeredBy) {
@@ -71,16 +152,18 @@ class CartDrawer extends HTMLElement {
   }
 
   renderContents(parsedState) {
-    this.querySelector('.drawer__inner').classList.contains('is-empty') &&
-      this.querySelector('.drawer__inner').classList.remove('is-empty');
+    this.setEmptyState(parsedState.item_count === 0);
     this.productId = parsedState.id;
     this.getSectionsToRender().forEach((section) => {
       const sectionElement = section.selector
         ? document.querySelector(section.selector)
         : document.getElementById(section.id);
+      const sectionHTML = parsedState.sections?.[section.id];
 
-      if (!sectionElement) return;
-      sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
+      if (!sectionElement || !sectionHTML) return;
+      const nextContent = this.getSectionInnerHTML(sectionHTML, section.selector);
+      if (nextContent === null) return;
+      sectionElement.innerHTML = nextContent;
     });
 
     setTimeout(() => {
@@ -90,7 +173,8 @@ class CartDrawer extends HTMLElement {
   }
 
   getSectionInnerHTML(html, selector = '.shopify-section') {
-    return new DOMParser().parseFromString(html, 'text/html').querySelector(selector).innerHTML;
+    const section = new DOMParser().parseFromString(html, 'text/html').querySelector(selector);
+    return section ? section.innerHTML : null;
   }
 
   getSectionsToRender() {

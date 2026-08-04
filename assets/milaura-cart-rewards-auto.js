@@ -57,6 +57,7 @@
   const renderCart = (response) => {
     const drawer = document.querySelector('cart-drawer');
     if (!response?.sections || !drawer || typeof drawer.renderContents !== 'function') return;
+    if (typeof drawer.setEmptyState === 'function') drawer.setEmptyState(response.item_count === 0);
     const wasOpen = drawer.classList.contains('active');
     if (wasOpen) {
       drawer.renderContents(response);
@@ -70,7 +71,9 @@
         ? document.querySelector(section.selector)
         : document.getElementById(section.id);
       if (!target) return;
-      target.innerHTML = drawer.getSectionInnerHTML(html, section.selector);
+      const nextContent = drawer.getSectionInnerHTML(html, section.selector);
+      if (nextContent === null) return;
+      target.innerHTML = nextContent;
     });
     drawer.querySelector('#CartDrawer-Overlay')?.addEventListener('click', drawer.close.bind(drawer));
   };
