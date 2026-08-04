@@ -33,16 +33,6 @@
           <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
             <div class="cart-drawer__empty-content">
               <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
-              <button
-                class="drawer__close"
-                type="button"
-                onclick="this.closest('cart-drawer').close()"
-                aria-label="{{ 'accessibility.close' | t }}"
-              >
-                <span class="svg-wrapper">
-                  {{- 'icon-close.svg' | inline_asset_content -}}
-                </span>
-              </button>
               <a href="{{ routes.all_products_collection_url }}" class="button">
                 {{ 'general.continue_shopping' | t }}
               </a>
@@ -63,26 +53,14 @@
         </div>
       {%- endif -%}
       <div class="drawer__header">
-        <div class="milaura-drawer-heading">
-          <h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
-          <button
-            class="milaura-drawer-continue"
-            type="button"
-            onclick="this.closest('cart-drawer').close()"
-          >
-            <span aria-hidden="true">←</span>
-            Continuer mes achats
-          </button>
-        </div>
+        <h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
         <button
-          class="drawer__close"
+          class="milaura-drawer-continue"
           type="button"
           onclick="this.closest('cart-drawer').close()"
-          aria-label="{{ 'accessibility.close' | t }}"
         >
-          <span class="svg-wrapper">
-            {{- 'icon-close.svg' | inline_asset_content -}}
-          </span>
+          <span aria-hidden="true">←</span>
+          Retour à la boutique
         </button>
       </div>
 
@@ -210,7 +188,10 @@
 
                               {%- for property in item.properties -%}
                                 {%- assign property_first_char = property.first | slice: 0 -%}
-                                {%- if property.last != blank and property_first_char != '_' -%}
+                                {%- if property.last != blank
+                                  and property_first_char != '_'
+                                  and property.first != 'Avantages panier'
+                                -%}
                                   <div class="product-option">
                                     <dt>{{ property.first }}:</dt>
                                     <dd>
