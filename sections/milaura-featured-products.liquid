@@ -1,6 +1,10 @@
 {{ 'milaura-card.css' | asset_url | stylesheet_tag }}
 
 {% style %}
+  .milaura-product-section-anchor {
+    scroll-margin-top: 150px;
+  }
+
   /* --- LAYOUT GLOBAL --- */
   #MilauraProd-{{ section.id }} {
     padding: var(--milaura-spacing-lg) 0 var(--milaura-spacing-xl) 0;
@@ -197,6 +201,12 @@
     }
   }
 
+  @media screen and (max-width: 767px) {
+    .milaura-product-section-anchor {
+      scroll-margin-top: 112px;
+    }
+  }
+
   /* --- RESPONSIVE TABLETTE --- */
   @media screen and (max-width: 1024px) {
     #MilauraProd-{{ section.id }} .prod-carousel .grid__card {
@@ -265,6 +275,10 @@
     }
   }
 {% endstyle %}
+
+{% if section.settings.homepage_selection_anchor %}
+  <div id="MilauraSelectionAtelier" class="milaura-product-section-anchor">
+{% endif %}
 
 <section id="MilauraProd-{{ section.id }}" aria-label="{{ section.settings.title }}">
   <div class="prod-container">
@@ -345,6 +359,10 @@
     </div>
   {% endif %}
 </section>
+
+{% if section.settings.homepage_selection_anchor %}
+  </div>
+{% endif %}
 
 <script>
 (function() {
@@ -442,6 +460,13 @@
     {
       "type": "header",
       "content": "Contenu"
+    },
+    {
+      "type": "checkbox",
+      "id": "homepage_selection_anchor",
+      "label": "Cible du CTA hero",
+      "info": "Active l'ancre unique de la Selection de l'atelier.",
+      "default": false
     },
     {
       "type": "text",

@@ -1,19 +1,28 @@
 {%- liquid
   assign primary_url = section.settings.primary_link
   if primary_url == blank
-    assign primary_url = routes.collections_url | append: '/bijoux-pierres-naturelles'
+    assign primary_url = '#MilauraSelectionAtelier'
   endif
 
-  assign secondary_url = section.settings.secondary_link
-  if secondary_url == blank
-    assign secondary_url = '#MilauraChoiceDoors'
+  assign panel_aventurine_width = 768
+  assign panel_aventurine_height = 1152
+  if section.settings.panel_aventurine_image != blank
+    assign panel_aventurine_width = section.settings.panel_aventurine_image.width
+    assign panel_aventurine_height = section.settings.panel_aventurine_image.height
   endif
 
-  assign hero_image_width = 1536
-  assign hero_image_height = 1024
-  if section.settings.image != blank
-    assign hero_image_width = section.settings.image.width
-    assign hero_image_height = section.settings.image.height
+  assign panel_quartz_width = 768
+  assign panel_quartz_height = 1152
+  if section.settings.panel_quartz_image != blank
+    assign panel_quartz_width = section.settings.panel_quartz_image.width
+    assign panel_quartz_height = section.settings.panel_quartz_image.height
+  endif
+
+  assign panel_object_width = 768
+  assign panel_object_height = 1152
+  if section.settings.panel_object_image != blank
+    assign panel_object_width = section.settings.panel_object_image.width
+    assign panel_object_height = section.settings.panel_object_image.height
   endif
 -%}
 
@@ -77,7 +86,7 @@
     gap: 13px;
     margin: 0 0 24px;
     color: var(--portal-aqua);
-    font-size: clamp(0.68rem, 0.78vw, 0.82rem);
+    font-size: clamp(0.8rem, 0.85vw, 0.9rem);
     font-weight: 700;
     letter-spacing: 0.16em;
     line-height: 1.25;
@@ -120,7 +129,7 @@
     max-width: 52ch;
     margin: clamp(24px, 2.4vw, 34px) 0 0;
     color: rgba(47, 34, 45, 0.76);
-    font-size: clamp(0.98rem, 1.04vw, 1.1rem);
+    font-size: clamp(1.0625rem, 1.1vw, 1.125rem);
     font-weight: 450;
     letter-spacing: -0.012em;
     line-height: 1.55;
@@ -144,9 +153,9 @@
     border-radius: 999px;
     color: var(--portal-ink);
     background: var(--portal-gold);
-    font-size: 0.72rem;
+    font-size: 1rem;
     font-weight: 750;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.045em;
     text-decoration: none;
     text-transform: uppercase;
     transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
@@ -158,35 +167,7 @@
     transform: translateY(-2px);
   }
 
-  #MilauraPortal-{{ section.id }} .portal-hero__secondary {
-    position: relative;
-    color: var(--portal-ink);
-    font-size: 0.78rem;
-    font-weight: 650;
-    line-height: 1.4;
-    text-decoration: none;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__secondary::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    bottom: -5px;
-    left: 0;
-    height: 1px;
-    background: var(--portal-aqua);
-    transform: scaleX(0.35);
-    transform-origin: left;
-    transition: transform 180ms ease;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__secondary:hover::after,
-  #MilauraPortal-{{ section.id }} .portal-hero__secondary:focus-visible::after {
-    transform: scaleX(1);
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__primary:focus-visible,
-  #MilauraPortal-{{ section.id }} .portal-hero__secondary:focus-visible {
+  #MilauraPortal-{{ section.id }} .portal-hero__primary:focus-visible {
     outline: 2px solid var(--portal-aqua);
     outline-offset: 5px;
   }
@@ -198,9 +179,9 @@
     gap: 8px 13px;
     margin-top: 28px;
     color: rgba(47, 34, 45, 0.65);
-    font-size: 0.64rem;
+    font-size: 0.875rem;
     font-weight: 680;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.025em;
     line-height: 1.35;
     text-transform: uppercase;
   }
@@ -268,7 +249,7 @@
     clip-path: polygon(14% 0, 100% 0, 93% 91%, 81% 100%, 0 96%, 7% 43%);
   }
 
-  #MilauraPortal-{{ section.id }} .portal-facet--ear {
+  #MilauraPortal-{{ section.id }} .portal-facet--object {
     top: 4%;
     height: 96%;
     clip-path: polygon(9% 3%, 100% 0, 100% 100%, 0 94%, 6% 52%);
@@ -283,15 +264,15 @@
   }
 
   #MilauraPortal-{{ section.id }} .portal-facet--hand .portal-facet__image {
-    object-position: {{ section.settings.panel_hand_position | default: '16% 52%' }};
+    object-position: var(--panel-position, 50% 50%);
   }
 
   #MilauraPortal-{{ section.id }} .portal-facet--neck .portal-facet__image {
-    object-position: {{ section.settings.panel_neck_position | default: '50% 54%' }};
+    object-position: var(--panel-position, 50% 50%);
   }
 
-  #MilauraPortal-{{ section.id }} .portal-facet--ear .portal-facet__image {
-    object-position: {{ section.settings.panel_ear_position | default: '84% 40%' }};
+  #MilauraPortal-{{ section.id }} .portal-facet--object .portal-facet__image {
+    object-position: var(--panel-position, 50% 50%);
   }
 
   #MilauraPortal-{{ section.id }} .portal-facet__veil {
@@ -370,7 +351,7 @@
       height: 97%;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-facet--ear {
+    #MilauraPortal-{{ section.id }} .portal-facet--object {
       top: 0;
       height: 95%;
     }
@@ -387,7 +368,7 @@
     #MilauraPortal-{{ section.id }} .portal-hero__kicker {
       gap: 9px;
       margin-bottom: 12px;
-      font-size: 0.55rem;
+      font-size: 0.75rem;
       letter-spacing: 0.12em;
     }
 
@@ -412,8 +393,8 @@
     #MilauraPortal-{{ section.id }} .portal-hero__body {
       max-width: 46ch;
       margin-top: 15px;
-      font-size: 0.78rem;
-      line-height: 1.42;
+      font-size: 1rem;
+      line-height: 1.55;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__actions {
@@ -428,17 +409,11 @@
       padding: 12px 20px;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__secondary {
-      width: max-content;
-      max-width: 100%;
-      font-size: 0.73rem;
-    }
-
     #MilauraPortal-{{ section.id }} .portal-hero__proofs {
       gap: 5px 10px;
       margin-top: 18px;
-      font-size: 0.52rem;
-      letter-spacing: 0.025em;
+      font-size: 0.8125rem;
+      letter-spacing: 0.015em;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__proof:last-child {
@@ -451,8 +426,7 @@
       animation: none;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__primary,
-    #MilauraPortal-{{ section.id }} .portal-hero__secondary::after {
+    #MilauraPortal-{{ section.id }} .portal-hero__primary {
       transition: none;
     }
   }
@@ -461,51 +435,63 @@
 <div id="MilauraPortal-{{ section.id }}" class="milaura-portal-hero">
   <div class="portal-hero__stage">
     <div class="portal-hero__visual" aria-hidden="true">
-      <div class="portal-facet portal-facet--hand" style="--facet-order: 1;">
+      <div
+        class="portal-facet portal-facet--hand"
+        style="--facet-order: 1; --panel-position: {% if section.settings.panel_aventurine_image != blank %}{{ section.settings.panel_hand_position | default: '50% 50%' }}{% else %}50% 50%{% endif %};"
+      >
         <img
           class="portal-facet__image"
-          {% if section.settings.image != blank %}
-            src="{{ section.settings.image | image_url: width: 1800 }}"
+          {% if section.settings.panel_aventurine_image != blank %}
+            src="{{ section.settings.panel_aventurine_image | image_url: width: 1200 }}"
           {% else %}
-            src="{{ 'milaura-hero-triptych-prototype-v2.webp' | asset_url }}"
+            src="{{ 'milaura-hero-aventurine-halo-worn-v1.webp' | asset_url }}"
           {% endif %}
-          width="{{ hero_image_width }}"
-          height="{{ hero_image_height }}"
+          width="{{ panel_aventurine_width }}"
+          height="{{ panel_aventurine_height }}"
           alt=""
           loading="eager"
           fetchpriority="high"
+          decoding="async"
         >
         <span class="portal-facet__veil"></span>
       </div>
 
-      <div class="portal-facet portal-facet--neck" style="--facet-order: 2;">
+      <div
+        class="portal-facet portal-facet--neck"
+        style="--facet-order: 2; --panel-position: {% if section.settings.panel_quartz_image != blank %}{{ section.settings.panel_neck_position | default: '50% 50%' }}{% else %}50% 50%{% endif %};"
+      >
         <img
           class="portal-facet__image"
-          {% if section.settings.image != blank %}
-            src="{{ section.settings.image | image_url: width: 1800 }}"
+          {% if section.settings.panel_quartz_image != blank %}
+            src="{{ section.settings.panel_quartz_image | image_url: width: 1200 }}"
           {% else %}
-            src="{{ 'milaura-hero-triptych-prototype-v2.webp' | asset_url }}"
+            src="{{ 'milaura-hero-quartz-rose-boho-worn-v1.webp' | asset_url }}"
           {% endif %}
-          width="{{ hero_image_width }}"
-          height="{{ hero_image_height }}"
+          width="{{ panel_quartz_width }}"
+          height="{{ panel_quartz_height }}"
           alt=""
           loading="eager"
+          decoding="async"
         >
         <span class="portal-facet__veil"></span>
       </div>
 
-      <div class="portal-facet portal-facet--ear" style="--facet-order: 3;">
+      <div
+        class="portal-facet portal-facet--object"
+        style="--facet-order: 3; --panel-position: {% if section.settings.panel_object_image != blank %}{{ section.settings.panel_ear_position | default: '50% 50%' }}{% else %}50% 50%{% endif %};"
+      >
         <img
           class="portal-facet__image"
-          {% if section.settings.image != blank %}
-            src="{{ section.settings.image | image_url: width: 1800 }}"
+          {% if section.settings.panel_object_image != blank %}
+            src="{{ section.settings.panel_object_image | image_url: width: 1200 }}"
           {% else %}
-            src="{{ 'milaura-hero-triptych-prototype-v2.webp' | asset_url }}"
+            src="{{ 'milaura-hero-soap-amethyst-v1.webp' | asset_url }}"
           {% endif %}
-          width="{{ hero_image_width }}"
-          height="{{ hero_image_height }}"
+          width="{{ panel_object_width }}"
+          height="{{ panel_object_height }}"
           alt=""
           loading="eager"
+          decoding="async"
         >
         <span class="portal-facet__veil"></span>
       </div>
@@ -527,17 +513,14 @@
 
       <div class="portal-hero__actions">
         <a class="portal-hero__primary" href="{{ primary_url }}">
-          {{ section.settings.primary_label | default: 'Découvrir les bijoux' }}
-        </a>
-        <a class="portal-hero__secondary" href="{{ secondary_url }}">
-          {{ section.settings.secondary_label | default: 'Trouver la pierre qui me correspond' }}
+          {{ section.settings.primary_label | default: 'Voir la sélection de l’atelier' }}
         </a>
       </div>
 
       <div class="portal-hero__proofs" aria-label="Les engagements MilAura">
         <span class="portal-hero__proof">{{ section.settings.proof_1 | default: 'Pierres naturelles certifiées' }}</span>
         <span class="portal-hero__proof">{{ section.settings.proof_2 | default: 'Préparées par Karine' }}</span>
-        <span class="portal-hero__proof">{{ section.settings.proof_3 | default: 'Expédiées depuis les Vosges' }}</span>
+        <span class="portal-hero__proof">{{ section.settings.proof_3 | default: 'Expédiées depuis notre atelier en France' }}</span>
       </div>
     </div>
   </div>
@@ -585,23 +568,12 @@
       "type": "text",
       "id": "primary_label",
       "label": "Bouton principal",
-      "default": "Découvrir les bijoux"
+      "default": "Voir la sélection de l’atelier"
     },
     {
       "type": "url",
       "id": "primary_link",
       "label": "Lien principal"
-    },
-    {
-      "type": "text",
-      "id": "secondary_label",
-      "label": "Lien secondaire",
-      "default": "Trouver la pierre qui me correspond"
-    },
-    {
-      "type": "url",
-      "id": "secondary_link",
-      "label": "Destination secondaire"
     },
     {
       "type": "header",
@@ -623,34 +595,44 @@
       "type": "text",
       "id": "proof_3",
       "label": "Preuve 3",
-      "default": "Expédiées depuis les Vosges"
+      "default": "Expédiées depuis notre atelier en France"
     },
     {
       "type": "header",
-      "content": "Triptyque taillé"
+      "content": "Triptyque produits exacts"
     },
     {
       "type": "image_picker",
-      "id": "image",
-      "label": "Photographie générale"
+      "id": "panel_aventurine_image",
+      "label": "Panneau bracelet aventurine"
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_quartz_image",
+      "label": "Panneau collier quartz rose"
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_object_image",
+      "label": "Panneau objet améthyste"
     },
     {
       "type": "text",
       "id": "panel_hand_position",
-      "label": "Cadrage main et bracelet",
-      "default": "16% 52%"
+      "label": "Cadrage bracelet personnalisé",
+      "default": "50% 50%"
     },
     {
       "type": "text",
       "id": "panel_neck_position",
-      "label": "Cadrage collier",
-      "default": "50% 54%"
+      "label": "Cadrage collier personnalisé",
+      "default": "50% 50%"
     },
     {
       "type": "text",
       "id": "panel_ear_position",
-      "label": "Cadrage boucles d’oreilles",
-      "default": "84% 40%"
+      "label": "Cadrage objet personnalisé",
+      "default": "50% 50%"
     }
   ],
   "presets": [
