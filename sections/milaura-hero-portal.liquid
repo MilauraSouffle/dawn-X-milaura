@@ -1,18 +1,19 @@
 {%- liquid
-  assign quiz_page = pages['diagnostic-emotionnel']
-  assign quiz_url = section.settings.quiz_link
-  if quiz_url == blank and quiz_page != blank
-    assign quiz_url = quiz_page.url
-  endif
-  if quiz_url == blank
-    assign quiz_url = '/pages/diagnostic-emotionnel'
+  assign primary_url = section.settings.primary_link
+  if primary_url == blank
+    assign primary_url = routes.collections_url | append: '/bijoux-pierres-naturelles'
   endif
 
-  assign hero_image_width = 941
-  assign hero_image_height = 1672
-  if section.settings.image_mobile != blank
-    assign hero_image_width = section.settings.image_mobile.width
-    assign hero_image_height = section.settings.image_mobile.height
+  assign secondary_url = section.settings.secondary_link
+  if secondary_url == blank
+    assign secondary_url = '#MilauraChoiceDoors'
+  endif
+
+  assign hero_image_width = 1536
+  assign hero_image_height = 1024
+  if section.settings.image != blank
+    assign hero_image_width = section.settings.image.width
+    assign hero_image_height = section.settings.image.height
   endif
 -%}
 
@@ -40,9 +41,10 @@
     --portal-gold: #b9975b;
     --portal-aqua: #6fa9a6;
     --portal-aqua-soft: #dce9e7;
+    --portal-quartz: #d7b8b1;
     position: relative;
     isolation: isolate;
-    min-height: clamp(720px, calc(100svh - 148px), 900px);
+    min-height: clamp(690px, calc(100svh - 148px), 860px);
     overflow: hidden;
     color: var(--portal-ink);
     background: var(--portal-nacre);
@@ -60,71 +62,12 @@
     margin: 0 auto;
   }
 
-  #MilauraPortal-{{ section.id }} .portal-hero__visual {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    width: 61%;
-    height: calc(100% - 205px);
-    min-height: 545px;
-    overflow: hidden;
-    background: var(--portal-aqua-soft);
-    clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%, 7% 73%, 2% 47%, 8% 19%);
-    animation: milauraPortalReveal 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__picture,
-  #MilauraPortal-{{ section.id }} .portal-hero__image {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__image {
-    object-fit: cover;
-    object-position: {{ section.settings.image_position_desktop | default: '34% 52%' }};
-    transform: scale(1.035);
-    animation: milauraPortalImageSettle 1400ms cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__image-wash {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: rgba(47, 34, 45, 0.035);
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__facet {
-    position: absolute;
-    z-index: 2;
-    width: 1px;
-    height: 130%;
-    pointer-events: none;
-    transform-origin: top;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__facet--gold {
-    top: -9%;
-    left: 13%;
-    background: rgba(185, 151, 91, 0.72);
-    transform: rotate(9deg);
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__facet--aqua {
-    top: -8%;
-    left: 21%;
-    background: rgba(220, 233, 231, 0.92);
-    transform: rotate(-5deg);
-  }
-
   #MilauraPortal-{{ section.id }} .portal-hero__copy {
     position: absolute;
-    top: 44%;
+    top: 50%;
     left: clamp(42px, 6vw, 104px);
     z-index: 3;
-    width: min(49%, 760px);
+    width: min(46%, 690px);
     transform: translateY(-50%);
   }
 
@@ -132,9 +75,9 @@
     display: flex;
     align-items: center;
     gap: 13px;
-    margin: 0 0 22px;
+    margin: 0 0 24px;
     color: var(--portal-aqua);
-    font-size: clamp(0.7rem, 0.82vw, 0.82rem);
+    font-size: clamp(0.68rem, 0.78vw, 0.82rem);
     font-weight: 700;
     letter-spacing: 0.16em;
     line-height: 1.25;
@@ -150,14 +93,14 @@
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__title {
-    max-width: 9.8ch;
+    max-width: 10ch;
     margin: 0;
     color: var(--portal-ink);
     font-family: 'MilAura Gloock', serif;
-    font-size: clamp(4.1rem, 6.45vw, 7.4rem);
+    font-size: clamp(4.15rem, 6vw, 7rem);
     font-weight: 400;
     letter-spacing: -0.055em;
-    line-height: 0.88;
+    line-height: 0.9;
     text-wrap: balance;
   }
 
@@ -167,19 +110,85 @@
 
   #MilauraPortal-{{ section.id }} .portal-hero__title span:last-child {
     width: max-content;
-    max-width: 9.5ch;
-    margin-left: clamp(24px, 3vw, 52px);
+    max-width: 9.6ch;
+    margin-top: 2px;
+    margin-left: clamp(24px, 3vw, 50px);
     color: var(--portal-aqua);
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__body {
     max-width: 52ch;
-    margin: clamp(22px, 2.4vw, 34px) 0 0;
+    margin: clamp(24px, 2.4vw, 34px) 0 0;
     color: rgba(47, 34, 45, 0.76);
-    font-size: clamp(0.98rem, 1.08vw, 1.12rem);
+    font-size: clamp(0.98rem, 1.04vw, 1.1rem);
     font-weight: 450;
     letter-spacing: -0.012em;
     line-height: 1.55;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px 24px;
+    margin-top: 30px;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__primary {
+    min-height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 25px;
+    border: 1px solid var(--portal-gold);
+    border-radius: 999px;
+    color: var(--portal-ink);
+    background: var(--portal-gold);
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__primary:hover {
+    color: var(--portal-paper);
+    background: var(--portal-ink);
+    transform: translateY(-2px);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__secondary {
+    position: relative;
+    color: var(--portal-ink);
+    font-size: 0.78rem;
+    font-weight: 650;
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__secondary::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: -5px;
+    left: 0;
+    height: 1px;
+    background: var(--portal-aqua);
+    transform: scaleX(0.35);
+    transform-origin: left;
+    transition: transform 180ms ease;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__secondary:hover::after,
+  #MilauraPortal-{{ section.id }} .portal-hero__secondary:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__primary:focus-visible,
+  #MilauraPortal-{{ section.id }} .portal-hero__secondary:focus-visible {
+    outline: 2px solid var(--portal-aqua);
+    outline-offset: 5px;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__proofs {
@@ -187,11 +196,11 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 8px 13px;
-    margin-top: 24px;
-    color: rgba(47, 34, 45, 0.68);
-    font-size: 0.69rem;
-    font-weight: 650;
-    letter-spacing: 0.045em;
+    margin-top: 28px;
+    color: rgba(47, 34, 45, 0.65);
+    font-size: 0.64rem;
+    font-weight: 680;
+    letter-spacing: 0.04em;
     line-height: 1.35;
     text-transform: uppercase;
   }
@@ -211,213 +220,119 @@
     background: var(--portal-gold);
   }
 
-  #MilauraPortal-{{ section.id }} .portal-hero__doors {
+  #MilauraPortal-{{ section.id }} .portal-hero__visual {
     position: absolute;
+    top: 0;
     right: 0;
     bottom: 0;
-    left: 0;
-    z-index: 5;
-    min-height: 205px;
+    z-index: 1;
+    width: 58%;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid rgba(47, 34, 45, 0.14);
-    border-bottom: 1px solid rgba(47, 34, 45, 0.08);
-    background: rgba(251, 248, 243, 0.97);
+    grid-template-columns: 0.84fr 1.04fr 0.92fr;
+    gap: 6px;
+    padding-left: 28px;
+    overflow: hidden;
   }
 
-  #MilauraPortal-{{ section.id }} .portal-door {
-    min-width: 0;
-    padding: 26px clamp(24px, 3vw, 48px) 22px;
-    border-right: 1px solid rgba(47, 34, 45, 0.12);
-    transition: background-color 220ms ease, color 220ms ease;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door:last-child {
-    border-right: 0;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door:nth-child(2) {
-    background: rgba(220, 233, 231, 0.42);
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door:hover,
-  #MilauraPortal-{{ section.id }} .portal-door:focus-within {
-    background: var(--portal-paper);
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door summary {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-    gap: 16px;
-    color: var(--portal-ink);
-    cursor: pointer;
-    list-style: none;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door summary::-webkit-details-marker {
-    display: none;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door__eyebrow {
-    display: block;
-    margin-bottom: 7px;
-    color: var(--portal-aqua);
-    font-size: 0.64rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door__title {
-    display: block;
-    font-family: 'MilAura Gloock', serif;
-    font-size: clamp(1.45rem, 2vw, 2.1rem);
-    font-weight: 400;
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door__toggle {
-    width: 34px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(47, 34, 45, 0.18);
-    border-radius: 50%;
-    color: var(--portal-ink);
-    font-size: 1rem;
-    transition: transform 200ms ease, background-color 200ms ease;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door[open] .portal-door__toggle {
-    transform: rotate(45deg);
-    background: var(--portal-aqua-soft);
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door__content {
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 7px 15px;
-    margin-top: 20px;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door__link {
-    position: relative;
-    color: rgba(47, 34, 45, 0.75);
-    font-size: 0.73rem;
-    font-weight: 600;
-    letter-spacing: 0.025em;
-    line-height: 1.35;
-    text-decoration: none;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-door__link::after {
+  #MilauraPortal-{{ section.id }} .portal-hero__visual::before {
     content: '';
     position: absolute;
-    right: 0;
-    bottom: -3px;
+    top: 0;
+    bottom: 0;
     left: 0;
-    height: 1px;
-    background: var(--portal-gold);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 180ms ease;
+    z-index: 0;
+    width: 1px;
+    background: rgba(185, 151, 91, 0.46);
+    transform: rotate(5deg) scaleY(1.08);
+    transform-origin: center;
   }
 
-  #MilauraPortal-{{ section.id }} .portal-door__link:hover::after,
-  #MilauraPortal-{{ section.id }} .portal-door__link:focus-visible::after {
-    transform: scaleX(1);
-    transform-origin: left;
+  #MilauraPortal-{{ section.id }} .portal-facet {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    overflow: hidden;
+    background: #e7e1d8;
+    animation: milauraFacetSettle 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--facet-order) * 90ms);
   }
 
-  #MilauraPortal-{{ section.id }} .portal-door__link:focus-visible,
-  #MilauraPortal-{{ section.id }} .portal-door summary:focus-visible {
-    outline: 2px solid var(--portal-aqua);
-    outline-offset: 5px;
+  #MilauraPortal-{{ section.id }} .portal-facet--hand {
+    top: 7%;
+    height: 93%;
+    clip-path: polygon(12% 0, 100% 4%, 91% 100%, 0 94%, 5% 46%);
   }
 
-  #MilauraPortal-{{ section.id }} .portal-door__guide {
-    max-width: 31ch;
-    margin: 0;
-    color: rgba(47, 34, 45, 0.68);
-    font-size: 0.76rem;
-    line-height: 1.45;
+  #MilauraPortal-{{ section.id }} .portal-facet--neck {
+    height: 96%;
+    clip-path: polygon(14% 0, 100% 0, 93% 91%, 81% 100%, 0 96%, 7% 43%);
   }
 
-  #MilauraPortal-{{ section.id }} .portal-door__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 14px;
-    border-radius: 999px;
-    color: var(--portal-nacre);
-    background: var(--portal-ink);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-decoration: none;
-    text-transform: uppercase;
+  #MilauraPortal-{{ section.id }} .portal-facet--ear {
+    top: 4%;
+    height: 96%;
+    clip-path: polygon(9% 3%, 100% 0, 100% 100%, 0 94%, 6% 52%);
   }
 
-  #MilauraPortal-{{ section.id }} .portal-door__cta:hover {
-    color: var(--portal-ink);
-    background: var(--portal-aqua-soft);
+  #MilauraPortal-{{ section.id }} .portal-facet__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transform: scale(1.035);
   }
 
-  @keyframes milauraPortalReveal {
+  #MilauraPortal-{{ section.id }} .portal-facet--hand .portal-facet__image {
+    object-position: {{ section.settings.panel_hand_position | default: '16% 52%' }};
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-facet--neck .portal-facet__image {
+    object-position: {{ section.settings.panel_neck_position | default: '50% 54%' }};
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-facet--ear .portal-facet__image {
+    object-position: {{ section.settings.panel_ear_position | default: '84% 40%' }};
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-facet__veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 253, 249, 0.26);
+  }
+
+  @keyframes milauraFacetSettle {
     from {
-      clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%, 100% 73%, 100% 47%, 100% 19%);
-    }
-  }
-
-  @keyframes milauraPortalImageSettle {
-    from {
-      opacity: 0.72;
-      transform: scale(1.11);
+      opacity: 0;
+      transform: translateY(18px);
     }
     to {
       opacity: 1;
-      transform: scale(1.035);
-    }
-  }
-
-  @media screen and (min-width: 768px) {
-    #MilauraPortal-{{ section.id }} .portal-door summary {
-      cursor: default;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-door[open] > .portal-door__content {
-      display: flex;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-door__toggle {
-      display: none;
+      transform: translateY(0);
     }
   }
 
   @media screen and (max-width: 1100px) and (min-width: 768px) {
     #MilauraPortal-{{ section.id }} {
-      min-height: 820px;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-hero__visual {
-      width: 58%;
+      min-height: 760px;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__copy {
-      left: 44px;
-      width: 53%;
+      left: 42px;
+      width: 49%;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__title {
-      font-size: clamp(3.7rem, 7vw, 5.4rem);
+      font-size: clamp(3.75rem, 6.8vw, 5.2rem);
     }
 
-    #MilauraPortal-{{ section.id }} .portal-door {
-      padding-right: 24px;
-      padding-left: 24px;
+    #MilauraPortal-{{ section.id }} .portal-hero__visual {
+      width: 55%;
+      padding-left: 16px;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__proofs {
+      max-width: 48ch;
     }
   }
 
@@ -429,34 +344,35 @@
 
     #MilauraPortal-{{ section.id }} .portal-hero__stage {
       min-height: 0;
-      padding-bottom: 76px;
+      padding-bottom: 28px;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__visual {
-      top: 0;
+      position: relative;
       width: 100%;
-      height: clamp(230px, 30svh, 260px);
-      min-height: 0;
-      clip-path: polygon(0 0, 100% 0, 100% 87%, 78% 100%, 0 94%);
+      height: clamp(270px, 34svh, 315px);
+      grid-template-columns: 0.86fr 1.05fr 0.89fr;
+      gap: 4px;
+      padding-left: 0;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__image {
-      object-position: {{ section.settings.image_position_mobile | default: '43% 43%' }};
-      transform: scale(1.02);
+    #MilauraPortal-{{ section.id }} .portal-hero__visual::before {
+      display: none;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__image-wash {
-      background: rgba(47, 34, 45, 0.025);
+    #MilauraPortal-{{ section.id }} .portal-facet--hand {
+      top: 0;
+      height: 94%;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__facet--gold {
-      left: 76%;
-      transform: rotate(13deg);
+    #MilauraPortal-{{ section.id }} .portal-facet--neck {
+      top: 3%;
+      height: 97%;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__facet--aqua {
-      left: 86%;
-      transform: rotate(-5deg);
+    #MilauraPortal-{{ section.id }} .portal-facet--ear {
+      top: 0;
+      height: 95%;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__copy {
@@ -464,13 +380,13 @@
       top: auto;
       left: auto;
       width: auto;
-      padding: clamp(215px, 28svh, 240px) 20px 0;
+      padding: 8px 20px 0;
       transform: none;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__kicker {
       gap: 9px;
-      margin-bottom: 11px;
+      margin-bottom: 12px;
       font-size: 0.55rem;
       letter-spacing: 0.12em;
     }
@@ -482,8 +398,8 @@
 
     #MilauraPortal-{{ section.id }} .portal-hero__title {
       max-width: none;
-      font-size: clamp(2.5rem, 10.8vw, 3.15rem);
-      line-height: 0.91;
+      font-size: clamp(2.65rem, 11vw, 3.2rem);
+      line-height: 0.92;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__title span:last-child {
@@ -494,71 +410,49 @@
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__body {
-      max-width: 43ch;
-      margin-top: 14px;
-      font-size: 0.76rem;
-      line-height: 1.4;
+      max-width: 46ch;
+      margin-top: 15px;
+      font-size: 0.78rem;
+      line-height: 1.42;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__actions {
+      display: grid;
+      gap: 13px;
+      margin-top: 19px;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__primary {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 20px;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__secondary {
+      width: max-content;
+      max-width: 100%;
+      font-size: 0.73rem;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__proofs {
       gap: 5px 10px;
-      margin-top: 12px;
-      font-size: 0.51rem;
+      margin-top: 18px;
+      font-size: 0.52rem;
       letter-spacing: 0.025em;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__proof:last-child {
       flex-basis: 100%;
     }
-
-    #MilauraPortal-{{ section.id }} .portal-hero__doors {
-      position: relative;
-      min-height: 0;
-      display: block;
-      margin-top: 14px;
-      border-bottom: 0;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-door {
-      min-height: 58px;
-      padding: 12px 20px;
-      border-right: 0;
-      border-bottom: 1px solid rgba(47, 34, 45, 0.12);
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-door__eyebrow {
-      margin-bottom: 3px;
-      font-size: 0.55rem;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-door__title {
-      font-size: 1.32rem;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-door__toggle {
-      width: 30px;
-      height: 30px;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-door__content {
-      padding-bottom: 7px;
-      margin-top: 14px;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-door[open] > .portal-door__content {
-      display: flex;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #MilauraPortal-{{ section.id }} .portal-hero__visual,
-    #MilauraPortal-{{ section.id }} .portal-hero__image {
+    #MilauraPortal-{{ section.id }} .portal-facet {
       animation: none;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-door,
-    #MilauraPortal-{{ section.id }} .portal-door__toggle,
-    #MilauraPortal-{{ section.id }} .portal-door__link::after {
+    #MilauraPortal-{{ section.id }} .portal-hero__primary,
+    #MilauraPortal-{{ section.id }} .portal-hero__secondary::after {
       transition: none;
     }
   }
@@ -567,33 +461,13 @@
 <div id="MilauraPortal-{{ section.id }}" class="milaura-portal-hero">
   <div class="portal-hero__stage">
     <div class="portal-hero__visual" aria-hidden="true">
-      <picture class="portal-hero__picture">
-        {%- if section.settings.image_desktop != blank -%}
-          <source
-            media="(min-width: 768px)"
-            srcset="{{ section.settings.image_desktop | image_url: width: 1000 }} 1000w, {{ section.settings.image_desktop | image_url: width: 1600 }} 1600w, {{ section.settings.image_desktop | image_url: width: 2200 }} 2200w"
-            sizes="61vw"
-          >
-        {%- else -%}
-          <source media="(min-width: 768px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.webp' | asset_url }}">
-        {%- endif -%}
-
-        {%- if section.settings.image_mobile != blank -%}
-          <source
-            media="(max-width: 767px)"
-            srcset="{{ section.settings.image_mobile | image_url: width: 720 }} 720w, {{ section.settings.image_mobile | image_url: width: 1100 }} 1100w"
-            sizes="100vw"
-          >
-        {%- else -%}
-          <source media="(max-width: 767px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-mobile-v5-clean.webp' | asset_url }}">
-        {%- endif -%}
-
+      <div class="portal-facet portal-facet--hand" style="--facet-order: 1;">
         <img
-          class="portal-hero__image"
-          {% if section.settings.image_mobile != blank %}
-            src="{{ section.settings.image_mobile | image_url: width: 1100 }}"
+          class="portal-facet__image"
+          {% if section.settings.image != blank %}
+            src="{{ section.settings.image | image_url: width: 1800 }}"
           {% else %}
-            src="{{ 'milaura-hero-aigue-marine-chloe-mobile-v5-clean.webp' | asset_url }}"
+            src="{{ 'milaura-hero-triptych-prototype-v2.webp' | asset_url }}"
           {% endif %}
           width="{{ hero_image_width }}"
           height="{{ hero_image_height }}"
@@ -601,10 +475,40 @@
           loading="eager"
           fetchpriority="high"
         >
-      </picture>
-      <span class="portal-hero__image-wash"></span>
-      <span class="portal-hero__facet portal-hero__facet--gold"></span>
-      <span class="portal-hero__facet portal-hero__facet--aqua"></span>
+        <span class="portal-facet__veil"></span>
+      </div>
+
+      <div class="portal-facet portal-facet--neck" style="--facet-order: 2;">
+        <img
+          class="portal-facet__image"
+          {% if section.settings.image != blank %}
+            src="{{ section.settings.image | image_url: width: 1800 }}"
+          {% else %}
+            src="{{ 'milaura-hero-triptych-prototype-v2.webp' | asset_url }}"
+          {% endif %}
+          width="{{ hero_image_width }}"
+          height="{{ hero_image_height }}"
+          alt=""
+          loading="eager"
+        >
+        <span class="portal-facet__veil"></span>
+      </div>
+
+      <div class="portal-facet portal-facet--ear" style="--facet-order: 3;">
+        <img
+          class="portal-facet__image"
+          {% if section.settings.image != blank %}
+            src="{{ section.settings.image | image_url: width: 1800 }}"
+          {% else %}
+            src="{{ 'milaura-hero-triptych-prototype-v2.webp' | asset_url }}"
+          {% endif %}
+          width="{{ hero_image_width }}"
+          height="{{ hero_image_height }}"
+          alt=""
+          loading="eager"
+        >
+        <span class="portal-facet__veil"></span>
+      </div>
     </div>
 
     <div class="portal-hero__copy">
@@ -618,104 +522,30 @@
       </h1>
 
       <p class="portal-hero__body">
-        {{ section.settings.body | default: 'Des bijoux en pierres naturelles et gemmes, sélectionnés pour leur allure, leur qualité et les vertus qui leur sont traditionnellement associées en lithothérapie.' }}
+        {{ section.settings.body | default: 'Bagues, bracelets, colliers et boucles d’oreilles en pierres naturelles, choisis pour leur beauté, leur qualité et leur symbolique en lithothérapie.' }}
       </p>
+
+      <div class="portal-hero__actions">
+        <a class="portal-hero__primary" href="{{ primary_url }}">
+          {{ section.settings.primary_label | default: 'Découvrir les bijoux' }}
+        </a>
+        <a class="portal-hero__secondary" href="{{ secondary_url }}">
+          {{ section.settings.secondary_label | default: 'Trouver la pierre qui me correspond' }}
+        </a>
+      </div>
 
       <div class="portal-hero__proofs" aria-label="Les engagements MilAura">
         <span class="portal-hero__proof">{{ section.settings.proof_1 | default: 'Pierres naturelles certifiées' }}</span>
-        <span class="portal-hero__proof">{{ section.settings.proof_2 | default: 'Sélection et conseils de Karine' }}</span>
-        <span class="portal-hero__proof">{{ section.settings.proof_3 | default: 'Préparation et rechargement dans les Vosges' }}</span>
+        <span class="portal-hero__proof">{{ section.settings.proof_2 | default: 'Préparées par Karine' }}</span>
+        <span class="portal-hero__proof">{{ section.settings.proof_3 | default: 'Expédiées depuis les Vosges' }}</span>
       </div>
     </div>
-
-    <nav class="portal-hero__doors" aria-label="Commencer votre découverte MilAura">
-      <details class="portal-door" open>
-        <summary>
-          <span>
-            <span class="portal-door__eyebrow">Par type de création</span>
-            <span class="portal-door__title">Choisir mon bijou</span>
-          </span>
-          <span class="portal-door__toggle" aria-hidden="true">+</span>
-        </summary>
-        <div class="portal-door__content">
-          <a class="portal-door__link" href="{{ routes.collections_url }}/bracelets-pierres">Bracelets</a>
-          <a class="portal-door__link" href="{{ routes.collections_url }}/colliers-pierres">Colliers</a>
-          <a class="portal-door__link" href="{{ routes.collections_url }}/bijoux-pierres-naturelles">Bagues</a>
-          <a class="portal-door__link" href="{{ routes.collections_url }}/boucles-oreilles">Boucles d’oreilles</a>
-          <a class="portal-door__link" href="{{ routes.collections_url }}/rituels-bien-etre">Rituels</a>
-        </div>
-      </details>
-
-      <details class="portal-door" open>
-        <summary>
-          <span>
-            <span class="portal-door__eyebrow">Comment souhaitez-vous vous sentir ?</span>
-            <span class="portal-door__title">Choisir selon mon besoin</span>
-          </span>
-          <span class="portal-door__toggle" aria-hidden="true">+</span>
-        </summary>
-        <div class="portal-door__content">
-          <a class="portal-door__link" href="{{ routes.collections_url }}/serenite-sommeil">Sérénité</a>
-          <a class="portal-door__link" href="{{ routes.collections_url }}/protection-energie">Protection</a>
-          <a class="portal-door__link" href="{{ routes.collections_url }}/amour-relations">Amour & confiance</a>
-          <a class="portal-door__link" href="#MilauraBenefits-milaura_benefits_explorer_XxAi7N">Tous les besoins</a>
-        </div>
-      </details>
-
-      <details class="portal-door" open>
-        <summary>
-          <span>
-            <span class="portal-door__eyebrow">Vous hésitez ?</span>
-            <span class="portal-door__title">Me laisser guider</span>
-          </span>
-          <span class="portal-door__toggle" aria-hidden="true">+</span>
-        </summary>
-        <div class="portal-door__content">
-          <p class="portal-door__guide">Karine vous guide vers les pierres et les créations adaptées à votre besoin du moment.</p>
-          <a class="portal-door__cta" href="{{ quiz_url }}">Faire le quiz <span aria-hidden="true">→</span></a>
-        </div>
-      </details>
-    </nav>
   </div>
 </div>
 
-<script>
-  (() => {
-    const root = document.getElementById('MilauraPortal-{{ section.id }}');
-    if (!root) return;
-
-    const doors = Array.from(root.querySelectorAll('.portal-door'));
-    const mobileQuery = window.matchMedia('(max-width: 767px)');
-
-    doors.forEach((door) => {
-      const summary = door.querySelector('summary');
-      summary?.addEventListener('click', (event) => {
-        if (!mobileQuery.matches) event.preventDefault();
-      });
-    });
-
-    const syncDoors = (isMobile) => {
-      doors.forEach((door) => {
-        if (isMobile) {
-          door.removeAttribute('open');
-        } else {
-          door.setAttribute('open', '');
-        }
-      });
-    };
-
-    syncDoors(mobileQuery.matches);
-    if (mobileQuery.addEventListener) {
-      mobileQuery.addEventListener('change', (event) => syncDoors(event.matches));
-    } else {
-      mobileQuery.addListener((event) => syncDoors(event.matches));
-    }
-  })();
-</script>
-
 {% schema %}
 {
-  "name": "Hero portail MilAura",
+  "name": "Hero de marque MilAura",
   "tag": "section",
   "class": "milaura-hero-homepage",
   "settings": [
@@ -745,7 +575,33 @@
       "type": "textarea",
       "id": "body",
       "label": "Texte",
-      "default": "Des bijoux en pierres naturelles et gemmes, sélectionnés pour leur allure, leur qualité et les vertus qui leur sont traditionnellement associées en lithothérapie."
+      "default": "Bagues, bracelets, colliers et boucles d’oreilles en pierres naturelles, choisis pour leur beauté, leur qualité et leur symbolique en lithothérapie."
+    },
+    {
+      "type": "header",
+      "content": "Actions"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Bouton principal",
+      "default": "Découvrir les bijoux"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Lien principal"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Lien secondaire",
+      "default": "Trouver la pierre qui me correspond"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Destination secondaire"
     },
     {
       "type": "header",
@@ -761,63 +617,45 @@
       "type": "text",
       "id": "proof_2",
       "label": "Preuve 2",
-      "default": "Sélection et conseils de Karine"
+      "default": "Préparées par Karine"
     },
     {
       "type": "text",
       "id": "proof_3",
       "label": "Preuve 3",
-      "default": "Préparation et rechargement dans les Vosges"
-    },
-    {
-      "type": "url",
-      "id": "quiz_link",
-      "label": "Lien du quiz"
+      "default": "Expédiées depuis les Vosges"
     },
     {
       "type": "header",
-      "content": "Image"
+      "content": "Triptyque taillé"
     },
     {
       "type": "image_picker",
-      "id": "image_desktop",
-      "label": "Image desktop"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_mobile",
-      "label": "Image mobile"
+      "id": "image",
+      "label": "Photographie générale"
     },
     {
       "type": "text",
-      "id": "image_position_desktop",
-      "label": "Cadrage desktop",
-      "default": "34% 52%"
+      "id": "panel_hand_position",
+      "label": "Cadrage main et bracelet",
+      "default": "16% 52%"
     },
     {
       "type": "text",
-      "id": "image_position_mobile",
-      "label": "Cadrage mobile",
-      "default": "43% 43%"
-    }
-  ],
-  "blocks": [
+      "id": "panel_neck_position",
+      "label": "Cadrage collier",
+      "default": "50% 54%"
+    },
     {
-      "type": "trust",
-      "name": "Élément historique masqué",
-      "limit": 3,
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Libellé"
-        }
-      ]
+      "type": "text",
+      "id": "panel_ear_position",
+      "label": "Cadrage boucles d’oreilles",
+      "default": "84% 40%"
     }
   ],
   "presets": [
     {
-      "name": "Hero portail MilAura"
+      "name": "Hero de marque MilAura"
     }
   ]
 }
