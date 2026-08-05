@@ -1,0 +1,756 @@
+{%- liquid
+  assign featured_product = section.settings.product
+  assign destination_url = section.settings.editorial_cta_link
+  if destination_url == blank and featured_product != blank
+    assign destination_url = featured_product.url
+  endif
+  if destination_url == blank
+    assign destination_url = '/collections/bijoux-pierres-naturelles'
+  endif
+
+  assign hero_alt = section.settings.editorial_image_alt
+  if hero_alt == blank and featured_product != blank
+    assign hero_alt = featured_product.title | append: ' porté'
+  endif
+  if hero_alt == blank
+    assign hero_alt = 'Création en aigue-marine MilAura portée'
+  endif
+
+  assign hero_image_width = 941
+  assign hero_image_height = 1672
+  if section.settings.editorial_image_mobile != blank
+    assign hero_image_width = section.settings.editorial_image_mobile.width
+    assign hero_image_height = section.settings.editorial_image_mobile.height
+  endif
+-%}
+
+{%- style -%}
+  @font-face {
+    font-family: 'MilAura Gloock';
+    src: url('{{ 'milaura-gloock-regular.ttf' | asset_url }}') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'MilAura Instrument';
+    src: url('{{ 'milaura-instrument-sans-variable.ttf' | asset_url }}') format('truetype-variations');
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} {
+    --hero-nacre: #fbf8f3;
+    --hero-ink: #2f222d;
+    --hero-gold: #b9975b;
+    --hero-aqua: #6fa9a6;
+    --hero-aqua-soft: #dce9e7;
+    position: relative;
+    isolation: isolate;
+    min-height: clamp(690px, calc(100svh - var(--header-height-desktop, 110px)), 920px);
+    overflow: hidden;
+    color: var(--hero-ink);
+    background: var(--hero-nacre);
+    font-family: 'MilAura Instrument', sans-serif;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__layout {
+    width: min(100%, 1600px);
+    min-height: inherit;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(360px, 0.78fr) minmax(620px, 1.22fr);
+    align-items: center;
+    gap: clamp(18px, 2.6vw, 48px);
+    padding: clamp(42px, 5.5vw, 88px) clamp(28px, 5vw, 80px);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__copy {
+    position: relative;
+    z-index: 3;
+    max-width: 560px;
+    padding-left: clamp(0px, 2vw, 30px);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__kicker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 24px;
+    color: var(--hero-aqua);
+    font-size: 0.76rem;
+    font-weight: 650;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__kicker::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    flex: 0 0 32px;
+    background: currentColor;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__title {
+    max-width: 9ch;
+    margin: 0;
+    color: var(--hero-ink);
+    font-family: 'MilAura Gloock', serif;
+    font-size: clamp(4.2rem, 6.5vw, 7.7rem);
+    font-weight: 400;
+    letter-spacing: -0.055em;
+    line-height: 0.88;
+    text-wrap: balance;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__title em {
+    display: block;
+    margin-left: clamp(26px, 3.6vw, 62px);
+    color: var(--hero-aqua);
+    font-style: normal;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__description {
+    max-width: 42ch;
+    margin: clamp(28px, 3vw, 42px) 0 0;
+    color: rgba(47, 34, 45, 0.76);
+    font-size: clamp(1rem, 1.15vw, 1.14rem);
+    font-weight: 450;
+    letter-spacing: -0.01em;
+    line-height: 1.58;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__product {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 7px 14px;
+    margin-top: 22px;
+    color: var(--hero-ink);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__product-name {
+    font-size: 0.82rem;
+    font-weight: 650;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__price {
+    color: var(--hero-gold);
+    font-family: 'MilAura Gloock', serif;
+    font-size: 1.08rem;
+    white-space: nowrap;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 30px;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cta {
+    min-height: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px 20px 15px 24px;
+    border: 1px solid var(--hero-ink);
+    border-radius: 999px;
+    color: var(--hero-nacre);
+    background: var(--hero-ink);
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.095em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 220ms ease, background-color 220ms ease, transform 220ms ease;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cta-icon {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 28px;
+    border-radius: 50%;
+    color: var(--hero-ink);
+    background: var(--hero-gold);
+    transition: transform 220ms ease;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cta:hover {
+    color: var(--hero-ink);
+    background: transparent;
+    transform: translateY(-2px);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cta:hover .editorial-hero__cta-icon {
+    transform: translateX(3px);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cta:focus-visible {
+    outline: 2px solid var(--hero-aqua);
+    outline-offset: 4px;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__visual {
+    position: relative;
+    z-index: 1;
+    height: min(78svh, 820px);
+    min-height: 610px;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon,
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon-outline {
+    position: absolute;
+    inset: 0;
+    border-radius: 48% 52% 45% 55% / 53% 44% 56% 47%;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon-outline {
+    pointer-events: none;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon-outline--gold {
+    inset: 18px -12px -12px 22px;
+    border: 1px solid rgba(185, 151, 91, 0.72);
+    transform: rotate(2.4deg);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon-outline--aqua {
+    inset: -13px 22px 16px -14px;
+    border: 1px solid rgba(111, 169, 166, 0.48);
+    transform: rotate(-1.8deg);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon {
+    overflow: hidden;
+    background: var(--hero-aqua-soft);
+    animation: milauraCabochonReveal 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__picture,
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__image {
+    object-fit: cover;
+    object-position: {{ section.settings.editorial_image_position_desktop | default: '35% 54%' }};
+    transform: scale(1.08);
+    animation: milauraHeroImageSettle 1400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__material-index {
+    position: absolute;
+    right: clamp(-10px, -0.8vw, -2px);
+    bottom: 7%;
+    z-index: 4;
+    width: min(92%, 620px);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 16px 22px;
+    border: 1px solid rgba(185, 151, 91, 0.56);
+    border-radius: 999px;
+    background: rgba(251, 248, 243, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__material-item {
+    min-width: 0;
+    display: grid;
+    gap: 3px;
+    padding: 0 18px;
+    border-left: 1px solid rgba(47, 34, 45, 0.14);
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__material-item:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__material-item:last-child {
+    padding-right: 0;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__material-index dt {
+    color: rgba(47, 34, 45, 0.5);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__material-index dd {
+    overflow: hidden;
+    margin: 0;
+    color: var(--hero-ink);
+    font-family: 'MilAura Gloock', serif;
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__availability {
+    position: absolute;
+    top: 10%;
+    left: -24px;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 14px;
+    border: 1px solid rgba(47, 34, 45, 0.12);
+    border-radius: 999px;
+    color: var(--hero-ink);
+    background: rgba(251, 248, 243, 0.86);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: 0.68rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #MilauraEditorialHero-{{ section.id }} .editorial-hero__availability-dot {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 7px;
+    border-radius: 50%;
+    background: var(--hero-aqua);
+  }
+
+  @keyframes milauraCabochonReveal {
+    from {
+      clip-path: inset(0 0 100% 0 round 50%);
+    }
+    to {
+      clip-path: inset(0 0 0 0 round 0);
+    }
+  }
+
+  @keyframes milauraHeroImageSettle {
+    from {
+      opacity: 0.7;
+      transform: scale(1.15);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+
+  @media screen and (max-width: 1100px) {
+    #MilauraEditorialHero-{{ section.id }} {
+      min-height: 760px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__layout {
+      grid-template-columns: minmax(320px, 0.86fr) minmax(430px, 1.14fr);
+      padding: 44px 34px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__title {
+      font-size: clamp(3.8rem, 7vw, 5.6rem);
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__visual {
+      height: 650px;
+      min-height: 0;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__material-index {
+      right: -8px;
+      width: calc(100% - 16px);
+      padding: 14px 18px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    #MilauraEditorialHero-{{ section.id }} {
+      min-height: clamp(700px, calc(100svh - var(--header-height-mobile, 80px) - 34px), 780px);
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__layout {
+      min-height: inherit;
+      display: block;
+      padding: 0 20px 30px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__visual {
+      position: absolute;
+      top: -1svh;
+      right: -19vw;
+      width: 112vw;
+      height: clamp(370px, 47svh, 430px);
+      min-height: 0;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon,
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon-outline {
+      border-radius: 48% 52% 47% 53% / 50% 44% 56% 50%;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon-outline--gold {
+      inset: 12px 4px -8px 18px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon-outline--aqua {
+      inset: -8px 18px 14px -6px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__image {
+      object-position: {{ section.settings.editorial_image_position_mobile | default: '43% 48%' }};
+      transform: scale(1.03);
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__copy {
+      position: absolute;
+      right: 20px;
+      bottom: 145px;
+      left: 20px;
+      max-width: none;
+      padding: 0;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__kicker {
+      margin-bottom: 9px;
+      font-size: 0.66rem;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__kicker::before {
+      width: 22px;
+      flex-basis: 22px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__title {
+      max-width: 10ch;
+      font-size: clamp(3rem, 13vw, 3.7rem);
+      line-height: 0.9;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__title em {
+      margin-left: 22px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__description {
+      max-width: 34ch;
+      margin-top: 11px;
+      font-size: 0.82rem;
+      line-height: 1.42;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__product {
+      margin-top: 8px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__product-name {
+      font-size: 0.7rem;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__price {
+      font-size: 0.96rem;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__actions {
+      margin-top: 12px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__cta {
+      width: 100%;
+      min-height: 46px;
+      justify-content: space-between;
+      padding: 11px 12px 11px 20px;
+      font-size: 0.72rem;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__availability {
+      top: auto;
+      right: 26vw;
+      bottom: 5%;
+      left: auto;
+      padding: 7px 10px;
+      font-size: 0.58rem;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__material-index {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    #MilauraEditorialHero-{{ section.id }} {
+      min-height: 720px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__visual {
+      height: 53svh;
+      min-height: 390px;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__title {
+      font-size: clamp(3rem, 14.5vw, 3.55rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__cabochon,
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__image {
+      animation: none;
+    }
+
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__cta,
+    #MilauraEditorialHero-{{ section.id }} .editorial-hero__cta-icon {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+<div id="MilauraEditorialHero-{{ section.id }}" class="milaura-editorial-hero">
+  <div class="editorial-hero__layout">
+    <div class="editorial-hero__copy">
+      <p class="editorial-hero__kicker">{{ section.settings.editorial_kicker | default: 'La création du moment' }}</p>
+
+      <h2 class="editorial-hero__title">
+        {{ section.settings.editorial_title_line_1 | default: "L’aigue-marine," }}
+        <em>{{ section.settings.editorial_title_line_2 | default: 'en pleine lumière.' }}</em>
+      </h2>
+
+      <p class="editorial-hero__description">
+        {{ section.settings.editorial_description | default: 'Une bague sculpturale en argent 925, sertie d’aigue-marine naturelle.' }}
+      </p>
+
+      {%- if featured_product != blank -%}
+        <div class="editorial-hero__product" aria-label="Produit présenté">
+          <span class="editorial-hero__product-name">{{ featured_product.title }}</span>
+          <span class="editorial-hero__price">{{ featured_product.price | money }}</span>
+        </div>
+      {%- endif -%}
+
+      <div class="editorial-hero__actions">
+        <a class="editorial-hero__cta" href="{{ destination_url }}">
+          <span>{{ section.settings.editorial_cta_label | default: 'Découvrir la bague' }}</span>
+          <span class="editorial-hero__cta-icon" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="editorial-hero__visual">
+      <span class="editorial-hero__cabochon-outline editorial-hero__cabochon-outline--gold" aria-hidden="true"></span>
+      <span class="editorial-hero__cabochon-outline editorial-hero__cabochon-outline--aqua" aria-hidden="true"></span>
+
+      <div class="editorial-hero__cabochon">
+        <picture class="editorial-hero__picture">
+          {%- if section.settings.editorial_image_desktop != blank -%}
+            <source
+              media="(min-width: 768px)"
+              srcset="{{ section.settings.editorial_image_desktop | image_url: width: 1000 }} 1000w, {{ section.settings.editorial_image_desktop | image_url: width: 1600 }} 1600w, {{ section.settings.editorial_image_desktop | image_url: width: 2200 }} 2200w"
+              sizes="(min-width: 1400px) 780px, 58vw"
+            >
+          {%- else -%}
+            <source media="(min-width: 768px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-desktop-v5-clean.webp' | asset_url }}">
+          {%- endif -%}
+
+          {%- if section.settings.editorial_image_mobile != blank -%}
+            <source
+              media="(max-width: 767px)"
+              srcset="{{ section.settings.editorial_image_mobile | image_url: width: 720 }} 720w, {{ section.settings.editorial_image_mobile | image_url: width: 1100 }} 1100w"
+              sizes="116vw"
+            >
+          {%- else -%}
+            <source media="(max-width: 767px)" srcset="{{ 'milaura-hero-aigue-marine-chloe-mobile-v5-clean.webp' | asset_url }}">
+          {%- endif -%}
+
+          <img
+            class="editorial-hero__image"
+            {% if section.settings.editorial_image_mobile != blank %}
+              src="{{ section.settings.editorial_image_mobile | image_url: width: 1100 }}"
+            {% else %}
+              src="{{ 'milaura-hero-aigue-marine-chloe-mobile-v5-clean.webp' | asset_url }}"
+            {% endif %}
+            width="{{ hero_image_width }}"
+            height="{{ hero_image_height }}"
+            alt="{{ hero_alt | escape }}"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </picture>
+      </div>
+
+      {%- if featured_product == blank or featured_product.available -%}
+        <span class="editorial-hero__availability">
+          <span class="editorial-hero__availability-dot" aria-hidden="true"></span>
+          {{ section.settings.editorial_availability | default: 'Disponible' }}
+        </span>
+      {%- endif -%}
+
+      <dl class="editorial-hero__material-index" aria-label="Matières de la création">
+        <div class="editorial-hero__material-item">
+          <dt>Pierre</dt>
+          <dd>{{ section.settings.editorial_stone | default: 'Aigue-marine' }}</dd>
+        </div>
+        <div class="editorial-hero__material-item">
+          <dt>Origine</dt>
+          <dd>{{ section.settings.editorial_origin | default: 'Brésil · Grade AA' }}</dd>
+        </div>
+        <div class="editorial-hero__material-item">
+          <dt>Métal</dt>
+          <dd>{{ section.settings.editorial_metal | default: 'Argent 925' }}</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Création du moment",
+  "tag": "section",
+  "class": "milaura-creation-moment",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Création présentée"
+    },
+    {
+      "type": "header",
+      "content": "Texte"
+    },
+    {
+      "type": "text",
+      "id": "editorial_kicker",
+      "label": "Surtitre",
+      "default": "La création du moment"
+    },
+    {
+      "type": "text",
+      "id": "editorial_title_line_1",
+      "label": "Titre, première ligne",
+      "default": "L’aigue-marine,"
+    },
+    {
+      "type": "text",
+      "id": "editorial_title_line_2",
+      "label": "Titre, seconde ligne",
+      "default": "en pleine lumière."
+    },
+    {
+      "type": "textarea",
+      "id": "editorial_description",
+      "label": "Description",
+      "default": "Une bague sculpturale en argent 925, sertie d’aigue-marine naturelle."
+    },
+    {
+      "type": "text",
+      "id": "editorial_cta_label",
+      "label": "Libellé du bouton",
+      "default": "Découvrir la bague"
+    },
+    {
+      "type": "url",
+      "id": "editorial_cta_link",
+      "label": "Lien du bouton (le produit par défaut)"
+    },
+    {
+      "type": "text",
+      "id": "editorial_availability",
+      "label": "Disponibilité",
+      "default": "Disponible"
+    },
+    {
+      "type": "header",
+      "content": "Fiche matière"
+    },
+    {
+      "type": "text",
+      "id": "editorial_stone",
+      "label": "Pierre",
+      "default": "Aigue-marine"
+    },
+    {
+      "type": "text",
+      "id": "editorial_origin",
+      "label": "Origine et qualité",
+      "default": "Brésil · Grade AA"
+    },
+    {
+      "type": "text",
+      "id": "editorial_metal",
+      "label": "Métal",
+      "default": "Argent 925"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "editorial_image_desktop",
+      "label": "Image desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "editorial_image_mobile",
+      "label": "Image mobile"
+    },
+    {
+      "type": "text",
+      "id": "editorial_image_alt",
+      "label": "Texte alternatif"
+    },
+    {
+      "type": "text",
+      "id": "editorial_image_position_desktop",
+      "label": "Cadrage desktop",
+      "default": "35% 54%",
+      "info": "Format CSS object-position, par exemple 35% 54%."
+    },
+    {
+      "type": "text",
+      "id": "editorial_image_position_mobile",
+      "label": "Cadrage mobile",
+      "default": "43% 48%",
+      "info": "Format CSS object-position, par exemple 43% 48%."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust",
+      "name": "Élément historique masqué",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Libellé"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Création du moment"
+    }
+  ]
+}
+{% endschema %}
