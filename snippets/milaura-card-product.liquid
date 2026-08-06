@@ -8,9 +8,18 @@
   - img_loading: 'eager' ou 'lazy' (defaut: 'lazy')
   - show_vendor: boolean
   - show_badges: boolean (defaut: true)
+  - show_secondary_image: boolean (defaut: true)
   - force_bestseller_badge: boolean
   - badge_label: texte du badge (defaut: 'Bestseller')
 {%- endcomment -%}
+
+{%- liquid
+  assign secondary_image_enabled = true
+  if show_secondary_image == false
+    assign secondary_image_enabled = false
+  endif
+  assign secondary_image = card_product.images[1]
+-%}
 
 <a href="{{ card_product.url }}" class="grid__card">
   <div class="grid__card-img">
@@ -32,6 +41,7 @@
 
     {%- if card_product.featured_image != blank -%}
       <img
+        class="grid__card-image grid__card-image--primary"
         src="{{ card_product.featured_image | image_url: width: 480 }}"
         srcset="{{ card_product.featured_image | image_url: width: 160 }} 160w,
                 {{ card_product.featured_image | image_url: width: 320 }} 320w,
@@ -43,6 +53,21 @@
         width="480"
         height="480"
       >
+      {%- if secondary_image_enabled and secondary_image != blank -%}
+        <img
+          class="grid__card-image grid__card-image--secondary"
+          src="{{ secondary_image | image_url: width: 480 }}"
+          srcset="{{ secondary_image | image_url: width: 160 }} 160w,
+                  {{ secondary_image | image_url: width: 320 }} 320w,
+                  {{ secondary_image | image_url: width: 480 }} 480w"
+          sizes="(max-width: 380px) 45vw, (max-width: 768px) 48vw, 25vw"
+          alt="{{ secondary_image.alt | default: card_product.title | escape }}"
+          loading="lazy"
+          decoding="async"
+          width="480"
+          height="480"
+        >
+      {%- endif -%}
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag }}
     {%- endif -%}

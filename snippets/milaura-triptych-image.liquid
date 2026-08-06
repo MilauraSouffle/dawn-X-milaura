@@ -1,0 +1,46 @@
+{%- liquid
+  assign image_class = 'portal-facet__image'
+  if is_active
+    assign image_class = image_class | append: ' is-active'
+  endif
+
+  assign image_loading = loading | default: 'lazy'
+  assign image_fetchpriority = fetchpriority | default: 'low'
+  assign image_position = position | default: '50% 50%'
+-%}
+
+{%- if image != blank -%}
+  <img
+    class="{{ image_class }}"
+    src="{{ image | image_url: width: 1024 }}"
+    srcset="
+      {{ image | image_url: width: 480 }} 480w,
+      {{ image | image_url: width: 768 }} 768w,
+      {{ image | image_url: width: 1024 }} 1024w,
+      {{ image | image_url: width: 1200 }} 1200w
+    "
+    sizes="(max-width: 767px) 36vw, 20vw"
+    width="{{ image.width }}"
+    height="{{ image.height }}"
+    alt=""
+    loading="{{ image_loading }}"
+    fetchpriority="{{ image_fetchpriority }}"
+    decoding="async"
+    data-triptych-image
+    data-product-handle="{{ product.handle | escape }}"
+    style="--image-position: {{ image_position }};"
+  >
+{%- elsif fallback_asset != blank -%}
+  <img
+    class="{{ image_class }}"
+    src="{{ fallback_asset | asset_url }}"
+    width="768"
+    height="1152"
+    alt=""
+    loading="{{ image_loading }}"
+    fetchpriority="{{ image_fetchpriority }}"
+    decoding="async"
+    data-triptych-image
+    style="--image-position: {{ image_position }};"
+  >
+{%- endif -%}

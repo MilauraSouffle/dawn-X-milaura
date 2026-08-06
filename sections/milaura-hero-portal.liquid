@@ -4,26 +4,64 @@
     assign primary_url = '#MilauraSelectionAtelier'
   endif
 
-  assign panel_aventurine_width = 768
-  assign panel_aventurine_height = 1152
-  if section.settings.panel_aventurine_image != blank
-    assign panel_aventurine_width = section.settings.panel_aventurine_image.width
-    assign panel_aventurine_height = section.settings.panel_aventurine_image.height
+  assign triptych_product_1 = section.settings.triptych_product_1
+  if triptych_product_1 == blank
+    assign triptych_product_1 = all_products['collier-obsidienne-noire-boho-dore']
+  endif
+  assign triptych_product_2 = section.settings.triptych_product_2
+  if triptych_product_2 == blank
+    assign triptych_product_2 = all_products['bracelet-oeil-de-tigre-cuir-brun']
+  endif
+  assign triptych_product_3 = section.settings.triptych_product_3
+  if triptych_product_3 == blank
+    assign triptych_product_3 = all_products['collier-agate-arbre']
+  endif
+  assign triptych_product_4 = section.settings.triptych_product_4
+  if triptych_product_4 == blank
+    assign triptych_product_4 = all_products['pendentif-argent-925-rhodie-modele-05-amethyste-facettee-bre']
+  endif
+  assign triptych_product_5 = section.settings.triptych_product_5
+  if triptych_product_5 == blank
+    assign triptych_product_5 = all_products['pendentif-amazonite']
+  endif
+  assign triptych_product_6 = section.settings.triptych_product_6
+  if triptych_product_6 == blank
+    assign triptych_product_6 = all_products['bougie-reconfort-neroli-calcedoine']
+  endif
+  assign triptych_product_7 = section.settings.triptych_product_7
+  if triptych_product_7 == blank
+    assign triptych_product_7 = all_products['savon-argan-1-piece']
+  endif
+  assign triptych_product_8 = section.settings.triptych_product_8
+  if triptych_product_8 == blank
+    assign triptych_product_8 = all_products['bol-chantant-120mm-1-piece']
+  endif
+  assign triptych_product_9 = section.settings.triptych_product_9
+  if triptych_product_9 == blank
+    assign triptych_product_9 = all_products['distributeur-savon-lapis-lazuli']
   endif
 
-  assign panel_quartz_width = 768
-  assign panel_quartz_height = 1152
-  if section.settings.panel_quartz_image != blank
-    assign panel_quartz_width = section.settings.panel_quartz_image.width
-    assign panel_quartz_height = section.settings.panel_quartz_image.height
-  endif
+  assign triptych_photo_1_index = section.settings.triptych_photo_1 | default: 2 | minus: 1
+  assign triptych_photo_2_index = section.settings.triptych_photo_2 | default: 2 | minus: 1
+  assign triptych_photo_3_index = section.settings.triptych_photo_3 | default: 1 | minus: 1
+  assign triptych_photo_4_index = section.settings.triptych_photo_4 | default: 1 | minus: 1
+  assign triptych_photo_5_index = section.settings.triptych_photo_5 | default: 1 | minus: 1
+  assign triptych_photo_6_index = section.settings.triptych_photo_6 | default: 1 | minus: 1
+  assign triptych_photo_7_index = section.settings.triptych_photo_7 | default: 1 | minus: 1
+  assign triptych_photo_8_index = section.settings.triptych_photo_8 | default: 1 | minus: 1
+  assign triptych_photo_9_index = section.settings.triptych_photo_9 | default: 1 | minus: 1
 
-  assign panel_object_width = 768
-  assign panel_object_height = 1152
-  if section.settings.panel_object_image != blank
-    assign panel_object_width = section.settings.panel_object_image.width
-    assign panel_object_height = section.settings.panel_object_image.height
-  endif
+  assign triptych_image_1 = triptych_product_1.images[triptych_photo_1_index] | default: triptych_product_1.featured_image
+  assign triptych_image_2 = triptych_product_2.images[triptych_photo_2_index] | default: triptych_product_2.featured_image
+  assign triptych_image_3 = triptych_product_3.images[triptych_photo_3_index] | default: triptych_product_3.featured_image
+  assign triptych_image_4 = triptych_product_4.images[triptych_photo_4_index] | default: triptych_product_4.featured_image
+  assign triptych_image_5 = triptych_product_5.images[triptych_photo_5_index] | default: triptych_product_5.featured_image
+  assign triptych_image_6 = triptych_product_6.images[triptych_photo_6_index] | default: triptych_product_6.featured_image
+  assign triptych_image_7 = triptych_product_7.images[triptych_photo_7_index] | default: triptych_product_7.featured_image
+  assign triptych_image_8 = triptych_product_8.images[triptych_photo_8_index] | default: triptych_product_8.featured_image
+  assign triptych_image_9 = triptych_product_9.images[triptych_photo_9_index] | default: triptych_product_9.featured_image
+
+  assign triptych_interval = section.settings.triptych_interval | default: 4 | times: 1000
 -%}
 
 {%- style -%}
@@ -61,9 +99,11 @@
     --portal-aqua-soft: #dce9e7;
     --portal-quartz: #d7b8b1;
     --portal-amethyst: #7a4d82;
+    --portal-header-overlap: 0px;
+    --portal-base-height: clamp(690px, calc(100svh - 148px), 860px);
     position: relative;
     isolation: isolate;
-    min-height: clamp(690px, calc(100svh - 148px), 860px);
+    min-height: calc(var(--portal-base-height) + var(--portal-header-overlap));
     overflow: hidden;
     color: var(--portal-ink);
     background: var(--portal-nacre);
@@ -73,6 +113,10 @@
   @media screen and (min-width: 1101px) {
     #MainContent > .shopify-section.milaura-hero-homepage {
       margin-top: calc(var(--header-height-desktop, 110px) * -1) !important;
+    }
+
+    #MilauraPortal-{{ section.id }} {
+      --portal-header-overlap: var(--header-height-desktop, 110px);
     }
   }
 
@@ -89,7 +133,7 @@
 
   #MilauraPortal-{{ section.id }} .portal-hero__copy {
     position: absolute;
-    top: 50%;
+    top: calc(50% + (var(--portal-header-overlap) / 2));
     left: clamp(42px, 6vw, 104px);
     z-index: 3;
     width: min(46%, 690px);
@@ -113,32 +157,107 @@
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__title {
-    max-width: 10ch;
+    max-width: 690px;
     margin: 0;
     color: var(--portal-ink);
     font-family: 'MilAura Gloock', serif;
-    font-size: clamp(4rem, 5vw, 5.5rem);
+    font-size: clamp(3.35rem, 4.15vw, 4.7rem);
     font-weight: 400;
     letter-spacing: -0.045em;
-    line-height: 0.93;
+    line-height: 0.94;
     text-wrap: balance;
   }
 
-  #MilauraPortal-{{ section.id }} .portal-hero__title span {
-    display: block;
+  #MilauraPortal-{{ section.id }} .portal-hero__equation-row {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 1.2vw, 18px);
+    width: max-content;
+    max-width: 100%;
   }
 
-  #MilauraPortal-{{ section.id }} .portal-hero__title span:last-child {
-    width: max-content;
-    max-width: 9.6ch;
-    margin-top: 2px;
+  #MilauraPortal-{{ section.id }} .portal-hero__equation-row--stone {
+    margin-top: 5px;
     margin-left: clamp(24px, 3vw, 50px);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__equation-text {
+    display: block;
+    min-width: 0;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__equation-row--stone .portal-hero__equation-text {
     color: var(--portal-aqua-deep);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__operator {
+    position: relative;
+    flex: 0 0 auto;
+    width: clamp(42px, 3.5vw, 52px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(185, 151, 91, 0.86);
+    border-radius: 48% 52% 45% 55%;
+    color: #fffaf2;
+    font-family: 'MilAura Instrument', sans-serif;
+    font-size: 0.38em;
+    font-weight: 720;
+    letter-spacing: 0;
+    line-height: 1;
+    text-shadow: 0 1px 5px rgba(47, 34, 45, 0.38);
+    box-shadow:
+      0 9px 24px rgba(72, 40, 78, 0.2),
+      inset 0 1px 1px rgba(255, 255, 255, 0.72);
+    transform: rotate(5deg);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__operator::after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__operator--plus {
+    background:
+      radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.92) 0 6%, transparent 18%),
+      radial-gradient(circle at 38% 32%, #cfaed8 0, #8a5c91 42%, #4d2b52 100%);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__operator--equals {
+    background:
+      radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.9) 0 6%, transparent 18%),
+      radial-gradient(circle at 40% 34%, #b9dfda 0, #6fa9a6 44%, #376867 100%);
+    transform: rotate(-5deg);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__result {
+    display: flex;
+    align-items: baseline;
+    gap: 0.18em;
+    margin-top: 10px;
+    margin-left: clamp(54px, 7vw, 108px);
+    color: var(--portal-amethyst);
+    font-family: 'MilAura Instrument', sans-serif;
+    font-size: 0.48em;
+    font-weight: 620;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__result-brand {
+    font-family: 'MilAura Dancing', cursive;
+    font-size: 1.42em;
+    font-weight: 650;
+    letter-spacing: 0;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__body {
     max-width: 48ch;
-    margin: clamp(22px, 2vw, 28px) 0 0;
+    margin: clamp(18px, 1.6vw, 24px) 0 0;
     color: rgba(47, 34, 45, 0.84);
     font-size: clamp(1.1875rem, 1.2vw, 1.3125rem);
     font-weight: 460;
@@ -159,23 +278,44 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 25px;
-    border: 1px solid var(--portal-gold);
+    gap: 16px;
+    padding: 10px 11px 10px 25px;
+    border: 1px solid var(--portal-ink);
     border-radius: 999px;
-    color: var(--portal-ink);
-    background: var(--portal-gold);
+    color: var(--portal-paper);
+    background: var(--portal-ink);
     font-size: 1rem;
     font-weight: 750;
     letter-spacing: 0.045em;
     text-decoration: none;
     text-transform: uppercase;
-    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+    box-shadow: 0 14px 30px rgba(47, 34, 45, 0.16);
+    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__primary:hover {
-    color: var(--portal-paper);
-    background: var(--portal-ink);
+    color: var(--portal-ink);
+    background: transparent;
     transform: translateY(-2px);
+    box-shadow: 0 18px 34px rgba(47, 34, 45, 0.12);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__primary-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--portal-ink);
+    background: var(--portal-gold);
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: transform 180ms ease;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__primary:hover .portal-hero__primary-icon {
+    transform: translateX(3px);
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__primary:focus-visible {
@@ -183,42 +323,33 @@
     outline-offset: 5px;
   }
 
-  #MilauraPortal-{{ section.id }} .portal-hero__proofs {
+  #MilauraPortal-{{ section.id }} .portal-hero__proof-card {
     display: grid;
-    gap: 8px;
-    max-width: 34rem;
+    gap: 5px;
+    max-width: 35rem;
     margin: 24px 0 0;
-    padding: 0;
+    padding: 13px 17px 13px 20px;
+    border-left: 2px solid var(--portal-gold);
+    border-radius: 0 14px 14px 0;
     color: rgba(47, 34, 45, 0.84);
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0;
-    line-height: 1.35;
-    list-style: none;
-    text-transform: none;
+    background: linear-gradient(90deg, rgba(185, 151, 91, 0.11), rgba(255, 253, 249, 0.2));
   }
 
-  #MilauraPortal-{{ section.id }} .portal-hero__proof {
-    display: grid;
-    grid-template-columns: 22px minmax(0, 1fr);
-    align-items: center;
-    gap: 10px;
-    min-height: 24px;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__proof::before {
-    content: '✓';
-    width: 20px;
-    height: 20px;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(185, 151, 91, 0.68);
-    border-radius: 50%;
+  #MilauraPortal-{{ section.id }} .portal-hero__proof-label {
     color: #725927;
-    background: rgba(255, 253, 249, 0.78);
-    font-size: 0.72rem;
-    font-weight: 700;
-    line-height: 1;
+    font-size: 0.76rem;
+    font-weight: 760;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__proof-text {
+    margin: 0;
+    font-size: 0.96rem;
+    font-weight: 560;
+    letter-spacing: -0.005em;
+    line-height: 1.42;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__visual {
@@ -276,28 +407,41 @@
   }
 
   #MilauraPortal-{{ section.id }} .portal-facet__image {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
+    opacity: 0;
+    transform: scale(1.065);
+    transition:
+      opacity 1100ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-facet__image.is-active {
+    z-index: 1;
+    opacity: 1;
     transform: scale(1.035);
   }
 
   #MilauraPortal-{{ section.id }} .portal-facet--hand .portal-facet__image {
-    object-position: var(--panel-position, 50% 50%);
+    object-position: var(--image-position, var(--panel-position, 50% 50%));
   }
 
   #MilauraPortal-{{ section.id }} .portal-facet--neck .portal-facet__image {
-    object-position: var(--panel-position, 50% 50%);
+    object-position: var(--image-position, var(--panel-position, 50% 50%));
   }
 
   #MilauraPortal-{{ section.id }} .portal-facet--object .portal-facet__image {
-    object-position: var(--panel-position, 50% 50%);
+    object-position: var(--image-position, var(--panel-position, 50% 50%));
   }
 
   #MilauraPortal-{{ section.id }} .portal-facet__veil {
     position: absolute;
     inset: 0;
+    z-index: 2;
     pointer-events: none;
     box-shadow: inset 0 0 0 1px rgba(255, 253, 249, 0.26);
   }
@@ -324,7 +468,7 @@
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__title {
-      font-size: clamp(3.75rem, 6.8vw, 5.2rem);
+      font-size: clamp(3.1rem, 5.8vw, 4.4rem);
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__visual {
@@ -332,7 +476,7 @@
       padding-left: 16px;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__proofs {
+    #MilauraPortal-{{ section.id }} .portal-hero__proof-card {
       max-width: 31rem;
     }
   }
@@ -393,15 +537,29 @@
 
     #MilauraPortal-{{ section.id }} .portal-hero__title {
       max-width: none;
-      font-size: clamp(2.8rem, 11.4vw, 3.35rem);
-      line-height: 0.95;
+      font-size: clamp(2.55rem, 10.2vw, 3.15rem);
+      line-height: 0.96;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__title span:last-child {
-      width: auto;
-      max-width: none;
-      margin-top: 3px;
-      margin-left: 20px;
+    #MilauraPortal-{{ section.id }} .portal-hero__equation-row {
+      gap: 9px;
+      width: 100%;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__equation-row--stone {
+      margin-top: 4px;
+      margin-left: 18px;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__operator {
+      width: 36px;
+      font-size: 0.38em;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__result {
+      margin-top: 8px;
+      margin-left: 34px;
+      font-size: 0.48em;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__body {
@@ -420,13 +578,16 @@
     #MilauraPortal-{{ section.id }} .portal-hero__primary {
       width: 100%;
       min-height: 48px;
-      padding: 12px 20px;
+      padding: 8px 9px 8px 20px;
     }
 
-    #MilauraPortal-{{ section.id }} .portal-hero__proofs {
-      gap: 7px;
+    #MilauraPortal-{{ section.id }} .portal-hero__proof-card {
       margin-top: 18px;
-      font-size: 1rem;
+      padding: 12px 14px 12px 17px;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__proof-text {
+      font-size: 0.94rem;
     }
   }
 
@@ -438,70 +599,50 @@
     #MilauraPortal-{{ section.id }} .portal-hero__primary {
       transition: none;
     }
+
+    #MilauraPortal-{{ section.id }} .portal-facet__image {
+      transition: none;
+    }
   }
 {%- endstyle -%}
 
-<div id="MilauraPortal-{{ section.id }}" class="milaura-portal-hero">
+<div
+  id="MilauraPortal-{{ section.id }}"
+  class="milaura-portal-hero"
+  data-triptych-interval="{{ triptych_interval }}"
+>
   <div class="portal-hero__stage">
     <div class="portal-hero__visual" aria-hidden="true">
       <div
         class="portal-facet portal-facet--hand"
-        style="--facet-order: 1; --panel-position: {% if section.settings.panel_aventurine_image != blank %}{{ section.settings.panel_hand_position | default: '50% 50%' }}{% else %}50% 50%{% endif %};"
+        style="--facet-order: 1; --panel-position: {{ section.settings.panel_hand_position | default: '50% 50%' }};"
+        data-triptych-panel
       >
-        <img
-          class="portal-facet__image"
-          {% if section.settings.panel_aventurine_image != blank %}
-            src="{{ section.settings.panel_aventurine_image | image_url: width: 1200 }}"
-          {% else %}
-            src="{{ 'milaura-hero-aventurine-halo-worn-v1.webp' | asset_url }}"
-          {% endif %}
-          width="{{ panel_aventurine_width }}"
-          height="{{ panel_aventurine_height }}"
-          alt=""
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        >
+        {% render 'milaura-triptych-image', image: triptych_image_1, product: triptych_product_1, is_active: true, loading: 'eager', fetchpriority: 'high', position: section.settings.panel_hand_position, fallback_asset: 'milaura-hero-aventurine-halo-worn-v1.webp' %}
+        {% render 'milaura-triptych-image', image: triptych_image_2, product: triptych_product_2, position: section.settings.panel_hand_position %}
+        {% render 'milaura-triptych-image', image: triptych_image_3, product: triptych_product_3, position: section.settings.panel_hand_position %}
         <span class="portal-facet__veil"></span>
       </div>
 
       <div
         class="portal-facet portal-facet--neck"
-        style="--facet-order: 2; --panel-position: {% if section.settings.panel_quartz_image != blank %}{{ section.settings.panel_neck_position | default: '50% 50%' }}{% else %}50% 50%{% endif %};"
+        style="--facet-order: 2; --panel-position: {{ section.settings.panel_neck_position | default: '50% 50%' }};"
+        data-triptych-panel
       >
-        <img
-          class="portal-facet__image"
-          {% if section.settings.panel_quartz_image != blank %}
-            src="{{ section.settings.panel_quartz_image | image_url: width: 1200 }}"
-          {% else %}
-            src="{{ 'milaura-hero-quartz-rose-boho-worn-v1.webp' | asset_url }}"
-          {% endif %}
-          width="{{ panel_quartz_width }}"
-          height="{{ panel_quartz_height }}"
-          alt=""
-          loading="eager"
-          decoding="async"
-        >
+        {% render 'milaura-triptych-image', image: triptych_image_4, product: triptych_product_4, is_active: true, loading: 'eager', fetchpriority: 'auto', position: section.settings.panel_neck_position, fallback_asset: 'milaura-hero-quartz-rose-boho-worn-v1.webp' %}
+        {% render 'milaura-triptych-image', image: triptych_image_5, product: triptych_product_5, position: section.settings.panel_neck_position %}
+        {% render 'milaura-triptych-image', image: triptych_image_6, product: triptych_product_6, position: section.settings.panel_neck_position %}
         <span class="portal-facet__veil"></span>
       </div>
 
       <div
         class="portal-facet portal-facet--object"
-        style="--facet-order: 3; --panel-position: {% if section.settings.panel_object_image != blank %}{{ section.settings.panel_ear_position | default: '50% 50%' }}{% else %}50% 50%{% endif %};"
+        style="--facet-order: 3; --panel-position: {{ section.settings.panel_ear_position | default: '50% 50%' }};"
+        data-triptych-panel
       >
-        <img
-          class="portal-facet__image"
-          {% if section.settings.panel_object_image != blank %}
-            src="{{ section.settings.panel_object_image | image_url: width: 1200 }}"
-          {% else %}
-            src="{{ 'milaura-hero-soap-amethyst-v1.webp' | asset_url }}"
-          {% endif %}
-          width="{{ panel_object_width }}"
-          height="{{ panel_object_height }}"
-          alt=""
-          loading="eager"
-          decoding="async"
-        >
+        {% render 'milaura-triptych-image', image: triptych_image_7, product: triptych_product_7, is_active: true, loading: 'eager', fetchpriority: 'auto', position: section.settings.panel_ear_position, fallback_asset: 'milaura-hero-soap-amethyst-v1.webp' %}
+        {% render 'milaura-triptych-image', image: triptych_image_8, product: triptych_product_8, position: section.settings.panel_ear_position %}
+        {% render 'milaura-triptych-image', image: triptych_image_9, product: triptych_product_9, position: section.settings.panel_ear_position %}
         <span class="portal-facet__veil"></span>
       </div>
     </div>
@@ -512,28 +653,107 @@
       </p>
 
       <h1 class="portal-hero__title">
-        <span>{{ section.settings.title_line_1 | default: 'La beauté d’un bijou.' }}</span>
-        <span>{{ section.settings.title_line_2 | default: 'Les vertus d’une pierre.' }}</span>
+        <span class="portal-hero__equation-row">
+          <span class="portal-hero__equation-text">{{ section.settings.slogan_line_1 | default: 'La beauté d’un bijou' }}</span>
+          <span class="portal-hero__operator portal-hero__operator--plus" aria-hidden="true">+</span>
+        </span>
+        <span class="portal-hero__equation-row portal-hero__equation-row--stone">
+          <span class="portal-hero__equation-text">{{ section.settings.slogan_line_2 | default: 'la vertu des pierres' }}</span>
+          <span class="portal-hero__operator portal-hero__operator--equals" aria-hidden="true">=</span>
+        </span>
+        <span class="portal-hero__result">
+          <span>{{ section.settings.slogan_result | default: 'l’émotion' }}</span>
+          <span class="portal-hero__result-brand">MilAura</span>
+          <span aria-hidden="true">!</span>
+        </span>
       </h1>
 
       <p class="portal-hero__body">
         {{ section.settings.body | default: 'Bagues, bracelets, colliers et boucles d’oreilles en pierres naturelles, choisis pour leur beauté, leur qualité et leur symbolique en lithothérapie.' }}
       </p>
 
-      <ul class="portal-hero__proofs" aria-label="Les engagements MilAura">
-        <li class="portal-hero__proof">{{ section.settings.proof_1 | default: 'Pierres naturelles certifiées' }}</li>
-        <li class="portal-hero__proof">{{ section.settings.proof_2 | default: 'Préparées par Karine' }}</li>
-        <li class="portal-hero__proof">{{ section.settings.proof_3 | default: 'Expédiées depuis notre atelier en France' }}</li>
-      </ul>
+      <div class="portal-hero__proof-card" aria-label="Les engagements MilAura">
+        <span class="portal-hero__proof-label">{{ section.settings.proof_label | default: 'L’engagement MilAura' }}</span>
+        <p class="portal-hero__proof-text">
+          {{ section.settings.proof_text | default: 'Pierres naturelles certifiées. Chaque commande est préparée par Karine et expédiée depuis notre atelier en France.' }}
+        </p>
+      </div>
 
       <div class="portal-hero__actions">
         <a class="portal-hero__primary" href="{{ primary_url }}">
-          {{ section.settings.primary_label | default: 'Voir la sélection de l’atelier' }}
+          <span>{{ section.settings.primary_label_v2 | default: 'Découvrir les créations' }}</span>
+          <span class="portal-hero__primary-icon" aria-hidden="true">→</span>
         </a>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  (() => {
+    const root = document.getElementById('MilauraPortal-{{ section.id }}');
+    if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const visual = root.querySelector('.portal-hero__visual');
+    const panels = Array.from(root.querySelectorAll('[data-triptych-panel]'));
+    if (!visual || panels.length === 0) return;
+
+    const interval = Number(root.dataset.triptychInterval) || 4000;
+    const controller = new AbortController();
+    let panelCursor = 0;
+    let initialTimer;
+    let rotationTimer;
+
+    const advancePanel = () => {
+      if (!root.isConnected) {
+        stopRotation();
+        controller.abort();
+        return;
+      }
+      if (document.hidden) return;
+
+      const panel = panels[panelCursor % panels.length];
+      const images = Array.from(panel.querySelectorAll('[data-triptych-image]'));
+      panelCursor += 1;
+      if (images.length < 2) return;
+
+      const activeIndex = Math.max(0, images.findIndex((image) => image.classList.contains('is-active')));
+      const nextIndex = (activeIndex + 1) % images.length;
+      images[activeIndex].classList.remove('is-active');
+      images[nextIndex].classList.add('is-active');
+    };
+
+    const stopRotation = () => {
+      window.clearTimeout(initialTimer);
+      window.clearInterval(rotationTimer);
+    };
+
+    const startRotation = () => {
+      stopRotation();
+      initialTimer = window.setTimeout(() => {
+        advancePanel();
+        rotationTimer = window.setInterval(advancePanel, interval);
+      }, interval * panels.length);
+    };
+
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      visual.addEventListener('mouseenter', stopRotation, { signal: controller.signal });
+      visual.addEventListener('mouseleave', startRotation, { signal: controller.signal });
+    }
+
+    document.addEventListener(
+      'shopify:section:unload',
+      (event) => {
+        if (!event.target.contains(root)) return;
+        stopRotation();
+        controller.abort();
+      },
+      { signal: controller.signal }
+    );
+
+    startRotation();
+  })();
+</script>
 
 {% schema %}
 {
@@ -553,15 +773,21 @@
     },
     {
       "type": "text",
-      "id": "title_line_1",
-      "label": "Titre, première ligne",
-      "default": "La beauté d’un bijou."
+      "id": "slogan_line_1",
+      "label": "Slogan, première proposition",
+      "default": "La beauté d’un bijou"
     },
     {
       "type": "text",
-      "id": "title_line_2",
-      "label": "Titre, seconde ligne",
-      "default": "Les vertus d’une pierre."
+      "id": "slogan_line_2",
+      "label": "Slogan, seconde proposition",
+      "default": "la vertu des pierres"
+    },
+    {
+      "type": "text",
+      "id": "slogan_result",
+      "label": "Slogan, résultat avant MilAura",
+      "default": "l’émotion"
     },
     {
       "type": "textarea",
@@ -575,9 +801,9 @@
     },
     {
       "type": "text",
-      "id": "primary_label",
+      "id": "primary_label_v2",
       "label": "Bouton principal",
-      "default": "Voir la sélection de l’atelier"
+      "default": "Découvrir les créations"
     },
     {
       "type": "url",
@@ -590,57 +816,188 @@
     },
     {
       "type": "text",
-      "id": "proof_1",
-      "label": "Preuve 1",
-      "default": "Pierres naturelles certifiées"
+      "id": "proof_label",
+      "label": "Titre du cartouche",
+      "default": "L’engagement MilAura"
     },
     {
-      "type": "text",
-      "id": "proof_2",
-      "label": "Preuve 2",
-      "default": "Préparées par Karine"
-    },
-    {
-      "type": "text",
-      "id": "proof_3",
-      "label": "Preuve 3",
-      "default": "Expédiées depuis notre atelier en France"
+      "type": "textarea",
+      "id": "proof_text",
+      "label": "Texte du cartouche",
+      "default": "Pierres naturelles certifiées. Chaque commande est préparée par Karine et expédiée depuis notre atelier en France."
     },
     {
       "type": "header",
-      "content": "Triptyque produits exacts"
+      "content": "Triptyque animé 3 x 3"
     },
     {
-      "type": "image_picker",
-      "id": "panel_aventurine_image",
-      "label": "Panneau bracelet aventurine"
+      "type": "paragraph",
+      "content": "Un seul panneau change à la fois. Si un produit reste vide, la sélection MilAura validée est utilisée automatiquement."
     },
     {
-      "type": "image_picker",
-      "id": "panel_quartz_image",
-      "label": "Panneau collier quartz rose"
+      "type": "range",
+      "id": "triptych_interval",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "unit": "s",
+      "label": "Temps entre deux changements",
+      "default": 4
     },
     {
-      "type": "image_picker",
-      "id": "panel_object_image",
-      "label": "Panneau objet améthyste"
+      "type": "header",
+      "content": "Panneau 1 : bijoux de caractère"
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_1",
+      "label": "1. Collier obsidienne"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_1",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 1",
+      "default": 2
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_2",
+      "label": "2. Bracelet œil de tigre"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_2",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 2",
+      "default": 2
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_3",
+      "label": "3. Collier agate arbre"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_3",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 3",
+      "default": 1
     },
     {
       "type": "text",
       "id": "panel_hand_position",
-      "label": "Cadrage bracelet personnalisé",
+      "label": "Cadrage du panneau 1",
       "default": "50% 50%"
+    },
+    {
+      "type": "header",
+      "content": "Panneau 2 : pierres lumineuses"
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_4",
+      "label": "4. Pendentif améthyste"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_4",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 4",
+      "default": 1
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_5",
+      "label": "5. Pendentif amazonite"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_5",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 5",
+      "default": 1
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_6",
+      "label": "6. Bougie Réconfort"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_6",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 6",
+      "default": 1
     },
     {
       "type": "text",
       "id": "panel_neck_position",
-      "label": "Cadrage collier personnalisé",
+      "label": "Cadrage du panneau 2",
       "default": "50% 50%"
+    },
+    {
+      "type": "header",
+      "content": "Panneau 3 : rituels et maison"
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_7",
+      "label": "7. Savon argan"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_7",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 7",
+      "default": 1
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_8",
+      "label": "8. Bol chantant"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_8",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 8",
+      "default": 1
+    },
+    {
+      "type": "product",
+      "id": "triptych_product_9",
+      "label": "9. Distributeur lapis-lazuli"
+    },
+    {
+      "type": "range",
+      "id": "triptych_photo_9",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Photo du produit 9",
+      "default": 1
     },
     {
       "type": "text",
       "id": "panel_ear_position",
-      "label": "Cadrage objet personnalisé",
+      "label": "Cadrage du panneau 3",
       "default": "50% 50%"
     }
   ],
