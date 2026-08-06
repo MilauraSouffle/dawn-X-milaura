@@ -694,9 +694,8 @@
     const root = document.getElementById('MilauraPortal-{{ section.id }}');
     if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const visual = root.querySelector('.portal-hero__visual');
     const panels = Array.from(root.querySelectorAll('[data-triptych-panel]'));
-    if (!visual || panels.length === 0) return;
+    if (panels.length === 0) return;
 
     const interval = Number(root.dataset.triptychInterval) || 4000;
     const controller = new AbortController();
@@ -733,13 +732,8 @@
       initialTimer = window.setTimeout(() => {
         advancePanel();
         rotationTimer = window.setInterval(advancePanel, interval);
-      }, interval * panels.length);
+      }, interval);
     };
-
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      visual.addEventListener('mouseenter', stopRotation, { signal: controller.signal });
-      visual.addEventListener('mouseleave', startRotation, { signal: controller.signal });
-    }
 
     document.addEventListener(
       'shopify:section:unload',
