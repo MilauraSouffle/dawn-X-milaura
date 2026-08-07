@@ -1,806 +1,368 @@
 {% comment %}
-  MILAURA DOCK BRACELET
-  Navigation mobile en trois cabochons : Menu, Trouver ma pierre, Panier.
-  Recherche, compte et telephone vivent dans le panneau Menu.
+  MILAURA DOCK
+  Dock fixe Apple-style en bas de l'ecran sur mobile.
+  4 icones : Telephone, Compte, Contact, Panier (badge reactif).
+  Visible uniquement sur mobile (<=768px).
 {% endcomment %}
 
-{%- liquid
-  assign dock_menu = section.settings.menu
-  if dock_menu == blank
-    assign dock_menu = linklists['main-menu']
-  endif
-  assign stone_url = section.settings.stone_url | default: '/pages/diagnostic-emotionnel'
-  assign dock_phone = section.settings.phone_number | default: '03 72 39 64 73'
-  assign dock_phone_compact = dock_phone | remove: ' '
-  assign dock_phone_href = dock_phone_compact | replace_first: '0', '+33'
--%}
-
 {% style %}
-  :root {
-    --milaura-dock-clearance: calc(94px + env(safe-area-inset-bottom, 0px));
-  }
-
-  body.milaura-dock-menu-open {
-    overflow: hidden;
-  }
+  /* ============================================
+     MILAURA DOCK - Apple-style bottom dock
+     ============================================ */
 
   .milaura-dock {
-    --dock-nacre: #fffdf9;
-    --dock-ink: #2f222d;
-    --dock-prune: #3b2738;
-    --dock-amethyst: #7a4d82;
-    --dock-gold: #b9975b;
-    --dock-aqua: #6fa9a6;
     position: fixed;
-    inset: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     z-index: 99998;
     display: none;
-    pointer-events: none;
-  }
-
-  .milaura-dock.is-menu-open {
-    z-index: 2147482000;
+    align-items: center;
+    justify-content: space-around;
+    padding: 8px 0;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    background: rgba(253, 251, 247, 0.92);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(192, 160, 98, 0.2);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
   }
 
   @media screen and (max-width: 768px) {
     .milaura-dock {
-      display: block;
+      display: flex;
     }
   }
 
-  .milaura-dock__bracelet {
-    position: fixed;
-    right: 12px;
-    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-    left: 12px;
-    width: min(390px, calc(100vw - 24px));
-    height: 76px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 76px minmax(142px, 1fr) 76px;
-    align-items: end;
-    justify-items: center;
-    gap: 3px;
-    pointer-events: auto;
-    transition: opacity 260ms ease, transform 340ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .milaura-dock.is-hidden:not(.is-menu-open) .milaura-dock__bracelet {
-    opacity: 0;
-    transform: translateY(calc(100% + 20px));
-    pointer-events: none;
-  }
-
-  @media screen and (max-width: 768px) {
-    body:has(.milaura-dock.is-hidden) .milaura-bubble-trigger {
-      bottom: 16px;
-    }
-
-    body:has(.milaura-dock.is-hidden) .milaura-bubble-label {
-      bottom: 24px;
-    }
-  }
-
-  .milaura-dock__bracelet::before,
-  .milaura-dock__bracelet::after {
-    content: '';
-    position: absolute;
-    right: 48px;
-    bottom: 26px;
-    left: 48px;
-    z-index: 0;
-    height: 38px;
-    border-top: 1px solid rgba(185, 151, 91, 0.92);
-    border-radius: 50% 50% 0 0;
-    pointer-events: none;
-    transform: rotate(-1deg);
-  }
-
-  .milaura-dock__bracelet::after {
-    right: 54px;
-    bottom: 20px;
-    left: 54px;
-    border-top-color: rgba(111, 169, 166, 0.66);
-    transform: rotate(1.4deg);
-  }
-
-  .milaura-dock__item {
-    position: relative;
-    z-index: 2;
-    min-width: 0;
-    border: 0;
-    color: var(--dock-ink);
-    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
-    text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
-  }
-
-  .milaura-dock__item:focus-visible {
-    outline: 2px solid var(--dock-aqua);
-    outline-offset: 4px;
-  }
-
-  .milaura-dock__item--side {
-    width: 72px;
-    height: 68px;
+  /* --- DOCK ITEM --- */
+  .milaura-dock-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 4px;
-    padding: 0 4px 2px;
-    background: transparent;
-  }
-
-  .milaura-dock__side-stone {
+    flex: 1;
+    padding: 6px 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: {{ section.settings.text_color | default: '#333333' }};
+    transition: color 0.2s ease, transform 0.2s ease;
     position: relative;
-    width: 48px;
-    height: 48px;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    border: 1px solid rgba(185, 151, 91, 0.72);
-    border-radius: 47% 53% 45% 55% / 54% 46% 54% 46%;
-    background:
-      radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.96) 0 6%, transparent 24%),
-      linear-gradient(145deg, #fffefb 0%, #f5ead7 58%, #e3cfa9 100%);
-    box-shadow:
-      0 10px 25px rgba(47, 34, 45, 0.16),
-      inset 0 1px 1px rgba(255, 255, 255, 0.86);
-    transition: transform 180ms ease, box-shadow 180ms ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .milaura-dock__item--cart .milaura-dock__side-stone {
-    border-color: rgba(111, 169, 166, 0.68);
-    border-radius: 53% 47% 56% 44% / 46% 55% 45% 54%;
-    background:
-      radial-gradient(circle at 31% 23%, rgba(255, 255, 255, 0.96) 0 6%, transparent 24%),
-      linear-gradient(145deg, #fcfffe 0%, #dceae7 58%, #bbd6d2 100%);
+  .milaura-dock-item:active {
+    transform: scale(0.92);
   }
 
-  .milaura-dock__item--side:active .milaura-dock__side-stone {
-    transform: scale(0.93);
-    box-shadow: 0 5px 13px rgba(47, 34, 45, 0.14);
+  .milaura-dock-item svg {
+    width: 22px;
+    height: 22px;
+    color: {{ section.settings.icon_color | default: '#333333' }};
+    transition: color 0.2s ease;
   }
 
-  .milaura-dock__item--side svg {
-    width: 21px;
-    height: 21px;
-    color: var(--dock-prune);
+  .milaura-dock-item:active svg {
+    color: var(--milaura-gold, #C0A062);
   }
 
-  .milaura-dock__label {
-    display: block;
-    color: var(--dock-ink);
-    font-size: 0.7rem;
-    font-weight: 760;
-    letter-spacing: 0.015em;
+  .milaura-dock-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
     line-height: 1;
   }
 
-  .milaura-dock__item--stone {
-    align-self: start;
-    width: min(100%, 166px);
-    min-height: 64px;
-    display: grid;
-    grid-template-columns: 30px minmax(0, 1fr);
-    align-items: center;
-    gap: 7px;
-    padding: 10px 15px 10px 12px;
-    border: 1px solid rgba(185, 151, 91, 0.86);
-    border-radius: 48% 52% 46% 54% / 55% 45% 55% 45%;
-    color: #fffaf2;
-    background:
-      radial-gradient(circle at 28% 20%, rgba(255, 255, 255, 0.25) 0 4%, transparent 21%),
-      radial-gradient(circle at 82% 86%, rgba(111, 169, 166, 0.26), transparent 42%),
-      linear-gradient(145deg, #543951 0%, var(--dock-prune) 57%, #271a27 100%);
-    box-shadow:
-      0 15px 34px rgba(47, 34, 45, 0.26),
-      inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    text-align: left;
-    transition: transform 180ms ease, box-shadow 180ms ease;
-  }
-
-  .milaura-dock__item--stone::after {
-    content: '';
-    position: absolute;
-    inset: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: inherit;
-    pointer-events: none;
-  }
-
-  .milaura-dock__item--stone:active {
-    transform: scale(0.96);
-    box-shadow: 0 8px 20px rgba(47, 34, 45, 0.22);
-  }
-
-  .milaura-dock__stone-mark {
-    width: 30px;
-    height: 30px;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(236, 207, 146, 0.72);
-    border-radius: 48% 52% 46% 54%;
-    background: rgba(255, 250, 242, 0.1);
-  }
-
-  .milaura-dock__stone-mark svg {
-    width: 17px;
-    height: 17px;
-    color: #f2d28d;
-  }
-
-  .milaura-dock__stone-copy {
-    display: block;
-    min-width: 0;
-    font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
-    font-size: 0.9rem;
-    font-weight: 650;
-    letter-spacing: -0.01em;
-    line-height: 1.08;
-    text-wrap: balance;
-  }
-
-  .milaura-dock__bead {
-    position: absolute;
-    z-index: 3;
-    display: block;
-    border: 1px solid rgba(255, 255, 255, 0.68);
-    border-radius: 48% 52% 45% 55%;
-    pointer-events: none;
-    box-shadow: 0 5px 12px rgba(47, 34, 45, 0.2);
-    animation: milaura-dock-bead-float 3.8s ease-in-out infinite;
-  }
-
-  .milaura-dock__bead--amethyst {
-    top: 5px;
-    left: calc(50% - 98px);
-    width: 10px;
-    height: 10px;
-    background: linear-gradient(145deg, #c7a4cd, #75457d);
-  }
-
-  .milaura-dock__bead--aqua {
-    right: calc(50% - 101px);
-    bottom: 18px;
-    width: 12px;
-    height: 12px;
-    background: linear-gradient(145deg, #c8ebe6, #5f9f9a);
-    animation-delay: -1.9s;
-  }
-
+  /* --- BADGE PANIER --- */
   .milaura-dock-badge {
     position: absolute;
-    top: 0;
-    right: 7px;
-    min-width: 19px;
-    height: 19px;
+    top: 2px;
+    right: 50%;
+    transform: translateX(calc(50% + 10px));
+    min-width: 16px;
+    height: 16px;
+    background: {{ section.settings.badge_color | default: '#C0A062' }};
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4px;
-    border: 2px solid var(--dock-nacre);
-    border-radius: 999px;
-    color: #fff;
-    background: var(--dock-amethyst);
-    font-size: 0.68rem;
-    font-weight: 800;
+    padding: 0 3px;
     line-height: 1;
-    box-shadow: 0 4px 10px rgba(47, 34, 45, 0.2);
   }
 
-  .milaura-dock__overlay {
+  /* --- POPUP TELEPHONE --- */
+  .milaura-dock-phone-overlay {
     position: fixed;
-    inset: 0;
-    z-index: 1;
-    background: rgba(31, 23, 30, 0.42);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100002;
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
-    transition: opacity 240ms ease, visibility 240ms ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
-  .milaura-dock__menu-panel {
-    position: fixed;
-    right: 12px;
-    bottom: var(--milaura-dock-clearance);
-    left: 12px;
-    z-index: 2;
-    width: min(420px, calc(100vw - 24px));
-    max-height: min(68dvh, 620px);
-    margin: 0 auto;
-    padding: 22px 18px 18px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    border: 1px solid rgba(185, 151, 91, 0.48);
-    border-radius: 28px 28px 20px 20px;
-    color: var(--dock-ink);
-    background:
-      radial-gradient(circle at 86% 8%, rgba(111, 169, 166, 0.16), transparent 31%),
-      radial-gradient(circle at 8% 92%, rgba(122, 77, 130, 0.09), transparent 34%),
-      rgba(255, 253, 249, 0.98);
-    box-shadow: 0 25px 70px rgba(47, 34, 45, 0.26);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(24px) scale(0.98);
-    transform-origin: bottom center;
-    transition:
-      opacity 240ms ease,
-      visibility 240ms ease,
-      transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .milaura-dock.is-menu-open .milaura-dock__overlay,
-  .milaura-dock.is-menu-open .milaura-dock__menu-panel {
+  .milaura-dock-phone-overlay.active {
     opacity: 1;
     visibility: visible;
-    pointer-events: auto;
   }
 
-  .milaura-dock.is-menu-open .milaura-dock__menu-panel {
-    transform: translateY(0) scale(1);
+  .milaura-dock-phone-card {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    width: calc(100% - 32px);
+    max-width: 340px;
+    background: rgba(253, 251, 247, 0.97);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(192, 160, 98, 0.25);
+    border-radius: 20px;
+    padding: 28px 24px;
+    z-index: 100003;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .milaura-dock__menu-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 18px;
-    margin-bottom: 18px;
+  .milaura-dock-phone-overlay.active + .milaura-dock-phone-card,
+  .milaura-dock-phone-card.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
   }
 
-  .milaura-dock__menu-kicker {
-    display: block;
-    margin-bottom: 3px;
-    color: #8f6d32;
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.11em;
-    line-height: 1.2;
-    text-transform: uppercase;
-  }
-
-  .milaura-dock__menu-title {
-    margin: 0;
-    color: var(--dock-prune);
-    font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
-    font-size: 1.75rem;
-    font-weight: 550;
-    letter-spacing: -0.025em;
-    line-height: 1.05;
-  }
-
-  .milaura-dock__menu-close {
-    width: 40px;
-    height: 40px;
-    display: grid;
-    flex: 0 0 auto;
-    place-items: center;
-    padding: 0;
-    border: 1px solid rgba(185, 151, 91, 0.42);
+  .milaura-dock-phone-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(0, 0, 0, 0.06);
     border-radius: 50%;
-    color: var(--dock-prune);
-    background: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-  }
-
-  .milaura-dock__menu-close svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .milaura-dock__menu-links {
-    display: grid;
-    gap: 0;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid rgba(185, 151, 91, 0.24);
-    list-style: none;
-  }
-
-  .milaura-dock__menu-link {
-    min-height: 48px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 10px 2px;
-    border-bottom: 1px solid rgba(185, 151, 91, 0.2);
-    color: var(--dock-ink);
-    font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
-    font-size: 1.08rem;
-    font-weight: 550;
-    line-height: 1.2;
-    text-decoration: none;
-  }
-
-  .milaura-dock__menu-link svg {
-    width: 17px;
-    height: 17px;
-    flex: 0 0 auto;
-    color: var(--dock-gold);
-  }
-
-  .milaura-dock__quick-actions {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    margin-top: 18px;
-  }
-
-  .milaura-dock__quick-action {
-    min-width: 0;
-    min-height: 64px;
-    display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 7px;
-    padding: 8px 4px;
-    border: 1px solid rgba(111, 169, 166, 0.32);
-    border-radius: 17px;
-    color: var(--dock-ink);
-    background: rgba(255, 255, 255, 0.64);
-    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
-    font-size: 0.72rem;
-    font-weight: 740;
-    line-height: 1.1;
-    text-align: center;
-    text-decoration: none;
     cursor: pointer;
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1;
+    padding: 0;
+    transition: background 0.2s ease;
   }
 
-  .milaura-dock__quick-action svg {
-    width: 21px;
-    height: 21px;
-    color: var(--dock-amethyst);
+  .milaura-dock-phone-close:hover {
+    background: rgba(0, 0, 0, 0.1);
   }
 
-  .milaura-dock__quick-action:focus-visible,
-  .milaura-dock__menu-close:focus-visible,
-  .milaura-dock__menu-link:focus-visible {
-    outline: 2px solid var(--dock-aqua);
-    outline-offset: 3px;
+  .milaura-dock-phone-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 12px 0;
   }
 
-  @keyframes milaura-dock-bead-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+  .milaura-dock-phone-number {
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--milaura-gold-dark, #8F723A);
+    text-decoration: none;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
   }
 
-  @media screen and (max-width: 359px) {
-    .milaura-dock__bracelet {
-      right: 8px;
-      left: 8px;
-      width: calc(100vw - 16px);
-      grid-template-columns: 68px minmax(134px, 1fr) 68px;
-    }
-
-    .milaura-dock__item--side {
-      width: 66px;
-    }
-
-    .milaura-dock__item--stone {
-      padding-right: 11px;
-      padding-left: 10px;
-    }
-
-    .milaura-dock__stone-copy {
-      font-size: 0.82rem;
-    }
+  .milaura-dock-phone-hours {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0 0 16px 0;
   }
 
+  .milaura-dock-phone-cta {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--milaura-gold, #C0A062), var(--milaura-gold-light, #E6C88B));
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .milaura-dock-phone-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(192, 160, 98, 0.35);
+  }
+
+  /* --- REDUCED MOTION --- */
   @media (prefers-reduced-motion: reduce) {
-    .milaura-dock__bracelet,
-    .milaura-dock__side-stone,
-    .milaura-dock__item--stone,
-    .milaura-dock__overlay,
-    .milaura-dock__menu-panel {
+    .milaura-dock-item,
+    .milaura-dock-phone-overlay,
+    .milaura-dock-phone-card {
       transition: none !important;
-    }
-
-    .milaura-dock__bead {
-      animation: none !important;
     }
   }
 {% endstyle %}
 
-<div class="milaura-dock" id="milaura-dock">
-  <nav class="milaura-dock__bracelet" aria-label="Navigation rapide">
-    <span class="milaura-dock__bead milaura-dock__bead--amethyst" aria-hidden="true"></span>
-    <span class="milaura-dock__bead milaura-dock__bead--aqua" aria-hidden="true"></span>
+<!-- ============ DOCK ============ -->
+<div class="milaura-dock" id="milaura-dock" role="navigation" aria-label="Navigation rapide">
 
-    <button
-      type="button"
-      class="milaura-dock__item milaura-dock__item--side milaura-dock__item--menu"
-      data-dock-menu
-      aria-controls="milaura-dock-menu-panel"
-      aria-expanded="false"
-    >
-      <span class="milaura-dock__side-stone" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-          <path d="M5 7.5h14M5 12h14M5 16.5h14" />
-          <circle cx="7" cy="7.5" r="1" fill="currentColor" stroke="none" />
-          <circle cx="17" cy="16.5" r="1" fill="currentColor" stroke="none" />
-        </svg>
-      </span>
-      <span class="milaura-dock__label">{{ section.settings.menu_label | default: 'Menu' }}</span>
-    </button>
+  <!-- 1. Telephone -->
+  <button class="milaura-dock-item" data-dock-phone aria-label="{{ section.settings.phone_label | default: 'Appeler' }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span class="milaura-dock-label">{{ section.settings.phone_label | default: 'Appeler' }}</span>
+  </button>
 
-    <a
-      href="{{ stone_url }}"
-      class="milaura-dock__item milaura-dock__item--stone"
-      aria-label="{{ section.settings.stone_label | default: 'Trouver ma pierre' }}"
-    >
-      <span class="milaura-dock__stone-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2.8 15 9l6.2 3-6.2 3-3 6.2L9 15l-6.2-3L9 9l3-6.2Z" />
-          <path d="m18.7 3.4.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8.8-1.7Z" />
-        </svg>
-      </span>
-      <span class="milaura-dock__stone-copy">{{ section.settings.stone_label | default: 'Trouver ma pierre' }}</span>
-    </a>
+  <!-- 2. Compte -->
+  <a href="/account" class="milaura-dock-item" aria-label="{{ section.settings.account_label | default: 'Compte' }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <span class="milaura-dock-label">{{ section.settings.account_label | default: 'Compte' }}</span>
+  </a>
 
-    <a
-      href="{{ routes.cart_url }}"
-      class="milaura-dock__item milaura-dock__item--side milaura-dock__item--cart"
-      aria-label="{{ section.settings.cart_label | default: 'Panier' }}"
-    >
-      <span class="milaura-dock__side-stone" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6.5 8.5h11l1 11h-13l1-11Z" />
-          <path d="M9 9V6.8a3 3 0 0 1 6 0V9" />
-        </svg>
-      </span>
-      <span class="milaura-dock__label">{{ section.settings.cart_label | default: 'Panier' }}</span>
-      <span class="milaura-dock-badge" id="milaura-dock-badge" style="display:none;">0</span>
-    </a>
-  </nav>
+  <!-- 3. Recherche -->
+  <button type="button" class="milaura-dock-item" data-dock-search aria-label="Rechercher">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <span class="milaura-dock-label">Rechercher</span>
+  </button>
 
-  <button class="milaura-dock__overlay" type="button" data-dock-menu-close tabindex="-1" aria-label="Fermer le menu"></button>
+  <!-- 4. Panier -->
+  <a href="/cart" class="milaura-dock-item" aria-label="{{ section.settings.cart_label | default: 'Panier' }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <path d="M16 10a4 4 0 0 1-8 0"/>
+    </svg>
+    <span class="milaura-dock-label">{{ section.settings.cart_label | default: 'Panier' }}</span>
+    <span class="milaura-dock-badge" id="milaura-dock-badge" style="display:none;">0</span>
+  </a>
 
-  <section
-    class="milaura-dock__menu-panel"
-    id="milaura-dock-menu-panel"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="milaura-dock-menu-title"
-    aria-hidden="true"
-  >
-    <div class="milaura-dock__menu-head">
-      <div>
-        <span class="milaura-dock__menu-kicker">Votre univers MilAura</span>
-        <h2 class="milaura-dock__menu-title" id="milaura-dock-menu-title">Menu</h2>
-      </div>
-      <button class="milaura-dock__menu-close" type="button" data-dock-menu-close aria-label="Fermer le menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-          <path d="m6 6 12 12M18 6 6 18" />
-        </svg>
-      </button>
-    </div>
+</div>
 
-    <ul class="milaura-dock__menu-links" role="list">
-      {%- if dock_menu != blank and dock_menu.links.size > 0 -%}
-        {%- for link in dock_menu.links -%}
-          <li>
-            <a class="milaura-dock__menu-link" href="{{ link.url }}">
-              <span>{{ link.title | escape }}</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="m9 5 7 7-7 7" />
-              </svg>
-            </a>
-          </li>
-        {%- endfor -%}
-      {%- else -%}
-        <li><a class="milaura-dock__menu-link" href="{{ routes.root_url }}"><span>Accueil</span><span aria-hidden="true">›</span></a></li>
-        <li><a class="milaura-dock__menu-link" href="{{ routes.all_products_collection_url }}"><span>Toutes les créations</span><span aria-hidden="true">›</span></a></li>
-      {%- endif -%}
-    </ul>
-
-    <div class="milaura-dock__quick-actions" aria-label="Accès rapides">
-      <button type="button" class="milaura-dock__quick-action" data-dock-search>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
-          <circle cx="10.8" cy="10.8" r="6.8" />
-          <path d="m16 16 4.2 4.2" />
-        </svg>
-        <span>Rechercher</span>
-      </button>
-
-      <a href="{{ routes.account_url }}" class="milaura-dock__quick-action">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="8" r="3.5" />
-          <path d="M5.5 20a6.5 6.5 0 0 1 13 0" />
-        </svg>
-        <span>{{ section.settings.account_label | default: 'Mon compte' }}</span>
-      </a>
-
-      <a href="tel:{{ dock_phone_href }}" class="milaura-dock__quick-action">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M7.2 3.5h3l1.2 4-2 1.6a14.5 14.5 0 0 0 5.5 5.5l1.6-2 4 1.2v3a2.2 2.2 0 0 1-2.4 2.2A16.2 16.2 0 0 1 5 5.9a2.2 2.2 0 0 1 2.2-2.4Z" />
-        </svg>
-        <span>{{ section.settings.phone_label | default: 'Appeler' }}</span>
-      </a>
-    </div>
-  </section>
+<!-- ============ POPUP TELEPHONE ============ -->
+<div class="milaura-dock-phone-overlay" id="milaura-dock-phone-overlay"></div>
+<div class="milaura-dock-phone-card" id="milaura-dock-phone-card">
+  <button class="milaura-dock-phone-close" id="milaura-dock-phone-close" aria-label="Fermer">&times;</button>
+  <h3 class="milaura-dock-phone-title">Appelez-nous</h3>
+  {%- assign dock_phone = section.settings.phone_number | default: '03 72 39 64 73' -%}
+  <a href="tel:+33{{ dock_phone | remove: ' ' | remove: '0' | prepend: '' }}" class="milaura-dock-phone-number">{{ dock_phone }}</a>
+  <p class="milaura-dock-phone-hours">{{ section.settings.phone_hours | default: 'Lun - Ven, 9h - 18h' }}</p>
+  <a href="tel:+33{{ dock_phone | remove: ' ' | remove: '0' | prepend: '' }}" class="milaura-dock-phone-cta">Appeler maintenant</a>
 </div>
 
 <script>
-  (() => {
-    const dock = document.getElementById('milaura-dock');
-    if (!dock || dock.dataset.ready === 'true') return;
-    dock.dataset.ready = 'true';
+(function() {
+  'use strict';
 
-    const menuButton = dock.querySelector('[data-dock-menu]');
-    const panel = dock.querySelector('.milaura-dock__menu-panel');
-    const closeButtons = dock.querySelectorAll('[data-dock-menu-close]');
-    const searchButton = dock.querySelector('[data-dock-search]');
-    const badge = document.getElementById('milaura-dock-badge');
-    const stickyBar = document.querySelector('.milaura-sticky-bar');
-    const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-    let lastScrollY = window.scrollY;
-    let scrollTicking = false;
-    let returnFocus = null;
+  /* --- Phone popup --- */
+  var phoneBtn = document.querySelector('[data-dock-phone]');
+  var phoneOverlay = document.getElementById('milaura-dock-phone-overlay');
+  var phoneCard = document.getElementById('milaura-dock-phone-card');
+  var phoneClose = document.getElementById('milaura-dock-phone-close');
 
-    const setMenuState = (open) => {
-      dock.classList.toggle('is-menu-open', open);
-      document.body.classList.toggle('milaura-dock-menu-open', open);
-      menuButton.setAttribute('aria-expanded', String(open));
-      panel.setAttribute('aria-hidden', String(!open));
+  function openPhonePopup() {
+    phoneOverlay.classList.add('active');
+    phoneCard.classList.add('active');
+  }
 
-      if (open) {
-        dock.classList.remove('is-hidden');
-        returnFocus = document.activeElement;
-        requestAnimationFrame(() => {
-          const first = panel.querySelector(focusableSelector);
-          if (first) first.focus();
-        });
-      } else if (returnFocus && typeof returnFocus.focus === 'function') {
-        returnFocus.focus();
-      }
-    };
+  function closePhonePopup() {
+    phoneOverlay.classList.remove('active');
+    phoneCard.classList.remove('active');
+  }
 
-    menuButton.addEventListener('click', () => {
-      setMenuState(!dock.classList.contains('is-menu-open'));
-    });
+  if (phoneBtn) phoneBtn.addEventListener('click', openPhonePopup);
+  if (phoneOverlay) phoneOverlay.addEventListener('click', closePhonePopup);
+  if (phoneClose) phoneClose.addEventListener('click', closePhonePopup);
 
-    closeButtons.forEach((button) => {
-      button.addEventListener('click', () => setMenuState(false));
-    });
-
-    panel.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        setMenuState(false);
-        return;
-      }
-
-      if (event.key !== 'Tab') return;
-      const focusable = Array.from(panel.querySelectorAll(focusableSelector));
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    });
-
-    if (searchButton) {
-      searchButton.addEventListener('click', () => {
-        setMenuState(false);
-        if (typeof window.milauraOpenSearch === 'function') {
-          window.milauraOpenSearch();
-        } else {
-          window.location.href = {{ routes.search_url | json }};
-        }
-      });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && phoneOverlay.classList.contains('active')) {
+      closePhonePopup();
     }
+  });
 
-    const updateDockBadge = (count) => {
-      if (!badge) return;
-      if (count > 0) {
-        badge.textContent = count > 99 ? '99+' : count;
-        badge.style.display = 'flex';
-      } else {
-        badge.style.display = 'none';
+  /* --- Dock Search --- */
+  var dockSearchBtn = document.querySelector('[data-dock-search]');
+  if (dockSearchBtn) {
+    dockSearchBtn.addEventListener('click', function() {
+      if (typeof window.milauraOpenSearch === 'function') {
+        window.milauraOpenSearch();
       }
-    };
-
-    fetch(`${window.Shopify?.routes?.root || '/'}cart.js`)
-      .then((response) => response.json())
-      .then((cart) => updateDockBadge(cart.item_count))
-      .catch(() => {});
-
-    if (typeof window.PUB_SUB_EVENTS !== 'undefined' && typeof subscribe === 'function') {
-      subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
-        if (event?.cart) updateDockBadge(event.cart.item_count);
-      });
-    }
-
-    document.addEventListener('cart:updated', () => {
-      fetch(`${window.Shopify?.routes?.root || '/'}cart.js`)
-        .then((response) => response.json())
-        .then((cart) => updateDockBadge(cart.item_count))
-        .catch(() => {});
     });
+  }
 
-    const updateDockVisibility = () => {
-      scrollTicking = false;
-      if (dock.classList.contains('is-menu-open')) return;
+  /* --- Cart badge --- */
+  var badge = document.getElementById('milaura-dock-badge');
 
-      const currentY = Math.max(window.scrollY, 0);
-      const delta = currentY - lastScrollY;
+  function updateDockBadge(count) {
+    if (!badge) return;
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
 
-      if (stickyBar?.classList.contains('is-visible')) {
-        dock.classList.remove('is-hidden');
-        lastScrollY = currentY;
-        return;
+  /* 1. Init: fetch cart count */
+  fetch('/cart.js')
+    .then(function(r) { return r.json(); })
+    .then(function(cart) { updateDockBadge(cart.item_count); })
+    .catch(function() {});
+
+  /* 2. Dawn pub/sub: subscribe to cartUpdate if available */
+  if (typeof window.PUB_SUB_EVENTS !== 'undefined' && typeof subscribe === 'function') {
+    subscribe(PUB_SUB_EVENTS.cartUpdate, function(event) {
+      if (event && event.cart) {
+        updateDockBadge(event.cart.item_count);
       }
+    });
+  }
 
-      if (currentY < 120 || delta < -8) {
-        dock.classList.remove('is-hidden');
-      } else if (delta > 10) {
-        dock.classList.add('is-hidden');
-      }
-
-      lastScrollY = currentY;
-    };
-
-    window.addEventListener('scroll', () => {
-      if (scrollTicking) return;
-      scrollTicking = true;
-      window.requestAnimationFrame(updateDockVisibility);
-    }, { passive: true });
-  })();
+  /* 3. Custom event fallback (Milaura + Dawn cart:updated) */
+  document.addEventListener('cart:updated', function() {
+    fetch('/cart.js')
+      .then(function(r) { return r.json(); })
+      .then(function(cart) {
+        updateDockBadge(cart.item_count);
+      })
+      .catch(function() {});
+  });
+})();
 </script>
 
 {% schema %}
 {
-  "name": "Milaura Dock Bracelet",
+  "name": "Milaura Dock Mobile",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu mobile",
-      "default": "main-menu"
-    },
-    {
-      "type": "text",
-      "id": "menu_label",
-      "label": "Label menu",
-      "default": "Menu"
-    },
-    {
-      "type": "text",
-      "id": "stone_label",
-      "label": "Label central",
-      "default": "Trouver ma pierre"
-    },
-    {
-      "type": "url",
-      "id": "stone_url",
-      "label": "Lien central"
-    },
-    {
-      "type": "text",
-      "id": "cart_label",
-      "label": "Label panier",
-      "default": "Panier"
-    },
-    {
-      "type": "text",
-      "id": "account_label",
-      "label": "Label compte",
-      "default": "Mon compte"
+      "type": "header",
+      "content": "Telephone"
     },
     {
       "type": "text",
@@ -810,14 +372,75 @@
     },
     {
       "type": "text",
+      "id": "phone_hours",
+      "label": "Horaires",
+      "default": "Lun - Ven, 9h - 18h"
+    },
+    {
+      "type": "text",
       "id": "phone_label",
       "label": "Label telephone",
       "default": "Appeler"
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Label compte",
+      "default": "Compte"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Label contact",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "URL page contact"
+    },
+    {
+      "type": "text",
+      "id": "cart_label",
+      "label": "Label panier",
+      "default": "Panier"
+    },
+    {
+      "type": "header",
+      "content": "Apparence"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#FDFBF7"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur texte",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Couleur icones",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Couleur badge panier",
+      "default": "#C0A062"
     }
   ],
   "presets": [
     {
-      "name": "Milaura Dock Bracelet"
+      "name": "Milaura Dock Mobile"
     }
   ]
 }
