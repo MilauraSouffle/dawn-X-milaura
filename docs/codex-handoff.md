@@ -91,7 +91,8 @@ Contrôle du 2026-08-07 à 18:25 CEST :
 
 - checkout actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche active : `codex/milaura-reconcile-2026-08-07` ;
-- HEAD local et distant : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
+- baseline de code réconciliée : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
+- documentation de clôture versionnée ensuite sur la même branche ;
 - divergence distante : `0 ahead`, `0 behind` ;
 - checkout actif strictement propre ;
 - tout le code live et les assets publics actifs requis sont présents ;

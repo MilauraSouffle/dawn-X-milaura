@@ -16,8 +16,8 @@ Aucun déploiement Shopify n'a été effectué pendant cette phase de réconcili
 
 - chemin : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche : `codex/milaura-reconcile-2026-08-07` ;
-- HEAD : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
-- branche distante : même commit ;
+- baseline de code avant ce checkpoint : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
+- checkpoint de clôture versionné ensuite sur la même branche ;
 - divergence : `0 ahead`, `0 behind` ;
 - statut : propre ;
 - secret ou matériau privé détecté dans le checkout actif : aucun.

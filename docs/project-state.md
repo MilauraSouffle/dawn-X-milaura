@@ -118,7 +118,8 @@ Validation : hero terminé et validé visuellement par Patrice.
 
 - checkout canonique propre : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche : `codex/milaura-reconcile-2026-08-07` ;
-- HEAD et branche distante : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
+- baseline de code réconciliée : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
+- documentation de clôture versionnée ensuite sur la même branche ;
 - divergence avec la branche distante : `0 ahead`, `0 behind` ;
 - commits de la réconciliation : `ac49b85b`, `b6b7fce9` et `ff5712dd` ;
 - six fichiers utiles de l'ancien checkout ont été classés, migrés, validés et versionnés ;
