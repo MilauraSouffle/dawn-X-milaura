@@ -58,39 +58,57 @@ class CartDrawer extends HTMLElement {
     button.textContent = 'Ajout...';
 
     try {
+      const cartAddRoute = window.routes?.cart_add_url || '/cart/add';
+      const cartAddUrl = cartAddRoute.endsWith('.js') ? cartAddRoute : `${cartAddRoute}.js`;
       const payload = {
         items: [{ id: variantId, quantity: 1 }],
         sections: this.getSectionsToRender().map((section) => section.id),
         sections_url: window.location.pathname,
       };
-      const response = await fetch(window.routes?.cart_add_url || '/cart/add.js', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json();
-      if (!response.ok || data.status) {
-        throw new Error(data.description || data.message || `cart_add_${response.status}`);
+
+      let data;
+      try {
+        const response = await fetch(cartAddUrl, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          body: JSON.stringify(payload),
+        });
+        data = await response.json().catch(() => null);
+        if (!response.ok || !data || data.status) {
+          throw new Error(data?.description || data?.message || `cart_add_${response.status}`);
+        }
+      } catch (error) {
+        console.error('MilAura quick add request failed:', error);
+        button.textContent = 'Réessayer';
+        return;
       }
 
-      this.setActiveElement(button);
-      this.renderContents(data);
       button.textContent = 'Ajouté';
-
-      const cart = await fetch(window.routes?.cart_url ? `${window.routes.cart_url}.js` : '/cart.js', {
-        credentials: 'same-origin',
-      }).then((cartResponse) => cartResponse.json());
-
-      document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
-      window.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
       if (typeof window.milauraCartToast === 'function') window.milauraCartToast('Ajouté au panier');
-    } catch (error) {
-      console.error('MilAura quick add failed:', error);
-      button.textContent = 'Réessayer';
+
+      this.setActiveElement(button);
+      try {
+        this.renderContents(data);
+      } catch (error) {
+        console.error('MilAura quick add drawer refresh failed:', error);
+      }
+
+      try {
+        const cartRoute = window.routes?.cart_url || '/cart';
+        const cartJsonUrl = cartRoute.endsWith('.js') ? cartRoute : `${cartRoute}.js`;
+        const cartResponse = await fetch(cartJsonUrl, { credentials: 'same-origin' });
+        const cart = await cartResponse.json();
+        if (!cartResponse.ok) throw new Error(`cart_refresh_${cartResponse.status}`);
+
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+        window.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+      } catch (error) {
+        console.error('MilAura quick add cart refresh failed:', error);
+      }
     } finally {
       window.setTimeout(() => {
         button.innerHTML = originalContent;
