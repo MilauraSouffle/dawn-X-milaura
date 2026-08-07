@@ -2,9 +2,9 @@
 
 Date : 2026-08-05
 
-Derniere mise a jour : 2026-08-07 09:55 CEST
+Derniere mise a jour : 2026-08-07 17:35 CEST
 
-Statut : hero termine et valide par Patrice. Dock mobile V2 et CTA prune publies et valides techniquement le 2026-08-07. G1 est en cours dans un worktree propre separe. L'Atelier des emotions est un chantier produit actif. Le Cercle MilAura et la reutilisation de ScratchToReveal sont integres comme lots distincts et ordonnes.
+Statut : hero termine et valide par Patrice. Dock mobile V2 et CTA prune publies et valides techniquement le 2026-08-07. G1 est termine, commite et pousse depuis un worktree propre separe. L'Atelier des emotions est un chantier produit actif. Le Cercle MilAura et la reutilisation de ScratchToReveal sont integres comme lots distincts et ordonnes.
 
 Perimetres : theme Shopify, navigation, systeme CTA, reconciliation Git, verite commerciale, Cercle, ScratchToReveal, acquisition et automatisation
 
@@ -215,7 +215,7 @@ Le live n'est pas en panne. Le risque est cumulatif : chaque nouveau lot augment
 9. Valider Theme Check, JSON, preview et diff avant proposition de merge.
 10. Demander une autorisation distincte avant commit, push, merge ou archivage du vieux checkout.
 
-### Etat G1 au 2026-08-07 a 09:55 CEST
+### Etat G1 termine au 2026-08-07 a 17:35 CEST
 
 - `origin/main` est un miroir automatique Shopify et non une branche humaine de developpement ;
 - dernier commit miroir : `b55b7494`, contenant exactement les quatre fichiers du dock V2 ;
@@ -225,7 +225,10 @@ Le live n'est pas en panne. Le risque est cumulatif : chaque nouveau lot augment
 - nouvelle branche : `codex/milaura-reconcile-2026-08-07`, basee sur `origin/main` ;
 - 20 assets publics referencies ont ete restaures depuis le live ;
 - 9 anciens prototypes live non references ne sont pas recopies ;
-- aucun commit, push, merge, reset, clean ou archivage G1 encore effectue.
+- baseline publique commitee sous `ac49b85b` et poussee sur `origin/codex/milaura-reconcile-2026-08-07` ;
+- `shopify theme check` : 0 erreur et 29 avertissements historiques ;
+- `git diff --check` : aucune erreur ;
+- aucun merge, reset, clean ou archivage de l'ancien checkout effectue.
 
 ### Definition de termine
 
@@ -613,7 +616,7 @@ Chaque etape commence seulement lorsque la definition de termine de l'etape prec
 
 1. `H1` termine : hero valide par Patrice.
 2. `N1` termine : dock V2 et prune d'action publies puis valides techniquement.
-3. `G1` en cours : baseline propre prepare, commit et push encore soumis a accord explicite.
+3. `G1` termine : baseline propre commitee et poussee sous `ac49b85b`.
 4. `P0A` : calculer l'economie du panier, verifier les cumuls Shopify et auditer le reliquat Scratch de la page `/cart`.
 5. `P0B` : compter, identifier et chiffrer quatre produits reels.
 6. Construire la `Selection de l'atelier` avec ces quatre produits.

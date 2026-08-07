@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex
 
-Date : 2026-08-07 09:55 CEST
+Date : 2026-08-07 17:35 CEST
 
 ## Mission de la prochaine session
 
@@ -17,7 +17,7 @@ Reprendre MilAura depuis la base de réconciliation propre, sans perdre les déc
 
 ## Première interaction avec Patrice
 
-Confirmer le commit et le push du baseline G1 préparé dans le worktree propre. Ne pas fusionner `origin/main` dans l'ancien `main` et ne pas nettoyer l'ancien checkout avant archivage explicite.
+Travailler uniquement depuis le worktree propre. G1 est terminé et poussé. Ne pas fusionner `origin/main` dans l'ancien `main` et ne pas nettoyer l'ancien checkout avant archivage explicite.
 
 ## État live
 
@@ -78,29 +78,41 @@ Premières tâches :
 
 ## Ordre d'exécution immédiat
 
-1. Finaliser G1 : committer et pousser le baseline du worktree propre après accord de Patrice.
-2. Calculer la contribution du panier dans le pire scénario et tester les cumuls Shopify.
-3. Identifier quatre produits physiquement présents et rentables.
-4. Construire la Sélection de l'atelier.
-5. Repositionner les trois portes.
-6. Construire la landing Aigue-marine.
-7. Inventorier et prototyper l'Atelier des émotions.
+1. Calculer la contribution du panier dans le pire scénario et tester les cumuls Shopify.
+2. Identifier quatre produits physiquement présents et rentables.
+3. Construire la Sélection de l'atelier.
+4. Repositionner les trois portes.
+5. Construire la landing Aigue-marine.
+6. Inventorier et prototyper l'Atelier des émotions.
 
 ## État Git critique
 
-Contrôle du 2026-08-07 à 09:55 CEST :
+Contrôle du 2026-08-07 à 17:35 CEST :
 
 - vieux `main...origin/main [ahead 29, behind 338]` ;
 - HEAD local `252f31b5`, miroir Shopify `b55b7494` ;
 - 75 modifications suivies, 1 suppression suivie et 177 fichiers non suivis ;
-- nouveau worktree propre sur `codex/milaura-reconcile-2026-08-07` ;
+- worktree propre sur `codex/milaura-reconcile-2026-08-07` ;
+- baseline publique commitée sous `ac49b85b` et poussée sur la branche distante homonyme ;
 - tout le code live est présent dans cette base ;
-- 20 assets live actifs absents du miroir GitHub ont été restaurés ;
+- 20 assets live actifs absents du miroir GitHub ont été restaurés et versionnés ;
 - 9 assets live non référencés restent uniquement sur Shopify ;
 - les 61 écarts restants avec le snapshot live sont des sérialisations automatiques Shopify ;
 - les 9 fichiers JSON de métadonnées Git absents du live sont volontairement conservés.
 
 Ne pas faire de reset, clean, pull global ou merge du vieux `main`. Les 21 écarts métier local/live restent conservés dans l'ancien checkout et seront repris par lots, jamais globalement.
+
+## Camilla et workflow produit VPS
+
+Contrôle en lecture seule du 2026-08-07 :
+
+- workflow autonome monté en lecture-écriture dans `hermes-milaura-control` sous `/opt/data/milaura-generation-nouveau-produit` ;
+- doctrine Camilla, runbook et skill `milaura-product-generation` présents ;
+- environnement Python, scripts, références Chloé et Elena accessibles ;
+- accès OpenAI, Shopify et fournisseur confirmés par réponses HTTP 200 ;
+- création Shopify forcée en brouillon et publication automatique désactivée.
+
+La baseline G1 locale ne modifie pas cette copie VPS. Le workflow privé local reste conservé dans l'ancien checkout jusqu'à sa séparation et son archivage explicites.
 
 ## Panier et Ads
 

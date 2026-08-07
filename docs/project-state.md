@@ -1,10 +1,10 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-07 09:55 CEST
+Dernière mise à jour : 2026-08-07 17:35 CEST
 
 ## État en une phrase
 
-Le hero et le dock mobile V2 sont live et validés, tandis que la réconciliation G1 a produit une base propre séparée fondée sur le dernier miroir Shopify/GitHub. Le vieux checkout sale reste intact jusqu'au commit et au push explicites du lot de réconciliation.
+Le hero et le dock mobile V2 sont live et validés. La réconciliation G1 est terminée : la base propre fondée sur le dernier miroir Shopify/GitHub est commitée et poussée, tandis que l'ancien checkout reste intact comme coffre de conservation.
 
 ## Production Shopify
 
@@ -75,21 +75,19 @@ Validation : hero terminé et validé visuellement par Patrice.
 
 ### P0
 
-1. Réconcilier Git par lots, sans reset ni écrasement.
-2. Calculer l'économie des paliers panier et vérifier les cumuls Shopify.
-3. Compter le stock physique et le rapprocher de Shopify.
-4. Choisir 20 à 30 produits héros rentables.
-5. Tenir un registre de preuve par SKU.
+1. Calculer l'économie des paliers panier et vérifier les cumuls Shopify.
+2. Compter le stock physique et le rapprocher de Shopify.
+3. Choisir 20 à 30 produits héros rentables.
+4. Tenir un registre de preuve par SKU.
 
 ### P1
 
-1. Terminer G1 et adopter la base de travail propre.
-2. Sélection de l'atelier avec quatre produits réels.
-3. Trois portes.
-4. Pierre du moment et landing Aigue-marine.
-5. Karine et preuves.
-6. Sur mesure V1 et pilote Atelier des émotions.
-7. PDP mobile-first, mariage, Journal et Cercle.
+1. Sélection de l'atelier avec quatre produits réels.
+2. Trois portes.
+3. Pierre du moment et landing Aigue-marine.
+4. Karine et preuves.
+5. Sur mesure V1 et pilote Atelier des émotions.
+6. PDP mobile-first, mariage, Journal et Cercle.
 
 ### P2 et P3
 
@@ -116,7 +114,7 @@ Validation : hero terminé et validé visuellement par Patrice.
 
 ## Git
 
-État du 2026-08-07 à 09:55 CEST :
+État du 2026-08-07 à 17:35 CEST :
 
 - vieux checkout sur `main`, HEAD `252f31b5` ;
 - `ahead 29`, `behind 338` après `git fetch origin --prune` ;
@@ -124,18 +122,22 @@ Validation : hero terminé et validé visuellement par Patrice.
 - `origin/main` est un miroir automatique Shopify, dernier commit `b55b7494` ;
 - 484 fichiers dans le thème live, dont 402 identiques au vieux checkout ;
 - aucun fichier live absent du vieux checkout ;
-- nouveau worktree propre : `/Users/paesano/Documents/MilAura website/dawn-X-milaura-reconcile-2026-08-07` ;
+- worktree de développement propre : `/Users/paesano/Documents/MilAura website/dawn-X-milaura-reconcile-2026-08-07` ;
 - branche : `codex/milaura-reconcile-2026-08-07`, fondée sur `origin/main` ;
-- 20 assets publics actifs absents du miroir GitHub ont été recopiés depuis le snapshot live et restent à committer ;
+- baseline publique : commit `ac49b85b`, poussé sur `origin/codex/milaura-reconcile-2026-08-07` ;
+- 20 assets publics actifs absents du miroir GitHub sont désormais versionnés ;
 - 9 assets live non référencés sont documentés mais non recopiés ;
 - aucun reset, clean, merge global ou écrasement du vieux checkout.
 
-Priorité : valider, committer et pousser le baseline G1, puis travailler uniquement depuis la base propre.
+Validation G1 : `shopify theme check` avec 0 erreur et 29 avertissements historiques, `git diff --check` sans erreur, aucun secret ou matériau privé dans le commit.
+
+Priorité : travailler uniquement depuis la base propre et lancer le lot P0A sur l'économie du panier.
 
 ## Documents de reprise
 
 - Handoff : `docs/codex-handoff.md`.
 - Checkpoint : `docs/checkpoints/2026-08-06-1828-milaura-hero-renouveau-little-words-handoff.md`.
 - Checkpoint G1 : `docs/checkpoints/2026-08-07-0955-milaura-dock-v2-g1-reconciliation.md`.
+- Clôture G1 : `docs/checkpoints/2026-08-07-1735-milaura-g1-baseline-complete.md`.
 - Plan : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
 - Spécification : `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
