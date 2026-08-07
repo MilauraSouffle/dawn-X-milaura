@@ -1,10 +1,10 @@
 # MilAura - Handoff Codex
 
-Date : 2026-08-07 17:35 CEST
+Date : 2026-08-07 18:25 CEST
 
 ## Mission de la prochaine session
 
-Reprendre MilAura depuis la base de réconciliation propre, sans perdre les décisions du hero, du dock, de la homepage, du panier, du Cercle, de ScratchToReveal et de l'Atelier des émotions. Le vieux checkout sale reste un coffre de conservation et ne doit plus servir aux nouveaux lots.
+Reprendre MilAura depuis le chemin canonique désormais propre, sans perdre les décisions du hero, du dock, de la homepage, du panier, du Cercle, de ScratchToReveal et de l'Atelier des émotions. L'ancien checkout est archivé comme coffre de conservation et ne doit plus servir aux nouveaux lots.
 
 ## Lecture obligatoire, dans cet ordre
 
@@ -17,7 +17,7 @@ Reprendre MilAura depuis la base de réconciliation propre, sans perdre les déc
 
 ## Première interaction avec Patrice
 
-Travailler uniquement depuis le worktree propre. G1 est terminé et poussé. Ne pas fusionner `origin/main` dans l'ancien `main` et ne pas nettoyer l'ancien checkout avant archivage explicite.
+Travailler uniquement depuis `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. La réconciliation est terminée et poussée. Ne pas fusionner `origin/main` dans l'ancien `main` archivé et ne pas modifier l'archive sans besoin de récupération explicite.
 
 ## État live
 
@@ -87,20 +87,21 @@ Premières tâches :
 
 ## État Git critique
 
-Contrôle du 2026-08-07 à 17:35 CEST :
+Contrôle du 2026-08-07 à 18:25 CEST :
 
-- vieux `main...origin/main [ahead 29, behind 338]` ;
-- HEAD local `252f31b5`, miroir Shopify `b55b7494` ;
-- 75 modifications suivies, 1 suppression suivie et 177 fichiers non suivis ;
-- worktree propre sur `codex/milaura-reconcile-2026-08-07` ;
-- baseline publique commitée sous `ac49b85b` et poussée sur la branche distante homonyme ;
-- tout le code live est présent dans cette base ;
-- 20 assets live actifs absents du miroir GitHub ont été restaurés et versionnés ;
-- 9 assets live non référencés restent uniquement sur Shopify ;
-- les 61 écarts restants avec le snapshot live sont des sérialisations automatiques Shopify ;
-- les 9 fichiers JSON de métadonnées Git absents du live sont volontairement conservés.
+- checkout actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
+- branche active : `codex/milaura-reconcile-2026-08-07` ;
+- HEAD local et distant : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
+- divergence distante : `0 ahead`, `0 behind` ;
+- checkout actif strictement propre ;
+- tout le code live et les assets publics actifs requis sont présents ;
+- six écarts historiques encore utiles ont été migrés dans `ff5712dd` ;
+- archive complète de l'ancien checkout : `/Users/paesano/Documents/MilAura website/dawn-X-milaura-archive-2026-08-07` ;
+- l'archive conserve l'ancien `main` à `252f31b5`, ses modifications suivies et ses fichiers non suivis ;
+- données privées séparées sous `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace` ;
+- aucun secret ou matériau privé n'est présent dans le checkout actif.
 
-Ne pas faire de reset, clean, pull global ou merge du vieux `main`. Les 21 écarts métier local/live restent conservés dans l'ancien checkout et seront repris par lots, jamais globalement.
+Ne pas faire de reset, clean, pull global ou merge du vieux `main` archivé. Pour récupérer un élément historique, comparer le fichier ciblé et le migrer intentionnellement dans un commit distinct.
 
 ## Camilla et workflow produit VPS
 
@@ -112,7 +113,7 @@ Contrôle en lecture seule du 2026-08-07 :
 - accès OpenAI, Shopify et fournisseur confirmés par réponses HTTP 200 ;
 - création Shopify forcée en brouillon et publication automatique désactivée.
 
-La baseline G1 locale ne modifie pas cette copie VPS. Le workflow privé local reste conservé dans l'ancien checkout jusqu'à sa séparation et son archivage explicites.
+La réconciliation locale ne modifie pas cette copie VPS. Le workflow privé local se trouve maintenant sous `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`. Les 171 fichiers actifs utiles sont conservés, avec Chloé, Elena, les outputs et un runbook adapté au nouveau chemin. Le `.env` local est hors Git en permissions `600` et son contenu n'a pas été affiché.
 
 ## Panier et Ads
 
@@ -145,4 +146,4 @@ Avant tout trafic payant :
 
 ## Prompt prêt à copier
 
-> Reprends MilAura depuis `docs/codex-handoff.md`. Lis le checkpoint du 2026-08-06 à 18:28 CEST et les documents liés avant toute modification. Commence en lecture seule par le hero public et Git. Recueille le verdict visuel de Patrice sur les cabochons ovales après propagation. Ensuite, sécurise la réconciliation Git avant une nouvelle grande section. Le prochain lot commerce dépend de la contribution panier et de quatre produits réellement en stock. N'oublie surtout pas `L'Atelier des émotions`, chantier actif inspiré de la mécanique de Little Words Project : Patrice achète les composants maintenant et veut des bracelets MilAura personnalisables en pierres, lettres, messages et charms, conçus par Karine.
+> Reprends MilAura depuis `docs/codex-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. La réconciliation Git et privée est terminée, le hero et le dock sont validés. Commence par le lot P0A : contribution panier dans le pire scénario et cumuls Shopify. Le lot commerce suivant dépend de quatre produits réellement en stock. N'oublie surtout pas `L'Atelier des émotions`, chantier actif inspiré de la mécanique de Little Words Project : Patrice achète les composants maintenant et veut des bracelets MilAura personnalisables en pierres, lettres, messages et charms, conçus par Karine.

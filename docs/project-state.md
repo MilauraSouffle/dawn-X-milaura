@@ -1,10 +1,10 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-07 17:35 CEST
+Dernière mise à jour : 2026-08-07 18:25 CEST
 
 ## État en une phrase
 
-Le hero et le dock mobile V2 sont live et validés. La réconciliation G1 est terminée : la base propre fondée sur le dernier miroir Shopify/GitHub est commitée et poussée, tandis que l'ancien checkout reste intact comme coffre de conservation.
+Le hero et le dock mobile V2 sont live et validés. La réconciliation Git et privée est terminée : le chemin canonique contient une base propre alignée avec GitHub, et l'ancien checkout est archivé sans perte sous un nom daté.
 
 ## Production Shopify
 
@@ -114,24 +114,26 @@ Validation : hero terminé et validé visuellement par Patrice.
 
 ## Git
 
-État du 2026-08-07 à 17:35 CEST :
+État du 2026-08-07 à 18:25 CEST :
 
-- vieux checkout sur `main`, HEAD `252f31b5` ;
-- `ahead 29`, `behind 338` après `git fetch origin --prune` ;
-- 75 fichiers suivis modifiés, 1 suppression suivie et 177 fichiers non suivis ;
-- `origin/main` est un miroir automatique Shopify, dernier commit `b55b7494` ;
-- 484 fichiers dans le thème live, dont 402 identiques au vieux checkout ;
-- aucun fichier live absent du vieux checkout ;
-- worktree de développement propre : `/Users/paesano/Documents/MilAura website/dawn-X-milaura-reconcile-2026-08-07` ;
-- branche : `codex/milaura-reconcile-2026-08-07`, fondée sur `origin/main` ;
-- baseline publique : commit `ac49b85b`, poussé sur `origin/codex/milaura-reconcile-2026-08-07` ;
-- 20 assets publics actifs absents du miroir GitHub sont désormais versionnés ;
-- 9 assets live non référencés sont documentés mais non recopiés ;
-- aucun reset, clean, merge global ou écrasement du vieux checkout.
+- checkout canonique propre : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
+- branche : `codex/milaura-reconcile-2026-08-07` ;
+- HEAD et branche distante : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
+- divergence avec la branche distante : `0 ahead`, `0 behind` ;
+- commits de la réconciliation : `ac49b85b`, `b6b7fce9` et `ff5712dd` ;
+- six fichiers utiles de l'ancien checkout ont été classés, migrés, validés et versionnés ;
+- ancien checkout intact : `/Users/paesano/Documents/MilAura website/dawn-X-milaura-archive-2026-08-07` ;
+- son ancien `main` reste à `252f31b5`, `ahead 29`, `behind 338`, avec toutes ses modifications historiques ;
+- workspace privé hors Git : `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace` ;
+- workflow produit, outputs, modèles Chloé et Elena, photos, documents et données historiques y sont conservés ;
+- `.venv`, caches et fichiers reproductibles sont exclus ;
+- les deux `.env` historiques sont conservés localement en permissions `600`, sans lecture de leur contenu ;
+- corpus `credentials` : 2 741 fichiers utiles source et destination, contrôle checksum sans différence ;
+- Camilla sur le VPS reste indépendante et inchangée.
 
-Validation G1 : `shopify theme check` avec 0 erreur et 29 avertissements historiques, `git diff --check` sans erreur, aucun secret ou matériau privé dans le commit.
+Validation finale : `shopify theme check` avec 0 erreur et 29 avertissements historiques, `git diff --check` sans erreur, checkout canonique propre, aucun secret ou matériau privé dans Git.
 
-Priorité : travailler uniquement depuis la base propre et lancer le lot P0A sur l'économie du panier.
+Priorité : développer uniquement depuis le chemin canonique propre et lancer le lot P0A sur l'économie du panier.
 
 ## Documents de reprise
 
@@ -139,5 +141,6 @@ Priorité : travailler uniquement depuis la base propre et lancer le lot P0A sur
 - Checkpoint : `docs/checkpoints/2026-08-06-1828-milaura-hero-renouveau-little-words-handoff.md`.
 - Checkpoint G1 : `docs/checkpoints/2026-08-07-0955-milaura-dock-v2-g1-reconciliation.md`.
 - Clôture G1 : `docs/checkpoints/2026-08-07-1735-milaura-g1-baseline-complete.md`.
+- Réconciliation complète : `docs/checkpoints/2026-08-07-1825-milaura-repo-reconciliation-complete.md`.
 - Plan : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
 - Spécification : `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
