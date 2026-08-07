@@ -29,30 +29,6 @@
       aria-label="{{ 'sections.cart.title' | t }}"
       tabindex="-1"
     >
-      {%- if cart == empty -%}
-        <div class="drawer__inner-empty">
-          <div class="cart-drawer__warnings center{% if settings.cart_drawer_collection != blank %} cart-drawer__warnings--has-collection{% endif %}">
-            <div class="cart-drawer__empty-content">
-              <h2 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h2>
-              <a href="{{ routes.all_products_collection_url }}" class="button">
-                {{ 'general.continue_shopping' | t }}
-              </a>
-
-              {%- if shop.customer_accounts_enabled and customer == null -%}
-                <p class="cart__login-title h3">{{ 'sections.cart.login.title' | t }}</p>
-                <p class="cart__login-paragraph">
-                  {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}
-                </p>
-              {%- endif -%}
-            </div>
-          </div>
-          {%- if settings.cart_drawer_collection != blank -%}
-            <div class="cart-drawer__collection">
-              {% render 'card-collection', card_collection: settings.cart_drawer_collection, columns: 1 %}
-            </div>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
       <div class="drawer__header">
         <h2 class="drawer__heading">{{ 'sections.cart.title' | t }}</h2>
         <button
@@ -64,6 +40,34 @@
           Retour à la boutique
         </button>
       </div>
+
+      {%- if cart == empty -%}
+        <div class="drawer__inner-empty">
+          <div class="cart-drawer__warnings center">
+            <div class="milaura-cart-empty">
+              <div class="milaura-cart-empty__stones" aria-hidden="true">
+                <span class="milaura-cart-empty__stone milaura-cart-empty__stone--quartz"></span>
+                <span class="milaura-cart-empty__stone milaura-cart-empty__stone--amethyst"></span>
+                <span class="milaura-cart-empty__stone milaura-cart-empty__stone--lapis"></span>
+                <span class="milaura-cart-empty__stone milaura-cart-empty__stone--aqua"></span>
+                <span class="milaura-cart-empty__stone milaura-cart-empty__stone--citrine"></span>
+              </div>
+              <p class="milaura-cart-empty__eyebrow">Votre prochaine pierre vous attend</p>
+              <h2 class="cart__empty-text">Votre panier est vide</h2>
+              <p class="milaura-cart-empty__text">
+                Découvrez les créations choisies par Karine et trouvez celle qui vous accompagne aujourd’hui.
+              </p>
+              <a href="{{ routes.all_products_collection_url }}" class="milaura-cart-empty__cta">
+                <span>Découvrir les créations</span>
+                <span class="milaura-cart-empty__cta-icon" aria-hidden="true">→</span>
+              </a>
+              <a href="/pages/diagnostic-emotionnel" class="milaura-cart-empty__guide">
+                Je cherche la pierre qui me correspond
+              </a>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
 
       <!-- Progression immediately visible, before cart contents -->
       {% render 'milaura-cart-rewards-drawer' %}
