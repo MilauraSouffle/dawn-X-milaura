@@ -4,9 +4,34 @@
       "namespace": "milaura",
       "key": "stone_handle",
       "name": "Handle pierre",
-      "description": "Handle de la pierre associée au produit (ex: calcedoine, obsidienne, amethyste). OBLIGATOIRE pour bijoux et bougies.",
+      "description": "Handle canonique de la pierre associee au produit. Obligatoire pour bijoux et produits avec pierre.",
       "type": "single_line_text_field",
       "owner_type": "product",
+      "required_for": ["bijoux", "produits_avec_pierre"],
+      "validations": {
+        "format": "slug"
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "scent_handle",
+      "name": "Handle senteur",
+      "description": "Handle canonique de la senteur. Obligatoire pour les bougies et produits parfumes.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["bougie", "produit_parfume"],
+      "validations": {
+        "format": "slug"
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "energy_handle",
+      "name": "Handle energie",
+      "description": "Handle energie visible dans le hero PDP, coherent avec le profil emotionnel ou l energie principale du produit.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["produits_commerciaux"],
       "validations": {
         "format": "slug"
       }
@@ -15,9 +40,10 @@
       "namespace": "milaura",
       "key": "product_type_handle",
       "name": "Type produit",
-      "description": "Type de produit (ex: bracelet, collier, bague, bougie). OBLIGATOIRE pour tous les produits.",
+      "description": "Type produit canonique utilise par le theme, les filtres, les tags et la generation produit (ex: bracelet, collier, bague, bougie).",
       "type": "single_line_text_field",
       "owner_type": "product",
+      "required_for": ["all_products"],
       "validations": {
         "format": "slug"
       }
@@ -25,40 +51,176 @@
     {
       "namespace": "milaura",
       "key": "baseline",
-      "name": "Baseline émotionnelle",
-      "description": "Phrase émotionnelle pour hero PDP (ex: Portez votre intention). OPTIONNEL.",
+      "name": "Baseline emotionnelle",
+      "description": "Phrase courte affichee dans le hero PDP ou les blocs de conversion.",
       "type": "single_line_text_field",
-      "owner_type": "product"
+      "owner_type": "product",
+      "required_for": []
     },
     {
       "namespace": "milaura",
       "key": "is_bestseller",
       "name": "Bestseller",
-      "description": "Marquer comme bestseller pour fallback recos. OPTIONNEL (true/false).",
+      "description": "Booleen utilise pour les recommandations, badges et fallbacks merchandising.",
       "type": "boolean",
-      "owner_type": "product"
+      "owner_type": "product",
+      "required_for": []
     },
     {
       "namespace": "milaura",
-      "key": "scent_handle",
-      "name": "Handle senteur",
-      "description": "Handle de la senteur (ex: neroli, bois-oud). OBLIGATOIRE pour bougies uniquement.",
+      "key": "intention_handle",
+      "name": "Handle intention",
+      "description": "Intention canonique du produit: sommeil, protection, amour, stress, energie, clarte, equilibre, confiance, ancrage, purification ou bien-etre.",
       "type": "single_line_text_field",
       "owner_type": "product",
+      "required_for": ["produits_avec_intention"],
       "validations": {
         "format": "slug"
       }
     },
     {
       "namespace": "milaura",
-      "key": "energy_handle",
-      "name": "Handle énergie",
-      "description": "Pour produits sans pierre (ex: sauge). OPTIONNEL.",
+      "key": "stone_name",
+      "name": "Nom pierre",
+      "description": "Nom lisible de la pierre affiche dans les sections PDP.",
       "type": "single_line_text_field",
       "owner_type": "product",
-      "validations": {
-        "format": "slug"
-      }
+      "required_for": ["bijoux", "produits_avec_pierre"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "stone_description",
+      "name": "Description pierre",
+      "description": "Texte court sur la pierre, son energie et son role dans le produit.",
+      "type": "multi_line_text_field",
+      "owner_type": "product",
+      "required_for": ["bijoux", "produits_avec_pierre"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "stone_benefits",
+      "name": "Benefices pierre",
+      "description": "Liste courte serialisee en texte, separee par virgules ou points-virgules selon le contrat agent.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["bijoux", "produits_avec_pierre"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "vertus",
+      "name": "Vertus",
+      "description": "Vertus synthetiques affichees dans le hero PDP ou les blocs produit.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["produits_avec_intention"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "qualite",
+      "name": "Qualite",
+      "description": "Mention de qualite, matiere, finition ou selection produit.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["all_products"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "specifications",
+      "name": "Specifications",
+      "description": "JSON structure pour les dimensions, matieres, taille, poids et details techniques.",
+      "type": "json",
+      "owner_type": "product",
+      "required_for": ["all_products"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "benefits_json",
+      "name": "Benefices JSON",
+      "description": "JSON structure des benefices affichables par le theme.",
+      "type": "json",
+      "owner_type": "product",
+      "required_for": ["all_products"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "story_text",
+      "name": "Histoire produit",
+      "description": "Texte narratif court pour la section histoire ou rituel du produit.",
+      "type": "multi_line_text_field",
+      "owner_type": "product",
+      "required_for": ["all_products"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "ritual_steps",
+      "name": "Etapes rituel",
+      "description": "JSON array des etapes de rituel affichees sur la PDP.",
+      "type": "json",
+      "owner_type": "product",
+      "required_for": ["produits_avec_rituel"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "faq_json",
+      "name": "FAQ produit JSON",
+      "description": "JSON array de questions reponses propres au produit.",
+      "type": "json",
+      "owner_type": "product",
+      "required_for": ["all_products"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "scent_notes",
+      "name": "Notes olfactives",
+      "description": "JSON structure des notes olfactives pour les bougies et produits parfumes.",
+      "type": "json",
+      "owner_type": "product",
+      "required_for": ["bougie", "produit_parfume"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "composition_enabled",
+      "name": "Composition produit active",
+      "description": "Active le selecteur obligatoire de composition sur la fiche produit quand la valeur est true.",
+      "type": "boolean",
+      "owner_type": "product",
+      "required_for": []
+    },
+    {
+      "namespace": "milaura",
+      "key": "composition_title",
+      "name": "Titre composition produit",
+      "description": "Titre affiche au-dessus du selecteur de composition. Fallback theme si vide.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["produits_composition"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "composition_help",
+      "name": "Aide composition produit",
+      "description": "Texte d'aide affiche sous le titre du selecteur de composition. Fallback theme si vide.",
+      "type": "multi_line_text_field",
+      "owner_type": "product",
+      "required_for": ["produits_composition"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "composition_required_qty",
+      "name": "Nombre de choix requis",
+      "description": "Nombre total de choix requis avant ajout au panier. Fallback theme si vide.",
+      "type": "number_integer",
+      "owner_type": "product",
+      "required_for": ["produits_composition"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "composition_option_source",
+      "name": "Options composition JSON",
+      "description": "JSON array optionnel des libelles a afficher. Exemple: [\"Palo Santo clair\", \"Palo Santo intense\"]. Si vide, les titres des variants produit sont utilises.",
+      "type": "json",
+      "owner_type": "product",
+      "required_for": []
     }
   ]
 }

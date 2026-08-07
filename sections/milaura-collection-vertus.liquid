@@ -1,0 +1,179 @@
+{%- comment -%}
+  MILAURA COLLECTION VERTUS
+  Intro editoriale, vertus et conseils de port pour les pages par pierre.
+  Source prioritaire : metafields de collection milaura.*.
+  Repli : settings de section. Si tout est vide, la section ne rend rien.
+{%- endcomment -%}
+
+{%- liquid
+  assign mf_intro = collection.metafields.milaura.stone_intro
+  assign mf_benefits = collection.metafields.milaura.stone_benefits
+  assign mf_wear = collection.metafields.milaura.comment_porter
+
+  assign intro = section.settings.intro_text
+  assign benefits = section.settings.benefits_text
+  assign wear = section.settings.wear_text
+-%}
+
+{%- if mf_intro != blank -%}
+  {%- capture intro -%}{{ mf_intro | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+
+{%- if mf_benefits != blank -%}
+  {%- capture benefits -%}{{ mf_benefits | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+
+{%- if mf_wear != blank -%}
+  {%- capture wear -%}{{ mf_wear | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+
+{%- liquid
+  assign has_content = false
+  if intro != blank or benefits != blank or wear != blank
+    assign has_content = true
+  endif
+-%}
+
+{%- if has_content -%}
+  {%- style -%}
+    #MilauraCollectionVertus-{{ section.id }} {
+      padding: var(--milaura-spacing-md, 32px) var(--milaura-spacing-sm, 16px);
+      background: {{ section.settings.background_color }};
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__intro {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--milaura-text, #333333);
+      text-align: center;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__block {
+      margin-top: var(--milaura-spacing-md, 32px);
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__heading {
+      font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+      font-size: 22px;
+      color: var(--milaura-text, #1b1b1b);
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--milaura-text-light, #444444);
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__body ul {
+      padding-left: 1.2em;
+      margin: 0;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__body li {
+      margin-bottom: 6px;
+    }
+
+    @media screen and (max-width: 768px) {
+      #MilauraCollectionVertus-{{ section.id }} {
+        padding: var(--milaura-spacing-sm, 20px) var(--milaura-spacing-xs, 14px);
+      }
+
+      #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__heading {
+        font-size: 19px;
+      }
+    }
+  {%- endstyle -%}
+
+  <section
+    id="MilauraCollectionVertus-{{ section.id }}"
+    class="milaura-collection-vertus milaura-section"
+    aria-label="A propos de {{ collection.title | escape }}"
+  >
+    <div class="milaura-vertus__inner">
+      {%- if intro != blank -%}
+        <div class="milaura-vertus__intro rte">{{ intro }}</div>
+      {%- endif -%}
+
+      {%- if benefits != blank -%}
+        <div class="milaura-vertus__block">
+          <h2 class="milaura-vertus__heading">
+            <span aria-hidden="true">💎</span>
+            {{ section.settings.benefits_heading | default: 'Les vertus de cette pierre' }}
+          </h2>
+          <div class="milaura-vertus__body rte">{{ benefits }}</div>
+        </div>
+      {%- endif -%}
+
+      {%- if wear != blank -%}
+        <div class="milaura-vertus__block">
+          <h2 class="milaura-vertus__heading">
+            <span aria-hidden="true">✨</span>
+            {{ section.settings.wear_heading | default: 'Comment porter votre pierre' }}
+          </h2>
+          <div class="milaura-vertus__body rte">{{ wear }}</div>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection Vertus",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Contenu prioritaire = metafields de collection (milaura.stone_intro, milaura.stone_benefits, milaura.comment_porter). Les champs ci-dessous servent de repli si les metafields sont vides."
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Intro (repli)"
+    },
+    {
+      "type": "text",
+      "id": "benefits_heading",
+      "label": "Titre vertus",
+      "default": "Les vertus de cette pierre"
+    },
+    {
+      "type": "richtext",
+      "id": "benefits_text",
+      "label": "Vertus (repli)"
+    },
+    {
+      "type": "text",
+      "id": "wear_heading",
+      "label": "Titre comment porter",
+      "default": "Comment porter votre pierre"
+    },
+    {
+      "type": "richtext",
+      "id": "wear_text",
+      "label": "Comment porter (repli)"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Vertus"
+    }
+  ]
+}
+{% endschema %}
