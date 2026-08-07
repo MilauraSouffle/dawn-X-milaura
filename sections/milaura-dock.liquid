@@ -1,7 +1,7 @@
 {% comment %}
   MILAURA DOCK MOBILE
   Navigation principale mobile : Menu, Recherche, Contact, Cercle et Panier.
-  La ligne de gemmes est la signature visuelle du dock.
+  La ligne de gemmes est la signature visuelle du dock et emerge du bas de l'ecran.
 {% endcomment %}
 
 {%- liquid
@@ -10,11 +10,11 @@
 
 {% style %}
   :root {
-    --milaura-mobile-dock-bar: 74px;
-    --milaura-mobile-dock-crown: 54px;
+    --milaura-mobile-dock-bar: 60px;
+    --milaura-mobile-dock-gems: 28px;
     --milaura-mobile-dock-total: calc(
       var(--milaura-mobile-dock-bar) +
-      var(--milaura-mobile-dock-crown) +
+      var(--milaura-mobile-dock-gems) +
       env(safe-area-inset-bottom, 0px)
     );
   }
@@ -24,10 +24,10 @@
     inset: auto 0 0;
     z-index: 99998;
     display: none;
-    align-items: stretch;
+    align-items: flex-start;
     width: 100%;
-    min-height: calc(var(--milaura-mobile-dock-bar) + env(safe-area-inset-bottom, 0px));
-    padding: 0 4px env(safe-area-inset-bottom, 0px);
+    min-height: var(--milaura-mobile-dock-total);
+    padding: 0 4px;
     background: {{ section.settings.bg_color | default: '#2F222D' }};
     border-top: 1px solid rgba(111, 169, 166, 0.72);
     box-shadow: 0 -12px 30px rgba(47, 34, 45, 0.2);
@@ -37,9 +37,10 @@
   .milaura-dock-gem-crown {
     position: absolute;
     right: 0;
-    bottom: 100%;
+    bottom: 0;
     left: 0;
-    height: var(--milaura-mobile-dock-crown);
+    z-index: 1;
+    height: calc(var(--milaura-mobile-dock-gems) + env(safe-area-inset-bottom, 0px));
     overflow: hidden;
     background: {{ section.settings.bg_color | default: '#2F222D' }};
     border-top: 1px solid rgba(185, 151, 91, 0.38);
@@ -48,40 +49,42 @@
 
   .milaura-dock-gem-crown img {
     position: absolute;
-    top: 48%;
+    top: -50px;
     left: 50%;
     display: block;
     width: 100%;
     min-width: 320px;
     height: auto;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
   }
 
   .milaura-dock-gem-crown::after {
     content: '';
     position: absolute;
+    top: -1px;
     right: 0;
-    bottom: -1px;
     left: 0;
-    height: 18px;
+    height: 10px;
     background: linear-gradient(
       to bottom,
-      rgba(47, 34, 45, 0),
-      {{ section.settings.bg_color | default: '#2F222D' }} 86%
+      {{ section.settings.bg_color | default: '#2F222D' }} 0%,
+      rgba(47, 34, 45, 0) 100%
     );
   }
 
   .milaura-dock-item {
     position: relative;
+    z-index: 2;
     display: flex;
     flex: 1 1 20%;
     min-width: 0;
     min-height: var(--milaura-mobile-dock-bar);
-    padding: 9px 2px 8px;
+    height: var(--milaura-mobile-dock-bar);
+    padding: 7px 2px 5px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 3px;
     color: {{ section.settings.text_color | default: '#FBF8F3' }};
     background: transparent;
     border: 0;
@@ -94,8 +97,8 @@
   .milaura-dock-item + .milaura-dock-item::before {
     content: '';
     position: absolute;
-    top: 17px;
-    bottom: 17px;
+    top: 12px;
+    bottom: 12px;
     left: 0;
     width: 1px;
     background: rgba(111, 169, 166, 0.7);
@@ -151,7 +154,7 @@
 
   .milaura-dock-badge {
     position: absolute;
-    top: 7px;
+    top: 5px;
     left: calc(50% + 8px);
     display: none;
     min-width: 17px;
