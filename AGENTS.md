@@ -2,6 +2,13 @@
 
 This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follow the guidelines below to keep changes consistent, maintainable, and compatible with Shopify’s theme tooling.
 
+## Hubs MilAura (carte rapide, maj 2026-07-09)
+- Ce dossier = le SITE / theme Shopify (Liquid, sections, templates). CLAUDE.md = @AGENTS.md : ce fichier est la seule source de verite du repo.
+- Les AUTOMATISATIONS MilAura (workflows N8N, pipeline produits, payloads) vivent dans `~/Documents/Agentic-Ops/milaura-automation/` (voir son AGENTS.md) ; souls et contexte des agents Hermes MilAura : `milaura-automation/agents/`.
+- Scripts, creative/UGC et contexte ops elargi : `~/Documents/Agentic-Ops/`. Etat courant agents/infra : `~/Documents/Agentic-Ops/docs/project-state.md`.
+- Maitre global : `~/.claude/CLAUDE.md` (Codex : `~/.codex/AGENTS.md`).
+- Docs du repo (ranges 2026-07-09) : `docs/project-state.md` (etat), `docs/codex-handoff.md` (handoff), `docs/checkpoints/` (handovers de session), `docs/audits/` (SEO), `docs/playbooks/` (Higgsfield, campagnes, workflows IA), `docs/reference/` (metafields, product mapping, blog API, legal), `docs/archive-2026/` (perime).
+
 ## Project Structure & Module Organization
 - `assets/` holds CSS, JavaScript, and images. Global Milaura styles live in `assets/milaura.css`.
 - `sections/` contains Liquid sections. Custom Milaura sections follow `milaura-*.liquid`.
@@ -35,3 +42,24 @@ This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follo
 ## Configuration & Localization Tips
 - Update `config/settings_schema.json` when adding new settings and keep defaults in `config/settings_data.json`.
 - Keep translation keys consistent across `locales/*.json` when adding or changing copy.
+
+## Contexte projet MilAura (maj 2026-06-16)
+MilAura.fr : e-shop Shopify (bougies emotionnelles, mineraux, bijoux en pierres). Theme Dawn customise (projet dawn-X-milaura). Gere par Karine (femme de Patrice). Vitrine technique d'ONORA.
+
+Stack : Antigravity (IDE), Shopify CLI (compte MilauraSouffle), N8N self-hosted (VPS Hostinger 147.79.100.97). Generation creative images : workflow GPT Image 2 (Gemini abandonne). Enrichissement texte/metafields : a recabler sur le workflow courant (l'ancien pipeline Gemini 3.1 est obsolete, verifier les scripts dans Agentic-Ops/).
+
+Modeles UGC :
+- Chloe (TikTok/Reels, selfie energique) : `Agentic-Ops/Creative + UGC/MilAura/Chloe/chloe_human_model.json`
+- Elena (Instagram/Pinterest, premium serenite) : `Agentic-Ops/Creative + UGC/MilAura/Elena/elena_human_model.json`
+
+Chantiers ouverts connus :
+- Mapping images : `credentials/data/images-final/` contient ~832 dossiers nommes par IDs aleatoires (pas des EAN). Reconstituer le mapping ID -> nom produit (indice : `batch_state.json`) avant de renommer.
+- Pinterest : compte cree + blog milaura.fr en place, mais connexion API + workflow N8N (veille -> generation post -> publication Pinterest/blog, chaque post pointant vers la fiche produit) restent a construire.
+
+Automatisations detaillees et etat agents : `~/Documents/Agentic-Ops/milaura-automation/` + `~/Documents/Agentic-Ops/docs/project-state.md`.
+
+Contraintes durables :
+- Ne pas toucher aux fichiers actifs de dawn-X-milaura sans validation.
+- Verifier les chemins absolus avant d'ecrire.
+- Patrice = operateur solo : viser l'autonomie, zero dependance humaine pour scaler.
+- Pas d'em-dash, dates absolues YYYY-MM-DD.
