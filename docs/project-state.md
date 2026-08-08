@@ -1,10 +1,10 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-08 07:12 CEST
+Dernière mise à jour : 2026-08-08 08:14 CEST
 
 ## État en une phrase
 
-Le hero et le dock mobile V2 sont live et validés. La réconciliation Git et privée est terminée. La session lourde est clôturée avant P0A afin que l'économie du panier démarre dans une nouvelle session depuis un contexte propre et un plan canonique actualisé.
+Le hero, le dock mobile V2 et le nouveau panneau de navigation mobile sont live. Patrice aime la nouvelle direction. La réconciliation Git et privée est terminée, P0A a commencé dans une session séparée et la règle d'usage des doubles anneaux MilAura est désormais verrouillée.
 
 ## Décision de reprise du 2026-08-08
 
@@ -22,7 +22,9 @@ Le hero et le dock mobile V2 sont live et validés. La réconciliation Git et pr
 - ID : `190430282075`.
 - Hero H1C : live et validé visuellement par Patrice le 2026-08-07.
 - Dock V2 : live depuis le 2026-08-07 à 09:46 CEST environ.
+- Panneau mobile V2 : live le 2026-08-08, avec croix de fermeture dorée simple.
 - Pullback ciblé du dock, de la navbar, du hero, de la sélection et de l'asset gemmes : identique au local approuvé.
+- Pullback ciblé de la navbar après la correction du 2026-08-08 : identique octet pour octet au local.
 - Validation publique : mobile 390 px, Menu, Recherche et Panier fonctionnels ; desktop 1440 px sans dock.
 - Theme Check du déploiement : 0 erreur, 29 avertissements historiques.
 
@@ -58,6 +60,17 @@ Validation : hero terminé et validé visuellement par Patrice.
 - Dégradé d'action CTA : `#52394D` vers `#493246`, avec terminaison prune profond.
 - Commits : `0567fff1` pour le baseline live homepage, puis `252f31b5` pour le polish V2.
 - Branche distante sûre : `codex/milaura-mobile-dock-2026-08-07`.
+
+## Panneau mobile et symboles de marque
+
+- Le panneau est un écrin prune avec `Explorer MilAura`, les catégories, le Cercle, `Notre histoire` et `Le Journal`.
+- Le dock reste présent sous le panneau.
+- La fermeture est une croix dorée simple, sans cercle ni double anneau.
+- Le double anneau irrégulier croisé, or et aigue-marine, est réservé au Cercle MilAura et aux cadres de photographies produit importantes.
+- Il est interdit sur les contrôles utilitaires, les fermetures, la recherche, le panier, les focus, les séparateurs et les CTA génériques.
+- Le cabochon `Trouver ma pierre` conserve ses contours décalés comme exception validée.
+- Référence obligatoire : `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md`.
+- Commits du lot : `e89c76e4` puis `e49a18d2` sur `codex/milaura-reconcile-2026-08-07`.
 
 ## Architecture homepage validée
 
@@ -123,11 +136,11 @@ Validation : hero terminé et validé visuellement par Patrice.
 
 ## Git
 
-État contrôlé le 2026-08-08 à 07:12 CEST avant rédaction du handoff :
+État contrôlé le 2026-08-08 à 08:14 CEST avant rédaction du handoff :
 
-- checkout canonique propre : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
+- checkout canonique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche : `codex/milaura-reconcile-2026-08-07` ;
-- HEAD local et distant avant le handoff : `ac16164944a95748b01d46551dd5e5248d55fb61` ;
+- HEAD local et distant avant le handoff : `e49a18d2` ;
 - baseline de code réconciliée : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
 - documentation de clôture versionnée ensuite sur la même branche ;
 - divergence avec la branche distante : `0 ahead`, `0 behind` ;
@@ -142,9 +155,11 @@ Validation : hero terminé et validé visuellement par Patrice.
 - corpus `credentials` : 2 741 fichiers utiles source et destination, contrôle checksum sans différence ;
 - Camilla sur le VPS reste indépendante et inchangée.
 
-Validation finale : `shopify theme check` avec 0 erreur et 29 avertissements historiques, `git diff --check` sans erreur, checkout canonique propre, aucun secret ou matériau privé dans Git.
+Deux modifications concurrentes P0A sont présentes dans `templates/cart.json` et `templates/cart.milaura.json`. Elles ne font pas partie du lot navigation et ne doivent être ni écrasées ni embarquées dans un commit non ciblé.
 
-Priorité : développer uniquement depuis le chemin canonique propre et lancer le lot P0A sur l'économie du panier.
+Validation du lot navigation : `shopify theme check` avec 0 erreur et 29 avertissements historiques, `git diff --check` sans erreur, pullback Shopify identique et contrôle public mobile réussi. Aucun secret ou matériau privé dans Git.
+
+Priorité : développer uniquement depuis le chemin canonique, préserver le diff panier existant et poursuivre le lot P0A sur son économie.
 
 ## Documents de reprise
 
@@ -154,5 +169,7 @@ Priorité : développer uniquement depuis le chemin canonique propre et lancer l
 - Clôture G1 : `docs/checkpoints/2026-08-07-1735-milaura-g1-baseline-complete.md`.
 - Réconciliation complète : `docs/checkpoints/2026-08-07-1825-milaura-repo-reconciliation-complete.md`.
 - Handoff avant P0A : `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
+- Menu mobile et symboles : `docs/checkpoints/2026-08-08-0814-milaura-menu-cercle-branding-handoff.md`.
 - Plan : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
 - Spécification : `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
+- Symboles visuels : `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md`.
