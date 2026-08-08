@@ -1,6 +1,6 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-08 13:18 CEST
+Dernière mise à jour : 2026-08-08 13:32 CEST
 
 ## État en une phrase
 
@@ -11,13 +11,13 @@ Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` son
 - Les trois preuves sont maintenant photographiques et flottantes, sans bandeau de fond : certificat LFG Paris, portrait de Karine et atelier de Metz.
 - Le portrait de Karine est volontairement conservé pour humaniser la boutique.
 - Texte de conversion final : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
-- `choisies avec exigence` reçoit un seul soulignage fin, irrégulier et doré. Les anciens doubles traits prune et aigue-marine ont été supprimés.
+- `choisies avec exigence` reçoit un surlignage champagne horizontal derrière la moitié basse des lettres. Le premier soulignage irrégulier a été refusé puis entièrement supprimé, comme les anciens doubles traits prune et aigue-marine.
 - La hiérarchie du slogan renforce `beauté` et `vertu` sans ajouter de nouvel ornement concurrent.
 - Le triptyque remonte de `34px` à `40px` sur desktop uniquement afin de ne plus chevaucher les preuves photographiques. Le mobile reste inchangé.
 - Déploiement ciblé du seul fichier `sections/milaura-hero-portal.liquid` sur le thème live `190430282075`.
-- Pullback live identique au local, SHA-256 `8f43fd3284f3b0df4c235876fd9cb0f620d583b325a4ac1d01eabe12fc2acbe6`.
+- Pullback live identique au local, SHA-256 `0fa221e4eee886a3b0a4bcbda5052c55dcb822c65496bf3fc9dd1a251a7411ab`.
 - Contrôles publics : desktop `1440 x 1200`, mobile `390 x 1250`, CTA visible dans les deux formats.
-- Commits du lot : `9a809e0d`, `ed455a9f`, `3b98c937` et `45a225fa`.
+- Commits du lot : `9a809e0d`, `ed455a9f`, `3b98c937`, `45a225fa` et `78bbb26b`.
 
 ## Décision P0A et reprise P0B du 2026-08-08
 
@@ -100,7 +100,7 @@ Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` son
 - Hiérarchie renforcée sur `beauté` et `vertu`.
 - CTA unique prune et or : `Découvrir les créations`.
 - Texte de conversion : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
-- Soulignage doré limité à `choisies avec exigence`.
+- Surlignage champagne horizontal limité à `choisies avec exigence`, sans trait, rotation ou pseudo-élément.
 - Trois preuves photographiques flottantes, sans cartouche ni bandeau : LFG Paris, Karine et atelier de Metz.
 - Trois cabochons ovales asymétriques avec doubles contours or et aigue-marine.
 - Neuf photographies produit officielles en rotation, une image toutes les quatre secondes.
@@ -200,10 +200,11 @@ Validation : Hero terminé et déployé. Direction validée visuellement par Pat
 
 - checkout canonique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche : `codex/milaura-reconcile-2026-08-07` ;
-- HEAD du lot Hero poussé : `45a225fa` ;
+- dernier commit fonctionnel Hero poussé : `78bbb26b` ;
 - branche locale alignée avec `origin/codex/milaura-reconcile-2026-08-07` après le push ;
-- commits Hero : `9a809e0d`, `ed455a9f`, `3b98c937` et `45a225fa` ;
+- commits Hero : `9a809e0d`, `ed455a9f`, `3b98c937`, `45a225fa` et `78bbb26b` ;
 - commit des trois portes présent sur la branche : `7f4093f7`, état live et approbation visuelle à reconfirmer lors de la reprise ;
+- nouveaux diffs locaux hors lot observés à la clôture : `sections/milaura-choice-doors.liquid` et `templates/index.json`. Leur provenance, leur état live et leur approbation n'ont pas été audités pendant la correction du Hero ;
 - modifications panier préservées et hors lot : `templates/cart.json` et `templates/cart.milaura.json` ;
 - fichiers non suivis préservés et hors lot : `assets/milaura-hero-proof-karine.webp` et `sections/milaura-selection-atelier 2.liquid` ;
 - aucun reset, nettoyage global, pull global ou déploiement de thème complet n'a été effectué ;

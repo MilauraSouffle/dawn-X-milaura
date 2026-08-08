@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex
 
-Date : 2026-08-08 13:18 CEST
+Date : 2026-08-08 13:32 CEST
 
 ## Mission de la prochaine session
 
@@ -25,9 +25,10 @@ Le Hero est terminé, validé et live. Reprendre par le contrôle du lot des tro
 - Thème live : `dawn-X-milaura/main`, ID `190430282075`.
 - Hero H1C final : live. Photographies, copywriting et hiérarchie validés visuellement par Patrice le 2026-08-08. Dernier espacement desktop demandé explicitement et vérifié techniquement.
 - Texte final du Hero : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
+- `choisies avec exigence` possède un surlignage champagne horizontal derrière la moitié basse des lettres. Aucun soulignage, aucune rotation et aucun pseudo-élément ne subsistent.
 - Les trois preuves photographiques flottent sans bandeau : LFG Paris, portrait de Karine et atelier de Metz.
 - Le triptyque remonte de `34px` à `40px` sur desktop uniquement et ne chevauche plus les preuves. Le mobile est inchangé.
-- Pullback du Hero live identique au local, SHA-256 `8f43fd3284f3b0df4c235876fd9cb0f620d583b325a4ac1d01eabe12fc2acbe6`.
+- Pullback du Hero live identique au local, SHA-256 `0fa221e4eee886a3b0a4bcbda5052c55dcb822c65496bf3fc9dd1a251a7411ab`.
 - Dock mobile V2 : live et validé.
 - Nouveau panneau mobile : live. Patrice a répondu `j'aime beaucoup bravo`.
 - Croix de fermeture finale : dorée, simple, sans anneaux.
@@ -55,10 +56,10 @@ Le cabochon `Trouver ma pierre` conserve ses contours décalés comme exception 
 
 - Checkout : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche : `codex/milaura-reconcile-2026-08-07`.
-- HEAD du lot Hero poussé : `45a225fa fix: separate hero triptych from proof`.
-- Commits Hero précédents : `9a809e0d`, `ed455a9f` et `3b98c937`.
+- Dernier commit fonctionnel Hero poussé : `78bbb26b fix: replace hero underline with champagne highlight`.
+- Commits Hero précédents : `9a809e0d`, `ed455a9f`, `3b98c937` et `45a225fa`.
 - Commit des trois portes présent sur la branche : `7f4093f7`. Ne pas assimiler sa présence Git à une validation visuelle ou live sans nouveau contrôle.
-- La branche locale était alignée avec la branche distante après le push de `45a225fa`.
+- La branche locale était alignée avec la branche distante après le push de `78bbb26b`, avant l'actualisation de cette documentation.
 
 Deux fichiers panier sont modifiés localement par le lot P0A :
 
@@ -69,10 +70,12 @@ Ils retirent le reliquat panier obsolète. Ils ne sont ni stagés, ni commités,
 
 Fichiers hors lot toujours présents localement :
 
+- `sections/milaura-choice-doors.liquid` ;
+- `templates/index.json` ;
 - `assets/milaura-hero-proof-karine.webp` ;
 - `sections/milaura-selection-atelier 2.liquid`.
 
-Ne pas les supprimer sans validation. Le second est un doublon iCloud dont le nom est invalide pour Shopify.
+Ne pas les supprimer, les réinitialiser ou les embarquer sans audit. Les deux premiers diffs sont apparus hors de la correction du Hero. Leur provenance, leur état live et leur approbation n'ont pas été contrôlés dans cette passe. Le dernier fichier est un doublon iCloud dont le nom est invalide pour Shopify.
 
 Validation de `L’atelier MilAura` :
 
