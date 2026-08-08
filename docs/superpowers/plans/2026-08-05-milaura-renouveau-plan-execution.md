@@ -2,9 +2,9 @@
 
 Date : 2026-08-05
 
-Derniere mise a jour : 2026-08-07 17:35 CEST
+Derniere mise a jour : 2026-08-08 07:12 CEST
 
-Statut : hero termine et valide par Patrice. Dock mobile V2 et CTA prune publies et valides techniquement le 2026-08-07. G1 est termine, commite et pousse depuis un worktree propre separe. L'Atelier des emotions est un chantier produit actif. Le Cercle MilAura et la reutilisation de ScratchToReveal sont integres comme lots distincts et ordonnes.
+Statut : hero termine et valide par Patrice. Dock mobile V2 et CTA prune publies et valides techniquement le 2026-08-07. G1 est entierement termine : le checkout canonique est propre, aligne avec GitHub, les donnees privees sont separees et l'ancien checkout est archive. L'Atelier des emotions est un chantier produit actif. Le Cercle MilAura et la reutilisation de ScratchToReveal sont integres comme lots distincts et ordonnes. Prochaine etape : P0A.
 
 Perimetres : theme Shopify, navigation, systeme CTA, reconciliation Git, verite commerciale, Cercle, ScratchToReveal, acquisition et automatisation
 
@@ -215,20 +215,26 @@ Le live n'est pas en panne. Le risque est cumulatif : chaque nouveau lot augment
 9. Valider Theme Check, JSON, preview et diff avant proposition de merge.
 10. Demander une autorisation distincte avant commit, push, merge ou archivage du vieux checkout.
 
-### Etat G1 termine au 2026-08-07 a 17:35 CEST
+### Etat G1 termine au 2026-08-08 a 07:12 CEST
 
 - `origin/main` est un miroir automatique Shopify et non une branche humaine de developpement ;
 - dernier commit miroir : `b55b7494`, contenant exactement les quatre fichiers du dock V2 ;
 - snapshot integral live : 484 fichiers ;
 - vieux checkout : tous les fichiers live presents, 402 identiques, 61 differences de serialisation Shopify et 21 ecarts a reprendre par lots ;
-- nouveau worktree : `/Users/paesano/Documents/MilAura website/dawn-X-milaura-reconcile-2026-08-07` ;
-- nouvelle branche : `codex/milaura-reconcile-2026-08-07`, basee sur `origin/main` ;
+- checkout actif canonique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
+- branche active : `codex/milaura-reconcile-2026-08-07`, basee sur `origin/main` ;
 - 20 assets publics referencies ont ete restaures depuis le live ;
 - 9 anciens prototypes live non references ne sont pas recopies ;
 - baseline publique commitee sous `ac49b85b` et poussee sur `origin/codex/milaura-reconcile-2026-08-07` ;
+- six fichiers historiques encore utiles migres dans `ff5712dd` ;
+- ancien checkout preserve sous `/Users/paesano/Documents/MilAura website/dawn-X-milaura-archive-2026-08-07` ;
+- workspace prive valide sous `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace` ;
+- corpus prive `credentials` : 2 741 fichiers utiles source et destination, controle checksum sans difference ;
+- workflow produit : 171 fichiers actifs utiles, modeles Chloe et Elena, outputs et `.env` hors Git ;
+- branche locale et distante alignees, divergence `0 ahead`, `0 behind` au debut du handoff du 2026-08-08 ;
 - `shopify theme check` : 0 erreur et 29 avertissements historiques ;
 - `git diff --check` : aucune erreur ;
-- aucun merge, reset, clean ou archivage de l'ancien checkout effectue.
+- aucun merge, reset ou clean global ; archivage effectue seulement apres verification des copies et du clone propre.
 
 ### Definition de termine
 
@@ -616,7 +622,7 @@ Chaque etape commence seulement lorsque la definition de termine de l'etape prec
 
 1. `H1` termine : hero valide par Patrice.
 2. `N1` termine : dock V2 et prune d'action publies puis valides techniquement.
-3. `G1` termine : baseline propre commitee et poussee sous `ac49b85b`.
+3. `G1` termine : checkout canonique propre, donnees privees separees, archive datee et branche distante alignee.
 4. `P0A` : calculer l'economie du panier, verifier les cumuls Shopify et auditer le reliquat Scratch de la page `/cart`.
 5. `P0B` : compter, identifier et chiffrer quatre produits reels.
 6. Construire la `Selection de l'atelier` avec ces quatre produits.
@@ -637,3 +643,27 @@ Chaque etape commence seulement lorsque la definition de termine de l'etape prec
 ### Regle de suivi
 
 Pour chaque lot : objectif, fichiers, dependances, donnees requises, preview, tests, validation creative, GO live, commit cible, push cible, mesure apres publication et checkpoint date. Aucune etape n'est consideree terminee par le seul fait que le code existe.
+
+## 18. Politique de parallelisation
+
+Le plan commercial reste sequentiel pour ses dependances : P0A precede les decisions de recompense, P0B precede la Selection de l'atelier, et les fondations du Cercle precedent le popup ScratchToReveal.
+
+Une seule session est proprietaire a un instant donne du theme actif, de la branche Git active et de tout deploiement Shopify. Deux sessions ne doivent jamais modifier en parallele les memes fichiers Liquid, JSON, CSS, JavaScript, documents d'etat ou reglages Shopify.
+
+Travaux paralleles autorises avec perimetres separes :
+
+1. session principale `P0A` : economie du panier, cumuls Shopify et audit Scratch panier, sans autre mutation theme concurrente ;
+2. session `P0B inventaire` : comptage physique, couts, SKU, EAN, origine, marge et delais, sans modification du theme ;
+3. session `Atelier des emotions` : inventaire des composants, prototypes, couts et regles produit dans le workspace prive, sans landing ni modification Shopify live ;
+4. session `Camilla` : pipeline produit et agents dans Agentic-Ops ou sur le VPS, sans toucher au theme et sans publier de produit ;
+5. recherches ou briefs creatifs en lecture seule, a condition de remettre leurs livrables a la session principale avant implementation.
+
+Travaux paralleles interdits :
+
+- deux branches ou sessions modifiant la homepage ou les memes sections ;
+- deux sessions modifiant le panier, `settings_data.json` ou les remises Shopify ;
+- plusieurs deploiements Shopify simultanes ;
+- modifications concurrentes de `docs/project-state.md`, `docs/codex-handoff.md` ou du plan canonique ;
+- construction d'une section avant validation de ses dependances commerciales.
+
+Chaque session parallele doit annoncer son proprietaire, son depot, ses fichiers autorises, ses mutations interdites et son livrable. La session principale consolide les resultats et reste seule responsable des commits du theme, des pushes Shopify et de l'avancement du plan canonique.

@@ -1,10 +1,19 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-07 18:25 CEST
+Dernière mise à jour : 2026-08-08 07:12 CEST
 
 ## État en une phrase
 
-Le hero et le dock mobile V2 sont live et validés. La réconciliation Git et privée est terminée : le chemin canonique contient une base propre alignée avec GitHub, et l'ancien checkout est archivé sans perte sous un nom daté.
+Le hero et le dock mobile V2 sont live et validés. La réconciliation Git et privée est terminée. La session lourde est clôturée avant P0A afin que l'économie du panier démarre dans une nouvelle session depuis un contexte propre et un plan canonique actualisé.
+
+## Décision de reprise du 2026-08-08
+
+- Ne pas commencer P0A dans la session de réconciliation.
+- Ouvrir une nouvelle session principale propriétaire du thème et du live.
+- Commencer en lecture seule par les coûts, seuils, codes, règles de cumul et reliquats Scratch du panier.
+- Ne modifier ni Shopify ni le thème avant présentation du diagnostic P0A et GO explicite de Patrice.
+- Autoriser en parallèle uniquement P0B inventaire, l'inventaire des composants de l'Atelier des émotions et une session Camilla strictement séparée.
+- Interdire deux sessions concurrentes sur le thème, la homepage, le panier, les documents d'état ou les déploiements Shopify.
 
 ## Production Shopify
 
@@ -114,10 +123,11 @@ Validation : hero terminé et validé visuellement par Patrice.
 
 ## Git
 
-État du 2026-08-07 à 18:25 CEST :
+État contrôlé le 2026-08-08 à 07:12 CEST avant rédaction du handoff :
 
 - checkout canonique propre : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche : `codex/milaura-reconcile-2026-08-07` ;
+- HEAD local et distant avant le handoff : `ac16164944a95748b01d46551dd5e5248d55fb61` ;
 - baseline de code réconciliée : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
 - documentation de clôture versionnée ensuite sur la même branche ;
 - divergence avec la branche distante : `0 ahead`, `0 behind` ;
@@ -143,5 +153,6 @@ Priorité : développer uniquement depuis le chemin canonique propre et lancer l
 - Checkpoint G1 : `docs/checkpoints/2026-08-07-0955-milaura-dock-v2-g1-reconciliation.md`.
 - Clôture G1 : `docs/checkpoints/2026-08-07-1735-milaura-g1-baseline-complete.md`.
 - Réconciliation complète : `docs/checkpoints/2026-08-07-1825-milaura-repo-reconciliation-complete.md`.
+- Handoff avant P0A : `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
 - Plan : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
 - Spécification : `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.

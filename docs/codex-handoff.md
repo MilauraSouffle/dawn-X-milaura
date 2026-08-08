@@ -1,23 +1,30 @@
 # MilAura - Handoff Codex
 
-Date : 2026-08-07 18:25 CEST
+Date : 2026-08-08 07:12 CEST
 
 ## Mission de la prochaine session
 
-Reprendre MilAura depuis le chemin canonique désormais propre, sans perdre les décisions du hero, du dock, de la homepage, du panier, du Cercle, de ScratchToReveal et de l'Atelier des émotions. L'ancien checkout est archivé comme coffre de conservation et ne doit plus servir aux nouveaux lots.
+Ouvrir une nouvelle session principale MilAura et commencer le lot P0A en lecture seule : économie des paliers panier, cumuls Shopify et reliquat Scratch de `/cart`. Reprendre exclusivement depuis le checkout canonique propre et conserver toutes les décisions du hero, du dock, de la homepage, du Cercle, de ScratchToReveal et de l'Atelier des émotions.
+
+## Verdict de clôture
+
+La session précédente a réalisé une modification structurelle importante : réconciliation Shopify, GitHub et local, séparation du workspace privé, archivage contrôlé de l'ancien checkout, restauration d'une base propre et consolidation du plan de refonte.
+
+Elle est volontairement clôturée avant P0A. Plusieurs compactages ont eu lieu et le prochain lot demande un raisonnement économique et des tests Shopify précis. Une nouvelle session réduit le risque de mélanger les preuves de réconciliation avec les décisions commerciales du panier.
 
 ## Lecture obligatoire, dans cet ordre
 
 1. `AGENTS.md`.
 2. `docs/project-state.md`.
 3. `docs/checkpoints/2026-08-06-1828-milaura-hero-renouveau-little-words-handoff.md`.
-4. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
-5. `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
-6. `docs/reference/MILAURA-CTA-SYSTEM-2026.md` avant tout CTA.
+4. `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
+5. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
+6. `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
+7. `docs/reference/MILAURA-CTA-SYSTEM-2026.md` avant tout CTA.
 
 ## Première interaction avec Patrice
 
-Travailler uniquement depuis `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. La réconciliation est terminée et poussée. Ne pas fusionner `origin/main` dans l'ancien `main` archivé et ne pas modifier l'archive sans besoin de récupération explicite.
+Travailler uniquement depuis `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. Commencer par vérifier Git et lire les règles P0A. Ne rien modifier avant d'avoir produit le tableau économique et le diagnostic des cumuls. Ne pas fusionner `origin/main` dans l'ancien `main` archivé et ne pas modifier l'archive sans besoin de récupération explicite.
 
 ## État live
 
@@ -87,10 +94,11 @@ Premières tâches :
 
 ## État Git critique
 
-Contrôle du 2026-08-07 à 18:25 CEST :
+Contrôle du 2026-08-08 à 07:12 CEST avant rédaction du handoff :
 
 - checkout actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche active : `codex/milaura-reconcile-2026-08-07` ;
+- HEAD local et distant avant le handoff : `ac16164944a95748b01d46551dd5e5248d55fb61` ;
 - baseline de code réconciliée : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
 - documentation de clôture versionnée ensuite sur la même branche ;
 - divergence distante : `0 ahead`, `0 behind` ;
@@ -103,6 +111,27 @@ Contrôle du 2026-08-07 à 18:25 CEST :
 - aucun secret ou matériau privé n'est présent dans le checkout actif.
 
 Ne pas faire de reset, clean, pull global ou merge du vieux `main` archivé. Pour récupérer un élément historique, comparer le fichier ciblé et le migrer intentionnellement dans un commit distinct.
+
+## Politique de parallélisation
+
+La session principale P0A est seule propriétaire du thème actif, de la branche Git active, du panier et des éventuelles mutations Shopify.
+
+Peuvent avancer en parallèle sans toucher au thème :
+
+1. P0B, comptage physique et rapprochement SKU, EAN, coûts, marges et délais ;
+2. Atelier des émotions, inventaire des composants, trois à cinq prototypes, temps d'assemblage et économie produit ;
+3. Camilla, audit ou évolution du pipeline dans Agentic-Ops et sur le VPS, en brouillon uniquement ;
+4. recherches et briefs créatifs en lecture seule.
+
+Ne pas paralléliser :
+
+- deux sessions modifiant la homepage ou le même fichier de thème ;
+- deux sessions modifiant le panier, les remises ou `settings_data.json` ;
+- plusieurs déploiements Shopify ;
+- plusieurs sessions écrivant les documents d'état du projet ;
+- la construction d'une section avant validation de ses dépendances stock et économie.
+
+Chaque session parallèle doit annoncer son périmètre, ses fichiers autorisés, ses interdictions et son livrable. Les résultats reviennent à la session principale avant toute implémentation.
 
 ## Camilla et workflow produit VPS
 
@@ -147,4 +176,4 @@ Avant tout trafic payant :
 
 ## Prompt prêt à copier
 
-> Reprends MilAura depuis `docs/codex-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. La réconciliation Git et privée est terminée, le hero et le dock sont validés. Commence par le lot P0A : contribution panier dans le pire scénario et cumuls Shopify. Le lot commerce suivant dépend de quatre produits réellement en stock. N'oublie surtout pas `L'Atelier des émotions`, chantier actif inspiré de la mécanique de Little Words Project : Patrice achète les composants maintenant et veut des bracelets MilAura personnalisables en pierres, lettres, messages et charms, conçus par Karine.
+> Reprends MilAura depuis `docs/codex-handoff.md` et `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. La réconciliation Git et privée est terminée, le hero et le dock sont validés. Commence P0A en lecture seule : construis le tableau de contribution aux paniers 30, 50, 80, 89 et 100 EUR, vérifie les règles de cumul des codes `MILAURA-LIV50` et `MILAURA15`, le cadeau variante `53142713925979` et le reliquat Scratch de `/cart`. Distingue coûts confirmés, données manquantes et hypothèses. Ne modifie ni Shopify ni le thème avant de présenter le diagnostic et d'obtenir mon GO. P0B inventaire et l'Atelier des émotions peuvent avancer dans des sessions séparées sans toucher au thème.
