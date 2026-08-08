@@ -11,6 +11,7 @@
 
   assign slogan_line_1 = section.settings.slogan_line_1 | default: 'La beauté d’un bijou'
   assign slogan_line_2 = section.settings.slogan_line_2 | default: 'la vertu des pierres'
+  assign kicker_text = section.settings.kicker | default: 'MilAura • Bijoux, gemmes & lithothérapie'
 
   assign proof_1_label = section.settings.proof_1 | default: 'Pierres naturelles certifiées'
   if proof_1_label == 'Pierres naturelles certifiées'
@@ -193,6 +194,10 @@
     content: none;
   }
 
+  #MilauraPortal-{{ section.id }} .portal-hero__kicker-mobile {
+    display: none;
+  }
+
   #MilauraPortal-{{ section.id }} .portal-hero__title {
     max-width: 860px;
     margin: 0;
@@ -240,6 +245,9 @@
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__equation-material {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.18em;
     color: transparent;
     font-size: 0.67em;
     margin-left: 0.22em;
@@ -249,6 +257,16 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0.02em 0 rgba(47, 34, 45, 0.12));
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__equation-connector,
+  #MilauraPortal-{{ section.id }} .portal-hero__equation-noun {
+    display: inline-block;
+    color: transparent;
+    background-image: inherit;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__equation-material--jewel {
@@ -813,16 +831,56 @@
       top: auto;
       left: auto;
       width: auto;
-      padding: 22px 12px 0;
+      padding: 24px 8px 0;
       transform: none;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__kicker {
-      max-width: 20ch;
-      margin: 0 auto 18px;
+      width: 100%;
+      max-width: none;
+      margin: 0 auto 24px;
       font-size: clamp(2.1rem, 9.4vw, 2.7rem);
-      line-height: 1.08;
+      line-height: 1;
       text-align: center;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__kicker-default {
+      display: none;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__kicker-mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__kicker-main {
+      display: block;
+      font-size: 1.14em;
+      line-height: 0.94;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__kicker-detail {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.22em;
+      width: 100%;
+      font-size: 0.84em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__kicker-separator {
+      width: 0.22em;
+      height: 0.22em;
+      flex: 0 0 auto;
+      align-self: center;
+      border-radius: 50%;
+      background: var(--portal-aqua);
+      box-shadow: 0 0 0 1px rgba(63, 116, 116, 0.16);
+      transform: translateY(0.04em);
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__title {
@@ -831,8 +889,8 @@
       max-width: none;
       flex-direction: column;
       align-items: center;
-      font-size: clamp(2.1rem, 10.2vw, 3rem);
-      line-height: 0.94;
+      font-size: clamp(2.25rem, 11.2vw, 3.35rem);
+      line-height: 0.96;
       letter-spacing: -0.04em;
       text-align: center;
     }
@@ -845,16 +903,33 @@
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__equation-lockup {
+      gap: 0.13em;
       justify-content: center;
       width: 100%;
+      line-height: 0.86;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__equation-lead {
+      margin-right: 0;
+      font-size: 0.6em;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__equation-focus {
-      font-size: 1.25em;
+      font-size: 1.34em;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__equation-material {
-      font-size: 0.67em;
+      gap: 0.13em;
+      margin-left: 0;
+      font-size: 1em;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__equation-connector {
+      font-size: 0.56em;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__equation-noun {
+      font-size: 0.82em;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__equation-row--stone {
@@ -871,7 +946,7 @@
     #MilauraPortal-{{ section.id }} .portal-hero__operator-line {
       width: 100%;
       gap: 16px;
-      margin: 11px 0 10px;
+      margin: 18px 0 17px;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__operator-line::before,
@@ -1023,7 +1098,20 @@
 
     <div class="portal-hero__copy">
       <p class="portal-hero__kicker">
-        {{ section.settings.kicker | default: 'MilAura • Bijoux, gemmes & lithothérapie' }}
+        {% if kicker_text == 'MilAura • Bijoux, gemmes & lithothérapie' %}
+          <span class="visually-hidden">{{ kicker_text }}</span>
+          <span class="portal-hero__kicker-default" aria-hidden="true">{{ kicker_text }}</span>
+          <span class="portal-hero__kicker-mobile" aria-hidden="true">
+            <span class="portal-hero__kicker-main">MilAura</span>
+            <span class="portal-hero__kicker-detail">
+              <span>Bijoux</span>
+              <span class="portal-hero__kicker-separator"></span>
+              <span>gemmes &amp; lithothérapie</span>
+            </span>
+          </span>
+        {% else %}
+          {{ kicker_text }}
+        {% endif %}
       </p>
 
       <h1 class="portal-hero__title">
@@ -1033,7 +1121,10 @@
             <span class="portal-hero__equation-lockup" aria-hidden="true">
               <span class="portal-hero__equation-fragment portal-hero__equation-lead">La</span>
               <span class="portal-hero__equation-fragment portal-hero__equation-focus">beauté</span>
-              <span class="portal-hero__equation-fragment portal-hero__equation-material portal-hero__equation-material--jewel">d’un bijou</span>
+              <span class="portal-hero__equation-fragment portal-hero__equation-material portal-hero__equation-material--jewel">
+                <span class="portal-hero__equation-connector">d’un</span>
+                <span class="portal-hero__equation-noun">bijou</span>
+              </span>
             </span>
           {% else %}
             <span class="portal-hero__equation-text">{{ slogan_line_1 }}</span>
@@ -1048,7 +1139,10 @@
             <span class="portal-hero__equation-lockup" aria-hidden="true">
               <span class="portal-hero__equation-fragment portal-hero__equation-lead">la</span>
               <span class="portal-hero__equation-fragment portal-hero__equation-focus">vertu</span>
-              <span class="portal-hero__equation-fragment portal-hero__equation-material portal-hero__equation-material--stone">des pierres</span>
+              <span class="portal-hero__equation-fragment portal-hero__equation-material portal-hero__equation-material--stone">
+                <span class="portal-hero__equation-connector">des</span>
+                <span class="portal-hero__equation-noun">pierres</span>
+              </span>
             </span>
           {% else %}
             <span class="portal-hero__equation-text">{{ slogan_line_2 }}</span>
