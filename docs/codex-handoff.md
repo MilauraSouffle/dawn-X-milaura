@@ -23,7 +23,7 @@ Le Hero est terminé, validé et live. Reprendre par le contrôle du lot des tro
 
 - Boutique : `https://milaura.fr`.
 - Thème live : `dawn-X-milaura/main`, ID `190430282075`.
-- Hero H1C final : live et validé visuellement par Patrice le 2026-08-08 après les passes photographies, copywriting, hiérarchie et espacement.
+- Hero H1C final : live. Photographies, copywriting et hiérarchie validés visuellement par Patrice le 2026-08-08. Dernier espacement desktop demandé explicitement et vérifié techniquement.
 - Texte final du Hero : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
 - Les trois preuves photographiques flottent sans bandeau : LFG Paris, portrait de Karine et atelier de Metz.
 - Le triptyque remonte de `34px` à `40px` sur desktop uniquement et ne chevauche plus les preuves. Le mobile est inchangé.

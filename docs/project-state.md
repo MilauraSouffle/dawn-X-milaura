@@ -4,7 +4,7 @@ Dernière mise à jour : 2026-08-08 13:18 CEST
 
 ## État en une phrase
 
-Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live. Le Hero est fermé après validation visuelle de Patrice. La prochaine reprise doit contrôler le lot des trois portes présent dans `7f4093f7` avant de poursuivre le plan homepage.
+Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live. La direction du Hero est validée visuellement par Patrice. Le dernier espacement desktop a été demandé explicitement puis vérifié techniquement. La prochaine reprise doit contrôler le lot des trois portes présent dans `7f4093f7` avant de poursuivre le plan homepage.
 
 ## Hero final validé et live le 2026-08-08
 
@@ -74,7 +74,7 @@ Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` son
 - Boutique : `milaura.fr`.
 - Thème live : `dawn-X-milaura/main`.
 - ID : `190430282075`.
-- Hero H1C final : live et validé visuellement par Patrice le 2026-08-08 après la passe photographies, copywriting, hiérarchie et espacement.
+- Hero H1C final : live. Photographies, copywriting et hiérarchie validés visuellement par Patrice le 2026-08-08. Dernier espacement desktop demandé explicitement et vérifié techniquement.
 - Dock V2 : live depuis le 2026-08-07 à 09:46 CEST environ.
 - Panneau mobile V2 : live le 2026-08-08, avec croix de fermeture dorée simple.
 - `L’atelier MilAura` : live le 2026-08-08 à 10:06 CEST, quatre produits réels, cartes natives et contour aigue-marine local à la section.
@@ -108,7 +108,7 @@ Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` son
 - Aucun produit régénéré par IA.
 - Image secondaire des cartes activée au survol et au focus, première image conservée sur tactile.
 
-Validation : Hero terminé, validé visuellement par Patrice, déployé puis contrôlé publiquement en desktop et mobile le 2026-08-08.
+Validation : Hero terminé et déployé. Direction validée visuellement par Patrice. Dernier espacement contrôlé publiquement en desktop et mobile le 2026-08-08.
 
 ## Dock mobile et CTA
 

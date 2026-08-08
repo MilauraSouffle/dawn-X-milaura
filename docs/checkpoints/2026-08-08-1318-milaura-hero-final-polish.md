@@ -4,9 +4,9 @@ Date : 2026-08-08 13:18 CEST
 
 ## Résultat
 
-Le Hero MilAura est finalisé, validé visuellement par Patrice et publié sur le thème live Shopify `dawn-X-milaura/main`, ID `190430282075`.
+Le Hero MilAura est finalisé et publié sur le thème live Shopify `dawn-X-milaura/main`, ID `190430282075`. Patrice a validé visuellement la direction et les passes précédentes. Le dernier décalage desktop a été demandé explicitement puis vérifié techniquement sur le site public.
 
-## Décisions visuelles validées
+## Décisions visuelles et correction finale demandée
 
 - Le triptyque conserve trois grands médaillons asymétriques avec contours or et aigue-marine.
 - Trois preuves photographiques flottent entre le Hero et la section suivante, sans bandeau de fond : certificat LFG Paris, portrait de Karine et atelier de Metz.
