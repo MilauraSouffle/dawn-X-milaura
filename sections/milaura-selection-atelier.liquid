@@ -1,0 +1,317 @@
+{{ 'milaura-card.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign selected_count = 0
+  for block in section.blocks
+    if block.settings.product != blank
+      assign selected_count = selected_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- style -%}
+  #MilauraSelectionAtelier {
+    scroll-margin-top: 150px;
+  }
+
+  #MilauraSelection-{{ section.id }} {
+    --atelier-prune: #2f222d;
+    --atelier-gold: #b9975b;
+    --atelier-aqua: #6fa9a6;
+    --atelier-aqua-soft: rgba(111, 169, 166, 0.56);
+    --atelier-nacre: #fffdf9;
+    padding: clamp(54px, 6.5vw, 94px) 0 clamp(64px, 7vw, 104px);
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(255, 253, 249, 0.54), rgba(255, 255, 255, 0));
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__fronton {
+    width: min(760px, calc(100% - 36px));
+    margin: 0 auto clamp(34px, 4.5vw, 58px);
+    text-align: center;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__title {
+    margin: 0;
+    color: var(--atelier-gold);
+    font-family: var(--milaura-font-script, 'Dancing Script', cursive);
+    font-size: clamp(3rem, 5.2vw, 5rem);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.04;
+    text-shadow: 0 2px 12px rgba(185, 151, 91, 0.12);
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__subtitle {
+    max-width: 620px;
+    margin: 12px auto 0;
+    color: rgba(47, 34, 45, 0.72);
+    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
+    font-size: clamp(0.94rem, 1.2vw, 1.08rem);
+    font-weight: 400;
+    letter-spacing: 0.025em;
+    line-height: 1.55;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__cards {
+    width: min(1760px, calc(100% - clamp(32px, 5vw, 80px)));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 30px);
+    align-items: stretch;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__card {
+    min-width: 0;
+    display: flex;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__card .grid__card {
+    width: 100%;
+    height: 100%;
+    border-color: var(--atelier-aqua-soft);
+    box-shadow: 0 8px 22px rgba(54, 105, 103, 0.07);
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__card .grid__card:hover {
+    border-color: var(--atelier-aqua);
+    box-shadow: 0 13px 30px rgba(54, 105, 103, 0.16);
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__card .grid__card:focus-visible {
+    outline: 2px solid var(--atelier-aqua);
+    outline-offset: 5px;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__cta-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(34px, 4vw, 54px);
+    padding: 0 18px;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__cta {
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    padding: 10px 12px 10px 23px;
+    border: 1px solid rgba(185, 151, 91, 0.74);
+    border-radius: 999px;
+    background: var(--atelier-prune);
+    color: var(--atelier-nacre);
+    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(47, 34, 45, 0.14);
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__cta:focus-visible {
+    outline: 2px solid var(--atelier-aqua);
+    outline-offset: 5px;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-atelier__cta-arrow {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--atelier-gold);
+    color: var(--atelier-prune);
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  @media screen and (max-width: 989px) {
+    #MilauraSelectionAtelier {
+      scroll-margin-top: 112px;
+    }
+
+    #MilauraSelection-{{ section.id }} {
+      padding-top: 48px;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-atelier__fronton {
+      margin-bottom: 30px;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-atelier__cards {
+      width: 100%;
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(245px, 78vw);
+      gap: 15px;
+      padding: 6px 18px 24px;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-padding-inline: 18px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-atelier__cards::-webkit-scrollbar {
+      display: none;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-atelier__card {
+      scroll-snap-align: start;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #MilauraSelection-{{ section.id }} .milaura-atelier__title {
+      font-size: clamp(2.65rem, 12vw, 3.7rem);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-atelier__subtitle {
+      max-width: 330px;
+      margin-top: 9px;
+      font-size: 0.9rem;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-atelier__cta {
+      font-size: 0.74rem;
+      letter-spacing: 0.055em;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-atelier__card .grid__card:hover {
+      border-color: var(--atelier-aqua);
+      box-shadow: 0 8px 22px rgba(54, 105, 103, 0.07);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraSelection-{{ section.id }} .milaura-atelier__cta {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="MilauraSelection-{{ section.id }}"
+  class="milaura-atelier"
+  aria-labelledby="MilauraSelectionTitle-{{ section.id }}"
+  {% if section.settings.homepage_selection_anchor %}data-homepage-selection-anchor{% endif %}
+>
+  <span id="MilauraSelectionAtelier" aria-hidden="true"></span>
+
+  <header class="milaura-atelier__fronton">
+    <h2 id="MilauraSelectionTitle-{{ section.id }}" class="milaura-atelier__title">
+      {{ section.settings.title | escape }}
+    </h2>
+    {%- if section.settings.subtitle != blank -%}
+      <p class="milaura-atelier__subtitle">{{ section.settings.subtitle | escape }}</p>
+    {%- endif -%}
+  </header>
+
+  {%- if selected_count > 0 -%}
+    <div class="milaura-atelier__cards milaura-cards" role="list">
+      {%- for block in section.blocks -%}
+        {%- assign product = block.settings.product -%}
+        {%- if product != blank -%}
+          {%- assign image_loading = 'lazy' -%}
+          {%- if forloop.first -%}
+            {%- assign image_loading = 'eager' -%}
+          {%- endif -%}
+          <div class="milaura-atelier__card" role="listitem" {{ block.shopify_attributes }}>
+            {% render 'milaura-card-product',
+              card_product: product,
+              img_loading: image_loading,
+              show_vendor: false,
+              show_badges: section.settings.show_badges,
+              show_secondary_image: true,
+              force_bestseller_badge: false
+            %}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+    <div class="milaura-atelier__cta-wrap">
+      <a class="milaura-atelier__cta" href="{{ section.settings.cta_link }}">
+        <span>{{ section.settings.cta_label | escape }}</span>
+        <span class="milaura-atelier__cta-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Sélection de l'atelier",
+  "tag": "section",
+  "class": "section-milaura-selection-atelier",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "homepage_selection_anchor",
+      "label": "Cible du CTA de la page d'accueil",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "L’atelier MilAura"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Des créations choisies et préparées par Karine, au fil de sa créativité et des saisons."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Afficher les badges produit",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texte du bouton",
+      "default": "Découvrir toutes les créations"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Lien du bouton"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produit",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produit"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sélection de l'atelier"
+    }
+  ]
+}
+{% endschema %}
