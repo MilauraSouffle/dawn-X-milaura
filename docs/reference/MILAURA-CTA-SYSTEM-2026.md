@@ -2,9 +2,11 @@
 
 Date : 2026-08-06
 
-Derniere mise a jour : 2026-08-07 08:56 CEST
+Derniere mise a jour : 2026-08-08 08:06 CEST
 
-Statut : direction validee, correction colorimetrique prune en preview apres le retour de Patrice du 2026-08-07
+Statut : direction validee et cadrage des symboles verrouille par Patrice le 2026-08-08
+
+Reference complementaire obligatoire : `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md`.
 
 ## 1. Decision
 
@@ -64,6 +66,8 @@ Exemples :
 5. Le prune et l'or signalent une action MilAura. Ils ne sont pas utilises comme decoration repetee autour du bouton.
 6. Les textes de CTA commencent par un verbe et decrivent la destination reelle.
 7. Le mouvement est supprime avec `prefers-reduced-motion`.
+8. Le double anneau croise or et aigue-marine est reserve au Cercle MilAura et aux cadres de photographies produit importantes.
+9. Les controles utilitaires utilisent des symboles lineaires simples. Une fermeture est une croix or sans double anneau.
 
 ## 3. Libelles recommandes
 

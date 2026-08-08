@@ -233,7 +233,9 @@ Direction validee par Patrice : `100 % epure premium`.
 - utiliser des mouvements courts et rares ;
 - conserver un signe MilAura distinctif pour ne pas devenir un template premium generique.
 
-Le cercle ou halo plat peut devenir un motif de marque recurrent, sans retomber dans la sur-decoration.
+Un cercle ou halo simple peut soutenir ponctuellement une composition, sans devenir une decoration systematique.
+
+[DECISION 2026-08-08] Le double anneau irregulier croise, or et aigue-marine, est reserve au Cercle MilAura et aux cadres de photographies produit importantes. Il est interdit autour des controles utilitaires, des fermetures, des recherches, des paniers, des focus et des CTA generiques. Le cabochon `Trouver ma pierre` reste l'exception validee. Reference obligatoire : `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md`.
 
 ### 3.5 Karine et la preuve humaine
 
