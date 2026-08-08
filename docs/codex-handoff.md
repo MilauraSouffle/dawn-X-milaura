@@ -1,28 +1,33 @@
 # MilAura - Handoff Codex
 
-Date : 2026-08-08 10:10 CEST
+Date : 2026-08-08 13:18 CEST
 
 ## Mission de la prochaine session
 
-Finaliser les trois portes placées après `L’atelier MilAura` pour récupérer les visiteurs qui n'ont pas encore choisi : par type de création, par besoin ou par diagnostic. `L’atelier MilAura` est terminé et live. La stratégie de ventes complémentaires reste reportée à une session dédiée.
+Le Hero est terminé, validé et live. Reprendre par le contrôle du lot des trois portes présent dans le commit `7f4093f7` : confirmer son état live et obtenir l'approbation visuelle de Patrice avant de poursuivre vers la Pierre du moment. La stratégie de ventes complémentaires reste reportée à une session dédiée.
 
 ## Lecture obligatoire, dans cet ordre
 
 1. `AGENTS.md`.
 2. `docs/project-state.md`.
-3. `docs/reference/MILAURA-P0B-PRODUCT-REGISTER-2026.md`.
-4. `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
-5. `docs/checkpoints/2026-08-08-0814-milaura-menu-cercle-branding-handoff.md`.
-6. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
-7. `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
-8. `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md` avant tout travail visuel.
-9. `docs/reference/MILAURA-CTA-SYSTEM-2026.md` avant tout CTA.
+3. `docs/checkpoints/2026-08-08-1318-milaura-hero-final-polish.md`.
+4. `docs/reference/MILAURA-P0B-PRODUCT-REGISTER-2026.md`.
+5. `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
+6. `docs/checkpoints/2026-08-08-0814-milaura-menu-cercle-branding-handoff.md`.
+7. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
+8. `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
+9. `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md` avant tout travail visuel.
+10. `docs/reference/MILAURA-CTA-SYSTEM-2026.md` avant tout CTA.
 
 ## État live confirmé
 
 - Boutique : `https://milaura.fr`.
 - Thème live : `dawn-X-milaura/main`, ID `190430282075`.
-- Hero H1C final : live et validé visuellement par Patrice.
+- Hero H1C final : live et validé visuellement par Patrice le 2026-08-08 après les passes photographies, copywriting, hiérarchie et espacement.
+- Texte final du Hero : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
+- Les trois preuves photographiques flottent sans bandeau : LFG Paris, portrait de Karine et atelier de Metz.
+- Le triptyque remonte de `34px` à `40px` sur desktop uniquement et ne chevauche plus les preuves. Le mobile est inchangé.
+- Pullback du Hero live identique au local, SHA-256 `8f43fd3284f3b0df4c235876fd9cb0f620d583b325a4ac1d01eabe12fc2acbe6`.
 - Dock mobile V2 : live et validé.
 - Nouveau panneau mobile : live. Patrice a répondu `j'aime beaucoup bravo`.
 - Croix de fermeture finale : dorée, simple, sans anneaux.
@@ -50,10 +55,10 @@ Le cabochon `Trouver ma pierre` conserve ses contours décalés comme exception 
 
 - Checkout : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche : `codex/milaura-reconcile-2026-08-07`.
-- Commit panneau mobile : `e89c76e4 feat: rebuild mobile navigation`.
-- Commit correction et cadrage : `e49a18d2 fix: reserve Cercle rings for brand use`.
-- Les deux commits sont poussés sur la branche distante.
-- Divergence vérifiée après le dernier push : 0 ahead, 0 behind.
+- HEAD du lot Hero poussé : `45a225fa fix: separate hero triptych from proof`.
+- Commits Hero précédents : `9a809e0d`, `ed455a9f` et `3b98c937`.
+- Commit des trois portes présent sur la branche : `7f4093f7`. Ne pas assimiler sa présence Git à une validation visuelle ou live sans nouveau contrôle.
+- La branche locale était alignée avec la branche distante après le push de `45a225fa`.
 
 Deux fichiers panier sont modifiés localement par le lot P0A :
 
@@ -62,13 +67,12 @@ Deux fichiers panier sont modifiés localement par le lot P0A :
 
 Ils retirent le reliquat panier obsolète. Ils ne sont ni stagés, ni commités, ni déployés. Ne pas lancer de reset, clean, pull global ou commit large.
 
-Documents non versionnés ou modifiés par la reprise P0B :
+Fichiers hors lot toujours présents localement :
 
-- `docs/project-state.md` ;
-- `docs/codex-handoff.md` ;
-- `docs/reference/MILAURA-P0B-PRODUCT-REGISTER-2026.md`.
-- `sections/milaura-selection-atelier.liquid` ;
-- `templates/index.json`.
+- `assets/milaura-hero-proof-karine.webp` ;
+- `sections/milaura-selection-atelier 2.liquid`.
+
+Ne pas les supprimer sans validation. Le second est un doublon iCloud dont le nom est invalide pour Shopify.
 
 Validation de `L’atelier MilAura` :
 
@@ -93,7 +97,7 @@ Validation de `L’atelier MilAura` :
 1. P0A clos par décision de Patrice le 2026-08-08.
 2. P0B terminé : quatre produits physiquement présents et rentables confirmés par Patrice.
 3. Sélection de l'atelier terminée et live le 2026-08-08.
-4. Étape active : repositionner et finaliser les trois portes.
+4. Étape active : contrôler le lot des trois portes de `7f4093f7`, confirmer son état live et sa validation visuelle.
 5. Construire la landing Aigue-marine.
 6. Inventorier et prototyper l'Atelier des émotions.
 
@@ -134,4 +138,4 @@ Les quatre variantes Shopify et leurs images live sont identifiées. Les coûts 
 
 ## Prompt prêt à copier
 
-> Reprends MilAura depuis `docs/codex-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. P0A, P0B et `L’atelier MilAura` sont terminés. L'atelier est live avec quatre produits saisonniers. Commence par relire et finaliser les trois portes placées juste après les produits : type de création, besoin et diagnostic. Préserve les diffs locaux du panier et le travail Hero concurrent.
+> Reprends MilAura depuis `docs/codex-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. Le Hero final et `L’atelier MilAura` sont live et validés. Commence par contrôler le lot des trois portes présent dans `7f4093f7`, puis confirme son état live et son approbation visuelle avant de poursuivre. Préserve les diffs locaux du panier et les fichiers non suivis signalés.

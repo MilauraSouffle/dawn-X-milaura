@@ -1,10 +1,23 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-08 10:10 CEST
+Dernière mise à jour : 2026-08-08 13:18 CEST
 
 ## État en une phrase
 
-Le hero, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live. L'étape Sélection est terminée. La prochaine étape active est la finalisation des trois portes pour les personnes encore indécises.
+Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live. Le Hero est fermé après validation visuelle de Patrice. La prochaine reprise doit contrôler le lot des trois portes présent dans `7f4093f7` avant de poursuivre le plan homepage.
+
+## Hero final validé et live le 2026-08-08
+
+- Les trois preuves sont maintenant photographiques et flottantes, sans bandeau de fond : certificat LFG Paris, portrait de Karine et atelier de Metz.
+- Le portrait de Karine est volontairement conservé pour humaniser la boutique.
+- Texte de conversion final : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
+- `choisies avec exigence` reçoit un seul soulignage fin, irrégulier et doré. Les anciens doubles traits prune et aigue-marine ont été supprimés.
+- La hiérarchie du slogan renforce `beauté` et `vertu` sans ajouter de nouvel ornement concurrent.
+- Le triptyque remonte de `34px` à `40px` sur desktop uniquement afin de ne plus chevaucher les preuves photographiques. Le mobile reste inchangé.
+- Déploiement ciblé du seul fichier `sections/milaura-hero-portal.liquid` sur le thème live `190430282075`.
+- Pullback live identique au local, SHA-256 `8f43fd3284f3b0df4c235876fd9cb0f620d583b325a4ac1d01eabe12fc2acbe6`.
+- Contrôles publics : desktop `1440 x 1200`, mobile `390 x 1250`, CTA visible dans les deux formats.
+- Commits du lot : `9a809e0d`, `ed455a9f`, `3b98c937` et `45a225fa`.
 
 ## Décision P0A et reprise P0B du 2026-08-08
 
@@ -61,7 +74,7 @@ Le hero, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live
 - Boutique : `milaura.fr`.
 - Thème live : `dawn-X-milaura/main`.
 - ID : `190430282075`.
-- Hero H1C : live et validé visuellement par Patrice le 2026-08-07.
+- Hero H1C final : live et validé visuellement par Patrice le 2026-08-08 après la passe photographies, copywriting, hiérarchie et espacement.
 - Dock V2 : live depuis le 2026-08-07 à 09:46 CEST environ.
 - Panneau mobile V2 : live le 2026-08-08, avec croix de fermeture dorée simple.
 - `L’atelier MilAura` : live le 2026-08-08 à 10:06 CEST, quatre produits réels, cartes natives et contour aigue-marine local à la section.
@@ -84,14 +97,18 @@ Le hero, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live
 - Kicker Dancing Script.
 - Slogan : `La beauté d'un bijou + la vertu des pierres = l'émotion MilAura !`.
 - `+` et `=` typographiques or entre des filets visibles.
+- Hiérarchie renforcée sur `beauté` et `vertu`.
 - CTA unique prune et or : `Découvrir les créations`.
-- Trois preuves simples, sans cartouche marketing.
+- Texte de conversion : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
+- Soulignage doré limité à `choisies avec exigence`.
+- Trois preuves photographiques flottantes, sans cartouche ni bandeau : LFG Paris, Karine et atelier de Metz.
 - Trois cabochons ovales asymétriques avec doubles contours or et aigue-marine.
 - Neuf photographies produit officielles en rotation, une image toutes les quatre secondes.
+- Triptyque remonté de `34px` à `40px` sur desktop uniquement pour ne plus chevaucher les preuves.
 - Aucun produit régénéré par IA.
 - Image secondaire des cartes activée au survol et au focus, première image conservée sur tactile.
 
-Validation : hero terminé et validé visuellement par Patrice.
+Validation : Hero terminé, validé visuellement par Patrice, déployé puis contrôlé publiquement en desktop et mobile le 2026-08-08.
 
 ## Dock mobile et CTA
 
@@ -179,30 +196,20 @@ Validation : hero terminé et validé visuellement par Patrice.
 
 ## Git
 
-État contrôlé le 2026-08-08 à 08:14 CEST avant rédaction du handoff :
+État contrôlé le 2026-08-08 à 13:18 CEST :
 
 - checkout canonique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche : `codex/milaura-reconcile-2026-08-07` ;
-- HEAD local et distant avant le handoff : `e49a18d2` ;
-- baseline de code réconciliée : `ff5712dd0a7cf6900e1e8a4dcd4e7fa2ebd71f9b` ;
-- documentation de clôture versionnée ensuite sur la même branche ;
-- divergence avec la branche distante : `0 ahead`, `0 behind` ;
-- commits de la réconciliation : `ac49b85b`, `b6b7fce9` et `ff5712dd` ;
-- six fichiers utiles de l'ancien checkout ont été classés, migrés, validés et versionnés ;
-- ancien checkout intact : `/Users/paesano/Documents/MilAura website/dawn-X-milaura-archive-2026-08-07` ;
-- son ancien `main` reste à `252f31b5`, `ahead 29`, `behind 338`, avec toutes ses modifications historiques ;
-- workspace privé hors Git : `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace` ;
-- workflow produit, outputs, modèles Chloé et Elena, photos, documents et données historiques y sont conservés ;
-- `.venv`, caches et fichiers reproductibles sont exclus ;
-- les deux `.env` historiques sont conservés localement en permissions `600`, sans lecture de leur contenu ;
-- corpus `credentials` : 2 741 fichiers utiles source et destination, contrôle checksum sans différence ;
-- Camilla sur le VPS reste indépendante et inchangée.
+- HEAD du lot Hero poussé : `45a225fa` ;
+- branche locale alignée avec `origin/codex/milaura-reconcile-2026-08-07` après le push ;
+- commits Hero : `9a809e0d`, `ed455a9f`, `3b98c937` et `45a225fa` ;
+- commit des trois portes présent sur la branche : `7f4093f7`, état live et approbation visuelle à reconfirmer lors de la reprise ;
+- modifications panier préservées et hors lot : `templates/cart.json` et `templates/cart.milaura.json` ;
+- fichiers non suivis préservés et hors lot : `assets/milaura-hero-proof-karine.webp` et `sections/milaura-selection-atelier 2.liquid` ;
+- aucun reset, nettoyage global, pull global ou déploiement de thème complet n'a été effectué ;
+- aucun secret ou matériau privé n'a été ajouté à Git.
 
-Deux modifications concurrentes P0A sont présentes dans `templates/cart.json` et `templates/cart.milaura.json`. Elles ne font pas partie du lot navigation et ne doivent être ni écrasées ni embarquées dans un commit non ciblé.
-
-Validation du lot navigation : `shopify theme check` avec 0 erreur et 29 avertissements historiques, `git diff --check` sans erreur, pullback Shopify identique et contrôle public mobile réussi. Aucun secret ou matériau privé dans Git.
-
-Priorité : développer uniquement depuis le chemin canonique, préserver le diff panier existant et poursuivre le lot P0A sur son économie.
+L'ancien checkout, le workspace privé d'automatisation et Camilla restent indépendants et inchangés. Leur état détaillé est conservé dans `docs/checkpoints/2026-08-07-1825-milaura-repo-reconciliation-complete.md`.
 
 ## Documents de reprise
 
@@ -213,6 +220,7 @@ Priorité : développer uniquement depuis le chemin canonique, préserver le dif
 - Réconciliation complète : `docs/checkpoints/2026-08-07-1825-milaura-repo-reconciliation-complete.md`.
 - Handoff avant P0A : `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
 - Menu mobile et symboles : `docs/checkpoints/2026-08-08-0814-milaura-menu-cercle-branding-handoff.md`.
+- Hero final : `docs/checkpoints/2026-08-08-1318-milaura-hero-final-polish.md`.
 - Plan : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
 - Spécification : `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
 - Symboles visuels : `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md`.
