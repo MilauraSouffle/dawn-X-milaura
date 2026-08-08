@@ -1,15 +1,16 @@
 # MilAura - Clôture du Hero final
 
-Date : 2026-08-08 13:32 CEST
+Date : 2026-08-08 13:52 CEST
 
 ## Résultat
 
-Le Hero MilAura est finalisé et publié sur le thème live Shopify `dawn-X-milaura/main`, ID `190430282075`. Patrice a validé visuellement la direction et les passes précédentes. Le dernier décalage desktop a été demandé explicitement puis vérifié techniquement sur le site public.
+Le Hero MilAura est finalisé et publié sur le thème live Shopify `dawn-X-milaura/main`, ID `190430282075`. Patrice a validé visuellement la direction et les passes précédentes. Les deux photographies de réassurance demandées en fin de session ont été remplacées, déployées et contrôlées par pullback ciblé. Leur rendu live final reste à confirmer visuellement par Patrice.
 
 ## Décisions visuelles et correction finale demandée
 
 - Le triptyque conserve trois grands médaillons asymétriques avec contours or et aigue-marine.
-- Trois preuves photographiques flottent entre le Hero et la section suivante, sans bandeau de fond : certificat LFG Paris, portrait de Karine et atelier de Metz.
+- Trois preuves photographiques flottent entre le Hero et la section suivante, sans bandeau de fond : nouveau visuel LFG Paris à gauche, portrait de Karine inchangé au centre et nouvelle photographie de l'atelier de Metz à droite.
+- Les deux nouvelles sources fournies par Patrice ont seulement été converties en WebP et cadrées en CSS. Aucune génération ou retouche IA n'a été appliquée.
 - Le portrait de Karine est conservé pour humaniser la boutique.
 - Le texte de conversion final est : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
 - Seuls les mots `choisies avec exigence` reçoivent un surlignage champagne horizontal derrière la moitié basse des lettres.
@@ -19,18 +20,24 @@ Le Hero MilAura est finalisé et publié sur le thème live Shopify `dawn-X-mila
 - Sur desktop uniquement, les trois photos du triptyque remontent de `34px` à `40px` selon la largeur. Cette correction supprime le chevauchement avec les preuves photographiques.
 - Le mobile conserve sa composition et son positionnement antérieurs.
 
-## Fichier publié
+## Fichiers publiés
 
+- `assets/milaura-hero-proof-certificat-lfg.webp`
+- `assets/milaura-hero-proof-atelier-metz.webp`
 - `sections/milaura-hero-portal.liquid`
 
 ## Déploiement et validation
 
-- Déploiement ciblé avec `shopify theme push --only sections/milaura-hero-portal.liquid`.
+- Déploiement ciblé limité aux deux WebP et à `sections/milaura-hero-portal.liquid`.
 - Thème live : `190430282075`.
-- Theme Check : 270 fichiers, 0 erreur, 28 avertissements historiques hors périmètre lors de la correction finale.
-- Pullback ciblé du fichier live : SHA-256 local et distant identique, `0fa221e4eee886a3b0a4bcbda5052c55dcb822c65496bf3fc9dd1a251a7411ab`.
+- Theme Check : 0 erreur, avertissements historiques hors périmètre.
+- Pullback ciblé des trois fichiers live : correspondance exacte avec le local.
+- SHA-256 LFG local et live : `3851ae42dfcb9fc31ba3940888792c9f3b14ec71a4547e470b9c44ba1fb75bdf`.
+- SHA-256 atelier local et live : `115aebde3c849fe1e00b183219e77bcf9bc88b23fe57b2c6ab57cdee1e52806e`.
+- SHA-256 section Hero local et live : `de7161ae3992c528e51b4b33bc7d253832e1023a356f8e174395579124321afb`.
 - Contrôle public desktop `1440 x 1200` : CTA visible, environ `2px` entre le médaillon gauche et le portrait de Karine, environ `32px` entre le médaillon droit et la preuve atelier.
 - Contrôle public mobile `390 x 1250` : décalage desktop neutralisé, CTA visible, composition inchangée.
+- Aucun Chrome ou Playwright n'a été ouvert pour la dernière substitution, conformément à la demande de Patrice. La validation de cette passe est technique et non une approbation visuelle.
 
 ## Commits du lot Hero
 
@@ -39,8 +46,9 @@ Le Hero MilAura est finalisé et publié sur le thème live Shopify `dawn-X-mila
 - `3b98c937` : texte de conversion et soulignage doré.
 - `45a225fa` : séparation du triptyque et des preuves.
 - `78bbb26b` : remplacement du soulignage refusé par le surlignage champagne final.
+- `6848e181` : remplacement des visuels LFG et atelier, avec cadrages associés.
 
-La branche `codex/milaura-reconcile-2026-08-07` a été poussée après `78bbb26b`.
+La branche `codex/milaura-reconcile-2026-08-07` a été poussée après `6848e181`.
 
 ## État local préservé
 
@@ -57,4 +65,4 @@ Les deux premiers diffs sont apparus hors de la correction du Hero. Leur provena
 
 ## Reprise recommandée
 
-Le Hero est fermé. Reprendre le plan homepage par le contrôle du lot des trois portes présent dans le commit `7f4093f7`, puis confirmer son état live et son approbation visuelle avant de poursuivre vers la Pierre du moment.
+Confirmer visuellement les deux nouvelles images de réassurance sur le live, puis reprendre le plan homepage par le contrôle du lot des trois portes présent dans le commit `7f4093f7` avant de poursuivre vers la Pierre du moment.

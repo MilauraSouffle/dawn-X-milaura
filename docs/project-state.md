@@ -1,23 +1,25 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-08 13:32 CEST
+Dernière mise à jour : 2026-08-08 13:52 CEST
 
 ## État en une phrase
 
-Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live. La direction du Hero est validée visuellement par Patrice. Le dernier espacement desktop a été demandé explicitement puis vérifié techniquement. La prochaine reprise doit contrôler le lot des trois portes présent dans `7f4093f7` avant de poursuivre le plan homepage.
+Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live. La direction du Hero est validée visuellement par Patrice. Les nouveaux visuels LFG et atelier demandés le 2026-08-08 sont live et identiques au local après pullback ; leur rendu final doit encore être confirmé visuellement par Patrice. La prochaine reprise doit ensuite contrôler le lot des trois portes présent dans `7f4093f7`.
 
 ## Hero final validé et live le 2026-08-08
 
-- Les trois preuves sont maintenant photographiques et flottantes, sans bandeau de fond : certificat LFG Paris, portrait de Karine et atelier de Metz.
+- Les trois preuves sont photographiques et flottantes, sans bandeau de fond : nouveau visuel LFG Paris, portrait de Karine inchangé et nouvelle photographie de l'atelier de Metz.
+- Les deux sources fournies par Patrice ont été converties en WebP et cadrées sans génération ou retouche IA.
 - Le portrait de Karine est volontairement conservé pour humaniser la boutique.
 - Texte de conversion final : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
 - `choisies avec exigence` reçoit un surlignage champagne horizontal derrière la moitié basse des lettres. Le premier soulignage irrégulier a été refusé puis entièrement supprimé, comme les anciens doubles traits prune et aigue-marine.
 - La hiérarchie du slogan renforce `beauté` et `vertu` sans ajouter de nouvel ornement concurrent.
 - Le triptyque remonte de `34px` à `40px` sur desktop uniquement afin de ne plus chevaucher les preuves photographiques. Le mobile reste inchangé.
-- Déploiement ciblé du seul fichier `sections/milaura-hero-portal.liquid` sur le thème live `190430282075`.
-- Pullback live identique au local, SHA-256 `0fa221e4eee886a3b0a4bcbda5052c55dcb822c65496bf3fc9dd1a251a7411ab`.
+- Dernier déploiement ciblé limité aux deux WebP de réassurance et à `sections/milaura-hero-portal.liquid` sur le thème live `190430282075`.
+- Pullback live identique au local : LFG `3851ae42dfcb9fc31ba3940888792c9f3b14ec71a4547e470b9c44ba1fb75bdf`, atelier `115aebde3c849fe1e00b183219e77bcf9bc88b23fe57b2c6ab57cdee1e52806e`, section `de7161ae3992c528e51b4b33bc7d253832e1023a356f8e174395579124321afb`.
 - Contrôles publics : desktop `1440 x 1200`, mobile `390 x 1250`, CTA visible dans les deux formats.
-- Commits du lot : `9a809e0d`, `ed455a9f`, `3b98c937`, `45a225fa` et `78bbb26b`.
+- Aucun Chrome ou Playwright n'a été ouvert pour la dernière substitution. Cette passe est validée techniquement, pas visuellement.
+- Commits du lot : `9a809e0d`, `ed455a9f`, `3b98c937`, `45a225fa`, `78bbb26b` et `6848e181`.
 
 ## Décision P0A et reprise P0B du 2026-08-08
 
@@ -196,13 +198,13 @@ Validation : Hero terminé et déployé. Direction validée visuellement par Pat
 
 ## Git
 
-État contrôlé le 2026-08-08 à 13:18 CEST :
+État contrôlé le 2026-08-08 à 13:52 CEST :
 
 - checkout canonique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
 - branche : `codex/milaura-reconcile-2026-08-07` ;
-- dernier commit fonctionnel Hero poussé : `78bbb26b` ;
+- dernier commit fonctionnel Hero poussé : `6848e181` ;
 - branche locale alignée avec `origin/codex/milaura-reconcile-2026-08-07` après le push ;
-- commits Hero : `9a809e0d`, `ed455a9f`, `3b98c937`, `45a225fa` et `78bbb26b` ;
+- commits Hero : `9a809e0d`, `ed455a9f`, `3b98c937`, `45a225fa`, `78bbb26b` et `6848e181` ;
 - commit des trois portes présent sur la branche : `7f4093f7`, état live et approbation visuelle à reconfirmer lors de la reprise ;
 - nouveaux diffs locaux hors lot observés à la clôture : `sections/milaura-choice-doors.liquid` et `templates/index.json`. Leur provenance, leur état live et leur approbation n'ont pas été audités pendant la correction du Hero ;
 - modifications panier préservées et hors lot : `templates/cart.json` et `templates/cart.milaura.json` ;
