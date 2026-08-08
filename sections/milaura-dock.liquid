@@ -22,7 +22,7 @@
   .milaura-dock {
     position: fixed;
     inset: auto 0 0;
-    z-index: 99998;
+    z-index: 1000002;
     display: none;
     align-items: flex-start;
     width: 100%;
@@ -116,19 +116,33 @@
     transition: color 180ms ease, transform 180ms ease, filter 180ms ease;
   }
 
-  .milaura-dock-item .milaura-dock-circle-mark__ring {
-    stroke: #d7b8df;
-    stroke-width: 1.3;
+  .milaura-dock-circle-mark {
+    position: relative;
+    display: block;
+    width: 23px;
+    height: 23px;
+    transition: transform 180ms ease, filter 180ms ease;
   }
 
-  .milaura-dock-item .milaura-dock-circle-mark__gold {
-    stroke: #b9975b;
-    stroke-width: 1.65;
+  .milaura-dock-circle-mark__ring {
+    position: absolute;
+    display: block;
+    border: 1.35px solid;
+    pointer-events: none;
   }
 
-  .milaura-dock-item .milaura-dock-circle-mark__aqua {
-    stroke: #6fa9a6;
-    stroke-width: 1.65;
+  .milaura-dock-circle-mark__ring--gold {
+    inset: 4px 1px 3px 2px;
+    border-color: #b9975b;
+    border-radius: 48% 52% 46% 54% / 53% 45% 55% 47%;
+    transform: rotate(10deg);
+  }
+
+  .milaura-dock-circle-mark__ring--aqua {
+    inset: 2px 4px 2px 3px;
+    border-color: #6fa9a6;
+    border-radius: 53% 47% 55% 45% / 46% 54% 48% 52%;
+    transform: rotate(-13deg);
   }
 
   .milaura-dock-item:active {
@@ -147,6 +161,13 @@
   .milaura-dock-item.is-current svg {
     color: #efdaf2;
     filter: drop-shadow(0 0 7px rgba(215, 184, 223, 0.42));
+    transform: translateY(-1px);
+  }
+
+  .milaura-dock-item:hover .milaura-dock-circle-mark,
+  .milaura-dock-item:focus-visible .milaura-dock-circle-mark,
+  .milaura-dock-item.is-current .milaura-dock-circle-mark {
+    filter: drop-shadow(0 0 7px rgba(215, 184, 223, 0.34));
     transform: translateY(-1px);
   }
 
@@ -215,11 +236,17 @@
       width: 21px;
       height: 21px;
     }
+
+    .milaura-dock-circle-mark {
+      width: 21px;
+      height: 21px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .milaura-dock-item,
-    .milaura-dock-item svg {
+    .milaura-dock-item svg,
+    .milaura-dock-circle-mark {
       transition: none !important;
     }
   }
@@ -234,7 +261,13 @@
     {%- endif -%}
   </div>
 
-  <button type="button" class="milaura-dock-item" data-dock-menu aria-label="{{ section.settings.menu_label | default: 'Menu' }}">
+  <button
+    type="button"
+    class="milaura-dock-item"
+    data-dock-menu
+    aria-label="{{ section.settings.menu_label | default: 'Menu' }}"
+    aria-expanded="false"
+  >
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M4 7h16M4 12h11M4 17h16"/>
     </svg>
@@ -266,11 +299,10 @@
     class="milaura-dock-item{% if request.path contains '/account' %} is-current{% endif %}"
     aria-label="{{ section.settings.account_label | default: 'Cercle' }}"
   >
-    <svg class="milaura-dock-circle-mark" viewBox="0 0 24 24" aria-hidden="true">
-      <circle class="milaura-dock-circle-mark__ring" cx="12" cy="12" r="8.4"/>
-      <path class="milaura-dock-circle-mark__gold" d="M7.1 16.6C9.1 13.7 12.4 10.2 16.9 7.4"/>
-      <path class="milaura-dock-circle-mark__aqua" d="M7.2 7.5c3.7 1.7 6.5 5 9.6 9"/>
-    </svg>
+    <span class="milaura-dock-circle-mark" aria-hidden="true">
+      <span class="milaura-dock-circle-mark__ring milaura-dock-circle-mark__ring--gold"></span>
+      <span class="milaura-dock-circle-mark__ring milaura-dock-circle-mark__ring--aqua"></span>
+    </span>
     <span class="milaura-dock-label">{{ section.settings.account_label | default: 'Cercle' }}</span>
   </a>
 
@@ -297,9 +329,21 @@
   var badge = document.getElementById('milaura-dock-badge');
 
   if (menuButton) {
+    var navbarBurger = document.querySelector('[id^="burger-"]');
+    if (navbarBurger && navbarBurger.getAttribute('aria-controls')) {
+      menuButton.setAttribute('aria-controls', navbarBurger.getAttribute('aria-controls'));
+    }
+
     menuButton.addEventListener('click', function() {
-      var navbarBurger = document.querySelector('[id^="burger-"]');
       if (navbarBurger) navbarBurger.click();
+    });
+
+    document.addEventListener('milaura:menu-state', function(event) {
+      if (!event.detail) return;
+      var isExpanded = Boolean(event.detail.expanded);
+      menuButton.setAttribute('aria-expanded', String(isExpanded));
+      menuButton.classList.toggle('is-current', isExpanded);
+      if (event.detail.controls) menuButton.setAttribute('aria-controls', event.detail.controls);
     });
   }
 
