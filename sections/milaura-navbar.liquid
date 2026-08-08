@@ -5,6 +5,10 @@
 <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
 
 {% style %}
+  #shopify-section-{{ section.id }} {
+    z-index: 1000000 !important;
+  }
+
   /* ============================================
      MILAURA NAVBAR - VERSION CTA & CRO
      Badge Quiz visible sur TOUS les écrans
@@ -565,22 +569,17 @@
   }
 
   /* ============================================
-     MENU MOBILE - EFFET ÉCRAN TV LUXUEUX
+     MENU MOBILE - ECRIN MILAURA
      ============================================ */
 
-  /* Overlay sombre derrière le menu */
   #MilauraNav-{{ section.id }} .nav-mobile-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    background: rgba(0, 0, 0, 0.6);
+    inset: 0;
     z-index: 999998;
+    background: rgba(47, 34, 45, 0.28);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transition: opacity 220ms ease, visibility 220ms ease;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-overlay.active {
@@ -588,508 +587,418 @@
     visibility: visible;
   }
 
-  /* Menu principal - Effet écran TV */
   #MilauraNav-{{ section.id }} .nav-mobile-menu {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
+    z-index: 999999;
+    display: block;
     width: 100%;
     height: 100vh;
     height: 100dvh;
-    background: linear-gradient(
-      165deg,
-      rgba(35, 28, 20, 0.98) 0%,
-      rgba(50, 40, 28, 0.98) 30%,
-      rgba(65, 52, 35, 0.97) 60%,
-      rgba(80, 62, 40, 0.96) 100%
-    );
-    backdrop-filter: blur(30px) saturate(150%);
-    -webkit-backdrop-filter: blur(30px) saturate(150%);
-    z-index: 999999;
-    padding: 100px 32px 40px;
+    padding: 126px 28px 36px;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-
-    /* Animation écran TV - départ */
+    color: #fbf8f3;
+    background:
+      radial-gradient(circle at 88% 24%, rgba(111, 169, 166, 0.13), transparent 30%),
+      linear-gradient(155deg, #2f222d 0%, #382733 52%, #261b24 100%);
+    box-sizing: border-box;
     opacity: 0;
     visibility: hidden;
-    transform: scale(0.95);
-    transform-origin: center center;
+    transform: translateY(-14px);
     transition:
-      opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-      visibility 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 240ms ease;
+    pointer-events: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  /* Glow doré subtil sur les bords */
-  #MilauraNav-{{ section.id }} .nav-mobile-menu::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 2px solid transparent;
-    background: linear-gradient(
-      135deg,
-      rgba(192, 160, 98, 0.4) 0%,
-      rgba(192, 160, 98, 0.1) 25%,
-      transparent 50%,
-      rgba(192, 160, 98, 0.1) 75%,
-      rgba(192, 160, 98, 0.4) 100%
-    ) border-box;
-    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.6s ease 0.2s;
-  }
-
-  /* Effet scan line TV rétro subtil */
-  #MilauraNav-{{ section.id }} .nav-mobile-menu::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(192, 160, 98, 0.02) 2px,
-      rgba(192, 160, 98, 0.02) 4px
-    );
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease 0.3s;
-  }
-
-  /* Animation écran TV - actif */
-  #MilauraNav-{{ section.id }} .nav-mobile-menu.active {
+  #MilauraNav-{{ section.id }} .nav-mobile-menu.active,
+  #MilauraNav-{{ section.id }} .nav-mobile-menu.opening {
     opacity: 1;
     visibility: visible;
-    transform: scale(1);
+    transform: translateY(0);
   }
 
-  #MilauraNav-{{ section.id }} .nav-mobile-menu.active::before,
-  #MilauraNav-{{ section.id }} .nav-mobile-menu.active::after {
-    opacity: 1;
-  }
-
-  /* Animation de fermeture TV (extinction) */
   #MilauraNav-{{ section.id }} .nav-mobile-menu.closing {
-    animation: tvTurnOff 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+    opacity: 0;
+    visibility: visible;
+    transform: translateY(-10px);
   }
 
-  @keyframes tvTurnOff {
-    0% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    30% {
-      opacity: 1;
-      transform: scale(1, 0.8);
-    }
-    60% {
-      opacity: 0.8;
-      transform: scale(0.8, 0.01);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0, 0);
-    }
+  #MilauraNav-{{ section.id }} .nav-mobile-shell {
+    position: relative;
+    width: min(100%, 680px);
+    min-height: 100%;
+    margin: 0 auto;
   }
 
-  /* Animation d'ouverture TV (allumage) */
-  #MilauraNav-{{ section.id }} .nav-mobile-menu.opening {
-    animation: tvTurnOn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-
-  @keyframes tvTurnOn {
-    0% {
-      opacity: 0;
-      transform: scale(0, 0);
-    }
-    30% {
-      opacity: 0.5;
-      transform: scale(0.8, 0.01);
-    }
-    60% {
-      opacity: 0.8;
-      transform: scale(1, 0.8);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  /* Header du menu mobile avec logo et bouton retour */
   #MilauraNav-{{ section.id }} .nav-mobile-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 24px;
-    z-index: 100;
-    pointer-events: auto;
+    gap: 20px;
+    padding: 0 0 14px;
+    border-bottom: 1px solid rgba(111, 169, 166, 0.46);
   }
 
-  /* Bouton retour (flèche) */
-  #MilauraNav-{{ section.id }} .nav-mobile-back {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, rgba(192, 160, 98, 0.2) 0%, rgba(192, 160, 98, 0.1) 100%);
-    border: 1px solid rgba(192, 160, 98, 0.4);
-    border-radius: 50px;
-    padding: 12px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--milaura-gold-light, #E6C88B);
+  #MilauraNav-{{ section.id }} .nav-mobile-heading {
+    min-width: 0;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-kicker {
+    display: block;
+    margin-bottom: 3px;
+    color: #b9975b;
     font-family: 'Lato', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.66rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 1.8px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    pointer-events: auto;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-title {
+    margin: 0;
+    color: #fbf8f3;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.42rem, 4vw, 1.8rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: 0.1px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-back {
     position: relative;
-    z-index: 101;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    padding: 0;
+    place-items: center;
+    color: #d7b8df;
+    background: rgba(251, 248, 243, 0.05);
+    border: 1px solid rgba(185, 151, 91, 0.58);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-back::after {
+    content: '';
+    position: absolute;
+    inset: -3px 1px;
+    border: 1px solid rgba(111, 169, 166, 0.72);
+    border-radius: 52% 48% 46% 54% / 48% 53% 47% 52%;
+    transform: rotate(-8deg);
+    pointer-events: none;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-back:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-back:active {
-    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
-    border-color: var(--milaura-gold);
-    color: #fff;
-    transform: translateX(-3px);
+  #MilauraNav-{{ section.id }} .nav-mobile-back:focus-visible {
+    color: #ffffff;
+    background: rgba(111, 169, 166, 0.14);
+    transform: translateY(-1px);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-back:focus-visible {
+    outline: 2px solid #d7b8df;
+    outline-offset: 4px;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-back svg {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
+    width: 19px;
+    height: 19px;
   }
 
-  #MilauraNav-{{ section.id }} .nav-mobile-back:hover svg {
-    transform: translateX(-3px);
-  }
-
-  /* Icônes essentielles dans le header mobile */
-  #MilauraNav-{{ section.id }} .nav-mobile-icons {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    pointer-events: auto;
-    position: relative;
-    z-index: 101;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    background: rgba(192, 160, 98, 0.15);
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: 50%;
-    color: var(--milaura-gold-light, #E6C88B);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 101;
-    pointer-events: auto;
-    cursor: pointer;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-icon:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-icon:active {
-    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
-    border-color: var(--milaura-gold);
-    color: #fff;
-    transform: scale(1.08);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  /* Badge panier */
-  #MilauraNav-{{ section.id }} .nav-mobile-cart-count {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    min-width: 18px;
-    height: 18px;
-    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-dark) 100%);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 4px;
-  }
-
-  /* Liste des liens */
   #MilauraNav-{{ section.id }} .nav-mobile-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
+    position: relative;
+    z-index: 1;
     flex-direction: column;
     gap: 0;
-    position: relative;
-    z-index: 50;
-    pointer-events: auto;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-link {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 0.5px;
     display: flex;
-    align-items: center;
-    padding: 18px 0;
-    border-bottom: 1px solid rgba(192, 160, 98, 0.2);
-    transition: all 0.3s ease;
     position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 55px;
+    padding: 14px 2px;
+    align-items: center;
+    justify-content: space-between;
+    color: #fbf8f3;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(111, 169, 166, 0.28);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.08rem, 3.6vw, 1.34rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.15px;
+    text-align: left;
+    text-decoration: none;
     cursor: pointer;
-    pointer-events: auto;
-    z-index: 51;
-  }
-
-  /* Accent doré au survol */
-  #MilauraNav-{{ section.id }} .nav-mobile-link::before {
-    content: '';
-    position: absolute;
-    left: -32px;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
-    border-radius: 0 3px 3px 0;
-    opacity: 0;
-    transform: scaleY(0);
-    transition: all 0.3s ease;
+    transition: color 180ms ease, padding-left 180ms ease, background-color 180ms ease;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-link:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-link:active {
-    color: var(--milaura-gold-light, #E6C88B);
-    padding-left: 16px;
+  #MilauraNav-{{ section.id }} .nav-mobile-link:focus-visible,
+  #MilauraNav-{{ section.id }} .nav-mobile-link.open {
+    padding-left: 9px;
+    color: #efdaf2;
+    background: rgba(111, 169, 166, 0.08);
   }
 
-  #MilauraNav-{{ section.id }} .nav-mobile-link:hover::before,
-  #MilauraNav-{{ section.id }} .nav-mobile-link:active::before {
-    opacity: 1;
-    transform: scaleY(1);
+  #MilauraNav-{{ section.id }} .nav-mobile-link:focus-visible,
+  #MilauraNav-{{ section.id }} .nav-mobile-sublink:focus-visible,
+  #MilauraNav-{{ section.id }} .nav-mobile-group-title:focus-visible,
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-link:focus-visible {
+    outline: 2px solid #6fa9a6;
+    outline-offset: -2px;
   }
 
-  /* --- SOUS-MENU MOBILE (Accordéon) --- */
-  #MilauraNav-{{ section.id }} .nav-mobile-parent {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  #MilauraNav-{{ section.id }} .nav-mobile-link--nouveautes {
+    color: #d8bd84 !important;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-parent .nav-link-chevron {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
+    width: 16px;
+    height: 16px;
     flex-shrink: 0;
-    color: var(--milaura-gold);
+    color: #6fa9a6;
+    transition: transform 200ms ease, color 200ms ease;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-parent.open .nav-link-chevron {
+    color: #b9975b;
     transform: rotate(180deg);
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-submenu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     max-height: 0;
+    margin: 0;
+    padding: 0 10px;
     overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    margin-top: 0;
+    visibility: hidden;
+    list-style: none;
+    background: rgba(251, 248, 243, 0.045);
+    border-left: 1px solid rgba(111, 169, 166, 0.56);
+    border-radius: 0 16px 16px 0;
+    opacity: 0;
+    transition:
+      max-height 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      margin 200ms ease,
+      padding 200ms ease,
+      opacity 180ms ease,
+      visibility 180ms ease;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-submenu.open {
-    max-height: 1000px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    max-height: 1200px;
+    margin: 8px 0 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    visibility: visible;
+    opacity: 1;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-sublink {
     display: block;
-    font-family: 'Lato', sans-serif;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    padding: 14px 20px 14px 28px;
-    border-bottom: 1px solid rgba(192, 160, 98, 0.1);
-    transition: all 0.3s ease;
     position: relative;
-    pointer-events: auto;
-    z-index: 52;
-    cursor: pointer;
+    padding: 11px 14px 11px 22px;
+    color: rgba(251, 248, 243, 0.82);
+    border-bottom: 1px solid rgba(215, 184, 223, 0.1);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+    transition: color 180ms ease, background-color 180ms ease, padding-left 180ms ease;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-sublink::before {
     content: '';
     position: absolute;
-    left: 12px;
     top: 50%;
-    transform: translateY(-50%);
-    width: 6px;
-    height: 6px;
+    left: 8px;
+    width: 5px;
+    height: 5px;
+    background: #b9975b;
     border-radius: 50%;
-    background: var(--milaura-gold);
-    opacity: 0.5;
-    transition: all 0.3s ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink:last-child {
-    border-bottom: none;
+    opacity: 0.72;
+    transform: translateY(-50%);
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-sublink:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink:active {
-    color: var(--milaura-gold-light);
-    padding-left: 36px;
-    background: rgba(192, 160, 98, 0.1);
+  #MilauraNav-{{ section.id }} .nav-mobile-sublink:focus-visible {
+    padding-left: 27px;
+    color: #ffffff;
+    background: rgba(111, 169, 166, 0.09);
   }
 
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink:hover::before,
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink:active::before {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.3);
+  #MilauraNav-{{ section.id }} .nav-mobile-sublink--all {
+    color: #d7b8df;
+    font-weight: 800;
   }
 
-  /* --- GROUPES MEGA-MENU MOBILE (3 niveaux) --- */
   #MilauraNav-{{ section.id }} .nav-mobile-group {
     padding: 4px 0;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-group-title {
     display: block;
-    font-family: 'Playfair Display', serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--milaura-gold);
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    padding: 14px 20px 6px 20px;
+    padding: 12px 14px 4px;
+    color: #d8bd84;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 1.15px;
     text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-group-title:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-group-title:active {
-    color: var(--milaura-gold-light);
+    text-transform: uppercase;
   }
 
   #MilauraNav-{{ section.id }} .nav-mobile-group-links {
-    list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  /* Badge Quiz Mobile */
-  #MilauraNav-{{ section.id }} .nav-mobile-quiz {
-    margin-top: auto;
-    padding-top: 32px;
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle {
     position: relative;
-    z-index: 50;
-    pointer-events: auto;
+    z-index: 1;
+    margin-top: 18px;
   }
 
-  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge {
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-link {
     display: flex;
+    min-height: 76px;
+    padding: 13px 15px;
+    align-items: center;
+    gap: 14px;
+    color: #fbf8f3;
+    background: rgba(251, 248, 243, 0.055);
+    border: 1px solid rgba(111, 169, 166, 0.42);
+    border-radius: 22px;
+    text-decoration: none;
+    transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-link:hover,
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-link:focus-visible {
+    background: rgba(111, 169, 166, 0.12);
+    border-color: rgba(185, 151, 91, 0.68);
+    transform: translateY(-1px);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-mark {
+    position: relative;
+    display: block;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-ring {
+    position: absolute;
+    display: block;
+    border: 1.4px solid;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-ring--gold {
+    inset: 8px 2px 7px 4px;
+    border-color: #b9975b;
+    border-radius: 48% 52% 46% 54% / 53% 45% 55% 47%;
+    transform: rotate(10deg);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-ring--aqua {
+    inset: 4px 8px 4px 6px;
+    border-color: #6fa9a6;
+    border-radius: 53% 47% 55% 45% / 46% 54% 48% 52%;
+    transform: rotate(-13deg);
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-copy {
+    min-width: 0;
+    flex: 1;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-title,
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-subtitle {
+    display: block;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-subtitle {
+    margin-top: 3px;
+    color: rgba(251, 248, 243, 0.58);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.45px;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-cercle-arrow {
+    flex: 0 0 auto;
+    color: #b9975b;
+    font-size: 1.15rem;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-secondary {
+    display: flex;
+    margin-top: 14px;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    background: linear-gradient(135deg, var(--milaura-gold) 0%, #D4B678 50%, var(--milaura-gold-light) 100%);
-    background-size: 200% 200%;
-    color: #fff;
-    padding: 20px 32px;
-    border-radius: 60px;
-    text-decoration: none;
-    box-shadow:
-      0 8px 30px rgba(192, 160, 98, 0.4),
-      0 0 40px rgba(192, 160, 98, 0.2);
-    transition: all 0.3s ease;
-    position: relative;
-    animation: badgeShimmer 3s ease-in-out infinite;
-    pointer-events: auto;
-    z-index: 51;
-    cursor: pointer;
+    gap: 0;
   }
 
-  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge::before {
+  #MilauraNav-{{ section.id }} .nav-mobile-secondary a {
+    position: relative;
+    padding: 8px 14px;
+    color: rgba(251, 248, 243, 0.68);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.9px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 180ms ease;
+  }
+
+  #MilauraNav-{{ section.id }} .nav-mobile-secondary a + a::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 60px;
-    box-shadow: 0 0 0 0 rgba(192, 160, 98, 0.6);
-    animation: haloPulse 2s ease-out infinite;
-    pointer-events: none;
+    width: 3px;
+    height: 3px;
+    background: #6fa9a6;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
   }
 
-  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge:active {
-    transform: scale(1.03);
-    box-shadow:
-      0 12px 40px rgba(192, 160, 98, 0.5),
-      0 0 60px rgba(192, 160, 98, 0.3);
+  #MilauraNav-{{ section.id }} .nav-mobile-secondary a:hover,
+  #MilauraNav-{{ section.id }} .nav-mobile-secondary a:focus-visible {
+    color: #efdaf2;
   }
 
-  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-icon {
-    font-size: 1.5rem;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-title {
-    font-size: 1.1rem;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-subtitle {
-    font-size: 0.85rem;
-  }
-
-  /* Footer du menu mobile */
-  #MilauraNav-{{ section.id }} .nav-mobile-footer {
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(192, 160, 98, 0.2);
-    text-align: center;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-footer-text {
-    font-family: 'Lato', sans-serif;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 1px;
-    text-transform: uppercase;
+  #MilauraNav-{{ section.id }} .nav-mobile-secondary a:focus-visible {
+    outline: 1px solid #6fa9a6;
+    outline-offset: 2px;
   }
 
   /* --- ANIMATIONS --- */
@@ -1410,147 +1319,50 @@
      RESPONSIVE MENU MOBILE
      ============================================ */
 
-  /* Ajustements tablette */
   @media screen and (max-width: 1100px) {
-    #MilauraNav-{{ section.id }} .nav-mobile-menu {
-      padding: 90px 28px 36px;
+    #MilauraNav-{{ section.id }} .nav-snake-wrapper {
+      z-index: 1000000;
     }
 
-    #MilauraNav-{{ section.id }} .nav-mobile-link {
-      font-size: 1.3rem;
-      padding: 16px 0;
+    #MilauraNav-{{ section.id }} .nav-mobile-menu {
+      padding: 122px 28px 36px;
     }
   }
 
-  /* Ajustements mobile */
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 768px) {
     #MilauraNav-{{ section.id }} .nav-mobile-menu {
-      padding: 85px 20px 32px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-header {
-      padding: 16px 20px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-back {
-      padding: 10px 16px;
-      font-size: 0.8rem;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-back svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-icon {
-      width: 40px;
-      height: 40px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-icon svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-icons {
-      gap: 12px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-link {
-      font-size: 1.2rem;
-      padding: 14px 0;
+      padding: 124px 18px calc(var(--milaura-mobile-dock-total, 88px) + 18px);
     }
 
     #MilauraNav-{{ section.id }} .nav-mobile-sublink {
-      font-size: 0.95rem;
-      padding: 12px 16px 12px 24px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge {
-      padding: 16px 24px;
+      font-size: 0.84rem;
     }
   }
 
-  /* Ajustements petit mobile */
   @media screen and (max-width: 480px) {
     #MilauraNav-{{ section.id }} .nav-mobile-menu {
-      padding: 80px 16px 28px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-header {
-      padding: 14px 16px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-back {
-      padding: 8px 14px;
-      font-size: 0.75rem;
-      gap: 6px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-back span {
-      display: none;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-back svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-icon {
-      width: 38px;
-      height: 38px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-icons {
-      gap: 10px;
+      padding-top: 118px;
+      padding-right: 16px;
+      padding-left: 16px;
     }
 
     #MilauraNav-{{ section.id }} .nav-mobile-link {
-      font-size: 1.1rem;
-      padding: 12px 0;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-link::before {
-      left: -16px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge {
-      padding: 14px 20px;
-      gap: 10px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-icon {
-      font-size: 1.3rem;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-title {
-      font-size: 1rem;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-quiz-badge .badge-subtitle {
-      font-size: 0.8rem;
+      min-height: 52px;
+      padding-top: 12px;
+      padding-bottom: 12px;
     }
   }
 
-  /* Très petit écran */
   @media screen and (max-width: 360px) {
-    #MilauraNav-{{ section.id }} .nav-mobile-back {
-      padding: 8px 12px;
-      border-radius: 50%;
+    #MilauraNav-{{ section.id }} .nav-mobile-menu {
+      padding-top: 108px;
+      padding-right: 13px;
+      padding-left: 13px;
     }
 
-    #MilauraNav-{{ section.id }} .nav-mobile-icon {
-      width: 36px;
-      height: 36px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-icon svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-link {
-      font-size: 1rem;
+    #MilauraNav-{{ section.id }} .nav-mobile-cercle-link {
+      min-height: 70px;
+      padding: 10px 12px;
     }
   }
 
@@ -1568,7 +1380,14 @@
     <div class="nav-inner">
 
       <!-- Menu toggle (mobile/tablette) - 2 traits dores -->
-      <button class="nav-burger" aria-label="Menu" id="burger-{{ section.id }}">
+      <button
+        type="button"
+        class="nav-burger"
+        aria-label="Menu"
+        aria-controls="mobile-menu-{{ section.id }}"
+        aria-expanded="false"
+        id="burger-{{ section.id }}"
+      >
         <span></span>
         <span></span>
       </button>
@@ -1712,62 +1531,57 @@
     </div>
   </div>
 
-  <!-- Overlay sombre -->
+  <!-- Overlay du menu mobile -->
   <div class="nav-mobile-overlay" id="mobile-overlay-{{ section.id }}"></div>
 
-  <!-- Menu Mobile - Effet écran TV -->
-  <div class="nav-mobile-menu" id="mobile-menu-{{ section.id }}">
+  <!-- Menu mobile : écrin prune entre l'en-tête et le dock -->
+  <div
+    class="nav-mobile-menu"
+    id="mobile-menu-{{ section.id }}"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="mobile-menu-title-{{ section.id }}"
+    tabindex="-1"
+  >
+    <div class="nav-mobile-shell">
+      <div class="nav-mobile-header">
+        <div class="nav-mobile-heading">
+          <span class="nav-mobile-kicker">Créateur d'émotions</span>
+          <h2 class="nav-mobile-title" id="mobile-menu-title-{{ section.id }}">Explorer MilAura</h2>
+        </div>
 
-    <!-- Header mobile : Bouton retour + Icônes essentielles -->
-    <div class="nav-mobile-header">
-      <!-- Bouton retour (flèche) -->
-      <button class="nav-mobile-back" id="close-menu-{{ section.id }}" aria-label="Fermer le menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5"/>
-          <polyline points="12 19 5 12 12 5"/>
-        </svg>
-        <span>Retour</span>
-      </button>
-
-      <!-- Icônes essentielles -->
-      <div class="nav-mobile-icons">
-        <a href="{{ routes.account_url }}" class="nav-mobile-icon" aria-label="Mon compte" data-close-menu>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
+        <button type="button" class="nav-mobile-back" id="close-menu-{{ section.id }}" aria-label="Fermer le menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18"/>
           </svg>
-        </a>
-        {% if section.settings.show_contact_icon %}
-          <a href="{{ section.settings.contact_page_url | default: '/pages/contact' }}" class="nav-mobile-icon nav-contact-icon" aria-label="Contact" data-close-menu>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-            </svg>
-          </a>
-        {% endif %}
-        <a href="{{ routes.cart_url }}" class="nav-mobile-icon" aria-label="Panier" data-close-menu>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <path d="M16 10a4 4 0 0 1-8 0"/>
-          </svg>
-          <span class="nav-mobile-cart-count" id="mobile-cart-count-{{ section.id }}" style="display: none;">0</span>
-        </a>
+        </button>
       </div>
-    </div>
 
-    <!-- Liens de navigation (3 niveaux : mega-menu) -->
-    <ul class="nav-mobile-links">
+      <ul class="nav-mobile-links">
       {%- for link in linklists[section.settings.menu].links -%}
         {%- if link.links.size > 0 -%}
           <li>
-            <div class="nav-mobile-link nav-mobile-parent" data-toggle-submenu>
-              {{ link.title }}
+            <button
+              type="button"
+              class="nav-mobile-link nav-mobile-parent"
+              data-toggle-submenu
+              aria-expanded="false"
+              aria-controls="mobile-submenu-{{ section.id }}-{{ forloop.index }}"
+            >
+              <span>{{ link.title }}</span>
               <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-            <ul class="nav-mobile-submenu">
+            </button>
+            <ul
+              class="nav-mobile-submenu"
+              id="mobile-submenu-{{ section.id }}-{{ forloop.index }}"
+              aria-hidden="true"
+            >
+              <li>
+                <a href="{{ link.url }}" class="nav-mobile-sublink nav-mobile-sublink--all" data-close-menu>Tout découvrir</a>
+              </li>
               {%- for child in link.links -%}
                 {%- if child.links.size > 0 -%}
-                  <!-- Groupe avec sous-liens (3e niveau) -->
                   <li class="nav-mobile-group">
                     <a href="{{ child.url }}" class="nav-mobile-group-title" data-close-menu>{{ child.title }}</a>
                     <ul class="nav-mobile-group-links">
@@ -1806,25 +1620,27 @@
           </li>
         {%- endif -%}
       {%- endfor -%}
-    </ul>
+      </ul>
 
-    <!-- Badge Quiz Mobile -->
-    <div class="nav-mobile-quiz">
-      <a href="{{ section.settings.quiz_link | default: '/pages/diagnostic-emotionnel' }}" class="nav-mobile-quiz-badge" data-close-menu>
-        <div class="badge-content">
-          <span class="badge-title">{{ section.settings.quiz_label | default: 'Trouver ma pierre' }}</span>
-          {%- if section.settings.quiz_subtitle != blank -%}
-            <span class="badge-subtitle">{{ section.settings.quiz_subtitle }}</span>
-          {%- endif -%}
-        </div>
-      </a>
+      <div class="nav-mobile-cercle">
+        <a href="{{ routes.account_url }}" class="nav-mobile-cercle-link" data-close-menu>
+          <span class="nav-mobile-cercle-mark" aria-hidden="true">
+            <span class="nav-mobile-cercle-ring nav-mobile-cercle-ring--gold"></span>
+            <span class="nav-mobile-cercle-ring nav-mobile-cercle-ring--aqua"></span>
+          </span>
+          <span class="nav-mobile-cercle-copy">
+            <span class="nav-mobile-cercle-title">Le Cercle MilAura</span>
+            <span class="nav-mobile-cercle-subtitle">Votre espace personnel</span>
+          </span>
+          <span class="nav-mobile-cercle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <nav class="nav-mobile-secondary" aria-label="Découvrir MilAura">
+        <a href="{{ routes.root_url }}pages/notre-histoire" data-close-menu>Notre histoire</a>
+        <a href="{{ routes.root_url }}blogs/journal" data-close-menu>Le Journal</a>
+      </nav>
     </div>
-
-    <!-- Footer menu mobile -->
-    <div class="nav-mobile-footer">
-      <p class="nav-mobile-footer-text">Milaura, créateur d'émotions</p>
-    </div>
-
   </div>
 </div>
 
@@ -2297,59 +2113,73 @@
     const closeBtn = document.getElementById('close-menu-' + sectionId);
     const mobileMenu = document.getElementById('mobile-menu-' + sectionId);
     const overlay = document.getElementById('mobile-overlay-' + sectionId);
-    const cartCount = document.getElementById('mobile-cart-count-' + sectionId);
     const desktopCartCount = document.getElementById('desktop-cart-count-' + sectionId);
 
     let isAnimating = false;
+    let lastFocusedElement = null;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const menuTransitionDuration = reduceMotion ? 0 : 240;
+    function setPageInert(isInert) {
+      Array.from(document.querySelectorAll('main, footer')).forEach(function(target) {
+        if (target.querySelector('.milaura-dock')) return;
+        target.inert = isInert;
+      });
+    }
 
-    // Animation d'ouverture type "écran TV qui s'allume"
+    function notifyMenuState(isOpen) {
+      document.dispatchEvent(new CustomEvent('milaura:menu-state', {
+        detail: {
+          expanded: isOpen,
+          controls: mobileMenu.id
+        }
+      }));
+    }
+
     function openMenu() {
       if (isAnimating) return;
       isAnimating = true;
+      lastFocusedElement = document.activeElement;
 
       burger.classList.add('active');
+      burger.setAttribute('aria-expanded', 'true');
       overlay.classList.add('active');
-
-      // Retirer les classes de fermeture si présentes
       mobileMenu.classList.remove('closing');
-
-      // Ajouter la classe d'ouverture avec animation
       mobileMenu.classList.add('opening');
-      mobileMenu.style.visibility = 'visible';
-      mobileMenu.style.opacity = '1';
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      setPageInert(true);
+      document.body.style.overflow = 'hidden';
+      notifyMenuState(true);
 
-      // Après l'animation, passer à l'état actif stable
       setTimeout(function() {
         mobileMenu.classList.remove('opening');
         mobileMenu.classList.add('active');
         isAnimating = false;
-      }, 500);
-
-      document.body.style.overflow = 'hidden';
+        if (closeBtn) closeBtn.focus();
+      }, menuTransitionDuration);
     }
 
-    // Animation de fermeture type "écran TV qui s'éteint"
     function closeMenu() {
       if (isAnimating) return;
       isAnimating = true;
 
       burger.classList.remove('active');
+      burger.setAttribute('aria-expanded', 'false');
       overlay.classList.remove('active');
-
-      // Lancer l'animation de fermeture
       mobileMenu.classList.remove('active');
       mobileMenu.classList.remove('opening');
       mobileMenu.classList.add('closing');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      notifyMenuState(false);
 
-      // Après l'animation, cacher le menu
       setTimeout(function() {
         mobileMenu.classList.remove('closing');
-        mobileMenu.style.visibility = 'hidden';
-        mobileMenu.style.opacity = '0';
         isAnimating = false;
-      }, 400);
-
-      document.body.style.overflow = '';
+        document.body.style.overflow = '';
+        setPageInert(false);
+        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+          lastFocusedElement.focus();
+        }
+      }, menuTransitionDuration);
     }
 
     // Événements burger
@@ -2363,7 +2193,6 @@
       });
     }
 
-    // Bouton retour (flèche)
     if (closeBtn) {
       closeBtn.addEventListener('click', function(e) {
         e.preventDefault();
@@ -2377,23 +2206,48 @@
       overlay.addEventListener('click', closeMenu);
     }
 
-    // Fermer au clic sur les liens (avec délai pour permettre la navigation)
     const closeLinks = mobileMenu.querySelectorAll('[data-close-menu]');
     closeLinks.forEach(function(link) {
-      link.addEventListener('click', function(e) {
-        // Ne pas empêcher la navigation, mais fermer le menu avec un léger délai
+      link.addEventListener('click', function() {
         setTimeout(closeMenu, 100);
       });
     });
 
-    // Fermer avec Escape
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && (mobileMenu.classList.contains('active') || mobileMenu.classList.contains('opening'))) {
+      const isOpen = mobileMenu.classList.contains('active') || mobileMenu.classList.contains('opening');
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
         closeMenu();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusableElements = Array.from(mobileMenu.querySelectorAll(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )).filter(function(element) {
+          return element.offsetParent !== null && window.getComputedStyle(element).visibility !== 'hidden';
+        });
+
+        if (focusableElements.length === 0) {
+          e.preventDefault();
+          mobileMenu.focus();
+          return;
+        }
+
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
       }
     });
 
-    // Accordéon sous-menus mobile
     var parentItems = mobileMenu.querySelectorAll('[data-toggle-submenu]');
     parentItems.forEach(function(item) {
       item.addEventListener('click', function(e) {
@@ -2401,20 +2255,32 @@
         e.stopPropagation();
 
         var submenu = item.nextElementSibling;
-        var isOpen = item.classList.contains('open');
+        var isOpen = item.getAttribute('aria-expanded') === 'true';
 
-        // Fermer tous les autres
         parentItems.forEach(function(other) {
           other.classList.remove('open');
-          if (other.nextElementSibling) other.nextElementSibling.classList.remove('open');
+          other.setAttribute('aria-expanded', 'false');
+          if (other.nextElementSibling) {
+            other.nextElementSibling.classList.remove('open');
+            other.nextElementSibling.setAttribute('aria-hidden', 'true');
+          }
         });
 
-        // Toggle celui-ci
         if (!isOpen) {
           item.classList.add('open');
-          if (submenu) submenu.classList.add('open');
+          item.setAttribute('aria-expanded', 'true');
+          if (submenu) {
+            submenu.classList.add('open');
+            submenu.setAttribute('aria-hidden', 'false');
+          }
         }
       });
+    });
+
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 1100 && (mobileMenu.classList.contains('active') || mobileMenu.classList.contains('opening'))) {
+        closeMenu();
+      }
     });
 
     // --- MISE À JOUR DU COMPTEUR PANIER ---
@@ -2423,7 +2289,7 @@
         fetch('/cart.js')
           .then(function(response) { return response.json(); })
           .then(function(cart) {
-            [cartCount, desktopCartCount].forEach(function(el) {
+            [desktopCartCount].forEach(function(el) {
               if (el) {
                 if (cart.item_count > 0) {
                   el.textContent = cart.item_count;
