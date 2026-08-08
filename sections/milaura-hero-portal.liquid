@@ -5,8 +5,8 @@
   endif
 
   assign conversion_text = section.settings.body
-  if conversion_text == blank or conversion_text contains 'Bagues, bracelets, colliers et boucles d’oreilles'
-    assign conversion_text = 'Des matières de qualité. Des finitions soignées. Une sélection exigeante.'
+  if conversion_text == blank or conversion_text contains 'Bagues, bracelets, colliers et boucles d’oreilles' or conversion_text == 'Des matières de qualité. Des finitions soignées. Une sélection exigeante.'
+    assign conversion_text = 'Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.'
   endif
 
   assign slogan_line_1 = section.settings.slogan_line_1 | default: 'La beauté d’un bijou'
@@ -337,7 +337,7 @@
 
   #MilauraPortal-{{ section.id }} .portal-hero__body {
     max-width: 48ch;
-    margin: clamp(18px, 1.6vw, 24px) 0 0;
+    margin: clamp(26px, 2vw, 32px) 0 0;
     color: rgba(47, 34, 45, 0.84);
     font-size: clamp(1.1875rem, 1.2vw, 1.3125rem);
     font-weight: 460;
@@ -345,19 +345,8 @@
     line-height: 1.5;
   }
 
-  #MilauraPortal-{{ section.id }} .portal-hero__conversion-rule,
   #MilauraPortal-{{ section.id }} .portal-hero__conversion-text {
     display: block;
-  }
-
-  #MilauraPortal-{{ section.id }} .portal-hero__conversion-rule {
-    width: min(230px, 58%);
-    height: 10px;
-    margin: 0 auto 12px;
-    background:
-      linear-gradient(var(--portal-prune-action), var(--portal-prune-action)) top center / 100% 2px no-repeat,
-      linear-gradient(var(--portal-aqua-deep), var(--portal-aqua-deep)) bottom center / 72% 3px no-repeat;
-    opacity: 1;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__conversion-text {
@@ -370,6 +359,33 @@
     letter-spacing: -0.018em;
     line-height: 1.38;
     text-align: center;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__conversion-emphasis {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__conversion-emphasis::after {
+    content: '';
+    position: absolute;
+    right: -0.08em;
+    bottom: -0.16em;
+    left: -0.08em;
+    height: 5px;
+    background: linear-gradient(
+      92deg,
+      transparent 0%,
+      rgba(185, 151, 91, 0.78) 7%,
+      rgba(224, 195, 133, 0.96) 48%,
+      rgba(185, 151, 91, 0.84) 93%,
+      transparent 100%
+    );
+    clip-path: polygon(0 62%, 14% 38%, 34% 48%, 58% 24%, 78% 42%, 100% 18%, 98% 64%, 76% 74%, 55% 58%, 31% 82%, 12% 66%, 2% 90%);
+    pointer-events: none;
+    transform: rotate(-0.65deg);
+    transform-origin: center;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__actions {
@@ -880,21 +896,21 @@
 
     #MilauraPortal-{{ section.id }} .portal-hero__body {
       max-width: 35ch;
-      margin: 20px auto 0;
+      margin: 27px auto 0;
       font-size: 1rem;
       line-height: 1.5;
       text-align: center;
-    }
-
-    #MilauraPortal-{{ section.id }} .portal-hero__conversion-rule {
-      width: min(170px, 52%);
-      margin-bottom: 10px;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__conversion-text {
       max-width: 31ch;
       font-size: clamp(1.14rem, 5vw, 1.28rem);
       line-height: 1.42;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__conversion-emphasis::after {
+      bottom: -0.14em;
+      height: 4px;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__actions {
@@ -1061,8 +1077,13 @@
       </h1>
 
       <p class="portal-hero__body">
-        <span class="portal-hero__conversion-rule" aria-hidden="true"></span>
-        <span class="portal-hero__conversion-text">{{ conversion_text }}</span>
+        <span class="portal-hero__conversion-text">
+          {% if conversion_text == 'Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.' %}
+            Des pierres naturelles <span class="portal-hero__conversion-emphasis">choisies avec exigence</span> pour leur beauté, leur qualité et leur symbolique en lithothérapie.
+          {% else %}
+            {{ conversion_text }}
+          {% endif %}
+        </span>
       </p>
 
       <div class="portal-hero__actions">
@@ -1241,7 +1262,7 @@
       "type": "textarea",
       "id": "body",
       "label": "Texte de conversion",
-      "default": "Des matières de qualité. Des finitions soignées. Une sélection exigeante."
+      "default": "Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie."
     },
     {
       "type": "header",
