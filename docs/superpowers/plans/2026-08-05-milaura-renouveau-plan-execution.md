@@ -625,8 +625,8 @@ Chaque etape commence seulement lorsque la definition de termine de l'etape prec
 3. `G1` termine : checkout canonique propre, donnees privees separees, archive datee et branche distante alignee.
 4. `P0A` : calculer l'economie du panier, verifier les cumuls Shopify et auditer le reliquat Scratch de la page `/cart`.
 5. `P0B` : compter, identifier et chiffrer quatre produits reels.
-6. Construire la `Selection de l'atelier` avec ces quatre produits.
-7. Repositionner et finaliser les trois portes.
+6. Termine le 2026-08-08 : construire puis publier `L'atelier MilAura` avec les quatre produits reels, cartes natives, grille desktop et carousel mobile.
+7. Etape active : repositionner et finaliser les trois portes.
 8. Construire la landing Aigue-marine et relier les produits reels.
 9. Inventorier les composants de l'Atelier des emotions, fabriquer trois a cinq prototypes et calculer leur contribution.
 10. Construire Karine et les preuves d'atelier.

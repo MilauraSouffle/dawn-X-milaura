@@ -1,21 +1,22 @@
 # MilAura - Handoff Codex
 
-Date : 2026-08-08 08:14 CEST
+Date : 2026-08-08 10:10 CEST
 
 ## Mission de la prochaine session
 
-Poursuivre le lot P0A sur l'économie du panier depuis le checkout canonique. Le hero, le dock et le panneau mobile sont terminés pour cette session. Préserver le travail panier déjà présent et appliquer le cadrage des symboles MilAura avant toute nouvelle modification visuelle.
+Finaliser les trois portes placées après `L’atelier MilAura` pour récupérer les visiteurs qui n'ont pas encore choisi : par type de création, par besoin ou par diagnostic. `L’atelier MilAura` est terminé et live. La stratégie de ventes complémentaires reste reportée à une session dédiée.
 
 ## Lecture obligatoire, dans cet ordre
 
 1. `AGENTS.md`.
 2. `docs/project-state.md`.
-3. `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
-4. `docs/checkpoints/2026-08-08-0814-milaura-menu-cercle-branding-handoff.md`.
-5. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
-6. `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
-7. `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md` avant tout travail visuel.
-8. `docs/reference/MILAURA-CTA-SYSTEM-2026.md` avant tout CTA.
+3. `docs/reference/MILAURA-P0B-PRODUCT-REGISTER-2026.md`.
+4. `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
+5. `docs/checkpoints/2026-08-08-0814-milaura-menu-cercle-branding-handoff.md`.
+6. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
+7. `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
+8. `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md` avant tout travail visuel.
+9. `docs/reference/MILAURA-CTA-SYSTEM-2026.md` avant tout CTA.
 
 ## État live confirmé
 
@@ -28,6 +29,11 @@ Poursuivre le lot P0A sur l'économie du panier depuis le checkout canonique. Le
 - Pullback ciblé de `sections/milaura-navbar.liquid` : identique au local après déploiement.
 - Validation publique : mobile 390 x 844, fermeture par Echap et desktop 1440 px.
 - Theme Check : 0 erreur, 29 avertissements historiques.
+- `L’atelier MilAura` : live sur le thème `190430282075` depuis le 2026-08-08 à 10:06 CEST.
+- Livraison standard France : 5,80 EUR jusqu'à 49,99 EUR, gratuite à partir de 50 EUR.
+- Europe : tarif payant de 12 EUR.
+- `MILAURA-LIV50` et `MILAURA-LIV19` : France uniquement, tarif d'expédition maximum 6 EUR.
+- Guadeloupe, Martinique, La Réunion, États-Unis et reste du monde : aucune zone d'expédition active au contrôle du 2026-08-08.
 
 ## Décision de marque impérative
 
@@ -49,40 +55,60 @@ Le cabochon `Trouver ma pierre` conserve ses contours décalés comme exception 
 - Les deux commits sont poussés sur la branche distante.
 - Divergence vérifiée après le dernier push : 0 ahead, 0 behind.
 
-Deux fichiers panier sont modifiés par la session P0A parallèle :
+Deux fichiers panier sont modifiés localement par le lot P0A :
 
 - `templates/cart.json`
 - `templates/cart.milaura.json`
 
-Ces fichiers n'ont pas été touchés, stagés, commités ou déployés par le lot navigation. Ne pas lancer de reset, clean, pull global ou commit large. Identifier le propriétaire P0A et préserver son diff.
+Ils retirent le reliquat panier obsolète. Ils ne sont ni stagés, ni commités, ni déployés. Ne pas lancer de reset, clean, pull global ou commit large.
+
+Documents non versionnés ou modifiés par la reprise P0B :
+
+- `docs/project-state.md` ;
+- `docs/codex-handoff.md` ;
+- `docs/reference/MILAURA-P0B-PRODUCT-REGISTER-2026.md`.
+- `sections/milaura-selection-atelier.liquid` ;
+- `templates/index.json`.
+
+Validation de `L’atelier MilAura` :
+
+- version simple retenue après le refus des directions éditoriale et du toit dessiné ;
+- cartes natives réutilisées via `snippets/milaura-card-product.liquid` ;
+- contour aigue-marine limité à cette section ;
+- titre doré en Dancing Script `L’atelier MilAura` et sous-titre sur les créations choisies et préparées par Karine ;
+- quatre cartes sur toute la largeur disponible en desktop et carousel avec aperçu de la suivante en mobile ;
+- Theme Check : 0 erreur, 29 avertissements historiques ;
+- JSON de `templates/index.json` valide après retrait du commentaire Shopify ;
+- preview mobile 390 x 844 et desktop 1440 px contrôlée ;
+- CTA Hero vers la section contrôlé ;
+- ajout du Bracelet Amazonite contrôlé, drawer ouvert et total 29,90 EUR ;
+- déploiement Shopify ciblé limité à la section et à `templates/index.json` ;
+- pullback de la section et de `templates/index.json` identique au local ;
+- Hero public intact après normalisation par Shopify de trois anciens réglages désormais absents du schéma ;
+- validation publique mobile 390 x 844 et desktop 1440 px réussie.
+- doublon iCloud non suivi `sections/milaura-selection-atelier 2.liquid` exclu de la preview car son nom est invalide pour Shopify ; ne pas le supprimer sans validation.
 
 ## Ordre d'exécution actif
 
-1. Terminer P0A : économie des paliers panier, cumuls Shopify et reliquats Scratch.
-2. Identifier quatre produits physiquement présents et rentables.
-3. Construire la Sélection de l'atelier.
-4. Repositionner les trois portes.
+1. P0A clos par décision de Patrice le 2026-08-08.
+2. P0B terminé : quatre produits physiquement présents et rentables confirmés par Patrice.
+3. Sélection de l'atelier terminée et live le 2026-08-08.
+4. Étape active : repositionner et finaliser les trois portes.
 5. Construire la landing Aigue-marine.
 6. Inventorier et prototyper l'Atelier des émotions.
 
-## P0A
+## P0A clos et P0B actif
 
-Avant tout trafic payant :
+Patrice considère P0A terminé. Les protections de livraison sont appliquées. `MILAURA15`, le cadeau et les automatisations n'ont pas été modifiés. Les coûts exacts manquants restent à compléter avant Ads et ne doivent pas être présentés comme confirmés.
 
-- calculer cadeau, livraison, remise, frais et CAC dans le pire scénario ;
-- vérifier le cumul réel des avantages Shopify ;
-- vérifier stock, marge, délais, tracking et claims ;
-- retirer ScratchToReveal des PDP quand ce lot arrive, puis le réutiliser plus tard comme mécanique distinctive d'inscription au Cercle ;
-- ne pas réintroduire de friction dans le panier.
+P0B est validé par Patrice le 2026-08-08 avec quatre produits physiquement présents et disposant d'une bonne marge :
 
-Codes et seuils connus :
+1. Bracelet Amazonite 6 mm ;
+2. Distributeur Savon Lapis-Lazuli ;
+3. Bougie Joie - Aventurine verte ;
+4. Collier Jade.
 
-- 30 EUR : cadeau ;
-- 50 EUR : livraison ;
-- 80 EUR : remise de 15 % ;
-- `MILAURA-LIV50` ;
-- `MILAURA15` ;
-- cadeau variante `53142713925979`.
+Les quatre variantes Shopify et leurs images live sont identifiées. Les coûts exacts et délais de remplacement restent à documenter avant Ads. La sélection est provisoire : chaque produit doit être remplaçable depuis l'éditeur Shopify sans code.
 
 ## Architecture homepage validée
 
@@ -108,4 +134,4 @@ Codes et seuils connus :
 
 ## Prompt prêt à copier
 
-> Reprends MilAura depuis `docs/codex-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. Le hero, le dock et le panneau mobile sont live. Préserve les modifications concurrentes de `templates/cart.json` et `templates/cart.milaura.json`. Lis obligatoirement `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md` avant toute décision visuelle : le double anneau or et aigue-marine est réservé au Cercle et aux cadres photo produit importants. Poursuis P0A sans reset, clean, pull global ou commit non ciblé.
+> Reprends MilAura depuis `docs/codex-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. P0A, P0B et `L’atelier MilAura` sont terminés. L'atelier est live avec quatre produits saisonniers. Commence par relire et finaliser les trois portes placées juste après les produits : type de création, besoin et diagnostic. Préserve les diffs locaux du panier et le travail Hero concurrent.

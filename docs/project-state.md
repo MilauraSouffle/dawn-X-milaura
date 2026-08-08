@@ -1,12 +1,53 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-08 08:14 CEST
+Dernière mise à jour : 2026-08-08 10:10 CEST
 
 ## État en une phrase
 
-Le hero, le dock mobile V2 et le nouveau panneau de navigation mobile sont live. Patrice aime la nouvelle direction. La réconciliation Git et privée est terminée, P0A a commencé dans une session séparée et la règle d'usage des doubles anneaux MilAura est désormais verrouillée.
+Le hero, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live. L'étape Sélection est terminée. La prochaine étape active est la finalisation des trois portes pour les personnes encore indécises.
 
-## Décision de reprise du 2026-08-08
+## Décision P0A et reprise P0B du 2026-08-08
+
+- Patrice considère P0A terminé et demande de reprendre la séquence canonique de refonte.
+- La livraison standard France coûte 5,80 EUR jusqu'à 49,99 EUR et devient gratuite à partir de 50 EUR.
+- Les codes actifs `MILAURA-LIV50` et `MILAURA-LIV19` sont limités à la France et aux tarifs d'expédition de 6 EUR maximum.
+- La zone Europe reste payante à 12 EUR. Aucun tarif n'est ouvert pour la Guadeloupe, la Martinique, La Réunion, les États-Unis ou le reste du monde.
+- `MILAURA15`, le cadeau et les automatisations n'ont pas été modifiés pendant ce réglage.
+- Le reliquat panier obsolète a été retiré des deux templates locaux. Le moteur ScratchToReveal reste conservé pour une future réutilisation Cercle.
+- La stratégie de ventes complémentaires est explicitement reportée à une session dédiée. Elle ne doit pas détourner P0B ni la refonte active.
+- Registre P0B : `docs/reference/MILAURA-P0B-PRODUCT-REGISTER-2026.md`.
+
+## Décision P0B du 2026-08-08
+
+- Patrice confirme quatre produits physiquement en stock et disposant d'une bonne marge : Bracelet Amazonite 6 mm, Distributeur Savon Lapis-Lazuli, Bougie Joie - Aventurine verte et Collier Jade.
+- Les quatre variantes Shopify sont identifiées et achetables sur le storefront public.
+- Chaque produit dispose de trois images live.
+- La sélection est volontairement saisonnière et provisoire. Les quatre produits doivent pouvoir être remplacés depuis l'éditeur Shopify sans développement.
+- Les coûts exacts, quantités exactes et délais de remplacement restent à documenter avant acquisition payante.
+
+## L'atelier MilAura, terminé et live le 2026-08-08
+
+- Nouvelle section locale : `sections/milaura-selection-atelier.liquid`.
+- La section remplace localement `Les incontournables` dans `templates/index.json`.
+- Quatre blocs produit indépendants permettent une rotation saisonnière depuis l'éditeur Shopify sans changement de code.
+- Produits initiaux : Bracelet Amazonite 6 mm, Distributeur Savon Lapis-Lazuli, Bougie Joie - Aventurine verte et Collier Jade.
+- Aucun badge bestseller forcé.
+- La première proposition éditoriale a été refusée par Patrice car elle reconstruisait inutilement les cartes et ne respectait pas assez les codes visuels MilAura.
+- Version finale : réutilisation stricte de `snippets/milaura-card-product.liquid` et de `assets/milaura-card.css`.
+- Seule adaptation des cartes dans cette section : contour aigue-marine et ombre assortie, sans modifier le composant partagé.
+- Le toit dessiné de la V2 a été refusé puis entièrement retiré à la demande de Patrice.
+- Présentation retenue : titre doré en Dancing Script `L’atelier MilAura`, suivi de `Des créations choisies et préparées par Karine, au fil de sa créativité et des saisons.`
+- Desktop 1440 px : grille régulière de quatre cartes occupant toute la largeur disponible.
+- Mobile 390 x 844 : carousel horizontal avec aperçu net de la carte suivante.
+- Ajout panier réel vérifié en preview avec ouverture du drawer et total de 29,90 EUR pour le Bracelet Amazonite.
+- CTA du Hero vers `#MilauraSelectionAtelier` vérifié à 390 x 844.
+- Theme Check : 272 fichiers, 0 erreur, 29 avertissements historiques.
+- Déploiement ciblé réussi à 10:06 CEST sur le thème live `dawn-X-milaura/main`, ID `190430282075`, avec uniquement `sections/milaura-selection-atelier.liquid` et `templates/index.json`.
+- Pullback : les deux fichiers live correspondent exactement aux fichiers locaux. Shopify avait retiré trois anciens réglages Hero devenus étrangers au schéma actuel ; le local a été aligné et le Hero public est intact.
+- Validation publique : Hero intact, CTA vers `#MilauraSelectionAtelier` fonctionnel, quatre produits corrects, mobile 390 x 844 et desktop 1440 px contrôlés.
+- Un doublon iCloud non suivi `sections/milaura-selection-atelier 2.liquid` est apparu pendant la validation. Son espace rend son nom invalide pour Shopify. Il a été exclu de la preview mais n'a pas été supprimé sans autorisation.
+
+## Décision historique de reprise avant P0A du 2026-08-08
 
 - Ne pas commencer P0A dans la session de réconciliation.
 - Ouvrir une nouvelle session principale propriétaire du thème et du live.
@@ -23,6 +64,7 @@ Le hero, le dock mobile V2 et le nouveau panneau de navigation mobile sont live.
 - Hero H1C : live et validé visuellement par Patrice le 2026-08-07.
 - Dock V2 : live depuis le 2026-08-07 à 09:46 CEST environ.
 - Panneau mobile V2 : live le 2026-08-08, avec croix de fermeture dorée simple.
+- `L’atelier MilAura` : live le 2026-08-08 à 10:06 CEST, quatre produits réels, cartes natives et contour aigue-marine local à la section.
 - Pullback ciblé du dock, de la navbar, du hero, de la sélection et de l'asset gemmes : identique au local approuvé.
 - Pullback ciblé de la navbar après la correction du 2026-08-08 : identique octet pour octet au local.
 - Validation publique : mobile 390 px, Menu, Recherche et Panier fonctionnels ; desktop 1440 px sans dock.
@@ -34,7 +76,8 @@ Le hero, le dock mobile V2 et le nouveau panneau de navigation mobile sont live.
 - Paliers : 30 EUR cadeau, 50 EUR livraison, 80 EUR remise de 15 %.
 - Codes : `MILAURA-LIV50`, `MILAURA15`.
 - Cadeau : variante `53142713925979`.
-- Reste à faire avant Ads : contribution du pire scénario et cumul Shopify.
+- Réglage de livraison France protégé contre l'international le 2026-08-08.
+- P0A clos par décision de Patrice. Les coûts exacts manquants restent des données de pilotage à compléter avant Ads et ne doivent pas être présentés comme confirmés.
 
 ## Hero H1C
 
@@ -104,8 +147,8 @@ Validation : hero terminé et validé visuellement par Patrice.
 
 ### P1
 
-1. Sélection de l'atelier avec quatre produits réels.
-2. Trois portes.
+1. Terminé : Sélection de l'atelier avec quatre produits réels.
+2. Actif : Trois portes.
 3. Pierre du moment et landing Aigue-marine.
 4. Karine et preuves.
 5. Sur mesure V1 et pilote Atelier des émotions.
