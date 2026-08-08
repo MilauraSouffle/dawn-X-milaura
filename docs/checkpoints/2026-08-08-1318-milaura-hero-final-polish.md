@@ -1,6 +1,6 @@
 # MilAura - Clôture du Hero final
 
-Date : 2026-08-08 13:52 CEST
+Date : 2026-08-08 18:10 CEST
 
 ## Résultat
 
@@ -17,6 +17,7 @@ Le Hero MilAura est finalisé et publié sur le thème live Shopify `dawn-X-mila
 - Le premier soulignage irrégulier a été refusé après contrôle à fort zoom puis entièrement supprimé. La version finale n'utilise aucun trait, rotation, `clip-path` ou pseudo-élément.
 - Les anciens doubles traits prune et aigue-marine du texte de conversion ont été supprimés.
 - La hiérarchie du slogan met davantage en valeur `beauté` et `vertu` sans ajouter de décoration concurrente.
+- La dernière passe amplifie l'ensemble de l'équation sur desktop et mobile. L'échelle générale augmente d'environ 20 %, tandis que `beauté`, `vertu` et le résultat gagnent un contraste supplémentaire. La zone de composition desktop est élargie et les formules restent sur une ligne aux largeurs contrôlées.
 - Sur desktop uniquement, les trois photos du triptyque remontent de `34px` à `40px` selon la largeur. Cette correction supprime le chevauchement avec les preuves photographiques.
 - Le mobile conserve sa composition et son positionnement antérieurs.
 
@@ -38,6 +39,9 @@ Le Hero MilAura est finalisé et publié sur le thème live Shopify `dawn-X-mila
 - Contrôle public desktop `1440 x 1200` : CTA visible, environ `2px` entre le médaillon gauche et le portrait de Karine, environ `32px` entre le médaillon droit et la preuve atelier.
 - Contrôle public mobile `390 x 1250` : décalage desktop neutralisé, CTA visible, composition inchangée.
 - Aucun Chrome ou Playwright n'a été ouvert pour la dernière substitution, conformément à la demande de Patrice. La validation de cette passe est technique et non une approbation visuelle.
+- Dernier déploiement typographique ciblé : section Hero uniquement, Theme Check sur 272 fichiers avec 0 erreur et 29 avertissements historiques.
+- Dernier pullback typographique local et live identique, SHA-256 `1ff6e40fb7f7044efa848608942e23631383beea7c878f17bd64a667f6c0a1ab`.
+- Les largeurs des deux formules ont été mesurées avec la police Gloock réelle à 360, 390, 430, 768, 1024, 1366, 1440, 1680 et 1950 px. Aucun navigateur n'a été lancé.
 
 ## Commits du lot Hero
 
@@ -47,8 +51,9 @@ Le Hero MilAura est finalisé et publié sur le thème live Shopify `dawn-X-mila
 - `45a225fa` : séparation du triptyque et des preuves.
 - `78bbb26b` : remplacement du soulignage refusé par le surlignage champagne final.
 - `6848e181` : remplacement des visuels LFG et atelier, avec cadrages associés.
+- `c1411895` : amplification responsive de la signature typographique du Hero.
 
-La branche `codex/milaura-reconcile-2026-08-07` a été poussée après `6848e181`.
+La branche `codex/milaura-reconcile-2026-08-07` a été poussée après `c1411895`.
 
 ## État local préservé
 
@@ -65,4 +70,4 @@ Les deux premiers diffs sont apparus hors de la correction du Hero. Leur provena
 
 ## Reprise recommandée
 
-Confirmer visuellement les deux nouvelles images de réassurance sur le live, puis reprendre le plan homepage par le contrôle du lot des trois portes présent dans le commit `7f4093f7` avant de poursuivre vers la Pierre du moment.
+Confirmer visuellement la dernière échelle typographique et les deux images de réassurance sur le live, puis reprendre le plan homepage par le contrôle du lot des trois portes avant de poursuivre vers la Pierre du moment.

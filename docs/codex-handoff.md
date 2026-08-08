@@ -1,10 +1,10 @@
 # MilAura - Handoff Codex
 
-Date : 2026-08-08 13:52 CEST
+Date : 2026-08-08 18:10 CEST
 
 ## Mission de la prochaine session
 
-Le Hero est terminé et live. Commencer par faire confirmer visuellement à Patrice les nouveaux visuels LFG et atelier déjà déployés et vérifiés par pullback, puis contrôler le lot des trois portes présent dans le commit `7f4093f7` avant de poursuivre vers la Pierre du moment. La stratégie de ventes complémentaires reste reportée à une session dédiée.
+Le Hero est terminé et live. Commencer par faire confirmer visuellement à Patrice sa dernière échelle typographique et les nouveaux visuels LFG et atelier, tous déjà déployés et vérifiés par pullback, puis contrôler le lot des trois portes avant de poursuivre vers la Pierre du moment. La stratégie de ventes complémentaires reste reportée à une session dédiée.
 
 ## Lecture obligatoire, dans cet ordre
 
@@ -28,9 +28,11 @@ Le Hero est terminé et live. Commencer par faire confirmer visuellement à Patr
 - `choisies avec exigence` possède un surlignage champagne horizontal derrière la moitié basse des lettres. Aucun soulignage, aucune rotation et aucun pseudo-élément ne subsistent.
 - Les trois preuves photographiques flottent sans bandeau : nouveau visuel LFG Paris, portrait de Karine inchangé et nouvelle photographie de l'atelier de Metz.
 - Les deux nouvelles sources ont été converties en WebP et cadrées sans génération ou retouche IA.
+- L'équation typographique est amplifiée sur desktop et mobile : échelle générale environ 20 % supérieure, contraste renforcé sur `beauté`, `vertu` et le résultat, zone desktop élargie à `min(51%, 860px)`.
 - Le triptyque remonte de `34px` à `40px` sur desktop uniquement et ne chevauche plus les preuves. Le mobile est inchangé.
 - Pullback des deux images et de la section Hero identique au local : LFG `3851ae42dfcb9fc31ba3940888792c9f3b14ec71a4547e470b9c44ba1fb75bdf`, atelier `115aebde3c849fe1e00b183219e77bcf9bc88b23fe57b2c6ab57cdee1e52806e`, section `de7161ae3992c528e51b4b33bc7d253832e1023a356f8e174395579124321afb`.
 - Aucun Chrome ou Playwright n'a été ouvert pour cette dernière passe. Le déploiement est validé techniquement ; le rendu final des deux images reste à confirmer visuellement par Patrice.
+- Dernier pullback typographique identique au local, SHA-256 `1ff6e40fb7f7044efa848608942e23631383beea7c878f17bd64a667f6c0a1ab`. Theme Check : 0 erreur et 29 avertissements historiques. Les formules ont été mesurées avec la police réelle sur neuf largeurs sans navigateur.
 - Dock mobile V2 : live et validé.
 - Nouveau panneau mobile : live. Patrice a répondu `j'aime beaucoup bravo`.
 - Croix de fermeture finale : dorée, simple, sans anneaux.
@@ -58,10 +60,10 @@ Le cabochon `Trouver ma pierre` conserve ses contours décalés comme exception 
 
 - Checkout : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche : `codex/milaura-reconcile-2026-08-07`.
-- Dernier commit fonctionnel Hero poussé : `6848e181 feat: update hero proof imagery`.
+- Dernier commit fonctionnel Hero poussé : `c1411895 feat: amplify hero typography`.
 - Commits Hero précédents : `9a809e0d`, `ed455a9f`, `3b98c937` et `45a225fa`.
 - Commit des trois portes présent sur la branche : `7f4093f7`. Ne pas assimiler sa présence Git à une validation visuelle ou live sans nouveau contrôle.
-- La branche locale était alignée avec la branche distante après le push de `6848e181`, avant l'actualisation de cette documentation.
+- La branche locale était alignée avec la branche distante après le push de `c1411895`, avant l'actualisation de cette documentation.
 
 Deux fichiers panier sont modifiés localement par le lot P0A :
 
@@ -143,4 +145,4 @@ Les quatre variantes Shopify et leurs images live sont identifiées. Les coûts 
 
 ## Prompt prêt à copier
 
-> Reprends MilAura depuis `docs/codex-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. Le Hero final et `L’atelier MilAura` sont live. Commence par faire confirmer visuellement les nouveaux visuels LFG et atelier déjà vérifiés par pullback, puis contrôle le lot des trois portes présent dans `7f4093f7`. Préserve les diffs locaux du panier et les fichiers non suivis signalés.
+> Reprends MilAura depuis `docs/codex-handoff.md` dans `/Users/paesano/Documents/MilAura website/dawn-X-milaura`. Le Hero final et `L’atelier MilAura` sont live. Commence par faire confirmer visuellement la dernière échelle typographique et les nouveaux visuels LFG et atelier déjà vérifiés par pullback, puis contrôle le lot des trois portes. Préserve les diffs locaux du panier et les fichiers non suivis signalés.
