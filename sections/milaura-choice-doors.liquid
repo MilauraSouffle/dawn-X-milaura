@@ -10,7 +10,6 @@
     assign quiz_url = '/pages/diagnostic-emotionnel'
   endif
 
-  assign background_asset = section.settings.background_asset | default: 'milaura-selection-aout-lagon.webp'
   assign quiz_asset = section.settings.quiz_asset | default: 'milaura-hero-proof-karine-v2.webp'
   assign type_count = 0
   assign emotion_count = 0
@@ -63,7 +62,6 @@
   class="milaura-choice-flow"
   aria-labelledby="MilauraChoiceTitle-{{ section.id }}"
   data-milaura-choice-flow
-  style="--choice-bg-image: url('{{ background_asset | asset_url }}');"
 >
   <span id="MilauraChoiceDoors" aria-hidden="true"></span>
   <span class="milaura-choice-flow__rule milaura-choice-flow__rule--top" aria-hidden="true"></span>
@@ -86,19 +84,74 @@
     </header>
 
     {%- if type_count > 0 -%}
-      <div class="milaura-choice-flow__chapter milaura-choice-flow__chapter--type">
-        <header class="milaura-choice-flow__chapter-head milaura-choice-flow__reveal">
-          {%- if section.settings.type_kicker != blank -%}
-            <p class="milaura-choice-flow__chapter-kicker">{{ section.settings.type_kicker | escape }}</p>
-          {%- endif -%}
-          <h3 class="milaura-choice-flow__chapter-title">{{ section.settings.type_title | escape }}</h3>
-          {%- if section.settings.type_lead != blank -%}
-            <p class="milaura-choice-flow__chapter-lead">{{ section.settings.type_lead | escape }}</p>
-          {%- endif -%}
-          <span class="milaura-choice-flow__mobile-hint" aria-hidden="true">Faire défiler</span>
-        </header>
+      <details class="milaura-choice-flow__chapter milaura-choice-flow__chapter--type milaura-choice-flow__reveal" data-choice-details>
+        <summary class="milaura-choice-flow__chapter-summary">
+          <span class="milaura-choice-flow__chapter-head">
+            {%- if section.settings.type_kicker != blank -%}
+              <span class="milaura-choice-flow__chapter-kicker">{{ section.settings.type_kicker | escape }}</span>
+            {%- endif -%}
+            <span class="milaura-choice-flow__chapter-title" role="heading" aria-level="3">
+              {{ section.settings.type_title | escape }}
+            </span>
+            {%- if section.settings.type_lead != blank -%}
+              <span class="milaura-choice-flow__chapter-lead">{{ section.settings.type_lead | escape }}</span>
+            {%- endif -%}
+            <span class="milaura-choice-flow__chapter-toggle" aria-hidden="true">
+              <span class="milaura-choice-flow__chapter-toggle-closed">Voir les bijoux</span>
+              <span class="milaura-choice-flow__chapter-toggle-open">Réduire</span>
+              <span class="milaura-choice-flow__chapter-toggle-icon">+</span>
+            </span>
+          </span>
+          <span class="milaura-choice-flow__chapter-preview milaura-choice-flow__chapter-preview--type" aria-hidden="true">
+            {%- assign type_preview_count = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'type_card' and type_preview_count < 3 -%}
+                {%- liquid
+                  assign preview_collection = block.settings.collection
+                  assign preview_product = block.settings.product
+                  assign preview_image = block.settings.image
+                  if preview_image == blank and preview_product != blank
+                    assign preview_image = preview_product.featured_image
+                  endif
+                  if preview_image == blank and preview_collection != blank and preview_collection.image != blank
+                    assign preview_image = preview_collection.image
+                  endif
+                  if preview_image == blank and preview_collection != blank and preview_collection.products.first != blank
+                    assign preview_image = preview_collection.products.first.featured_image
+                  endif
+                  assign type_preview_count = type_preview_count | plus: 1
+                -%}
+                <span class="milaura-choice-flow__preview-tile" style="--preview-index: {{ type_preview_count }};">
+                  {%- if preview_image != blank -%}
+                    {{- preview_image
+                      | image_url: width: 420
+                      | image_tag:
+                        class: 'milaura-choice-flow__preview-image',
+                        widths: '180, 280, 420',
+                        sizes: '(max-width: 749px) 24vw, 150px',
+                        loading: 'lazy',
+                        alt: ''
+                    -}}
+                  {%- elsif block.settings.asset_name != blank -%}
+                    <img
+                      class="milaura-choice-flow__preview-image"
+                      src="{{ block.settings.asset_name | asset_url }}"
+                      alt=""
+                      loading="lazy"
+                      width="320"
+                      height="400"
+                    >
+                  {%- endif -%}
+                  <span>{{ block.settings.heading | escape }}</span>
+                </span>
+              {%- endif -%}
+            {%- endfor -%}
+          </span>
+        </summary>
 
-        <nav aria-label="Choisir un type de bijou">
+        <div class="milaura-choice-flow__chapter-content">
+          <span class="milaura-choice-flow__mobile-hint" aria-hidden="true">Faire défiler</span>
+          <nav aria-label="Choisir un type de bijou">
           <ul class="milaura-choice-flow__type-grid" role="list">
             {%- for block in section.blocks -%}
               {%- if block.type == 'type_card' -%}
@@ -166,31 +219,73 @@
               {%- endif -%}
             {%- endfor -%}
           </ul>
-        </nav>
+          </nav>
 
-        {%- if section.settings.type_all_label != blank and section.settings.type_all_link != blank -%}
-          <a class="milaura-choice-flow__all-link" href="{{ section.settings.type_all_link }}">
-            <span>{{ section.settings.type_all_label | escape }}</span>
-            <span aria-hidden="true">→</span>
-          </a>
-        {%- endif -%}
-      </div>
+          {%- if section.settings.type_all_label != blank and section.settings.type_all_link != blank -%}
+            <a class="milaura-choice-flow__all-link" href="{{ section.settings.type_all_link }}">
+              <span>{{ section.settings.type_all_label | escape }}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </details>
     {%- endif -%}
 
     {%- if emotion_count > 0 -%}
-      <div class="milaura-choice-flow__chapter milaura-choice-flow__chapter--emotion">
-        <header class="milaura-choice-flow__chapter-head milaura-choice-flow__reveal">
-          {%- if section.settings.emotion_kicker != blank -%}
-            <p class="milaura-choice-flow__chapter-kicker">{{ section.settings.emotion_kicker | escape }}</p>
-          {%- endif -%}
-          <h3 class="milaura-choice-flow__chapter-title">{{ section.settings.emotion_title | escape }}</h3>
-          {%- if section.settings.emotion_lead != blank -%}
-            <p class="milaura-choice-flow__chapter-lead">{{ section.settings.emotion_lead | escape }}</p>
-          {%- endif -%}
-          <span class="milaura-choice-flow__mobile-hint" aria-hidden="true">Faire défiler</span>
-        </header>
+      <details class="milaura-choice-flow__chapter milaura-choice-flow__chapter--emotion milaura-choice-flow__reveal" data-choice-details>
+        <summary class="milaura-choice-flow__chapter-summary">
+          <span class="milaura-choice-flow__chapter-head">
+            {%- if section.settings.emotion_kicker != blank -%}
+              <span class="milaura-choice-flow__chapter-kicker">{{ section.settings.emotion_kicker | escape }}</span>
+            {%- endif -%}
+            <span class="milaura-choice-flow__chapter-title" role="heading" aria-level="3">
+              {{ section.settings.emotion_title | escape }}
+            </span>
+            {%- if section.settings.emotion_lead != blank -%}
+              <span class="milaura-choice-flow__chapter-lead">{{ section.settings.emotion_lead | escape }}</span>
+            {%- endif -%}
+            <span class="milaura-choice-flow__chapter-toggle" aria-hidden="true">
+              <span class="milaura-choice-flow__chapter-toggle-closed">Explorer mes besoins</span>
+              <span class="milaura-choice-flow__chapter-toggle-open">Réduire</span>
+              <span class="milaura-choice-flow__chapter-toggle-icon">+</span>
+            </span>
+          </span>
+          <span class="milaura-choice-flow__chapter-preview milaura-choice-flow__chapter-preview--emotion" aria-hidden="true">
+            {%- assign emotion_preview_count = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'emotion_card' and emotion_preview_count < 3 -%}
+                {%- assign emotion_preview_count = emotion_preview_count | plus: 1 -%}
+                <span class="milaura-choice-flow__preview-tile" style="--preview-index: {{ emotion_preview_count }};">
+                  {%- if block.settings.image != blank -%}
+                    {{- block.settings.image
+                      | image_url: width: 420
+                      | image_tag:
+                        class: 'milaura-choice-flow__preview-image',
+                        widths: '180, 280, 420',
+                        sizes: '(max-width: 749px) 24vw, 150px',
+                        loading: 'lazy',
+                        alt: ''
+                    -}}
+                  {%- elsif block.settings.desktop_asset != blank -%}
+                    <img
+                      class="milaura-choice-flow__preview-image"
+                      src="{{ block.settings.desktop_asset | asset_url }}"
+                      alt=""
+                      loading="lazy"
+                      width="320"
+                      height="400"
+                    >
+                  {%- endif -%}
+                  <span>{{ block.settings.stone | escape }}</span>
+                </span>
+              {%- endif -%}
+            {%- endfor -%}
+          </span>
+        </summary>
 
-        <nav aria-label="Choisir une pierre selon votre ressenti">
+        <div class="milaura-choice-flow__chapter-content">
+          <span class="milaura-choice-flow__mobile-hint" aria-hidden="true">Faire défiler</span>
+          <nav aria-label="Choisir une pierre selon votre ressenti">
           <ul class="milaura-choice-flow__emotion-grid" role="list">
             {%- for block in section.blocks -%}
               {%- if block.type == 'emotion_card' -%}
@@ -244,39 +339,44 @@
               {%- endif -%}
             {%- endfor -%}
           </ul>
-        </nav>
+          </nav>
 
-        {%- if section.settings.emotion_all_label != blank and section.settings.emotion_all_link != blank -%}
-          <a class="milaura-choice-flow__all-link" href="{{ section.settings.emotion_all_link }}">
-            <span>{{ section.settings.emotion_all_label | escape }}</span>
-            <span aria-hidden="true">→</span>
-          </a>
-        {%- endif -%}
-      </div>
+          {%- if section.settings.emotion_all_label != blank and section.settings.emotion_all_link != blank -%}
+            <a class="milaura-choice-flow__all-link" href="{{ section.settings.emotion_all_link }}">
+              <span>{{ section.settings.emotion_all_label | escape }}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </details>
     {%- endif -%}
 
     <aside class="milaura-choice-flow__quiz milaura-choice-flow__reveal" aria-labelledby="MilauraChoiceQuizTitle-{{ section.id }}">
       <div class="milaura-choice-flow__quiz-media">
-        {%- if section.settings.quiz_image != blank -%}
-          {{- section.settings.quiz_image
-            | image_url: width: 1200
-            | image_tag:
-              class: 'milaura-choice-flow__quiz-image',
-              widths: '480, 720, 960, 1200',
-              sizes: '(max-width: 749px) calc(100vw - 36px), 42vw',
-              loading: 'lazy',
-              alt: section.settings.quiz_image_alt
-          -}}
-        {%- else -%}
-          <img
-            class="milaura-choice-flow__quiz-image"
-            src="{{ quiz_asset | asset_url }}"
-            alt="{{ section.settings.quiz_image_alt | escape }}"
-            loading="lazy"
-            width="900"
-            height="1100"
-          >
-        {%- endif -%}
+        <span class="milaura-choice-flow__quiz-orbit" aria-hidden="true"></span>
+        <span class="milaura-choice-flow__quiz-portrait">
+          {%- if section.settings.quiz_image != blank -%}
+            {{- section.settings.quiz_image
+              | image_url: width: 720
+              | image_tag:
+                class: 'milaura-choice-flow__quiz-image',
+                widths: '280, 420, 560, 720',
+                sizes: '(max-width: 749px) 142px, 210px',
+                loading: 'lazy',
+                alt: section.settings.quiz_image_alt
+            -}}
+          {%- else -%}
+            <img
+              class="milaura-choice-flow__quiz-image"
+              src="{{ quiz_asset | asset_url }}"
+              alt="{{ section.settings.quiz_image_alt | escape }}"
+              loading="lazy"
+              width="560"
+              height="560"
+            >
+          {%- endif -%}
+        </span>
+        <span class="milaura-choice-flow__quiz-caption">Karine · Fondatrice</span>
       </div>
       <div class="milaura-choice-flow__quiz-copy">
         {%- if section.settings.quiz_kicker != blank -%}
@@ -316,12 +416,6 @@
   "class": "milaura-choice-doors-section",
   "max_blocks": 16,
   "settings": [
-    {
-      "type": "text",
-      "id": "background_asset",
-      "label": "Fond dans les assets",
-      "default": "milaura-selection-aout-lagon.webp"
-    },
     {
       "type": "header",
       "content": "Introduction"
