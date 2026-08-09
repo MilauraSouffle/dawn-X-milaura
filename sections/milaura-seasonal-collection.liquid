@@ -24,15 +24,24 @@
     --season-sand: #f1e8d8;
     --season-ink: #322a31;
     --season-muted: #716870;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     color: var(--season-ink);
     background: var(--season-nacre);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
-    padding: clamp(34px, 4.5vw, 58px) 0 clamp(30px, 4vw, 48px);
+    padding: 0 0 clamp(34px, 4vw, 52px);
     background:
-      radial-gradient(circle at 88% 12%, rgba(118, 188, 183, 0.13), transparent 25%),
-      var(--season-nacre);
+      linear-gradient(
+        180deg,
+        rgba(255, 253, 249, 0.18) 0%,
+        rgba(255, 253, 249, 0.42) 38%,
+        rgba(255, 253, 249, 0.9) 76%,
+        var(--season-nacre) 100%
+      ),
+      url('{{ campaign_asset | asset_url }}') center 48% / cover no-repeat;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro-shell {
@@ -42,16 +51,18 @@
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-card {
-    min-height: clamp(220px, 19vw, 270px);
+    width: 100vw;
+    min-height: clamp(300px, 25vw, 380px);
     display: grid;
     grid-template-columns: 38% 62%;
+    margin-left: calc(50% - 50vw);
     padding: 0;
-    overflow: hidden;
-    border: 1px solid rgba(63, 133, 131, 0.38);
-    border-radius: 18px;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
     color: var(--season-nacre);
-    background: var(--season-nacre);
-    box-shadow: 0 16px 42px rgba(47, 34, 45, 0.12);
+    background: transparent;
+    box-shadow: none;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-panel {
@@ -62,31 +73,38 @@
     align-items: center;
     justify-content: center;
     padding: clamp(28px, 4vw, 54px);
-    background: var(--season-prune);
+    background: transparent;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-panel::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0 -24% 0 0;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      var(--season-prune) 0%,
+      rgba(47, 34, 45, 0.98) 72%,
+      rgba(47, 34, 45, 0) 100%
+    );
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 58%, rgba(0, 0, 0, 0.7) 76%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 58%, rgba(0, 0, 0, 0.7) 76%, transparent 100%);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__visual {
     position: relative;
     min-width: 0;
-    overflow: hidden;
-    border-left: 1px solid rgba(188, 152, 88, 0.58);
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__visual img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    object-position: center 52%;
+    overflow: visible;
+    border-left: 0;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__visual::after {
     content: '';
     position: absolute;
-    inset: 0;
-    background: rgba(255, 253, 249, 0.22);
+    inset: 6% 12% 18% 4%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 253, 249, 0.72), transparent 66%);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__date {
@@ -127,7 +145,8 @@
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__text {
     max-width: 900px;
-    margin: clamp(22px, 2.6vw, 32px) auto 0;
+    margin: clamp(4px, 0.8vw, 12px) auto 0;
+    padding: 0 20px;
     color: var(--season-muted);
     font-family: var(--milaura-font-body, 'Lato'), sans-serif;
     font-size: clamp(15px, 1.2vw, 18px);
@@ -253,7 +272,7 @@
 
   @media screen and (max-width: 749px) {
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
-      padding: 34px 0 38px;
+      padding: 0 0 38px;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro-shell {
@@ -261,14 +280,14 @@
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-card {
-      min-height: 150px;
+      min-height: 210px;
       grid-template-columns: 62% 38%;
       padding: 0;
-      border-radius: 13px;
+      border-radius: 0;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-panel {
-      padding: 18px 14px 20px;
+      padding: 24px 14px 42px;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title {
@@ -288,7 +307,7 @@
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__text {
-      margin-top: 24px;
+      margin-top: 0;
       padding: 0 8px;
       font-size: 14px;
       line-height: 1.65;
@@ -343,13 +362,6 @@
           {%- endif -%}
         </div>
         <div class="milaura-seasonal-landing__visual" aria-hidden="true">
-          <img
-            src="{{ campaign_asset | asset_url }}"
-            alt=""
-            loading="eager"
-            width="1122"
-            height="1402"
-          >
           <span class="milaura-seasonal-landing__date">{{ section.settings.campaign_date | escape }}</span>
         </div>
       </div>

@@ -362,47 +362,109 @@
 
 /* ============================================
    VARIANTE EDITORIALE - SELECTIONS SAISONNIERES
-   La photo et le clic carte portent la navigation.
+   La carte devient une vitrine photo pleine surface.
    ============================================ */
 .milaura-cards.milaura-cards--editorial .grid__card {
-  padding: 10px 10px 14px;
+  position: relative;
+  isolation: isolate;
+  aspect-ratio: 4 / 5;
+  display: block;
+  padding: 0;
   border: 0;
-  border-radius: 18px;
-  background: rgba(255, 253, 249, 0.88);
-  box-shadow: 0 16px 38px rgba(47, 34, 45, 0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  background: #ede6dc;
+  box-shadow: 0 18px 42px rgba(47, 34, 45, 0.14);
+}
+
+.milaura-cards.milaura-cards--editorial .grid__card::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 42%,
+    rgba(47, 34, 45, 0.03) 66%,
+    rgba(47, 34, 45, 0.22) 100%
+  );
+}
+
+.milaura-cards.milaura-cards--editorial .grid__card::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  right: 13px;
+  bottom: 13px;
+  left: 13px;
+  height: 104px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 253, 249, 0.94), rgba(255, 253, 249, 0.78));
+  box-shadow: 0 12px 28px rgba(47, 34, 45, 0.15);
+  backdrop-filter: blur(12px) saturate(118%);
+  -webkit-backdrop-filter: blur(12px) saturate(118%);
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card:hover {
-  padding: 10px 10px 14px;
+  padding: 0;
   border: 0;
-  transform: translateY(-3px);
-  box-shadow: 0 20px 46px rgba(63, 133, 131, 0.14);
+  transform: translateY(-5px);
+  box-shadow: 0 24px 54px rgba(47, 34, 45, 0.2);
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-img {
-  margin-bottom: 9px;
-  border-radius: 13px;
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  margin: 0;
+  border-radius: inherit;
+  background: #ede6dc;
+}
+
+.milaura-cards.milaura-cards--editorial .grid__card-img img {
+  border-radius: inherit;
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-info {
-  padding: 5px 6px 0;
+  position: absolute;
+  z-index: 3;
+  right: 78px;
+  bottom: 27px;
+  left: 27px;
+  height: 76px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
+  text-align: left;
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-title {
-  min-height: 39px;
-  margin-bottom: 5px;
+  min-height: 38px;
+  margin: 0 0 7px;
+  color: var(--season-prune, #2f222d);
   font-size: 15px;
   line-height: 1.3;
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-price {
+  margin-top: 0;
+  color: var(--season-gold, #bc9858);
   font-size: 15px;
+  line-height: 1;
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-actions {
-  margin-top: 5px;
+  position: absolute;
+  z-index: 4;
+  right: 24px;
+  bottom: 25px;
+  margin: 0;
   align-items: center;
   gap: 0;
 }
@@ -412,89 +474,169 @@
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-quick {
-  width: max-content;
-  min-height: 40px;
-  padding: 11px 2px 7px;
-  border: 0;
-  border-bottom: 1px solid rgba(188, 152, 88, 0.72);
-  border-radius: 0;
-  color: var(--season-prune, #2f222d);
-  background: transparent;
-  font-size: 11px;
+  position: relative;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 1px solid rgba(225, 189, 120, 0.72);
+  border-radius: 50%;
+  color: #fffdf9;
+  background: var(--season-prune, #2f222d);
+  box-shadow: 0 9px 20px rgba(47, 34, 45, 0.2);
+  font-size: 0;
   font-weight: 800;
-  letter-spacing: 0.075em;
   line-height: 1;
-  text-transform: uppercase;
   opacity: 1;
   transform: none;
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-quick:hover {
-  color: var(--season-aqua-deep, #3f8583);
-  background: transparent;
-  border-bottom-color: var(--season-aqua-deep, #3f8583);
+  color: var(--season-prune, #2f222d);
+  border-color: rgba(188, 152, 88, 0.92);
+  background: var(--season-gold, #bc9858);
+  transform: translateY(-2px);
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-quick svg {
+  width: 16px;
+  height: 16px;
+}
+
+.milaura-cards.milaura-cards--editorial .grid__card-quick::after {
+  content: '+';
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  display: grid;
   width: 13px;
   height: 13px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--season-prune, #2f222d);
+  background: var(--season-aqua, #76bcb7);
+  font-family: 'Lato', sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+@supports selector(.grid__card:has(.grid__card-image--secondary)) {
+  .milaura-cards.milaura-cards--editorial .grid__card:not(:has(.grid__card-image--secondary)):hover .grid__card-image--primary,
+  .milaura-cards.milaura-cards--editorial .grid__card:not(:has(.grid__card-image--secondary)):focus-visible .grid__card-image--primary {
+    opacity: 1;
+    transform: scale(1.025);
+  }
 }
 
 @media screen and (max-width: 768px) {
   .milaura-cards.milaura-cards--editorial .grid__card,
   .milaura-cards.milaura-cards--editorial .grid__card:hover {
-    padding: 7px 7px 11px;
+    aspect-ratio: 3 / 4;
+    padding: 0;
     border: 0;
-    border-radius: 15px;
+    border-radius: 16px;
   }
 
-  .milaura-cards.milaura-cards--editorial .grid__card-img {
-    margin-bottom: 7px;
-    border-radius: 11px;
+  .milaura-cards.milaura-cards--editorial .grid__card::after {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    height: 79px;
+    border-radius: 12px;
   }
 
   .milaura-cards.milaura-cards--editorial .grid__card-info {
-    padding: 4px 4px 0;
+    right: 52px;
+    bottom: 15px;
+    left: 16px;
+    height: 62px;
+    padding: 0;
   }
 
   .milaura-cards.milaura-cards--editorial .grid__card-title {
-    min-height: 31px;
-    font-size: 12px;
+    min-height: 29px;
+    margin-bottom: 5px;
+    font-size: 11.5px;
     line-height: 1.3;
     -webkit-line-clamp: 2;
   }
 
   .milaura-cards.milaura-cards--editorial .grid__card-price {
-    font-size: 13px;
+    font-size: 12px;
+  }
+
+  .milaura-cards.milaura-cards--editorial .grid__card-actions {
+    right: 14px;
+    bottom: 14px;
   }
 
   .milaura-cards.milaura-cards--editorial .grid__card-quick {
-    min-height: 40px;
-    padding: 11px 1px 7px;
-    font-size: 10px;
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+  }
+
+  .milaura-cards.milaura-cards--editorial .grid__card-quick svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .milaura-cards.milaura-cards--editorial .grid__card-quick::after {
+    top: 4px;
+    right: 4px;
+    width: 11px;
+    height: 11px;
+    font-size: 8px;
   }
 }
 
-@media screen and (max-width: 380px) {
-  .milaura-cards.milaura-cards--editorial .grid__card-title {
-    min-height: 31px;
-    font-size: 12px;
-    -webkit-line-clamp: 2;
+@media screen and (max-width: 768px) {
+  .milaura-season__cards.milaura-cards--editorial .grid__card::after {
+    right: 11px;
+    bottom: 11px;
+    left: 11px;
+    height: 91px;
+  }
+
+  .milaura-season__cards.milaura-cards--editorial .grid__card-info {
+    right: 64px;
+    bottom: 21px;
+    left: 21px;
+    height: 68px;
+  }
+
+  .milaura-season__cards.milaura-cards--editorial .grid__card-title {
+    min-height: 34px;
+    font-size: 14px;
+  }
+
+  .milaura-season__cards.milaura-cards--editorial .grid__card-price {
+    font-size: 13px;
+  }
+
+  .milaura-season__cards.milaura-cards--editorial .grid__card-actions {
+    right: 19px;
+    bottom: 19px;
+  }
+
+  .milaura-season__cards.milaura-cards--editorial .grid__card-quick {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
   }
 }
 
 @media (hover: none) {
   .milaura-cards.milaura-cards--editorial .grid__card:hover {
-    padding: 10px 10px 14px;
+    padding: 0;
     border: 0;
     transform: none;
-    box-shadow: 0 16px 38px rgba(47, 34, 45, 0.08);
-  }
-}
-
-@media (hover: none) and (max-width: 768px) {
-  .milaura-cards.milaura-cards--editorial .grid__card:hover {
-    padding: 7px 7px 11px;
+    box-shadow: 0 18px 42px rgba(47, 34, 45, 0.14);
   }
 }
 
