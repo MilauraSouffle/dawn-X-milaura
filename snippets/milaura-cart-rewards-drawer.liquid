@@ -1,7 +1,8 @@
 {%- comment -%}
   MilAura cart drawer rewards.
   Progression 30 / 50 / 80. Les avantages sont synchronises par
-  milaura-cart-rewards-auto.js a partir du sous-total marchand d'origine.
+  milaura-cart-rewards-auto.js a partir du sous-total marchand d'origine :
+  point relais offert, cadeau du mois, puis remise de 15 %.
 {%- endcomment -%}
 
 {%- if settings.milaura_cart_rewards_enabled and cart.item_count > 0 -%}
@@ -9,8 +10,8 @@
     assign threshold_1_cents = settings.milaura_reward_threshold_1 | default: 30 | times: 100
     assign threshold_2_cents = settings.milaura_reward_threshold_2 | default: 50 | times: 100
     assign threshold_3_cents = settings.milaura_reward_threshold_3 | default: 80 | times: 100
-    assign reward_label_1 = settings.milaura_reward_label_1 | default: 'Surprise offerte'
-    assign reward_label_2 = settings.milaura_reward_label_2 | default: 'Livraison offerte'
+    assign reward_label_1 = settings.milaura_reward_label_1 | default: 'Point relais offert'
+    assign reward_label_2 = settings.milaura_reward_label_2 | default: 'Cadeau du mois offert'
     assign reward_label_3 = settings.milaura_reward_label_3 | default: '-15 % sur la commande'
     assign reward_logo = settings.favicon
     if reward_logo == blank
@@ -159,11 +160,11 @@
   <div
     id="MilauraCartRewardsConfig"
     hidden
-    data-threshold-gift="{{ settings.milaura_reward_threshold_1 | default: 30 | times: 100 }}"
-    data-threshold-shipping="{{ settings.milaura_reward_threshold_2 | default: 50 | times: 100 }}"
+    data-threshold-gift="{{ settings.milaura_reward_threshold_2 | default: 50 | times: 100 }}"
+    data-threshold-shipping="{{ settings.milaura_reward_threshold_1 | default: 30 | times: 100 }}"
     data-threshold-discount="{{ settings.milaura_reward_threshold_3 | default: 80 | times: 100 }}"
     data-gift-variant-id="{{ settings.milaura_reward_gift_variant_id | default: '53142713925979' | escape }}"
-    data-shipping-code="{{ settings.milaura_reward_shipping_code | default: 'MILAURA-LIV50' | escape }}"
-    data-discount-code="{{ settings.milaura_reward_order_code | default: 'MILAURA15' | escape }}"
+    data-shipping-code="{{ settings.milaura_reward_shipping_code | default: 'MILAURA-RELAIS30' | escape }}"
+    data-discount-code="{{ settings.milaura_reward_order_code | default: 'MILAURA15-80' | escape }}"
   ></div>
 {%- endif -%}

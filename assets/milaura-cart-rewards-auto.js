@@ -1,6 +1,6 @@
-/* MilAura automatic cart rewards, 2026-08-04.
+/* MilAura automatic cart rewards, 2026-08-09.
    Stable tiers are calculated from paid merchandise before MilAura rewards:
-   30 EUR gift, 50 EUR free shipping, 80 EUR 15% order discount. */
+   30 EUR pickup-point shipping, 50 EUR monthly gift, 80 EUR 15% order discount. */
 
 (() => {
   if (window.MilauraCartRewardsAuto) return;
@@ -22,8 +22,8 @@
 
     return {
       element,
-      giftThreshold: Number.parseInt(element.dataset.thresholdGift, 10) || 3000,
-      shippingThreshold: Number.parseInt(element.dataset.thresholdShipping, 10) || 5000,
+      giftThreshold: Number.parseInt(element.dataset.thresholdGift, 10) || 5000,
+      shippingThreshold: Number.parseInt(element.dataset.thresholdShipping, 10) || 3000,
       discountThreshold: Number.parseInt(element.dataset.thresholdDiscount, 10) || 8000,
       giftVariantId: Number.parseInt(element.dataset.giftVariantId, 10) || 0,
       shippingCode: (element.dataset.shippingCode || '').trim(),
@@ -107,7 +107,7 @@
       id: config.giftVariantId,
       quantity: 1,
       properties: {
-        'Cadeau MilAura': 'Bracelet hématite offert',
+        'Cadeau MilAura': 'Cadeau du mois offert',
         Statut: 'Offert',
         _milaura_gift: 'true',
         _milaura_gift_min_paid_cents: String(config.giftThreshold),
@@ -143,7 +143,19 @@
   };
 
   const syncDiscountCodes = async (cart, config, subtotal) => {
-    const managed = [config.shippingCode, config.discountCode, 'MILAURA-LIV19', 'MILAURA30']
+    const managed = [
+      config.shippingCode,
+      config.discountCode,
+      'MILAURA15',
+      'MILAURA-LIV50',
+      'MILAURA-LIV19',
+      'MILAURA30',
+      'MILAURA-CARTE10',
+      'BIENVENUE10',
+      'ANNIV20',
+      'PORTOFFERT',
+      'COEURDELORRAINE2026',
+    ]
       .filter(Boolean)
       .map((code) => code.toUpperCase());
     const preserved = cartCodes(cart).filter((code) => !managed.includes(code.toUpperCase()));
