@@ -2,11 +2,29 @@
 
 Date : 2026-08-05
 
-Derniere mise a jour : 2026-08-08 07:12 CEST
+Derniere mise a jour : 2026-08-08 19:53 CEST
 
-Statut : hero termine et valide par Patrice. Dock mobile V2 et CTA prune publies et valides techniquement le 2026-08-07. G1 est entierement termine : le checkout canonique est propre, aligne avec GitHub, les donnees privees sont separees et l'ancien checkout est archive. L'Atelier des emotions est un chantier produit actif. Le Cercle MilAura et la reutilisation de ScratchToReveal sont integres comme lots distincts et ordonnes. Prochaine etape : P0A.
+Statut : hero termine et valide par Patrice. Dock mobile V2 et CTA prune publies. G1 et P0A sont clos. La premiere selection saisonniere, aout 2026, est publiee sur la homepage et sur une landing dediee de 20 produits. L'ancienne direction `L'atelier MilAura` est abandonnee au profit de ce systeme vivant et renouvelable. L'implementation actuelle des trois portes est rejetee visuellement et constitue la prochaine etape de redesign. L'Atelier des emotions, le Cercle MilAura et la reutilisation de ScratchToReveal restent des lots distincts et ordonnes.
 
 Perimetres : theme Shopify, navigation, systeme CTA, reconciliation Git, verite commerciale, Cercle, ScratchToReveal, acquisition et automatisation
+
+## Mise a jour validee le 2026-08-08 a 19:53 CEST
+
+Patrice valide les decisions suivantes :
+
+1. P0A est clos. La mecanique economique du panier est conservee et les automatisations ne sont pas suspendues.
+2. La livraison gratuite est reservee a la France selon les regles deja configurees. L'Europe reste payante et les territoires non desservis ne doivent pas pouvoir obtenir une livraison gratuite accidentelle.
+3. La strategie de ventes complementaires est pertinente mais sort du chantier de refonte actuel. Elle fera l'objet d'une session de brainstorming et de conception dediee.
+4. La section `L'atelier MilAura` est abandonnee. Elle ne produit pas un avantage suffisant par rapport a une selection de produits classique.
+5. Elle est remplacee par une selection saisonniere vivante : quatre produits sur la homepage et une landing dediee d'environ vingt produits, renouvelee chaque mois ou chaque saison.
+6. La premiere campagne est `La selection de Karine`, edition aout 2026, dans un univers lagon et plage des Maldives. La homepage et la landing partagent le meme langage visuel.
+7. Cette landing saisonniere est a la fois une destination editoriale et une landing d'acquisition utilisable pour les campagnes Meta et les autres reseaux.
+8. En fin de mois, la campagne suivante est preparee, par exemple septembre ou la rentree : nouvelle selection, nouvel univers, nouvelle landing ou adaptation de la landing, puis mise a jour des quatre produits et du mois sur la homepage.
+9. Le concept des trois portes est conserve, mais son rendu actuel en cartes depliantes est rejete comme trop fade et trop generique.
+10. La premiere porte devient `Choisir mon bijou par type`, sous forme de cartes categories visuelles proches des cartes produits, plus marquees en prune et accompagnees de photographies fortes.
+11. La deuxieme porte devient `Choisir par emotion`, avec le meme systeme de cartes categories visuelles et des destinations qui regroupent les produits correspondants.
+12. La troisieme porte, `Me laisser guider`, reutilise et redessine l'introduction au diagnostic emotionnel deja presente plus bas. Elle ne doit pas dupliquer ce contenu ni concurrencer le cabochon fixe `Trouver ma pierre`.
+13. La landing Aigue-marine reste une etape distincte apres le redesign des trois portes. La selection saisonniere ne la remplace pas.
 
 ## Mise a jour validee le 2026-08-06 a 17:17 CEST
 
@@ -56,9 +74,9 @@ Etat H1C au 2026-08-06 18:33 CEST : lot publie sur le live `190430282075` apres 
 
 Probleme : le hero comporte un CTA principal et un CTA secondaire alors que la homepage doit d'abord montrer des produits reels avant de demander au visiteur de choisir un parcours.
 
-Cible validee : un seul CTA principal, `Voir la selection de l'atelier`, qui descend vers la section de quatre produits sans faire quitter la homepage.
+Cible actualisee le 2026-08-08 : un seul CTA principal qui descend vers la selection saisonniere de quatre produits sans faire quitter la homepage. L'ancre technique `MilauraSelectionAtelier` reste conservee pour compatibilite tant qu'un renommage controle n'est pas necessaire.
 
-Le hero remplit ainsi une seule fonction : presenter MilAura et conduire vers une premiere preuve produit. Le choix par besoin et le diagnostic restent disponibles plus bas, apres la selection de l'atelier. Aucun lien concurrent ne doit detourner l'action principale.
+Le hero remplit ainsi une seule fonction : presenter MilAura et conduire vers une premiere preuve produit. Le guide par type, par emotion et le diagnostic restent disponibles plus bas, apres la selection saisonniere. Aucun lien concurrent ne doit detourner l'action principale.
 
 ### 2.2 Systeme image
 
@@ -136,10 +154,10 @@ Perimetre ferme :
 1. augmenter les textes courants, CTA, preuves, descriptions et liens du hero et des trois portes selon les planchers de la section 2.3 ;
 2. conserver les grands titres dont l'echelle est deja satisfaisante ;
 3. supprimer le CTA secondaire du hero ;
-4. remplacer le CTA principal par `Voir la selection de l'atelier` avec un scroll interne vers la future selection ;
+4. relier le CTA principal par un scroll interne vers la selection saisonniere ;
 5. remplacer `Expediees depuis les Vosges` par `Expediees depuis notre atelier en France` ;
-6. placer la section produit actuelle avant les trois portes et lui donner l'ancre stable `MilauraSelectionAtelier` sans la considerer comme la selection finale ;
-7. reformuler l'introduction des trois portes comme une aide apres la premiere presentation produit ;
+6. placer la selection saisonniere avant le guide et conserver l'ancre stable `MilauraSelectionAtelier` pour compatibilite ;
+7. remplacer les trois portes actuelles par le guide visuel valide apres la premiere presentation produit ;
 8. conserver provisoirement le triptyque actuel afin d'isoler la validation de lisibilite ;
 9. verifier 360, 390, 430, 768, 1280 et 1440 px ;
 10. verifier clavier, focus, contraste, absence de debordement, cible tactile et mouvement reduit ;
@@ -150,9 +168,9 @@ Definition de termine H1A :
 
 - aucun texte utile ne demande de zoom sur mobile ou desktop ;
 - un seul CTA est visible dans le hero ;
-- le CTA conduit vers la selection de l'atelier sans sortie prematuree de la homepage ;
+- le CTA conduit vers la selection saisonniere sans sortie prematuree de la homepage ;
 - la preuve logistique est exacte ;
-- les trois portes restent utilisables mais viennent apres les produits dans l'architecture cible ;
+- le guide visuel vient apres les produits dans l'architecture cible ;
 - aucun changement de visuel n'est melange a ce lot ;
 - Patrice valide le rendu mobile et desktop.
 
@@ -274,11 +292,11 @@ Le seuil de 50 % de contribution reste une hypothese de travail, pas une regle a
 - seuils conserves, modifies ou suspendus par decision documentee ;
 - aucun budget Ads tant que le scenario maximal n'est pas soutenable.
 
-## 6. Lot P0B - Quatre produits reels
+## 6. Lot P0B - Produits reels et selection saisonniere
 
 ### Objectif
 
-Alimenter la future `Selection de l'atelier` avec quatre produits detenus, rentables et presentables.
+Alimenter la selection saisonniere avec des produits detenus, rentables et presentables. Quatre produits sont exposes sur la homepage et la landing saisonniere en rassemble environ vingt.
 
 Pour chaque produit : variante Shopify, SKU, EAN si valide, quantite physique, cout, prix, marge, delai, origine, assemblage, certificat, photo, statut et remplacement possible.
 
@@ -292,13 +310,15 @@ La verification physique prime sur les quantites Shopify susceptibles de proveni
 - images utilisables ou brief de production approuve ;
 - ajout panier testable.
 
+Etat au 2026-08-08 : Patrice a autorise la poursuite du chantier homepage et fourni les vingt produits de l'edition d'aout. La selection et la landing sont live. Les couts unitaires, marges exactes et delais ne sont toutefois pas documentes produit par produit. P0B est donc clos pour l'execution editoriale de la homepage, mais incomplet comme preuve economique avant acquisition payante.
+
 ## 7. Architecture homepage validee
 
 L'ordre suivant est valide par Patrice :
 
 1. Hero de marque.
-2. Selection de l'atelier, quatre produits reels.
-3. Trois portes, reformulees comme aide pour les personnes encore indecises.
+2. Selection saisonniere vivante, quatre produits reels, reliee a une landing d'environ vingt produits.
+3. Guide de navigation visuel : choisir par type, choisir par emotion, puis se laisser guider par le diagnostic existant.
 4. Pierre du moment, avec landing pierre et produits reels associes.
 5. Karine et les preuves d'atelier.
 6. `Votre bijou, imagine avec Karine`, incluant Sur mesure et `L'Atelier des emotions`.
@@ -309,8 +329,9 @@ L'ordre suivant est valide par Patrice :
 Logique de conversion :
 
 - le hero donne envie et descend vers les produits ;
-- la selection prouve immediatement ce que MilAura vend ;
-- les trois portes recuperent les personnes qui n'ont pas encore choisi ;
+- la selection saisonniere prouve immediatement ce que MilAura vend, rend le site vivant et fournit une landing d'acquisition renouvelable ;
+- les deux premieres portes organisent la navigation par type et par emotion avec de vraies images ;
+- la troisieme porte reutilise le diagnostic existant au lieu de le dupliquer ;
 - la Pierre du moment transforme une pierre en campagne, landing et selection de produits ;
 - Karine apporte la preuve humaine ;
 - le Sur mesure et l'Atelier des emotions revelent la singularite commerciale de MilAura ;
@@ -321,10 +342,10 @@ Logique de conversion :
 | Brique actuelle | Destination validee | Regle |
 | --- | --- | --- |
 | Hero de marque | Homepage | Corriger en H1A puis H1B |
-| Les incontournables | Selection de l'atelier | Remplacer les badges de bestseller forces par quatre produits reels |
+| Les incontournables | Selection saisonniere | Remplacer les badges de bestseller forces par quatre produits reels et une landing editoriale d'environ vingt produits |
 | Creation Aigue-marine | Pierre du moment | Transformer la section en entree vers une landing Aigue-marine et tous les produits reels associes |
 | `Une pierre pour une emotion, comment choisir ?` | Landing interactive et composant partage | Retirer a terme de la homepage longue, ne pas supprimer le code |
-| Diagnostic emotionnel | Troisieme porte et page dediee | Conserver comme accompagnement approfondi |
+| Diagnostic emotionnel | Troisieme porte et page dediee | Reutiliser le teaser existant, le redessiner et eviter toute duplication avec le cabochon fixe `Trouver ma pierre` |
 | `Ca vient d'arriver` | Collection ou rotation de la selection | Eviter un second carrousel produit concurrent |
 | `Au Coeur de l'Atelier MilAura` | Karine et les preuves | Reutiliser la video et les gestes reels |
 | `Le Rituel de Purification` | Journal, guide ou PDP | Sortir de la homepage generale |
@@ -422,8 +443,8 @@ Ordre recommande :
 2. H1B, systeme image documente ;
 3. H1C, hauteur structurelle du hero, slogan, CTA prune et or, preuves simples et image secondaire des cartes ;
 4. triptyque 3 x 3 publie avec les neuf produits dans trois cabochons ovales a doubles contours, validation visuelle encore requise ;
-5. Selection de l'atelier ;
-6. trois portes repositionnees apres les produits ;
+5. selection saisonniere et landing d'aout publiees, puis cycle mensuel a maintenir ;
+6. guide visuel par type et par emotion, suivi du teaser du diagnostic existant ;
 7. Pierre du moment et landing Aigue-marine ;
 8. Karine et les preuves ;
 9. offre et landing Sur mesure V1, avec pilote Atelier des emotions et inventaire composants ;
@@ -468,7 +489,7 @@ Donner au mobile une navigation de marque permanente, visuelle et moins encombra
 - commit `45a4b47d` pousse sur `codex/milaura-mobile-dock-2026-08-07` ;
 - dock live valide techniquement en 390 px : Menu, Rechercher et Panier fonctionnels ;
 - V2 publiee : gemmes sous les pictogrammes, base coupee par le bord de l'ecran, hauteur hors safe area reduite de 128 a 88 px ;
-- CTA hero, Selection de l'atelier et `Trouver ma pierre` harmonises avec le prune d'action `#493246` et le prune clair `#52394D` ;
+- CTA hero, selection saisonniere et `Trouver ma pierre` harmonises avec le prune d'action `#493246` et le prune clair `#52394D` ;
 - validation technique V2 effectuee en 320, 390 et 430 px, avec Menu, Rechercher et Panier fonctionnels ; dock masque en 1440 px ;
 - GO live donne par Patrice, commit `252f31b5`, push branche sure et deploiement cible termines ;
 - desktop conserve sa navigation complete et ne sert jamais le dock.
@@ -623,10 +644,10 @@ Chaque etape commence seulement lorsque la definition de termine de l'etape prec
 1. `H1` termine : hero valide par Patrice.
 2. `N1` termine : dock V2 et prune d'action publies puis valides techniquement.
 3. `G1` termine : checkout canonique propre, donnees privees separees, archive datee et branche distante alignee.
-4. `P0A` : calculer l'economie du panier, verifier les cumuls Shopify et auditer le reliquat Scratch de la page `/cart`.
-5. `P0B` : compter, identifier et chiffrer quatre produits reels.
-6. Termine le 2026-08-08 : construire puis publier `L'atelier MilAura` avec les quatre produits reels, cartes natives, grille desktop et carousel mobile.
-7. Etape active : repositionner et finaliser les trois portes.
+4. `P0A` clos par Patrice le 2026-08-08 : economie validee pour avancer, regles de livraison securisees, panier obsolete retire et moteur Scratch conserve. Aucune automatisation suspendue.
+5. `P0B` clos pour l'execution editoriale le 2026-08-08 : vingt produits reels fournis, dont quatre mis en avant. Les couts et delais exacts restent a documenter avant paid acquisition.
+6. Termine et live le 2026-08-08 : remplacer `L'atelier MilAura` par la selection saisonniere d'aout, quatre produits sur la homepage et vingt sur la landing `/collections/selection-aout-2026`.
+7. Etape active : remplacer les cartes depliantes rejetees par un guide visuel. Construire `Choisir mon bijou par type`, puis `Choisir par emotion`, avec cartes categories photographiees, et reutiliser le teaser du diagnostic existant pour `Me laisser guider`.
 8. Construire la landing Aigue-marine et relier les produits reels.
 9. Inventorier les composants de l'Atelier des emotions, fabriquer trois a cinq prototypes et calculer leur contribution.
 10. Construire Karine et les preuves d'atelier.
@@ -646,7 +667,7 @@ Pour chaque lot : objectif, fichiers, dependances, donnees requises, preview, te
 
 ## 18. Politique de parallelisation
 
-Le plan commercial reste sequentiel pour ses dependances : P0A precede les decisions de recompense, P0B precede la Selection de l'atelier, et les fondations du Cercle precedent le popup ScratchToReveal.
+Le plan commercial reste sequentiel pour ses dependances : P0A precede les decisions de recompense, la preuve economique produit precede l'acquisition payante, et les fondations du Cercle precedent le popup ScratchToReveal.
 
 Une seule session est proprietaire a un instant donne du theme actif, de la branche Git active et de tout deploiement Shopify. Deux sessions ne doivent jamais modifier en parallele les memes fichiers Liquid, JSON, CSS, JavaScript, documents d'etat ou reglages Shopify.
 

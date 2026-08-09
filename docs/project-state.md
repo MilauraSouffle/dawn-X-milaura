@@ -1,232 +1,222 @@
 # MilAura - État courant du projet
 
-Dernière mise à jour : 2026-08-08 18:10 CEST
+Dernière mise à jour : 2026-08-08 19:53 CEST
 
 ## État en une phrase
 
-Le Hero final, le dock mobile V2, le panneau mobile et `L’atelier MilAura` sont live. La direction du Hero est validée visuellement par Patrice. Les nouveaux visuels LFG et atelier et la dernière amplification typographique sont live et identiques au local après pullback ; leur rendu final doit encore être confirmé visuellement par Patrice.
+Le Hero, la navigation mobile et la première sélection saisonnière d'août sont live sur le thème Shopify principal. P0A est clos. La prochaine étape du plan est le redesign visuel des trois portes, dont la version actuelle est rejetée par Patrice.
 
-## Hero final validé et live le 2026-08-08
+## Règles de conduite actives
 
-- Les trois preuves sont photographiques et flottantes, sans bandeau de fond : nouveau visuel LFG Paris, portrait de Karine inchangé et nouvelle photographie de l'atelier de Metz.
-- Les deux sources fournies par Patrice ont été converties en WebP et cadrées sans génération ou retouche IA.
-- Le portrait de Karine est volontairement conservé pour humaniser la boutique.
-- Texte de conversion final : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
-- `choisies avec exigence` reçoit un surlignage champagne horizontal derrière la moitié basse des lettres. Le premier soulignage irrégulier a été refusé puis entièrement supprimé, comme les anciens doubles traits prune et aigue-marine.
-- La hiérarchie du slogan renforce `beauté` et `vertu` sans ajouter de nouvel ornement concurrent.
-- La dernière passe augmente d'environ 20 % l'échelle de l'équation sur desktop et mobile, avec un contraste encore plus marqué pour `beauté`, `vertu` et le résultat. La zone de composition desktop passe à `min(51%, 860px)`.
-- Le triptyque remonte de `34px` à `40px` sur desktop uniquement afin de ne plus chevaucher les preuves photographiques. Le mobile reste inchangé.
-- Dernier déploiement ciblé limité aux deux WebP de réassurance et à `sections/milaura-hero-portal.liquid` sur le thème live `190430282075`.
-- Pullback live identique au local : LFG `3851ae42dfcb9fc31ba3940888792c9f3b14ec71a4547e470b9c44ba1fb75bdf`, atelier `115aebde3c849fe1e00b183219e77bcf9bc88b23fe57b2c6ab57cdee1e52806e`, section `de7161ae3992c528e51b4b33bc7d253832e1023a356f8e174395579124321afb`.
-- Contrôles publics : desktop `1440 x 1200`, mobile `390 x 1250`, CTA visible dans les deux formats.
-- Aucun Chrome ou Playwright n'a été ouvert pour la dernière substitution. Cette passe est validée techniquement, pas visuellement.
-- Dernier déploiement typographique limité à la section Hero. Theme Check : 0 erreur, 29 avertissements historiques. Pullback identique, SHA-256 `1ff6e40fb7f7044efa848608942e23631383beea7c878f17bd64a667f6c0a1ab`.
-- Les formules ont été mesurées avec la police réelle sur neuf largeurs de 360 à 1950 px. Aucun navigateur n'a été lancé.
-- Commits du lot : `9a809e0d`, `ed455a9f`, `3b98c937`, `45a225fa`, `78bbb26b`, `6848e181` et `c1411895`.
+- La validation technique ne vaut jamais validation créative.
+- Patrice reste l'unique valideur de la direction visuelle.
+- Aucun push complet du thème. Les déploiements Shopify restent ciblés avec theme push --only, pullback et contrôle public.
+- Préserver le worktree sale et les fichiers des autres lots. Aucun reset, clean, merge ou suppression globale.
+- Ne suspendre aucune automatisation MilAura dans le cadre de cette refonte.
+- La stratégie de ventes complémentaires est sortie du plan actif et réservée à une session dédiée.
 
-## Décision P0A et reprise P0B du 2026-08-08
+## Production Shopify confirmée
 
-- Patrice considère P0A terminé et demande de reprendre la séquence canonique de refonte.
-- La livraison standard France coûte 5,80 EUR jusqu'à 49,99 EUR et devient gratuite à partir de 50 EUR.
-- Les codes actifs `MILAURA-LIV50` et `MILAURA-LIV19` sont limités à la France et aux tarifs d'expédition de 6 EUR maximum.
-- La zone Europe reste payante à 12 EUR. Aucun tarif n'est ouvert pour la Guadeloupe, la Martinique, La Réunion, les États-Unis ou le reste du monde.
-- `MILAURA15`, le cadeau et les automatisations n'ont pas été modifiés pendant ce réglage.
-- Le reliquat panier obsolète a été retiré des deux templates locaux. Le moteur ScratchToReveal reste conservé pour une future réutilisation Cercle.
-- La stratégie de ventes complémentaires est explicitement reportée à une session dédiée. Elle ne doit pas détourner P0B ni la refonte active.
-- Registre P0B : `docs/reference/MILAURA-P0B-PRODUCT-REGISTER-2026.md`.
+- Boutique : milaura.fr.
+- Thème live : dawn-X-milaura/main.
+- ID du thème live : 190430282075.
+- Hero final live et validé visuellement par Patrice.
+- Dock mobile V2 live.
+- Homepage saisonnière d'août live.
+- Landing saisonnière live : https://milaura.fr/collections/selection-aout-2026.
 
-## Décision P0B du 2026-08-08
+## P0A, économie du panier et livraison
 
-- Patrice confirme quatre produits physiquement en stock et disposant d'une bonne marge : Bracelet Amazonite 6 mm, Distributeur Savon Lapis-Lazuli, Bougie Joie - Aventurine verte et Collier Jade.
-- Les quatre variantes Shopify sont identifiées et achetables sur le storefront public.
-- Chaque produit dispose de trois images live.
-- La sélection est volontairement saisonnière et provisoire. Les quatre produits doivent pouvoir être remplacés depuis l'éditeur Shopify sans développement.
-- Les coûts exacts, quantités exactes et délais de remplacement restent à documenter avant acquisition payante.
+Patrice a clos P0A le 2026-08-08 et validé la poursuite de la refonte.
 
-## L'atelier MilAura, terminé et live le 2026-08-08
+Faits confirmés :
 
-- Nouvelle section locale : `sections/milaura-selection-atelier.liquid`.
-- La section remplace localement `Les incontournables` dans `templates/index.json`.
-- Quatre blocs produit indépendants permettent une rotation saisonnière depuis l'éditeur Shopify sans changement de code.
-- Produits initiaux : Bracelet Amazonite 6 mm, Distributeur Savon Lapis-Lazuli, Bougie Joie - Aventurine verte et Collier Jade.
-- Aucun badge bestseller forcé.
-- La première proposition éditoriale a été refusée par Patrice car elle reconstruisait inutilement les cartes et ne respectait pas assez les codes visuels MilAura.
-- Version finale : réutilisation stricte de `snippets/milaura-card-product.liquid` et de `assets/milaura-card.css`.
-- Seule adaptation des cartes dans cette section : contour aigue-marine et ombre assortie, sans modifier le composant partagé.
-- Le toit dessiné de la V2 a été refusé puis entièrement retiré à la demande de Patrice.
-- Présentation retenue : titre doré en Dancing Script `L’atelier MilAura`, suivi de `Des créations choisies et préparées par Karine, au fil de sa créativité et des saisons.`
-- Desktop 1440 px : grille régulière de quatre cartes occupant toute la largeur disponible.
-- Mobile 390 x 844 : carousel horizontal avec aperçu net de la carte suivante.
-- Ajout panier réel vérifié en preview avec ouverture du drawer et total de 29,90 EUR pour le Bracelet Amazonite.
-- CTA du Hero vers `#MilauraSelectionAtelier` vérifié à 390 x 844.
-- Theme Check : 272 fichiers, 0 erreur, 29 avertissements historiques.
-- Déploiement ciblé réussi à 10:06 CEST sur le thème live `dawn-X-milaura/main`, ID `190430282075`, avec uniquement `sections/milaura-selection-atelier.liquid` et `templates/index.json`.
-- Pullback : les deux fichiers live correspondent exactement aux fichiers locaux. Shopify avait retiré trois anciens réglages Hero devenus étrangers au schéma actuel ; le local a été aligné et le Hero public est intact.
-- Validation publique : Hero intact, CTA vers `#MilauraSelectionAtelier` fonctionnel, quatre produits corrects, mobile 390 x 844 et desktop 1440 px contrôlés.
-- Un doublon iCloud non suivi `sections/milaura-selection-atelier 2.liquid` est apparu pendant la validation. Son espace rend son nom invalide pour Shopify. Il a été exclu de la preview mais n'a pas été supprimé sans autorisation.
+- paliers du panier : cadeau à 30 EUR, livraison offerte à 50 EUR, remise de 15 % à 80 EUR ;
+- code de livraison principal : MILAURA-LIV50 ;
+- code de remise : MILAURA15 ;
+- cadeau : variante Shopify 53142713925979 ;
+- livraison standard France : 5,80 EUR jusqu'à 49,99 EUR, gratuite à partir de 50 EUR ;
+- MILAURA-LIV50 et MILAURA-LIV19 : France uniquement, avec tarif d'expédition maximum de 6 EUR ;
+- Europe : tarif payant de 12 EUR ;
+- Guadeloupe, Martinique, La Réunion, États-Unis et reste du monde : aucune zone d'expédition active au contrôle du 2026-08-08 ;
+- MILAURA15, le cadeau et les automatisations n'ont pas été modifiés pendant le réglage ;
+- le bloc panier obsolète a été retiré des deux templates locaux ;
+- le moteur ScratchToReveal est conservé pour une future réutilisation dans l'entrée du Cercle.
 
-## Décision historique de reprise avant P0A du 2026-08-08
+Données encore manquantes :
 
-- Ne pas commencer P0A dans la session de réconciliation.
-- Ouvrir une nouvelle session principale propriétaire du thème et du live.
-- Commencer en lecture seule par les coûts, seuils, codes, règles de cumul et reliquats Scratch du panier.
-- Ne modifier ni Shopify ni le thème avant présentation du diagnostic P0A et GO explicite de Patrice.
-- Autoriser en parallèle uniquement P0B inventaire, l'inventaire des composants de l'Atelier des émotions et une session Camilla strictement séparée.
-- Interdire deux sessions concurrentes sur le thème, la homepage, le panier, les documents d'état ou les déploiements Shopify.
+- coûts unitaires exacts par produit ;
+- transport entrant ;
+- emballage, paiement, retours et casse ;
+- coût réel moyen du cadeau ;
+- contribution exacte aux paniers 30, 50, 80, 89 et 100 EUR ;
+- CAC maximal soutenable calculé sur des données complètes.
 
-## Production Shopify
+Décision : ces données ne bloquent plus la refonte éditoriale, mais elles restent obligatoires avant de piloter sérieusement les campagnes payantes.
 
-- Boutique : `milaura.fr`.
-- Thème live : `dawn-X-milaura/main`.
-- ID : `190430282075`.
-- Hero H1C final : live. Photographies, copywriting et hiérarchie validés visuellement par Patrice le 2026-08-08. Dernier espacement desktop demandé explicitement et vérifié techniquement.
-- Dock V2 : live depuis le 2026-08-07 à 09:46 CEST environ.
-- Panneau mobile V2 : live le 2026-08-08, avec croix de fermeture dorée simple.
-- `L’atelier MilAura` : live le 2026-08-08 à 10:06 CEST, quatre produits réels, cartes natives et contour aigue-marine local à la section.
-- Pullback ciblé du dock, de la navbar, du hero, de la sélection et de l'asset gemmes : identique au local approuvé.
-- Pullback ciblé de la navbar après la correction du 2026-08-08 : identique octet pour octet au local.
-- Validation publique : mobile 390 px, Menu, Recherche et Panier fonctionnels ; desktop 1440 px sans dock.
-- Theme Check du déploiement : 0 erreur, 29 avertissements historiques.
+## P0B et vérité produit
 
-## Panier
+Patrice a fourni vingt produits en stock pour l'édition d'août, dont quatre produits mis en avant sur la homepage. Il confirme disposer d'une bonne marge sur la sélection.
 
-- Drawer live et validé par Patrice.
-- Paliers : 30 EUR cadeau, 50 EUR livraison, 80 EUR remise de 15 %.
-- Codes : `MILAURA-LIV50`, `MILAURA15`.
-- Cadeau : variante `53142713925979`.
-- Réglage de livraison France protégé contre l'international le 2026-08-08.
-- P0A clos par décision de Patrice. Les coûts exacts manquants restent des données de pilotage à compléter avant Ads et ne doivent pas être présentés comme confirmés.
+P0B est considéré terminé pour exécuter la homepage et la landing. Il reste incomplet comme dossier économique tant que les coûts et délais ne sont pas renseignés produit par produit.
 
-## Hero H1C
+Registre de référence : docs/reference/MILAURA-P0B-PRODUCT-REGISTER-2026.md.
 
-- Kicker Dancing Script.
-- Slogan : `La beauté d'un bijou + la vertu des pierres = l'émotion MilAura !`.
-- `+` et `=` typographiques or entre des filets visibles.
-- Hiérarchie renforcée sur `beauté` et `vertu`.
-- CTA unique prune et or : `Découvrir les créations`.
-- Texte de conversion : `Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.`
-- Surlignage champagne horizontal limité à `choisies avec exigence`, sans trait, rotation ou pseudo-élément.
-- Trois preuves photographiques flottantes, sans cartouche ni bandeau : LFG Paris, Karine et atelier de Metz.
-- Trois cabochons ovales asymétriques avec doubles contours or et aigue-marine.
-- Neuf photographies produit officielles en rotation, une image toutes les quatre secondes.
-- Triptyque remonté de `34px` à `40px` sur desktop uniquement pour ne plus chevaucher les preuves.
-- Aucun produit régénéré par IA.
-- Image secondaire des cartes activée au survol et au focus, première image conservée sur tactile.
+## Réorientation validée de la homepage
 
-Validation : Hero terminé et déployé. Direction validée visuellement par Patrice. Dernier espacement contrôlé publiquement en desktop et mobile le 2026-08-08.
+L'ancienne section L'atelier MilAura est abandonnée. Patrice l'a jugée trop proche d'un carrousel produit générique et sans avantage réel face aux anciens best sellers.
 
-## Dock mobile et CTA
+Elle est remplacée par un système saisonnier vivant :
 
-- Navigation principale mobile : Menu, Rechercher, Contact, Cercle et Panier.
-- Logo et CTA `Trouver ma pierre` conservés dans l'en-tête mobile.
-- Gemmes sous les pictogrammes, coupées par le bord inférieur de l'écran.
-- Hauteur hors zone de sécurité réduite de 128 à 88 px.
-- Prune profond du dock : `#2F222D`.
-- Dégradé d'action CTA : `#52394D` vers `#493246`, avec terminaison prune profond.
-- Commits : `0567fff1` pour le baseline live homepage, puis `252f31b5` pour le polish V2.
-- Branche distante sûre : `codex/milaura-mobile-dock-2026-08-07`.
+1. quatre produits mis en avant sur la homepage ;
+2. une landing dédiée d'environ vingt produits ;
+3. un univers visuel cohérent entre la homepage et la landing ;
+4. une rotation mensuelle ou saisonnière ;
+5. une destination directement exploitable pour les publicités Meta et les autres réseaux.
 
-## Panneau mobile et symboles de marque
+La campagne suivante doit être préparée avant la fin du mois, par exemple septembre ou la rentrée. Le travail récurrent consiste à changer l'univers, la sélection de la landing, les quatre produits homepage et le libellé du mois.
 
-- Le panneau est un écrin prune avec `Explorer MilAura`, les catégories, le Cercle, `Notre histoire` et `Le Journal`.
-- Le dock reste présent sous le panneau.
-- La fermeture est une croix dorée simple, sans cercle ni double anneau.
-- Le double anneau irrégulier croisé, or et aigue-marine, est réservé au Cercle MilAura et aux cadres de photographies produit importantes.
-- Il est interdit sur les contrôles utilitaires, les fermetures, la recherche, le panier, les focus, les séparateurs et les CTA génériques.
-- Le cabochon `Trouver ma pierre` conserve ses contours décalés comme exception validée.
-- Référence obligatoire : `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md`.
-- Commits du lot : `e89c76e4` puis `e49a18d2` sur `codex/milaura-reconcile-2026-08-07`.
+## Sélection d'août 2026, terminée et live
 
-## Architecture homepage validée
+Univers : plage des Maldives, lagon, lumière estivale, nacre et pierres naturelles.
 
-1. Hero de marque.
-2. Sélection de l'atelier, quatre produits réels.
-3. Trois portes pour les indécis.
-4. Pierre du moment.
-5. Karine et les preuves.
-6. Sur mesure et Atelier des émotions.
-7. Cadeaux et mariage.
-8. Journal.
-9. Cercle MilAura.
+Homepage :
 
-## Nouveau chantier actif : Atelier des émotions
+- cartouche fin pleine largeur ;
+- partie gauche prune avec La sélection de Karine en aigue-marine ;
+- partie droite sur image de lagon avec Août 2026 en prune ;
+- phrase sous le cartouche : Des bijoux choisis par Karine pour leurs reflets dorés, leurs pierres naturelles et leur lumière estivale. ;
+- quatre cartes produits natives avec accent aigue-marine ;
+- CTA Découvrir toute la sélection vers la collection d'août ;
+- ancre technique MilauraSelectionAtelier conservée pour compatibilité avec le Hero.
 
-- Inspiration de mécanique : [Little Words Project](https://www.littlewordsproject.com).
-- Patrice achète actuellement les composants nécessaires.
-- Offre MilAura propre : pierres naturelles, lettres, mot ou prénom, charms ludiques, tailles et palettes contrôlées, création par Karine.
-- Position : section Sur mesure de la homepage puis landing ou configurateur dédié.
-- Prochaine étape produit : inventaire des composants, trois à cinq prototypes, coûts, prix, délais, règles de personnalisation, photos et pilote.
-- Ne pas copier la marque ou l'identité visuelle de Little Words Project.
+Landing :
 
-## Priorités
+- collection manuelle Sélection d'août 2026 ;
+- ID Shopify 677642535259 ;
+- handle selection-aout-2026 ;
+- template selection-aout-2026 ;
+- vingt produits en stock ;
+- bloc prune supérieur avec La sélection de Karine et Une escale minérale imaginée par Karine ;
+- paragraphe validé sur le lagon, l'amazonite, la calcédoine, la nacre et les nuances solaires ;
+- indicateurs 20 créations, Édition août 2026, Sélection en stock ;
+- image Maldives utilisée en arrière-plan de la grille produit avec un voile nacré ;
+- aucun titre marketing secondaire redondant au-dessus de la grille.
 
-### P0
+SEO collection :
 
-1. Calculer l'économie des paliers panier et vérifier les cumuls Shopify.
-2. Compter le stock physique et le rapprocher de Shopify.
-3. Choisir 20 à 30 produits héros rentables.
-4. Tenir un registre de preuve par SKU.
+- titre : Sélection d'août 2026 | Bijoux en pierres naturelles ;
+- description : Éclats des Maldives : la sélection d'août de Karine. Vingt bijoux et créations aux nuances de lagon, de nacre et de lumière, réunis pour l'été.
 
-### P1
+## Produits d'août
 
-1. Terminé : Sélection de l'atelier avec quatre produits réels.
-2. Actif : Trois portes.
-3. Pierre du moment et landing Aigue-marine.
-4. Karine et preuves.
-5. Sur mesure V1 et pilote Atelier des émotions.
-6. PDP mobile-first, mariage, Journal et Cercle.
+Homepage et landing :
 
-### P2 et P3
+1. collier-obsidienne-noire-boho-dore
+2. bracelet-aventurine-verte-halo-dore
+3. bracelet-oeil-de-tigre-cuir-brun
+4. bracelet-elye-dore-nacre-amethyste-aa
 
-- SEO, AEO, GEO, landings, Pinterest, organique puis Ads rentables.
-- Camilla jusqu'au brouillon uniquement.
-- Conseillère MilAura avec sources réelles et escalade vers Karine.
-- Cercle Privilège puis ambassadeurs après preuve.
+Landing uniquement :
 
-## Recyclage acté
+5. bracelet-elye-dore-nacre-lapis-lazuli-aa
+6. boucles-doreilles-cornaline-fleur-15mm
+7. bracelet-amazonite-1
+8. bracelet-agate-fleur-de-cerisier
+9. bracelet-turquoise
+10. bracelet-fluorine-multicolore
+11. boucles-doreilles-quartz-rose-4
+12. boucles-doreilles-aventurine-3
+13. collier-boule-06mm-jaspe-rouge-a
+14. bague-azelys-doree-quartz-rose-ab
+15. savon-verveine-1-piece
+16. collier-calcedoine-bleue-4mm
+17. collier-aurela-dore-amethyste-a
+18. collier-amethyste
+19. collier-amazonite
+20. collier-agate-arbre
 
-- `Une pierre pour une émotion` devient une landing interactive.
-- Aigue-marine devient la première Pierre du moment.
-- La vidéo atelier nourrit Karine et les preuves.
-- Le rituel de purification nourrit le Journal ou les PDP.
-- Les cartes à gratter rejoignent le Cercle.
-- Aucun bon composant n'est supprimé avant que sa destination soit opérationnelle.
+## Trois portes, prochaine étape active
 
-## Vérité origine et certification
+Le concept de guide est validé, mais le rendu actuel en cartes dépliantes est rejeté comme fade et générique. Sa présence dans Git ou sur le live ne constitue pas une validation visuelle.
 
-- Les commandes sont préparées et expédiées depuis l'atelier MilAura à Metz.
-- Formulation hero : `notre atelier en France`.
-- Les certificats sont transmis par le fournisseur et émis par LFG Paris.
-- La référence à Cartier reste interne tant que son usage public n'est pas prouvé et autorisé.
+Direction validée :
 
-## Git
+1. Choisir mon bijou par type : cartes catégories photographiées, proches des cartes produits mais plus marquées en prune, vers les collections par type de bijou.
+2. Choisir par émotion : même logique visuelle, vers des pages regroupant les produits adaptés à chaque émotion.
+3. Me laisser guider : réutiliser et redessiner le teaser du diagnostic émotionnel déjà présent plus bas au lieu de créer une troisième section concurrente.
 
-État contrôlé le 2026-08-08 à 18:10 CEST :
+Le cabochon fixe Trouver ma pierre reste en place. Le redesign doit éviter la duplication du quiz et améliorer réellement la navigabilité.
 
-- checkout canonique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
-- branche : `codex/milaura-reconcile-2026-08-07` ;
-- dernier commit fonctionnel Hero poussé : `c1411895` ;
-- branche locale alignée avec `origin/codex/milaura-reconcile-2026-08-07` après le push ;
-- commits Hero : `9a809e0d`, `ed455a9f`, `3b98c937`, `45a225fa`, `78bbb26b`, `6848e181` et `c1411895` ;
-- commit des trois portes présent sur la branche : `7f4093f7`, état live et approbation visuelle à reconfirmer lors de la reprise ;
-- nouveaux diffs locaux hors lot observés à la clôture : `sections/milaura-choice-doors.liquid` et `templates/index.json`. Leur provenance, leur état live et leur approbation n'ont pas été audités pendant la correction du Hero ;
-- modifications panier préservées et hors lot : `templates/cart.json` et `templates/cart.milaura.json` ;
-- fichiers non suivis préservés et hors lot : `assets/milaura-hero-proof-karine.webp` et `sections/milaura-selection-atelier 2.liquid` ;
-- aucun reset, nettoyage global, pull global ou déploiement de thème complet n'a été effectué ;
-- aucun secret ou matériau privé n'a été ajouté à Git.
+## Ordre actif du plan
 
-L'ancien checkout, le workspace privé d'automatisation et Camilla restent indépendants et inchangés. Leur état détaillé est conservé dans `docs/checkpoints/2026-08-07-1825-milaura-repo-reconciliation-complete.md`.
+1. Hero : terminé et validé.
+2. Navigation mobile : terminée et live.
+3. G1 : terminé.
+4. P0A : clos par Patrice.
+5. P0B : clos pour l'exécution éditoriale, données économiques détaillées encore manquantes.
+6. Sélection saisonnière d'août et landing : terminées et live.
+7. Trois portes : étape active, redesign complet à faire.
+8. Pierre du moment : landing Aigue-marine à construire après les trois portes.
+9. Atelier des émotions : inventaire, prototypes et contribution.
+10. Karine et preuves d'atelier.
+11. Sur mesure V1.
+12. Première PDP mobile prioritaire et retrait Scratch produit.
+13. Cadeaux et mariage.
+14. Journal.
+15. Fondations et page compte du Cercle.
+16. ScratchToReveal autonome puis popup Cercle.
 
-## Documents de reprise
+## Fichiers du lot saisonnier
 
-- Handoff : `docs/codex-handoff.md`.
-- Checkpoint : `docs/checkpoints/2026-08-06-1828-milaura-hero-renouveau-little-words-handoff.md`.
-- Checkpoint G1 : `docs/checkpoints/2026-08-07-0955-milaura-dock-v2-g1-reconciliation.md`.
-- Clôture G1 : `docs/checkpoints/2026-08-07-1735-milaura-g1-baseline-complete.md`.
-- Réconciliation complète : `docs/checkpoints/2026-08-07-1825-milaura-repo-reconciliation-complete.md`.
-- Handoff avant P0A : `docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md`.
-- Menu mobile et symboles : `docs/checkpoints/2026-08-08-0814-milaura-menu-cercle-branding-handoff.md`.
-- Hero final : `docs/checkpoints/2026-08-08-1318-milaura-hero-final-polish.md`.
-- Plan : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
-- Spécification : `docs/superpowers/specs/2026-07-31-milaura-renouveau-commerce-design.md`.
-- Symboles visuels : `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md`.
+Modifiés ou créés :
+
+- sections/milaura-selection-atelier.liquid
+- templates/index.json
+- assets/milaura-selection-aout-lagon.webp
+- sections/milaura-seasonal-collection.liquid
+- templates/collection.selection-aout-2026.json
+- output/concepts/selection-aout-2026/concept.css
+- output/concepts/selection-aout-2026/home-preview.html
+- output/concepts/selection-aout-2026/landing-preview.html
+
+Fichiers sales hors lot saisonnier à préserver :
+
+- templates/cart.json
+- templates/cart.milaura.json
+- assets/milaura-hero-proof-karine.webp
+- sections/milaura-selection-atelier 2.liquid
+
+Le dernier fichier est un fichier non suivi préexistant ou issu d'un travail parallèle. Son origine exacte n'est pas confirmée. Ne pas le supprimer sans audit.
+
+## Validation du lot saisonnier
+
+- shopify theme check : 0 erreur, 29 avertissements historiques sur 274 fichiers.
+- git diff --check : propre sur le lot ciblé.
+- Contrôle public homepage desktop et mobile 390 x 844.
+- Contrôle public landing desktop et mobile 390 x 844.
+- CTA homepage vérifié vers /collections/selection-aout-2026.
+- Landing vérifiée avec vingt produits et les quatre produits prioritaires en tête.
+- Pullback homepage : fichiers locaux et live identiques.
+- Pullback landing : fichiers locaux et live identiques.
+- Aucun push complet du thème.
+
+## Git au 2026-08-08 19:53 CEST
+
+- Branche : codex/milaura-reconcile-2026-08-07.
+- HEAD : 266a9cac feat: refine MilAura hero statement.
+- Branche locale alignée avec origin/codex/milaura-reconcile-2026-08-07 avant les écritures documentaires de ce handoff.
+- Le lot saisonnier n'est pas commit ni poussé dans Git.
+- Les déploiements Shopify ciblés sont néanmoins live et ont été vérifiés par pullback.
+
+## Reprise recommandée
+
+Reprendre exclusivement le redesign des trois portes. Auditer d'abord la section live et le teaser quiz existant, définir les catégories par type et par émotion, puis produire une proposition desktop et mobile avant tout nouveau déploiement. Ne pas rouvrir P0A, les ventes complémentaires ou les automatisations dans cette session.
+
+## Références
+
+- Plan canonique : docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md
+- Handoff actif : docs/codex-handoff.md
+- Checkpoint actif : docs/checkpoints/2026-08-08-1953-milaura-selection-aout-handoff.md
+- Handoff P0A initial : docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md
+- Hero final : docs/checkpoints/2026-08-08-1318-milaura-hero-final-polish.md
