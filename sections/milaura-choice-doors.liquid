@@ -1,3 +1,5 @@
+{{ 'milaura-choice-doors.css' | asset_url | stylesheet_tag }}
+
 {%- liquid
   assign quiz_page = pages['diagnostic-emotionnel']
   assign quiz_url = section.settings.quiz_link
@@ -7,515 +9,475 @@
   if quiz_url == blank
     assign quiz_url = '/pages/diagnostic-emotionnel'
   endif
+
+  assign background_asset = section.settings.background_asset | default: 'milaura-selection-aout-lagon.webp'
+  assign quiz_asset = section.settings.quiz_asset | default: 'milaura-hero-proof-karine-v2.webp'
+  assign type_count = 0
+  assign emotion_count = 0
+  for block in section.blocks
+    if block.type == 'type_card'
+      assign type_count = type_count | plus: 1
+    elsif block.type == 'emotion_card'
+      assign emotion_count = emotion_count | plus: 1
+    endif
+  endfor
 -%}
 
 {%- style -%}
-  #MilauraChoiceDoors {
+  @font-face {
+    font-family: 'MilauraGloock';
+    src: url('{{ 'milaura-gloock-regular.ttf' | asset_url }}') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'MilauraInstrument';
+    src: url('{{ 'milaura-instrument-sans-variable.ttf' | asset_url }}') format('truetype-variations');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400 900;
+  }
+
+  #shopify-section-{{ section.id }} {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  #MilauraChoiceDoors,
+  #MilauraChoiceDoors-{{ section.id }} {
     scroll-margin-top: 150px;
   }
 
-  #MilauraChoices-{{ section.id }} {
-    --choices-prune: #2f222d;
-    --choices-gold: #b9975b;
-    --choices-aqua: #6fa9a6;
-    --choices-aqua-soft: rgba(111, 169, 166, 0.42);
-    --choices-nacre: #fffdf9;
-    --choices-paper: #ffffff;
-    padding: clamp(58px, 7vw, 104px) 0 clamp(66px, 7.5vw, 112px);
-    color: var(--choices-prune);
-    background:
-      linear-gradient(180deg, rgba(255, 253, 249, 0.7), rgba(255, 255, 255, 0) 32%),
-      var(--choices-paper);
-    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
-  }
-
-  #MilauraChoices-{{ section.id }} * {
-    box-sizing: border-box;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-doors__intro {
-    width: min(760px, calc(100% - 36px));
-    margin: 0 auto clamp(36px, 4.5vw, 58px);
-    text-align: center;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-doors__kicker {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin: 0 0 10px;
-    color: var(--choices-aqua);
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    line-height: 1.3;
-    text-transform: uppercase;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-doors__title {
-    margin: 0;
-    color: var(--choices-gold);
-    font-family: var(--milaura-font-script, 'Dancing Script'), cursive;
-    font-size: clamp(3rem, 5.2vw, 5rem);
-    font-weight: 600;
-    letter-spacing: 0;
-    line-height: 1.04;
-    text-shadow: 0 2px 12px rgba(185, 151, 91, 0.12);
-    text-wrap: balance;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-doors__lead {
-    max-width: 620px;
-    margin: 13px auto 0;
-    color: rgba(47, 34, 45, 0.72);
-    font-size: clamp(0.98rem, 1.15vw, 1.08rem);
-    font-weight: 400;
-    letter-spacing: 0.015em;
-    line-height: 1.58;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-doors__grid {
-    width: min(1540px, calc(100% - clamp(32px, 5vw, 80px)));
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(16px, 2vw, 28px);
-    margin: 0 auto;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door {
-    position: relative;
-    min-width: 0;
-    min-height: 330px;
-    padding: clamp(30px, 3vw, 46px);
-    overflow: hidden;
-    border: 1px solid var(--choices-aqua-soft);
-    border-radius: 20px;
-    background: var(--choices-nacre);
-    box-shadow: 0 7px 20px rgba(54, 105, 103, 0.045);
-    transition: border-color 180ms ease, box-shadow 180ms ease;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door:hover,
-  #MilauraChoices-{{ section.id }} .choice-door:focus-within {
-    border-color: var(--choices-aqua);
-    box-shadow: 0 9px 24px rgba(54, 105, 103, 0.07);
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door summary {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 18px;
-    color: var(--choices-prune);
-    cursor: pointer;
-    list-style: none;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door summary::-webkit-details-marker {
-    display: none;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__eyebrow {
-    display: block;
-    margin-bottom: 10px;
-    color: var(--choices-aqua);
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__title {
-    display: block;
-    color: var(--choices-prune);
-    font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
-    font-size: clamp(1.9rem, 2.35vw, 2.7rem);
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 1.06;
-    text-wrap: balance;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__toggle {
-    width: 34px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    border: 1px solid rgba(185, 151, 91, 0.6);
-    border-radius: 50%;
-    color: var(--choices-gold);
-    background: var(--choices-paper);
-    font-size: 1rem;
-    line-height: 1;
-    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door[open] .choice-door__toggle {
-    color: var(--choices-paper);
-    background: var(--choices-gold);
-    transform: rotate(45deg);
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__content {
-    margin-top: 28px;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__description {
-    max-width: 36ch;
-    margin: 0 0 22px;
-    color: rgba(47, 34, 45, 0.68);
-    font-size: 1rem;
-    line-height: 1.58;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 11px 20px;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__link {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    min-height: 30px;
-    color: var(--choices-prune);
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.4;
-    text-decoration: none;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__link::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    bottom: 2px;
-    left: 0;
-    height: 1px;
-    background: var(--choices-gold);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 180ms ease;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__link:hover::after,
-  #MilauraChoices-{{ section.id }} .choice-door__link:focus-visible::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__cta {
-    min-height: 50px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 13px;
-    padding: 10px 12px 10px 23px;
-    border: 1px solid rgba(185, 151, 91, 0.74);
-    border-radius: 999px;
-    color: var(--choices-nacre);
-    background: var(--choices-prune);
-    font-size: 0.82rem;
-    font-weight: 800;
-    letter-spacing: 0.07em;
-    line-height: 1;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: transform 180ms ease, box-shadow 180ms ease;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__cta:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(47, 34, 45, 0.14);
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__cta-arrow {
-    width: 30px;
-    height: 30px;
-    display: grid;
-    place-items: center;
-    flex: 0 0 auto;
-    border-radius: 50%;
-    color: var(--choices-prune);
-    background: var(--choices-gold);
-    font-size: 1rem;
-    line-height: 1;
-    transition: transform 180ms ease;
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door__cta:hover .choice-door__cta-arrow {
-    transform: translateX(3px);
-  }
-
-  #MilauraChoices-{{ section.id }} .choice-door summary:focus-visible,
-  #MilauraChoices-{{ section.id }} .choice-door__link:focus-visible,
-  #MilauraChoices-{{ section.id }} .choice-door__cta:focus-visible {
-    outline: 2px solid var(--choices-aqua);
-    outline-offset: 5px;
-  }
-
-  @media screen and (min-width: 768px) {
-    #MilauraChoices-{{ section.id }} .choice-door summary {
-      cursor: default;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door[open] > .choice-door__content {
-      display: block;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__toggle {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 980px) and (min-width: 768px) {
-    #MilauraChoices-{{ section.id }} .choice-doors__grid {
-      width: calc(100% - 48px);
-      gap: 14px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door {
-      padding: 28px 24px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__title {
-      font-size: 1.75rem;
-    }
-  }
-
-  @media screen and (max-width: 767px) {
-    #MilauraChoiceDoors {
+  @media screen and (max-width: 749px) {
+    #MilauraChoiceDoors,
+    #MilauraChoiceDoors-{{ section.id }} {
       scroll-margin-top: 112px;
-    }
-
-    #MilauraChoices-{{ section.id }} {
-      padding: 48px 0 72px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-doors__intro {
-      margin-bottom: 30px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-doors__kicker {
-      margin-bottom: 8px;
-      font-size: 0.7rem;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-doors__title {
-      font-size: clamp(2.6rem, 12vw, 3.55rem);
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-doors__lead {
-      margin-top: 11px;
-      font-size: 1rem;
-      line-height: 1.55;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-doors__grid {
-      width: calc(100% - 32px);
-      display: block;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door {
-      min-height: 0;
-      padding: 22px 20px;
-      border-radius: 16px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door + .choice-door {
-      margin-top: 12px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__eyebrow {
-      margin-bottom: 5px;
-      font-size: 0.69rem;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__title {
-      font-size: 1.55rem;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__toggle {
-      width: 32px;
-      height: 32px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__content {
-      padding-bottom: 3px;
-      margin-top: 18px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__description {
-      margin-bottom: 15px;
-      font-size: 1rem;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__links {
-      gap: 9px 18px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__link {
-      min-height: 32px;
-    }
-
-    #MilauraChoices-{{ section.id }} .choice-door__cta {
-      min-height: 48px;
-      font-size: 0.78rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    #MilauraChoices-{{ section.id }} .choice-door,
-    #MilauraChoices-{{ section.id }} .choice-door__toggle,
-    #MilauraChoices-{{ section.id }} .choice-door__link::after,
-    #MilauraChoices-{{ section.id }} .choice-door__cta,
-    #MilauraChoices-{{ section.id }} .choice-door__cta-arrow {
-      transition: none;
     }
   }
 {%- endstyle -%}
 
-<section id="MilauraChoiceDoors" aria-labelledby="MilauraChoicesTitle-{{ section.id }}">
-  <div id="MilauraChoices-{{ section.id }}" class="milaura-choice-doors">
-    <div class="choice-doors__intro">
-      <p class="choice-doors__kicker">{{ section.settings.kicker | default: 'Vous hésitez encore ?' }}</p>
-      <h2 id="MilauraChoicesTitle-{{ section.id }}" class="choice-doors__title">
-        {{ section.settings.title | default: 'Comment souhaitez-vous choisir ?' }}
+<section
+  id="MilauraChoiceDoors-{{ section.id }}"
+  class="milaura-choice-flow"
+  aria-labelledby="MilauraChoiceTitle-{{ section.id }}"
+  data-milaura-choice-flow
+  style="--choice-bg-image: url('{{ background_asset | asset_url }}');"
+>
+  <span id="MilauraChoiceDoors" aria-hidden="true"></span>
+  <span class="milaura-choice-flow__rule milaura-choice-flow__rule--top" aria-hidden="true"></span>
+  <span class="milaura-choice-flow__rule milaura-choice-flow__rule--bottom" aria-hidden="true"></span>
+
+  <div class="milaura-choice-flow__shell">
+    <header class="milaura-choice-flow__masthead milaura-choice-flow__reveal">
+      {%- if section.settings.kicker != blank -%}
+        <p class="milaura-choice-flow__kicker">{{ section.settings.kicker | escape }}</p>
+      {%- endif -%}
+      <h2 id="MilauraChoiceTitle-{{ section.id }}" class="milaura-choice-flow__title">
+        {{ section.settings.title | escape }}
+        {%- if section.settings.title_accent != blank -%}
+          <span class="milaura-choice-flow__title-accent">{{ section.settings.title_accent | escape }}</span>
+        {%- endif -%}
       </h2>
-      <p class="choice-doors__lead">
-        {{ section.settings.lead | default: 'Si aucun coup de cœur ne s’est encore imposé, explorez par bijou, par émotion ou avec les conseils de Karine.' }}
-      </p>
-    </div>
+      {%- if section.settings.lead != blank -%}
+        <p class="milaura-choice-flow__lead">{{ section.settings.lead | escape }}</p>
+      {%- endif -%}
+    </header>
 
-    <nav class="choice-doors__grid" aria-label="Choisir votre parcours MilAura">
-      <details class="choice-door" open>
-        <summary>
-          <span>
-            <span class="choice-door__eyebrow">Par type de création</span>
-            <span class="choice-door__title">Choisir mon bijou</span>
-          </span>
-          <span class="choice-door__toggle" aria-hidden="true">+</span>
-        </summary>
-        <div class="choice-door__content">
-          <p class="choice-door__description">Je sais déjà ce que j’ai envie de porter.</p>
-          <div class="choice-door__links">
-            <a class="choice-door__link" href="{{ routes.collections_url }}/bracelets-pierres">Bracelets</a>
-            <a class="choice-door__link" href="{{ routes.collections_url }}/colliers-pierres">Colliers</a>
-            <a class="choice-door__link" href="{{ routes.collections_url }}/boucles-oreilles">Boucles d’oreilles</a>
-            <a class="choice-door__link" href="{{ routes.collections_url }}/pendentifs">Pendentifs</a>
-            <a class="choice-door__link" href="{{ routes.collections_url }}/bijoux-pierres-naturelles">Tous les bijoux</a>
-          </div>
-        </div>
-      </details>
+    {%- if type_count > 0 -%}
+      <div class="milaura-choice-flow__chapter milaura-choice-flow__chapter--type">
+        <header class="milaura-choice-flow__chapter-head milaura-choice-flow__reveal">
+          {%- if section.settings.type_kicker != blank -%}
+            <p class="milaura-choice-flow__chapter-kicker">{{ section.settings.type_kicker | escape }}</p>
+          {%- endif -%}
+          <h3 class="milaura-choice-flow__chapter-title">{{ section.settings.type_title | escape }}</h3>
+          {%- if section.settings.type_lead != blank -%}
+            <p class="milaura-choice-flow__chapter-lead">{{ section.settings.type_lead | escape }}</p>
+          {%- endif -%}
+          <span class="milaura-choice-flow__mobile-hint" aria-hidden="true">Faire défiler</span>
+        </header>
 
-      <details class="choice-door" open>
-        <summary>
-          <span>
-            <span class="choice-door__eyebrow">Selon votre émotion du moment</span>
-            <span class="choice-door__title">Choisir selon mon émotion</span>
-          </span>
-          <span class="choice-door__toggle" aria-hidden="true">+</span>
-        </summary>
-        <div class="choice-door__content">
-          <p class="choice-door__description">Je pars de ce que je ressens aujourd’hui.</p>
-          <div class="choice-door__links">
-            <a class="choice-door__link" href="{{ routes.collections_url }}/serenite-sommeil">Sérénité</a>
-            <a class="choice-door__link" href="{{ routes.collections_url }}/protection-energie">Protection</a>
-            <a class="choice-door__link" href="{{ routes.collections_url }}/amour-relations">Amour &amp; confiance</a>
-            <a class="choice-door__link" href="#MilauraBenefits-milaura_benefits_explorer_XxAi7N">Toutes les émotions</a>
-          </div>
-        </div>
-      </details>
+        <nav aria-label="Choisir un type de bijou">
+          <ul class="milaura-choice-flow__type-grid" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'type_card' -%}
+                {%- liquid
+                  assign card_collection = block.settings.collection
+                  assign card_product = block.settings.product
+                  assign card_image = block.settings.image
+                  if card_image == blank and card_product != blank
+                    assign card_image = card_product.featured_image
+                  endif
+                  if card_image == blank and card_collection != blank and card_collection.image != blank
+                    assign card_image = card_collection.image
+                  endif
+                  if card_image == blank and card_collection != blank and card_collection.products.first != blank
+                    assign card_image = card_collection.products.first.featured_image
+                  endif
 
-      <details class="choice-door" open>
-        <summary>
-          <span>
-            <span class="choice-door__eyebrow">Avec les conseils de Karine</span>
-            <span class="choice-door__title">Me laisser guider</span>
-          </span>
-          <span class="choice-door__toggle" aria-hidden="true">+</span>
-        </summary>
-        <div class="choice-door__content">
-          <p class="choice-door__description">Je réponds à quelques questions pour découvrir les pierres qui correspondent à mon émotion du moment.</p>
-          <a class="choice-door__cta" href="{{ quiz_url }}">
-            <span>Faire le diagnostic</span>
-            <span class="choice-door__cta-arrow" aria-hidden="true">→</span>
+                  assign card_url = block.settings.link
+                  if card_url == blank and card_collection != blank
+                    assign card_url = card_collection.url
+                  endif
+                -%}
+                <li
+                  class="milaura-choice-flow__type-card milaura-choice-flow__reveal"
+                  style="--choice-index: {{ forloop.index0 }};"
+                  {{ block.shopify_attributes }}
+                >
+                  <a
+                    class="milaura-choice-flow__type-link"
+                    href="{{ card_url }}"
+                    data-choice-path="type"
+                    data-choice-value="{{ block.settings.heading | handleize }}"
+                  >
+                    {%- if card_image != blank -%}
+                      {{- card_image
+                        | image_url: width: 1000
+                        | image_tag:
+                          class: 'milaura-choice-flow__type-image',
+                          widths: '260, 380, 520, 720, 1000',
+                          sizes: '(max-width: 989px) 78vw, 20vw',
+                          loading: 'lazy',
+                          alt: block.settings.heading
+                      -}}
+                    {%- elsif block.settings.asset_name != blank -%}
+                      <img
+                        class="milaura-choice-flow__type-image"
+                        src="{{ block.settings.asset_name | asset_url }}"
+                        alt="{{ block.settings.heading | escape }}"
+                        loading="lazy"
+                        width="800"
+                        height="1040"
+                      >
+                    {%- endif -%}
+                    <span class="milaura-choice-flow__type-copy">
+                      <span>
+                        <span class="milaura-choice-flow__type-label">
+                          {{ block.settings.label | default: 'Explorer' | escape }}
+                        </span>
+                        <span class="milaura-choice-flow__type-title">{{ block.settings.heading | escape }}</span>
+                      </span>
+                      <span class="milaura-choice-flow__arrow" aria-hidden="true">→</span>
+                    </span>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </nav>
+
+        {%- if section.settings.type_all_label != blank and section.settings.type_all_link != blank -%}
+          <a class="milaura-choice-flow__all-link" href="{{ section.settings.type_all_link }}">
+            <span>{{ section.settings.type_all_label | escape }}</span>
+            <span aria-hidden="true">→</span>
           </a>
-        </div>
-      </details>
-    </nav>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if emotion_count > 0 -%}
+      <div class="milaura-choice-flow__chapter milaura-choice-flow__chapter--emotion">
+        <header class="milaura-choice-flow__chapter-head milaura-choice-flow__reveal">
+          {%- if section.settings.emotion_kicker != blank -%}
+            <p class="milaura-choice-flow__chapter-kicker">{{ section.settings.emotion_kicker | escape }}</p>
+          {%- endif -%}
+          <h3 class="milaura-choice-flow__chapter-title">{{ section.settings.emotion_title | escape }}</h3>
+          {%- if section.settings.emotion_lead != blank -%}
+            <p class="milaura-choice-flow__chapter-lead">{{ section.settings.emotion_lead | escape }}</p>
+          {%- endif -%}
+          <span class="milaura-choice-flow__mobile-hint" aria-hidden="true">Faire défiler</span>
+        </header>
+
+        <nav aria-label="Choisir une pierre selon votre ressenti">
+          <ul class="milaura-choice-flow__emotion-grid" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'emotion_card' -%}
+                <li
+                  class="milaura-choice-flow__emotion-card milaura-choice-flow__reveal"
+                  style="--choice-index: {{ forloop.index0 }};"
+                  {{ block.shopify_attributes }}
+                >
+                  <a
+                    class="milaura-choice-flow__emotion-link"
+                    href="{{ block.settings.link }}"
+                    data-choice-path="emotion"
+                    data-choice-value="{{ block.settings.stone | handleize }}"
+                  >
+                    <span class="milaura-choice-flow__emotion-window">
+                      {%- if block.settings.image != blank -%}
+                        {{- block.settings.image
+                          | image_url: width: 900
+                          | image_tag:
+                            class: 'milaura-choice-flow__emotion-image',
+                            widths: '220, 340, 480, 680, 900',
+                            sizes: '(max-width: 989px) 58vw, 20vw',
+                            loading: 'lazy',
+                            alt: block.settings.stone
+                        -}}
+                      {%- elsif block.settings.desktop_asset != blank -%}
+                        <picture>
+                          {%- if block.settings.mobile_asset != blank -%}
+                            <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_asset | asset_url }}">
+                          {%- endif -%}
+                          <img
+                            class="milaura-choice-flow__emotion-image"
+                            src="{{ block.settings.desktop_asset | asset_url }}"
+                            alt="{{ block.settings.stone | escape }}"
+                            loading="lazy"
+                            width="720"
+                            height="960"
+                          >
+                        </picture>
+                      {%- endif -%}
+                    </span>
+                    <span class="milaura-choice-flow__emotion-copy">
+                      <span class="milaura-choice-flow__emotion-need">{{ block.settings.need | escape }}</span>
+                      <span class="milaura-choice-flow__emotion-stone">{{ block.settings.stone | escape }}</span>
+                      {%- if block.settings.note != blank -%}
+                        <span class="milaura-choice-flow__emotion-note">{{ block.settings.note | escape }}</span>
+                      {%- endif -%}
+                    </span>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </nav>
+
+        {%- if section.settings.emotion_all_label != blank and section.settings.emotion_all_link != blank -%}
+          <a class="milaura-choice-flow__all-link" href="{{ section.settings.emotion_all_link }}">
+            <span>{{ section.settings.emotion_all_label | escape }}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <aside class="milaura-choice-flow__quiz milaura-choice-flow__reveal" aria-labelledby="MilauraChoiceQuizTitle-{{ section.id }}">
+      <div class="milaura-choice-flow__quiz-media">
+        {%- if section.settings.quiz_image != blank -%}
+          {{- section.settings.quiz_image
+            | image_url: width: 1200
+            | image_tag:
+              class: 'milaura-choice-flow__quiz-image',
+              widths: '480, 720, 960, 1200',
+              sizes: '(max-width: 749px) calc(100vw - 36px), 42vw',
+              loading: 'lazy',
+              alt: section.settings.quiz_image_alt
+          -}}
+        {%- else -%}
+          <img
+            class="milaura-choice-flow__quiz-image"
+            src="{{ quiz_asset | asset_url }}"
+            alt="{{ section.settings.quiz_image_alt | escape }}"
+            loading="lazy"
+            width="900"
+            height="1100"
+          >
+        {%- endif -%}
+      </div>
+      <div class="milaura-choice-flow__quiz-copy">
+        {%- if section.settings.quiz_kicker != blank -%}
+          <p class="milaura-choice-flow__quiz-kicker">{{ section.settings.quiz_kicker | escape }}</p>
+        {%- endif -%}
+        <h3 id="MilauraChoiceQuizTitle-{{ section.id }}" class="milaura-choice-flow__quiz-title">
+          {{ section.settings.quiz_title | escape }}
+        </h3>
+        {%- if section.settings.quiz_text != blank -%}
+          <p class="milaura-choice-flow__quiz-text">{{ section.settings.quiz_text | escape }}</p>
+        {%- endif -%}
+        <ul class="milaura-choice-flow__quiz-meta" aria-label="Informations sur le diagnostic">
+          {%- if section.settings.quiz_meta_1 != blank -%}<li>{{ section.settings.quiz_meta_1 | escape }}</li>{%- endif -%}
+          {%- if section.settings.quiz_meta_2 != blank -%}<li>{{ section.settings.quiz_meta_2 | escape }}</li>{%- endif -%}
+          {%- if section.settings.quiz_meta_3 != blank -%}<li>{{ section.settings.quiz_meta_3 | escape }}</li>{%- endif -%}
+        </ul>
+        <a
+          class="milaura-choice-flow__quiz-cta"
+          href="{{ quiz_url }}"
+          data-choice-path="quiz"
+          data-choice-value="diagnostic-emotionnel"
+        >
+          <span>{{ section.settings.quiz_cta_label | escape }}</span>
+          <span class="milaura-choice-flow__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </aside>
   </div>
 </section>
 
-<script>
-  (() => {
-    const root = document.getElementById('MilauraChoices-{{ section.id }}');
-    if (!root) return;
-
-    const doors = Array.from(root.querySelectorAll('.choice-door'));
-    const mobileQuery = window.matchMedia('(max-width: 767px)');
-
-    doors.forEach((door) => {
-      const summary = door.querySelector('summary');
-      summary?.addEventListener('click', (event) => {
-        if (!mobileQuery.matches) event.preventDefault();
-      });
-
-      door.addEventListener('toggle', () => {
-        if (!mobileQuery.matches || !door.open) return;
-        doors.forEach((otherDoor) => {
-          if (otherDoor !== door) otherDoor.removeAttribute('open');
-        });
-      });
-    });
-
-    const syncDoors = (isMobile) => {
-      doors.forEach((door, index) => {
-        if (isMobile) {
-          door.toggleAttribute('open', index === 0);
-        } else {
-          door.setAttribute('open', '');
-        }
-      });
-    };
-
-    syncDoors(mobileQuery.matches);
-    if (mobileQuery.addEventListener) {
-      mobileQuery.addEventListener('change', (event) => syncDoors(event.matches));
-    } else {
-      mobileQuery.addListener((event) => syncDoors(event.matches));
-    }
-  })();
-</script>
+<script src="{{ 'milaura-choice-doors.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
-  "name": "Portes de découverte",
+  "name": "Guide de découverte",
   "tag": "section",
   "class": "milaura-choice-doors-section",
+  "max_blocks": 16,
   "settings": [
+    {
+      "type": "text",
+      "id": "background_asset",
+      "label": "Fond dans les assets",
+      "default": "milaura-selection-aout-lagon.webp"
+    },
+    {
+      "type": "header",
+      "content": "Introduction"
+    },
     {
       "type": "text",
       "id": "kicker",
       "label": "Surtitre",
-      "default": "Vous hésitez encore ?"
+      "default": "Le guide MilAura"
     },
     {
       "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Comment souhaitez-vous choisir ?"
+      "default": "Votre prochain bijou"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Ligne manuscrite",
+      "default": "commence ici."
     },
     {
       "type": "textarea",
       "id": "lead",
       "label": "Introduction",
-      "default": "Si aucun coup de cœur ne s’est encore imposé, explorez par bijou, par émotion ou avec les conseils de Karine."
+      "default": "Partez d’une forme, d’un ressenti ou laissez Karine vous guider. Trois façons simples de trouver ce qui vous ressemble."
+    },
+    {
+      "type": "header",
+      "content": "Choix par type"
+    },
+    {
+      "type": "text",
+      "id": "type_kicker",
+      "label": "Surtitre",
+      "default": "Choisir par forme"
+    },
+    {
+      "type": "text",
+      "id": "type_title",
+      "label": "Titre",
+      "default": "Quel bijou avez-vous envie de porter ?"
+    },
+    {
+      "type": "textarea",
+      "id": "type_lead",
+      "label": "Introduction",
+      "default": "Entrez directement par la création que vous imaginez déjà."
+    },
+    {
+      "type": "text",
+      "id": "type_all_label",
+      "label": "Lien vers tous les bijoux",
+      "default": "Voir tous les bijoux"
+    },
+    {
+      "type": "url",
+      "id": "type_all_link",
+      "label": "Destination de tous les bijoux"
+    },
+    {
+      "type": "header",
+      "content": "Choix par ressenti"
+    },
+    {
+      "type": "text",
+      "id": "emotion_kicker",
+      "label": "Surtitre",
+      "default": "Choisir par ressenti"
+    },
+    {
+      "type": "text",
+      "id": "emotion_title",
+      "label": "Titre",
+      "default": "De quoi avez-vous besoin aujourd’hui ?"
+    },
+    {
+      "type": "textarea",
+      "id": "emotion_lead",
+      "label": "Introduction",
+      "default": "Commencez par votre émotion du moment. La pierre vient ensuite, comme une direction à explorer."
+    },
+    {
+      "type": "text",
+      "id": "emotion_all_label",
+      "label": "Lien vers toutes les pierres",
+      "default": "Explorer toutes les pierres"
+    },
+    {
+      "type": "url",
+      "id": "emotion_all_link",
+      "label": "Destination de toutes les pierres"
+    },
+    {
+      "type": "header",
+      "content": "Diagnostic"
+    },
+    {
+      "type": "image_picker",
+      "id": "quiz_image",
+      "label": "Photo de Karine"
+    },
+    {
+      "type": "text",
+      "id": "quiz_asset",
+      "label": "Photo de secours dans les assets",
+      "default": "milaura-hero-proof-karine-v2.webp"
+    },
+    {
+      "type": "text",
+      "id": "quiz_image_alt",
+      "label": "Texte alternatif de la photo",
+      "default": "Karine, fondatrice de MilAura"
+    },
+    {
+      "type": "text",
+      "id": "quiz_kicker",
+      "label": "Surtitre",
+      "default": "Vous hésitez encore ?"
+    },
+    {
+      "type": "text",
+      "id": "quiz_title",
+      "label": "Titre",
+      "default": "Laissez Karine vous guider."
+    },
+    {
+      "type": "textarea",
+      "id": "quiz_text",
+      "label": "Introduction",
+      "default": "Répondez à quelques questions simples et découvrez les pierres qui correspondent à votre ressenti du moment."
+    },
+    {
+      "type": "text",
+      "id": "quiz_meta_1",
+      "label": "Information 1",
+      "default": "2 minutes"
+    },
+    {
+      "type": "text",
+      "id": "quiz_meta_2",
+      "label": "Information 2",
+      "default": "5 profils"
+    },
+    {
+      "type": "text",
+      "id": "quiz_meta_3",
+      "label": "Information 3",
+      "default": "Résultat immédiat"
+    },
+    {
+      "type": "text",
+      "id": "quiz_cta_label",
+      "label": "Texte du bouton",
+      "default": "Faire le diagnostic"
     },
     {
       "type": "url",
@@ -523,9 +485,106 @@
       "label": "Lien du diagnostic"
     }
   ],
+  "blocks": [
+    {
+      "type": "type_card",
+      "name": "Type de bijou",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Petit libellé",
+          "default": "Explorer"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Nom",
+          "default": "Bracelets"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produit utilisé comme visuel"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "asset_name",
+          "label": "Visuel de secours dans les assets"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien personnalisé"
+        }
+      ]
+    },
+    {
+      "type": "emotion_card",
+      "name": "Ressenti et pierre",
+      "settings": [
+        {
+          "type": "text",
+          "id": "need",
+          "label": "Ressenti ou besoin",
+          "default": "Retrouver le calme"
+        },
+        {
+          "type": "text",
+          "id": "stone",
+          "label": "Pierre",
+          "default": "Améthyste"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Associations courtes",
+          "default": "Sérénité · sommeil · recentrage"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "desktop_asset",
+          "label": "Visuel desktop dans les assets"
+        },
+        {
+          "type": "text",
+          "id": "mobile_asset",
+          "label": "Visuel mobile dans les assets"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Destination"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
-      "name": "Portes de découverte"
+      "name": "Guide de découverte",
+      "blocks": [
+        { "type": "type_card" },
+        { "type": "type_card" },
+        { "type": "type_card" },
+        { "type": "emotion_card" },
+        { "type": "emotion_card" },
+        { "type": "emotion_card" }
+      ]
     }
   ]
 }
