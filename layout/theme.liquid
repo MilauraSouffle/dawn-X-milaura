@@ -7,6 +7,10 @@
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
 
+    {%- if request.page_type == 'search' or current_tags -%}
+      <meta name="robots" content="noindex,follow">
+    {%- endif -%}
+
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
@@ -15,11 +19,15 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {%- liquid
+      assign page_title_normalized = page_title | downcase | strip
+      assign shop_name_normalized = shop.name | downcase | strip
+    -%}
     <title>
       {{ page_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- unless page_title_normalized contains shop_name_normalized %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
     {% if page_description %}
@@ -28,74 +36,24 @@
 
     {% render 'meta-tags' %}
 
-    <!-- MilAura Advanced SEO Schema (Entity Authority & Local Presence) -->
+    <!-- MilAura SEO schema: factual site identity only -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@type": ["Organization", "LocalBusiness", "Store"],
+            "@type": ["Organization", "OnlineStore"],
             "@id": "{{ shop.url }}/#organization",
             "name": "MilAura",
-            "legalName": "ONORA SARL",
             "url": "{{ shop.url }}",
             {%- if settings.logo -%}
             "logo": {
               "@type": "ImageObject",
               "url": "{{ settings.logo | image_url: width: 500 | prepend: 'https:' }}"
-            },
-            "image": "{{ settings.logo | image_url: width: 800 | prepend: 'https:' }}",
+            }
+            {%- else -%}
+            "description": {{ shop.description | strip_html | default: 'Boutique MilAura' | json }}
             {%- endif -%}
-            "description": "Boutique de lithotherapie, bijoux en pierres naturelles et bougies artisanales a Montigny-les-Metz. Pierres certifiees, creations artisanales francaises.",
-            "sameAs": [
-              "https://www.facebook.com/milaura.creations/",
-              "https://www.instagram.com/milaura_souffle/",
-              "https://www.tiktok.com/@milaura_creations",
-              "https://pin.it/3TbjBkFSS",
-              "https://www.pagesjaunes.fr/pros/64692900"
-            ],
-            "telephone": "+33 3 72 39 64 73",
-            "email": "contact@milaura.fr",
-            "contactPoint": {
-              "@type": "ContactPoint",
-              "telephone": "+33 3 72 39 64 73",
-              "contactType": "customer service",
-              "email": "contact@milaura.fr",
-              "areaServed": "FR",
-              "availableLanguage": "French"
-            },
-            "address": {
-              "@type": "PostalAddress",
-              "streetAddress": "92 Rue de Pont-a-Mousson",
-              "addressLocality": "Montigny-les-Metz",
-              "addressRegion": "Grand Est",
-              "postalCode": "57950",
-              "addressCountry": "FR"
-            },
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": 49.1016662,
-              "longitude": 6.1579442
-            },
-            "hasMap": "https://maps.app.goo.gl/hyTwAGPbu71J2LEVA",
-            "priceRange": "$$",
-            "currenciesAccepted": "EUR",
-            "paymentAccepted": "Carte bancaire, PayPal, Apple Pay",
-            "openingHoursSpecification": [
-              {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-                "opens": "09:00",
-                "closes": "18:00"
-              }
-            ],
-            "founder": {
-              "@type": "Person",
-              "name": "Karine Allie",
-              "jobTitle": "Fondatrice"
-            },
-            "foundingDate": "2024",
-            "knowsAbout": ["Lithotherapie", "Pierres naturelles", "Bijoux en pierres precieuses", "Bougies artisanales", "Aromatherapie"]
           },
           {
             "@type": "WebSite",
@@ -103,13 +61,8 @@
             "url": "{{ shop.url }}",
             "name": "MilAura",
             "description": {{ shop.description | strip_html | json }},
-            "inLanguage": "fr",
-            "publisher": { "@id": "{{ shop.url }}/#organization" },
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "{{ shop.url }}/search?q={search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
+            "inLanguage": {{ request.locale.iso_code | json }},
+            "publisher": { "@id": "{{ shop.url }}/#organization" }
           }
         ]
       }

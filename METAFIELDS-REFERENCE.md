@@ -1,5 +1,9 @@
 # Metafields Milaura - Référence Rapide
 
+Mise à jour canonique : 2026-08-10
+
+Le contrat prioritaire est `docs/reference/2026-08-10-contrat-donnees-catalogue.md`. `milaura.stone_handle` contient la pierre principale. `milaura.stone_handles` contient les pierres secondaires ou l'ensemble des pierres d'un produit multi-pierres. `milaura.stone_benefits` conserve la clé technique existante et le libellé public `Symbolique traditionnelle`.
+
 ## Création dans Shopify Admin
 
 **Chemin** : Paramètres → Données personnalisées → Produits → Ajouter une définition
@@ -14,7 +18,7 @@
 |-------------|------------------|------|-------------|
 | Nom de la pierre | `milaura.stone_name` | Texte sur une ligne | Recommandé |
 | Description pierre | `milaura.stone_description` | Texte sur plusieurs lignes | Optionnel |
-| Bénéfices pierre | `milaura.stone_benefits` | Liste de valeurs de texte | Recommandé |
+| Symbolique traditionnelle | `milaura.stone_benefits` | Texte sur une ligne | Recommandé |
 | Histoire du produit | `milaura.story_text` | Texte sur plusieurs lignes | Optionnel |
 | Baseline/Accroche | `milaura.baseline` | Texte sur une ligne | Optionnel |
 | Nom de la senteur | `milaura.scent_name` | Texte sur une ligne | Bougies only |
@@ -78,7 +82,7 @@
 | Metafield | Valeur |
 |-----------|--------|
 | `stone_name` | Améthyste |
-| `stone_benefits` | `Apaise le mental`, `Favorise le sommeil`, `Équilibre émotionnel` |
+| `stone_benefits` | `Sérénité`, `Clarté`, `Introspection`, présentées comme associations traditionnelles |
 | `stone_description` | Pierre de sérénité par excellence, l'améthyste apaise les pensées agitées et favorise un sommeil réparateur. |
 | `story_text` | Ce bracelet est né d'une envie simple : offrir un compagnon quotidien qui rappelle l'importance de prendre soin de soi. |
 | `baseline` | Reconnecte-toi à ta sérénité intérieure |
@@ -88,7 +92,7 @@
 | Metafield | Valeur |
 |-----------|--------|
 | `stone_name` | Améthyste |
-| `stone_benefits` | `Apaise`, `Clarifie`, `Protège` |
+| `stone_benefits` | `Sérénité`, `Clarté`, `Introspection`, présentées comme associations traditionnelles |
 | `scent_name` | Néroli & Fleur d'oranger |
 | `scent_description` | Une senteur florale délicate qui transporte instantanément vers un état de calme profond. |
 | `scent_notes` | `{"top":["Néroli","Bergamote"],"heart":["Fleur d'oranger","Jasmin"],"base":["Musc blanc","Bois de cèdre"]}` |

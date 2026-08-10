@@ -1,164 +1,70 @@
 # MilAura - Handoff Codex actif
 
-Date de clôture : 2026-08-08 19:53 CEST
+Date de clôture : 2026-08-10 07:57 CEST
 
 ## Mission de reprise
 
-Reprendre la refonte de la homepage après la publication de la sélection saisonnière d'août. La prochaine étape est le redesign des trois portes. Ne pas rouvrir P0A, les ventes complémentaires ou les automatisations.
+Reprendre après la fondation catalogue privée. La prochaine mutation catalogue dépend de l'inventaire réel. Ne publier aucune collection ni aucun hub, et ne modifier ni homepage, ni livraison, ni panier sans le périmètre et le GO correspondants.
 
 ## Lecture obligatoire
 
-1. AGENTS.md
-2. docs/project-state.md
-3. docs/checkpoints/2026-08-08-1953-milaura-selection-aout-handoff.md
-4. docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md
-5. docs/checkpoints/2026-08-08-0712-milaura-plan-p0a-handoff.md uniquement si le détail économique ou panier est nécessaire
+1. `AGENTS.md`
+2. `docs/project-state.md`
+3. `docs/checkpoints/2026-08-10-0757-catalogue-taxonomie-drafts-handoff.md`
+4. `docs/reference/2026-08-10-contrat-donnees-catalogue.md`
+5. `docs/reference/2026-08-10-baguettes-retrait-catalogue-public.md`
+6. `docs/reference/2026-08-10-matrice-activation-collections-publiques.md`
 
-## Vérité live
+## Vérité Shopify
 
-- Boutique : https://milaura.fr.
-- Thème live : dawn-X-milaura/main, ID 190430282075.
-- Hero final live et validé par Patrice.
-- Dock mobile V2 live.
-- Sélection saisonnière d'août live sur la homepage.
-- Landing live : https://milaura.fr/collections/selection-aout-2026.
-- Collection Shopify : Sélection d'août 2026, ID 677642535259, handle selection-aout-2026, vingt produits.
-- Les derniers déploiements ont été ciblés. Aucun push complet du thème.
+- Thème live : `dawn-X-milaura/main`, ID `190430282075`.
+- Thème de développement : `Development (c105a8-mac-1)`, ID `199421952347`.
+- 589 produits : 261 actifs, 312 brouillons, 15 archivés, 1 non répertorié.
+- 51 définitions produit et 11 définitions collection.
+- 26 collections Admin, 20 publiques dans le sitemap.
+- 5 nouvelles collections privées, toutes en 404 et absentes du sitemap.
+- Aucun produit brouillon modifié par la phase catalogue.
+- Aucun push live et aucune publication le 2026-08-10.
 
-## Décisions de Patrice à ne pas rouvrir
+## Contrat canonique
 
-1. P0A est terminé pour continuer le plan.
-2. Aucune automatisation ne doit être suspendue.
-3. La livraison gratuite reste limitée à la France. L'Europe est payante et les territoires sans zone active ne doivent pas bénéficier d'une expédition gratuite.
-4. Le bloc panier obsolète est retiré localement. Le moteur ScratchToReveal est conservé pour le futur module Cercle.
-5. La vente complémentaire mérite une session dédiée. Elle ne fait pas partie de la reprise des trois portes.
-6. L'ancienne section L'atelier MilAura est abandonnée.
-7. La homepage utilise désormais une sélection saisonnière vivante : quatre produits et une landing d'environ vingt produits.
-8. Le rendu actuel des trois portes en cartes dépliantes est rejeté. Le concept de guide, lui, est conservé.
-9. La landing Aigue-marine reste la prochaine grande étape après le redesign des trois portes.
+- `stone_handle` : pierre principale.
+- `stone_handles` : pierres secondaires ou multiples.
+- `stone_benefits` : clé technique conservée, libellé public `Symbolique traditionnelle`.
+- `content_updated_at` : date canonique de vérification éditoriale.
+- Source machine : `config/catalogue-data-contract.json`.
 
-## Sélection saisonnière d'août
+## Préviews disponibles
 
-Direction validée : Maldives, lagon, lumière d'été, prune, or et aigue-marine.
+Le thème de développement contient :
 
-Homepage validée :
+- `collection.milaura-pierre` ;
+- `collection.milaura-type` ;
+- `page.milaura-bijoux-pierre` ;
+- `page.milaura-choisir-pierre` ;
+- `page.milaura-pierres-naissance` ;
+- `page.milaura-cadeaux-mariage`.
 
-- La sélection de Karine sur fond prune ;
-- Août 2026 sur image de lagon ;
-- une phrase descriptive sur une ligne sous le cartouche ;
-- quatre cartes produits natives ;
-- CTA vers toute la sélection.
+Les quatre routes Page sont seulement documentées. Aucune Page Shopify Admin n'a été créée, car le scope de lecture des pages n'est pas disponible et le statut privé ne pouvait pas être prouvé de façon sûre.
 
-Landing validée :
+## Blocages avant activation
 
-- bloc prune simple et premium en haut ;
-- titre La sélection de Karine ;
-- sous-titre Une escale minérale imaginée par Karine ;
-- paragraphe validé ;
-- trois informations : 20 créations, Édition août 2026, Sélection en stock ;
-- image Maldives en arrière-plan derrière la grille complète ;
-- vingt cartes produits ;
-- aucun titre secondaire ou bloc marketing superflu.
+1. Inventaire : confirmer nature, stock, matières, pierres et seuils.
+2. Baguettes : contrôler 18 URLs actives, commandes et GSC avant brouillon ou archive.
+3. Bagues : atteindre 8 bagues réelles ; la route canonique reste `/collections/bagues-pierres`.
+4. Homepage : remplacer la référence historique à `/collections/bagues` par `/collections/bijoux-pierres-naturelles` dans la session UI/UX, pas ici.
+5. Collections publiques : utiliser la matrice des 13 destinations avant toute meta définitive.
+6. Hubs : créer les Pages non publiées, assigner les templates et ajouter uniquement des sélections réelles après inventaire.
 
-Ce système est récurrent. Préparer la sélection de septembre ou de la rentrée avant la fin d'août, avec un nouvel univers, une nouvelle sélection d'environ vingt produits et quatre produits homepage.
+## Limites de preuve
 
-## Prochaine étape : redesign des trois portes
+- Search Console : non vérifié.
+- GA4 : non vérifié.
+- Merchant Center : non vérifié.
+- Pinterest : non vérifié.
 
-La prochaine session doit travailler uniquement cette zone.
+Journal, netlinking externe, activation Pinterest, tracking et campagnes Ads restent hors de ce lot.
 
-Direction validée :
+## Prompt de reprise
 
-1. Choisir mon bijou par type.
-   - Cartes catégories visuelles proches des cartes produits.
-   - Traitement plus prune et plus affirmé.
-   - Belle photographie pour chaque catégorie.
-   - Chaque carte mène à une collection ou page de type pertinente.
-
-2. Choisir par émotion.
-   - Même famille graphique.
-   - Catégories émotionnelles illustrées.
-   - Chaque carte mène à une page regroupant les produits correspondants.
-
-3. Me laisser guider.
-   - Ne pas créer une troisième section redondante.
-   - Réutiliser et redessiner le teaser du diagnostic émotionnel déjà présent dans la homepage.
-   - Tenir compte du cabochon fixe Trouver ma pierre déjà visible dans la navigation.
-
-Méthode de reprise :
-
-1. Inspecter sections/milaura-choice-doors.liquid et sa configuration dans templates/index.json.
-2. Inspecter sections/milaura-quiz-teaser.liquid et le teaser live existant.
-3. Inventorier les destinations réelles déjà disponibles par type et par émotion.
-4. Proposer une architecture et un rendu desktop/mobile avant déploiement.
-5. Présenter le rendu à Patrice.
-6. Déployer uniquement après son GO.
-
-## P0A, faits utiles
-
-- paliers : cadeau à 30 EUR, livraison à 50 EUR, remise de 15 % à 80 EUR ;
-- codes : MILAURA-LIV50 et MILAURA15 ;
-- cadeau : variante 53142713925979 ;
-- France : 5,80 EUR jusqu'à 49,99 EUR, gratuite à partir de 50 EUR ;
-- MILAURA-LIV50 et MILAURA-LIV19 limités à la France et aux tarifs de 6 EUR maximum ;
-- Europe : 12 EUR payants ;
-- aucune zone active contrôlée le 2026-08-08 pour Guadeloupe, Martinique, La Réunion, États-Unis et reste du monde ;
-- MILAURA15, le cadeau et les automatisations n'ont pas été modifiés ;
-- les coûts précis par produit et la contribution exacte restent à compléter avant Ads.
-
-## Fichiers du lot saisonnier local
-
-- sections/milaura-selection-atelier.liquid
-- templates/index.json
-- assets/milaura-selection-aout-lagon.webp
-- sections/milaura-seasonal-collection.liquid
-- templates/collection.selection-aout-2026.json
-- output/concepts/selection-aout-2026/concept.css
-- output/concepts/selection-aout-2026/home-preview.html
-- output/concepts/selection-aout-2026/landing-preview.html
-
-## Fichiers sales hors lot à préserver
-
-- templates/cart.json
-- templates/cart.milaura.json
-- assets/milaura-hero-proof-karine.webp
-- sections/milaura-selection-atelier 2.liquid
-
-Le dernier fichier est non suivi et son origine exacte n'est pas confirmée. Ne pas le qualifier de doublon iCloud comme un fait et ne pas le supprimer sans audit.
-
-## Git
-
-- Branche : codex/milaura-reconcile-2026-08-07.
-- HEAD au début de la clôture : 266a9cac.
-- Branche alignée avec son origin avant les modifications documentaires du handoff.
-- Le lot saisonnier est live sur Shopify mais n'est pas commit ni poussé dans Git.
-- Ne pas embarquer les fichiers panier, Hero ou non suivis dans un futur commit sans vérification de leur propriétaire et de leur portée.
-
-## Validation déjà effectuée
-
-- shopify theme check : 0 erreur et 29 avertissements historiques sur 274 fichiers ;
-- git diff --check propre sur le lot saisonnier ;
-- homepage contrôlée publiquement sur desktop et mobile 390 x 844 ;
-- landing contrôlée publiquement sur desktop et mobile 390 x 844 ;
-- CTA vers /collections/selection-aout-2026 vérifié ;
-- vingt produits vérifiés sur la landing ;
-- pullbacks ciblés identiques au local pour les deux fichiers homepage et les deux fichiers landing.
-
-SHA-256 du dernier pullback :
-
-- sections/milaura-selection-atelier.liquid : 8f3153aef3275b33361763a682a186d3f1679c2e0b91c9feb1f000e49d700a4a
-- templates/index.json : fc67a0e2e5b2efe3908f13940231e407f98c4cc784a007c89c8e954a926b1604
-- sections/milaura-seasonal-collection.liquid : e4ee9275088935442e9dad4851fa3e1bc61538f1e5721962cc106c16b3a25585
-- templates/collection.selection-aout-2026.json : d7dd04568b117707cc0fcc027bfadd9a426b44d99813f8d05c85a1cdada46737
-
-## Risques et dépendances
-
-1. La version actuelle des trois portes peut être live, mais elle est visuellement rejetée.
-2. Les pages de destination par type et surtout par émotion doivent être inventoriées avant de dessiner toutes les cartes.
-3. Le teaser quiz existe déjà plus bas et doit être réutilisé sans duplication.
-4. Le lot saisonnier doit encore être isolé dans un commit Git propre si Patrice le demande.
-5. Les coûts produit exacts et délais manquent encore avant paid acquisition.
-6. La campagne de septembre doit être préparée avant la fin d'août pour que le dispositif reste vivant.
-
-## Prompt exact de reprise
-
-> Reprends MilAura depuis docs/codex-handoff.md, docs/project-state.md et docs/checkpoints/2026-08-08-1953-milaura-selection-aout-handoff.md dans /Users/paesano/Documents/MilAura website/dawn-X-milaura. La sélection saisonnière d'août et sa landing sont terminées et live. Reprends uniquement l'étape active des trois portes. La version actuelle en cartes dépliantes est rejetée. Conçois un guide visuel avec des cartes catégories photographiées pour Choisir mon bijou par type, puis Choisir par émotion, et réutilise le teaser du diagnostic existant pour Me laisser guider. Vérifie les destinations réelles avant de coder, préserve tous les changements sales hors périmètre, et ne déploie rien sans mon GO visuel.
+> Reprends MilAura depuis `docs/codex-handoff.md`, `docs/project-state.md` et `docs/checkpoints/2026-08-10-0757-catalogue-taxonomie-drafts-handoff.md`. Le contrat canonique, le lot témoin, les cinq collections privées et les templates de développement sont terminés. Commence en lecture seule par l'inventaire réel. Ne touche pas aux 312 produits brouillons sans décision de la session inventaire, ne publie aucune collection ni aucun hub, et préserve les changements concurrents de homepage, livraison et panier. Utilise `stone_handle` pour la pierre principale, `stone_handles` pour les pierres secondaires ou multiples, `stone_benefits` avec le libellé public Symbolique traditionnelle, et `content_updated_at` pour la date éditoriale.

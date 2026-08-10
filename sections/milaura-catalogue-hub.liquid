@@ -1,0 +1,208 @@
+{%- comment -%}
+  Structure de hub catalogue pour previews uniquement.
+  Aucun produit ni lien de collection n est rendu sans selection explicite.
+{%- endcomment -%}
+
+{%- if section.settings.heading != blank or section.settings.introduction != blank or section.blocks.size > 0 -%}
+  {%- style -%}
+    #MilauraCatalogueHub-{{ section.id }} {
+      padding: clamp(32px, 6vw, 72px) 16px;
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__title {
+      margin: 0;
+      font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+      font-size: clamp(32px, 6vw, 56px);
+      line-height: 1.1;
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__intro {
+      max-width: 760px;
+      margin-top: 20px;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__content {
+      margin-top: 40px;
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__block + .milaura-catalogue-hub__block {
+      margin-top: 28px;
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__block h2 {
+      margin: 0 0 10px;
+      font-size: clamp(22px, 3vw, 30px);
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__eyebrow {
+      margin: 0 0 4px;
+      color: var(--milaura-text-light, #666666);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__body {
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__selection {
+      padding: 20px;
+      border: 1px solid rgba(91, 44, 91, 0.2);
+    }
+  {%- endstyle -%}
+
+  <main id="MilauraCatalogueHub-{{ section.id }}" class="milaura-catalogue-hub milaura-section">
+    <div class="milaura-catalogue-hub__inner">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="milaura-catalogue-hub__title">{{ section.settings.heading | escape }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.introduction != blank -%}
+        <div class="milaura-catalogue-hub__intro rte">{{ section.settings.introduction }}</div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="milaura-catalogue-hub__content">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'content' -%}
+                {%- if block.settings.heading != blank or block.settings.body != blank -%}
+                  <section class="milaura-catalogue-hub__block" {{ block.shopify_attributes }}>
+                    {%- if block.settings.heading != blank -%}
+                      <h2>{{ block.settings.heading | escape }}</h2>
+                    {%- endif -%}
+                    {%- if block.settings.body != blank -%}
+                      <div class="milaura-catalogue-hub__body rte">{{ block.settings.body }}</div>
+                    {%- endif -%}
+                  </section>
+                {%- endif -%}
+
+              {%- when 'correspondence' -%}
+                {%- if block.settings.label != blank or block.settings.heading != blank or block.settings.body != blank -%}
+                  <section class="milaura-catalogue-hub__block" {{ block.shopify_attributes }}>
+                    {%- if block.settings.label != blank -%}
+                      <p class="milaura-catalogue-hub__eyebrow">{{ block.settings.label | escape }}</p>
+                    {%- endif -%}
+                    {%- if block.settings.heading != blank -%}
+                      <h2>{{ block.settings.heading | escape }}</h2>
+                    {%- endif -%}
+                    {%- if block.settings.body != blank -%}
+                      <div class="milaura-catalogue-hub__body rte">{{ block.settings.body }}</div>
+                    {%- endif -%}
+                  </section>
+                {%- endif -%}
+
+              {%- when 'featured_collection' -%}
+                {%- assign selected_collection = block.settings.collection -%}
+                {%- if selected_collection != blank and selected_collection.products_count > 0 -%}
+                  <section class="milaura-catalogue-hub__block milaura-catalogue-hub__selection" {{ block.shopify_attributes }}>
+                    <h2>{{ block.settings.heading | default: selected_collection.title | escape }}</h2>
+                    {%- if block.settings.body != blank -%}
+                      <div class="milaura-catalogue-hub__body rte">{{ block.settings.body }}</div>
+                    {%- endif -%}
+                    <a href="{{ selected_collection.url }}">Voir la sélection</a>
+                  </section>
+                {%- endif -%}
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </main>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Hub catalogue",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre"
+    },
+    {
+      "type": "richtext",
+      "id": "introduction",
+      "label": "Introduction"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "content",
+      "name": "Contenu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Texte"
+        }
+      ]
+    },
+    {
+      "type": "correspondence",
+      "name": "Correspondance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Repère"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Explication"
+        }
+      ]
+    },
+    {
+      "type": "featured_collection",
+      "name": "Sélection réelle",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection publique vérifiée"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Texte"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 40,
+  "presets": [
+    {
+      "name": "Hub catalogue"
+    }
+  ]
+}
+{% endschema %}

@@ -309,7 +309,7 @@ La section hero-showcase a ete optimisee avec :
 | name | single_line_text | Nom (ex: "Reconfort") |
 | candle_product | product_reference | Bougie recommandee |
 | candle_variant_id | single_line_text | ID variant si plusieurs |
-| stone_handle | single_line_text | Handle pierre associee |
+| stone_handle | single_line_text | Pierre principale associee |
 | scent_handle | single_line_text | Handle senteur associee |
 | hero_copy | multi_line_text | Texte page resultat |
 | needs_bullets | list.single_line_text | 3 besoins |
@@ -318,11 +318,13 @@ La section hero-showcase a ete optimisee avec :
 
 **Donnees seed** : 5 profils (reconfort, protection, serenite, elegance, joie-de-vivre)
 
-### Product Metafields (6)
+### Product Metafields canoniques
 
 | Namespace.Key | Type | Role | Obligatoire |
 |---------------|------|------|-------------|
-| milaura.stone_handle | single_line_text | Handle pierre | Oui (bijoux, bougies) |
+| milaura.stone_handle | single_line_text | Pierre principale | Oui (bijoux et produits avec pierre) |
+| milaura.stone_handles | list.single_line_text | Pierres secondaires ou multiples | Si produit multi-pierres |
+| milaura.stone_benefits | single_line_text | Symbolique traditionnelle | Selon contenu disponible |
 | milaura.scent_handle | single_line_text | Handle senteur | Oui (bougies) |
 | milaura.product_type_handle | single_line_text | Type produit | Oui |
 | milaura.baseline | single_line_text | Phrase emotionnelle | Non |

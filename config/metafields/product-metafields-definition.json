@@ -3,13 +3,26 @@
     {
       "namespace": "milaura",
       "key": "stone_handle",
-      "name": "Handle pierre",
-      "description": "Handle canonique de la pierre associee au produit. Obligatoire pour bijoux et produits avec pierre.",
+      "name": "Pierre principale",
+      "description": "Handle canonique de la pierre principale du produit. Obligatoire pour les bijoux et produits avec pierre.",
       "type": "single_line_text_field",
       "owner_type": "product",
       "required_for": ["bijoux", "produits_avec_pierre"],
       "validations": {
         "format": "slug"
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "stone_handles",
+      "name": "Pierres secondaires ou multiples",
+      "description": "Liste controlee des pierres secondaires. Pour un produit multi-pierres, elle contient toutes les pierres presentes, pierre principale comprise. La pierre principale reste toujours renseignee dans stone_handle.",
+      "type": "list.single_line_text_field",
+      "owner_type": "product",
+      "required_for": [],
+      "validations": {
+        "format": "slug",
+        "list_max": 6
       }
     },
     {
@@ -28,7 +41,7 @@
       "namespace": "milaura",
       "key": "energy_handle",
       "name": "Handle energie",
-      "description": "Handle energie visible dans le hero PDP, coherent avec le profil emotionnel ou l energie principale du produit.",
+      "description": "Cle editoriale historique du profil emotionnel. A conserver pour compatibilite du theme, sans en faire une allegation de sante.",
       "type": "single_line_text_field",
       "owner_type": "product",
       "required_for": ["produits_commerciaux"],
@@ -46,6 +59,18 @@
       "required_for": ["all_products"],
       "validations": {
         "format": "slug"
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "catalogue_family",
+      "name": "Famille catalogue",
+      "description": "Famille canonique de navigation. Ne remplace pas la categorie produit standard Shopify.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["all_products"],
+      "validations": {
+        "choices": ["bijou", "pierre-mineral", "rituel", "bougie-senteur", "soin", "accessoire"]
       }
     },
     {
@@ -70,12 +95,115 @@
       "namespace": "milaura",
       "key": "intention_handle",
       "name": "Handle intention",
-      "description": "Intention canonique du produit: sommeil, protection, amour, stress, energie, clarte, equilibre, confiance, ancrage, purification ou bien-etre.",
+      "description": "Cle historique de l intention editoriale principale. Ce champ est conserve pendant la migration vers primary_intention.",
       "type": "single_line_text_field",
       "owner_type": "product",
       "required_for": ["produits_avec_intention"],
       "validations": {
         "format": "slug"
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "primary_intention",
+      "name": "Intention principale",
+      "description": "Intention editoriale principale normalisee. Elle sert a la navigation et ne constitue pas une promesse de resultat.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["produits_avec_intention"],
+      "validations": {
+        "choices": ["calme", "sommeil", "douceur", "amour", "confiance", "energie", "protection", "ancrage", "intuition", "creativite", "nouveaux-departs"]
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "intention_handles",
+      "name": "Intentions secondaires",
+      "description": "Liste controlee d intentions editoriales pour les filtres et les futures collections automatiques.",
+      "type": "list.single_line_text_field",
+      "owner_type": "product",
+      "required_for": [],
+      "validations": {
+        "choices": ["calme", "sommeil", "douceur", "amour", "confiance", "energie", "protection", "ancrage", "intuition", "creativite", "nouveaux-departs"],
+        "list_max": 5
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "materials",
+      "name": "Matieres",
+      "description": "Matieres factuelles du produit, normalisees pour les filtres et le controle catalogue.",
+      "type": "list.single_line_text_field",
+      "owner_type": "product",
+      "required_for": [],
+      "validations": {
+        "format": "slug",
+        "list_max": 6
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "colors",
+      "name": "Couleurs",
+      "description": "Couleurs dominantes normalisees pour les filtres catalogue.",
+      "type": "list.single_line_text_field",
+      "owner_type": "product",
+      "required_for": [],
+      "validations": {
+        "format": "slug",
+        "list_max": 6
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "recipient_handles",
+      "name": "Destinataires",
+      "description": "Destinataires possibles du produit, uniquement pour la navigation cadeau et sans ciblage stereotype.",
+      "type": "list.single_line_text_field",
+      "owner_type": "product",
+      "required_for": [],
+      "validations": {
+        "choices": ["femme", "homme", "mixte", "couple"],
+        "list_max": 4
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "occasion_handles",
+      "name": "Occasions cadeau",
+      "description": "Occasions cadeau normalisees pour la navigation et les landings editoriales.",
+      "type": "list.single_line_text_field",
+      "owner_type": "product",
+      "required_for": [],
+      "validations": {
+        "format": "slug",
+        "list_max": 8
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "birth_months",
+      "name": "Mois de naissance",
+      "description": "Mois de naissance associes par convention gemmologique ou editoriale documentee.",
+      "type": "list.single_line_text_field",
+      "owner_type": "product",
+      "required_for": [],
+      "validations": {
+        "choices": ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"],
+        "list_max": 3
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "wedding_anniversary_years",
+      "name": "Annees de mariage",
+      "description": "Annees d anniversaire de mariage associees a la pierre selon une source editoriale documentee.",
+      "type": "list.single_line_text_field",
+      "owner_type": "product",
+      "required_for": [],
+      "validations": {
+        "format": "slug",
+        "list_max": 10
       }
     },
     {
@@ -91,7 +219,7 @@
       "namespace": "milaura",
       "key": "stone_description",
       "name": "Description pierre",
-      "description": "Texte court sur la pierre, son energie et son role dans le produit.",
+      "description": "Texte factuel sur la pierre et son role visuel dans le produit. Les associations symboliques doivent etre attribuees a une tradition.",
       "type": "multi_line_text_field",
       "owner_type": "product",
       "required_for": ["bijoux", "produits_avec_pierre"]
@@ -99,8 +227,8 @@
     {
       "namespace": "milaura",
       "key": "stone_benefits",
-      "name": "Benefices pierre",
-      "description": "Liste courte serialisee en texte, separee par virgules ou points-virgules selon le contrat agent.",
+      "name": "Symbolique traditionnelle",
+      "description": "Liste courte d associations symboliques traditionnelles. Ne jamais y inscrire un effet medical ou garanti.",
       "type": "single_line_text_field",
       "owner_type": "product",
       "required_for": ["bijoux", "produits_avec_pierre"]
@@ -108,8 +236,8 @@
     {
       "namespace": "milaura",
       "key": "vertus",
-      "name": "Vertus",
-      "description": "Vertus synthetiques affichees dans le hero PDP ou les blocs produit.",
+      "name": "Symbolique courte",
+      "description": "Libelle historique affiche par le theme. Contenu symbolique uniquement, sans allegation de sante ni promesse de resultat.",
       "type": "single_line_text_field",
       "owner_type": "product",
       "required_for": ["produits_avec_intention"]
@@ -136,7 +264,7 @@
       "namespace": "milaura",
       "key": "benefits_json",
       "name": "Benefices JSON",
-      "description": "JSON structure des benefices affichables par le theme.",
+      "description": "JSON structure des caracteristiques et usages factuels affichables par le theme. Toute allegation de sante est interdite.",
       "type": "json",
       "owner_type": "product",
       "required_for": ["all_products"]
@@ -158,6 +286,24 @@
       "type": "json",
       "owner_type": "product",
       "required_for": ["produits_avec_rituel"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "gem_treatments",
+      "name": "Traitements gemmes",
+      "description": "Traitements connus, declares ou inconnus pour les pierres du produit. Ne pas inventer une absence de traitement.",
+      "type": "multi_line_text_field",
+      "owner_type": "product",
+      "required_for": []
+    },
+    {
+      "namespace": "milaura",
+      "key": "gem_origin",
+      "name": "Origine gemmes",
+      "description": "Origine documentee des pierres. Laisser vide si le fournisseur ne fournit pas une preuve exploitable.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": []
     },
     {
       "namespace": "milaura",

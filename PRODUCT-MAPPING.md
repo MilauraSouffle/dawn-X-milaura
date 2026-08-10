@@ -3,6 +3,8 @@
 > Document de reference pour l'automatisation scraping fournisseur → CSV → Shopify
 > Genere le 12 fevrier 2026 — **Mis a jour le 12 fevrier 2026 (audit corrections)**
 
+> **ADDENDUM CANONIQUE 2026-08-10** : le contrat de clés prioritaire est `docs/reference/2026-08-10-contrat-donnees-catalogue.md` et sa source machine `config/catalogue-data-contract.json`. `stone_handle` = pierre principale ; `stone_handles` = pierres secondaires ou multiples ; `stone_benefits` conserve le libellé public `Symbolique traditionnelle`.
+
 ---
 
 ## 1. CHAMPS SHOPIFY NATIFS (CSV Standard)
@@ -50,7 +52,7 @@
 | `bracelet` | cache | Purifier, intention, porter, gratitude | France, Pierre certifiee, Fait main, Or/Argent 925 | Authenticite, entretien, quotidien, taille | "ton bijou ideal" |
 | `collier` | cache | Purifier, intention, porter, gratitude | France, Pierre certifiee, Fait main, Or/Argent 925 | Authenticite, entretien, quotidien, taille | "ton bijou ideal" |
 | `bague` | cache | Purifier, intention, porter, gratitude | France, Pierre certifiee, Fait main, Or/Argent 925 | Authenticite, entretien, quotidien, taille | "ton bijou ideal" |
-| `boucles` | cache | Purifier, intention, porter, gratitude | France, Pierre certifiee, Fait main, Or/Argent 925 | Authenticite, entretien, quotidien, taille | "ton bijou ideal" |
+| `boucles-oreilles` | cache | Purifier, intention, porter, gratitude | Claims historiques à vérifier avant affichage | Authenticite, entretien, quotidien, taille | "ton bijou ideal" |
 | `sauge` | cache | Ouvrir fenetres, allumer, cercle fumee, eteindre | Origine controlee, Sechage naturel, Rituel ancestral, Eco-responsable | Usage, duree, securite, intensite | "ton rituel de purification" |
 | `encens` | cache | (idem sauge) | (idem sauge) | (idem sauge) | "ton rituel de purification" |
 | `coffret` | cache | Ouvrir, disposer, rituel, partager | Coffret complet, Personnalisable, Qualite cadeau, Multi-tailles | Contenu, personnalisation, cadeau, tailles | "ton coffret sur-mesure" |
@@ -88,8 +90,9 @@ Ces types existent chez le fournisseur et heritent d'un comportement PDP existan
 
 | Colonne CSV metafield | Cle | Type Shopify | Obligatoire pour | Valeurs possibles | Exemple |
 |----------------------|-----|------|------------------|-------------------|---------|
-| `milaura.stone_handle` | `stone_handle` | `single_line_text_field` | bijoux + bougies | Voir table pierres ci-dessous | `amethyste` |
-| `milaura.product_type_handle` | `product_type_handle` | `single_line_text_field` | **TOUS les produits** | `bougie`, `bracelet`, `collier`, `bague`, `boucles`, `sauge`, `encens`, `coffret`, `bundle`, `pendentif`, `pierre-roulee`, `cabochon`, `fil-de-perles`, `coussin`, `bol-chantant`, `maillet`, `cymbales` | `bracelet` |
+| `milaura.stone_handle` | `stone_handle` | `single_line_text_field` | bijoux + produits avec pierre | pierre principale, voir table ci-dessous | `amethyste` |
+| `milaura.product_type_handle` | `product_type_handle` | `single_line_text_field` | **TOUS les produits** | `bougie`, `bracelet`, `collier`, `bague`, `boucles-oreilles`, `sauge`, `encens`, `coffret`, `bundle`, `pendentif`, `pierre-roulee`, `cabochon`, `fil-de-perles`, `coussin`, `bol-chantant`, `maillet`, `cymbales` | `bracelet` |
+| `milaura.stone_handles` | `stone_handles` | `list.single_line_text_field` | produits multi-pierres | pierres secondaires ou ensemble des pierres ; la principale reste dans `stone_handle` | `["amethyste","nacre"]` |
 
 ### 3.2 Metafields RECOMMANDES
 
@@ -120,7 +123,7 @@ Ces types existent chez le fournisseur et heritent d'un comportement PDP existan
 | `milaura.stone_name` | `stone_name` | `single_line_text_field` | Section Pierre + Spotlight | Setting customizer |
 | `milaura.stone_image` | `stone_image` | `single_line_text_field` (URL) | Section Pierre + Spotlight | `product.featured_image` |
 | `milaura.stone_description` | `stone_description` | `multi_line_text_field` | Section Pierre | Aucun (section vide) |
-| `milaura.stone_benefits` | `stone_benefits` | `single_line_text_field` | Section Pierre (3 benefits, virgule) | Aucun |
+| `milaura.stone_benefits` | `stone_benefits` | `single_line_text_field` | Section Pierre, libellé public `Symbolique traditionnelle` | Aucun |
 | `milaura.story_text` | `story_text` | `multi_line_text_field` | Section Histoire emotionnelle | Setting customizer |
 | `milaura.ritual_steps` | `ritual_steps` | `json` | Section Rituel (4 etapes max) | Defauts selon product.type |
 | `milaura.faq_json` | `faq` | `json` | Section FAQ (8 max) | Defauts selon product.type |
@@ -312,7 +315,7 @@ Apres le quiz, filtre par `stone_handle` correspondant au profil gagnant. Les pr
 | Bracelets, Bracelet, bracelets | `bracelet` | `bracelet` | Bijou (sections pierre, rituel, artisanat) |
 | Colliers, Collier, colliers | `collier` | `collier` | Bijou |
 | Bagues, Bague, bagues | `bague` | `bague` | Bijou |
-| Boucles d'oreilles | `boucles` | `boucles` | Bijou |
+| Boucles d'oreilles | `boucles-oreilles` | `boucles-oreilles` | Bijou |
 | Pendentifs, Pendentif | `pendentif` | `pendentif` | Defaut bijou |
 | Bougies, Bougie | `bougie` | `bougie` | Bougie (section senteur VISIBLE) |
 | Sauge, Sauges | `sauge` | `sauge` | Sauge/encens |
@@ -398,7 +401,7 @@ Pour chaque produit importe, verifier :
 - [ ] `milaura.baseline` — phrase emotionnelle
 - [ ] `milaura.stone_name` — nom affiche de la pierre
 - [ ] `milaura.stone_description` — description poetique
-- [ ] `milaura.stone_benefits` — 3 bienfaits separes par virgule
+- [ ] `milaura.stone_benefits` : associations symboliques traditionnelles, sans promesse médicale
 - [ ] `milaura.story_text` — histoire emotionnelle
 - [ ] `milaura.ritual_steps` — JSON array de 4 etapes (sinon defauts auto)
 - [ ] `milaura.specifications` — JSON array de caracteristiques (sinon defauts bougie du template)
