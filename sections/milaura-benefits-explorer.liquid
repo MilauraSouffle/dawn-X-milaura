@@ -1,4 +1,31 @@
+{%- liquid
+  assign is_landing = false
+  if section.settings.presentation == 'landing'
+    assign is_landing = true
+  endif
+
+  assign query_parameter = section.settings.query_parameter | default: 'intention' | handleize
+  assign landing_title = section.settings.landing_title | default: 'Quelle pierre choisir ?'
+  assign landing_intro_text = section.settings.landing_intro | strip_html | strip
+-%}
+
 {% style %}
+  @font-face {
+    font-family: 'MilAura Gloock';
+    src: url('{{ 'milaura-gloock-regular.ttf' | asset_url }}') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'MilAura Instrument';
+    src: url('{{ 'milaura-instrument-sans-variable.ttf' | asset_url }}') format('truetype-variations');
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+  }
+
   /* ============================================
      MILAURA BENEFITS EXPLORER - V10 (HYBRID)
      Desktop: Navigation classique + Cartes
@@ -15,6 +42,239 @@
     background-size: cover;
     background-position: center;
     position: relative;
+  }
+
+  #MilauraBenefits-{{ section.id }}.benefits-explorer--landing {
+    --benefits-ink: #2f222d;
+    --benefits-plum: #603b5f;
+    --benefits-aqua: #6fa9a6;
+    --benefits-gold: #b9975b;
+    --benefits-nacre: #fbf8f3;
+    margin: 0;
+    padding: 0 0 clamp(48px, 7vw, 96px);
+    color: var(--benefits-ink);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(111, 169, 166, 0.18), transparent 30%),
+      radial-gradient(circle at 88% 22%, rgba(185, 151, 91, 0.13), transparent 27%),
+      var(--benefits-nacre);
+    font-family: 'MilAura Instrument', var(--milaura-font-body, sans-serif);
+    overflow: hidden;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-hero {
+    position: relative;
+    isolation: isolate;
+    width: min(100%, 1500px);
+    margin: 0 auto;
+    padding: clamp(64px, 8vw, 118px) clamp(22px, 6vw, 88px) clamp(54px, 6vw, 88px);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-hero::before,
+  #MilauraBenefits-{{ section.id }} .benefits-landing-hero::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-hero::before {
+    width: clamp(260px, 36vw, 560px);
+    aspect-ratio: 1;
+    right: clamp(-210px, -11vw, -70px);
+    top: clamp(30px, 5vw, 80px);
+    border: 1px solid rgba(111, 169, 166, 0.36);
+    box-shadow: 0 0 0 28px rgba(185, 151, 91, 0.06), 0 0 0 58px rgba(111, 169, 166, 0.05);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-hero::after {
+    width: 110px;
+    aspect-ratio: 1;
+    right: 17%;
+    bottom: 18%;
+    background: rgba(111, 169, 166, 0.15);
+    filter: blur(1px);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-kicker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 24px;
+    color: var(--benefits-aqua);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-kicker::before {
+    content: '';
+    width: 34px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-title {
+    max-width: 12ch;
+    margin: 0;
+    color: var(--benefits-ink);
+    font-family: 'MilAura Gloock', var(--milaura-font-heading, serif);
+    font-size: clamp(3.4rem, 7vw, 7.5rem);
+    font-weight: 400;
+    letter-spacing: -0.055em;
+    line-height: 0.94;
+    text-wrap: balance;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-accent {
+    display: block;
+    max-width: 19ch;
+    margin-top: 14px;
+    color: var(--benefits-plum);
+    font-family: 'MilAura Gloock', var(--milaura-font-heading, serif);
+    font-size: clamp(1.8rem, 3.4vw, 3.8rem);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-intro {
+    max-width: 60ch;
+    margin: clamp(26px, 3vw, 40px) 0 0;
+    color: rgba(47, 34, 45, 0.76);
+    font-size: clamp(1.6rem, 1.45vw, 1.9rem);
+    line-height: 1.68;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px 22px;
+    margin-top: 32px;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-start {
+    min-height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 14px 18px 14px 24px;
+    border: 1px solid var(--benefits-ink);
+    border-radius: 999px;
+    color: var(--benefits-nacre);
+    background: var(--benefits-ink);
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.095em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 220ms ease, background-color 220ms ease, transform 220ms ease;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-start span {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--benefits-ink);
+    background: var(--benefits-gold);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-start:hover {
+    color: var(--benefits-ink);
+    background: transparent;
+    transform: translateY(-2px);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-start:focus-visible {
+    outline: 2px solid var(--benefits-aqua);
+    outline-offset: 4px;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-note {
+    max-width: 42ch;
+    margin: 0;
+    color: rgba(47, 34, 45, 0.6);
+    font-size: 1.3rem;
+    line-height: 1.55;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-steps {
+    width: min(100%, 1180px);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0 auto clamp(28px, 4vw, 52px);
+    padding: 0 clamp(22px, 4vw, 44px);
+    list-style: none;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-top: 1px solid rgba(47, 34, 45, 0.15);
+    border-bottom: 1px solid rgba(47, 34, 45, 0.15);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-step + .benefits-landing-step {
+    border-left: 1px solid rgba(47, 34, 45, 0.15);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-step-index {
+    color: var(--benefits-aqua);
+    font-family: 'MilAura Gloock', serif;
+    font-size: 2.2rem;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-step-label {
+    color: var(--benefits-ink);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.075em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  #MilauraBenefits-{{ section.id }}.benefits-explorer--landing .benefits-dashboard {
+    width: min(94%, 1320px);
+    padding: clamp(18px, 3vw, 42px);
+    border: 1px solid rgba(185, 151, 91, 0.35);
+    border-radius: 36px;
+    background: rgba(255, 255, 255, 0.68);
+    box-shadow: 0 26px 80px rgba(47, 34, 45, 0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: soft-light;
+    transition: background-image 0.5s ease-in-out;
+    scroll-margin-top: 120px;
+  }
+
+  #MilauraBenefits-{{ section.id }}.benefits-explorer--landing .benefits-header {
+    max-width: 760px;
+    display: block;
+    margin: 0 auto clamp(28px, 4vw, 46px);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  #MilauraBenefits-{{ section.id }}.benefits-explorer--landing .benefits-subtitle {
+    font-size: clamp(1.45rem, 1.5vw, 1.7rem);
+    line-height: 1.55;
   }
 
   /* --- CONTENEUR GLOBAL (transparent sur desktop) --- */
@@ -59,6 +319,16 @@
     font-family: 'Dancing Script', cursive;
     text-transform: none;
     margin-bottom: 10px;
+  }
+
+  #MilauraBenefits-{{ section.id }}.benefits-explorer--landing .benefits-header .milaura-heading {
+    margin: 0 0 12px;
+    color: var(--benefits-ink);
+    font-family: 'MilAura Gloock', var(--milaura-font-heading, serif);
+    font-size: clamp(2.15rem, 4vw, 4rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
   }
 
   #MilauraBenefits-{{ section.id }} .benefits-subtitle {
@@ -553,12 +823,17 @@
     /* Contenu accordéon visible sur mobile */
     #MilauraBenefits-{{ section.id }} .benefit-accordion-content {
       display: block;
+      max-height: none;
+      overflow: visible;
+    }
+
+    #MilauraBenefits-{{ section.id }}.is-enhanced .benefit-accordion-content {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    #MilauraBenefits-{{ section.id }} .benefit-accordion-content.is-open {
+    #MilauraBenefits-{{ section.id }}.is-enhanced .benefit-accordion-content.is-open {
       max-height: 1500px;
     }
 
@@ -739,16 +1014,206 @@
     }
   }
 
+  #MilauraBenefits-{{ section.id }} .benefits-landing-footer {
+    width: min(92%, 960px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 26px;
+    margin: clamp(34px, 5vw, 64px) auto 0;
+    padding: clamp(24px, 3vw, 38px);
+    border-top: 1px solid rgba(47, 34, 45, 0.16);
+    border-bottom: 1px solid rgba(47, 34, 45, 0.16);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-footer-kicker {
+    margin: 0 0 8px;
+    color: var(--benefits-aqua);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-footer-title {
+    margin: 0;
+    color: var(--benefits-ink);
+    font-family: 'MilAura Gloock', var(--milaura-font-heading, serif);
+    font-size: clamp(2.8rem, 4vw, 4.2rem);
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-footer-text {
+    max-width: 60ch;
+    margin: 10px 0 0;
+    color: rgba(47, 34, 45, 0.68);
+    font-size: 1.5rem;
+    line-height: 1.6;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-diagnostic {
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 22px;
+    border: 1px solid var(--benefits-plum);
+    border-radius: 999px;
+    color: var(--benefits-plum);
+    background: transparent;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 200ms ease, background-color 200ms ease, transform 200ms ease;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-diagnostic:hover {
+    color: #fff;
+    background: var(--benefits-plum);
+    transform: translateY(-2px);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-landing-diagnostic:focus-visible {
+    outline: 2px solid var(--benefits-aqua);
+    outline-offset: 4px;
+  }
+
+  @media screen and (max-width: 990px) {
+    #MilauraBenefits-{{ section.id }}.benefits-explorer--landing {
+      padding-bottom: 56px;
+      background:
+        radial-gradient(circle at 8% 5%, rgba(111, 169, 166, 0.17), transparent 24%),
+        var(--benefits-nacre);
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-hero {
+      padding-top: 60px;
+      padding-bottom: 44px;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-hero::before {
+      right: -190px;
+      top: 20px;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-hero::after {
+      display: none;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-title {
+      font-size: clamp(3rem, 14vw, 5.8rem);
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-steps {
+      grid-template-columns: 1fr;
+      width: min(94%, 620px);
+      padding: 0;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-step {
+      padding: 13px 10px;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-step + .benefits-landing-step {
+      border-top: 0;
+      border-left: 0;
+    }
+
+    #MilauraBenefits-{{ section.id }}.benefits-explorer--landing .benefits-dashboard {
+      width: min(94%, 720px);
+      padding: 16px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    #MilauraBenefits-{{ section.id }}.benefits-explorer--landing .benefits-header {
+      padding: 8px 5px 4px;
+      text-align: center;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-footer {
+      grid-template-columns: 1fr;
+      width: min(92%, 720px);
+      padding-inline: 4px;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-diagnostic {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    #MilauraBenefits-{{ section.id }} .benefits-landing-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    #MilauraBenefits-{{ section.id }} .benefits-landing-start {
+      width: 100%;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    #MilauraBenefits-{{ section.id }} *,
+    #MilauraBenefits-{{ section.id }} *::before,
+    #MilauraBenefits-{{ section.id }} *::after {
       transition: none !important;
       animation: none !important;
     }
   }
 {% endstyle %}
 
-<div id="MilauraBenefits-{{ section.id }}">
-  <div class="benefits-dashboard">
+<div
+  id="MilauraBenefits-{{ section.id }}"
+  class="benefits-explorer{% if is_landing %} benefits-explorer--landing{% endif %}"
+  data-landing-mode="{{ is_landing }}"
+  data-query-parameter="{{ query_parameter }}"
+>
+  {%- if is_landing -%}
+    <header class="benefits-landing-hero">
+      {%- if section.settings.landing_eyebrow != blank -%}
+        <p class="benefits-landing-kicker">{{ section.settings.landing_eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="benefits-landing-title">{{ landing_title | escape }}</h1>
+      {%- if section.settings.landing_accent != blank -%}
+        <span class="benefits-landing-accent">{{ section.settings.landing_accent | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.landing_intro != blank -%}
+        <div class="benefits-landing-intro rte">{{ section.settings.landing_intro }}</div>
+      {%- endif -%}
+      <div class="benefits-landing-actions">
+        <a class="benefits-landing-start" href="#MilauraBenefitsDashboard-{{ section.id }}">
+          {{ section.settings.start_label | default: 'Commencer mon choix' | escape }}
+          <span aria-hidden="true">↓</span>
+        </a>
+        {%- if section.settings.landing_note != blank -%}
+          <p class="benefits-landing-note">{{ section.settings.landing_note | escape }}</p>
+        {%- endif -%}
+      </div>
+    </header>
+
+    <ol class="benefits-landing-steps" aria-label="Votre parcours en trois étapes">
+      <li class="benefits-landing-step">
+        <span class="benefits-landing-step-index" aria-hidden="true">01</span>
+        <span class="benefits-landing-step-label">Choisissez une intention</span>
+      </li>
+      <li class="benefits-landing-step">
+        <span class="benefits-landing-step-index" aria-hidden="true">02</span>
+        <span class="benefits-landing-step-label">Découvrez la pierre associée</span>
+      </li>
+      <li class="benefits-landing-step">
+        <span class="benefits-landing-step-index" aria-hidden="true">03</span>
+        <span class="benefits-landing-step-label">Explorez une création disponible</span>
+      </li>
+    </ol>
+  {%- endif -%}
+
+  <div class="benefits-dashboard" id="MilauraBenefitsDashboard-{{ section.id }}">
     {% if section.settings.title != blank %}
       <div class="benefits-header">
         <h2 class="milaura-heading">{{ section.settings.title }}</h2>
@@ -777,13 +1242,22 @@
             {%- when 'aventurine-verte' -%}
               {%- assign optimized_stone_mobile_asset = 'milaura-benefit-aventurine-mobile.webp' -%}
           {%- endcase -%}
-          <div class="benefit-accordion-item" data-accordion-index="{{ forloop.index0 }}">
+          {%- assign intention_key = block.settings.intention_slug | strip | handleize -%}
+          {%- if intention_key == blank -%}
+            {%- assign intention_key = block.settings.emotion | handleize -%}
+          {%- endif -%}
+          <div
+            class="benefit-accordion-item"
+            data-accordion-index="{{ forloop.index0 }}"
+            data-intention="{{ intention_key }}"
+          >
             <button
               type="button"
               id="benefit-btn-{{ block.id }}"
               class="benefit-btn"
               data-target="benefit-{{ block.id }}"
               data-index="{{ forloop.index0 }}"
+              data-intention="{{ intention_key }}"
               role="tab"
               aria-selected="false"
               aria-controls="benefit-{{ block.id }}"
@@ -877,6 +1351,10 @@
         {%- for block in section.blocks -%}
           {%- assign prod = block.settings.product -%}
           {%- assign stone_key = block.settings.stone_name | handleize -%}
+          {%- assign intention_key = block.settings.intention_slug | strip | handleize -%}
+          {%- if intention_key == blank -%}
+            {%- assign intention_key = block.settings.emotion | handleize -%}
+          {%- endif -%}
           {%- assign optimized_stone_desktop_asset = blank -%}
           {%- case stone_key -%}
             {%- when 'amethyste' -%}
@@ -903,6 +1381,7 @@
             aria-labelledby="benefit-btn-{{ block.id }}"
             tabindex="0"
             data-bg-image="{{ desktop_stone_src }}"
+            data-intention="{{ intention_key }}"
           >
             <div class="benefit-info-box">
               {%- if block.settings.is_bestseller -%}
@@ -940,7 +1419,63 @@
       </div>
     </div>
   </div>
+
+  {%- if is_landing and section.settings.diagnostic_link != blank -%}
+    <aside class="benefits-landing-footer" aria-labelledby="MilauraBenefitsDiagnostic-{{ section.id }}">
+      <div>
+        <p class="benefits-landing-footer-kicker">Pour aller plus loin</p>
+        <h2 class="benefits-landing-footer-title" id="MilauraBenefitsDiagnostic-{{ section.id }}">
+          {{ section.settings.diagnostic_title | default: 'Vous hésitez encore ?' | escape }}
+        </h2>
+        {%- if section.settings.diagnostic_text != blank -%}
+          <p class="benefits-landing-footer-text">{{ section.settings.diagnostic_text | escape }}</p>
+        {%- endif -%}
+      </div>
+      <a class="benefits-landing-diagnostic" href="{{ section.settings.diagnostic_link }}">
+        {{ section.settings.diagnostic_label | default: 'Faire le diagnostic complet' | escape }}
+      </a>
+    </aside>
+  {%- endif -%}
 </div>
+
+{%- if is_landing -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebPage",
+          "@id": {{ canonical_url | append: '#webpage' | json }},
+          "url": {{ canonical_url | json }},
+          "name": {{ landing_title | json }},
+          "description": {{ landing_intro_text | json }},
+          "isPartOf": {
+            "@type": "WebSite",
+            "url": {{ shop.url | json }},
+            "name": {{ shop.name | json }}
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Accueil",
+              "item": {{ shop.url | append: routes.root_url | json }}
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ landing_title | json }},
+              "item": {{ canonical_url | json }}
+            }
+          ]
+        }
+      ]
+    }
+  </script>
+{%- endif -%}
 
 <script>
   (function () {
@@ -954,40 +1489,151 @@
     var cards = Array.prototype.slice.call(container.querySelectorAll('.benefit-card'));
     var accordionContents = Array.prototype.slice.call(container.querySelectorAll('.benefit-accordion-content'));
     var accordionItems = Array.prototype.slice.call(container.querySelectorAll('.benefit-accordion-item'));
+    var navigation = container.querySelector('.benefits-nav');
 
     if (btns.length === 0) return;
 
+    container.classList.add('is-enhanced');
+
+    var landingMode = container.getAttribute('data-landing-mode') === 'true';
+    var queryParameter = container.getAttribute('data-query-parameter') || 'intention';
+    var backgroundTarget = landingMode ? container.querySelector('.benefits-dashboard') : container;
     var currentIndex = -1;
     var lastWidth = window.innerWidth;
 
+    function normalizeIntention(value) {
+      return String(value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    function requestedIntention() {
+      if (!landingMode || !window.URLSearchParams) return '';
+
+      var rawValue = new URLSearchParams(window.location.search).get(queryParameter);
+      var normalizedValue = normalizeIntention(rawValue);
+      var aliases = {
+        apaisement: 'calme',
+        anxiete: 'calme',
+        serenite: 'calme',
+        sommeil: 'calme',
+        stress: 'calme',
+        confiance: 'douceur',
+        amour: 'douceur',
+        motivation: 'energie',
+        elan: 'energie',
+        ancrage: 'protection',
+        reussite: 'chance'
+      };
+
+      return aliases[normalizedValue] || normalizedValue;
+    }
+
+    function initialIndexFromQuery() {
+      var intention = requestedIntention();
+      if (!intention) return -1;
+
+      return btns.findIndex(function (btn) {
+        return normalizeIntention(btn.getAttribute('data-intention')) === intention;
+      });
+    }
+
+    var queryIndex = initialIndexFromQuery();
+
     function isMobile() {
       return window.innerWidth <= 990;
+    }
+
+    function configureAccessibility() {
+      var mobile = isMobile();
+
+      if (navigation) {
+        if (mobile) {
+          navigation.removeAttribute('role');
+        } else {
+          navigation.setAttribute('role', 'tablist');
+        }
+      }
+
+      btns.forEach(function (btn, index) {
+        if (mobile) {
+          btn.removeAttribute('role');
+          btn.removeAttribute('aria-selected');
+          btn.setAttribute('aria-controls', accordionContents[index].id);
+          btn.setAttribute('aria-expanded', index === currentIndex ? 'true' : 'false');
+        } else {
+          btn.setAttribute('role', 'tab');
+          btn.removeAttribute('aria-expanded');
+          btn.setAttribute('aria-controls', cards[index].id);
+          btn.setAttribute('aria-selected', index === currentIndex ? 'true' : 'false');
+        }
+      });
+    }
+
+    function shareSelection(index) {
+      if (!landingMode || !window.history || !window.URL) return;
+
+      var intention = normalizeIntention(btns[index].getAttribute('data-intention'));
+      if (!intention) return;
+
+      var nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.set(queryParameter, intention);
+      window.history.replaceState({}, '', nextUrl.toString());
+    }
+
+    function clearSharedSelection() {
+      if (!landingMode || !window.history || !window.URL) return;
+
+      var nextUrl = new URL(window.location.href);
+      nextUrl.searchParams.delete(queryParameter);
+      window.history.replaceState({}, '', nextUrl.toString());
+    }
+
+    function trackSelection(index) {
+      if (!landingMode) return;
+
+      var detail = {
+        intention: normalizeIntention(btns[index].getAttribute('data-intention')),
+        stone: cards[index] ? cards[index].querySelector('.benefit-info-title').textContent.trim() : ''
+      };
+
+      document.dispatchEvent(new CustomEvent('milaura:stone-intention-selected', { detail: detail }));
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'milaura_stone_intention_selected',
+        milaura_intention: detail.intention,
+        milaura_stone: detail.stone
+      });
     }
 
     function closeAllMobile() {
       btns.forEach(function (btn) {
         btn.classList.remove('is-active');
         btn.setAttribute('aria-expanded', 'false');
-        btn.setAttribute('aria-selected', 'false');
       });
       accordionContents.forEach(function (content) {
         content.classList.remove('is-open');
+        content.setAttribute('aria-hidden', 'true');
       });
       accordionItems.forEach(function (item) {
         item.classList.remove('is-expanded');
       });
       currentIndex = -1;
+      configureAccessibility();
     }
 
-    function activateTab(index) {
+    function activateTab(index, source) {
       if (index < 0 || index >= btns.length) return;
 
       // Sur mobile, fermer l'onglet actif d'abord (un seul ouvert)
       if (isMobile() && currentIndex >= 0 && currentIndex !== index) {
         btns[currentIndex].classList.remove('is-active');
         btns[currentIndex].setAttribute('aria-expanded', 'false');
-        btns[currentIndex].setAttribute('aria-selected', 'false');
         accordionContents[currentIndex].classList.remove('is-open');
+        accordionContents[currentIndex].setAttribute('aria-hidden', 'true');
         accordionItems[currentIndex].classList.remove('is-expanded');
       }
 
@@ -996,24 +1642,34 @@
       btns.forEach(function (btn, i) {
         var isActive = i === index;
         btn.classList.toggle('is-active', isActive);
-        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
         btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
       });
 
       cards.forEach(function (card, i) {
-        card.classList.toggle('is-active', i === index);
+        var isActive = i === index;
+        card.classList.toggle('is-active', isActive);
+        card.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        card.setAttribute('tabindex', isActive ? '0' : '-1');
       });
 
       if (!isMobile()) {
         var bgUrl = cards[index] && cards[index].getAttribute('data-bg-image');
-        if (bgUrl) {
-          container.style.backgroundImage = "url('" + bgUrl + "')";
+        if (bgUrl && backgroundTarget) {
+          backgroundTarget.style.backgroundImage = "url('" + bgUrl + "')";
         }
       }
 
       if (isMobile()) {
         accordionContents[index].classList.add('is-open');
+        accordionContents[index].setAttribute('aria-hidden', 'false');
         accordionItems[index].classList.add('is-expanded');
+      }
+
+      configureAccessibility();
+
+      if (source === 'user') {
+        shareSelection(index);
+        trackSelection(index);
       }
     }
 
@@ -1025,10 +1681,11 @@
         if (isMobile() && i === currentIndex) {
           // Toggle : fermer si déjà ouvert
           closeAllMobile();
+          clearSharedSelection();
           return;
         }
 
-        activateTab(i);
+        activateTab(i, 'user');
       });
     });
 
@@ -1036,18 +1693,19 @@
     container.addEventListener('keydown', function (e) {
       if (!e.target.classList.contains('benefit-btn')) return;
 
-      var newIndex = currentIndex;
+      var focusedIndex = btns.indexOf(e.target);
+      var newIndex = focusedIndex;
 
       switch (e.key) {
         case 'ArrowDown':
         case 'ArrowRight':
           e.preventDefault();
-          newIndex = (currentIndex + 1) % btns.length;
+          newIndex = (focusedIndex + 1) % btns.length;
           break;
         case 'ArrowUp':
         case 'ArrowLeft':
           e.preventDefault();
-          newIndex = (currentIndex - 1 + btns.length) % btns.length;
+          newIndex = (focusedIndex - 1 + btns.length) % btns.length;
           break;
         case 'Home':
           e.preventDefault();
@@ -1061,30 +1719,36 @@
           return;
       }
 
-      if (newIndex !== currentIndex) {
-        activateTab(newIndex);
+      if (newIndex !== focusedIndex) {
+        activateTab(newIndex, 'user');
         btns[newIndex].focus();
       }
     });
 
     // Init
-    function initializeState() {
+    function initializeState(preserveCurrent) {
+      var targetIndex = preserveCurrent && currentIndex >= 0 ? currentIndex : queryIndex;
+
       if (!isMobile()) {
-        activateTab(0);
+        activateTab(targetIndex >= 0 ? targetIndex : 0, 'init');
       } else {
-        closeAllMobile();
-        container.style.backgroundImage = '';
+        if (backgroundTarget) backgroundTarget.style.backgroundImage = '';
+        if (targetIndex >= 0) {
+          activateTab(targetIndex, 'init');
+        } else {
+          closeAllMobile();
+        }
       }
     }
 
-    initializeState();
+    initializeState(false);
 
     // Resize : uniquement si la LARGEUR change (ignore toolbar iOS)
     window.addEventListener('resize', function () {
       var newWidth = window.innerWidth;
       if (newWidth !== lastWidth) {
         lastWidth = newWidth;
-        initializeState();
+        initializeState(true);
       }
     });
   })();
@@ -1097,6 +1761,44 @@
     { "type": "header", "content": "📝 Contenu" },
     { "type": "text", "id": "title", "label": "Titre Section", "default": "De quoi as-tu besoin ?" },
     { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Trouve la pierre qui te correspond" },
+    {
+      "type": "select",
+      "id": "presentation",
+      "label": "Présentation",
+      "options": [
+        { "value": "embedded", "label": "Section intégrée" },
+        { "value": "landing", "label": "Page guide complète" }
+      ],
+      "default": "embedded"
+    },
+    { "type": "header", "content": "Page guide complète" },
+    { "type": "text", "id": "landing_eyebrow", "label": "Repère", "default": "Le guide MilAura" },
+    { "type": "text", "id": "landing_title", "label": "Titre principal", "default": "Quelle pierre choisir ?" },
+    { "type": "text", "id": "landing_accent", "label": "Accroche", "default": "Commencez par ce que vous souhaitez inviter dans votre quotidien." },
+    {
+      "type": "richtext",
+      "id": "landing_intro",
+      "label": "Introduction",
+      "default": "<p>Le choix peut partir d'une couleur, d'un bijou ou d'une intention symbolique. Explorez les associations traditionnelles, puis découvrez une création MilAura réellement disponible.</p>"
+    },
+    { "type": "text", "id": "start_label", "label": "Bouton de démarrage", "default": "Commencer mon choix" },
+    {
+      "type": "text",
+      "id": "landing_note",
+      "label": "Note de transparence",
+      "default": "Les symboliques présentées relèvent de traditions et ne garantissent aucun effet."
+    },
+    { "type": "text", "id": "query_parameter", "label": "Paramètre de préselection", "default": "intention" },
+    { "type": "header", "content": "Diagnostic complémentaire" },
+    { "type": "text", "id": "diagnostic_title", "label": "Titre", "default": "Vous hésitez encore ?" },
+    {
+      "type": "text",
+      "id": "diagnostic_text",
+      "label": "Texte",
+      "default": "Répondez à quelques questions pour affiner votre intention avant de choisir votre création."
+    },
+    { "type": "url", "id": "diagnostic_link", "label": "Lien vers le diagnostic" },
+    { "type": "text", "id": "diagnostic_label", "label": "Bouton", "default": "Faire le diagnostic complet" },
     { "type": "header", "content": "✏️ Style" },
     {
       "type": "range",
@@ -1158,6 +1860,12 @@
         { "type": "text", "id": "icon", "label": "Emoji", "default": "💎" },
         { "type": "text", "id": "emotion", "label": "Nom du besoin", "default": "Stress" },
         { "type": "text", "id": "tagline", "label": "Tagline", "default": "Pour s'apaiser" },
+        {
+          "type": "text",
+          "id": "intention_slug",
+          "label": "Valeur URL de préselection",
+          "info": "Exemple : calme pour ?intention=calme"
+        },
         { "type": "header", "content": "Contenu" },
         { "type": "image_picker", "id": "stone_image", "label": "Image de fond (Pierre)" },
         { "type": "text", "id": "stone_name", "label": "Nom de la Pierre", "default": "Améthyste" },
