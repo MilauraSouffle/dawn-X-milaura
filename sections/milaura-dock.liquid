@@ -1,7 +1,7 @@
 {% comment %}
   MILAURA DOCK MOBILE
   Navigation principale mobile : Menu, Recherche, Contact, Cercle et Panier.
-  La ligne de gemmes est la signature visuelle du dock et emerge du bas de l'ecran.
+  Deux pierres emergent du bas de l'ecran comme signature visuelle.
 {% endcomment %}
 
 {%- liquid
@@ -10,8 +10,8 @@
 
 {% style %}
   :root {
-    --milaura-mobile-dock-bar: 60px;
-    --milaura-mobile-dock-gems: 28px;
+    --milaura-mobile-dock-bar: 62px;
+    --milaura-mobile-dock-gems: 38px;
     --milaura-mobile-dock-total: calc(
       var(--milaura-mobile-dock-bar) +
       var(--milaura-mobile-dock-gems) +
@@ -28,9 +28,17 @@
     width: 100%;
     min-height: var(--milaura-mobile-dock-total);
     padding: 0 4px;
-    background: {{ section.settings.bg_color | default: '#2F222D' }};
-    border-top: 1px solid rgba(111, 169, 166, 0.72);
-    box-shadow: 0 -12px 30px rgba(47, 34, 45, 0.2);
+    background:
+      linear-gradient(
+        180deg,
+        rgba(251, 248, 243, 0.96) 0%,
+        {{ section.settings.bg_color | default: '#DCE9E7' }} 30%,
+        rgba(207, 228, 225, 0.98) 100%
+      );
+    border-top: 1px solid rgba(63, 116, 116, 0.42);
+    box-shadow: 0 -14px 34px rgba(47, 34, 45, 0.14);
+    backdrop-filter: blur(18px) saturate(130%);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
     isolation: isolate;
   }
 
@@ -42,14 +50,14 @@
     z-index: 1;
     height: calc(var(--milaura-mobile-dock-gems) + env(safe-area-inset-bottom, 0px));
     overflow: hidden;
-    background: {{ section.settings.bg_color | default: '#2F222D' }};
-    border-top: 1px solid rgba(185, 151, 91, 0.38);
+    background: {{ section.settings.bg_color | default: '#DCE9E7' }};
+    border-top: 1px solid rgba(63, 116, 116, 0.2);
     pointer-events: none;
   }
 
   .milaura-dock-gem-crown img {
     position: absolute;
-    top: -50px;
+    top: clamp(-124px, -30vw, -112px);
     left: 50%;
     display: block;
     width: 100%;
@@ -64,11 +72,11 @@
     top: -1px;
     right: 0;
     left: 0;
-    height: 10px;
+    height: 8px;
     background: linear-gradient(
       to bottom,
-      {{ section.settings.bg_color | default: '#2F222D' }} 0%,
-      rgba(47, 34, 45, 0) 100%
+      {{ section.settings.bg_color | default: '#DCE9E7' }} 0%,
+      rgba(220, 233, 231, 0) 100%
     );
   }
 
@@ -85,7 +93,7 @@
     align-items: center;
     justify-content: center;
     gap: 3px;
-    color: {{ section.settings.text_color | default: '#FBF8F3' }};
+    color: {{ section.settings.text_color | default: '#2F222D' }};
     background: transparent;
     border: 0;
     text-decoration: none;
@@ -101,13 +109,13 @@
     bottom: 12px;
     left: 0;
     width: 1px;
-    background: rgba(111, 169, 166, 0.7);
+    background: rgba(63, 116, 116, 0.42);
   }
 
   .milaura-dock-item svg {
     width: 23px;
     height: 23px;
-    color: {{ section.settings.icon_color | default: '#D7B8DF' }};
+    color: {{ section.settings.icon_color | default: '#3F7474' }};
     fill: none;
     stroke: currentColor;
     stroke-width: 1.8;
@@ -133,7 +141,7 @@
 
   .milaura-dock-circle-mark__ring--gold {
     inset: 4px 1px 3px 2px;
-    border-color: #b9975b;
+    border-color: rgba(73, 50, 70, 0.62);
     border-radius: 48% 52% 46% 54% / 53% 45% 55% 47%;
     transform: rotate(10deg);
   }
@@ -152,22 +160,22 @@
   .milaura-dock-item:hover,
   .milaura-dock-item:focus-visible,
   .milaura-dock-item.is-current {
-    color: #ffffff;
-    background: rgba(111, 169, 166, 0.12);
+    color: #2f222d;
+    background: rgba(251, 248, 243, 0.56);
   }
 
   .milaura-dock-item:hover svg,
   .milaura-dock-item:focus-visible svg,
   .milaura-dock-item.is-current svg {
-    color: #efdaf2;
-    filter: drop-shadow(0 0 7px rgba(215, 184, 223, 0.42));
+    color: #493246;
+    filter: drop-shadow(0 0 7px rgba(63, 116, 116, 0.26));
     transform: translateY(-1px);
   }
 
   .milaura-dock-item:hover .milaura-dock-circle-mark,
   .milaura-dock-item:focus-visible .milaura-dock-circle-mark,
   .milaura-dock-item.is-current .milaura-dock-circle-mark {
-    filter: drop-shadow(0 0 7px rgba(215, 184, 223, 0.34));
+    filter: drop-shadow(0 0 7px rgba(63, 116, 116, 0.24));
     transform: translateY(-1px);
   }
 
@@ -198,8 +206,8 @@
     padding: 0 4px;
     align-items: center;
     justify-content: center;
-    color: #2f222d;
-    background: {{ section.settings.badge_color | default: '#B9975B' }};
+    color: #fbf8f3;
+    background: {{ section.settings.badge_color | default: '#493246' }};
     border: 1px solid rgba(251, 248, 243, 0.88);
     border-radius: 999px;
     font-family: 'Lato', sans-serif;
@@ -257,7 +265,7 @@
     {%- if section.settings.gem_line_image != blank -%}
       {{ section.settings.gem_line_image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '480, 720, 960, 1280, 1600', sizes: '100vw' }}
     {%- else -%}
-      <img src="{{ 'milaura-dock-gem-line-v1.webp' | asset_url }}" width="1600" height="550" alt="" loading="eager">
+      <img src="{{ 'milaura-dock-gems-aigue-amethyste-v2.webp' | asset_url }}" width="1695" height="928" alt="" loading="eager">
     {%- endif -%}
   </div>
 
@@ -444,31 +452,31 @@
     {
       "type": "image_picker",
       "id": "gem_line_image",
-      "label": "Ligne de gemmes"
+      "label": "Duo de pierres"
     },
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Prune du dock",
-      "default": "#2F222D"
+      "label": "Aigue-marine du dock",
+      "default": "#DCE9E7"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Couleur des libelles",
-      "default": "#FBF8F3"
+      "default": "#2F222D"
     },
     {
       "type": "color",
       "id": "icon_color",
       "label": "Couleur des pictogrammes",
-      "default": "#D7B8DF"
+      "default": "#3F7474"
     },
     {
       "type": "color",
       "id": "badge_color",
       "label": "Couleur du badge panier",
-      "default": "#B9975B"
+      "default": "#493246"
     }
   ],
   "presets": [
