@@ -1365,6 +1365,8 @@
 
 {% endstyle %}
 
+{%- assign stone_guide_url = pages['choisir-sa-pierre'].url | default: '/pages/choisir-sa-pierre' -%}
+
 <div id="MilauraNav-{{ section.id }}">
   <div class="nav-snake-wrapper">
     <div class="nav-inner">
@@ -1394,6 +1396,29 @@
       <!-- Liens Desktop (cachés sur mobile/tablette) -->
       <ul class="nav-links">
         {%- for link in linklists[section.settings.menu].links -%}
+          {%- assign top_link_handle = link.title | handleize -%}
+          {%- assign is_stones_menu = false -%}
+          {%- if top_link_handle == 'pierres-mineraux' -%}
+            {%- assign is_stones_menu = true -%}
+          {%- endif -%}
+          {%- assign has_stone_guide_link = false -%}
+          {%- if is_stones_menu -%}
+            {%- for child in link.links -%}
+              {%- if child.url contains '/pages/choisir-sa-pierre' -%}
+                {%- assign has_stone_guide_link = true -%}
+                {%- break -%}
+              {%- endif -%}
+              {%- for grandchild in child.links -%}
+                {%- if grandchild.url contains '/pages/choisir-sa-pierre' -%}
+                  {%- assign has_stone_guide_link = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if has_stone_guide_link -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
           {%- if link.links.size > 0 -%}
             {%- assign has_grandchildren = false -%}
             {%- for child in link.links -%}
@@ -1443,6 +1468,11 @@
                         {%- endunless -%}
                       {%- endif -%}
                     {%- endfor -%}
+                    {%- if is_stones_menu and has_stone_guide_link == false -%}
+                      <div class="nav-megamenu-column nav-megamenu-column--single">
+                        <a href="{{ stone_guide_url }}" class="nav-megamenu-link">Choisir sa pierre</a>
+                      </div>
+                    {%- endif -%}
                   </div>
                 </div>
               {%- else -%}
@@ -1459,6 +1489,9 @@
                       <li><a href="{{ child.url }}" class="nav-dropdown-link">{{ child.title }}</a></li>
                     {%- endunless -%}
                   {%- endfor -%}
+                  {%- if is_stones_menu and has_stone_guide_link == false -%}
+                    <li><a href="{{ stone_guide_url }}" class="nav-dropdown-link">Choisir sa pierre</a></li>
+                  {%- endif -%}
                 </ul>
               {%- endif -%}
             </li>
@@ -1551,6 +1584,29 @@
 
       <ul class="nav-mobile-links">
       {%- for link in linklists[section.settings.menu].links -%}
+        {%- assign top_link_handle = link.title | handleize -%}
+        {%- assign is_stones_menu = false -%}
+        {%- if top_link_handle == 'pierres-mineraux' -%}
+          {%- assign is_stones_menu = true -%}
+        {%- endif -%}
+        {%- assign has_stone_guide_link = false -%}
+        {%- if is_stones_menu -%}
+          {%- for child in link.links -%}
+            {%- if child.url contains '/pages/choisir-sa-pierre' -%}
+              {%- assign has_stone_guide_link = true -%}
+              {%- break -%}
+            {%- endif -%}
+            {%- for grandchild in child.links -%}
+              {%- if grandchild.url contains '/pages/choisir-sa-pierre' -%}
+                {%- assign has_stone_guide_link = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if has_stone_guide_link -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
         {%- if link.links.size > 0 -%}
           <li>
             <button
@@ -1571,6 +1627,11 @@
               <li>
                 <a href="{{ link.url }}" class="nav-mobile-sublink nav-mobile-sublink--all" data-close-menu>Tout découvrir</a>
               </li>
+              {%- if is_stones_menu and has_stone_guide_link == false -%}
+                <li>
+                  <a href="{{ stone_guide_url }}" class="nav-mobile-sublink" data-close-menu>Choisir sa pierre</a>
+                </li>
+              {%- endif -%}
               {%- for child in link.links -%}
                 {%- if child.links.size > 0 -%}
                   <li class="nav-mobile-group">
