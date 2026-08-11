@@ -4936,71 +4936,73 @@
           {%- endif -%}
         {%- endfor -%}
         {%- if section.settings.show_bundle -%}
-          {%- liquid
-            assign reward_threshold_1_cents = section.settings.reward_threshold_1 | default: 20 | times: 100
-            assign reward_threshold_2_cents = section.settings.reward_threshold_2 | default: 50 | times: 100
-            assign reward_threshold_3_cents = section.settings.reward_threshold_3 | default: 80 | times: 100
-            assign projected_product_cents = product.selected_or_first_available_variant.price
-            assign projected_cards = 0
-            if projected_product_cents >= reward_threshold_1_cents
-              assign projected_cards = 1
-            endif
-            if projected_product_cents >= reward_threshold_2_cents
-              assign projected_cards = 2
-            endif
-            if projected_product_cents >= reward_threshold_3_cents
-              assign projected_cards = 3
-            endif
-          -%}
-          <div
-            class="milaura-reward-preview"
-            id="milaura-reward-preview-{{ section.id }}"
-            data-product-price-cents="{{ product.selected_or_first_available_variant.price }}"
-            data-reward-threshold-1="{{ reward_threshold_1_cents }}"
-            data-reward-threshold-2="{{ reward_threshold_2_cents }}"
-            data-reward-threshold-3="{{ reward_threshold_3_cents }}"
-          >
-            <div class="milaura-reward-preview__inner">
-              <div class="milaura-reward-preview__copy">
-                <p class="milaura-reward-preview__eyebrow">Cartes surprises MilAura</p>
-                <h3 class="milaura-reward-preview__title">{{ section.settings.bundle_title | default: 'Découvrez vos cadeaux en grattant les cartes surprises MilAura' }}</h3>
-                <p class="milaura-reward-preview__text">{{ section.settings.bundle_subtitle | default: 'Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 20 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte, cadeau et remise.' }}</p>
-                <p class="milaura-reward-preview__status" data-reward-preview-status>
-                  {%- if projected_cards >= 3 -%}
-                    Avec ce produit : 3 cartes surprises débloquées.
-                  {%- elsif projected_cards > 1 -%}
-                    Avec ce produit : {{ projected_cards }} cartes surprises débloquées.
-                  {%- elsif projected_cards == 1 -%}
-                    Avec ce produit : 1 carte surprise débloquée.
-                  {%- else -%}
-                    Dès {{ reward_threshold_1_cents | money_without_trailing_zeros | remove: '€' | strip }} € d'achat, votre première carte surprise se débloque.
-                  {%- endif -%}
-                </p>
-              </div>
-              <div class="milaura-reward-preview__visual" aria-hidden="true">
-                <div class="milaura-reward-preview__deck">
-                  <span class="milaura-reward-preview__card{% if projected_cards >= 1 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="1">
-                    <span class="milaura-reward-preview__seal">M</span>
-                    <span class="milaura-reward-preview__lock">{% if projected_cards >= 1 %}🔓{% else %}🔒{% endif %}</span>
-                  </span>
-                  <span class="milaura-reward-preview__card{% if projected_cards >= 2 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="2">
-                    <span class="milaura-reward-preview__seal">M</span>
-                    <span class="milaura-reward-preview__lock">{% if projected_cards >= 2 %}🔓{% else %}🔒{% endif %}</span>
-                  </span>
-                  <span class="milaura-reward-preview__card{% if projected_cards >= 3 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="3">
-                    <span class="milaura-reward-preview__seal">M</span>
-                    <span class="milaura-reward-preview__lock">{% if projected_cards >= 3 %}🔓{% else %}🔒{% endif %}</span>
-                  </span>
+          {%- if section.settings.show_scratch -%}
+            {%- liquid
+              assign reward_threshold_1_cents = section.settings.reward_threshold_1 | default: 20 | times: 100
+              assign reward_threshold_2_cents = section.settings.reward_threshold_2 | default: 50 | times: 100
+              assign reward_threshold_3_cents = section.settings.reward_threshold_3 | default: 80 | times: 100
+              assign projected_product_cents = product.selected_or_first_available_variant.price
+              assign projected_cards = 0
+              if projected_product_cents >= reward_threshold_1_cents
+                assign projected_cards = 1
+              endif
+              if projected_product_cents >= reward_threshold_2_cents
+                assign projected_cards = 2
+              endif
+              if projected_product_cents >= reward_threshold_3_cents
+                assign projected_cards = 3
+              endif
+            -%}
+            <div
+              class="milaura-reward-preview"
+              id="milaura-reward-preview-{{ section.id }}"
+              data-product-price-cents="{{ product.selected_or_first_available_variant.price }}"
+              data-reward-threshold-1="{{ reward_threshold_1_cents }}"
+              data-reward-threshold-2="{{ reward_threshold_2_cents }}"
+              data-reward-threshold-3="{{ reward_threshold_3_cents }}"
+            >
+              <div class="milaura-reward-preview__inner">
+                <div class="milaura-reward-preview__copy">
+                  <p class="milaura-reward-preview__eyebrow">Cartes surprises MilAura</p>
+                  <h3 class="milaura-reward-preview__title">{{ section.settings.bundle_title | default: 'Découvrez vos cadeaux en grattant les cartes surprises MilAura' }}</h3>
+                  <p class="milaura-reward-preview__text">{{ section.settings.bundle_subtitle | default: 'Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 20 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte, cadeau et remise.' }}</p>
+                  <p class="milaura-reward-preview__status" data-reward-preview-status>
+                    {%- if projected_cards >= 3 -%}
+                      Avec ce produit : 3 cartes surprises débloquées.
+                    {%- elsif projected_cards > 1 -%}
+                      Avec ce produit : {{ projected_cards }} cartes surprises débloquées.
+                    {%- elsif projected_cards == 1 -%}
+                      Avec ce produit : 1 carte surprise débloquée.
+                    {%- else -%}
+                      Dès {{ reward_threshold_1_cents | money_without_trailing_zeros | remove: '€' | strip }} € d'achat, votre première carte surprise se débloque.
+                    {%- endif -%}
+                  </p>
                 </div>
-                <div class="milaura-reward-preview__mini">
-                  <span class="milaura-reward-preview__fill" data-reward-preview-fill style="width: {{ projected_product_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;"></span>
-                  <span class="milaura-reward-preview__mark{% if projected_cards >= 1 %} is-unlocked{% endif %}" data-reward-preview-mark="1" style="left: {{ reward_threshold_1_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">1</span>
-                  <span class="milaura-reward-preview__mark{% if projected_cards >= 2 %} is-unlocked{% endif %}" data-reward-preview-mark="2" style="left: {{ reward_threshold_2_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">2</span>
-                  <span class="milaura-reward-preview__mark{% if projected_cards >= 3 %} is-unlocked{% endif %}" data-reward-preview-mark="3" style="left: {{ reward_threshold_3_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">3</span>
+                <div class="milaura-reward-preview__visual" aria-hidden="true">
+                  <div class="milaura-reward-preview__deck">
+                    <span class="milaura-reward-preview__card{% if projected_cards >= 1 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="1">
+                      <span class="milaura-reward-preview__seal">M</span>
+                      <span class="milaura-reward-preview__lock">{% if projected_cards >= 1 %}🔓{% else %}🔒{% endif %}</span>
+                    </span>
+                    <span class="milaura-reward-preview__card{% if projected_cards >= 2 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="2">
+                      <span class="milaura-reward-preview__seal">M</span>
+                      <span class="milaura-reward-preview__lock">{% if projected_cards >= 2 %}🔓{% else %}🔒{% endif %}</span>
+                    </span>
+                    <span class="milaura-reward-preview__card{% if projected_cards >= 3 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="3">
+                      <span class="milaura-reward-preview__seal">M</span>
+                      <span class="milaura-reward-preview__lock">{% if projected_cards >= 3 %}🔓{% else %}🔒{% endif %}</span>
+                    </span>
+                  </div>
+                  <div class="milaura-reward-preview__mini">
+                    <span class="milaura-reward-preview__fill" data-reward-preview-fill style="width: {{ projected_product_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;"></span>
+                    <span class="milaura-reward-preview__mark{% if projected_cards >= 1 %} is-unlocked{% endif %}" data-reward-preview-mark="1" style="left: {{ reward_threshold_1_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">1</span>
+                    <span class="milaura-reward-preview__mark{% if projected_cards >= 2 %} is-unlocked{% endif %}" data-reward-preview-mark="2" style="left: {{ reward_threshold_2_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">2</span>
+                    <span class="milaura-reward-preview__mark{% if projected_cards >= 3 %} is-unlocked{% endif %}" data-reward-preview-mark="3" style="left: {{ reward_threshold_3_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">3</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          {%- endif -%}
 
           {%- if section.settings.show_scratch -%}
             <div class="milaura-offer-contrast__hidden-engine" id="milaura-hero-scratch-{{ section.id }}" hidden aria-hidden="true">
@@ -5216,8 +5218,8 @@
               </button>
             </div>
             <div class="milaura-cart-confirm" id="milaura-cart-confirm-{{ section.id }}" hidden>
-              <p class="milaura-cart-confirm__text">Produit ajouté. Vos cartes surprises vous attendent dans le panier.</p>
-              <a href="{{ routes.cart_url }}" class="milaura-cart-confirm__link">Gratter mes cartes</a>
+              <p class="milaura-cart-confirm__text">Produit ajouté à votre panier.</p>
+              <a href="{{ routes.cart_url }}" class="milaura-cart-confirm__link">Voir mon panier</a>
             </div>
 	        {%- endif -%}
 
@@ -6683,6 +6685,10 @@
         </script>
       {%- endif -%}
 
+      {%- unless section.settings.show_scratch -%}
+        {%- render 'milaura-product-purchase-fallback', section: section, product: product -%}
+      {%- endunless -%}
+
     </div>
     <!-- Fin milaura-hero-wrapper -->
 
@@ -7582,8 +7588,8 @@
     {
       "type": "checkbox",
       "id": "show_scratch",
-      "label": "Conserver le moteur cartes a gratter",
-      "default": true
+      "label": "Activer l'ancien moteur cartes a gratter",
+      "default": false
     },
     {
       "type": "text",
