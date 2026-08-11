@@ -1,10 +1,27 @@
+{%- liquid
+  assign announcement_statement = section.settings.statement | strip
+  assign announcement_service = section.settings.service | strip
+  assign announcement_service_mobile = section.settings.service_mobile | strip
+
+  if announcement_statement == blank or announcement_statement == 'Karine choisit chaque pièce et prépare chaque commande à Metz.'
+    assign announcement_statement = 'Pierres naturelles et bijoux sélectionnés par Karine.'
+  endif
+
+  if announcement_service == blank or announcement_service == 'Pierres naturelles · Bijoux · Conseil avant et après l’achat'
+    assign announcement_service = 'Chaque commande est préparée à Metz · Conseil avant et après l’achat'
+  endif
+
+  if announcement_service_mobile == blank or announcement_service_mobile == 'Pierres naturelles · Bijoux · Conseil'
+    assign announcement_service_mobile = 'Préparés à Metz · Conseil avant et après l’achat'
+  endif
+-%}
+
 {% style %}
   :root {
-    --milaura-announcement-height: {{ section.settings.bar_height | default: 68 }}px;
+    --milaura-announcement-height: max({{ section.settings.bar_height | default: 82 }}px, 82px);
   }
 
   #MilauraAnnouncement-{{ section.id }} {
-    --announcement-nacre: #fbf8f3;
     --announcement-aqua: {{ section.settings.background_color | default: '#dce9e7' }};
     --announcement-aqua-deep: {{ section.settings.accent_color | default: '#3f7474' }};
     --announcement-prune: {{ section.settings.text_color | default: '#2f222d' }};
@@ -12,10 +29,14 @@
     inset: 0 0 auto;
     z-index: 1000001;
     height: var(--milaura-announcement-height);
-    overflow: visible;
-    color: var(--announcement-prune);
-    background: transparent;
+    overflow: hidden;
     isolation: isolate;
+    color: var(--announcement-prune);
+    background:
+      linear-gradient(112deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 38%),
+      linear-gradient(102deg, #eef5f4 0%, var(--announcement-aqua) 54%, #c6dedb 100%);
+    border-bottom: 1px solid rgba(63, 116, 116, 0.2);
+    box-shadow: 0 8px 26px rgba(47, 34, 45, 0.08);
   }
 
   body {
@@ -24,119 +45,205 @@
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
     position: relative;
-    z-index: 3;
-    width: min(1520px, calc(100% - 64px));
+    z-index: 4;
+    width: min(1000px, calc(100% - 48px));
     height: 100%;
-    display: grid;
-    grid-template-columns: minmax(180px, 1fr) minmax(460px, 1.8fr) minmax(240px, 1fr);
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: clamp(24px, 3.5vw, 64px);
+    justify-content: center;
+    gap: 6px;
     margin: 0 auto;
+    text-align: center;
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__surface {
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem-field {
+    --gem-row-istock: url("{{ 'milaura-announcement-gem-row-istock-v1.jpg' | asset_url }}");
+    --gem-row-anoli: url("{{ 'milaura-announcement-gem-row-anoli-v1.avif' | asset_url }}");
+    --gem-scatter: url("{{ 'milaura-announcement-gem-scatter-v1.jpg' | asset_url }}");
     position: absolute;
     inset: 0;
-    z-index: 1;
-    overflow: hidden;
-    background: linear-gradient(104deg, #f7fbfa 0%, var(--announcement-aqua) 46%, #c7dfdc 100%);
-    border-bottom: 1px solid rgba(63, 116, 116, 0.22);
-    box-shadow: 0 7px 22px rgba(47, 34, 45, 0.09);
+    z-index: 2;
     pointer-events: none;
+    user-select: none;
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
-    min-width: 0;
-    font-family: 'Lato', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.15em;
-    line-height: 1;
-    text-transform: uppercase;
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem {
+    position: absolute;
+    display: block;
+    background-repeat: no-repeat;
+    mix-blend-mode: multiply;
+    filter: saturate(1.18) contrast(1.06) brightness(1.03);
+    -webkit-mask-image: radial-gradient(ellipse 74% 78% at center, #000 54%, rgba(0, 0, 0, 0.94) 72%, transparent 100%);
+    mask-image: radial-gradient(ellipse 74% 78% at center, #000 54%, rgba(0, 0, 0, 0.94) 72%, transparent 100%);
   }
 
-  @media screen and (min-width: 1200px) {
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
-      visibility: hidden;
-    }
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--blue {
+    top: -7px;
+    left: clamp(12px, 2.2vw, 38px);
+    width: 60px;
+    height: 50px;
+    opacity: 0.92;
+    background-image: var(--gem-row-istock);
+    background-size: 290px 149px;
+    background-position: -27px -47px;
+    transform: rotate(-11deg);
   }
 
-  @media screen and (min-width: 990px) and (max-width: 1199px) {
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
-      grid-template-columns: minmax(460px, 1.65fr) minmax(260px, 1fr);
-    }
-
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
-      display: none;
-    }
-
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--aqua-pear {
+    bottom: -25px;
+    left: clamp(82px, 7.5vw, 138px);
+    width: 74px;
+    height: 70px;
+    opacity: 0.96;
+    background-image: var(--gem-row-istock);
+    background-size: 290px 149px;
+    background-position: -81px -45px;
+    transform: rotate(8deg);
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement,
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--ruby {
+    top: 5px;
+    left: clamp(178px, 14.5vw, 268px);
+    width: 51px;
+    height: 47px;
+    opacity: 0.88;
+    background-image: var(--gem-row-istock);
+    background-size: 290px 149px;
+    background-position: -138px -45px;
+    transform: rotate(17deg) scale(0.9);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--amber {
+    bottom: -24px;
+    left: clamp(274px, 22vw, 398px);
+    width: 45px;
+    height: 48px;
+    opacity: 0.74;
+    background-image: var(--gem-row-anoli);
+    background-size: 232px 86px;
+    background-position: -11px -10px;
+    transform: rotate(-19deg) scale(0.78);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--teal {
+    top: -25px;
+    left: clamp(370px, 29vw, 470px);
+    width: 50px;
+    height: 45px;
+    opacity: 0.58;
+    background-image: var(--gem-scatter);
+    background-size: 270px 135px;
+    background-position: -104px -34px;
+    transform: rotate(25deg) scale(0.68);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--pink-triangle {
+    right: clamp(370px, 29vw, 470px);
+    bottom: -27px;
+    width: 48px;
+    height: 52px;
+    opacity: 0.62;
+    background-image: var(--gem-row-anoli);
+    background-size: 232px 86px;
+    background-position: -124px -21px;
+    transform: rotate(18deg) scale(0.72);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--pink {
+    top: -12px;
+    right: clamp(278px, 21.5vw, 358px);
+    width: 56px;
+    height: 58px;
+    opacity: 0.78;
+    background-image: var(--gem-row-istock);
+    background-size: 290px 149px;
+    background-position: -170px -53px;
+    transform: rotate(-14deg) scale(0.82);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--emerald {
+    bottom: -22px;
+    right: clamp(185px, 14vw, 250px);
+    width: 48px;
+    height: 48px;
+    opacity: 0.84;
+    background-image: var(--gem-row-anoli);
+    background-size: 232px 86px;
+    background-position: -175px -8px;
+    transform: rotate(12deg) scale(0.88);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--amethyst {
+    top: 7px;
+    right: clamp(78px, 7vw, 126px);
+    width: 62px;
+    height: 56px;
+    opacity: 0.9;
+    background-image: var(--gem-scatter);
+    background-size: 270px 135px;
+    background-position: -92px -63px;
+    transform: rotate(-8deg) scale(0.86);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--citrine {
+    top: -10px;
+    right: clamp(10px, 1.7vw, 30px);
+    width: 52px;
+    height: 38px;
+    opacity: 0.86;
+    background-image: var(--gem-scatter);
+    background-size: 270px 135px;
+    background-position: -176px -63px;
+    transform: rotate(16deg);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} p {
     margin: 0;
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
     font-family: 'MilAura Gloock', 'Playfair Display', serif;
-    font-size: clamp(1.12rem, 1.35vw, 1.34rem);
+    font-size: clamp(1.45rem, 1.65vw, 1.7rem);
     font-weight: 400;
     letter-spacing: -0.018em;
-    line-height: 1.1;
-    text-align: center;
+    line-height: 1.05;
     white-space: nowrap;
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
-    max-width: 34ch;
-    justify-self: end;
     color: var(--announcement-aqua-deep);
     font-family: 'Lato', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.88rem;
     font-weight: 700;
     letter-spacing: 0.015em;
-    line-height: 1.35;
-    text-align: right;
+    line-height: 1.2;
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service-mobile {
     display: none;
   }
 
-  @media screen and (max-width: 989px) {
+  @media screen and (max-width: 749px) {
     :root {
-      --milaura-announcement-height: 76px;
+      --milaura-announcement-height: 92px;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
-      width: calc(100% - 28px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      padding: 7px 0;
-    }
-
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
-      display: none;
+      width: calc(100% - 32px);
+      gap: 6px;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
-      width: min(100%, 35ch);
-      font-size: clamp(1.02rem, 4.2vw, 1.16rem);
-      line-height: 1.12;
-      text-align: center;
+      max-width: 32ch;
+      font-size: clamp(1.22rem, 5.3vw, 1.35rem);
+      line-height: 1.08;
       white-space: normal;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
-      max-width: none;
-      justify-self: auto;
-      font-size: 0.75rem;
-      font-weight: 750;
-      letter-spacing: 0.035em;
-      line-height: 1.15;
-      text-align: center;
+      font-size: 0.82rem;
+      letter-spacing: 0.015em;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service-desktop {
@@ -146,39 +253,72 @@
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service-mobile {
       display: inline;
     }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--blue {
+      top: -8px;
+      left: -31px;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--aqua-pear {
+      bottom: -28px;
+      left: -39px;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--ruby {
+      top: auto;
+      bottom: -28px;
+      left: 7px;
+      transform: rotate(17deg) scale(0.66);
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--pink-triangle {
+      top: -22px;
+      right: 6px;
+      bottom: auto;
+      transform: rotate(18deg) scale(0.54);
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--emerald {
+      right: -28px;
+      bottom: -19px;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--citrine {
+      top: -11px;
+      right: -27px;
+      transform: rotate(16deg) scale(0.72);
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--amber,
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--teal,
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--pink,
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__gem--amethyst {
+      display: none;
+    }
   }
 
-  @media screen and (max-width: 420px) {
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
-      width: calc(100% - 20px);
-    }
-
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
-      font-size: 1.04rem;
-    }
-
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
-      font-size: 0.73rem;
-    }
-  }
 {% endstyle %}
 
 <aside id="MilauraAnnouncement-{{ section.id }}" aria-label="L'engagement MilAura">
-  <span class="milaura-announcement__surface" aria-hidden="true"></span>
+  <div class="milaura-announcement__gem-field" aria-hidden="true">
+    <span class="milaura-announcement__gem milaura-announcement__gem--blue"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--aqua-pear"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--ruby"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--amber"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--teal"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--pink-triangle"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--pink"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--emerald"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--amethyst"></span>
+    <span class="milaura-announcement__gem milaura-announcement__gem--citrine"></span>
+  </div>
   <div class="milaura-announcement__inner">
-    <span class="milaura-announcement__identity">
-      {{ section.settings.eyebrow | default: 'MilAura · Metz' | escape }}
-    </span>
     <p class="milaura-announcement__statement">
-      {{ section.settings.statement | default: 'Karine choisit chaque pièce et prépare chaque commande à Metz.' | escape }}
+      {{ announcement_statement | escape }}
     </p>
     <p class="milaura-announcement__service">
-      <span class="milaura-announcement__service-desktop">
-        {{ section.settings.service | default: 'Pierres naturelles · Bijoux · Conseil avant et après l’achat' | escape }}
-      </span>
-      <span class="milaura-announcement__service-mobile">
-        {{ section.settings.service_mobile | default: 'Pierres naturelles · Bijoux · Conseil' | escape }}
-      </span>
+      <span class="milaura-announcement__service-desktop">{{ announcement_service | escape }}</span>
+      <span class="milaura-announcement__service-mobile">{{ announcement_service_mobile | escape }}</span>
     </p>
   </div>
 </aside>
@@ -189,27 +329,21 @@
   "settings": [
     {
       "type": "text",
-      "id": "eyebrow",
-      "label": "Signature",
-      "default": "MilAura · Metz"
-    },
-    {
-      "type": "text",
       "id": "statement",
       "label": "Activité et exigence",
-      "default": "Karine choisit chaque pièce et prépare chaque commande à Metz."
+      "default": "Pierres naturelles et bijoux sélectionnés par Karine."
     },
     {
       "type": "text",
       "id": "service",
       "label": "Qualité de service",
-      "default": "Pierres naturelles · Bijoux · Conseil avant et après l’achat"
+      "default": "Chaque commande est préparée à Metz · Conseil avant et après l’achat"
     },
     {
       "type": "text",
       "id": "service_mobile",
       "label": "Qualité de service sur mobile",
-      "default": "Pierres naturelles · Bijoux · Conseil"
+      "default": "Préparés à Metz · Conseil avant et après l’achat"
     },
     {
       "type": "color",
@@ -233,11 +367,11 @@
       "type": "range",
       "id": "bar_height",
       "label": "Hauteur de la signature",
-      "min": 60,
-      "max": 76,
+      "min": 68,
+      "max": 90,
       "step": 2,
       "unit": "px",
-      "default": 68
+      "default": 82
     }
   ],
   "presets": [
