@@ -1,7 +1,7 @@
 {% comment %}
   MILAURA DOCK MOBILE
   Navigation principale mobile : Menu, Recherche, Contact, Cercle et Panier.
-  Deux pierres emergent du bas de l'ecran comme signature visuelle.
+  Un bracelet d'aigue-marine s'entrelace autour du dock comme signature visuelle.
 {% endcomment %}
 
 {%- liquid
@@ -10,11 +10,9 @@
 
 {% style %}
   :root {
-    --milaura-mobile-dock-bar: 62px;
-    --milaura-mobile-dock-gems: 38px;
+    --milaura-mobile-dock-bar: 70px;
     --milaura-mobile-dock-total: calc(
       var(--milaura-mobile-dock-bar) +
-      var(--milaura-mobile-dock-gems) +
       env(safe-area-inset-bottom, 0px)
     );
   }
@@ -28,61 +26,67 @@
     width: 100%;
     min-height: var(--milaura-mobile-dock-total);
     padding: 0 4px;
-    background:
-      linear-gradient(
-        180deg,
-        rgba(251, 248, 243, 0.96) 0%,
-        {{ section.settings.bg_color | default: '#DCE9E7' }} 30%,
-        rgba(207, 228, 225, 0.98) 100%
-      );
-    border-top: 1px solid rgba(63, 116, 116, 0.42);
-    box-shadow: 0 -14px 34px rgba(47, 34, 45, 0.14);
-    backdrop-filter: blur(18px) saturate(130%);
-    -webkit-backdrop-filter: blur(18px) saturate(130%);
+    overflow: visible;
+    background: transparent;
     isolation: isolate;
   }
 
-  .milaura-dock-gem-crown {
+  .milaura-dock__surface {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     z-index: 1;
-    height: calc(var(--milaura-mobile-dock-gems) + env(safe-area-inset-bottom, 0px));
     overflow: hidden;
-    background: {{ section.settings.bg_color | default: '#DCE9E7' }};
-    border-top: 1px solid rgba(63, 116, 116, 0.2);
+    background:
+      linear-gradient(
+        180deg,
+        rgba(251, 248, 243, 0.97) 0%,
+        {{ section.settings.bg_color | default: '#DCE9E7' }} 42%,
+        rgba(199, 223, 220, 0.99) 100%
+      );
+    border-top: 1px solid rgba(63, 116, 116, 0.42);
+    box-shadow: 0 -16px 38px rgba(47, 34, 45, 0.16);
+    backdrop-filter: blur(18px) saturate(130%);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
     pointer-events: none;
   }
 
-  .milaura-dock-gem-crown img {
+  .milaura-dock-bracelet {
     position: absolute;
-    top: clamp(-124px, -30vw, -112px);
+    top: -72px;
     left: 50%;
-    display: block;
-    width: 100%;
-    min-width: 320px;
-    height: auto;
+    z-index: 0;
+    width: clamp(410px, 108vw, 470px);
+    pointer-events: none;
     transform: translateX(-50%);
   }
 
-  .milaura-dock-gem-crown::after {
-    content: '';
-    position: absolute;
-    top: -1px;
-    right: 0;
-    left: 0;
-    height: 8px;
-    background: linear-gradient(
-      to bottom,
-      {{ section.settings.bg_color | default: '#DCE9E7' }} 0%,
-      rgba(220, 233, 231, 0) 100%
+  .milaura-dock-bracelet img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 7px 7px rgba(47, 34, 45, 0.17));
+  }
+
+  .milaura-dock-bracelet--front {
+    z-index: 4;
+    clip-path: inset(42px 0 0);
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 0 12%,
+      transparent 17% 83%,
+      #000 88% 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      #000 0 12%,
+      transparent 17% 83%,
+      #000 88% 100%
     );
   }
 
   .milaura-dock-item {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     display: flex;
     flex: 1 1 20%;
     min-width: 0;
@@ -261,13 +265,14 @@
 {% endstyle %}
 
 <nav class="milaura-dock" id="milaura-dock" aria-label="Navigation principale mobile">
-  <div class="milaura-dock-gem-crown" aria-hidden="true">
+  <span class="milaura-dock-bracelet milaura-dock-bracelet--back" aria-hidden="true">
     {%- if section.settings.gem_line_image != blank -%}
       {{ section.settings.gem_line_image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '480, 720, 960, 1280, 1600', sizes: '100vw' }}
     {%- else -%}
-      <img src="{{ 'milaura-dock-gems-aigue-amethyste-v2.webp' | asset_url }}" width="1695" height="928" alt="" loading="eager">
+      <img src="{{ 'milaura-dock-bracelet-aigue-v3.webp' | asset_url }}" width="1672" height="941" alt="" loading="eager">
     {%- endif -%}
-  </div>
+  </span>
+  <span class="milaura-dock__surface" aria-hidden="true"></span>
 
   <button
     type="button"
@@ -326,6 +331,14 @@
     <span class="milaura-dock-label">{{ section.settings.cart_label | default: 'Panier' }}</span>
     <span class="milaura-dock-badge" id="milaura-dock-badge" aria-live="polite">0</span>
   </a>
+
+  <span class="milaura-dock-bracelet milaura-dock-bracelet--front" aria-hidden="true">
+    {%- if section.settings.gem_line_image != blank -%}
+      {{ section.settings.gem_line_image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '480, 720, 960, 1280, 1600', sizes: '100vw' }}
+    {%- else -%}
+      <img src="{{ 'milaura-dock-bracelet-aigue-v3.webp' | asset_url }}" width="1672" height="941" alt="" loading="eager">
+    {%- endif -%}
+  </span>
 </nav>
 
 <script>
@@ -452,7 +465,7 @@
     {
       "type": "image_picker",
       "id": "gem_line_image",
-      "label": "Duo de pierres"
+      "label": "Bracelet signature"
     },
     {
       "type": "color",
