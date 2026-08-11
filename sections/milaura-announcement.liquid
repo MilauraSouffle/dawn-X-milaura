@@ -1,6 +1,34 @@
+{%- liquid
+  assign announcement_eyebrow = section.settings.eyebrow | strip
+  assign announcement_statement = section.settings.statement | strip
+  assign announcement_statement_mobile = section.settings.statement_mobile | strip
+  assign announcement_service = section.settings.service | strip
+  assign announcement_service_mobile = section.settings.service_mobile | strip
+
+  if announcement_eyebrow == blank or announcement_eyebrow == 'MilAura · Metz'
+    assign announcement_eyebrow = 'L’engagement MilAura'
+  endif
+
+  if announcement_statement == blank or announcement_statement == 'Karine choisit chaque pièce et prépare chaque commande à Metz.'
+    assign announcement_statement = 'Pierres naturelles sélectionnées avec exigence. Service humain avant et après votre achat.'
+  endif
+
+  if announcement_statement_mobile == blank
+    assign announcement_statement_mobile = 'Pierres sélectionnées avec exigence. Service humain avant et après l’achat.'
+  endif
+
+  if announcement_service == blank or announcement_service == 'Pierres naturelles · Bijoux · Conseil avant et après l’achat'
+    assign announcement_service = 'Équipe disponible 6j/7 · Commandes préparées et expédiées depuis notre atelier à Metz'
+  endif
+
+  if announcement_service_mobile == blank or announcement_service_mobile == 'Pierres naturelles · Bijoux · Conseil'
+    assign announcement_service_mobile = 'Équipe disponible 6j/7 · Commande préparée et expédiée depuis notre atelier à Metz'
+  endif
+-%}
+
 {% style %}
   :root {
-    --milaura-announcement-height: {{ section.settings.bar_height | default: 68 }}px;
+    --milaura-announcement-height: max({{ section.settings.bar_height | default: 68 }}px, 88px);
   }
 
   #MilauraAnnouncement-{{ section.id }} {
@@ -23,21 +51,21 @@
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
-    width: min(1520px, calc(100% - 64px));
+    width: min(1640px, calc(100% - 72px));
     height: 100%;
     display: grid;
-    grid-template-columns: minmax(180px, 1fr) minmax(460px, 1.8fr) minmax(240px, 1fr);
+    grid-template-columns: minmax(180px, 0.72fr) minmax(460px, 1.62fr) minmax(340px, 1.16fr);
     align-items: center;
-    gap: clamp(24px, 3.5vw, 64px);
+    gap: clamp(24px, 3vw, 56px);
     margin: 0 auto;
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
     min-width: 0;
     font-family: 'Lato', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.13em;
     line-height: 1;
     text-transform: uppercase;
   }
@@ -48,34 +76,58 @@
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
+    max-width: 46ch;
+    justify-self: center;
     font-family: 'MilAura Gloock', 'Playfair Display', serif;
-    font-size: clamp(1.12rem, 1.35vw, 1.34rem);
+    font-size: clamp(1.08rem, 1.25vw, 1.28rem);
     font-weight: 400;
     letter-spacing: -0.018em;
-    line-height: 1.1;
+    line-height: 1.16;
     text-align: center;
-    white-space: nowrap;
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
-    max-width: 34ch;
+    max-width: 48ch;
     justify-self: end;
     color: var(--announcement-aqua-deep);
     font-family: 'Lato', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.86rem;
     font-weight: 700;
-    letter-spacing: 0.015em;
-    line-height: 1.35;
+    letter-spacing: 0.01em;
+    line-height: 1.28;
     text-align: right;
   }
 
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement-mobile,
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service-mobile {
     display: none;
   }
 
+  @media screen and (min-width: 990px) and (max-width: 1199px) {
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
+      width: calc(100% - 48px);
+      grid-template-columns: minmax(0, 1.25fr) minmax(310px, 1fr);
+      gap: 28px;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
+      display: none;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
+      justify-self: start;
+      font-size: 1.05rem;
+      text-align: left;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
+      font-size: 0.82rem;
+    }
+  }
+
   @media screen and (max-width: 989px) {
     :root {
-      --milaura-announcement-height: 76px;
+      --milaura-announcement-height: 108px;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
@@ -84,35 +136,38 @@
       flex-direction: column;
       justify-content: center;
       gap: 5px;
-      padding: 7px 0;
+      padding: 9px 0;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
-      display: none;
+      display: block;
+      font-size: 0.64rem;
+      letter-spacing: 0.12em;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
-      width: min(100%, 35ch);
-      font-size: clamp(1.02rem, 4.2vw, 1.16rem);
-      line-height: 1.12;
+      width: min(100%, 42ch);
+      font-size: clamp(0.98rem, 4.1vw, 1.08rem);
+      line-height: 1.14;
       text-align: center;
-      white-space: normal;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
-      max-width: none;
+      max-width: 48ch;
       justify-self: auto;
-      font-size: 0.75rem;
-      font-weight: 750;
-      letter-spacing: 0.035em;
-      line-height: 1.15;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.18;
       text-align: center;
     }
 
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement-desktop,
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service-desktop {
       display: none;
     }
 
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement-mobile,
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service-mobile {
       display: inline;
     }
@@ -124,30 +179,27 @@
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
-      font-size: 1.04rem;
+      font-size: 0.98rem;
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
-      font-size: 0.73rem;
+      font-size: 0.76rem;
     }
   }
 {% endstyle %}
 
-<aside id="MilauraAnnouncement-{{ section.id }}" aria-label="L'engagement MilAura">
+<aside id="MilauraAnnouncement-{{ section.id }}" aria-label="Les engagements MilAura">
   <div class="milaura-announcement__inner">
     <span class="milaura-announcement__identity">
-      {{ section.settings.eyebrow | default: 'MilAura · Metz' | escape }}
+      {{ announcement_eyebrow | escape }}
     </span>
     <p class="milaura-announcement__statement">
-      {{ section.settings.statement | default: 'Karine choisit chaque pièce et prépare chaque commande à Metz.' | escape }}
+      <span class="milaura-announcement__statement-desktop">{{ announcement_statement | escape }}</span>
+      <span class="milaura-announcement__statement-mobile">{{ announcement_statement_mobile | escape }}</span>
     </p>
     <p class="milaura-announcement__service">
-      <span class="milaura-announcement__service-desktop">
-        {{ section.settings.service | default: 'Pierres naturelles · Bijoux · Conseil avant et après l’achat' | escape }}
-      </span>
-      <span class="milaura-announcement__service-mobile">
-        {{ section.settings.service_mobile | default: 'Pierres naturelles · Bijoux · Conseil' | escape }}
-      </span>
+      <span class="milaura-announcement__service-desktop">{{ announcement_service | escape }}</span>
+      <span class="milaura-announcement__service-mobile">{{ announcement_service_mobile | escape }}</span>
     </p>
   </div>
 </aside>
@@ -160,25 +212,31 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Signature",
-      "default": "MilAura · Metz"
+      "default": "L’engagement MilAura"
     },
     {
       "type": "text",
       "id": "statement",
       "label": "Activité et exigence",
-      "default": "Karine choisit chaque pièce et prépare chaque commande à Metz."
+      "default": "Pierres naturelles sélectionnées avec exigence. Service humain avant et après votre achat."
+    },
+    {
+      "type": "text",
+      "id": "statement_mobile",
+      "label": "Activité et exigence sur mobile",
+      "default": "Pierres sélectionnées avec exigence. Service humain avant et après l’achat."
     },
     {
       "type": "text",
       "id": "service",
       "label": "Qualité de service",
-      "default": "Pierres naturelles · Bijoux · Conseil avant et après l’achat"
+      "default": "Équipe disponible 6j/7 · Commandes préparées et expédiées depuis notre atelier à Metz"
     },
     {
       "type": "text",
       "id": "service_mobile",
       "label": "Qualité de service sur mobile",
-      "default": "Pierres naturelles · Bijoux · Conseil"
+      "default": "Équipe disponible 6j/7 · Commande préparée et expédiée depuis notre atelier à Metz"
     },
     {
       "type": "color",
