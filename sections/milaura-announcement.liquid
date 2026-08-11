@@ -1,336 +1,275 @@
 {% style %}
-  /* --- VARIABLES EFFET BIJOU --- */
-  #MilauraAnnouncement-{{ section.id }} {
-    --announce-gold-grad: linear-gradient(
-      135deg,
-      rgba(255, 240, 200, 0.95) 0%,
-      rgba(240, 210, 140, 0.95) 20%,
-      rgba(214, 176, 96, 0.95) 50%,
-      rgba(240, 210, 140, 0.95) 80%,
-      rgba(255, 240, 200, 0.95) 100%
-    );
+  :root {
+    --milaura-announcement-height: {{ section.settings.bar_height | default: 50 }}px;
   }
 
-  /* --- LE CONTENEUR PRINCIPAL (EFFET BIJOU) --- */
   #MilauraAnnouncement-{{ section.id }} {
+    --announcement-nacre: #fbf8f3;
+    --announcement-aqua: {{ section.settings.background_color | default: '#dce9e7' }};
+    --announcement-aqua-deep: {{ section.settings.accent_color | default: '#3f7474' }};
+    --announcement-prune: {{ section.settings.text_color | default: '#2f222d' }};
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: {{ section.settings.bar_height }}px;
-    overflow: hidden;
+    inset: 0 0 auto;
     z-index: 1000001;
-
-    /* Fond personnalisable via customizer */
-    background: linear-gradient(90deg, {{ section.settings.bg_color_start }}, {{ section.settings.bg_color_end }}, {{ section.settings.bg_color_start }});
-
-    /* Bordure dorée dégradée (effet bijou) */
-    border-bottom: 2px solid transparent;
-    background-clip: padding-box;
-
-    /* Ombres luxueuses */
-    box-shadow:
-      0 2px 12px rgba(192, 160, 98, 0.15),
-      0 1px 0 rgba(214, 176, 96, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8),
-      inset 0 -1px 0 rgba(214, 176, 96, 0.3);
+    height: var(--milaura-announcement-height);
+    overflow: hidden;
+    color: var(--announcement-prune);
+    background:
+      radial-gradient(circle at 11% 50%, rgba(255, 255, 255, 0.72) 0 3px, transparent 4px),
+      radial-gradient(circle at 88% 18%, rgba(63, 116, 116, 0.12) 0 1px, transparent 2px),
+      linear-gradient(104deg, #f7fbfa 0%, var(--announcement-aqua) 38%, #cde4e1 100%);
+    border-bottom: 1px solid rgba(63, 116, 116, 0.22);
+    box-shadow: 0 5px 18px rgba(47, 34, 45, 0.08);
+    isolation: isolate;
   }
 
-  /* Bordure dorée en bas avec dégradé */
-  #MilauraAnnouncement-{{ section.id }}::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--announce-gold-grad);
-  }
-
-  /* Compensation pour le body */
-  body {
-    padding-top: {{ section.settings.bar_height }}px;
-  }
-
-  @media screen and (max-width: 768px) {
-    body {
-      padding-top: {{ section.settings.bar_height | plus: 2 }}px;
-    }
-  }
-
-  /* --- LE REFLET DORÉ (SHEEN EFFECT) --- */
+  #MilauraAnnouncement-{{ section.id }}::before,
   #MilauraAnnouncement-{{ section.id }}::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(
-      120deg,
-      transparent 0%,
-      transparent 40%,
-      rgba(255, 248, 220, 0.5) 50%,
-      transparent 60%,
-      transparent 100%
-    );
-    animation: goldSheen 4s infinite ease-in-out;
+    z-index: -1;
+    border: 1px solid rgba(63, 116, 116, 0.2);
+    border-radius: 49% 51% 44% 56% / 57% 43% 57% 43%;
     pointer-events: none;
   }
 
-  /* --- LE TEXTE DÉFILANT (BFM STYLE) --- */
-  .marquee-container {
-    display: flex;
-    align-items: center;
+  #MilauraAnnouncement-{{ section.id }}::before {
+    top: -44px;
+    left: clamp(10px, 4vw, 72px);
+    width: 98px;
+    height: 98px;
+    transform: rotate(18deg);
+  }
+
+  #MilauraAnnouncement-{{ section.id }}::after {
+    right: clamp(10px, 5vw, 88px);
+    bottom: -56px;
+    width: 118px;
+    height: 118px;
+    border-color: rgba(73, 50, 70, 0.11);
+    transform: rotate(-13deg);
+  }
+
+  body {
+    padding-top: var(--milaura-announcement-height);
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
+    width: min(1440px, calc(100% - 48px));
     height: 100%;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .marquee-track {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
-    white-space: nowrap;
-    animation: scrollText {{ section.settings.scroll_speed }}s linear infinite;
-    gap: 4rem;
-    padding-left: 4rem;
-  }
-  
-  /* Pause au survol pour laisser lire */
-  .marquee-container:hover .marquee-track {
-    animation-play-state: paused;
+    gap: clamp(20px, 3vw, 54px);
+    margin: 0 auto;
   }
 
-  .announcement-item {
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: {{ section.settings.text_color }};
-    font-family: {{ section.settings.font_family }};
-    font-weight: {{ section.settings.font_weight }};
-    font-size: {{ section.settings.font_size | divided_by: 10.0 }}rem;
-    text-transform: {{ section.settings.text_transform }};
-    letter-spacing: 0.5px;
+    min-width: max-content;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.69rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1;
+    text-transform: uppercase;
   }
 
-  .announcement-icon {
-    font-size: {{ section.settings.font_size | plus: 2 | divided_by: 10.0 }}rem;
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mineral {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    display: block;
+    flex: 0 0 auto;
   }
 
-  .announcement-separator {
-    color: #C0A062;
-    font-size: 0.5rem;
-    opacity: 0.7;
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mineral::before,
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mineral::after {
+    content: '';
+    position: absolute;
+    border: 1px solid;
+    pointer-events: none;
   }
 
-  /* --- ANIMATIONS --- */
-  @keyframes goldSheen {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mineral::before {
+    inset: 2px 5px 3px 3px;
+    border-color: rgba(63, 116, 116, 0.84);
+    border-radius: 47% 53% 44% 56% / 56% 45% 55% 44%;
+    transform: rotate(-12deg);
   }
 
-  @keyframes scrollText {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* On déplace de 50% car on a dupliqué le contenu */
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mineral::after {
+    inset: 5px 2px 1px 6px;
+    border-color: rgba(73, 50, 70, 0.48);
+    border-radius: 53% 47% 56% 44% / 44% 56% 48% 52%;
+    transform: rotate(11deg);
   }
 
-  /* Mobile */
-  @media screen and (max-width: 768px) {
-    .marquee-track {
-      animation-duration: {{ section.settings.scroll_speed | minus: 5 }}s;
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement,
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
+    margin: 0;
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
+    overflow: hidden;
+    font-family: 'MilAura Gloock', 'Playfair Display', serif;
+    font-size: clamp(0.94rem, 1.1vw, 1.08rem);
+    font-weight: 400;
+    letter-spacing: -0.012em;
+    line-height: 1.2;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
+    min-width: max-content;
+    color: var(--announcement-aqua-deep);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.095em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 989px) {
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
+      width: min(100% - 28px, 760px);
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        'identity statement'
+        'service service';
+      column-gap: 14px;
+      row-gap: 2px;
+      padding: 6px 0 5px;
     }
-    #MilauraAnnouncement-{{ section.id }} {
-      height: {{ section.settings.bar_height | plus: 2 }}px;
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
+      grid-area: identity;
+      font-size: 0.59rem;
+      letter-spacing: 0.1em;
     }
-    .announcement-item {
-      font-size: {{ section.settings.font_size | minus: 1 | divided_by: 10.0 }}rem;
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mineral {
+      width: 18px;
+      height: 18px;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
+      grid-area: statement;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 760;
+      letter-spacing: 0.01em;
+      text-align: right;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
+      grid-area: service;
+      min-width: 0;
+      font-size: 0.57rem;
+      letter-spacing: 0.08em;
+      text-align: center;
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      transition: none !important;
-      animation: none !important;
+  @media screen and (max-width: 420px) {
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
+      width: calc(100% - 20px);
+      column-gap: 9px;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
+      font-size: 0.54rem;
+      letter-spacing: 0.075em;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mineral {
+      display: none;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
+      font-size: 0.62rem;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
+      font-size: 0.53rem;
     }
   }
 {% endstyle %}
 
-<div id="MilauraAnnouncement-{{ section.id }}">
-  <div class="marquee-container">
-    <div class="marquee-track">
-      
-      {%- for block in section.blocks -%}
-        <div class="announcement-item">
-          {% if block.settings.icon != blank %}
-            <span class="announcement-icon">{{ block.settings.icon }}</span>
-          {% endif %}
-          <span>{{ block.settings.text }}</span>
-        </div>
-        <div class="announcement-separator">◆</div>
-      {%- endfor -%}
-
-      {%- for block in section.blocks -%}
-        <div class="announcement-item">
-          {% if block.settings.icon != blank %}
-            <span class="announcement-icon">{{ block.settings.icon }}</span>
-          {% endif %}
-          <span>{{ block.settings.text }}</span>
-        </div>
-        <div class="announcement-separator">◆</div>
-      {%- endfor -%}
-
-    </div>
+<aside id="MilauraAnnouncement-{{ section.id }}" aria-label="L'engagement MilAura">
+  <div class="milaura-announcement__inner">
+    <span class="milaura-announcement__identity">
+      <span class="milaura-announcement__mineral" aria-hidden="true"></span>
+      <span>{{ section.settings.eyebrow | default: 'MilAura · Metz' | escape }}</span>
+    </span>
+    <p class="milaura-announcement__statement">
+      {{ section.settings.statement | default: 'Bijoux, pierres naturelles et rituels sélectionnés avec exigence' | escape }}
+    </p>
+    <p class="milaura-announcement__service">
+      {{ section.settings.service | default: 'Conseil attentionné · préparation soignée' | escape }}
+    </p>
   </div>
-</div>
+</aside>
 
 {% schema %}
 {
-  "name": "Milaura Announce Gold",
+  "name": "Signature MilAura",
   "settings": [
     {
-      "type": "header",
-      "content": "🎨 Couleurs"
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Signature",
+      "default": "MilAura · Metz"
+    },
+    {
+      "type": "text",
+      "id": "statement",
+      "label": "Activité et exigence",
+      "default": "Bijoux, pierres naturelles et rituels sélectionnés avec exigence"
+    },
+    {
+      "type": "text",
+      "id": "service",
+      "label": "Qualité de service",
+      "default": "Conseil attentionné · préparation soignée"
     },
     {
       "type": "color",
-      "id": "bg_color_start",
-      "label": "Couleur fond (début)",
-      "default": "#C0A062"
+      "id": "background_color",
+      "label": "Fond aigue-marine",
+      "default": "#dce9e7"
     },
     {
       "type": "color",
-      "id": "bg_color_end",
-      "label": "Couleur fond (fin)",
-      "default": "#E6C88B"
+      "id": "accent_color",
+      "label": "Aigue-marine profonde",
+      "default": "#3f7474"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Couleur du texte",
-      "default": "#1b1b1b"
-    },
-    {
-      "type": "header",
-      "content": "✏️ Typographie"
-    },
-    {
-      "type": "select",
-      "id": "font_family",
-      "label": "Police",
-      "options": [
-        { "value": "'Lato', sans-serif", "label": "Lato (moderne)" },
-        { "value": "'Playfair Display', serif", "label": "Playfair Display (élégant)" },
-        { "value": "'Dancing Script', cursive", "label": "Dancing Script (cursif)" }
-      ],
-      "default": "'Lato', sans-serif"
-    },
-    {
-      "type": "range",
-      "id": "font_size",
-      "label": "Taille du texte",
-      "min": 8,
-      "max": 14,
-      "step": 1,
-      "unit": "px",
-      "default": 11,
-      "info": "Valeur en dixièmes de rem (11 = 1.1rem)"
-    },
-    {
-      "type": "select",
-      "id": "font_weight",
-      "label": "Épaisseur",
-      "options": [
-        { "value": "400", "label": "Normal" },
-        { "value": "600", "label": "Semi-gras" },
-        { "value": "700", "label": "Gras" },
-        { "value": "800", "label": "Extra-gras" }
-      ],
-      "default": "700"
-    },
-    {
-      "type": "select",
-      "id": "text_transform",
-      "label": "Style du texte",
-      "options": [
-        { "value": "uppercase", "label": "MAJUSCULES" },
-        { "value": "capitalize", "label": "Première Lettre" },
-        { "value": "none", "label": "Normal" }
-      ],
-      "default": "uppercase"
-    },
-    {
-      "type": "header",
-      "content": "⚙️ Paramètres"
+      "label": "Texte prune",
+      "default": "#2f222d"
     },
     {
       "type": "range",
       "id": "bar_height",
-      "label": "Hauteur de la barre",
-      "min": 30,
-      "max": 50,
+      "label": "Hauteur de la signature",
+      "min": 46,
+      "max": 58,
       "step": 2,
       "unit": "px",
-      "default": 38
-    },
-    {
-      "type": "range",
-      "id": "scroll_speed",
-      "label": "Vitesse de défilement",
-      "min": 10,
-      "max": 40,
-      "step": 2,
-      "unit": "s",
-      "default": 20,
-      "info": "Plus petit = plus rapide"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "announcement",
-      "name": "Message",
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Message",
-          "default": "Bienvenue chez Mil'Aura"
-        },
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "Emoji/Icône",
-          "default": "📦",
-          "info": "Copiez-collez un emoji ici (ex: 🇫🇷, 💎, 📦)"
-        }
-      ]
+      "default": 50
     }
   ],
   "presets": [
     {
-      "name": "Milaura Announce Gold",
-      "blocks": [
-        {
-          "type": "announcement",
-          "settings": {
-            "text": "Avantage livraison dès 19,90 €",
-            "icon": "📦"
-          }
-        },
-        {
-          "type": "announcement",
-          "settings": {
-            "text": "Chaque commande préparée avec soin en France",
-            "icon": "🇫🇷"
-          }
-        },
-        {
-          "type": "announcement",
-          "settings": {
-            "text": "Pierres certifiées",
-            "icon": "💎"
-          }
-        }
-      ]
+      "name": "Signature MilAura"
     }
   ]
 }
