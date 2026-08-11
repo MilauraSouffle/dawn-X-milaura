@@ -12,11 +12,10 @@
     inset: 0 0 auto;
     z-index: 1000001;
     height: var(--milaura-announcement-height);
-    overflow: hidden;
+    overflow: visible;
     color: var(--announcement-prune);
-    background: linear-gradient(104deg, #f7fbfa 0%, var(--announcement-aqua) 46%, #c7dfdc 100%);
-    border-bottom: 1px solid rgba(63, 116, 116, 0.22);
-    box-shadow: 0 7px 22px rgba(47, 34, 45, 0.09);
+    background: transparent;
+    isolation: isolate;
   }
 
   body {
@@ -24,6 +23,8 @@
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
+    position: relative;
+    z-index: 3;
     width: min(1520px, calc(100% - 64px));
     height: 100%;
     display: grid;
@@ -31,6 +32,42 @@
     align-items: center;
     gap: clamp(24px, 3.5vw, 64px);
     margin: 0 auto;
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__surface {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    background: linear-gradient(104deg, #f7fbfa 0%, var(--announcement-aqua) 46%, #c7dfdc 100%);
+    border-bottom: 1px solid rgba(63, 116, 116, 0.22);
+    box-shadow: 0 7px 22px rgba(47, 34, 45, 0.09);
+    pointer-events: none;
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__jewel {
+    position: absolute;
+    top: -104px;
+    left: -34px;
+    z-index: 0;
+    width: 390px;
+    pointer-events: none;
+    transform: rotate(-2.5deg);
+    transform-origin: center;
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__jewel img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 8px 8px rgba(47, 34, 45, 0.18));
+  }
+
+  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__jewel--front {
+    z-index: 2;
+    clip-path: inset(104px 0 28px);
+    -webkit-mask-image: linear-gradient(90deg, #000 0 56%, transparent 72% 100%);
+    mask-image: linear-gradient(90deg, #000 0 56%, transparent 72% 100%);
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
@@ -41,6 +78,27 @@
     letter-spacing: 0.15em;
     line-height: 1;
     text-transform: uppercase;
+  }
+
+  @media screen and (min-width: 1200px) {
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
+      padding-left: 214px;
+    }
+  }
+
+  @media screen and (min-width: 990px) and (max-width: 1199px) {
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
+      grid-template-columns: minmax(460px, 1.65fr) minmax(260px, 1fr);
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
+      display: none;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__jewel {
+      left: -96px;
+      width: 350px;
+    }
   }
 
   #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement,
@@ -86,6 +144,20 @@
       justify-content: center;
       gap: 5px;
       padding: 7px 0;
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__jewel {
+      top: -62px;
+      right: -36px;
+      left: auto;
+      width: 280px;
+      transform: rotate(5deg);
+    }
+
+    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__jewel--front {
+      clip-path: inset(62px 0 0);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0 52%, #000 70% 100%);
+      mask-image: linear-gradient(90deg, transparent 0 52%, #000 70% 100%);
     }
 
     #MilauraAnnouncement-{{ section.id }} .milaura-announcement__identity {
@@ -135,6 +207,14 @@
 {% endstyle %}
 
 <aside id="MilauraAnnouncement-{{ section.id }}" aria-label="L'engagement MilAura">
+  <span class="milaura-announcement__jewel milaura-announcement__jewel--back" aria-hidden="true">
+    {%- if section.settings.jewel_image != blank -%}
+      {{ section.settings.jewel_image | image_url: width: 1200 | image_tag: loading: 'eager', widths: '320, 480, 720, 960, 1200', sizes: '(max-width: 989px) 280px, 390px' }}
+    {%- else -%}
+      <img src="{{ 'milaura-dock-bracelet-aigue-v3.webp' | asset_url }}" width="1672" height="941" alt="" loading="eager">
+    {%- endif -%}
+  </span>
+  <span class="milaura-announcement__surface" aria-hidden="true"></span>
   <div class="milaura-announcement__inner">
     <span class="milaura-announcement__identity">
       {{ section.settings.eyebrow | default: 'MilAura · Metz' | escape }}
@@ -151,6 +231,13 @@
       </span>
     </p>
   </div>
+  <span class="milaura-announcement__jewel milaura-announcement__jewel--front" aria-hidden="true">
+    {%- if section.settings.jewel_image != blank -%}
+      {{ section.settings.jewel_image | image_url: width: 1200 | image_tag: loading: 'eager', widths: '320, 480, 720, 960, 1200', sizes: '(max-width: 989px) 280px, 390px' }}
+    {%- else -%}
+      <img src="{{ 'milaura-dock-bracelet-aigue-v3.webp' | asset_url }}" width="1672" height="941" alt="" loading="eager">
+    {%- endif -%}
+  </span>
 </aside>
 
 {% schema %}
@@ -180,6 +267,11 @@
       "id": "service_mobile",
       "label": "Qualité de service sur mobile",
       "default": "Pierres naturelles · Bijoux · Conseil"
+    },
+    {
+      "type": "image_picker",
+      "id": "jewel_image",
+      "label": "Bracelet signature"
     },
     {
       "type": "color",
