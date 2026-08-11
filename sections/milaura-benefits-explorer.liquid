@@ -233,7 +233,8 @@
     display: block;
     object-fit: cover;
     transform: scale(1.035);
-    transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1), filter 280ms ease;
+    opacity: 1;
+    transition: opacity 210ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1), filter 280ms ease;
   }
 
   #MilauraBenefits-{{ section.id }} .benefits-triptych-panel:hover .benefits-triptych-image,
@@ -257,6 +258,19 @@
     left: 14px;
     display: grid;
     gap: 3px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 180ms ease, transform 240ms ease;
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-triptych-panel.is-changing .benefits-triptych-image {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+
+  #MilauraBenefits-{{ section.id }} .benefits-triptych-panel.is-changing .benefits-triptych-caption {
+    opacity: 0;
+    transform: translateY(7px);
   }
 
   #MilauraBenefits-{{ section.id }} .benefits-triptych-stone {
@@ -1292,6 +1306,8 @@
           {%- endcase -%}
           <a
             class="benefits-triptych-panel"
+            data-triptych-slot
+            data-source-index="{{ forloop.index0 }}"
             href="?{{ query_parameter }}={{ intention_key | url_encode }}#MilauraBenefitsDashboard-{{ section.id }}"
             aria-label="Choisir {{ block.settings.stone_name | escape }} pour {{ block.settings.emotion | escape }}"
           >
@@ -1334,6 +1350,43 @@
               <span class="benefits-triptych-intention">{{ block.settings.emotion | escape }}</span>
             </span>
           </a>
+        {%- endfor -%}
+      </div>
+
+      <div class="benefits-triptych-sources" hidden aria-hidden="true">
+        {%- for block in section.blocks -%}
+          {%- assign stone_key = block.settings.stone_name | handleize -%}
+          {%- assign intention_key = block.settings.intention_slug | strip | handleize -%}
+          {%- if intention_key == blank -%}
+            {%- assign intention_key = block.settings.emotion | handleize -%}
+          {%- endif -%}
+          {%- assign triptych_asset = blank -%}
+          {%- case stone_key -%}
+            {%- when 'amethyste' -%}
+              {%- assign triptych_asset = 'milaura-benefit-amethyste-desktop.webp' -%}
+            {%- when 'quartz-rose' -%}
+              {%- assign triptych_asset = 'milaura-benefit-quartz-rose-desktop.webp' -%}
+            {%- when 'citrine' -%}
+              {%- assign triptych_asset = 'milaura-benefit-citrine-desktop.webp' -%}
+            {%- when 'tourmaline-noire' -%}
+              {%- assign triptych_asset = 'milaura-benefit-tourmaline-desktop.webp' -%}
+            {%- when 'aventurine-verte' -%}
+              {%- assign triptych_asset = 'milaura-benefit-aventurine-desktop.webp' -%}
+          {%- endcase -%}
+          <span
+            data-triptych-source
+            data-stone="{{ block.settings.stone_name | escape }}"
+            data-emotion="{{ block.settings.emotion | escape }}"
+            data-intention="{{ intention_key | escape }}"
+            data-href="?{{ query_parameter }}={{ intention_key | url_encode }}#MilauraBenefitsDashboard-{{ section.id }}"
+            {%- if triptych_asset != blank %}
+              data-image="{{ triptych_asset | asset_url }}"
+            {%- elsif block.settings.stone_image != blank %}
+              data-image="{{ block.settings.stone_image | image_url: width: 900 }}"
+            {%- elsif block.settings.product.featured_image != blank %}
+              data-image="{{ block.settings.product.featured_image | image_url: width: 900 }}"
+            {%- endif %}
+          ></span>
         {%- endfor -%}
       </div>
     </header>
@@ -1621,6 +1674,127 @@
     var accordionContents = Array.prototype.slice.call(container.querySelectorAll('.benefit-accordion-content'));
     var accordionItems = Array.prototype.slice.call(container.querySelectorAll('.benefit-accordion-item'));
     var navigation = container.querySelector('.benefits-nav');
+    var triptych = container.querySelector('.benefits-landing-triptych');
+    var triptychSlots = Array.prototype.slice.call(container.querySelectorAll('[data-triptych-slot]'));
+    var triptychSources = Array.prototype.slice.call(container.querySelectorAll('[data-triptych-source]'));
+
+    function shuffleTriptychOrder(values) {
+      var shuffled = values.slice();
+
+      for (var i = shuffled.length - 1; i > 0; i -= 1) {
+        var randomIndex = Math.floor(Math.random() * (i + 1));
+        var currentValue = shuffled[i];
+        shuffled[i] = shuffled[randomIndex];
+        shuffled[randomIndex] = currentValue;
+      }
+
+      return shuffled;
+    }
+
+    function initializeTriptychRotation() {
+      if (!triptych || triptychSlots.length !== 3 || triptychSources.length < 4) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var sourceCount = triptychSources.length;
+      var currentIndices = triptychSlots.map(function (slot, index) {
+        var sourceIndex = Number(slot.getAttribute('data-source-index'));
+        return Number.isFinite(sourceIndex) ? sourceIndex : index;
+      });
+      var rotationOrder = shuffleTriptychOrder(
+        triptychSources.map(function (_, index) { return index; })
+      );
+      var rotationCursor = Math.floor(Math.random() * sourceCount);
+      var rotationTicks = 0;
+      var rotationPaused = false;
+      var rotationTimer = null;
+
+      triptychSources.forEach(function (source) {
+        var imageUrl = source.getAttribute('data-image');
+        if (!imageUrl) return;
+        var preload = new Image();
+        preload.src = imageUrl;
+      });
+
+      function nextIndices() {
+        for (var attempt = 0; attempt < sourceCount; attempt += 1) {
+          var candidate = triptychSlots.map(function (_, slotIndex) {
+            return rotationOrder[(rotationCursor + slotIndex) % sourceCount];
+          });
+
+          rotationCursor = (rotationCursor + 3) % sourceCount;
+
+          var everySlotChanges = candidate.every(function (sourceIndex, slotIndex) {
+            return sourceIndex !== currentIndices[slotIndex];
+          });
+
+          if (everySlotChanges) return candidate;
+        }
+
+        return currentIndices.map(function (sourceIndex) {
+          return (sourceIndex + 1) % sourceCount;
+        });
+      }
+
+      function updateSlot(slot, sourceIndex, delay) {
+        window.setTimeout(function () {
+          var source = triptychSources[sourceIndex];
+          var image = slot.querySelector('.benefits-triptych-image');
+          var stone = slot.querySelector('.benefits-triptych-stone');
+          var intention = slot.querySelector('.benefits-triptych-intention');
+          var stoneName = source.getAttribute('data-stone') || '';
+          var emotion = source.getAttribute('data-emotion') || '';
+          var imageUrl = source.getAttribute('data-image') || '';
+
+          slot.classList.add('is-changing');
+
+          window.setTimeout(function () {
+            slot.setAttribute('data-source-index', String(sourceIndex));
+            slot.setAttribute('href', source.getAttribute('data-href') || '#MilauraBenefitsDashboard-' + sectionId);
+            slot.setAttribute('aria-label', 'Choisir ' + stoneName + ' pour ' + emotion);
+
+            if (image && imageUrl) {
+              image.setAttribute('src', imageUrl);
+              image.setAttribute('alt', stoneName);
+            }
+            if (stone) stone.textContent = stoneName;
+            if (intention) intention.textContent = emotion;
+
+            window.requestAnimationFrame(function () {
+              slot.classList.remove('is-changing');
+            });
+          }, 210);
+        }, delay);
+      }
+
+      function rotateTriptych() {
+        if (rotationPaused || document.hidden) return;
+        if (!document.documentElement.contains(container)) {
+          window.clearInterval(rotationTimer);
+          return;
+        }
+
+        var candidate = nextIndices();
+        candidate.forEach(function (sourceIndex, slotIndex) {
+          updateSlot(triptychSlots[slotIndex], sourceIndex, slotIndex * 90);
+        });
+        currentIndices = candidate;
+        rotationTicks += 1;
+
+        if (rotationTicks % sourceCount === 0) {
+          rotationOrder = shuffleTriptychOrder(rotationOrder);
+          rotationCursor = Math.floor(Math.random() * sourceCount);
+        }
+      }
+
+      triptych.addEventListener('mouseenter', function () { rotationPaused = true; });
+      triptych.addEventListener('mouseleave', function () { rotationPaused = false; });
+      triptych.addEventListener('focusin', function () { rotationPaused = true; });
+      triptych.addEventListener('focusout', function () { rotationPaused = false; });
+
+      rotationTimer = window.setInterval(rotateTriptych, 3000);
+    }
+
+    initializeTriptychRotation();
 
     if (btns.length === 0) return;
 
