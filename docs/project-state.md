@@ -11,7 +11,7 @@ Le catalogue V1 est public, la capsule aigue-marine des collections est live, le
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique du theme Shopify live.
-- L'historique `main` a ete rattache a l'integration par `952d7587` sans modifier l'arbre source audite et sans deploiement Shopify.
+- L'historique `main` a ete rattache a l'integration par `952d7587`, puis le commit automatique Shopify du deploiement collection par `8bc59704`, sans modifier l'arbre source audite.
 - Les branches durables sont `main` et `codex/milaura-integration`. La branche temporaire PDP reste active uniquement jusqu'au GO visuel et a son integration.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Un seul worktree parallele est actif et declare : `pdp-visual-correction-20260812`.
@@ -136,6 +136,7 @@ Pipeline actif :
 - `4853db6e` : procedure propre de parallelisation et archive
 - `952d7587` : reconciliation de l'historique du miroir Shopify
 - `6f9b90b5` : capsule aigue-marine des collections integree et livree live
+- `8bc59704` : rattachement du miroir Shopify automatique apres le push collection, arbre source inchange
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 

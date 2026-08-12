@@ -57,6 +57,7 @@ Après intégration du commit de ce lot :
 Date : 2026-08-12 19:37 CEST
 
 - Commit integre sur `codex/milaura-integration` : `6f9b90b5`.
+- Commit automatique Shopify `1c18047c` rattache a l'integration par `8bc59704` avec une strategie d'historique qui conserve l'arbre audite.
 - Branche d'integration poussee sur GitHub.
 - Seul `sections/milaura-collection-hero.liquid` a ete pousse sur le theme live `190430282075` avec `--only`, `--nodelete`, `--strict` et `--allow-live`.
 - Pullback live identique bit a bit.

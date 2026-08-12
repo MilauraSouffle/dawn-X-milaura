@@ -25,7 +25,7 @@ Faire valider la PDP corrigee sur le theme de developpement, puis la livrer de f
 - Depot actif unique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique Shopify.
-- L'integration contient l'historique `main` depuis `952d7587` et n'est plus en retard sur ce miroir au 2026-08-12 18:19 CEST.
+- L'integration contient l'historique `main` depuis `952d7587`, ainsi que le commit automatique du push collection rattache par `8bc59704`. Elle n'est pas en retard sur le miroir Shopify au 2026-08-12 19:37 CEST.
 - La branche temporaire `codex/milaura-pdp-visual-correction-20260812` reste active et propre jusqu'au GO visuel.
 - Les quatre anciennes branches sont preservees par les tags `archive/2026-08-12/*`.
 - Aucun clone numerote et aucun fichier temporaire ne reste dans la zone active.
