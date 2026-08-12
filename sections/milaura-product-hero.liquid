@@ -30,6 +30,14 @@
 {%- endcomment %}
 
 {% style %}
+  @font-face {
+    font-family: 'Dancing Script';
+    src: url('{{ 'milaura-dancing-script-variable.ttf' | asset_url }}') format('truetype-variations');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400 700;
+  }
+
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -268,133 +276,144 @@
     transform: scale(1.3);
   }
 
-  /* --- BADGES METAFIELDS PRODUIT --- */
+  /* --- PILLS PRODUIT : une information courte par pill --- */
   .milaura-meta-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
     padding: 0;
   }
 
   .milaura-meta-badges--product {
-    justify-content: center;
-    align-items: center;
-    row-gap: 6px;
     margin: 0 0 12px;
+    overflow: hidden;
+  }
+
+  .milaura-meta-badges__rail,
+  .milaura-meta-badges__group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .milaura-meta-badges__rail {
+    justify-content: center;
+  }
+
+  .milaura-meta-badges__group {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .milaura-meta-badges__group[aria-hidden='true'] {
+    display: none;
   }
 
   .milaura-meta-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, 0.8);
+    gap: 7px;
+    flex: 0 0 auto;
+    background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(192, 160, 98, 0.2);
-    border-radius: 30px;
-    padding: 6px 14px;
-    font-family: 'Lato', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--milaura-text);
-    letter-spacing: 0.3px;
-    text-transform: capitalize;
+    border: 1px solid rgba(73, 50, 70, 0.16);
+    border-radius: 999px;
+    padding: 7px 13px;
+    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #493246;
+    letter-spacing: 0.02em;
     white-space: nowrap;
   }
 
-  .milaura-meta-badge svg {
-    flex-shrink: 0;
-    color: var(--milaura-gold);
+  .milaura-meta-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    flex: 0 0 6px;
+    border-radius: 50%;
+    background: #6fa9a6;
+    box-shadow: 0 0 0 3px rgba(111, 169, 166, 0.14);
   }
 
-  .milaura-meta-badge--gold {
-    background: linear-gradient(135deg, rgba(192, 160, 98, 0.15), rgba(230, 200, 139, 0.15));
-    border-color: rgba(192, 160, 98, 0.35);
-    color: var(--milaura-gold-dark);
+  .milaura-meta-badge--quality,
+  .milaura-meta-badge--provenance {
+    background: rgba(111, 169, 166, 0.11);
+    border-color: rgba(111, 169, 166, 0.3);
   }
 
-  .milaura-meta-badge--gold svg {
-    color: var(--milaura-gold);
+  .milaura-meta-badge--virtue {
+    text-transform: capitalize;
   }
 
-  .milaura-meta-badge__marquee-copy {
-    display: none;
+  .milaura-meta-badge--fact {
+    background: rgba(73, 50, 70, 0.07);
   }
 
-  @keyframes milauraVertusMarquee {
+  @keyframes milauraPillsRail {
     to {
-      transform: translateX(calc(-50% - 12px));
+      transform: translateX(calc(-50% - 4px));
     }
   }
 
   @media screen and (max-width: 749px) {
     .milaura-meta-badges--product {
+      width: calc(100vw - 32px);
       max-width: 100%;
-      overflow: hidden;
+      margin-inline: auto;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
     }
 
-    .milaura-meta-badges--product .milaura-meta-badge--vertus {
-      max-width: min(100%, calc(100vw - 32px));
-      overflow: hidden;
-      box-sizing: border-box;
+    .milaura-meta-badges__rail {
+      justify-content: flex-start;
+      width: max-content;
+      animation: milauraPillsRail 24s linear infinite;
+      will-change: transform;
+    }
+
+    .milaura-meta-badges__group {
+      flex-wrap: nowrap;
       justify-content: flex-start;
     }
 
-    .milaura-meta-badge--vertus .milaura-meta-badge__marquee {
-      display: block;
-      flex: 1 1 auto;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 18px), transparent 100%);
-      mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 18px), transparent 100%);
+    .milaura-meta-badges__group[aria-hidden='true'] {
+      display: flex;
     }
 
-    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee-inner {
-      display: inline-flex;
-      width: max-content;
-      gap: 24px;
-      animation: milauraVertusMarquee 18s linear infinite;
-    }
-
-    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee-copy {
-      display: inline;
+    .milaura-meta-badges--product:hover .milaura-meta-badges__rail,
+    .milaura-meta-badges--product:focus-within .milaura-meta-badges__rail,
+    .milaura-meta-badges--product:active .milaura-meta-badges__rail {
+      animation-play-state: paused;
     }
   }
 
   @media screen and (max-width: 749px) and (prefers-reduced-motion: reduce) {
-    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee {
+    .milaura-meta-badges--product {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      -webkit-mask-image: none;
+      mask-image: none;
     }
 
-    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee::-webkit-scrollbar {
+    .milaura-meta-badges--product::-webkit-scrollbar {
       display: none;
     }
 
-    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee-inner {
+    .milaura-meta-badges__rail {
       animation: none;
       transform: none;
     }
 
-    .milaura-meta-badge--vertus-scroll .milaura-meta-badge__marquee-copy {
+    .milaura-meta-badges__group[aria-hidden='true'] {
       display: none;
     }
   }
 
   @media screen and (max-width: 480px) {
-    .milaura-meta-badges--product {
-      gap: 6px;
-      margin-bottom: 10px;
-    }
     .milaura-meta-badge {
-      padding: 5px 10px;
-      font-size: 0.72rem;
-    }
-    .milaura-meta-badge svg {
-      width: 12px;
-      height: 12px;
+      padding: 6px 11px;
+      font-size: 0.71rem;
     }
   }
 
@@ -449,7 +468,7 @@
       top: calc(var(--header-height, 80px) + 20px);
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(192, 160, 98, 0.1);
+      border: 1px solid rgba(73, 50, 70, 0.1);
       border-radius: 16px;
       padding: 18px 20px; /* Équilibré */
     }
@@ -691,7 +710,7 @@
   .milaura-promo-badge {
     display: inline-block;
     background: linear-gradient(135deg, #1a1a2e, #2d2d44);
-    color: var(--milaura-gold-light, #E6C88B);
+    color: #dce9e7;
     font-size: 0.95rem;
     font-weight: 700;
     padding: 6px 16px;
@@ -755,7 +774,7 @@
   .milaura-hero-wrapper [id^="price-"] .price-item--sale {
     font-weight: 800;
     font-size: 1.4rem;
-    color: var(--milaura-gold, #C0A062);
+    color: #493246;
   }
   /* Badges Promotion + -30% inline (a cote du prix) */
   .milaura-hero-wrapper [id^="price-"] .badge.price__badge-sale,
@@ -803,7 +822,7 @@
   .milaura-hero-wrapper .badge.price__badge-sale,
   .milaura-hero-wrapper .price__badge-sale {
     background: linear-gradient(135deg, #1a1a2e, #2d2d44) !important;
-    color: var(--milaura-gold-light, #E6C88B) !important;
+    color: #dce9e7 !important;
     border: none !important;
     font-size: 0.95rem;
     font-weight: 700;
@@ -1343,30 +1362,31 @@
   }
   .milaura-add-btn:disabled { background: #ccc !important; cursor: not-allowed; box-shadow: none !important; }
 
-  /* --- LUXE QUANTITY CAPSULE (Milaura Custom) --- */
-  /* Reset complet des styles Dawn pour le sélecteur quantité */
+  /* --- QUANTITY CAPSULE : même langage visuel que le panier --- */
   .milaura-quantity-capsule,
   .milaura-quantity-capsule.quantity-input {
-    flex: 0 0 100px !important;
-    width: 100px !important;
-    min-width: 100px !important;
-    max-width: 100px !important;
-    height: 44px !important;
-    min-height: 44px !important;
-    background: #FFFFFF !important;
-    border: 1px solid #E5E5E5 !important;
-    border-radius: 50px !important;
+    flex: 0 0 108px !important;
+    width: 108px !important;
+    min-width: 108px !important;
+    max-width: 108px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    background: #f5f5f5 !important;
+    border: 1px solid rgba(73, 50, 70, 0.08) !important;
+    border-radius: 999px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 0 6px !important;
-    transition: all 0.3s ease;
+    padding: 0 4px !important;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box !important;
   }
 
-  .milaura-quantity-capsule:hover {
-    border-color: #C0A062 !important;
-    box-shadow: 0 4px 12px rgba(192, 160, 98, 0.1);
+  .milaura-quantity-capsule:hover,
+  .milaura-quantity-capsule:focus-within {
+    border-color: rgba(111, 169, 166, 0.58) !important;
+    box-shadow: 0 0 0 3px rgba(111, 169, 166, 0.12);
   }
 
   /* Reset before/after pseudo-elements de Dawn */
@@ -1380,42 +1400,43 @@
 
   .milaura-quantity-btn,
   .milaura-quantity-capsule button {
-    width: 28px !important;
-    height: 28px !important;
-    min-width: 28px !important;
-    max-width: 28px !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
     border: none !important;
     background: transparent !important;
     cursor: pointer;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    color: #1a1a1a !important;
-    transition: color 0.2s;
+    color: #2f222d !important;
+    transition: color 0.2s ease, background-color 0.2s ease;
     padding: 0 !important;
     margin: 0 !important;
-    font-size: 14px !important;
+    font-size: 17px !important;
     flex-shrink: 0 !important;
   }
 
   .milaura-quantity-btn:hover,
   .milaura-quantity-capsule button:hover {
-    color: #C0A062 !important;
-    background: transparent !important;
+    color: #493246 !important;
+    background: rgba(111, 169, 166, 0.16) !important;
+    border-radius: 50%;
   }
 
   .milaura-quantity-input,
   .milaura-quantity-capsule input {
-    width: 32px !important;
-    min-width: 32px !important;
-    max-width: 32px !important;
+    width: 24px !important;
+    min-width: 24px !important;
+    max-width: 24px !important;
     height: 100% !important;
     border: none !important;
     background: transparent !important;
     text-align: center !important;
     font-size: 14px !important;
     font-weight: 600 !important;
-    color: #1a1a1a !important;
+    color: #2f222d !important;
     padding: 0 !important;
     margin: 0 !important;
     -moz-appearance: textfield !important;
@@ -1437,30 +1458,14 @@
     background: transparent !important;
   }
 
-  /* Mobile: encore plus compact */
+  /* Mobile : même composant, légèrement resserré sans réduire les cibles tactiles. */
   @media screen and (max-width: 480px) {
     .milaura-quantity-capsule,
     .milaura-quantity-capsule.quantity-input {
-      flex: 0 0 90px !important;
-      width: 90px !important;
-      min-width: 90px !important;
-      max-width: 90px !important;
-      height: 40px !important;
-      min-height: 40px !important;
-    }
-
-    .milaura-quantity-btn,
-    .milaura-quantity-capsule button {
-      width: 24px !important;
-      height: 24px !important;
-      min-width: 24px !important;
-    }
-
-    .milaura-quantity-input,
-    .milaura-quantity-capsule input {
-      width: 28px !important;
-      min-width: 28px !important;
-      font-size: 13px !important;
+      flex-basis: 104px !important;
+      width: 104px !important;
+      min-width: 104px !important;
+      max-width: 104px !important;
     }
   }
 
@@ -3583,21 +3588,26 @@
      Refonte 2026-05-28 : col droite simplifiee
      ============================================ */
   .milaura-hero-social {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
+    justify-content: center;
+    gap: 10px;
+    min-height: 42px;
+    padding: 7px 18px;
     background: linear-gradient(135deg, #1a1a2e, #2d2d44);
-    border-radius: 14px;
-    border: 1px solid rgba(192, 160, 98, 0.35);
+    border-radius: 999px;
+    border: 1px solid rgba(192, 160, 98, 0.42);
     margin-bottom: var(--milaura-spacing-sm);
-    box-shadow: 0 6px 18px rgba(26, 26, 46, 0.18);
+    box-shadow: 0 5px 16px rgba(26, 26, 46, 0.16);
   }
 
   /* Variante : bulle social au-dessus de la galerie (mobile : tout premier element) */
   .milaura-hero-social--top {
     order: 0;
-    width: 100%;
+    width: fit-content;
+    max-width: calc(100% - 24px);
+    justify-self: center;
+    margin-inline: auto;
     margin-top: 14px;
     margin-bottom: 10px;
   }
@@ -3610,23 +3620,36 @@
   }
 
   .milaura-hero-stars {
-    font-size: 1.15rem;
+    flex: 0 0 auto;
     color: var(--milaura-gold-light, #E6C88B);
-    letter-spacing: 2px;
-    flex-shrink: 0;
+    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
     line-height: 1;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+    white-space: nowrap;
   }
 
   .milaura-hero-social-text {
-    font-size: 0.82rem;
-    line-height: 1.4;
+    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
+    font-size: 0.96rem;
+    font-weight: 600;
+    line-height: 1.15;
     color: var(--milaura-gold-light, #E6C88B);
+    letter-spacing: 0.01em;
     margin: 0;
+    text-align: left;
+  }
+
+  .milaura-hero-social-script {
+    font-family: var(--milaura-font-script, 'Dancing Script'), cursive;
+    font-size: 1.2em;
+    font-weight: 700;
+    letter-spacing: 0;
   }
 
   .milaura-hero-social-text strong {
-    color: #FFFFFF;
+    color: #F4D99C;
     font-weight: 700;
   }
 
@@ -3634,7 +3657,7 @@
   .milaura-info-block {
     margin-top: var(--milaura-spacing-md, 18px);
     padding-top: var(--milaura-spacing-md, 18px);
-    border-top: 1px solid rgba(192, 160, 98, 0.18);
+    border-top: 1px solid rgba(111, 169, 166, 0.24);
     display: flex;
     flex-direction: column;
     gap: var(--milaura-spacing-sm, 12px);
@@ -3645,14 +3668,14 @@
     color: var(--milaura-text, #000);
   }
   .milaura-info-description .read-more-link {
-    color: var(--milaura-gold-dark, #8F723A);
+    color: #493246;
     font-weight: 600;
     text-decoration: none;
-    border-bottom: 1px solid rgba(143, 114, 58, 0.35);
+    border-bottom: 1px solid rgba(73, 50, 70, 0.35);
   }
   .milaura-info-description .read-more-link:hover {
-    color: var(--milaura-gold, #C0A062);
-    border-bottom-color: var(--milaura-gold, #C0A062);
+    color: #3f7474;
+    border-bottom-color: #6fa9a6;
   }
 
   .milaura-gallery-story__karine--mobile {
@@ -3661,10 +3684,10 @@
     gap: 12px;
     margin-top: 2px;
     padding: 14px;
-    border: 1px solid rgba(192, 160, 98, 0.22);
+    border: 1px solid rgba(111, 169, 166, 0.28);
     border-radius: 16px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(253, 248, 239, 0.78));
-    box-shadow: 0 8px 22px rgba(143, 114, 58, 0.08);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(220, 233, 231, 0.42));
+    box-shadow: 0 8px 22px rgba(47, 34, 45, 0.07);
   }
 
   .milaura-gallery-story__karine--mobile .milaura-gallery-story__karine-img {
@@ -3673,8 +3696,8 @@
     height: 58px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--milaura-gold, #C0A062);
-    box-shadow: 0 5px 14px rgba(192, 160, 98, 0.2);
+    border: 2px solid #6fa9a6;
+    box-shadow: 0 5px 14px rgba(111, 169, 166, 0.2);
   }
 
   .milaura-gallery-story__karine--mobile .milaura-gallery-story__karine-content {
@@ -3695,7 +3718,7 @@
     font-family: 'Dancing Script', cursive;
     font-size: 1.5rem;
     line-height: 1;
-    color: var(--milaura-gold-dark, #8F723A);
+    color: #493246;
     margin: 0 0 1px;
     transform: rotate(-2deg);
     transform-origin: left center;
@@ -3704,7 +3727,7 @@
   .milaura-gallery-story__karine--mobile .milaura-gallery-story__author {
     font-family: 'Lato', sans-serif;
     font-size: 0.62rem;
-    color: var(--milaura-gold-dark, #8F723A);
+    color: #3f7474;
     letter-spacing: 1.1px;
     text-transform: uppercase;
     margin: 0;
@@ -3992,66 +4015,43 @@
     }
   }
 
-  /* CTA bundle-aware : premium gold avec icone panier + shimmer, texte NOIR */
+  /* CTA bundle-aware : prune MilAura, détail aqua, sans ancien doré. */
   .milaura-hero-cta-bundle {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 12px;
     flex: 1 1 auto;
     width: auto;
     min-width: 0;
-    padding: 18px 28px;
+    padding: 9px 12px 9px 18px;
     margin-top: 0;
-    background: linear-gradient(135deg, #8F723A 0%, #C0A062 45%, #E6C88B 100%);
-    color: #000000;
-    border: none;
-    border-radius: 16px;
-    font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
-    font-size: 1.1rem;
+    background: linear-gradient(145deg, #52394d 0%, #493246 58%, #2f222d 100%);
+    color: #fffdf9;
+    border: 1px solid rgba(111, 169, 166, 0.38);
+    border-radius: 999px;
+    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
+    font-size: 0.92rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.07em;
     cursor: pointer;
-    box-shadow:
-      0 12px 30px rgba(192, 160, 98, 0.35),
-      0 2px 6px rgba(143, 114, 58, 0.25),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    box-shadow: 0 14px 30px rgba(47, 34, 45, 0.2);
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     isolation: isolate;
   }
 
-  /* Shimmer band qui glisse au hover */
+  /* L'ancien shimmer doré est volontairement neutralisé. */
   .milaura-hero-cta-bundle::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      120deg,
-      transparent 0%,
-      transparent 35%,
-      rgba(255, 255, 255, 0.45) 50%,
-      transparent 65%,
-      transparent 100%
-    );
-    transform: translateX(-100%);
-    transition: transform 0.9s ease;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .milaura-hero-cta-bundle:hover::before {
-    transform: translateX(100%);
+    content: none;
   }
 
   .milaura-hero-cta-bundle:hover {
     transform: translateY(-2px);
-    box-shadow:
-      0 18px 40px rgba(192, 160, 98, 0.45),
-      0 4px 10px rgba(143, 114, 58, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    background: linear-gradient(145deg, #5b4056 0%, #52394d 58%, #382733 100%);
+    box-shadow: 0 18px 34px rgba(47, 34, 45, 0.24);
   }
 
   .milaura-hero-cta-bundle:active {
@@ -4073,18 +4073,22 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 34px;
+    height: 34px;
     flex-shrink: 0;
+    padding: 8px;
+    color: #2f222d;
+    background: #6fa9a6;
+    border-radius: 50%;
   }
 
   .milaura-cta-icon svg {
     width: 100%;
     height: 100%;
-    stroke: #000000;
+    stroke: currentColor;
     fill: none;
     stroke-width: 2;
-    filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.25));
+    filter: none;
   }
 
   .milaura-cta-label {
@@ -4096,12 +4100,44 @@
   .milaura-cta-price {
     font-weight: 800;
     font-size: 1.15rem;
-    color: #000000;
-    background: rgba(0, 0, 0, 0.08);
+    color: #fffdf9;
+    background: rgba(255, 255, 255, 0.12);
     padding: 6px 14px;
     border-radius: 10px;
     backdrop-filter: blur(2px);
     flex-shrink: 0;
+  }
+
+  /* Le système CTA global historique utilise des !important dorés.
+     Ce scope PDP reprend la main sans modifier les autres surfaces du site. */
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle {
+    min-height: 52px !important;
+    padding: 9px 12px 9px 18px !important;
+    border: 1px solid rgba(111, 169, 166, 0.38) !important;
+    background: linear-gradient(145deg, #52394d 0%, #493246 58%, #2f222d 100%) !important;
+    background-color: #493246 !important;
+    color: #fffdf9 !important;
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.07em !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 14px 30px rgba(47, 34, 45, 0.2) !important;
+  }
+
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle::before,
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle::after {
+    content: none !important;
+  }
+
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle:hover {
+    color: #fffdf9 !important;
+    background: linear-gradient(145deg, #5b4056 0%, #52394d 58%, #382733 100%) !important;
+    box-shadow: 0 18px 34px rgba(47, 34, 45, 0.24) !important;
+  }
+
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle .milaura-cta-price {
+    color: #fffdf9 !important;
+    background: rgba(255, 255, 255, 0.12) !important;
   }
 
   @media screen and (max-width: 749px) {
@@ -4110,21 +4146,21 @@
     }
 
     .milaura-bundle-atc-row .milaura-bundle-qty {
-      flex-basis: 92px !important;
-      width: 92px !important;
-      min-width: 92px !important;
-      max-width: 92px !important;
-      min-height: 56px !important;
-      border-radius: 15px !important;
+      flex-basis: 104px !important;
+      width: 104px !important;
+      min-width: 104px !important;
+      max-width: 104px !important;
+      min-height: 52px !important;
+      border-radius: 999px !important;
     }
 
     .milaura-hero-cta-bundle {
       gap: 8px;
       padding: 14px 10px;
-      border-radius: 15px;
+      border-radius: 999px;
       font-size: 0.78rem;
       letter-spacing: 1px;
-      min-height: 56px;
+      min-height: 52px;
     }
 
     .milaura-cta-icon {
@@ -4141,10 +4177,10 @@
 
   @media screen and (max-width: 374px) {
     .milaura-bundle-atc-row .milaura-bundle-qty {
-      flex-basis: 84px !important;
-      width: 84px !important;
-      min-width: 84px !important;
-      max-width: 84px !important;
+      flex-basis: 96px !important;
+      width: 96px !important;
+      min-width: 96px !important;
+      max-width: 96px !important;
     }
 
     .milaura-hero-cta-bundle {
@@ -4168,9 +4204,8 @@
     .milaura-hero-wrapper {
       grid-template-areas:
         "social   social"
-        "meta     meta"
         "gallery  rightcol" !important;
-      grid-template-rows: auto auto auto !important;
+      grid-template-rows: auto auto !important;
       align-items: start;
       row-gap: 12px;
     }
@@ -4206,7 +4241,7 @@
       display: none;
     }
 
-    /* Pills metafield : 1 ligne centree au-dessus de la galerie, plus de absolute */
+    /* Pills rendues dans le header de la colonne d'achat. */
     .milaura-meta-badges {
       position: static;
       padding: 0;
@@ -4214,117 +4249,35 @@
     }
   }
 
-  /* ===========================================
-     GALLERY STORY (desktop only) : description + Karine signature
-     Affiche sous la galerie pour exploiter le vide gauche et humaniser.
-     =========================================== */
+  /* La description et la preuve humaine vivent dans la colonne d'achat,
+     ce qui remplit l'espace libéré par Scratch sans doublonner le contenu. */
   .milaura-gallery-story {
     display: none;
   }
 
   @media screen and (min-width: 990px) {
-    .milaura-gallery-story {
-      display: block;
-      margin-top: 32px;
-      padding-top: 32px;
-      border-top: 1px solid rgba(192, 160, 98, 0.2);
-    }
-
-    .milaura-gallery-story__description {
-      font-family: 'Lato', sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: var(--milaura-text, #000);
-    }
-
-    .milaura-gallery-story__description p {
-      margin: 0 0 12px;
-      display: inline;
-    }
-
-    .milaura-gallery-story__read-more {
-      display: inline;
-      margin-left: 4px;
-      color: var(--milaura-gold-dark, #8F723A);
-      font-weight: 600;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(143, 114, 58, 0.4);
-      transition: color 0.18s ease, border-color 0.18s ease;
-      white-space: nowrap;
-    }
-
-    .milaura-gallery-story__read-more:hover {
-      color: var(--milaura-gold, #C0A062);
-      border-bottom-color: var(--milaura-gold, #C0A062);
-    }
-
-    .milaura-gallery-story__karine {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-top: 28px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(192, 160, 98, 0.2);
-    }
-
-    .milaura-gallery-story__karine-img {
-      flex-shrink: 0;
-      width: 88px;
-      height: 88px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--milaura-gold, #C0A062);
-      box-shadow: 0 6px 18px rgba(192, 160, 98, 0.22);
-    }
-
-    .milaura-gallery-story__karine-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .milaura-gallery-story__quote {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.98rem;
-      font-style: italic;
-      line-height: 1.55;
-      color: var(--milaura-text, #000);
-      margin: 0 0 10px;
-    }
-
-    .milaura-gallery-story__signature {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.9rem;
-      line-height: 1;
-      color: var(--milaura-gold-dark, #8F723A);
-      margin: 0 0 2px;
-      transform: rotate(-2deg);
-      transform-origin: left center;
-    }
-
-    .milaura-gallery-story__author {
-      font-family: 'Lato', sans-serif;
-      font-size: 0.68rem;
-      color: var(--milaura-gold-dark, #8F723A);
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      margin: 0;
-      font-weight: 600;
-    }
-
-    /* Sur desktop, on cache la description dans l'info-block (col droite) : elle est maintenant dans gallery story */
     .milaura-hero-actions-group .milaura-info-block {
-      display: none;
+      display: flex;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top-color: rgba(111, 169, 166, 0.28);
     }
   }
 
   /* Mobile : compact + galerie max 60vh */
   @media screen and (max-width: 768px) {
     .milaura-hero-social {
-      padding: 10px 14px;
-      gap: 10px;
+      min-height: 40px;
+      padding: 6px 13px;
+      gap: 8px;
     }
     .milaura-hero-social-text {
-      font-size: 0.75rem;
+      font-size: 0.96rem;
+      line-height: 1.15;
+    }
+    .milaura-hero-stars {
+      font-size: 0.7rem;
+      letter-spacing: 0.7px;
     }
     .milaura-hero-cta-bundle {
       padding: 14px 10px;
@@ -4349,39 +4302,82 @@
     <div class="milaura-hero-wrapper">
       {%- comment -%} GROUPE 1 HEADER deplace dans .milaura-hero-rightcol (avec actions group) pour eviter le trou vertical sur desktop. Refonte 2026-05-28 evening. {%- endcomment -%}
 
-      {%- comment -%} Bulle social proof au-dessus de la galerie (refonte 2026-05-28, demande user mobile).
-        Le nombre de client(e)s varie par produit via calcul deterministe base sur product.id (entre 12 et 141). {%- endcomment -%}
+      {%- comment -%}
+        Bulle sociale historique. Le compteur est stable par produit et varie entre 12
+        et 141 afin de representer le volume multi-canal communique par MilAura.
+      {%- endcomment -%}
       {%- if section.settings.show_social_proof -%}
-        {%- assign months_fr = "janvier,fevrier,mars,avril,mai,juin,juillet,aout,septembre,octobre,novembre,decembre" | split: "," -%}
-        {%- assign month_idx = "now" | date: "%-m" | minus: 1 -%}
+        {%- assign months_fr = 'janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre' | split: ',' -%}
+        {%- assign month_idx = 'now' | date: '%-m' | minus: 1 -%}
         {%- assign month_fr = months_fr[month_idx] -%}
-        {%- assign year_fr = "now" | date: "%Y" -%}
-        {%- comment -%} Calcul deterministe : meme produit = meme nombre, varie entre 12 et 141. {%- endcomment -%}
+        {%- assign year_fr = 'now' | date: '%Y' -%}
         {%- assign social_count_raw = product.id | default: 0 | modulo: 130 -%}
         {%- assign social_count = social_count_raw | plus: 12 -%}
         <div class="milaura-hero-social milaura-hero-social--top">
-          <div class="milaura-hero-stars" aria-label="5 etoiles sur 5">
+          <div class="milaura-hero-stars" aria-label="5 étoiles sur 5">
             <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
           </div>
           <p class="milaura-hero-social-text">
-            Ce produit a deja fait le bonheur de
-            <strong>+ de {{ social_count }} client(e)s</strong>
-            en {{ month_fr }} {{ year_fr }}
+            Ce produit a déjà fait le <span class="milaura-hero-social-script">bonheur</span> de <strong>+ de {{ social_count }} client(e)s</strong> en {{ month_fr }} {{ year_fr }}
           </p>
         </div>
       {%- endif -%}
 
-      {%- comment -%} Badges metafield : calcul ici, rendu dans le header produit apres la galerie. {%- endcomment -%}
-      {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
-      {%- assign badge_stone = product.metafields.milaura.stone_name -%}
-      {%- if badge_stone == blank -%}
-        {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
+      {%- comment -%} Pills atomiques : faits produit, pierre, qualite, provenance et vertus courtes. {%- endcomment -%}
+      {%- assign product_type_badge = product.metafields.milaura.product_type_handle.value | default: product.metafields.milaura.product_type_handle | downcase -%}
+      {%- assign is_candle_product = false -%}
+      {%- if product_type_badge contains 'bougie' or product_type_badge contains 'candle' -%}
+        {%- assign is_candle_product = true -%}
       {%- endif -%}
-      {%- assign badge_vertus = product.metafields.milaura.vertus -%}
-      {%- assign badge_quality = product.metafields.milaura.qualite -%}
-      {%- assign badge_provenance = product.metafields.milaura.provenance -%}
+      {%- assign badge_energy = product.metafields.milaura.primary_intention.value | default: product.metafields.milaura.energy_handle.value | default: product.metafields.milaura.energy_handle -%}
+      {%- assign badge_stone = product.metafields.milaura.stone_name.value | default: product.metafields.milaura.stone_name -%}
+      {%- if badge_stone == blank -%}
+        {%- assign badge_stone = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle | replace: '-', ' ' | capitalize -%}
+      {%- endif -%}
+      {%- assign badge_vertus = product.metafields.milaura.vertus.value | default: product.metafields.milaura.vertus -%}
+      {%- assign badge_quality = product.metafields.milaura.qualite.value | default: product.metafields.milaura.qualite -%}
+      {%- assign badge_provenance = product.metafields.milaura.provenance.value | default: product.metafields.milaura.provenance -%}
+      {%- assign badge_items_serialized = '' -%}
+      {%- if is_candle_product -%}
+        {%- for candle_fact_index in (1..4) -%}
+          {%- assign candle_fact_setting = 'candle_fact_' | append: candle_fact_index -%}
+          {%- assign candle_fact = section.settings[candle_fact_setting] | strip -%}
+          {%- if candle_fact != blank -%}
+            {%- assign badge_items_serialized = badge_items_serialized | append: 'fact::' | append: candle_fact | append: '|||' -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if badge_stone != blank -%}
+        {%- assign badge_items_serialized = badge_items_serialized | append: 'stone::' | append: badge_stone | append: '|||' -%}
+      {%- endif -%}
+      {%- assign badge_quality_values = badge_quality | replace: ';', ',' | split: ',' -%}
+      {%- assign badge_quality_value = badge_quality_values.first | strip | replace: 'Qualité ', 'Grade ' | replace: 'Qualite ', 'Grade ' -%}
+      {%- if badge_quality_value != blank -%}
+        {%- assign badge_items_serialized = badge_items_serialized | append: 'quality::' | append: badge_quality_value | append: '|||' -%}
+      {%- endif -%}
+      {%- if badge_provenance != blank -%}
+        {%- assign badge_items_serialized = badge_items_serialized | append: 'provenance::' | append: badge_provenance | append: '|||' -%}
+      {%- endif -%}
+      {%- assign badge_vertus_clean = badge_vertus | strip_html | replace: 'selon les usages traditionnels de la lithothérapie.', '' | replace: 'selon les usages traditionnels de la lithothérapie', '' | replace: 'Selon les usages traditionnels de la lithothérapie.', '' | replace: 'Selon les usages traditionnels de la lithothérapie', '' | replace: ';', ',' -%}
+      {%- assign badge_virtue_values = badge_vertus_clean | split: ',' -%}
+      {%- for badge_virtue_value in badge_virtue_values -%}
+        {%- assign badge_virtue_value = badge_virtue_value | strip -%}
+        {%- assign badge_virtue_key = badge_virtue_value | downcase -%}
+        {%- unless badge_virtue_value == blank or badge_virtue_key contains 'lithoth' or badge_virtue_key contains 'usage traditionnel' -%}
+          {%- assign badge_items_serialized = badge_items_serialized | append: 'virtue::' | append: badge_virtue_value | append: '|||' -%}
+        {%- endunless -%}
+      {%- endfor -%}
+      {%- if badge_energy != blank -%}
+        {%- assign badge_energy_label = badge_energy | replace: '-', ' ' | replace: 'serenite', 'sérénité' | replace: 'clarte', 'clarté' | replace: 'energie', 'énergie' | capitalize -%}
+        {%- assign badge_energy_key = badge_energy_label | downcase -%}
+        {%- assign badge_vertus_key = badge_vertus_clean | downcase -%}
+        {%- unless badge_vertus_key contains badge_energy_key -%}
+          {%- assign badge_items_serialized = badge_items_serialized | append: 'intention::' | append: badge_energy_label | append: '|||' -%}
+        {%- endunless -%}
+      {%- endif -%}
+      {%- assign badge_items = badge_items_serialized | split: '|||' -%}
       {%- assign has_meta_badges = false -%}
-      {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank or badge_provenance != blank -%}
+      {%- if badge_items_serialized != blank -%}
         {%- assign has_meta_badges = true -%}
       {%- endif -%}
 
@@ -4654,52 +4650,7 @@
           </div>
         {%- endif -%}
 
-        {%- comment -%} Badges metafield + bulle social proof restent dans grid area dediee. Description + Karine signature rendues ci-dessous (desktop only). {%- endcomment -%}
-
-        {%- comment -%} ==========================================
-          GALLERY STORY (desktop only) : description complete + signature Karine.
-          Affiche sous la galerie pour exploiter le vide gauche et humaniser la marque.
-          Sur mobile, ce bloc est cache (la description reste dans l'info-block apres CTA).
-          ========================================== {%- endcomment -%}
-        <div class="milaura-gallery-story">
-          {%- if section.settings.show_description and product.description != blank -%}
-            <div class="milaura-gallery-story__description rte">
-              {{ product.description | strip_html | truncatewords: 25 }}
-              <a href="#ProductTabs" class="milaura-gallery-story__read-more" id="readMoreLinkGallery-{{ section.id }}">Lire la suite &rarr;</a>
-            </div>
-            <script>
-              (function () {
-                var link = document.getElementById('readMoreLinkGallery-{{ section.id }}');
-                if (!link) return;
-                link.addEventListener('click', function (e) {
-                  e.preventDefault();
-                  var target = document.getElementById('ProductTabs');
-                  if (target) {
-                    var headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 80;
-                    var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                  }
-                });
-              })();
-            </script>
-          {%- endif -%}
-
-          {%- if section.settings.show_karine_block -%}
-            <div class="milaura-gallery-story__karine">
-              {%- if section.settings.karine_image != blank -%}
-                <img class="milaura-gallery-story__karine-img"
-                     src="{{ section.settings.karine_image | image_url: width: 220 }}"
-                     alt="Karine, fondatrice Mil'Aura"
-                     width="88" height="88" loading="lazy" decoding="async">
-              {%- endif -%}
-              <div class="milaura-gallery-story__karine-content">
-                <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Je sélectionne chaque pierre avec soin. Origine contrôlée, qualité vérifiée avec rigueur, avant d'arriver dans nos ateliers.{%- endif -%}</p>
-                <p class="milaura-gallery-story__signature">Karine</p>
-                <p class="milaura-gallery-story__author">Fondatrice Mil'Aura</p>
-              </div>
-            </div>
-          {%- endif -%}
-        </div>
+        {%- comment -%} La description courte et la preuve humaine restent dans la colonne d'achat sur tous les écrans. {%- endcomment -%}
       </div>
 
       <!--
@@ -4753,60 +4704,23 @@
           {%- endif -%}
 
           {%- if has_meta_badges -%}
-            {%- assign shown_meta_badges = 0 -%}
-            <div class="milaura-meta-badges milaura-meta-badges--product">
-              {%- if badge_stone != blank and shown_meta_badges < 4 -%}
-                {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
-                <span class="milaura-meta-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6 3h12l4 6-10 12L2 9l4-6z"/>
-                    <path d="M2 9h20M8 3 6 9l6 12 6-12-2-6"/>
-                  </svg>
-                  {{ badge_stone }}
-                </span>
-              {%- endif -%}
-              {%- if badge_vertus != blank and shown_meta_badges < 4 -%}
-                {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
-                {%- assign badge_vertus_size = badge_vertus | strip_html | size -%}
-                <span class="milaura-meta-badge milaura-meta-badge--vertus{% if badge_vertus_size > 36 %} milaura-meta-badge--vertus-scroll{% endif %}">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                  </svg>
-                  <span class="milaura-meta-badge__marquee">
-                    <span class="milaura-meta-badge__marquee-inner">
-                      <span>{{ badge_vertus }}</span>
-                      <span class="milaura-meta-badge__marquee-copy" aria-hidden="true">{{ badge_vertus }}</span>
-                    </span>
-                  </span>
-                </span>
-              {%- endif -%}
-              {%- if badge_quality != blank and shown_meta_badges < 4 -%}
-                {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
-                <span class="milaura-meta-badge milaura-meta-badge--gold">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                  {{ badge_quality }}
-                </span>
-              {%- endif -%}
-              {%- if badge_provenance != blank and shown_meta_badges < 4 -%}
-                {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
-                <span class="milaura-meta-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/>
-                    <circle cx="12" cy="10" r="2.5"/>
-                  </svg>
-                  {{ badge_provenance }}
-                </span>
-              {%- endif -%}
-              {%- if badge_energy != blank and shown_meta_badges < 4 -%}
-                <span class="milaura-meta-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                  </svg>
-                  {{ badge_energy }}
-                </span>
-              {%- endif -%}
+            <div class="milaura-meta-badges milaura-meta-badges--product" tabindex="0" aria-label="Caractéristiques du produit en défilement">
+              <div class="milaura-meta-badges__rail">
+                {%- for rail_copy in (1..2) -%}
+                  <div class="milaura-meta-badges__group"{% if rail_copy == 2 %} aria-hidden="true"{% endif %}>
+                    {%- for badge_item in badge_items -%}
+                      {%- assign badge_parts = badge_item | split: '::' -%}
+                      {%- assign badge_kind = badge_parts[0] | strip -%}
+                      {%- assign badge_value = badge_parts[1] | strip -%}
+                      {%- assign badge_value_key = badge_value | downcase -%}
+                      {%- assign badge_value_size = badge_value | size -%}
+                      {%- unless badge_value == blank or badge_value_key contains 'premium' or badge_value_size > 48 -%}
+                        <span class="milaura-meta-badge milaura-meta-badge--{{ badge_kind | escape }}">{{ badge_value | escape }}</span>
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  </div>
+                {%- endfor -%}
+              </div>
             </div>
           {%- endif -%}
 
@@ -5276,7 +5190,7 @@
                      width="58" height="58" loading="lazy" decoding="async">
               {%- endif -%}
               <div class="milaura-gallery-story__karine-content">
-                <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Je sélectionne chaque pierre avec soin. Origine contrôlée, qualité vérifiée avec rigueur, avant d'arriver dans nos ateliers.{%- endif -%}</p>
+                <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Je sélectionne chaque pièce et je la contrôle à réception avant de préparer votre commande à Metz.{%- endif -%}</p>
                 <p class="milaura-gallery-story__signature">Karine</p>
                 <p class="milaura-gallery-story__author">Fondatrice Mil'Aura</p>
               </div>
@@ -6729,8 +6643,9 @@
           "@type": "Brand",
           "name": {{ product.vendor | json }}
         },
+        {%- if product.selected_or_first_available_variant.sku != blank -%}
         "sku": {{ product.selected_or_first_available_variant.sku | json }},
-        "mpn": {{ product.selected_or_first_available_variant.sku | json }},
+        {%- endif -%}
         {%- if product.type != blank -%}
         "category": {{ product.type | json }},
         {%- endif -%}
@@ -6758,7 +6673,9 @@
               "@type": "Organization",
               "name": "Milaura"
             },
+            {%- if variant.sku != blank -%}
             "sku": {{ variant.sku | json }},
+            {%- endif -%}
             {%- if variant.barcode.size == 12 -%}
               "gtin12": {{ variant.barcode | json }},
             {%- elsif variant.barcode.size == 13 -%}
@@ -6766,69 +6683,42 @@
             {%- elsif variant.barcode.size == 14 -%}
               "gtin14": {{ variant.barcode | json }},
             {%- endif -%}
-            "shippingDetails": {
-              "@type": "OfferShippingDetails",
-              "shippingRate": {
-                "@type": "MonetaryAmount",
-                "value": {% if variant.price >= 3900 %}"0"{% else %}"4.90"{% endif %},
-                "currency": {{ cart.currency.iso_code | json }}
-              },
-              "shippingDestination": {
-                "@type": "DefinedRegion",
-                "addressCountry": "FR"
-              },
-              "deliveryTime": {
-                "@type": "ShippingDeliveryTime",
-                "handlingTime": {
-                  "@type": "QuantitativeValue",
-                  "minValue": "0",
-                  "maxValue": "1",
-                  "unitCode": "d"
-                },
-                "transitTime": {
-                  "@type": "QuantitativeValue",
-                  "minValue": "1",
-                  "maxValue": "3",
-                  "unitCode": "d"
-                }
-              }
-            },
-            "hasMerchantReturnPolicy": {
-              "@type": "MerchantReturnPolicy",
-              "applicableCountry": ["CH", "BE", "LU", "FR", "DE", "ES", "IT"],
-              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-              "merchantReturnDays": "14",
-              "returnMethod": "https://schema.org/ReturnByMail",
-              "returnFees": "https://schema.org/CustomerResponsibility",
-              "itemCondition": "https://schema.org/UnopenedCondition",
-              "description": "Retour à la charge du client, gratuit en cas de défaut. Produit doit être scellé dans son emballage d'origine."
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1
             }
           }{% unless forloop.last %},{% endunless %}
           {%- endfor -%}
         ]
         {%- comment -%} Metafields Milaura — additionalProperty pour agents IA / UCP {%- endcomment -%}
-        {%- assign has_additional = false -%}
-        {%- if product.metafields.milaura.baseline != blank or product.metafields.milaura.vertus != blank or product.metafields.milaura.stone_handle != blank or product.metafields.milaura.intention_handle != blank or product.metafields.milaura.scent_handle != blank -%}
+        {%- liquid
+          assign baseline_text = product.metafields.milaura.baseline | metafield_text | strip_html | strip
+          assign vertus_text = product.metafields.milaura.vertus | metafield_text | strip_html | strip
+          assign stone_benefits_text = product.metafields.milaura.stone_benefits | metafield_text | strip_html | strip
+          assign ritual_steps_text = product.metafields.milaura.ritual_steps | metafield_text | strip_html | strip
+          assign has_additional = false
+        -%}
+        {%- if baseline_text != blank or vertus_text != blank or product.metafields.milaura.stone_handle != blank or stone_benefits_text != blank or product.metafields.milaura.intention_handle != blank or product.metafields.milaura.scent_handle != blank or ritual_steps_text != blank or product.metafields.milaura.product_type_handle != blank -%}
           {%- assign has_additional = true -%}
         {%- endif -%}
         {%- if has_additional -%}
         ,"additionalProperty": [
           {%- assign prop_comma = false -%}
-          {%- if product.metafields.milaura.baseline != blank -%}
+          {%- if baseline_text != blank -%}
             {%- if prop_comma -%},{%- endif -%}
             {
               "@type": "PropertyValue",
               "name": "Intention emotionnelle",
-              "value": {{ product.metafields.milaura.baseline | json }}
+              "value": {{ baseline_text | json }}
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
-          {%- if product.metafields.milaura.vertus != blank -%}
+          {%- if vertus_text != blank -%}
             {%- if prop_comma -%},{%- endif -%}
             {
               "@type": "PropertyValue",
               "name": "Vertus",
-              "value": {{ product.metafields.milaura.vertus | json }}
+              "value": {{ vertus_text | json }}
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
@@ -6841,12 +6731,12 @@
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
-          {%- if product.metafields.milaura.stone_benefits != blank -%}
+          {%- if stone_benefits_text != blank -%}
             {%- if prop_comma -%},{%- endif -%}
             {
               "@type": "PropertyValue",
               "name": "Bienfaits de la pierre",
-              "value": {{ product.metafields.milaura.stone_benefits | json }}
+              "value": {{ stone_benefits_text | json }}
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
@@ -6868,12 +6758,12 @@
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
-          {%- if product.metafields.milaura.ritual_steps != blank -%}
+          {%- if ritual_steps_text != blank -%}
             {%- if prop_comma -%},{%- endif -%}
             {
               "@type": "PropertyValue",
               "name": "Rituel d'utilisation",
-              "value": {{ product.metafields.milaura.ritual_steps | json }}
+              "value": {{ ritual_steps_text | json }}
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
@@ -7384,14 +7274,36 @@
     {
       "type": "checkbox",
       "id": "show_social_proof",
-      "label": "Afficher social proof",
+      "label": "Afficher le bandeau bleu",
       "default": true
     },
     {
-      "type": "number",
-      "id": "social_count",
-      "label": "Nombre de client(e)s a afficher (mois en cours)",
-      "default": 127
+      "type": "header",
+      "content": "Pills bougies"
+    },
+    {
+      "type": "text",
+      "id": "candle_fact_1",
+      "label": "Fait bougie 1",
+      "default": "Fabrication artisanale"
+    },
+    {
+      "type": "text",
+      "id": "candle_fact_2",
+      "label": "Fait bougie 2",
+      "default": "Cire végétale"
+    },
+    {
+      "type": "text",
+      "id": "candle_fact_3",
+      "label": "Fait bougie 3",
+      "default": "40 h de combustion"
+    },
+    {
+      "type": "text",
+      "id": "candle_fact_4",
+      "label": "Fait bougie 4",
+      "default": "Pierre naturelle intégrée"
     },
     {
       "type": "paragraph",
@@ -7399,11 +7311,11 @@
     },
     {
       "type": "header",
-      "content": "Bloc Karine (desktop only) - sous la galerie"
+      "content": "Bloc Karine"
     },
     {
       "type": "paragraph",
-      "content": "Affiche sous la galerie photo : photo Karine ronde + citation vendeur + signature. Exploite le vide a gauche et humanise la marque. Cache sur mobile."
+      "content": "Affiche une preuve humaine compacte sous l'achat, sur mobile et desktop."
     },
     {
       "type": "checkbox",
@@ -7421,7 +7333,7 @@
       "type": "textarea",
       "id": "karine_quote",
       "label": "Citation Karine (texte vendeur)",
-      "default": "Je sélectionne chaque pierre avec soin. Origine contrôlée, qualité vérifiée avec rigueur, avant d'arriver dans nos ateliers."
+      "default": "Je sélectionne chaque pièce et je la contrôle à réception avant de préparer votre commande à Metz."
     },
     {
       "type": "header",
@@ -8192,12 +8104,12 @@
     {
       "name": "Milaura Hero Premium",
       "blocks": [
-        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Point relais offert dès 30 €" } },
-        { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
+        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison calculée au paiement" } },
+        { "type": "trust_badge", "settings": { "icon": "↩", "text": "Retour possible sous 14 jours" } },
         { "type": "volume_offer" },
-        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre livraison offerte en point relais se débloque automatiquement dès 30 € d’achat." } },
+        { "type": "gift", "settings": { "icon": "✉️", "name": "Ancien avantage", "value": "", "discount_code": "", "badge_label": "Désactivé", "popup_title": "Ancien avantage désactivé", "popup_text": "Les avantages actifs sont présentés dans le panier." } },
         { "type": "gift", "settings": { "icon": "🖤", "name": "Carte sélection", "value": "Cadeau MilAura", "badge_label": "Gagné", "popup_title": "Votre cadeau MilAura est débloqué", "popup_text": "Votre panier atteint le palier 50 €. Votre cadeau MilAura est ajouté automatiquement au panier." } },
-        { "type": "gift", "settings": { "icon": "✨", "name": "Surprise de l'été", "value": "", "discount_code": "MILAURA30", "badge_label": "Surprise été", "popup_title": "Votre meilleur cadeau est débloqué", "popup_text": "Votre panier atteint le palier 80 €. Grattez votre carte dans le panier pour appliquer la remise MilAura." } }
+        { "type": "gift", "settings": { "icon": "✨", "name": "Ancien avantage", "value": "", "discount_code": "", "badge_label": "Désactivé", "popup_title": "Ancien avantage désactivé", "popup_text": "Les avantages actifs sont présentés dans le panier." } }
       ]
     }
   ]
