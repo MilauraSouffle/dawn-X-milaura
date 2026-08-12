@@ -333,10 +333,6 @@
     border-color: rgba(111, 169, 166, 0.3);
   }
 
-  .milaura-meta-badge--virtue {
-    text-transform: capitalize;
-  }
-
   .milaura-meta-badge--fact {
     background: rgba(73, 50, 70, 0.07);
   }
@@ -4344,7 +4340,10 @@
       {%- assign badge_vertus_clean = badge_vertus | strip_html | replace: 'selon les usages traditionnels de la lithothérapie.', '' | replace: 'selon les usages traditionnels de la lithothérapie', '' | replace: 'Selon les usages traditionnels de la lithothérapie.', '' | replace: 'Selon les usages traditionnels de la lithothérapie', '' | replace: ';', ',' -%}
       {%- assign badge_virtue_values = badge_vertus_clean | split: ',' -%}
       {%- for badge_virtue_value in badge_virtue_values -%}
-        {%- assign badge_virtue_value = badge_virtue_value | strip | capitalize -%}
+        {%- assign badge_virtue_value = badge_virtue_value | strip -%}
+        {%- assign badge_virtue_initial = badge_virtue_value | slice: 0, 1 | upcase -%}
+        {%- assign badge_virtue_remainder = badge_virtue_value | slice: 1, 200 -%}
+        {%- assign badge_virtue_value = badge_virtue_initial | append: badge_virtue_remainder -%}
         {%- assign badge_virtue_key = badge_virtue_value | downcase -%}
         {%- unless badge_virtue_value == blank or badge_virtue_key contains 'lithoth' or badge_virtue_key contains 'usage traditionnel' -%}
           {%- assign badge_items_serialized = badge_items_serialized | append: 'virtue::' | append: badge_virtue_value | append: '|||' -%}
