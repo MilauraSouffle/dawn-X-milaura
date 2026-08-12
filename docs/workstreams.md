@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-08-12 18:57 CEST
+Derniere mise a jour : 2026-08-12 19:22 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active, aucune exception.
 
@@ -15,6 +15,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Lot | Proprietaire | Branche | Worktree | Fichiers ou zone exclusive | Theme | Statut | Mise a jour |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Correction visuelle PDP, pills mobiles et bandeau social | Codex, tache `Auditer l'avancement MilAura` | `codex/milaura-pdp-visual-correction-20260812` | `/Users/paesano/Documents/MilAura website/_worktrees/pdp-visual-correction-20260812` | `sections/milaura-product-hero.liquid`, `templates/product.milaura-produit.json`, checkpoint PDP associe | developpement `199421952347`, aucun live sans GO | actif | 2026-08-12 18:57 CEST |
+| Capsule de titre des collections, variante aigue-marine | Codex, tache `Definir la voix editoriale MilAura` | `codex/milaura-collection-pill-aqua-20260812` | `/Users/paesano/Documents/MilAura website/_worktrees/collection-pill-aqua-20260812` | `sections/milaura-collection-hero.liquid`, checkpoint collection associe | aucun push direct ; live uniquement par le proprietaire d'integration apres remise | actif | 2026-08-12 19:22 CEST |
 
 ## Regles du registre
 
