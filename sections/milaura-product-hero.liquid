@@ -4086,6 +4086,38 @@
     flex-shrink: 0;
   }
 
+  /* Le système CTA global historique utilise des !important dorés.
+     Ce scope PDP reprend la main sans modifier les autres surfaces du site. */
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle {
+    min-height: 52px !important;
+    padding: 9px 12px 9px 18px !important;
+    border: 1px solid rgba(111, 169, 166, 0.38) !important;
+    background: linear-gradient(145deg, #52394d 0%, #493246 58%, #2f222d 100%) !important;
+    background-color: #493246 !important;
+    color: #fffdf9 !important;
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.07em !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 14px 30px rgba(47, 34, 45, 0.2) !important;
+  }
+
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle::before,
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle::after {
+    content: none !important;
+  }
+
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle:hover {
+    color: #fffdf9 !important;
+    background: linear-gradient(145deg, #5b4056 0%, #52394d 58%, #382733 100%) !important;
+    box-shadow: 0 18px 34px rgba(47, 34, 45, 0.24) !important;
+  }
+
+  #ProductInfo-{{ section.id }} .milaura-hero-cta-bundle .milaura-cta-price {
+    color: #fffdf9 !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+  }
+
   @media screen and (max-width: 749px) {
     .milaura-bundle-atc-row {
       gap: 8px;
@@ -4298,27 +4330,29 @@
         {%- assign badge_items_serialized = badge_items_serialized | append: 'stone::' | append: badge_stone | append: '|||' -%}
       {%- endif -%}
       {%- assign badge_quality_values = badge_quality | replace: ';', ',' | split: ',' -%}
-      {%- for badge_quality_value in badge_quality_values -%}
-        {%- assign badge_quality_value = badge_quality_value | strip -%}
-        {%- if badge_quality_value != blank -%}
-          {%- assign badge_items_serialized = badge_items_serialized | append: 'quality::' | append: badge_quality_value | append: '|||' -%}
-        {%- endif -%}
-      {%- endfor -%}
+      {%- assign badge_quality_value = badge_quality_values.first | strip | replace: 'Qualité ', 'Grade ' | replace: 'Qualite ', 'Grade ' -%}
+      {%- if badge_quality_value != blank -%}
+        {%- assign badge_items_serialized = badge_items_serialized | append: 'quality::' | append: badge_quality_value | append: '|||' -%}
+      {%- endif -%}
       {%- if badge_provenance != blank -%}
         {%- assign badge_items_serialized = badge_items_serialized | append: 'provenance::' | append: badge_provenance | append: '|||' -%}
       {%- endif -%}
       {%- assign badge_vertus_clean = badge_vertus | strip_html | replace: 'selon les usages traditionnels de la lithothérapie.', '' | replace: 'selon les usages traditionnels de la lithothérapie', '' | replace: 'Selon les usages traditionnels de la lithothérapie.', '' | replace: 'Selon les usages traditionnels de la lithothérapie', '' | replace: ';', ',' -%}
       {%- assign badge_virtue_values = badge_vertus_clean | split: ',' -%}
       {%- for badge_virtue_value in badge_virtue_values -%}
-        {%- assign badge_virtue_value = badge_virtue_value | strip -%}
+        {%- assign badge_virtue_value = badge_virtue_value | strip | capitalize -%}
         {%- assign badge_virtue_key = badge_virtue_value | downcase -%}
         {%- unless badge_virtue_value == blank or badge_virtue_key contains 'lithoth' or badge_virtue_key contains 'usage traditionnel' -%}
           {%- assign badge_items_serialized = badge_items_serialized | append: 'virtue::' | append: badge_virtue_value | append: '|||' -%}
         {%- endunless -%}
       {%- endfor -%}
       {%- if badge_energy != blank -%}
-        {%- assign badge_energy_label = badge_energy | replace: '-', ' ' -%}
-        {%- assign badge_items_serialized = badge_items_serialized | append: 'intention::' | append: badge_energy_label | append: '|||' -%}
+        {%- assign badge_energy_label = badge_energy | replace: '-', ' ' | replace: 'serenite', 'sérénité' | replace: 'clarte', 'clarté' | replace: 'energie', 'énergie' | capitalize -%}
+        {%- assign badge_energy_key = badge_energy_label | downcase -%}
+        {%- assign badge_vertus_key = badge_vertus_clean | downcase -%}
+        {%- unless badge_vertus_key contains badge_energy_key -%}
+          {%- assign badge_items_serialized = badge_items_serialized | append: 'intention::' | append: badge_energy_label | append: '|||' -%}
+        {%- endunless -%}
       {%- endif -%}
       {%- assign badge_items = badge_items_serialized | split: '|||' -%}
       {%- assign has_meta_badges = false -%}
