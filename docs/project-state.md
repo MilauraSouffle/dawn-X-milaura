@@ -1,99 +1,141 @@
-# MilAura - État courant du projet
+# MilAura - Etat courant du projet
 
-Dernière mise à jour : 2026-08-10 07:57 CEST
+Derniere mise a jour : 2026-08-12 15:06 CEST
 
-## État en une phrase
+## Etat en une phrase
 
-La fondation catalogue et SEO de phase 2 est structurée et privée : contrat canonique figé, 20 produits actifs normalisés en lot témoin, 5 collections privées, templates pierre/type et 4 hubs en preview sur le thème de développement. Le dispositif n'est pas prêt pour une activation publique globale.
+Le catalogue V1 est public et operationnel, le Hero, la selection d'aout, `Choisir sa pierre`, le dock mobile, le bandeau d'engagement et le panier 30/50/80 sont live. La priorite est maintenant de consolider les destinations UI, puis de traiter la verite PDP et le retrait de l'ancien Scratch avant toute nouvelle passe creative.
 
-## Règles de conduite actives
+## Regles de conduite actives
 
-- Aucun produit brouillon ne doit être modifié par le chantier catalogue.
-- Aucune nouvelle collection ni aucun hub ne doit être publié sans nouveau GO de Patrice.
-- La homepage, la livraison et le panier appartiennent à d'autres sessions.
-- Aucun push complet du thème. Les déploiements Shopify restent ciblés, suivis d'un pullback.
-- Préserver le worktree sale et les fichiers concurrents.
-- Les métadonnées définitives des collections publiques attendent membres, stock et contenu fiables.
+- Une seule session possede a un instant donne le theme actif, la branche Git et les deploiements Shopify.
+- Aucun commit global, aucun push complet du theme, aucun reset et aucun nettoyage du worktree concurrent.
+- Les deploiements Shopify restent cibles, suivis d'un pullback et d'une comparaison locale.
+- Une validation technique ne vaut jamais validation creative de Patrice.
+- Aucun produit, brouillon, stock ou prix n'est modifie par un chantier theme ou catalogue sans autorisation explicite.
+- Le quiz `/pages/diagnostic-emotionnel` reste le funnel principal et ne doit pas etre remplace.
+- Le Cercle et la page compte restent hors du chemin critique actuel.
+- Les treize anciennes collections sans metas definitives restent dependantes de l'inventaire, du stock et du contenu fiable.
 
-## État Shopify Admin vérifié le 2026-08-10
+## Catalogue V1 public
 
-- 589 produits : 261 actifs, 312 brouillons, 15 archivés, 1 non répertorié.
-- 51 définitions de metafields produit.
-- 11 définitions de metafields collection.
-- 26 collections Admin.
-- 20 collections dans le sitemap public.
-- 5 collections privées créées le 2026-08-09, toujours en 404 et absentes du sitemap :
-  - `bagues-pierres`, 3 produits ;
-  - `par-pierre-agate`, 10 produits ;
-  - `par-pierre-quartz-rose`, 8 produits ;
-  - `par-pierre-lapis-lazuli`, 6 produits ;
-  - `par-pierre-amazonite`, 6 produits.
+Activation validee le 2026-08-12 dans le commit `cb0da71b` et documentee dans `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`.
 
-## Contrat de données canonique
+Pages publiques :
 
-Sources :
+- `/pages/choisir-sa-pierre` ;
+- `/pages/bijoux-par-pierre` ;
+- `/pages/pierres-de-naissance`, avec 4 produits reels ;
+- `/pages/cadeaux-anniversaire-de-mariage`, avec 3 produits reels.
 
-- `config/catalogue-data-contract.json` ;
-- `docs/reference/2026-08-10-contrat-donnees-catalogue.md`.
+Collections publiques :
 
-Décisions :
+- `/collections/bagues-pierres`, 6 produits ;
+- `/collections/par-pierre-aigue-marine`, 6 produits ;
+- `/collections/par-pierre-agate`, 10 produits ;
+- `/collections/par-pierre-quartz-rose`, 8 produits ;
+- `/collections/par-pierre-lapis-lazuli`, 6 produits ;
+- `/collections/par-pierre-amazonite`, 6 produits.
 
-- `stone_handle` = pierre principale ;
-- `stone_handles` = pierres secondaires ou ensemble des pierres d'un produit multi-pierres ;
-- `stone_benefits` reste la clé technique et porte le libellé public `Symbolique traditionnelle` ;
-- `content_updated_at` = date éditoriale canonique ;
-- les variantes de clés rejetées sont bloquées par le contrat.
+Navigation Shopify native :
 
-Quatre définitions Shopify ont été alignées le 2026-08-10 : trois définitions produit et le libellé collection `stone_handle`. Aucune valeur produit n'a été modifiée dans ce dernier lot.
+- `Pierres & Mineraux` : Choisir sa pierre, Bijoux par pierre, Pierres de naissance ;
+- `Bijoux & Pierres Naturelles` : Bagues en pierres, Cadeaux de mariage.
 
-## Templates et hubs
+Validation catalogue V1 : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, aucun `noindex`, presence dans les sitemaps, Theme Check sans erreur, pullback live et developpement identique pour les 9 fichiers cibles. Le journal de mutation confirme `productMutations: 0`.
 
-Thème de développement : `Development (c105a8-mac-1)`, ID `199421952347`.
+## Etat homepage et design live
 
-Présents uniquement sur ce thème :
+- Hero live et visuellement valide par Patrice : `La beaute des bijoux rencontre les vertus des pierres.`
+- Selection d'aout live : homepage et `/collections/selection-aout-2026`.
+- Guide de decouverte live : type, emotion et diagnostic.
+- Landing `Choisir sa pierre` live avec Benefits Explorer et triptyque anime.
+- Bandeau live depuis `c909f192` : `L'engagement MilAura`, service humain, equipe disponible 6j/7 et commandes preparees et expediees depuis l'atelier a Metz.
+- Reference de qualite pour la prochaine passe creative : `tiffany.com`.
 
-- rendu collection pierre avec introduction, composition minérale, couleurs, symbolique traditionnelle, comment porter, entretien, sources et date de mise à jour ;
-- template type dont l'introduction disparaît proprement lorsque la description est vide ;
-- quatre templates de pages hub : bijoux par pierre, choisir sa pierre, pierres de naissance, cadeaux d'anniversaire de mariage.
+Retour Patrice du 2026-08-12, non implemente :
 
-Les quatre Pages Shopify n'ont pas été créées. Le scope de lecture des pages n'est pas disponible, donc la voie locale sûre a été retenue. Aucun bloc produit n'est configuré dans les drafts.
+- le bandeau est trop epais sur mobile et manque d'un detail de marque ;
+- le Hero est beau, mais ses trois cabochons pourraient devenir plus immersifs ;
+- piste a etudier : le plus grand cabochon accueille une video courte et premium d'un mannequin presentant un bijou ;
+- toute evolution doit commencer par des propositions mobile et desktop, sans reutiliser les sprites, gemmes generees ou detourages rejetes le 2026-08-11.
 
-## Baguettes et route Bagues
+## Panier et livraison
 
-- 18 baguettes minérales actives sont listées dans `docs/reference/2026-08-10-baguettes-retrait-catalogue-public.md`.
-- Elles restent actives et inchangées jusqu'à la session inventaire.
-- 2 baguettes supplémentaires sont déjà en brouillon et n'ont pas été touchées.
-- Route canonique future : `/collections/bagues-pierres`.
-- La collection reste privée tant que 8 bagues réelles et disponibles ne sont pas confirmées.
-- Fallback temporaire : `/collections/bijoux-pierres-naturelles`.
-- Écart homepage connu : `templates/index.json` référence encore `shopify://collections/bagues`. Correction réservée à la session UI/UX.
+Avantages live :
 
-## SEO public
+- 30 EUR : point relais offert via `MILAURA-RELAIS30` ;
+- 50 EUR : cadeau mensuel, variante `53142713925979` ;
+- 80 EUR : remise de 15 % via `MILAURA15-80` ;
+- `VINTED10` reste manuel.
 
-Le seul changement live de la phase catalogue reste le correctif ciblé antérieur dans `layout/theme.liquid` : noindex des recherches et tags legacy, titres sans duplication de marque et schema global factuel. Aucun nouveau push live n'a été effectué le 2026-08-10.
+Les trois fichiers du moteur panier ont ete verifies par pullback live, committes dans `6259200d` et pousses le 2026-08-12 :
 
-Treize collections publiques restent sans couple complet de métadonnées SEO explicites. Leur matrice d'activation est dans `docs/reference/2026-08-10-matrice-activation-collections-publiques.md`. Aucun titre ni aucune meta définitive n'a été écrit dans ce dernier lot.
+- `assets/milaura-cart-rewards-auto.js` ;
+- `config/settings_schema.json` ;
+- `snippets/milaura-cart-rewards-drawer.liquid`.
 
-## Validation finale
+Limite de preuve : aucun checkout reel n'a encore confirme le parcours point relais complet.
 
-- Theme Check : 282 fichiers, 0 erreur, 29 avertissements historiques.
-- JSON : 9 fichiers de contrat et templates validés.
-- `git diff --check` : propre.
-- Pullback du thème de développement : 9 fichiers identiques aux fichiers locaux.
-- Previews des 4 hubs : HTTP 200, thème `199421952347`, un H1 par page, aucune sélection produit rendue.
-- Collections privées : 5 réponses 404 et 5 absences du sitemap de 20 collections.
+L'harmonisation `point relais des 30 EUR`, `expedition sous 24 h` et `livraison sous 3 a 5 jours` existe encore dans de nombreux fichiers locaux non livres. Elle ne doit pas etre committee ou deployee en bloc avant audit des proprietaires et de la source de verite logistique.
 
-## Dépendances et chantiers non exécutés
+## PDP et ScratchToReveal
 
-- inventaire réel pour généraliser la taxonomie, décider du retrait des baguettes et valider les sélections ;
-- GSC pour les URLs historiques, signaux et décisions de redirection ;
-- GA4 pour le trafic et le comportement ;
-- Merchant Center pour le flux et les diagnostics ;
-- Pinterest pour le catalogue, le tag et l'activation ;
-- Journal, netlinking externe, tracking et Ads restent dans le plan directeur.
+L'audit initial du 2026-08-11 est `docs/audits/2026-08-11-audit-fiche-produit-seo-aeo-geo.md`.
 
-## Références de reprise
+Risques P0 non clos :
+
+- promesse logistique contradictoire entre interface, politiques et JSON-LD ;
+- preuves sociales deterministes ou generiques ;
+- claims de fabrication, certification et sourcing non conditionnes par une preuve produit ;
+- Product JSON-LD incoherent ;
+- informations produit insuffisamment hierarchisees sur mobile.
+
+Le patch S1A de retrait Scratch est local et non livre. Il touche `sections/milaura-product-hero.liquid`, qui contient aussi des changements concurrents de badges et metafields. Le lot doit donc etre separe et traite avec PDP-P0 sur une fiche pilote avant commit ou live.
+
+## Contrat de donnees et pipeline produit
+
+Le contrat canonique reste :
+
+- `stone_handle` pour la pierre principale ;
+- `stone_handles` pour les pierres secondaires ou multiples ;
+- `stone_benefits` avec le libelle public `Symbolique traditionnelle` ;
+- `content_updated_at` pour la date editoriale.
+
+Le pipeline CAN/Camilla V1.2 vit dans `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`. Il reste draft-only, suit le prix conseille CAN exact, bloque les ambiguites lot/unite et reserve la publication finale a Patrice.
+
+## Etat Git et ownership au 2026-08-12 15:06 CEST
+
+- Branche : `codex/milaura-reconcile-2026-08-07`.
+- Branche distante synchronisee apres `6259200d`.
+- Catalogue V1 : `cb0da71b`, pousse.
+- Panier live : `6259200d`, pousse.
+- 41 fichiers suivis restent modifies localement.
+- Des fichiers non suivis appartiennent a des experiences design, des checkpoints, des sauvegardes, des copies temporaires et au fallback PDP.
+- Matrice d'ownership : `docs/checkpoints/2026-08-12-1506-reconciliation-ownership.md`.
+
+## Prochain ordre d'execution
+
+1. Mettre les destinations homepage et navigation en coherence avec le catalogue V1 public.
+2. Executer PDP-P0 et S1A sur une fiche pilote, sans deploiement avant validation.
+3. Auditer et isoler l'harmonisation livraison.
+4. Ouvrir ensuite un lot creatif dedie au bandeau mobile et au Hero immersif.
+5. Reprendre Karine, Sur mesure, Atelier des emotions, Cadeaux, Journal, puis Cercle.
+
+## Dependances encore ouvertes
+
+- inventaire et retrait controle des 18 baguettes minerales ;
+- treize anciennes collections sans metas definitives ;
+- pages mensuelles de naissance et pages enfants mariage ;
+- GSC, GA4, Merchant Center et Pinterest non verifies ;
+- stock, couts, delais et tracking avant acquisition payante ;
+- Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu.
+
+## References de reprise
 
 - Handoff actif : `docs/codex-handoff.md`.
-- Checkpoint : `docs/checkpoints/2026-08-10-0757-catalogue-taxonomie-drafts-handoff.md`.
-- Index catalogue : `docs/reference/2026-08-09-index-architecture-catalogue.md`.
+- Plan canonique : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
+- Catalogue V1 : `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`.
+- Ownership : `docs/checkpoints/2026-08-12-1506-reconciliation-ownership.md`.
+- Audit PDP : `docs/audits/2026-08-11-audit-fiche-produit-seo-aeo-geo.md`.
+- Bandeau : commit `c909f192`.

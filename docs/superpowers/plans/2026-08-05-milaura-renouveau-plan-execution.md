@@ -2,11 +2,36 @@
 
 Date : 2026-08-05
 
-Derniere mise a jour : 2026-08-08 19:53 CEST
+Derniere mise a jour : 2026-08-12 15:06 CEST
 
-Statut : hero termine et valide par Patrice. Dock mobile V2 et CTA prune publies. G1 et P0A sont clos. La premiere selection saisonniere, aout 2026, est publiee sur la homepage et sur une landing dediee de 20 produits. L'ancienne direction `L'atelier MilAura` est abandonnee au profit de ce systeme vivant et renouvelable. L'implementation actuelle des trois portes est rejetee visuellement et constitue la prochaine etape de redesign. L'Atelier des emotions, le Cercle MilAura et la reutilisation de ScratchToReveal restent des lots distincts et ordonnes.
+Statut : hero, dock mobile, selection saisonniere, bandeau d'engagement, panier 30/50/80 et catalogue V1 sont live. Le catalogue V1 public comprend les hubs Bijoux par pierre, Naissance et Mariage, ainsi que six collections type ou pierre. Le chemin critique passe maintenant par l'integration UI de ces destinations, la verite des fiches produit et le retrait S1A de l'ancien Scratch. Le Cercle reste hors du chemin critique et reprend apres PDP, Karine, Sur mesure, cadeaux et Journal.
 
 Perimetres : theme Shopify, navigation, systeme CTA, reconciliation Git, verite commerciale, Cercle, ScratchToReveal, acquisition et automatisation
+
+## Mise a jour validee le 2026-08-12
+
+1. Le catalogue V1 est public et operationnel depuis `cb0da71b` : trois nouveaux hubs publics, six collections publiques et cinq entrees de navigation Shopify natives.
+2. Les routes Bagues et Aigue-marine disposent chacune de six produits. Agate, Quartz rose, Lapis-lazuli et Amazonite sont aussi publiques.
+3. L'activation catalogue a effectue `productMutations: 0` et n'a modifie aucun produit, brouillon, stock ou prix.
+4. Les neuf fichiers du catalogue V1 ont ete verifies identiques sur les themes live et developpement.
+5. Les trois fichiers du panier 30/50/80 ont ete relus depuis le live, committes dans `6259200d` et pousses sur la branche canonique.
+6. L'integration UI devient le lot actif : remplacer les anciennes destinations, verifier la navigation native et traiter le double H1 homepage signale.
+7. PDP-P0 et S1A suivent immediatement, dans un lot sequentiel sur `sections/milaura-product-hero.liquid`.
+8. Le bandeau mobile et le Hero immersif constituent un lot creatif separe apres consolidation. Pistes demandees par Patrice : bandeau plus fin, detail de marque, cabochons plus immersifs et etude d'une video mannequin premium dans le grand cabochon.
+9. Les pages mensuelles de naissance, les pages enfants mariage, les treize anciennes collections sans metas definitives et le retrait des 18 baguettes restent dependants de l'inventaire.
+
+## Mise a jour de priorite validee le 2026-08-11
+
+Patrice valide le changement d'ordre suivant :
+
+1. Le Cercle et la page compte ne sont plus le prochain lot. Ils feront l'objet d'une session dediee quand les dependances catalogue, conversion et contenu auront avance.
+2. `S1A` est execute immediatement comme hygiene du live : retirer l'ancien Scratch visible ou initialise sur les PDP et la landing publique concernee, sans toucher au panier 30/50/80 et sans supprimer le moteur destine a une extraction future.
+3. La session architecture catalogue reprend en priorite le travail prive deja autorise. Elle peut creer ou reconcilier les categories manquantes hors Boutique en ligne, assigner les templates sur le theme de developpement, verifier les membres et fournir les routes de preview exactes.
+4. Cette reprise catalogue n'autorise aucune publication publique, aucune modification des treize collections publiques sans SEO explicite complet, aucune redirection et aucun lien live vers une route encore privee.
+5. Le premier livrable catalogue attendu est un paquet de destinations stable pour l'UI : routes de type publiques utilisables, hubs pierre et intention en preview, collections pierre eligibles en preview, fallback documente pour chaque route non publiable.
+6. La session UI/UX peut avancer sur les surfaces et templates de developpement a partir de ce contrat. Elle ne doit pas inventer une destination, relier le live a une 404 ou publier une categorie privee.
+7. Apres ce paquet catalogue, la priorite fonctionnelle passe a la verite PDP, puis aux sections Karine et preuves, Sur mesure et Atelier des emotions, Cadeaux et mariage, puis Journal.
+8. `C1`, `S1B`, `S1C` et la section Cercle homepage restent ordonnes ensemble, mais apres les lots ci-dessus.
 
 ## Mise a jour validee le 2026-08-08 a 19:53 CEST
 
@@ -647,19 +672,22 @@ Chaque etape commence seulement lorsque la definition de termine de l'etape prec
 4. `P0A` clos par Patrice le 2026-08-08 : economie validee pour avancer, regles de livraison securisees, panier obsolete retire et moteur Scratch conserve. Aucune automatisation suspendue.
 5. `P0B` clos pour l'execution editoriale le 2026-08-08 : vingt produits reels fournis, dont quatre mis en avant. Les couts et delais exacts restent a documenter avant paid acquisition.
 6. Termine et live le 2026-08-08 : remplacer `L'atelier MilAura` par la selection saisonniere d'aout, quatre produits sur la homepage et vingt sur la landing `/collections/selection-aout-2026`.
-7. Etape active : remplacer les cartes depliantes rejetees par un guide visuel. Construire `Choisir mon bijou par type`, puis `Choisir par emotion`, avec cartes categories photographiees, et reutiliser le teaser du diagnostic existant pour `Me laisser guider`.
-8. Construire la landing Aigue-marine et relier les produits reels.
-9. Inventorier les composants de l'Atelier des emotions, fabriquer trois a cinq prototypes et calculer leur contribution.
-10. Construire Karine et les preuves d'atelier.
-11. Construire Sur mesure V1 et la landing pilote de l'Atelier des emotions.
-12. Refaire la premiere PDP mobile prioritaire et executer `S1A`, retrait du Scratch produit.
-13. Construire Cadeaux et mariage.
-14. Recomposer le Journal et relier chaque contenu a une destination commerciale utile.
-15. Executer `C1` : fondations de donnees, page compte Cercle et pilote fondatrices.
-16. Executer `S1B` et `S1C` : moteur Scratch autonome puis popup d'entree dans le Cercle.
-17. Ajouter la section Cercle a la homepage et ouvrir le pilote public limite.
-18. Reprendre l'acquisition SEO, AEO, GEO, Pinterest et campagnes uniquement avec stock, marge et tracking valides.
-19. Automatiser progressivement Camilla, la conseillere MilAura, les attentions, le parrainage et le suivi, sans automatisation avant preuve manuelle.
+7. `CAT-P1 V1` termine le 2026-08-12 : hubs Bijoux par pierre, Naissance et Mariage publics ; collections Bagues, Aigue-marine, Agate, Quartz rose, Lapis-lazuli et Amazonite publiques ; navigation Shopify native en place.
+8. Etape active : integrer les destinations V1 dans la homepage et le guide, remplacer la reference historique `shopify://collections/bagues`, verifier la navigation native et corriger le double H1 homepage si confirme.
+9. Terminer le guide visuel : `Choisir mon bijou par type`, `Choisir par emotion`, puis `Me laisser guider`, selon les routes publiques et sans duplication du diagnostic. Les extensions intention, naissance mensuelle et mariage enfant restent sous gate inventaire.
+10. Executer `PDP-P0` et `S1A` a partir de l'audit du 2026-08-11 : logistique unique, retrait des preuves fabriquees, claims conditionnels, JSON-LD coherent, informations produit prioritaires et retrait de l'ancien Scratch. Le fichier `sections/milaura-product-hero.liquid` reste sequentiel et doit etre isole avant commit.
+11. Reprendre Pierre du moment a partir de la collection publique Aigue-marine et de ses six produits, apres verification de la diversite des types, du stock reel et des preuves produit necessaires a la campagne.
+12. Auditer l'harmonisation livraison locale avant tout commit ou deploiement global ; les textes statiques ne remplacent pas la future source dynamique liee a la disponibilite.
+13. Inventorier les composants de l'Atelier des emotions, fabriquer trois a cinq prototypes et calculer leur contribution. Ce travail produit peut avancer sans mutation de la homepage.
+14. Construire Karine et les preuves d'atelier avec images, gestes et affirmations documentes.
+15. Construire Sur mesure V1 et la landing pilote de l'Atelier des emotions apres validation de l'offre, des delais et de la capacite reelle.
+16. Construire Cadeaux et mariage a partir du hub et de selections catalogue valides, avant toute activation des pages enfant.
+17. Recomposer le Journal et relier chaque contenu a une destination commerciale publique utile.
+18. Executer `C1` dans une session dediee : nouveaux comptes, fondations de donnees, espace Cercle et pilote fondatrices.
+19. Executer `S1B` et `S1C` : moteur Scratch autonome puis nouvelle entree dans le Cercle, seulement apres C1 et les consentements.
+20. Ajouter la section Cercle a la homepage et ouvrir le pilote public limite.
+21. Reprendre l'acquisition SEO, AEO, GEO, Pinterest et campagnes uniquement avec stock, marge et tracking valides.
+22. Automatiser progressivement Camilla, la conseillere MilAura, les attentions, le parrainage et le suivi, sans automatisation avant preuve manuelle.
 
 ### Regle de suivi
 
