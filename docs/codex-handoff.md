@@ -1,10 +1,10 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-12 18:29 CEST
+Date de mise a jour : 2026-08-12 19:37 CEST
 
 ## Mission de reprise
 
-Reprendre depuis un worktree propre base sur `codex/milaura-integration`. Faire valider PDP-P0 sur le theme de developpement, puis le livrer de facon ciblee uniquement si Patrice donne son GO. Le lot creatif suivant est le bandeau mobile 56 px et le Hero immersif avec media reel.
+Faire valider la PDP corrigee sur le theme de developpement, puis la livrer de facon ciblee uniquement si Patrice donne son GO. La capsule aigue-marine des collections est deja live. Le lot creatif suivant est le bandeau mobile 56 px et le Hero immersif avec media reel.
 
 ## Lecture obligatoire
 
@@ -17,6 +17,8 @@ Reprendre depuis un worktree propre base sur `codex/milaura-integration`. Faire 
 7. `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`
 8. `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
 9. `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
+10. `docs/checkpoints/2026-08-12-1927-collection-pill-aqua.md`
+11. `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`
 
 ## Etat Git de depart
 
@@ -24,10 +26,10 @@ Reprendre depuis un worktree propre base sur `codex/milaura-integration`. Faire 
 - Branche d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique Shopify.
 - L'integration contient l'historique `main` depuis `952d7587` et n'est plus en retard sur ce miroir au 2026-08-12 18:19 CEST.
-- GitHub ne contient que les deux branches actives `main` et `codex/milaura-integration`.
+- La branche temporaire `codex/milaura-pdp-visual-correction-20260812` reste active et propre jusqu'au GO visuel.
 - Les quatre anciennes branches sont preservees par les tags `archive/2026-08-12/*`.
 - Aucun clone numerote et aucun fichier temporaire ne reste dans la zone active.
-- Aucun worktree parallele n'est declare actif.
+- Un seul worktree parallele est actif et declare dans `docs/workstreams.md` : la correction visuelle PDP.
 
 Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration courante dans `docs/workstreams.md`, creer un worktree gere, puis inscrire son ownership avant edition.
 
@@ -42,6 +44,7 @@ Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration c
 - Le quiz principal reste `/pages/diagnostic-emotionnel`.
 - La politique publique confirme point relais offert des 30 EUR, expedition sous 24 h du lundi au vendredi et livraison France sous 3 a 5 jours.
 - PDP-P0 et retrait Scratch sont valides en developpement dans `2effdfbd`, mais ne sont pas live.
+- La capsule aigue-marine des collections est live depuis le 2026-08-12 19:37 CEST. Le fichier live est identique bit a bit a Git.
 
 ## Changements locaux historiques maintenant classes
 
@@ -59,6 +62,8 @@ Avant toute publication :
 4. obtenir le GO visuel explicite de Patrice
 5. en cas de GO, pousser uniquement les six fichiers listes dans `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
 6. pullback cible et test ajout panier
+
+La proposition actuellement a controler ajoute les pills mobiles en rail anime, le bandeau bleu sans faux compteur, le selecteur neutre et le CTA prune. Elle est documentee dans `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md` et reste uniquement sur le theme de developpement.
 
 ## Prochain lot 2 : bandeau et Hero
 
@@ -84,4 +89,4 @@ Suivre `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
 ## Prompt de reprise
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. Base le nouveau worktree sur `codex/milaura-integration` et declare le lot avant toute edition. Le depot actif est propre et consolide. PDP-P0 est valide uniquement sur le theme de developpement et attend le GO visuel de Patrice. Ensuite, suis le brief bandeau 56 px et Hero immersif avec media reel. Ne travaille jamais dans un clone numerote et ne pousse jamais le theme complet.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. La capsule aigue-marine des collections est live. La correction visuelle PDP est sur `codex/milaura-pdp-visual-correction-20260812`, uniquement sur le theme de developpement, et attend le GO visuel de Patrice avant les six fichiers PDP-P0 live. Ensuite, suis le brief bandeau 56 px et Hero immersif avec media reel. Ne travaille jamais dans un clone numerote et ne pousse jamais le theme complet.

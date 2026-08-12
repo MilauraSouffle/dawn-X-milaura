@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-12 18:29 CEST
+Derniere mise a jour : 2026-08-12 19:37 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1 est public, le depot actif est consolide sur une branche d'integration permanente, les changements Shopify locaux sont versionnes, le clone divergent est archive et la prochaine decision reste le GO visuel PDP avant le lot bandeau mobile et Hero immersif.
+Le catalogue V1 est public, la capsule aigue-marine des collections est live, le depot reste organise autour d'une branche d'integration et la prochaine decision reste le GO visuel PDP avant le lot bandeau mobile et Hero immersif.
 
 ## Source de verite et etat du depot
 
@@ -12,9 +12,9 @@ Le catalogue V1 est public, le depot actif est consolide sur une branche d'integ
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique du theme Shopify live.
 - L'historique `main` a ete rattache a l'integration par `952d7587` sans modifier l'arbre source audite et sans deploiement Shopify.
-- GitHub ne conserve que deux branches actives : `main` et `codex/milaura-integration`.
+- Les branches durables sont `main` et `codex/milaura-integration`. La branche temporaire PDP reste active uniquement jusqu'au GO visuel et a son integration.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Aucun worktree parallele n'est actif au 2026-08-12 18:19 CEST.
+- Un seul worktree parallele est actif et declare : `pdp-visual-correction-20260812`.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -69,6 +69,15 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 - Reference de qualite : `tiffany.com`, sans copie et sans decoration generique.
 - Brief : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
+## Collections
+
+- La capsule de titre aigue-marine est live sur toutes les pages utilisant `milaura-collection-hero` depuis le 2026-08-12 19:37 CEST.
+- Fond `#DDF8F4` vers `#BFEAE3`, texte prune `#4A3147`, point dore conserve et compteur francais `modele(s)`.
+- Le jambage du `g` n'est plus coupe par le masque du typewriter.
+- Push live limite a `sections/milaura-collection-hero.liquid`, puis pullback identique bit a bit.
+- Controles publics : `/collections/bagues-pierres` sur desktop et `/collections/par-pierre-aigue-marine` sur mobile, un H1 et aucun debordement horizontal.
+- Checkpoint : `docs/checkpoints/2026-08-12-1927-collection-pill-aqua.md`.
+
 ## Livraison et verite Shopify versionnee
 
 Le commit `9220031e` versionne 31 fichiers auparavant locaux. L'audit du 2026-08-12 a etabli :
@@ -100,6 +109,18 @@ Le lot `2effdfbd` est valide techniquement uniquement sur le theme de developpem
 
 Ce lot n'est pas live et attend le GO visuel de Patrice.
 
+La correction visuelle complementaire est poussee sur `codex/milaura-pdp-visual-correction-20260812` et deployee uniquement sur le theme de developpement :
+
+- pills mobiles sur une seule ligne animee en boucle, avec repli horizontal sans animation
+- une pill par information utile, sans `Premium` et sans formule `selon les usages traditionnels de la lithotherapie`
+- faits bougie explicites, grade unique, provenance quand elle existe et vertus separees
+- bandeau bleu conserve sans connexion aux commandes Shopify
+- aucun zero affiche : tant que le futur compteur manuel multi-canal est vide, le bandeau affiche la selection et le controle par Karine
+- selecteur de quantite neutre et CTA prune, sans dore historique
+- espace Scratch supprime et colonne achat desktop remplie par la description et la preuve Karine
+
+Checkpoint : `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`.
+
 ## Contrat produit
 
 Le commit `6c4e6de4` fixe le contrat canonique complet : pierres, matieres, couleurs, intentions, occasions, disponibilite, fulfillment, provenance et six images minimum. Le pipeline reste draft-only et ne modifie ni hub ni collection publique.
@@ -114,6 +135,7 @@ Pipeline actif :
 - `6c4e6de4` : contrat produit et catalogue
 - `4853db6e` : procedure propre de parallelisation et archive
 - `952d7587` : reconciliation de l'historique du miroir Shopify
+- `6f9b90b5` : capsule aigue-marine des collections integree et livree live
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 
@@ -142,4 +164,6 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`
 - `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`
 - `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
+- `docs/checkpoints/2026-08-12-1927-collection-pill-aqua.md`
+- `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

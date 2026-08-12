@@ -51,3 +51,16 @@ Après intégration du commit de ce lot :
 3. effectuer un pullback ciblé et comparer le fichier bit à bit ;
 4. contrôler au minimum `/collections/bagues-pierres` et une seconde collection sur mobile et desktop ;
 5. fermer le lot dans `docs/workstreams.md`, puis retirer le worktree selon la procédure.
+
+## Cloture d'integration
+
+Date : 2026-08-12 19:37 CEST
+
+- Commit integre sur `codex/milaura-integration` : `6f9b90b5`.
+- Branche d'integration poussee sur GitHub.
+- Seul `sections/milaura-collection-hero.liquid` a ete pousse sur le theme live `190430282075` avec `--only`, `--nodelete`, `--strict` et `--allow-live`.
+- Pullback live identique bit a bit.
+- SHA-256 local et live : `a68655062d2a69d19b69a1f1d4b7f55a61e186980c39dcd88c0a552d2da1b032`.
+- `/collections/bagues-pierres` validee sur desktop : fond aigue-marine, texte prune, `6 modeles`, un H1, aucun debordement.
+- `/collections/par-pierre-aigue-marine` validee sur mobile : fond aigue-marine, texte prune, point dore, `6 modeles`, reserve basse du typewriter a `3.2 px`, un H1, aucun debordement.
+- Statut final : live et ferme.
