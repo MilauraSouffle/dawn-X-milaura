@@ -1,7 +1,7 @@
 # Checkpoint nettoyage et gouvernance du depot MilAura
 
 Date : 2026-08-12 18:19 CEST
-Statut : fermeture technique en cours de push final
+Statut : clos techniquement le 2026-08-12 18:22 CEST
 
 ## Demande
 
@@ -88,12 +88,16 @@ Aucun push Shopify n'a ete execute pendant ce nettoyage.
 - tags d'archive distants verifies avant suppression des branches historiques
 - GitHub verifie a deux branches actives apres nettoyage
 
-## Validation finale requise
+## Validation finale
 
-Apres le commit de ce checkpoint :
+- `git status --porcelain` : 0 entree
+- `git diff --check` et `git diff --cached --check` : reussis
+- `git fsck --full --no-dangling` : reussi, aucune corruption
+- `git worktree list` : un seul worktree, le checkout principal
+- recherche des secrets suivis : aucun `.env`, `credentials/`, `auth.json`, `.mcp.json` ou `config.env` suivi
+- contrats JSON : valides
+- Theme Check : 283 fichiers, 0 erreur, 29 avertissements historiques dans 12 fichiers
+- comparaison avec `origin/main` : 0 commit propre a `main`, l'integration contient tout son historique
+- archive obsolete et archive des fichiers locaux : presentes
 
-1. pousser `codex/milaura-integration`
-2. confirmer egalite HEAD local et branche GitHub
-3. confirmer `git status --porcelain` vide
-4. relancer `git diff --check`, `git fsck` et Theme Check
-5. passer ce checkpoint au statut `clos`
+Le dernier push et la comparaison du SHA GitHub sont effectues apres le commit de fermeture de ce checkpoint. Ils ne modifient aucun fichier Shopify.
