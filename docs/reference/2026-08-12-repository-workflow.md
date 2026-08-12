@@ -17,6 +17,14 @@ Permettre plusieurs sessions sur des lots distincts sans partager un checkout, e
 
 Git et Shopify ne sont pas interchangeables. Un commit ne prouve pas un deploiement. Un changement fait dans l'editeur Shopify ne devient durable qu'apres pullback cible, comparaison et commit.
 
+## Role particulier de `main`
+
+`main` est la branche par defaut et le miroir automatique du theme live Shopify. Elle peut avancer apres une action dans l'editeur Shopify ou une synchronisation du theme. Elle n'est pas la base des nouveaux lots.
+
+Avant une integration ou un deploiement, le proprietaire du checkout principal execute `git fetch --prune origin`, puis controle `HEAD..origin/main` et le diff des fichiers. Un nouveau commit automatique Shopify doit etre classe fichier par fichier. Il ne doit jamais etre fusionne aveuglement.
+
+Lorsque l'arbre d'integration contient deja la version source auditee de tous les changements utiles, l'historique du miroir peut etre rattache par un commit de reconciliation documente, sans modifier l'arbre et sans deployer. Dans tous les autres cas, effectuer d'abord un pullback cible, comparer et integrer les fichiers utiles explicitement.
+
 ## Architecture autorisee
 
 - Un seul clone actif du depot.
