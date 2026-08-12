@@ -8,6 +8,7 @@ This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follo
 - Scripts, creative/UGC et contexte ops elargi : `~/Documents/Agentic-Ops/`. Etat courant agents/infra : `~/Documents/Agentic-Ops/docs/project-state.md`.
 - Maitre global : `~/.claude/CLAUDE.md` (Codex : `~/.codex/AGENTS.md`).
 - Docs du repo (ranges 2026-07-09) : `docs/project-state.md` (etat), `docs/codex-handoff.md` (handoff), `docs/checkpoints/` (handovers de session), `docs/audits/` (SEO), `docs/playbooks/` (Higgsfield, campagnes, workflows IA), `docs/reference/` (metafields, product mapping, blog API, legal), `docs/archive-2026/` (perime).
+- Copywriting public MilAura : lire obligatoirement `docs/reference/2026-08-12-copywriting-milaura.md` avant toute creation ou modification de titre, texte commercial, CTA, navigation, page catalogue, fiche produit, email ou contenu SEO.
 
 ## Git, Sessions Paralleles Et Shopify
 
@@ -42,6 +43,15 @@ This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follo
 - Milaura naming: classes `.milaura-*`, IDs `Milaura*`, CSS variables `--milaura-*`.
 - Keep shared styles in `assets/milaura.css`; limit section-specific styles to `{% style %}` blocks.
 - Avoid editing upstream Dawn files unless necessary; prefer new Milaura sections/snippets.
+
+## Copywriting MilAura
+
+- Le texte public est commercial, clair, concret et centre sur le produit. Il explique ce qui est vendu, pourquoi le produit a ete selectionne et quelles informations aident a choisir.
+- Interdiction du remplissage poetique, des phrases interchangeables, du faux luxe et du `AI slop`. Un texte qui pourrait convenir sans modification a une marque de cosmetique, de bougies ou de mode doit etre reecrit.
+- Les mots `qualite`, `provenance`, `certifie`, `artisanat`, `fait main`, `ethique` et toute garantie exigent une preuve reliee au produit ou au perimetre concerne. Ne jamais transformer une preuve partielle en promesse globale.
+- La lithotherapie reste une symbolique traditionnelle, jamais une promesse medicale, therapeutique ou de resultat.
+- Les titres de navigation et H1 utilisent les mots simples compris par les clients. Les precisions SEO vivent dans le title, la meta description ou le contenu secondaire sans alourdir l'ouverture de page.
+- Le guide canonique, les exemples acceptes et la grille de relecture sont dans `docs/reference/2026-08-12-copywriting-milaura.md`.
 
 ## Testing Guidelines
 - No unit test suite is present; rely on `shopify theme check` for linting.
