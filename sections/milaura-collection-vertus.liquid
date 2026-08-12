@@ -1,0 +1,243 @@
+{%- comment -%}
+  MILAURA COLLECTION PIERRE
+  Couche de rendu factuelle des metafields de collection milaura.*.
+  Les reglages de section ne servent que de repli editorial explicite.
+  Si toutes les donnees sont vides, la section ne rend rien.
+{%- endcomment -%}
+
+{%- liquid
+  assign mf_intro = collection.metafields.milaura.stone_intro
+  assign mf_composition = collection.metafields.milaura.stone_composition
+  assign mf_colors = collection.metafields.milaura.stone_colors
+  assign mf_benefits = collection.metafields.milaura.stone_benefits
+  assign mf_wear = collection.metafields.milaura.comment_porter
+  assign mf_care = collection.metafields.milaura.care
+  assign mf_sources = collection.metafields.milaura.source_urls
+  assign mf_updated_at = collection.metafields.milaura.content_updated_at
+
+  assign intro = section.settings.intro_text
+  assign benefits = section.settings.benefits_text
+  assign wear = section.settings.wear_text
+-%}
+
+{%- if mf_intro != blank -%}
+  {%- capture intro -%}{{ mf_intro | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+
+{%- if mf_benefits != blank -%}
+  {%- capture benefits -%}{{ mf_benefits | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+
+{%- if mf_wear != blank -%}
+  {%- capture wear -%}{{ mf_wear | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+
+{%- liquid
+  assign has_content = false
+  if intro != blank or mf_composition != blank or mf_colors != blank or benefits != blank or wear != blank or mf_care != blank or mf_sources != blank or mf_updated_at != blank
+    assign has_content = true
+  endif
+-%}
+
+{%- if has_content -%}
+  {%- style -%}
+    #MilauraCollectionVertus-{{ section.id }} {
+      padding: var(--milaura-spacing-md, 32px) var(--milaura-spacing-sm, 16px);
+      background: {{ section.settings.background_color }};
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__intro {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--milaura-text, #333333);
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__block {
+      margin-top: var(--milaura-spacing-md, 32px);
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__heading {
+      margin: 0 0 12px;
+      color: var(--milaura-text, #1b1b1b);
+      font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+      font-size: 22px;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__body,
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__meta,
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__sources {
+      color: var(--milaura-text-light, #444444);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__meta-list,
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__sources {
+      margin: 0;
+      padding-left: 1.2em;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__body li,
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__sources li {
+      margin-bottom: 6px;
+    }
+
+    #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__updated {
+      margin-top: var(--milaura-spacing-md, 32px);
+      color: var(--milaura-text-light, #666666);
+      font-size: 13px;
+    }
+
+    @media screen and (max-width: 768px) {
+      #MilauraCollectionVertus-{{ section.id }} {
+        padding: var(--milaura-spacing-sm, 20px) var(--milaura-spacing-xs, 14px);
+      }
+
+      #MilauraCollectionVertus-{{ section.id }} .milaura-vertus__heading {
+        font-size: 19px;
+      }
+    }
+  {%- endstyle -%}
+
+  <section
+    id="MilauraCollectionVertus-{{ section.id }}"
+    class="milaura-collection-vertus milaura-section"
+    aria-label="Informations sur {{ collection.title | escape }}"
+  >
+    <div class="milaura-vertus__inner">
+      {%- if intro != blank -%}
+        <div class="milaura-vertus__intro rte">{{ intro }}</div>
+      {%- endif -%}
+
+      {%- if mf_composition != blank or mf_colors != blank -%}
+        <div class="milaura-vertus__block">
+          <h2 class="milaura-vertus__heading">Caractéristiques de la pierre</h2>
+          <dl class="milaura-vertus__meta">
+            {%- if mf_composition != blank -%}
+              <div>
+                <dt>Composition minérale</dt>
+                <dd>{{ mf_composition.value | escape }}</dd>
+              </div>
+            {%- endif -%}
+            {%- if mf_colors != blank -%}
+              <div>
+                <dt>Couleurs</dt>
+                <dd>
+                  <ul class="milaura-vertus__meta-list">
+                    {%- for color in mf_colors.value -%}
+                      <li>{{ color | replace: '-', ' ' | capitalize | escape }}</li>
+                    {%- endfor -%}
+                  </ul>
+                </dd>
+              </div>
+            {%- endif -%}
+          </dl>
+        </div>
+      {%- endif -%}
+
+      {%- if benefits != blank -%}
+        <div class="milaura-vertus__block">
+          <h2 class="milaura-vertus__heading">
+            {{ section.settings.benefits_heading | default: 'Symbolique traditionnelle' }}
+          </h2>
+          <div class="milaura-vertus__body rte">{{ benefits }}</div>
+        </div>
+      {%- endif -%}
+
+      {%- if wear != blank -%}
+        <div class="milaura-vertus__block">
+          <h2 class="milaura-vertus__heading">
+            {{ section.settings.wear_heading | default: 'Comment porter' }}
+          </h2>
+          <div class="milaura-vertus__body rte">{{ wear }}</div>
+        </div>
+      {%- endif -%}
+
+      {%- if mf_care != blank -%}
+        <div class="milaura-vertus__block">
+          <h2 class="milaura-vertus__heading">Entretien</h2>
+          <div class="milaura-vertus__body rte">{{ mf_care | metafield_tag }}</div>
+        </div>
+      {%- endif -%}
+
+      {%- if mf_sources != blank -%}
+        <div class="milaura-vertus__block">
+          <h2 class="milaura-vertus__heading">Sources</h2>
+          <ul class="milaura-vertus__sources">
+            {%- for source_url in mf_sources.value -%}
+              <li>
+                <a href="{{ source_url | escape }}" target="_blank" rel="noopener noreferrer">
+                  {{ source_url | remove: 'https://' | remove: 'http://' | escape }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if mf_updated_at != blank -%}
+        <p class="milaura-vertus__updated">
+          Dernière mise à jour :
+          <time datetime="{{ mf_updated_at.value | escape }}">{{ mf_updated_at.value | date: '%d/%m/%Y' }}</time>
+        </p>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Contenu pierre",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Sources prioritaires : metafields milaura.stone_intro, stone_composition, stone_colors, stone_benefits, comment_porter, care, source_urls et content_updated_at. Aucun texte automatique n est ajoute si les donnees sont vides."
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Introduction manuelle (repli)"
+    },
+    {
+      "type": "text",
+      "id": "benefits_heading",
+      "label": "Titre symbolique",
+      "default": "Symbolique traditionnelle"
+    },
+    {
+      "type": "richtext",
+      "id": "benefits_text",
+      "label": "Symbolique manuelle (repli)"
+    },
+    {
+      "type": "text",
+      "id": "wear_heading",
+      "label": "Titre comment porter",
+      "default": "Comment porter"
+    },
+    {
+      "type": "richtext",
+      "id": "wear_text",
+      "label": "Comment porter manuel (repli)"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contenu pierre"
+    }
+  ]
+}
+{% endschema %}
