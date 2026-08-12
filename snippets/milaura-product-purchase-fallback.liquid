@@ -1,0 +1,466 @@
+<script>
+  (function() {
+    'use strict';
+
+    var sid = '{{ section.id }}';
+    var root = document.getElementById('ProductInfo-' + sid);
+    var ctaButton = document.getElementById('milaura-hero-cta-bundle-' + sid);
+    if (!root || !ctaButton || ctaButton.dataset.milauraCartBound === 'true') return;
+    ctaButton.dataset.milauraCartBound = 'true';
+
+    var ctaPriceEl = document.getElementById('milaura-hero-cta-price-' + sid);
+    var qtyInputEl = document.getElementById('milaura-bundle-qty-' + sid);
+    var qtyCapsuleEl = qtyInputEl ? qtyInputEl.closest('.milaura-bundle-qty') : null;
+    var qtyMinusBtn = qtyCapsuleEl ? qtyCapsuleEl.querySelector('[data-milaura-qty-minus]') : null;
+    var qtyPlusBtn = qtyCapsuleEl ? qtyCapsuleEl.querySelector('[data-milaura-qty-plus]') : null;
+    var cartConfirmEl = document.getElementById('milaura-cart-confirm-' + sid);
+    var variantPickerEl = root.querySelector('[data-milaura-variant-picker]');
+    var variantOptionEls = variantPickerEl ? Array.prototype.slice.call(variantPickerEl.querySelectorAll('[data-milaura-variant-option]')) : [];
+    var variantSelectedLabelEl = variantPickerEl ? variantPickerEl.querySelector('[data-milaura-variant-selected-label]') : null;
+    var productVariants = {{ product.variants | json }};
+    var productUrl = {{ product.url | json }};
+    var ctaVariantId = parseInt(ctaButton.getAttribute('data-variant-id'), 10);
+    var unitPriceCents = parseInt(ctaButton.getAttribute('data-unit-price-cents'), 10) || {{ product.selected_or_first_available_variant.price }};
+    var variantAvailable = !ctaButton.disabled;
+    var isAdding = false;
+
+    var duoPickerEl = document.getElementById('milaura-duo-picker-' + sid);
+    var duoEnabled = Boolean(duoPickerEl);
+    var duoRequiredCount = duoPickerEl ? (parseInt(duoPickerEl.getAttribute('data-required-count'), 10) || 2) : 0;
+    var duoOptionEls = duoPickerEl ? Array.prototype.slice.call(duoPickerEl.querySelectorAll('[data-milaura-duo-option]')) : [];
+    var duoCountEl = duoPickerEl ? duoPickerEl.querySelector('[data-milaura-duo-count]') : null;
+    var duoMessageEl = duoPickerEl ? duoPickerEl.querySelector('[data-milaura-duo-message]') : null;
+
+    function formatPrice(cents) {
+      try {
+        return new Intl.NumberFormat('fr-FR', {
+          style: 'currency',
+          currency: '{{ cart.currency.iso_code | default: shop.currency }}'
+        }).format(cents / 100);
+      } catch (error) {
+        return (cents / 100).toFixed(2).replace('.', ',') + ' €';
+      }
+    }
+
+    function getSelectedQuantity() {
+      var quantity = qtyInputEl ? parseInt(qtyInputEl.value, 10) : 1;
+      return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+    }
+
+    function getDuoOptionCount(optionEl) {
+      var count = optionEl ? parseInt(optionEl.getAttribute('data-duo-count'), 10) : 0;
+      return Number.isFinite(count) && count > 0 ? count : 0;
+    }
+
+    function getDuoTotal() {
+      return duoOptionEls.reduce(function(total, optionEl) {
+        return total + getDuoOptionCount(optionEl);
+      }, 0);
+    }
+
+    function isDuoReady() {
+      return !duoEnabled || getDuoTotal() >= duoRequiredCount;
+    }
+
+    function getDuoSelections() {
+      var selections = [];
+      duoOptionEls.forEach(function(optionEl) {
+        var model = optionEl.getAttribute('data-duo-model') || '';
+        var count = getDuoOptionCount(optionEl);
+        for (var index = 0; index < count; index += 1) selections.push(model);
+      });
+      return selections.slice(0, duoRequiredCount);
+    }
+
+    function getDuoLineItemProperties() {
+      if (!duoEnabled || !isDuoReady()) return {};
+      return getDuoSelections().reduce(function(properties, selection, index) {
+        properties['Choix ' + (index + 1)] = selection;
+        return properties;
+      }, {});
+    }
+
+    function syncCtaState() {
+      ctaButton.disabled = isAdding || !variantAvailable;
+      ctaButton.classList.toggle('is-duo-blocked', duoEnabled && !isDuoReady());
+      ctaButton.setAttribute('aria-disabled', (isAdding || !variantAvailable || !isDuoReady()) ? 'true' : 'false');
+      if (duoMessageEl) ctaButton.setAttribute('aria-describedby', duoMessageEl.id);
+    }
+
+    function updateCtaButton() {
+      var quantity = getSelectedQuantity();
+      if (ctaPriceEl) ctaPriceEl.textContent = formatPrice(unitPriceCents * quantity);
+      syncCtaState();
+      document.dispatchEvent(new CustomEvent('milaura:product-quantity-change', {
+        detail: { quantity: quantity }
+      }));
+    }
+
+    function setSelectedQuantity(value) {
+      var quantity = parseInt(value, 10);
+      if (!Number.isFinite(quantity) || quantity < 1) quantity = 1;
+      if (qtyInputEl) qtyInputEl.value = String(quantity);
+      updateCtaButton();
+    }
+
+    function updateDuoPicker(options) {
+      if (!duoEnabled) return;
+      var total = getDuoTotal();
+      var maxReached = total >= duoRequiredCount;
+      duoOptionEls.forEach(function(optionEl) {
+        var count = getDuoOptionCount(optionEl);
+        var minusBtn = optionEl.querySelector('[data-milaura-duo-minus]');
+        var plusBtn = optionEl.querySelector('[data-milaura-duo-plus]');
+        var valueEl = optionEl.querySelector('[data-milaura-duo-value]');
+        var statusEl = optionEl.querySelector('[data-milaura-duo-status]');
+        optionEl.classList.toggle('is-selected', count > 0);
+        if (minusBtn) minusBtn.disabled = count <= 0;
+        if (plusBtn) plusBtn.disabled = maxReached;
+        if (valueEl) valueEl.textContent = String(count);
+        if (statusEl) statusEl.textContent = count > 0 ? 'Sélectionné' : 'Choisir';
+      });
+      if (duoCountEl) duoCountEl.textContent = total + '/' + duoRequiredCount;
+      if (duoMessageEl) {
+        var remaining = Math.max(duoRequiredCount - total, 0);
+        duoMessageEl.textContent = remaining === 0
+          ? 'Votre offre est prête.'
+          : 'Sélectionnez encore ' + remaining + ' choix pour composer votre offre.';
+      }
+      duoPickerEl.classList.toggle('has-error', Boolean(options && options.error) && !isDuoReady());
+      updateCtaButton();
+      document.dispatchEvent(new CustomEvent('milaura:duo-selection-change', {
+        detail: {
+          valid: isDuoReady(),
+          total: total,
+          required: duoRequiredCount,
+          selections: getDuoSelections(),
+          properties: getDuoLineItemProperties(),
+          sectionId: sid
+        }
+      }));
+    }
+
+    function setDuoOptionCount(optionEl, value) {
+      var current = getDuoOptionCount(optionEl);
+      var otherTotal = getDuoTotal() - current;
+      var next = parseInt(value, 10);
+      if (!Number.isFinite(next) || next < 0) next = 0;
+      next = Math.min(next, Math.max(duoRequiredCount - otherTotal, 0));
+      optionEl.setAttribute('data-duo-count', String(next));
+      updateDuoPicker();
+    }
+
+    function bindDuoPicker() {
+      if (!duoEnabled) return;
+      duoOptionEls.forEach(function(optionEl) {
+        var minusBtn = optionEl.querySelector('[data-milaura-duo-minus]');
+        var plusBtn = optionEl.querySelector('[data-milaura-duo-plus]');
+        if (minusBtn) {
+          minusBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            setDuoOptionCount(optionEl, getDuoOptionCount(optionEl) - 1);
+          });
+        }
+        if (plusBtn) {
+          plusBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            setDuoOptionCount(optionEl, getDuoOptionCount(optionEl) + 1);
+          });
+        }
+        optionEl.addEventListener('click', function(event) {
+          if (event.target && event.target.closest && event.target.closest('button')) return;
+          setDuoOptionCount(optionEl, getDuoOptionCount(optionEl) + 1);
+        });
+      });
+      updateDuoPicker();
+      var compositionApi = {
+        requestValidSelection: function() {
+          if (isDuoReady()) {
+            return {
+              valid: true,
+              selections: getDuoSelections(),
+              properties: getDuoLineItemProperties()
+            };
+          }
+          updateDuoPicker({ error: true });
+          return { valid: false };
+        },
+        getSelection: function() {
+          return {
+            valid: isDuoReady(),
+            total: getDuoTotal(),
+            required: duoRequiredCount,
+            selections: getDuoSelections(),
+            properties: getDuoLineItemProperties()
+          };
+        }
+      };
+      window.MilauraProductComposition = compositionApi;
+      window.MilauraDuoBracelets = compositionApi;
+    }
+
+    function findVariantById(variantId) {
+      var numericId = parseInt(variantId, 10);
+      return Array.isArray(productVariants) ? productVariants.find(function(variant) {
+        return parseInt(variant.id, 10) === numericId;
+      }) : null;
+    }
+
+    function updateHeroPrice(variant) {
+      var priceRoot = document.getElementById('price-' + sid);
+      if (!priceRoot || !variant) return;
+      var priceBlock = priceRoot.querySelector('.price');
+      var regularPrice = priceRoot.querySelector('.price__regular .price-item--regular');
+      var salePrice = priceRoot.querySelector('.price__sale .price-item--sale');
+      var comparePrice = priceRoot.querySelector('.price__sale s.price-item--regular');
+      var compareAt = parseInt(variant.compare_at_price, 10) || 0;
+      var price = parseInt(variant.price, 10) || 0;
+      var hasSale = compareAt > price;
+      if (priceBlock) {
+        priceBlock.classList.toggle('price--on-sale', hasSale);
+        priceBlock.classList.toggle('price--sold-out', variant.available === false);
+      }
+      if (regularPrice) regularPrice.textContent = formatPrice(hasSale ? compareAt : price);
+      if (salePrice) salePrice.textContent = formatPrice(price);
+      if (comparePrice) comparePrice.textContent = hasSale ? formatPrice(compareAt) : '';
+    }
+
+    function syncFinalCtas(variant) {
+      if (!variant) return;
+      document.querySelectorAll('[data-cta-final-variant-id]').forEach(function(input) {
+        input.value = variant.id;
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      document.querySelectorAll('[data-cta-final-price]').forEach(function(priceEl) {
+        priceEl.textContent = formatPrice(variant.price);
+      });
+      document.querySelectorAll('[data-cta-final-add]').forEach(function(button) {
+        var defaultText = button.getAttribute('data-cta-final-default-text') || 'Ajouter au panier';
+        var soldOutText = button.getAttribute('data-cta-final-sold-out-text') || 'Rupture de stock';
+        button.disabled = variant.available === false;
+        button.textContent = variant.available === false ? soldOutText : defaultText;
+      });
+    }
+
+    function variantMediaId(variant) {
+      if (!variant) return null;
+      if (variant.featured_media && variant.featured_media.id) return variant.featured_media.id;
+      if (variant.featured_image && variant.featured_image.id) return variant.featured_image.id;
+      return null;
+    }
+
+    function rememberOriginalImage(image) {
+      if (!image) return null;
+      if (!image.dataset.milauraOriginalSrc) {
+        image.dataset.milauraOriginalSrc = image.currentSrc || image.src || '';
+        image.dataset.milauraOriginalSrcset = image.getAttribute('srcset') || '';
+        image.dataset.milauraOriginalAlt = image.getAttribute('alt') || '';
+      }
+      return {
+        src: image.dataset.milauraOriginalSrc || image.src || '',
+        srcset: image.dataset.milauraOriginalSrcset || '',
+        alt: image.dataset.milauraOriginalAlt || ''
+      };
+    }
+
+    function focusVariantMedia(variant) {
+      var mediaId = variantMediaId(variant);
+      if (!mediaId) return;
+      var slider = root.querySelector('.milaura-hero-gallery-column slider-component');
+      var mediaList = slider ? slider.querySelector('[id^="Slider-"]') : null;
+      var targetSlide = slider ? slider.querySelector('[data-media-id="' + sid + '-' + mediaId + '"]') : null;
+      if (!slider || !mediaList || !targetSlide) return;
+      slider.querySelectorAll('.product__media-item img.image-magnify-hover').forEach(rememberOriginalImage);
+
+      var firstSlide = slider.querySelector('.product__media-item:first-child');
+      var mainImage = firstSlide ? firstSlide.querySelector('img.image-magnify-hover') : null;
+      var targetImage = targetSlide.querySelector('img.image-magnify-hover');
+      var targetData = targetImage ? rememberOriginalImage(targetImage) : null;
+      if (mainImage && targetData && targetData.src) {
+        mainImage.src = targetData.src;
+        if (targetData.srcset) mainImage.setAttribute('srcset', targetData.srcset);
+        else mainImage.removeAttribute('srcset');
+        mainImage.alt = targetData.alt || variant.title || mainImage.alt || '';
+      }
+
+      mediaList.scrollTo({ left: targetSlide.offsetLeft, behavior: 'smooth' });
+      var slides = Array.prototype.slice.call(slider.querySelectorAll('.product__media-item'));
+      var slideIndex = slides.indexOf(targetSlide);
+      slides.forEach(function(slide, index) {
+        slide.classList.toggle('is-active', index === slideIndex);
+      });
+      slider.querySelectorAll('.slider-counter__link--dots, .milaura-thumb-strip__item').forEach(function(element) {
+        var index = parseInt(element.getAttribute('data-slide-index'), 10);
+        element.classList.toggle('slider-counter__link--active', index === slideIndex);
+        element.classList.toggle('is-active', index === slideIndex);
+      });
+    }
+
+    function setSelectedVariant(variant, updateUrl) {
+      if (!variant) return;
+      ctaVariantId = parseInt(variant.id, 10) || ctaVariantId;
+      unitPriceCents = parseInt(variant.price, 10) || unitPriceCents;
+      variantAvailable = variant.available !== false;
+      ctaButton.setAttribute('data-variant-id', String(ctaVariantId));
+      ctaButton.setAttribute('data-unit-price-cents', String(unitPriceCents));
+      variantOptionEls.forEach(function(optionEl) {
+        var selected = parseInt(optionEl.getAttribute('data-variant-id'), 10) === ctaVariantId;
+        optionEl.classList.toggle('is-selected', selected);
+        optionEl.setAttribute('aria-checked', selected ? 'true' : 'false');
+        var statusEl = optionEl.querySelector('.milaura-variant-option__status');
+        if (statusEl && !optionEl.disabled) statusEl.textContent = selected ? 'Sélectionné' : 'Choisir';
+      });
+      if (variantSelectedLabelEl) variantSelectedLabelEl.textContent = variant.title || '';
+      updateHeroPrice(variant);
+      syncFinalCtas(variant);
+      updateCtaButton();
+      focusVariantMedia(variant);
+      if (updateUrl !== false && productUrl && window.history) {
+        window.history.replaceState({}, '', productUrl + '?variant=' + variant.id);
+      }
+      document.dispatchEvent(new CustomEvent('milaura:variant-change', {
+        detail: { variant: variant, sectionId: sid }
+      }));
+    }
+
+    function bindVariantPicker() {
+      variantOptionEls.forEach(function(optionEl) {
+        optionEl.addEventListener('click', function() {
+          if (optionEl.disabled) return;
+          setSelectedVariant(findVariantById(optionEl.getAttribute('data-variant-id')), true);
+        });
+      });
+      setSelectedVariant(findVariantById(ctaVariantId), false);
+    }
+
+    function cartDrawerPayload() {
+      var drawer = document.querySelector('cart-drawer');
+      if (!drawer || typeof drawer.getSectionsToRender !== 'function') return null;
+      return {
+        sections: drawer.getSectionsToRender().map(function(sectionData) { return sectionData.id; }),
+        sections_url: window.location.pathname
+      };
+    }
+
+    function renderCartDrawer(response) {
+      var drawer = document.querySelector('cart-drawer');
+      if (!drawer || typeof drawer.renderContents !== 'function' || !response || !response.sections) return;
+      drawer.renderContents(response);
+    }
+
+    function setBadge(element, count) {
+      if (!element) return;
+      element.textContent = count;
+      element.style.display = count > 0 ? 'flex' : 'none';
+    }
+
+    function updateCartSurfaces(cartData) {
+      if (!cartData || typeof cartData.item_count !== 'number') return;
+      document.querySelectorAll('.nav-cart-count, .nav-mobile-cart-count').forEach(function(element) {
+        setBadge(element, cartData.item_count);
+      });
+      document.querySelectorAll('.cart-count-bubble span[aria-hidden], [data-cart-count]').forEach(function(element) {
+        element.textContent = cartData.item_count;
+      });
+      setBadge(document.getElementById('milaura-dock-badge'), cartData.item_count);
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: cartData }));
+      window.dispatchEvent(new CustomEvent('cart:updated', { detail: cartData }));
+      if (window.MilauraCartRewardsAuto && typeof window.MilauraCartRewardsAuto.sync === 'function') {
+        window.MilauraCartRewardsAuto.sync();
+      }
+    }
+
+    function showCartConfirm() {
+      if (!cartConfirmEl) return;
+      cartConfirmEl.hidden = false;
+      window.clearTimeout(cartConfirmEl._milauraTimer);
+      cartConfirmEl._milauraTimer = window.setTimeout(function() {
+        cartConfirmEl.hidden = true;
+      }, 7000);
+    }
+
+    function addToCart() {
+      if (!ctaVariantId || isAdding || !variantAvailable) return;
+      if (!isDuoReady()) {
+        updateDuoPicker({ error: true });
+        if (duoPickerEl) duoPickerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      isAdding = true;
+      syncCtaState();
+      var labelEl = ctaButton.querySelector('.milaura-cta-label');
+      var originalLabel = labelEl ? labelEl.textContent : 'Ajouter au panier';
+      if (labelEl) labelEl.textContent = 'Ajout en cours...';
+      var properties = {
+        'Avantages panier': 'Produit ajouté depuis la fiche MilAura'
+      };
+      var duoProperties = getDuoLineItemProperties();
+      Object.keys(duoProperties).forEach(function(key) { properties[key] = duoProperties[key]; });
+      var payload = {
+        items: [{ id: ctaVariantId, quantity: getSelectedQuantity(), properties: properties }]
+      };
+      var drawerPayload = cartDrawerPayload();
+      if (drawerPayload && drawerPayload.sections.length) {
+        payload.sections = drawerPayload.sections;
+        payload.sections_url = drawerPayload.sections_url;
+      }
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function(response) {
+        if (!response.ok) throw new Error('cart_error');
+        return response.json();
+      })
+      .then(function(response) {
+        renderCartDrawer(response);
+        return fetch('/cart.js').then(function(cartResponse) {
+          return cartResponse.ok ? cartResponse.json() : null;
+        });
+      })
+      .then(function(cartData) {
+        updateCartSurfaces(cartData);
+        showCartConfirm();
+        if (labelEl) labelEl.textContent = 'Ajouté au panier';
+        window.setTimeout(function() {
+          isAdding = false;
+          if (labelEl) labelEl.textContent = originalLabel;
+          syncCtaState();
+        }, 1800);
+      })
+      .catch(function(error) {
+        console.error('MilAura add to cart failed:', error);
+        isAdding = false;
+        if (labelEl) labelEl.textContent = originalLabel;
+        syncCtaState();
+      });
+    }
+
+    ctaButton.addEventListener('click', addToCart);
+    if (qtyMinusBtn) {
+      qtyMinusBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        setSelectedQuantity(getSelectedQuantity() - 1);
+      });
+    }
+    if (qtyPlusBtn) {
+      qtyPlusBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        setSelectedQuantity(getSelectedQuantity() + 1);
+      });
+    }
+    if (qtyInputEl) {
+      qtyInputEl.addEventListener('input', function() { updateCtaButton(); });
+      qtyInputEl.addEventListener('change', function() { setSelectedQuantity(qtyInputEl.value); });
+      qtyInputEl.addEventListener('blur', function() { setSelectedQuantity(qtyInputEl.value); });
+    }
+    bindVariantPicker();
+    bindDuoPicker();
+    updateCtaButton();
+  })();
+</script>

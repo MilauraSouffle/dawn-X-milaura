@@ -4349,24 +4349,17 @@
     <div class="milaura-hero-wrapper">
       {%- comment -%} GROUPE 1 HEADER deplace dans .milaura-hero-rightcol (avec actions group) pour eviter le trou vertical sur desktop. Refonte 2026-05-28 evening. {%- endcomment -%}
 
-      {%- comment -%} Bulle social proof au-dessus de la galerie (refonte 2026-05-28, demande user mobile).
-        Le nombre de client(e)s varie par produit via calcul deterministe base sur product.id (entre 12 et 141). {%- endcomment -%}
-      {%- if section.settings.show_social_proof -%}
-        {%- assign months_fr = "janvier,fevrier,mars,avril,mai,juin,juillet,aout,septembre,octobre,novembre,decembre" | split: "," -%}
-        {%- assign month_idx = "now" | date: "%-m" | minus: 1 -%}
-        {%- assign month_fr = months_fr[month_idx] -%}
-        {%- assign year_fr = "now" | date: "%Y" -%}
-        {%- comment -%} Calcul deterministe : meme produit = meme nombre, varie entre 12 et 141. {%- endcomment -%}
-        {%- assign social_count_raw = product.id | default: 0 | modulo: 130 -%}
-        {%- assign social_count = social_count_raw | plus: 12 -%}
+      {%- comment -%} Afficher uniquement une note et un volume d'avis Shopify verifies. {%- endcomment -%}
+      {%- assign verified_rating = product.metafields.reviews.rating.value.rating | default: product.metafields.reviews.rating.value -%}
+      {%- assign verified_review_count = product.metafields.reviews.rating_count | default: 0 | plus: 0 -%}
+      {%- if section.settings.show_social_proof and verified_rating != blank and verified_review_count > 0 -%}
         <div class="milaura-hero-social milaura-hero-social--top">
-          <div class="milaura-hero-stars" aria-label="5 etoiles sur 5">
-            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <div class="milaura-hero-stars" aria-label="{{ verified_rating }} sur 5">
+            <span aria-hidden="true">&#9733;</span>
           </div>
           <p class="milaura-hero-social-text">
-            Ce produit a deja fait le bonheur de
-            <strong>+ de {{ social_count }} client(e)s</strong>
-            en {{ month_fr }} {{ year_fr }}
+            <strong>{{ verified_rating }} sur 5</strong>
+            · {{ verified_review_count }} avis vérifiés
           </p>
         </div>
       {%- endif -%}
@@ -4689,7 +4682,7 @@
                      width="88" height="88" loading="lazy" decoding="async">
               {%- endif -%}
               <div class="milaura-gallery-story__karine-content">
-                <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Je sélectionne chaque pierre avec soin. Origine contrôlée, qualité vérifiée avec rigueur, avant d'arriver dans nos ateliers.{%- endif -%}</p>
+                <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Je sélectionne chaque pièce et je la contrôle à réception avant de préparer votre commande à Metz.{%- endif -%}</p>
                 <p class="milaura-gallery-story__signature">Karine</p>
                 <p class="milaura-gallery-story__author">Fondatrice Mil'Aura</p>
               </div>
@@ -4936,71 +4929,73 @@
           {%- endif -%}
         {%- endfor -%}
         {%- if section.settings.show_bundle -%}
-          {%- liquid
-            assign reward_threshold_1_cents = section.settings.reward_threshold_1 | default: 20 | times: 100
-            assign reward_threshold_2_cents = section.settings.reward_threshold_2 | default: 50 | times: 100
-            assign reward_threshold_3_cents = section.settings.reward_threshold_3 | default: 80 | times: 100
-            assign projected_product_cents = product.selected_or_first_available_variant.price
-            assign projected_cards = 0
-            if projected_product_cents >= reward_threshold_1_cents
-              assign projected_cards = 1
-            endif
-            if projected_product_cents >= reward_threshold_2_cents
-              assign projected_cards = 2
-            endif
-            if projected_product_cents >= reward_threshold_3_cents
-              assign projected_cards = 3
-            endif
-          -%}
-          <div
-            class="milaura-reward-preview"
-            id="milaura-reward-preview-{{ section.id }}"
-            data-product-price-cents="{{ product.selected_or_first_available_variant.price }}"
-            data-reward-threshold-1="{{ reward_threshold_1_cents }}"
-            data-reward-threshold-2="{{ reward_threshold_2_cents }}"
-            data-reward-threshold-3="{{ reward_threshold_3_cents }}"
-          >
-            <div class="milaura-reward-preview__inner">
-              <div class="milaura-reward-preview__copy">
-                <p class="milaura-reward-preview__eyebrow">Cartes surprises MilAura</p>
-                <h3 class="milaura-reward-preview__title">{{ section.settings.bundle_title | default: 'Découvrez vos cadeaux en grattant les cartes surprises MilAura' }}</h3>
-                <p class="milaura-reward-preview__text">{{ section.settings.bundle_subtitle | default: 'Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 20 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte, cadeau et remise.' }}</p>
-                <p class="milaura-reward-preview__status" data-reward-preview-status>
-                  {%- if projected_cards >= 3 -%}
-                    Avec ce produit : 3 cartes surprises débloquées.
-                  {%- elsif projected_cards > 1 -%}
-                    Avec ce produit : {{ projected_cards }} cartes surprises débloquées.
-                  {%- elsif projected_cards == 1 -%}
-                    Avec ce produit : 1 carte surprise débloquée.
-                  {%- else -%}
-                    Dès {{ reward_threshold_1_cents | money_without_trailing_zeros | remove: '€' | strip }} € d'achat, votre première carte surprise se débloque.
-                  {%- endif -%}
-                </p>
-              </div>
-              <div class="milaura-reward-preview__visual" aria-hidden="true">
-                <div class="milaura-reward-preview__deck">
-                  <span class="milaura-reward-preview__card{% if projected_cards >= 1 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="1">
-                    <span class="milaura-reward-preview__seal">M</span>
-                    <span class="milaura-reward-preview__lock">{% if projected_cards >= 1 %}🔓{% else %}🔒{% endif %}</span>
-                  </span>
-                  <span class="milaura-reward-preview__card{% if projected_cards >= 2 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="2">
-                    <span class="milaura-reward-preview__seal">M</span>
-                    <span class="milaura-reward-preview__lock">{% if projected_cards >= 2 %}🔓{% else %}🔒{% endif %}</span>
-                  </span>
-                  <span class="milaura-reward-preview__card{% if projected_cards >= 3 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="3">
-                    <span class="milaura-reward-preview__seal">M</span>
-                    <span class="milaura-reward-preview__lock">{% if projected_cards >= 3 %}🔓{% else %}🔒{% endif %}</span>
-                  </span>
+          {%- if section.settings.show_scratch -%}
+            {%- liquid
+              assign reward_threshold_1_cents = section.settings.reward_threshold_1 | default: 20 | times: 100
+              assign reward_threshold_2_cents = section.settings.reward_threshold_2 | default: 50 | times: 100
+              assign reward_threshold_3_cents = section.settings.reward_threshold_3 | default: 80 | times: 100
+              assign projected_product_cents = product.selected_or_first_available_variant.price
+              assign projected_cards = 0
+              if projected_product_cents >= reward_threshold_1_cents
+                assign projected_cards = 1
+              endif
+              if projected_product_cents >= reward_threshold_2_cents
+                assign projected_cards = 2
+              endif
+              if projected_product_cents >= reward_threshold_3_cents
+                assign projected_cards = 3
+              endif
+            -%}
+            <div
+              class="milaura-reward-preview"
+              id="milaura-reward-preview-{{ section.id }}"
+              data-product-price-cents="{{ product.selected_or_first_available_variant.price }}"
+              data-reward-threshold-1="{{ reward_threshold_1_cents }}"
+              data-reward-threshold-2="{{ reward_threshold_2_cents }}"
+              data-reward-threshold-3="{{ reward_threshold_3_cents }}"
+            >
+              <div class="milaura-reward-preview__inner">
+                <div class="milaura-reward-preview__copy">
+                  <p class="milaura-reward-preview__eyebrow">Cartes surprises MilAura</p>
+                  <h3 class="milaura-reward-preview__title">{{ section.settings.bundle_title | default: 'Découvrez vos cadeaux en grattant les cartes surprises MilAura' }}</h3>
+                  <p class="milaura-reward-preview__text">{{ section.settings.bundle_subtitle | default: 'Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 30 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte en point relais, cadeau et remise.' }}</p>
+                  <p class="milaura-reward-preview__status" data-reward-preview-status>
+                    {%- if projected_cards >= 3 -%}
+                      Avec ce produit : 3 cartes surprises débloquées.
+                    {%- elsif projected_cards > 1 -%}
+                      Avec ce produit : {{ projected_cards }} cartes surprises débloquées.
+                    {%- elsif projected_cards == 1 -%}
+                      Avec ce produit : 1 carte surprise débloquée.
+                    {%- else -%}
+                      Dès {{ reward_threshold_1_cents | money_without_trailing_zeros | remove: '€' | strip }} € d'achat, votre première carte surprise se débloque.
+                    {%- endif -%}
+                  </p>
                 </div>
-                <div class="milaura-reward-preview__mini">
-                  <span class="milaura-reward-preview__fill" data-reward-preview-fill style="width: {{ projected_product_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;"></span>
-                  <span class="milaura-reward-preview__mark{% if projected_cards >= 1 %} is-unlocked{% endif %}" data-reward-preview-mark="1" style="left: {{ reward_threshold_1_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">1</span>
-                  <span class="milaura-reward-preview__mark{% if projected_cards >= 2 %} is-unlocked{% endif %}" data-reward-preview-mark="2" style="left: {{ reward_threshold_2_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">2</span>
-                  <span class="milaura-reward-preview__mark{% if projected_cards >= 3 %} is-unlocked{% endif %}" data-reward-preview-mark="3" style="left: {{ reward_threshold_3_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">3</span>
+                <div class="milaura-reward-preview__visual" aria-hidden="true">
+                  <div class="milaura-reward-preview__deck">
+                    <span class="milaura-reward-preview__card{% if projected_cards >= 1 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="1">
+                      <span class="milaura-reward-preview__seal">M</span>
+                      <span class="milaura-reward-preview__lock">{% if projected_cards >= 1 %}🔓{% else %}🔒{% endif %}</span>
+                    </span>
+                    <span class="milaura-reward-preview__card{% if projected_cards >= 2 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="2">
+                      <span class="milaura-reward-preview__seal">M</span>
+                      <span class="milaura-reward-preview__lock">{% if projected_cards >= 2 %}🔓{% else %}🔒{% endif %}</span>
+                    </span>
+                    <span class="milaura-reward-preview__card{% if projected_cards >= 3 %} is-unlocked{% else %} is-locked{% endif %}" data-reward-preview-card="3">
+                      <span class="milaura-reward-preview__seal">M</span>
+                      <span class="milaura-reward-preview__lock">{% if projected_cards >= 3 %}🔓{% else %}🔒{% endif %}</span>
+                    </span>
+                  </div>
+                  <div class="milaura-reward-preview__mini">
+                    <span class="milaura-reward-preview__fill" data-reward-preview-fill style="width: {{ projected_product_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;"></span>
+                    <span class="milaura-reward-preview__mark{% if projected_cards >= 1 %} is-unlocked{% endif %}" data-reward-preview-mark="1" style="left: {{ reward_threshold_1_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">1</span>
+                    <span class="milaura-reward-preview__mark{% if projected_cards >= 2 %} is-unlocked{% endif %}" data-reward-preview-mark="2" style="left: {{ reward_threshold_2_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">2</span>
+                    <span class="milaura-reward-preview__mark{% if projected_cards >= 3 %} is-unlocked{% endif %}" data-reward-preview-mark="3" style="left: {{ reward_threshold_3_cents | times: 100 | divided_by: reward_threshold_3_cents | at_most: 100 }}%;">3</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          {%- endif -%}
 
           {%- if section.settings.show_scratch -%}
             <div class="milaura-offer-contrast__hidden-engine" id="milaura-hero-scratch-{{ section.id }}" hidden aria-hidden="true">
@@ -5216,8 +5211,8 @@
               </button>
             </div>
             <div class="milaura-cart-confirm" id="milaura-cart-confirm-{{ section.id }}" hidden>
-              <p class="milaura-cart-confirm__text">Produit ajouté. Vos cartes surprises vous attendent dans le panier.</p>
-              <a href="{{ routes.cart_url }}" class="milaura-cart-confirm__link">Gratter mes cartes</a>
+              <p class="milaura-cart-confirm__text">Produit ajouté à votre panier.</p>
+              <a href="{{ routes.cart_url }}" class="milaura-cart-confirm__link">Voir mon panier</a>
             </div>
 	        {%- endif -%}
 
@@ -5259,7 +5254,7 @@
                      width="58" height="58" loading="lazy" decoding="async">
               {%- endif -%}
               <div class="milaura-gallery-story__karine-content">
-                <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Je sélectionne chaque pierre avec soin. Origine contrôlée, qualité vérifiée avec rigueur, avant d'arriver dans nos ateliers.{%- endif -%}</p>
+                <p class="milaura-gallery-story__quote">{%- if section.settings.karine_quote != blank -%}{{ section.settings.karine_quote }}{%- else -%}Je sélectionne chaque pièce et je la contrôle à réception avant de préparer votre commande à Metz.{%- endif -%}</p>
                 <p class="milaura-gallery-story__signature">Karine</p>
                 <p class="milaura-gallery-story__author">Fondatrice Mil'Aura</p>
               </div>
@@ -6683,6 +6678,10 @@
         </script>
       {%- endif -%}
 
+      {%- unless section.settings.show_scratch -%}
+        {%- render 'milaura-product-purchase-fallback', section: section, product: product -%}
+      {%- endunless -%}
+
     </div>
     <!-- Fin milaura-hero-wrapper -->
 
@@ -6708,8 +6707,9 @@
           "@type": "Brand",
           "name": {{ product.vendor | json }}
         },
+        {%- if product.selected_or_first_available_variant.sku != blank -%}
         "sku": {{ product.selected_or_first_available_variant.sku | json }},
-        "mpn": {{ product.selected_or_first_available_variant.sku | json }},
+        {%- endif -%}
         {%- if product.type != blank -%}
         "category": {{ product.type | json }},
         {%- endif -%}
@@ -6737,7 +6737,9 @@
               "@type": "Organization",
               "name": "Milaura"
             },
+            {%- if variant.sku != blank -%}
             "sku": {{ variant.sku | json }},
+            {%- endif -%}
             {%- if variant.barcode.size == 12 -%}
               "gtin12": {{ variant.barcode | json }},
             {%- elsif variant.barcode.size == 13 -%}
@@ -6745,69 +6747,42 @@
             {%- elsif variant.barcode.size == 14 -%}
               "gtin14": {{ variant.barcode | json }},
             {%- endif -%}
-            "shippingDetails": {
-              "@type": "OfferShippingDetails",
-              "shippingRate": {
-                "@type": "MonetaryAmount",
-                "value": {% if variant.price >= 3900 %}"0"{% else %}"4.90"{% endif %},
-                "currency": {{ cart.currency.iso_code | json }}
-              },
-              "shippingDestination": {
-                "@type": "DefinedRegion",
-                "addressCountry": "FR"
-              },
-              "deliveryTime": {
-                "@type": "ShippingDeliveryTime",
-                "handlingTime": {
-                  "@type": "QuantitativeValue",
-                  "minValue": "0",
-                  "maxValue": "1",
-                  "unitCode": "d"
-                },
-                "transitTime": {
-                  "@type": "QuantitativeValue",
-                  "minValue": "1",
-                  "maxValue": "3",
-                  "unitCode": "d"
-                }
-              }
-            },
-            "hasMerchantReturnPolicy": {
-              "@type": "MerchantReturnPolicy",
-              "applicableCountry": ["CH", "BE", "LU", "FR", "DE", "ES", "IT"],
-              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-              "merchantReturnDays": "14",
-              "returnMethod": "https://schema.org/ReturnByMail",
-              "returnFees": "https://schema.org/CustomerResponsibility",
-              "itemCondition": "https://schema.org/UnopenedCondition",
-              "description": "Retour à la charge du client, gratuit en cas de défaut. Produit doit être scellé dans son emballage d'origine."
+            "eligibleQuantity": {
+              "@type": "QuantitativeValue",
+              "minValue": 1
             }
           }{% unless forloop.last %},{% endunless %}
           {%- endfor -%}
         ]
         {%- comment -%} Metafields Milaura — additionalProperty pour agents IA / UCP {%- endcomment -%}
-        {%- assign has_additional = false -%}
-        {%- if product.metafields.milaura.baseline != blank or product.metafields.milaura.vertus != blank or product.metafields.milaura.stone_handle != blank or product.metafields.milaura.intention_handle != blank or product.metafields.milaura.scent_handle != blank -%}
+        {%- liquid
+          assign baseline_text = product.metafields.milaura.baseline | metafield_text | strip_html | strip
+          assign vertus_text = product.metafields.milaura.vertus | metafield_text | strip_html | strip
+          assign stone_benefits_text = product.metafields.milaura.stone_benefits | metafield_text | strip_html | strip
+          assign ritual_steps_text = product.metafields.milaura.ritual_steps | metafield_text | strip_html | strip
+          assign has_additional = false
+        -%}
+        {%- if baseline_text != blank or vertus_text != blank or product.metafields.milaura.stone_handle != blank or stone_benefits_text != blank or product.metafields.milaura.intention_handle != blank or product.metafields.milaura.scent_handle != blank or ritual_steps_text != blank or product.metafields.milaura.product_type_handle != blank -%}
           {%- assign has_additional = true -%}
         {%- endif -%}
         {%- if has_additional -%}
         ,"additionalProperty": [
           {%- assign prop_comma = false -%}
-          {%- if product.metafields.milaura.baseline != blank -%}
+          {%- if baseline_text != blank -%}
             {%- if prop_comma -%},{%- endif -%}
             {
               "@type": "PropertyValue",
               "name": "Intention emotionnelle",
-              "value": {{ product.metafields.milaura.baseline | json }}
+              "value": {{ baseline_text | json }}
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
-          {%- if product.metafields.milaura.vertus != blank -%}
+          {%- if vertus_text != blank -%}
             {%- if prop_comma -%},{%- endif -%}
             {
               "@type": "PropertyValue",
               "name": "Vertus",
-              "value": {{ product.metafields.milaura.vertus | json }}
+              "value": {{ vertus_text | json }}
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
@@ -6820,12 +6795,12 @@
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
-          {%- if product.metafields.milaura.stone_benefits != blank -%}
+          {%- if stone_benefits_text != blank -%}
             {%- if prop_comma -%},{%- endif -%}
             {
               "@type": "PropertyValue",
               "name": "Bienfaits de la pierre",
-              "value": {{ product.metafields.milaura.stone_benefits | json }}
+              "value": {{ stone_benefits_text | json }}
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
@@ -6847,12 +6822,12 @@
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
-          {%- if product.metafields.milaura.ritual_steps != blank -%}
+          {%- if ritual_steps_text != blank -%}
             {%- if prop_comma -%},{%- endif -%}
             {
               "@type": "PropertyValue",
               "name": "Rituel d'utilisation",
-              "value": {{ product.metafields.milaura.ritual_steps | json }}
+              "value": {{ ritual_steps_text | json }}
             }
             {%- assign prop_comma = true -%}
           {%- endif -%}
@@ -7363,14 +7338,8 @@
     {
       "type": "checkbox",
       "id": "show_social_proof",
-      "label": "Afficher social proof",
-      "default": true
-    },
-    {
-      "type": "number",
-      "id": "social_count",
-      "label": "Nombre de client(e)s a afficher (mois en cours)",
-      "default": 127
+      "label": "Afficher les avis Shopify verifies",
+      "default": false
     },
     {
       "type": "paragraph",
@@ -7400,7 +7369,7 @@
       "type": "textarea",
       "id": "karine_quote",
       "label": "Citation Karine (texte vendeur)",
-      "default": "Je sélectionne chaque pierre avec soin. Origine contrôlée, qualité vérifiée avec rigueur, avant d'arriver dans nos ateliers."
+      "default": "Je sélectionne chaque pièce et je la contrôle à réception avant de préparer votre commande à Metz."
     },
     {
       "type": "header",
@@ -7582,8 +7551,8 @@
     {
       "type": "checkbox",
       "id": "show_scratch",
-      "label": "Conserver le moteur cartes a gratter",
-      "default": true
+      "label": "Activer l'ancien moteur cartes a gratter",
+      "default": false
     },
     {
       "type": "text",
@@ -8171,12 +8140,12 @@
     {
       "name": "Milaura Hero Premium",
       "blocks": [
-        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Avantage livraison dès 19,90€" } },
-        { "type": "trust_badge", "settings": { "icon": "🛡️", "text": "Garantie 30 jours" } },
+        { "type": "trust_badge", "settings": { "icon": "🚚", "text": "Livraison calculée au paiement" } },
+        { "type": "trust_badge", "settings": { "icon": "↩", "text": "Retour possible sous 14 jours" } },
         { "type": "volume_offer" },
-        { "type": "gift", "settings": { "icon": "✉️", "name": "Avantage bienvenue", "value": "", "discount_code": "MILAURA-LIV19", "badge_label": "Gagné", "popup_title": "Votre avantage bienvenue est débloqué", "popup_text": "Votre livraison offerte se débloque automatiquement. Elle sera appliquée selon les conditions Shopify." } },
+        { "type": "gift", "settings": { "icon": "✉️", "name": "Ancien avantage", "value": "", "discount_code": "", "badge_label": "Désactivé", "popup_title": "Ancien avantage désactivé", "popup_text": "Les avantages actifs sont présentés dans le panier." } },
         { "type": "gift", "settings": { "icon": "🖤", "name": "Carte sélection", "value": "Cadeau MilAura", "badge_label": "Gagné", "popup_title": "Votre cadeau MilAura est débloqué", "popup_text": "Votre panier atteint le palier 50 €. Votre cadeau MilAura est ajouté automatiquement au panier." } },
-        { "type": "gift", "settings": { "icon": "✨", "name": "Surprise de l'été", "value": "", "discount_code": "MILAURA30", "badge_label": "Surprise été", "popup_title": "Votre meilleur cadeau est débloqué", "popup_text": "Votre panier atteint le palier 80 €. Grattez votre carte dans le panier pour appliquer la remise MilAura." } }
+        { "type": "gift", "settings": { "icon": "✨", "name": "Ancien avantage", "value": "", "discount_code": "", "badge_label": "Désactivé", "popup_title": "Ancien avantage désactivé", "popup_text": "Les avantages actifs sont présentés dans le panier." } }
       ]
     }
   ]
