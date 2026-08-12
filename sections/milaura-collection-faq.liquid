@@ -1,0 +1,240 @@
+{%- comment -%}
+  MILAURA COLLECTION FAQ
+  Accordeon accessible et JSON-LD FAQPage pour les pages par pierre.
+  Q/R via blocks customizer. Le JSON-LD est emis uniquement si au moins une Q/R est complete.
+{%- endcomment -%}
+
+{%- liquid
+  assign question_blocks = section.blocks | where: 'type', 'question'
+  assign valid_questions = 0
+
+  for block in question_blocks
+    if block.settings.question != blank and block.settings.answer != blank
+      assign valid_questions = valid_questions | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if valid_questions > 0 -%}
+  {%- style -%}
+    #MilauraCollectionFaq-{{ section.id }} {
+      padding: var(--milaura-spacing-md, 32px) var(--milaura-spacing-sm, 16px);
+      background: {{ section.settings.background_color }};
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__inner {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__title {
+      font-family: var(--milaura-font-heading, 'Playfair Display', serif);
+      font-size: 24px;
+      text-align: center;
+      color: var(--milaura-text, #1b1b1b);
+      margin: 0 0 var(--milaura-spacing-md, 28px);
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__item {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__q {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      padding: 16px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--milaura-text, #1b1b1b);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: var(--milaura-font-body, inherit);
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__q:focus-visible {
+      outline: 2px solid var(--milaura-gold, #c0a062);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__icon {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      transition: transform 0.25s ease;
+      color: var(--milaura-gold, #c0a062);
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__q[aria-expanded="true"] .milaura-faq__icon {
+      transform: rotate(45deg);
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__a {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.3s ease;
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__a[data-open="true"] {
+      max-height: 600px;
+    }
+
+    #MilauraCollectionFaq-{{ section.id }} .milaura-faq__a-inner {
+      padding: 0 0 16px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--milaura-text-light, #444444);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #MilauraCollectionFaq-{{ section.id }} .milaura-faq__icon,
+      #MilauraCollectionFaq-{{ section.id }} .milaura-faq__a {
+        transition: none;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      #MilauraCollectionFaq-{{ section.id }} {
+        padding: var(--milaura-spacing-sm, 20px) var(--milaura-spacing-xs, 14px);
+      }
+
+      #MilauraCollectionFaq-{{ section.id }} .milaura-faq__title {
+        font-size: 21px;
+      }
+    }
+  {%- endstyle -%}
+
+  <section
+    id="MilauraCollectionFaq-{{ section.id }}"
+    class="milaura-collection-faq milaura-section"
+    aria-label="{{ section.settings.title | escape }}"
+  >
+    <div class="milaura-faq__inner">
+      <h2 class="milaura-faq__title">{{ section.settings.title }}</h2>
+
+      {%- for block in question_blocks -%}
+        {%- if block.settings.question != blank and block.settings.answer != blank -%}
+          <div class="milaura-faq__item" {{ block.shopify_attributes }}>
+            <button
+              class="milaura-faq__q"
+              type="button"
+              aria-expanded="false"
+              aria-controls="MilauraFaqA-{{ section.id }}-{{ block.id }}"
+            >
+              <span>{{ block.settings.question }}</span>
+              <svg class="milaura-faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+            <div class="milaura-faq__a" id="MilauraFaqA-{{ section.id }}-{{ block.id }}" data-open="false">
+              <div class="milaura-faq__a-inner rte">{{ block.settings.answer }}</div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.getElementById('MilauraCollectionFaq-{{ section.id }}');
+      if (!root) return;
+
+      root.querySelectorAll('.milaura-faq__q').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var expanded = button.getAttribute('aria-expanded') === 'true';
+          var panel = document.getElementById(button.getAttribute('aria-controls'));
+
+          button.setAttribute('aria-expanded', String(!expanded));
+          if (panel) panel.setAttribute('data-open', String(!expanded));
+        });
+      });
+    })();
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- assign emitted_questions = 0 -%}
+        {%- for block in question_blocks -%}
+          {%- if block.settings.question != blank and block.settings.answer != blank -%}
+            {%- if emitted_questions > 0 -%},{%- endif -%}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | strip_html | json }}
+              }
+            }
+            {%- assign emitted_questions = emitted_questions | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection FAQ",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Questions frequentes"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Couleur de fond",
+      "default": "#f9f7f4"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Reponse"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection FAQ",
+      "blocks": [
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
