@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-08-12 18:10 CEST
+Derniere mise a jour : 2026-08-12 18:19 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active, aucune exception.
 
@@ -8,15 +8,15 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 | Role | Chemin | Branche | Theme Shopify | Etat |
 | --- | --- | --- | --- | --- |
-| Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-reconcile-2026-08-07` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
+| Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-integration` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
 
 ## Sessions actives
 
-Aucune session parallele active au 2026-08-12 18:10 CEST.
+Aucune session parallele active au 2026-08-12 18:19 CEST.
 
 | Lot | Proprietaire | Branche | Worktree | Fichiers ou zone exclusive | Theme | Statut | Mise a jour |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Aucun | Aucun | Aucun | Aucun | Aucun | Aucun | ferme | 2026-08-12 18:10 CEST |
+| Aucun | Aucun | Aucun | Aucun | Aucun | Aucun | ferme | 2026-08-12 18:19 CEST |
 
 ## Regles du registre
 

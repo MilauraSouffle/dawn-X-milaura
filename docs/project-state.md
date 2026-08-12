@@ -1,154 +1,142 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-12 17:46 CEST
+Derniere mise a jour : 2026-08-12 18:19 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1 et sa destination homepage Bagues sont publics, le panier 30/50/80 est versionne avec ses libelles corriges, et PDP-P0 avec retrait Scratch est valide sur le theme de developpement. La prochaine decision est le GO visuel PDP, puis le prototype bandeau mobile et Hero immersif avec un media reel.
+Le catalogue V1 est public, le depot actif est consolide sur une branche d'integration permanente, les changements Shopify locaux sont versionnes, le clone divergent est archive et la prochaine decision reste le GO visuel PDP avant le lot bandeau mobile et Hero immersif.
+
+## Source de verite et etat du depot
+
+- Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
+- Branche de travail et d'integration : `codex/milaura-integration`.
+- `main` reste le miroir automatique du theme Shopify live.
+- L'historique `main` a ete rattache a l'integration par `952d7587` sans modifier l'arbre source audite et sans deploiement Shopify.
+- GitHub ne conserve que deux branches actives : `main` et `codex/milaura-integration`.
+- Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
+- Aucun worktree parallele n'est actif au 2026-08-12 18:19 CEST.
+- Registre obligatoire : `docs/workstreams.md`.
+- Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
+
+Le clone `/Users/paesano/Documents/MilAura website/dawn-X-milaura 2` etait un depot complet obsolete de 3,4 Go, pas un worktree. Il est archive intact ici :
+
+`/Users/paesano/Documents/MilAura website/_archives/2026-08-12-repo-cleanup/obsolete-clones/dawn-X-milaura-2-obsolete`
+
+Les temporaires, sauvegardes et assets rejetes du depot principal sont archives ici :
+
+`/Users/paesano/Documents/MilAura website/_archives/2026-08-12-repo-cleanup/primary-untracked`
+
+Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 
 ## Regles de conduite actives
 
-- Une seule session possede a un instant donne le theme actif, la branche Git et les deploiements Shopify.
-- Aucun commit global, aucun push complet du theme, aucun reset et aucun nettoyage du worktree concurrent.
-- Les deploiements Shopify restent cibles, suivis d'un pullback et d'une comparaison locale.
+- Le checkout principal sert a l'integration, la documentation et aux deploiements.
+- Une session parallele utilise une branche et un worktree geres, declares avant edition dans `docs/workstreams.md`.
+- Deux sessions ne possedent jamais le meme fichier ou le meme theme Shopify au meme moment.
+- Aucun clone manuel, dossier numerote, handoff non committe ou push complet du theme.
+- Seul le proprietaire d'integration deploie le live, avec fichiers cibles, `--nodelete`, pullback et comparaison.
 - Une validation technique ne vaut jamais validation creative de Patrice.
-- Aucun produit, brouillon, stock ou prix n'est modifie par un chantier theme ou catalogue sans autorisation explicite.
-- Le quiz `/pages/diagnostic-emotionnel` reste le funnel principal et ne doit pas etre remplace.
-- Le Cercle et la page compte restent hors du chemin critique actuel.
-- Les treize anciennes collections sans metas definitives restent dependantes de l'inventaire, du stock et du contenu fiable.
+- Aucun produit, stock, prix ou statut de publication n'est modifie par un chantier theme sans autorisation explicite.
 
 ## Catalogue V1 public
 
-Activation validee le 2026-08-12 dans le commit `cb0da71b` et documentee dans `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`.
+Activation validee le 2026-08-12 dans `cb0da71b` et documentee dans `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`.
 
 Pages publiques :
 
-- `/pages/choisir-sa-pierre` ;
-- `/pages/bijoux-par-pierre` ;
-- `/pages/pierres-de-naissance`, avec 4 produits reels ;
-- `/pages/cadeaux-anniversaire-de-mariage`, avec 3 produits reels.
+- `/pages/choisir-sa-pierre`
+- `/pages/bijoux-par-pierre`
+- `/pages/pierres-de-naissance`, avec 4 produits reels
+- `/pages/cadeaux-anniversaire-de-mariage`, avec 3 produits reels
 
 Collections publiques :
 
-- `/collections/bagues-pierres`, 6 produits ;
-- `/collections/par-pierre-aigue-marine`, 6 produits ;
-- `/collections/par-pierre-agate`, 10 produits ;
-- `/collections/par-pierre-quartz-rose`, 8 produits ;
-- `/collections/par-pierre-lapis-lazuli`, 6 produits ;
-- `/collections/par-pierre-amazonite`, 6 produits.
+- `/collections/bagues-pierres`, 6 produits
+- `/collections/par-pierre-aigue-marine`, 6 produits
+- `/collections/par-pierre-agate`, 10 produits
+- `/collections/par-pierre-quartz-rose`, 8 produits
+- `/collections/par-pierre-lapis-lazuli`, 6 produits
+- `/collections/par-pierre-amazonite`, 6 produits
 
-Navigation Shopify native :
+Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, aucun `noindex`, presence sitemap, Theme Check sans erreur et `productMutations: 0`.
 
-- `Pierres & Mineraux` : Choisir sa pierre, Bijoux par pierre, Pierres de naissance ;
-- `Bijoux & Pierres Naturelles` : Bagues en pierres, Cadeaux de mariage.
+## Homepage et design
 
-Validation catalogue V1 : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, aucun `noindex`, presence dans les sitemaps, Theme Check sans erreur, pullback live et developpement identique pour les 9 fichiers cibles. Le journal de mutation confirme `productMutations: 0`.
+- Hero actuel live et valide visuellement par Patrice.
+- Selection d'aout, guide de decouverte, `Choisir sa pierre`, dock mobile et panier 30/50/80 sont live.
+- Le bandeau d'engagement live reste trop epais sur mobile selon Patrice.
+- Le Hero doit etre etudie avec une facette plus immersive, potentiellement une video reelle de 6 a 8 secondes dans le grand cabochon.
+- Reference de qualite : `tiffany.com`, sans copie et sans decoration generique.
+- Brief : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
-## Etat homepage et design live
+## Livraison et verite Shopify versionnee
 
-- Hero live et visuellement valide par Patrice : `La beaute des bijoux rencontre les vertus des pierres.`
-- Selection d'aout live : homepage et `/collections/selection-aout-2026`.
-- Guide de decouverte live : type, emotion et diagnostic.
-- Landing `Choisir sa pierre` live avec Benefits Explorer et triptyque anime.
-- Bandeau live depuis `c909f192` : `L'engagement MilAura`, service humain, equipe disponible 6j/7 et commandes preparees et expediees depuis l'atelier a Metz.
-- Reference de qualite pour la prochaine passe creative : `tiffany.com`.
+Le commit `9220031e` versionne 31 fichiers auparavant locaux. L'audit du 2026-08-12 a etabli :
 
-Retour Patrice du 2026-08-12, documente mais non implemente :
+- 27 fichiers theme etaient identiques bit a bit au theme live
+- la politique publique confirme expedition sous 24 h du lundi au vendredi, livraison France sous 3 a 5 jours et point relais offert des 30 EUR
+- `templates/cart.milaura.json` correspond a la normalisation Shopify live
+- aucun produit, stock, prix ou statut n'a ete modifie
 
-- le bandeau est trop epais sur mobile et manque d'un detail de marque ;
-- le Hero est beau, mais ses trois cabochons pourraient devenir plus immersifs ;
-- piste a etudier : le plus grand cabochon accueille une video courte et premium d'un mannequin presentant un bijou ;
-- toute evolution doit commencer par des propositions mobile et desktop, sans reutiliser les sprites, gemmes generees ou detourages rejetes le 2026-08-11.
+Quatre fichiers signales comme chevauches ont ete classes ainsi :
 
-Direction recommandee : bandeau mobile ramene de 108 px a 56 px sur une seule ligne, detail de marque discret issu d'un vrai bijou, puis facette centrale du Hero transformee en media principal. Le brief, les contraintes video et les captures live sont dans `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
-
-## Panier et livraison
-
-Avantages live :
-
-- 30 EUR : point relais offert via `MILAURA-RELAIS30` ;
-- 50 EUR : cadeau mensuel, variante `53142713925979` ;
-- 80 EUR : remise de 15 % via `MILAURA15-80` ;
-- `VINTED10` reste manuel.
-
-Les trois fichiers du moteur panier ont ete verifies par pullback live, committes dans `6259200d` et pousses le 2026-08-12 :
-
-- `assets/milaura-cart-rewards-auto.js` ;
-- `config/settings_schema.json` ;
-- `snippets/milaura-cart-rewards-drawer.liquid`.
-
-Le controle navigateur du 2026-08-12 a revele deux anciens libelles Shopify inverses. Le commit `7c823144` force maintenant les libelles canoniques `Point relais offert`, `Cadeau du mois offert` et `-15 % sur la commande`. Le snippet est live et en developpement, avec pullback bit a bit sur les deux themes.
-
-Limite de preuve : aucun checkout reel n'a encore confirme le parcours point relais complet.
-
-L'harmonisation `point relais des 30 EUR`, `expedition sous 24 h` et `livraison sous 3 a 5 jours` existe encore dans de nombreux fichiers locaux non livres. Elle ne doit pas etre committee ou deployee en bloc avant audit des proprietaires et de la source de verite logistique.
+| Fichier | Nature exacte | Etat Shopify |
+| --- | --- | --- |
+| `sections/milaura-product-hero.liquid` | pills pierre, symbolique, qualite et provenance, plus seuil point relais 30 EUR, sur le socle PDP-P0 | partie pills/logistique deja live, durcissement PDP-P0 uniquement en developpement |
+| `templates/index.json` | deux libelles livraison remplaces par point relais offert des 30 EUR | source versionnee, ces deux libelles ne sont pas encore deployes live |
+| `templates/page.lp-promo-bougies.json` | CTA vers le vrai produit, seuil 30 EUR, FAQ 24 h et 3 a 5 jours | identique bit a bit au live |
+| `templates/product.milaura-produit.json` | seuil 30 EUR, normalisation de cinq settings invalides, texte logistique, plus socle PDP-P0 | logistique deja live, durcissement PDP-P0 uniquement en developpement |
 
 ## PDP et ScratchToReveal
 
-L'audit initial du 2026-08-11 est `docs/audits/2026-08-11-audit-fiche-produit-seo-aeo-geo.md`. Le lot `2effdfbd` est maintenant deploye uniquement sur le theme de developpement `199421952347`.
+Le lot `2effdfbd` est valide techniquement uniquement sur le theme de developpement `199421952347` :
 
-Etat confirme en developpement :
+- Scratch invisible et non initialise sur la PDP
+- quantite, ajout panier, drawer et cadeau automatique fonctionnels
+- faux claims et preuves sociales non prouvees retires ou conditionnes
+- Product JSON-LD corrige
+- quatre blocs JSON-LD parses sans erreur
+- un H1 et achat direct verifies sur une bague, un bracelet et une bougie
 
-- Scratch invisible et non initialise sur la PDP ;
-- landing bougies Scratch desactivee ;
-- quantite, ajout panier, drawer et cadeau automatique fonctionnels ;
-- preuves sociales et claims generiques non prouves retires ou desactives ;
-- texte de Karine factuel ;
-- faux MPN et donnees logistiques statiques retires du Product JSON-LD ;
-- quatre blocs JSON-LD parses sans erreur ;
-- un H1, achat direct et absence Scratch verifies sur une bague, un bracelet et une bougie.
+Ce lot n'est pas live et attend le GO visuel de Patrice.
 
-Le lot n'est pas live. Il attend le GO visuel de Patrice. La verite logistique globale, les politiques et le checkout point relais restent un lot distinct.
+## Contrat produit
 
-## Contrat de donnees et pipeline produit
+Le commit `6c4e6de4` fixe le contrat canonique complet : pierres, matieres, couleurs, intentions, occasions, disponibilite, fulfillment, provenance et six images minimum. Le pipeline reste draft-only et ne modifie ni hub ni collection publique.
 
-Le contrat canonique reste :
+Pipeline actif :
 
-- `stone_handle` pour la pierre principale ;
-- `stone_handles` pour les pierres secondaires ou multiples ;
-- `stone_benefits` avec le libelle public `Symbolique traditionnelle` ;
-- `content_updated_at` pour la date editoriale.
+`/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`
 
-Le pipeline CAN/Camilla V1.2 vit dans `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`. Il reste draft-only, suit le prix conseille CAN exact, bloque les ambiguites lot/unite et reserve la publication finale a Patrice.
+## Commits de consolidation du 2026-08-12
 
-## Etat Git et ownership au 2026-08-12 17:46 CEST
-
-- Branche : `codex/milaura-reconcile-2026-08-07`.
-- Branche distante synchronisee jusqu'a `8e19bd12` avant le push final de cette reprise.
-- Catalogue V1 : `cb0da71b`, pousse.
-- Panier live : `6259200d`, pousse.
-- Documentation reconciliee : `c4200135`, poussee.
-- Destination homepage Bagues : `8e19bd12`, poussee et live.
-- PDP-P0 et S1A : `2effdfbd`, theme de developpement uniquement.
-- Libelles panier : `7c823144`, live et developpement.
-- 37 fichiers suivis restent modifies localement hors documentation de cette reprise.
-- Les fichiers non suivis d'experiences design, sauvegardes et copies temporaires restent intacts.
-- Matrice d'ownership : `docs/checkpoints/2026-08-12-1506-reconciliation-ownership.md`.
+- `9220031e` : verite storefront et logistique
+- `6c4e6de4` : contrat produit et catalogue
+- `4853db6e` : procedure propre de parallelisation et archive
+- `952d7587` : reconciliation de l'historique du miroir Shopify
 
 ## Prochain ordre d'execution
 
-1. Obtenir le GO visuel de Patrice sur PDP-P0 en developpement.
-2. En cas de GO, pousser uniquement les six fichiers `2effdfbd` sur le theme live, puis pullback et test achat.
-3. Choisir ou tourner une video reelle MilAura de 6 a 8 secondes avec son poster.
-4. Prototyper sur le theme de developpement le bandeau 56 px et le Hero Cabochon cinema, puis demander le GO visuel.
-5. Auditer et isoler l'harmonisation livraison avant de reprendre Karine, Sur mesure, Atelier des emotions, Cadeaux, Journal, puis Cercle.
+1. Faire le controle visuel mobile et desktop de PDP-P0 sur le theme de developpement, puis obtenir le GO explicite de Patrice.
+2. En cas de GO, deployer uniquement les six fichiers PDP autorises sur le live, effectuer le pullback et retester l'achat.
+3. Ouvrir un worktree declare pour le bandeau mobile 56 px et le Hero immersif, avec un media reel, puis soumettre une seule proposition mobile et desktop.
 
 ## Dependances encore ouvertes
 
-- inventaire et retrait controle des 18 baguettes minerales ;
-- treize anciennes collections sans metas definitives ;
-- pages mensuelles de naissance et pages enfants mariage ;
-- GSC, GA4, Merchant Center et Pinterest non verifies ;
-- stock, couts, delais et tracking avant acquisition payante ;
-- Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu.
+- inventaire et retrait controle des 18 baguettes minerales
+- treize anciennes collections sans metas definitives
+- pages mensuelles de naissance et pages enfants mariage
+- GSC, GA4, Merchant Center et Pinterest non verifies
+- parcours checkout reel du point relais non confirme
+- stock, couts, delais et tracking avant acquisition payante
+- Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
 
 ## References de reprise
 
-- Handoff actif : `docs/codex-handoff.md`.
-- Plan canonique : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
-- Catalogue V1 : `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`.
-- Ownership : `docs/checkpoints/2026-08-12-1506-reconciliation-ownership.md`.
-- Trois lots : `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`.
-- Audit PDP : `docs/audits/2026-08-11-audit-fiche-produit-seo-aeo-geo.md`.
-- Brief bandeau et Hero : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
-- Bandeau : commit `c909f192`.
+- `docs/codex-handoff.md`
+- `docs/workstreams.md`
+- `docs/reference/2026-08-12-repository-workflow.md`
+- `docs/checkpoints/2026-08-12-1819-repository-cleanup.md`
+- `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`
+- `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
+- `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

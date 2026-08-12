@@ -44,7 +44,7 @@ Exemple de convention :
 ```bash
 git worktree add -b codex/milaura-hero-video-20260813 \
   "/Users/paesano/Documents/MilAura website/_worktrees/hero-video-20260813" \
-  codex/milaura-reconcile-2026-08-07
+  codex/milaura-integration
 ```
 
 Le nom de la branche d'integration doit toujours etre relu dans le registre avant d'executer la commande.

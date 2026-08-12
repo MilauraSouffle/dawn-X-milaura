@@ -64,3 +64,16 @@ Ces fichiers restent recuperables, mais ne sont ni une source de verite ni une b
 - Ne pas copier ses fichiers dans le depot principal sans audit fichier par fichier.
 - Ne jamais exposer ou versionner ses secrets.
 - Une suppression definitive de l'archive exige une nouvelle decision explicite de Patrice.
+
+## Branches GitHub archivees
+
+Quatre branches historiques ont ete preservees sous des tags distants avant leur retrait des branches actives :
+
+| Ancienne branche | Tag d archive | Commit preserve |
+| --- | --- | --- |
+| `codex/milaura-mobile-dock-2026-08-07` | `archive/2026-08-12/legacy-mobile-dock` | `252f31b51fd714cbbe93c33293f32895635c8c82` |
+| `ux-mobile-commando` | `archive/2026-08-12/legacy-ux-mobile-commando` | `a586d88765fa88bb8d4b50dd283f634d47984845` |
+| `backup/avant-push-20251214-0929` | `archive/2026-08-12/backup-avant-push-20251214` | `f7c60c8b14809cb64e1cd3920e29cc87014ad140` |
+| `backup/avant-restore-20251213-1846` | `archive/2026-08-12/backup-avant-restore-20251213` | `7b44cf9eadba08b222c749ce63d9af2409dd1768` |
+
+GitHub conserve ensuite deux branches actives : `main`, miroir automatique Shopify, et `codex/milaura-integration`, branche source et integration.
