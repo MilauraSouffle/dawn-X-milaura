@@ -1,10 +1,10 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-12 15:06 CEST
+Date de mise a jour : 2026-08-12 17:46 CEST
 
 ## Mission de reprise
 
-Consolider le theme lot par lot depuis le catalogue V1 public, puis executer PDP-P0 et le retrait Scratch S1A sur une fiche pilote. Ne pas demarrer une mutation creative du bandeau ou du Hero avant d'avoir stabilise les destinations UI et separe les changements concurrents.
+Faire valider PDP-P0 sur le theme de developpement, puis le livrer de facon ciblee si Patrice donne son GO. Le lot creatif suivant est un bandeau mobile de 56 px et un Hero a facette centrale video, uniquement apres choix d'un media reel.
 
 ## Lecture obligatoire
 
@@ -14,6 +14,8 @@ Consolider le theme lot par lot depuis le catalogue V1 public, puis executer PDP
 4. `docs/checkpoints/2026-08-12-1506-reconciliation-ownership.md`
 5. `docs/audits/2026-08-11-audit-fiche-produit-seo-aeo-geo.md`
 6. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
+7. `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
+8. `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
 
 ## Faits live confirmes
 
@@ -24,6 +26,9 @@ Consolider le theme lot par lot depuis le catalogue V1 public, puis executer PDP
 - Le quiz principal reste `/pages/diagnostic-emotionnel`.
 - Le bandeau live est la version `c909f192`, posterieure au rollback `5d95b3b4`.
 - Le panier live est maintenant versionne dans `6259200d` et correspond bit a bit au pullback du theme live.
+- La homepage Bagues pointe vers `/collections/bagues-pierres`, commit `8e19bd12`, live et developpement.
+- Les libelles panier 30/50/80 sont corriges par `7c823144`, live et developpement.
+- PDP-P0 et S1A sont valides sur le theme de developpement dans `2effdfbd`, mais ne sont pas live.
 
 ## Catalogue V1 public
 
@@ -41,20 +46,17 @@ Routes publiques :
 
 Le checkpoint `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md` confirme 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, aucune directive `noindex`, presence sitemap et `productMutations: 0`.
 
-## Premier lot actif : integration UI du catalogue
+## Premier lot termine : integration UI du catalogue
 
-Actions autorisees et attendues :
+- `templates/index.json` utilise `shopify://collections/bagues-pierres` ;
+- le changement est live et en developpement ;
+- pullback identique ;
+- homepage publique avec un H1 ;
+- navigation native correcte, sans suppression risquee du fallback Liquid garde.
 
-1. remplacer la destination historique `shopify://collections/bagues` de `templates/index.json` par `shopify://collections/bagues-pierres` ;
-2. verifier que les cartes du guide utilisent uniquement les destinations maintenant publiques ;
-3. confirmer que la navigation native Shopify rend `Choisir sa pierre` sans doublon avant de supprimer un fallback Liquid eventuel ;
-4. verifier le double H1 homepage signale par le checkpoint catalogue ;
-5. valider desktop, mobile, Theme Check et `git diff --check` ;
-6. demander le GO de Patrice avant tout push live si le rendu change.
+## Deuxieme lot pret en developpement : PDP-P0 et Scratch S1A
 
-## Deuxieme lot : PDP-P0 et Scratch S1A
-
-Objectif : produire une premiere PDP fiable sans gamification Scratch visible ou initialisee.
+Objectif atteint techniquement sur le theme `199421952347` : produire une PDP fiable sans gamification Scratch visible ou initialisee.
 
 P0 :
 
@@ -72,7 +74,7 @@ Fichiers locaux a isoler :
 - `templates/product.milaura-produit.json` ;
 - `templates/page.lp-promo-bougies.json`.
 
-Risque : `sections/milaura-product-hero.liquid` melange actuellement S1A et des changements concurrents de badges/metafields. Ne pas committer le fichier en bloc sans relecture fonctionnelle complete.
+Le commit cible est `2effdfbd`. La bague pilote a valide quantite, prix, ajout panier, drawer et cadeau automatique. La bague, le bracelet et la bougie ont chacun un H1, un bouton d'achat, une quantite, quatre JSON-LD valides et aucun Scratch visible. Ne pas publier sans GO visuel de Patrice.
 
 ## Troisieme lot : livraison globale
 
@@ -84,7 +86,7 @@ La formulation locale vise :
 
 Ces remplacements couvrent de nombreuses surfaces et ne sont pas une source de verite dynamique. Ils doivent etre inventories, relies au mode de disponibilite produit et verifies contre les politiques, le checkout et le JSON-LD avant commit.
 
-## Lot creatif suivant, non implemente
+## Lot creatif suivant, specifie mais non implemente
 
 Retour Patrice du 2026-08-12 :
 
@@ -94,16 +96,20 @@ Retour Patrice du 2026-08-12 :
 - etudier une video premium dans le grand cabochon, avec mannequin et bijou ;
 - utiliser `tiffany.com` comme niveau d'exigence, pas comme modele a copier.
 
-Methode : captures live mobile et desktop, au maximum trois propositions, verification performance et accessibilite, puis GO visuel avant code ou live. Les assets rejetes du 2026-08-11 ne constituent pas une base creative.
+Direction recommandee : bandeau 56 px mobile sur une ligne avec un detail de marque reel, puis facette centrale video de 6 a 8 secondes dans le Hero, poster et reduced motion. Le brief complet est `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`. Les assets rejetes du 2026-08-11 ne constituent pas une base creative.
 
 ## Etat Git
 
 - Branche : `codex/milaura-reconcile-2026-08-07`.
 - `cb0da71b feat: activate catalogue v1` pousse le 2026-08-12.
 - `6259200d fix: preserve live cart rewards` pousse le 2026-08-12.
-- 41 fichiers suivis restent modifies apres isolation du panier.
+- `c4200135 docs: reconcile catalogue v1 state` pousse le 2026-08-12.
+- `8e19bd12 fix: route homepage rings to public collection` pousse et livre le 2026-08-12.
+- `2effdfbd fix: harden product purchase truth` est livre seulement en developpement.
+- `7c823144 fix: align cart reward labels` est livre en developpement et en live.
+- 37 fichiers suivis concurrents restent modifies hors documentation de cette reprise.
 - Aucun fichier concurrent n'a ete restaure, nettoye ou supprime.
-- Les documents canoniques et la matrice d'ownership forment un lot documentation autonome.
+- Le checkpoint `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md` est la reprise operationnelle la plus recente.
 
 ## Interdits de reprise
 
@@ -111,11 +117,11 @@ Methode : captures live mobile et desktop, au maximum trois propositions, verifi
 - Ne pas pousser le theme complet.
 - Ne pas supprimer les sauvegardes, copies, assets ou fichiers temporaires sans proprietaire confirme.
 - Ne pas traiter les changements locaux de livraison comme deja live.
-- Ne pas traiter S1A comme livre.
+- Ne pas traiter S1A comme livre sur le theme live.
 - Ne pas remplacer ou supprimer le diagnostic emotionnel.
 - Ne pas reprendre le Cercle ou la page compte dans ce cycle.
 - Ne pas publier un produit CAN ; les produits restent draft-only jusqu'a la decision de Patrice.
 
 ## Prompt de reprise
 
-> Reprends MilAura depuis `docs/codex-handoff.md`, `docs/project-state.md`, `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md` et `docs/checkpoints/2026-08-12-1506-reconciliation-ownership.md`. Le catalogue V1 et le panier 30/50/80 sont maintenant versionnes et pousses sur `codex/milaura-reconcile-2026-08-07`. Commence par integrer les nouvelles destinations publiques dans la homepage et la navigation, sans push live avant validation si le rendu change. Puis isole PDP-P0 et Scratch S1A sur une fiche pilote. Preserve les 41 fichiers concurrents, ne committe jamais tout le worktree et ne touche pas au Cercle. Le bandeau mobile et le Hero video sont un lot creatif separe apres consolidation.
+> Reprends MilAura depuis `docs/codex-handoff.md`, `docs/project-state.md` et `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`. Le catalogue V1, la route homepage Bagues et les libelles panier sont live. PDP-P0 avec retrait Scratch est valide uniquement sur le theme de developpement dans `2effdfbd`. Demande le GO visuel de Patrice avant de pousser ces six fichiers live. Ensuite, choisis un media reel et suis `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md` pour produire une seule proposition bandeau 56 px et Hero video sur le theme de developpement. Preserve les 37 fichiers concurrents et ne touche pas au Cercle.

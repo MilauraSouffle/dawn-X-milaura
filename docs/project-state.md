@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-12 15:06 CEST
+Derniere mise a jour : 2026-08-12 17:46 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1 est public et operationnel, le Hero, la selection d'aout, `Choisir sa pierre`, le dock mobile, le bandeau d'engagement et le panier 30/50/80 sont live. La priorite est maintenant de consolider les destinations UI, puis de traiter la verite PDP et le retrait de l'ancien Scratch avant toute nouvelle passe creative.
+Le catalogue V1 et sa destination homepage Bagues sont publics, le panier 30/50/80 est versionne avec ses libelles corriges, et PDP-P0 avec retrait Scratch est valide sur le theme de developpement. La prochaine decision est le GO visuel PDP, puis le prototype bandeau mobile et Hero immersif avec un media reel.
 
 ## Regles de conduite actives
 
@@ -53,12 +53,14 @@ Validation catalogue V1 : 9 routes HTTP 200, un H1 par route, canoniques auto-re
 - Bandeau live depuis `c909f192` : `L'engagement MilAura`, service humain, equipe disponible 6j/7 et commandes preparees et expediees depuis l'atelier a Metz.
 - Reference de qualite pour la prochaine passe creative : `tiffany.com`.
 
-Retour Patrice du 2026-08-12, non implemente :
+Retour Patrice du 2026-08-12, documente mais non implemente :
 
 - le bandeau est trop epais sur mobile et manque d'un detail de marque ;
 - le Hero est beau, mais ses trois cabochons pourraient devenir plus immersifs ;
 - piste a etudier : le plus grand cabochon accueille une video courte et premium d'un mannequin presentant un bijou ;
 - toute evolution doit commencer par des propositions mobile et desktop, sans reutiliser les sprites, gemmes generees ou detourages rejetes le 2026-08-11.
+
+Direction recommandee : bandeau mobile ramene de 108 px a 56 px sur une seule ligne, detail de marque discret issu d'un vrai bijou, puis facette centrale du Hero transformee en media principal. Le brief, les contraintes video et les captures live sont dans `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
 ## Panier et livraison
 
@@ -75,23 +77,28 @@ Les trois fichiers du moteur panier ont ete verifies par pullback live, committe
 - `config/settings_schema.json` ;
 - `snippets/milaura-cart-rewards-drawer.liquid`.
 
+Le controle navigateur du 2026-08-12 a revele deux anciens libelles Shopify inverses. Le commit `7c823144` force maintenant les libelles canoniques `Point relais offert`, `Cadeau du mois offert` et `-15 % sur la commande`. Le snippet est live et en developpement, avec pullback bit a bit sur les deux themes.
+
 Limite de preuve : aucun checkout reel n'a encore confirme le parcours point relais complet.
 
 L'harmonisation `point relais des 30 EUR`, `expedition sous 24 h` et `livraison sous 3 a 5 jours` existe encore dans de nombreux fichiers locaux non livres. Elle ne doit pas etre committee ou deployee en bloc avant audit des proprietaires et de la source de verite logistique.
 
 ## PDP et ScratchToReveal
 
-L'audit initial du 2026-08-11 est `docs/audits/2026-08-11-audit-fiche-produit-seo-aeo-geo.md`.
+L'audit initial du 2026-08-11 est `docs/audits/2026-08-11-audit-fiche-produit-seo-aeo-geo.md`. Le lot `2effdfbd` est maintenant deploye uniquement sur le theme de developpement `199421952347`.
 
-Risques P0 non clos :
+Etat confirme en developpement :
 
-- promesse logistique contradictoire entre interface, politiques et JSON-LD ;
-- preuves sociales deterministes ou generiques ;
-- claims de fabrication, certification et sourcing non conditionnes par une preuve produit ;
-- Product JSON-LD incoherent ;
-- informations produit insuffisamment hierarchisees sur mobile.
+- Scratch invisible et non initialise sur la PDP ;
+- landing bougies Scratch desactivee ;
+- quantite, ajout panier, drawer et cadeau automatique fonctionnels ;
+- preuves sociales et claims generiques non prouves retires ou desactives ;
+- texte de Karine factuel ;
+- faux MPN et donnees logistiques statiques retires du Product JSON-LD ;
+- quatre blocs JSON-LD parses sans erreur ;
+- un H1, achat direct et absence Scratch verifies sur une bague, un bracelet et une bougie.
 
-Le patch S1A de retrait Scratch est local et non livre. Il touche `sections/milaura-product-hero.liquid`, qui contient aussi des changements concurrents de badges et metafields. Le lot doit donc etre separe et traite avec PDP-P0 sur une fiche pilote avant commit ou live.
+Le lot n'est pas live. Il attend le GO visuel de Patrice. La verite logistique globale, les politiques et le checkout point relais restent un lot distinct.
 
 ## Contrat de donnees et pipeline produit
 
@@ -104,23 +111,27 @@ Le contrat canonique reste :
 
 Le pipeline CAN/Camilla V1.2 vit dans `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`. Il reste draft-only, suit le prix conseille CAN exact, bloque les ambiguites lot/unite et reserve la publication finale a Patrice.
 
-## Etat Git et ownership au 2026-08-12 15:06 CEST
+## Etat Git et ownership au 2026-08-12 17:46 CEST
 
 - Branche : `codex/milaura-reconcile-2026-08-07`.
-- Branche distante synchronisee apres `6259200d`.
+- Branche distante synchronisee jusqu'a `8e19bd12` avant le push final de cette reprise.
 - Catalogue V1 : `cb0da71b`, pousse.
 - Panier live : `6259200d`, pousse.
-- 41 fichiers suivis restent modifies localement.
-- Des fichiers non suivis appartiennent a des experiences design, des checkpoints, des sauvegardes, des copies temporaires et au fallback PDP.
+- Documentation reconciliee : `c4200135`, poussee.
+- Destination homepage Bagues : `8e19bd12`, poussee et live.
+- PDP-P0 et S1A : `2effdfbd`, theme de developpement uniquement.
+- Libelles panier : `7c823144`, live et developpement.
+- 37 fichiers suivis restent modifies localement hors documentation de cette reprise.
+- Les fichiers non suivis d'experiences design, sauvegardes et copies temporaires restent intacts.
 - Matrice d'ownership : `docs/checkpoints/2026-08-12-1506-reconciliation-ownership.md`.
 
 ## Prochain ordre d'execution
 
-1. Mettre les destinations homepage et navigation en coherence avec le catalogue V1 public.
-2. Executer PDP-P0 et S1A sur une fiche pilote, sans deploiement avant validation.
-3. Auditer et isoler l'harmonisation livraison.
-4. Ouvrir ensuite un lot creatif dedie au bandeau mobile et au Hero immersif.
-5. Reprendre Karine, Sur mesure, Atelier des emotions, Cadeaux, Journal, puis Cercle.
+1. Obtenir le GO visuel de Patrice sur PDP-P0 en developpement.
+2. En cas de GO, pousser uniquement les six fichiers `2effdfbd` sur le theme live, puis pullback et test achat.
+3. Choisir ou tourner une video reelle MilAura de 6 a 8 secondes avec son poster.
+4. Prototyper sur le theme de developpement le bandeau 56 px et le Hero Cabochon cinema, puis demander le GO visuel.
+5. Auditer et isoler l'harmonisation livraison avant de reprendre Karine, Sur mesure, Atelier des emotions, Cadeaux, Journal, puis Cercle.
 
 ## Dependances encore ouvertes
 
@@ -137,5 +148,7 @@ Le pipeline CAN/Camilla V1.2 vit dans `/Users/paesano/Documents/Agentic-Ops/mila
 - Plan canonique : `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`.
 - Catalogue V1 : `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`.
 - Ownership : `docs/checkpoints/2026-08-12-1506-reconciliation-ownership.md`.
+- Trois lots : `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`.
 - Audit PDP : `docs/audits/2026-08-11-audit-fiche-produit-seo-aeo-geo.md`.
+- Brief bandeau et Hero : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 - Bandeau : commit `c909f192`.
