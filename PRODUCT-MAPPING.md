@@ -3,7 +3,7 @@
 > Document de reference pour l'automatisation scraping fournisseur → CSV → Shopify
 > Genere le 12 fevrier 2026 — **Mis a jour le 12 fevrier 2026 (audit corrections)**
 
-> **ADDENDUM CANONIQUE 2026-08-10** : le contrat de clés prioritaire est `docs/reference/2026-08-10-contrat-donnees-catalogue.md` et sa source machine `config/catalogue-data-contract.json`. `stone_handle` = pierre principale ; `stone_handles` = pierres secondaires ou multiples ; `stone_benefits` conserve le libellé public `Symbolique traditionnelle`.
+> **ADDENDUM CANONIQUE 2026-08-12** : le contrat produit complet prioritaire est `docs/reference/2026-08-10-contrat-donnees-catalogue.md` et sa source machine `config/catalogue-data-contract.json`. Il couvre pierres, matieres, couleurs, intentions, naissance, mariage, disponibilite, fulfillment et six images minimum. `energy_handle` est optionnel. Le pipeline produit ne modifie ni hub ni collection publique et ne publie jamais automatiquement un produit.
 
 ---
 

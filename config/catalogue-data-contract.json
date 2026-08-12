@@ -1,24 +1,214 @@
 {
-  "contract": "milaura.catalogue",
-  "version": "2026-08-10",
+  "contract": "milaura.product-catalogue",
+  "version": "2026-08-10-complete-1",
   "namespace": "milaura",
+  "status": "canonical",
   "product_fields": {
+    "product_type_handle": {
+      "type": "single_line_text_field",
+      "required": true,
+      "meaning": "Type physique canonique du produit"
+    },
+    "catalogue_family": {
+      "type": "single_line_text_field",
+      "required": true,
+      "meaning": "Famille canonique de navigation"
+    },
     "stone_handle": {
       "type": "single_line_text_field",
-      "meaning": "Pierre principale du produit",
-      "required_when": "Le produit contient une pierre"
+      "required_when": "Le produit contient une pierre",
+      "meaning": "Pierre principale du produit"
     },
     "stone_handles": {
       "type": "list.single_line_text_field",
+      "required": false,
       "meaning": "Pierres secondaires ou ensemble des pierres d un produit multi-pierres",
       "rule": "La pierre principale reste toujours renseignee dans stone_handle"
     },
     "stone_benefits": {
       "type": "single_line_text_field",
+      "required": false,
       "public_label": "Symbolique traditionnelle",
-      "rule": "Associations culturelles attribuees, sans allegation medicale ni resultat garanti"
+      "rule": "Associations culturelles attribuees sans allegation medicale ni resultat garanti"
+    },
+    "provenance": {
+      "type": "single_line_text_field",
+      "required": false,
+      "meaning": "Pays ou region d origine explicitement documente par la source",
+      "rule": "Rester vide lorsque la provenance n est pas prouvee"
+    },
+    "materials": {
+      "type": "list.single_line_text_field",
+      "required": true,
+      "min_items": 1,
+      "meaning": "Matieres factuelles et observables"
+    },
+    "colors": {
+      "type": "list.single_line_text_field",
+      "required": true,
+      "min_items": 1,
+      "meaning": "Couleurs dominantes normalisees"
+    },
+    "primary_intention": {
+      "type": "single_line_text_field",
+      "required": false,
+      "meaning": "Intention editoriale principale sans promesse de resultat"
+    },
+    "intention_handles": {
+      "type": "list.single_line_text_field",
+      "required": false,
+      "meaning": "Intentions editoriales secondaires"
+    },
+    "intention_handle": {
+      "type": "single_line_text_field",
+      "required": false,
+      "status": "legacy-compatible",
+      "rule": "Ne doit pas contredire primary_intention"
+    },
+    "energy_handle": {
+      "type": "single_line_text_field",
+      "required": false,
+      "status": "optional-legacy"
+    },
+    "birth_months": {
+      "type": "list.single_line_text_field",
+      "required": false,
+      "rule": "Seulement avec convention documentee"
+    },
+    "wedding_anniversary_years": {
+      "type": "list.single_line_text_field",
+      "required": false,
+      "rule": "Seulement avec source editoriale documentee"
+    },
+    "recipient_handles": {
+      "type": "list.single_line_text_field",
+      "required": false
+    },
+    "occasion_handles": {
+      "type": "list.single_line_text_field",
+      "required": false
+    },
+    "availability_mode": {
+      "type": "single_line_text_field",
+      "required": true,
+      "choices": [
+        "physical-stock",
+        "supplier-backed",
+        "made-to-order"
+      ]
+    },
+    "dispatch_sla_business_hours": {
+      "type": "number_integer",
+      "required": true,
+      "choices": [
+        24,
+        48
+      ]
+    },
+    "estimated_receipt_business_days": {
+      "type": "number_integer",
+      "required": true,
+      "const": 5
+    },
+    "content_updated_at": {
+      "type": "date",
+      "required": true,
+      "meaning": "Date canonique de derniere verification des donnees produit"
     }
   },
+  "operational_availability": {
+    "required": true,
+    "private": true,
+    "fields": {
+      "availability_mode": {
+        "type": "string",
+        "choices": [
+          "physical-stock",
+          "supplier-backed",
+          "made-to-order"
+        ]
+      },
+      "commercializable_verified": {
+        "type": "boolean",
+        "const": true
+      },
+      "availability_checked_at": {
+        "type": "date"
+      },
+      "availability_evidence": {
+        "type": "string"
+      },
+      "physical_inventory_quantity": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "supplier_reliability": {
+        "type": "string",
+        "choices": [
+          "not-applicable",
+          "verified",
+          "unverified",
+          "blocked"
+        ]
+      },
+      "supplier_order_constraints_verified": {
+        "type": "boolean"
+      },
+      "supplier_lead_time_business_hours": {
+        "type": [
+          "integer",
+          "null"
+        ]
+      },
+      "dispatch_sla_business_hours": {
+        "type": "integer",
+        "choices": [
+          24,
+          48
+        ]
+      },
+      "estimated_receipt_business_days": {
+        "type": "integer",
+        "const": 5
+      }
+    },
+    "batch_gate": {
+      "physical-stock": "commercializable_verified true, physical_inventory_quantity greater than zero, dispatch 24 hours",
+      "supplier-backed": "commercializable_verified true, supplier_reliability verified, supplier_order_constraints_verified true, lead time documented and not greater than 48 business hours, dispatch 48 hours",
+      "made-to-order": "blocked in current batch phase"
+    },
+    "shopify_inventory_policy": {
+      "physical-stock": "inventory quantity equals verified physical quantity and inventory_policy deny",
+      "supplier-backed": "inventory quantity zero and inventory_policy continue only after the supplier gate passes"
+    }
+  },
+  "image_contract": {
+    "minimum_images": 6,
+    "minimum_worn_images": 2,
+    "position_2": "model-worn-close",
+    "slots": [
+      "cover",
+      "model-worn-close",
+      "macro-signature",
+      "macro-technical",
+      "editorial-context",
+      "model-worn-lifestyle"
+    ]
+  },
+  "logistics_promise": {
+    "physical-stock": "Expedition sous 24h ouvrees",
+    "supplier-backed": "Expedition sous 48h ouvrees",
+    "estimated_receipt": "Reception estimee sous 5 jours ouvres",
+    "forbidden": "Livraison sous 5 a 8 jours ouvres"
+  },
+  "sourcing_priority": [
+    {
+      "priority": "P0",
+      "stone_handle": "aigue-marine"
+    }
+  ],
   "collection_fields": {
     "stone_handle": {
       "type": "single_line_text_field",
@@ -27,7 +217,7 @@
     "stone_benefits": {
       "type": "rich_text_field",
       "public_label": "Symbolique traditionnelle",
-      "rule": "Associations culturelles attribuees, sans allegation medicale ni resultat garanti"
+      "rule": "Associations culturelles attribuees sans allegation medicale ni resultat garanti"
     },
     "content_updated_at": {
       "type": "date",
@@ -39,8 +229,16 @@
     "stone_symbolism",
     "updated_at"
   ],
+  "public_mutation_boundary": {
+    "scope": "automatic mutations performed by the product generation pipeline",
+    "modify_public_hubs": false,
+    "modify_public_collections": false,
+    "auto_publish_products": false,
+    "product_status": "DRAFT"
+  },
   "consumers": [
     "inventaire",
+    "pipeline de generation produit",
     "Shopify Admin",
     "collections intelligentes",
     "Merchant Center",

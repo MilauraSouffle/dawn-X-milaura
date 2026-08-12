@@ -2,7 +2,7 @@
 
 Mise à jour canonique : 2026-08-10
 
-Le contrat prioritaire est `docs/reference/2026-08-10-contrat-donnees-catalogue.md`. `milaura.stone_handle` contient la pierre principale. `milaura.stone_handles` contient les pierres secondaires ou l'ensemble des pierres d'un produit multi-pierres. `milaura.stone_benefits` conserve la clé technique existante et le libellé public `Symbolique traditionnelle`.
+Le contrat produit complet prioritaire est `docs/reference/2026-08-10-contrat-donnees-catalogue.md`. Il couvre pierres, matieres, couleurs, intentions, naissance, mariage, disponibilite et fulfillment. `milaura.stone_handle` contient la pierre principale. `milaura.stone_handles` contient les pierres secondaires ou l'ensemble des pierres d'un produit multi-pierres. `milaura.stone_benefits` conserve la cle technique existante et le libelle public `Symbolique traditionnelle`. `milaura.provenance` contient uniquement un pays ou une region explicitement documente par la source. `milaura.energy_handle` reste optionnel.
 
 ## Création dans Shopify Admin
 

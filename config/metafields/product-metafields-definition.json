@@ -44,7 +44,7 @@
       "description": "Cle editoriale historique du profil emotionnel. A conserver pour compatibilite du theme, sans en faire une allegation de sante.",
       "type": "single_line_text_field",
       "owner_type": "product",
-      "required_for": ["produits_commerciaux"],
+      "required_for": [],
       "validations": {
         "format": "slug"
       }
@@ -135,7 +135,7 @@
       "description": "Matieres factuelles du produit, normalisees pour les filtres et le controle catalogue.",
       "type": "list.single_line_text_field",
       "owner_type": "product",
-      "required_for": [],
+      "required_for": ["all_products"],
       "validations": {
         "format": "slug",
         "list_max": 6
@@ -148,11 +148,56 @@
       "description": "Couleurs dominantes normalisees pour les filtres catalogue.",
       "type": "list.single_line_text_field",
       "owner_type": "product",
-      "required_for": [],
+      "required_for": ["all_products"],
       "validations": {
         "format": "slug",
         "list_max": 6
       }
+    },
+    {
+      "namespace": "milaura",
+      "key": "availability_mode",
+      "name": "Mode de disponibilite",
+      "description": "Mode canonique de disponibilite commerciale. Ne vaut pas preuve sans controle operationnel date.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": ["all_products"],
+      "validations": {
+        "choices": ["physical-stock", "supplier-backed", "made-to-order"]
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "dispatch_sla_business_hours",
+      "name": "SLA expedition heures ouvrees",
+      "description": "24 pour physical-stock, 48 pour supplier-backed fiable et verifie.",
+      "type": "number_integer",
+      "owner_type": "product",
+      "required_for": ["produits_commercialisables"],
+      "validations": {
+        "choices": [24, 48]
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "estimated_receipt_business_days",
+      "name": "Reception estimee jours ouvres",
+      "description": "Promesse actuelle validee : reception estimee sous 5 jours ouvres.",
+      "type": "number_integer",
+      "owner_type": "product",
+      "required_for": ["produits_commercialisables"],
+      "validations": {
+        "choices": [5]
+      }
+    },
+    {
+      "namespace": "milaura",
+      "key": "content_updated_at",
+      "name": "Donnees produit verifiees le",
+      "description": "Date canonique de derniere verification des donnees produit et editoriales.",
+      "type": "date",
+      "owner_type": "product",
+      "required_for": ["all_products"]
     },
     {
       "namespace": "milaura",
@@ -250,6 +295,15 @@
       "type": "single_line_text_field",
       "owner_type": "product",
       "required_for": ["all_products"]
+    },
+    {
+      "namespace": "milaura",
+      "key": "provenance",
+      "name": "Provenance",
+      "description": "Pays ou region d origine uniquement si cette information est explicitement documentee par la source fournisseur.",
+      "type": "single_line_text_field",
+      "owner_type": "product",
+      "required_for": []
     },
     {
       "namespace": "milaura",
