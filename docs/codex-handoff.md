@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-12 19:37 CEST
+Date de mise a jour : 2026-08-12 19:48 CEST
 
 ## Mission de reprise
 
@@ -63,7 +63,7 @@ Avant toute publication :
 5. en cas de GO, pousser uniquement les six fichiers listes dans `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
 6. pullback cible et test ajout panier
 
-La proposition actuellement a controler ajoute les pills mobiles en rail anime, le bandeau bleu sans faux compteur, le selecteur neutre et le CTA prune. Elle est documentee dans `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md` et reste uniquement sur le theme de developpement.
+La proposition actuellement a controler ajoute les pills mobiles en rail anime, la bulle sociale historique demandee par Patrice avec cinq etoiles dorees, Dancing Script et compteur stable par produit entre 12 et 141, le selecteur neutre et le CTA prune. Le diamant est interdit. Elle est documentee dans `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md` et reste uniquement sur le theme de developpement.
 
 ## Prochain lot 2 : bandeau et Hero
 

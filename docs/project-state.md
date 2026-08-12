@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-12 19:37 CEST
+Derniere mise a jour : 2026-08-12 19:48 CEST
 
 ## Etat en une phrase
 
@@ -114,8 +114,9 @@ La correction visuelle complementaire est poussee sur `codex/milaura-pdp-visual-
 - pills mobiles sur une seule ligne animee en boucle, avec repli horizontal sans animation
 - une pill par information utile, sans `Premium` et sans formule `selon les usages traditionnels de la lithotherapie`
 - faits bougie explicites, grade unique, provenance quand elle existe et vertus separees
-- bandeau bleu conserve sans connexion aux commandes Shopify
-- aucun zero affiche : tant que le futur compteur manuel multi-canal est vide, le bandeau affiche la selection et le controle par Karine
+- bulle sociale historique restauree sur decision explicite de Patrice le 2026-08-12 : cinq etoiles dorees, texte Dancing Script dore et aucun diamant
+- message restaure : `Ce produit a deja fait le bonheur de + de X client(e)s en mois annee`
+- nombre stable par produit entre 12 et 141, calcule depuis `product.id`, sans connexion aux commandes Shopify ; Patrice le rattache au volume multi-canal site, atelier et evenements
 - selecteur de quantite neutre et CTA prune, sans dore historique
 - espace Scratch supprime et colonne achat desktop remplie par la description et la preuve Karine
 
