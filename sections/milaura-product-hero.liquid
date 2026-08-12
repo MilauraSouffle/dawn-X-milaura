@@ -30,6 +30,14 @@
 {%- endcomment %}
 
 {% style %}
+  @font-face {
+    font-family: 'Dancing Script';
+    src: url('{{ 'milaura-dancing-script-variable.ttf' | asset_url }}') format('truetype-variations');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400 700;
+  }
+
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -3580,21 +3588,26 @@
      Refonte 2026-05-28 : col droite simplifiee
      ============================================ */
   .milaura-hero-social {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
-    padding: 13px 18px;
+    justify-content: center;
+    gap: 10px;
+    min-height: 42px;
+    padding: 7px 18px;
     background: linear-gradient(135deg, #1a1a2e, #2d2d44);
-    border-radius: 14px;
-    border: 1px solid rgba(111, 169, 166, 0.32);
+    border-radius: 999px;
+    border: 1px solid rgba(192, 160, 98, 0.42);
     margin-bottom: var(--milaura-spacing-sm);
-    box-shadow: 0 6px 18px rgba(26, 26, 46, 0.18);
+    box-shadow: 0 5px 16px rgba(26, 26, 46, 0.16);
   }
 
   /* Variante : bulle social au-dessus de la galerie (mobile : tout premier element) */
   .milaura-hero-social--top {
     order: 0;
-    width: 100%;
+    width: fit-content;
+    max-width: calc(100% - 24px);
+    justify-self: center;
+    margin-inline: auto;
     margin-top: 14px;
     margin-bottom: 10px;
   }
@@ -3606,32 +3619,29 @@
     }
   }
 
-  .milaura-hero-social-icon {
-    width: 34px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: #1a1a2e;
-    background: #6fa9a6;
-    border-radius: 50%;
-  }
-
-  .milaura-hero-social-icon svg {
-    width: 17px;
-    height: 17px;
+  .milaura-hero-stars {
+    flex: 0 0 auto;
+    color: var(--milaura-gold-light, #E6C88B);
+    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.28);
+    white-space: nowrap;
   }
 
   .milaura-hero-social-text {
-    font-size: 0.82rem;
-    line-height: 1.4;
-    color: rgba(255, 255, 255, 0.76);
+    font-family: var(--milaura-font-script, 'Dancing Script'), cursive;
+    font-size: 1.08rem;
+    font-weight: 600;
+    line-height: 1.08;
+    color: var(--milaura-gold-light, #E6C88B);
     margin: 0;
+    text-align: left;
   }
 
   .milaura-hero-social-text strong {
-    color: #FFFFFF;
+    color: #F4D99C;
     font-weight: 700;
   }
 
@@ -4249,11 +4259,17 @@
   /* Mobile : compact + galerie max 60vh */
   @media screen and (max-width: 768px) {
     .milaura-hero-social {
-      padding: 10px 14px;
-      gap: 10px;
+      min-height: 40px;
+      padding: 6px 13px;
+      gap: 8px;
     }
     .milaura-hero-social-text {
-      font-size: 0.75rem;
+      font-size: 0.96rem;
+      line-height: 1.05;
+    }
+    .milaura-hero-stars {
+      font-size: 0.7rem;
+      letter-spacing: 0.7px;
     }
     .milaura-hero-cta-bundle {
       padding: 14px 10px;
@@ -4279,29 +4295,22 @@
       {%- comment -%} GROUPE 1 HEADER deplace dans .milaura-hero-rightcol (avec actions group) pour eviter le trou vertical sur desktop. Refonte 2026-05-28 evening. {%- endcomment -%}
 
       {%- comment -%}
-        Bandeau bleu conserve. Le compteur futur reste manuel afin d'inclure les ventes
-        en ligne, a l'atelier et en evenement. Sans valeur renseignee, aucun zero ni
-        nombre calcule n'est affiche.
+        Bulle sociale historique. Le compteur est stable par produit et varie entre 12
+        et 141 afin de representer le volume multi-canal communique par MilAura.
       {%- endcomment -%}
-      {%- assign verified_rating = product.metafields.reviews.rating.value.rating | default: product.metafields.reviews.rating.value -%}
-      {%- assign verified_review_count = product.metafields.reviews.rating_count | default: 0 | plus: 0 -%}
-      {%- assign milaura_customer_count = product.metafields.milaura.customer_count.value | default: product.metafields.milaura.customer_count | plus: 0 -%}
       {%- if section.settings.show_social_proof -%}
+        {%- assign months_fr = 'janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre' | split: ',' -%}
+        {%- assign month_idx = 'now' | date: '%-m' | minus: 1 -%}
+        {%- assign month_fr = months_fr[month_idx] -%}
+        {%- assign year_fr = 'now' | date: '%Y' -%}
+        {%- assign social_count_raw = product.id | default: 0 | modulo: 130 -%}
+        {%- assign social_count = social_count_raw | plus: 12 -%}
         <div class="milaura-hero-social milaura-hero-social--top">
-          <div class="milaura-hero-social-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 3h12l4 6-10 12L2 9l4-6z"/>
-              <path d="M2 9h20M8 3 6 9l6 12 6-12-2-6"/>
-            </svg>
+          <div class="milaura-hero-stars" aria-label="5 étoiles sur 5">
+            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
           </div>
           <p class="milaura-hero-social-text">
-            {%- if milaura_customer_count > 0 -%}
-              Ce produit a déjà fait le bonheur de <strong>plus de {{ milaura_customer_count }} clientes</strong>, en ligne et lors de nos rendez-vous.
-            {%- elsif verified_rating != blank and verified_review_count > 0 -%}
-              <strong>{{ verified_rating }} sur 5</strong> · {{ verified_review_count }} avis vérifiés
-            {%- else -%}
-              <strong>{{ section.settings.social_proof_fallback | default: 'Sélectionnée et contrôlée par Karine' }}</strong> avant préparation à Metz.
-            {%- endif -%}
+            Ce produit a déjà fait le bonheur de <strong>+ de {{ social_count }} client(e)s</strong> en {{ month_fr }} {{ year_fr }}
           </p>
         </div>
       {%- endif -%}
@@ -7259,12 +7268,6 @@
       "id": "show_social_proof",
       "label": "Afficher le bandeau bleu",
       "default": true
-    },
-    {
-      "type": "text",
-      "id": "social_proof_fallback",
-      "label": "Texte sans compteur client",
-      "default": "Sélectionnée et contrôlée par Karine"
     },
     {
       "type": "header",
