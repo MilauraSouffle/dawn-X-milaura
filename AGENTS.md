@@ -2,12 +2,26 @@
 
 This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follow the guidelines below to keep changes consistent, maintainable, and compatible with Shopify’s theme tooling.
 
-## Hubs MilAura (carte rapide, maj 2026-07-09)
+## Hubs MilAura (carte rapide, maj 2026-08-12)
 - Ce dossier = le SITE / theme Shopify (Liquid, sections, templates). CLAUDE.md = @AGENTS.md : ce fichier est la seule source de verite du repo.
 - Les AUTOMATISATIONS MilAura (workflows N8N, pipeline produits, payloads) vivent dans `~/Documents/Agentic-Ops/milaura-automation/` (voir son AGENTS.md) ; souls et contexte des agents Hermes MilAura : `milaura-automation/agents/`.
 - Scripts, creative/UGC et contexte ops elargi : `~/Documents/Agentic-Ops/`. Etat courant agents/infra : `~/Documents/Agentic-Ops/docs/project-state.md`.
 - Maitre global : `~/.claude/CLAUDE.md` (Codex : `~/.codex/AGENTS.md`).
 - Docs du repo (ranges 2026-07-09) : `docs/project-state.md` (etat), `docs/codex-handoff.md` (handoff), `docs/checkpoints/` (handovers de session), `docs/audits/` (SEO), `docs/playbooks/` (Higgsfield, campagnes, workflows IA), `docs/reference/` (metafields, product mapping, blog API, legal), `docs/archive-2026/` (perime).
+
+## Git, Sessions Paralleles Et Shopify
+
+- Le seul depot actif est `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
+- Le checkout principal est le point d'integration. Il doit rester propre et ne sert aux sessions paralleles que pour integrer, documenter et deployer.
+- Une session parallele utilise obligatoirement une branche dediee et un worktree Git gere sous `/Users/paesano/Documents/MilAura website/_worktrees/`.
+- Chaque session s'enregistre avant edition dans `docs/workstreams.md` avec son proprietaire, sa branche, son chemin, ses fichiers et son theme Shopify.
+- Deux sessions ne modifient jamais le meme fichier ou le meme theme Shopify au meme moment.
+- Les clones complets manuels, dossiers numerotes et copies de depot sont interdits.
+- Aucun handoff avec des changements non committes. Une session termine par validation, commit, push et mise a jour du registre.
+- Seul le proprietaire du checkout d'integration peut merger et deployer sur le theme live. Les pushes Shopify restent cibles, sans suppression, puis controles par pullback.
+- Apres integration, le worktree termine est retire proprement et sa branche ephemere peut etre supprimee apres verification du merge.
+- Les secrets, exports, sauvegardes et assets rejetes restent hors du depot Git.
+- Procedure complete : `docs/reference/2026-08-12-repository-workflow.md`.
 
 ## Project Structure & Module Organization
 - `assets/` holds CSS, JavaScript, and images. Global Milaura styles live in `assets/milaura.css`.
