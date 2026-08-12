@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-12 18:19 CEST
+Date de mise a jour : 2026-08-12 18:29 CEST
 
 ## Mission de reprise
 
@@ -13,9 +13,10 @@ Reprendre depuis un worktree propre base sur `codex/milaura-integration`. Faire 
 3. `docs/workstreams.md`
 4. `docs/reference/2026-08-12-repository-workflow.md`
 5. `docs/checkpoints/2026-08-12-1819-repository-cleanup.md`
-6. `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`
-7. `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
-8. `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
+6. `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`
+7. `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`
+8. `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
+9. `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
 
 ## Etat Git de depart
 
@@ -37,6 +38,7 @@ Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration c
 - Catalogue V1 public : 4 pages utiles, 6 collections et 5 entrees de menu natives.
 - Hero, selection d'aout, dock mobile, guide de decouverte, `Choisir sa pierre`, bandeau d'engagement et panier 30/50/80 sont live.
 - Homepage Bagues pointe vers `/collections/bagues-pierres`.
+- La homepage rend `Point relais offert dès 30 EUR` et `En point relais dès 30 EUR`. `templates/index.json` est identique bit a bit au pullback live.
 - Le quiz principal reste `/pages/diagnostic-emotionnel`.
 - La politique publique confirme point relais offert des 30 EUR, expedition sous 24 h du lundi au vendredi et livraison France sous 3 a 5 jours.
 - PDP-P0 et retrait Scratch sont valides en developpement dans `2effdfbd`, mais ne sont pas live.
@@ -51,11 +53,12 @@ Aucun de ces changements n'est encore local et flottant. Aucun fichier non suivi
 
 Avant toute publication :
 
-1. ouvrir le theme de developpement sur une bague, un bracelet et une bougie
-2. controler mobile et desktop
-3. obtenir le GO visuel explicite de Patrice
-4. en cas de GO, pousser uniquement les six fichiers listes dans `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
-5. pullback cible et test ajout panier
+1. ouvrir le theme de developpement sur la bague Aigue-marine, le bracelet Oeil de tigre et la bougie Serenite
+2. controler mobile et desktop : galerie, titre, prix, quantite, variantes, composition si presente, bouton d ajout, reassurance, absence de Scratch et ouverture du panier
+3. verifier que les textes paraissent vrais, sobres et lisibles, sans faux avis, faux certificat ou promesse de livraison trompeuse
+4. obtenir le GO visuel explicite de Patrice
+5. en cas de GO, pousser uniquement les six fichiers listes dans `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
+6. pullback cible et test ajout panier
 
 ## Prochain lot 2 : bandeau et Hero
 

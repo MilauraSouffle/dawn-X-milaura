@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-12 18:19 CEST
+Derniere mise a jour : 2026-08-12 18:29 CEST
 
 ## Etat en une phrase
 
@@ -83,7 +83,7 @@ Quatre fichiers signales comme chevauches ont ete classes ainsi :
 | Fichier | Nature exacte | Etat Shopify |
 | --- | --- | --- |
 | `sections/milaura-product-hero.liquid` | pills pierre, symbolique, qualite et provenance, plus seuil point relais 30 EUR, sur le socle PDP-P0 | partie pills/logistique deja live, durcissement PDP-P0 uniquement en developpement |
-| `templates/index.json` | deux libelles livraison remplaces par point relais offert des 30 EUR | source versionnee, ces deux libelles ne sont pas encore deployes live |
+| `templates/index.json` | deux libelles livraison remplaces par point relais offert des 30 EUR | live depuis le 2026-08-12 18:29 CEST, pullback bit a bit valide |
 | `templates/page.lp-promo-bougies.json` | CTA vers le vrai produit, seuil 30 EUR, FAQ 24 h et 3 a 5 jours | identique bit a bit au live |
 | `templates/product.milaura-produit.json` | seuil 30 EUR, normalisation de cinq settings invalides, texte logistique, plus socle PDP-P0 | logistique deja live, durcissement PDP-P0 uniquement en developpement |
 
@@ -115,6 +115,8 @@ Pipeline actif :
 - `4853db6e` : procedure propre de parallelisation et archive
 - `952d7587` : reconciliation de l'historique du miroir Shopify
 
+Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
+
 ## Prochain ordre d'execution
 
 1. Faire le controle visuel mobile et desktop de PDP-P0 sur le theme de developpement, puis obtenir le GO explicite de Patrice.
@@ -137,6 +139,7 @@ Pipeline actif :
 - `docs/workstreams.md`
 - `docs/reference/2026-08-12-repository-workflow.md`
 - `docs/checkpoints/2026-08-12-1819-repository-cleanup.md`
+- `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`
 - `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`
 - `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
