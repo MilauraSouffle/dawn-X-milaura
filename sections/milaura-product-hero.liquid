@@ -4366,11 +4366,15 @@
 
       {%- comment -%} Badges metafield : calcul ici, rendu dans le header produit apres la galerie. {%- endcomment -%}
       {%- assign badge_energy = product.metafields.milaura.energy_handle -%}
-      {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
+      {%- assign badge_stone = product.metafields.milaura.stone_name -%}
+      {%- if badge_stone == blank -%}
+        {%- assign badge_stone = product.metafields.milaura.stone_handle -%}
+      {%- endif -%}
       {%- assign badge_vertus = product.metafields.milaura.vertus -%}
       {%- assign badge_quality = product.metafields.milaura.qualite -%}
+      {%- assign badge_provenance = product.metafields.milaura.provenance -%}
       {%- assign has_meta_badges = false -%}
-      {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank -%}
+      {%- if badge_energy != blank or badge_stone != blank or badge_vertus != blank or badge_quality != blank or badge_provenance != blank -%}
         {%- assign has_meta_badges = true -%}
       {%- endif -%}
 
@@ -4744,25 +4748,17 @@
           {%- if has_meta_badges -%}
             {%- assign shown_meta_badges = 0 -%}
             <div class="milaura-meta-badges milaura-meta-badges--product">
-              {%- if badge_stone != blank and shown_meta_badges < 3 -%}
+              {%- if badge_stone != blank and shown_meta_badges < 4 -%}
                 {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
                 <span class="milaura-meta-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 3h12l4 6-10 12L2 9l4-6z"/>
+                    <path d="M2 9h20M8 3 6 9l6 12 6-12-2-6"/>
                   </svg>
                   {{ badge_stone }}
                 </span>
               {%- endif -%}
-              {%- if badge_energy != blank and shown_meta_badges < 3 -%}
-                {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
-                <span class="milaura-meta-badge">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                  </svg>
-                  {{ badge_energy }}
-                </span>
-              {%- endif -%}
-              {%- if badge_vertus != blank and shown_meta_badges < 3 -%}
+              {%- if badge_vertus != blank and shown_meta_badges < 4 -%}
                 {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
                 {%- assign badge_vertus_size = badge_vertus | strip_html | size -%}
                 <span class="milaura-meta-badge milaura-meta-badge--vertus{% if badge_vertus_size > 36 %} milaura-meta-badge--vertus-scroll{% endif %}">
@@ -4777,12 +4773,31 @@
                   </span>
                 </span>
               {%- endif -%}
-              {%- if badge_quality != blank and shown_meta_badges < 3 -%}
+              {%- if badge_quality != blank and shown_meta_badges < 4 -%}
+                {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
                 <span class="milaura-meta-badge milaura-meta-badge--gold">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                   </svg>
                   {{ badge_quality }}
+                </span>
+              {%- endif -%}
+              {%- if badge_provenance != blank and shown_meta_badges < 4 -%}
+                {%- assign shown_meta_badges = shown_meta_badges | plus: 1 -%}
+                <span class="milaura-meta-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0z"/>
+                    <circle cx="12" cy="10" r="2.5"/>
+                  </svg>
+                  {{ badge_provenance }}
+                </span>
+              {%- endif -%}
+              {%- if badge_energy != blank and shown_meta_badges < 4 -%}
+                <span class="milaura-meta-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                  </svg>
+                  {{ badge_energy }}
                 </span>
               {%- endif -%}
             </div>
@@ -7608,7 +7623,7 @@
       "type": "text",
       "id": "bundle_subtitle",
       "label": "Sous-titre de la preview",
-      "default": "Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 20 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte, cadeau et remise."
+      "default": "Ajoutez vos produits au panier : vos cartes surprises se débloquent aux paliers 30 €, 50 € et 80 €. Grattez-les dans le panier pour révéler livraison offerte en point relais, cadeau et remise."
     },
     {
       "type": "header",
@@ -8097,7 +8112,7 @@
           "type": "text",
           "id": "name",
           "label": "Nom du cadeau",
-          "default": "Livraison dès 19,90€"
+          "default": "Point relais offert dès 30 €"
         },
         {
           "type": "text",

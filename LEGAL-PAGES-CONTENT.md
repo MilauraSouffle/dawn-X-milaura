@@ -104,8 +104,9 @@ Les présentes CGV régissent les ventes de produits Milaura (bougies émotionne
 
 ## 5. Livraison
 
-- Délai : [X-X] jours ouvrés pour la France métropolitaine
-- Livraison suivie
+- Expédition sous 24 h
+- Livraison sous 3 à 5 jours en France métropolitaine
+- Livraison offerte en point relais dès 30 €
 - International : nous contacter
 
 ## 6. Droit de rétractation (14 jours)
