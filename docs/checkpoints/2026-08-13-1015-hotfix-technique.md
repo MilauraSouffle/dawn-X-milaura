@@ -4,8 +4,10 @@ Date : 2026-08-13 10:15 CEST
 Session : Claude, frontend et design, GO explicite de Patrice
 Branche : `claude/milaura-hotfix-technique-20260813`, poussee sur origin
 Themes : developpement `199421952347` uniquement. Aucun push live.
-Statut : defaut de code corrige et verifie. Trois defauts de donnee identifies,
-en attente d'autorisation de Patrice.
+Statut : defaut de code corrige, verifie et LIVRE LIVE le 2026-08-13 sur GO
+explicite de Patrice. Trois defauts de donnee identifies : Patrice a donne son
+accord, mais l'ecriture est bloquee par les scopes du jeton Admin. Valeurs
+finales fournies pour saisie manuelle.
 
 ## Methode
 
@@ -168,4 +170,54 @@ traitee, hors perimetre.
 2. Confirmation factuelle sur `pierres certifiees par gemmologue` : toutes les
    pierres sont-elles certifiees, ou seulement une partie du catalogue ? La
    reponse conditionne la formulation.
-3. GO distinct pour deployer le correctif de code sur le live.
+3. GO distinct pour deployer le correctif de code sur le live. DONNE et livre.
+
+## Acces Admin API : ce qui bloque
+
+Patrice a autorise l'ecriture directe dans Shopify Admin le 2026-08-13. Le jeton
+du pipeline `milaura-automation/private-workspace/product-generation` a ete
+reutilise selon sa convention existante, `SHOPIFY_ACCESS_TOKEN`, sans jamais
+exposer sa valeur. Il authentifie correctement et a permis de confirmer la
+description globale a la source, 178 caracteres, emoji inclus.
+
+Ses scopes sont : `read_files`, `read_inventory`, `read_locations`,
+`read_metaobjects`, `read_products`, `write_files`, `write_inventory`,
+`write_metaobjects`, `write_products`.
+
+Manquent `read_content` et `write_content`. La requete `pages` renvoie
+`ACCESS_DENIED`. Les titres et descriptions SEO des pages ne sont donc pas
+modifiables avec ce jeton.
+
+La description globale, elle, vit dans Online Store puis Preferences. Aucun
+chemin d'ecriture par l'Admin API n'a ete trouve pour ce champ, quel que soit le
+scope.
+
+Deux voies pour Patrice :
+
+1. saisie manuelle des quatre valeurs dans l'interface, quelques minutes ;
+2. ajout de `write_content` a l'application privee, ce qui debloque les trois
+   champs de page mais laisse la description globale en saisie manuelle.
+
+## Preuve de certification, confirmee le 2026-08-13
+
+Patrice confirme que la totalite des pierres MilAura passe par le Laboratoire
+Francais de Gemmologie, a Paris, a leur arrivee en France. Le LFG est fonde en
+1929, accredite COFRAC ISO 17025 depuis 2021, et est le seul organisme accredite
+sur le territoire francais a delivrer des rapports d'analyse sur la totalite des
+gemmes.
+
+L'argument est donc documente et rattache a un perimetre complet. Il redevient
+utilisable, et gagne a nommer le laboratoire plutot qu'a ecrire
+`certifiees par gemmologue`, qui ne prouve rien.
+
+## Valeurs finales a saisir
+
+| Ou | Champ | Avant | Apres |
+| --- | --- | --- | --- |
+| Page `bijoux-par-pierre` | Titre SEO | 54 car., prefixe duplique | `Bijoux par pierre naturelle \| MilAura`, 37 |
+| Page `pierres-de-naissance` | Titre SEO | 59 car., prefixe duplique | `Pierres de naissance par mois \| MilAura`, 39 |
+| Page `diagnostic-emotionnel` | Meta description | 116 car., six fautes, tutoiement, promesse interdite | `Quelques questions pour trouver la pierre qui vous correspond. Le diagnostic MilAura vous oriente vers les bijoux et mineraux adaptes a votre intention.`, 152 |
+| Preferences | Meta description globale | 178 car., emoji, superlatif, faute d'accord | `Bijoux, mineraux et bougies en pierres naturelles, toutes certifiees par le Laboratoire Francais de Gemmologie. Expedie depuis notre atelier a Metz.`, 148 |
+
+La description globale alimente trois surfaces d'un coup : meta description de
+l'accueil, `og:description` et JSON-LD `WebSite.description`.
