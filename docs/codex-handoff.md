@@ -57,7 +57,7 @@ La palette, les polices et le logo restent ceux du Brand System du 2026-08-04. `
 - theme live : inchange par le lot Heroes
 - Theme Check : 0 erreur, 29 avertissements historiques
 
-Le worktree et la branche ephemere du lot Heroes doivent etre retires apres la derniere verification. Ne pas retirer les worktrees UI sitewide ou carrousel, encore possedes par leurs sessions.
+Le worktree et la branche ephemere du lot Heroes sont retires. Ne pas retirer les worktrees UI sitewide ou carrousel, encore possedes par leurs sessions.
 
 ## Lot suivant : GO visuel et live des Heroes de destination
 

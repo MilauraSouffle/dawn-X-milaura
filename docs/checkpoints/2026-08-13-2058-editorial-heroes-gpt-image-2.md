@@ -88,6 +88,7 @@ Shopify CLI a recree des preferences saines, puis le pullback frais a reussi.
 - le conflit d'integration etait limite aux anciennes regles CSS du collage Hero dans `assets/milaura-catalogue-hub.css` ;
 - resolution : suppression de ces regles devenues mortes et conservation des evolutions plus recentes des grilles produit et destinations ;
 - branche canonique poussee sur `origin/codex/milaura-integration` apres la documentation de fermeture.
+- worktree et branche ephemere retires ; les captures Playwright sont archivees temporairement sous `/private/tmp/milaura-editorial-heroes-playwright-20260813`.
 
 ## Regle pour les futures pages
 
