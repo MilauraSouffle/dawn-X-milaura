@@ -21,7 +21,10 @@ Le lot a ete developpe en parallele de la passe de fondation design de Claude, d
 ## Fichiers du lot
 
 - `assets/milaura-card.css` ;
+- `assets/milaura-editorial-purchase.js` ;
 - `assets/milaura-section-heading.css` ;
+- `assets/cart-drawer.js` ;
+- `snippets/milaura-editorial-purchase.liquid` ;
 - `snippets/milaura-section-heading.liquid` ;
 - `sections/milaura-selection-atelier.liquid` ;
 - `sections/milaura-seasonal-collection.liquid` ;
@@ -126,4 +129,47 @@ Patrice doit verifier dans la previsualisation :
 4. les cartes dont la photo reste totalement visible ;
 5. la grille produit mobile en deux colonnes.
 
-Apres GO visuel, le proprietaire d'integration pourra integrer les commits, relancer les controles, pousser uniquement les six fichiers cibles sur le live, effectuer un pullback frais et fermer le workstream.
+Apres GO visuel, le proprietaire d'integration pourra integrer les commits, relancer les controles, pousser uniquement les neuf fichiers cibles sur le live, effectuer un pullback frais et fermer le workstream.
+
+## Passage P2 apres retour visuel
+
+Date : 2026-08-13 12:33 CEST
+
+Patrice a valide la direction generale et a demande cinq ajustements :
+
+- remonter le contenu de la page de destination pour supprimer du scroll inutile ;
+- utiliser Dancing Script pour les marqueurs saisonniers courts ;
+- retirer `Selection en stock` ;
+- resserrer le nom, le prix et l'achat sous les photographies ;
+- ajouter un selecteur de quantite et un marqueur turquoise entre les sections.
+
+### Changements P2
+
+- Hero desktop reduit a une plage de `520 a 590 px`, contenu aligne en haut et commence 126 px plus haut dans le viewport de controle ;
+- Hero mobile fixe a `470 px`, avec les produits visibles immediatement apres le decor ;
+- `Aout 2026`, `20 creations` et `Edition aout 2026` utilisent Dancing Script dans une taille lisible ;
+- suppression du texte, du reglage de schema et de la valeur JSON `Selection en stock` ;
+- bloc produit compacte a environ 61 px pour le titre et le prix sur le viewport desktop teste ;
+- controle d'achat place hors du lien produit, avec capsule moins, quantite, plus et bouton Ajouter ;
+- cibles de controle hautes de 44 px ;
+- la quantite selectionnee est transmise au gestionnaire d'ajout panier, avec repli a `1` pour toutes les anciennes cartes ;
+- marqueur de transition centre de `58 a 86 px`, en aigue-marine profonde, au bas de la section homepage.
+
+### Validation P2
+
+- commit fonctionnel : `65ca8192` ;
+- commit du marqueur final : `025ae02a` ;
+- `git diff --check` : reussi ;
+- template JSON : valide ;
+- Dancing Script : fichier WOFF2 present et police calculee confirmee dans le navigateur ;
+- `shopify theme check --fail-level error` : 0 erreur et 29 avertissements historiques ;
+- push cible sur le theme de developpement `199421952347` : reussi ;
+- pullback frais : 9 fichiers sur 9 identiques bit a bit ;
+- homepage desktop : 4 cartes, aucun debordement, controles d'achat contenus dans chaque carte ;
+- homepage mobile : carte de `254 px`, controle complet de `254 px`, aucun debordement ;
+- landing desktop : un H1, Hero a `88 px` sous le bandeau d'engagement, hauteur `561.7 px`, 20 cartes et aucune ancienne action visible ;
+- landing mobile : Hero a `102 px`, hauteur `470 px`, grille `175 px + 175 px`, controle de `175 px`, aucun debordement ;
+- test du selecteur : l'action `+` passe l'entree de `1` a `2` et transmet `data-quantity=2` au bouton Ajouter ;
+- aucun clic d'ajout panier n'a ete execute pendant le controle.
+
+Le live `190430282075` reste intact. Le lot attend le nouveau GO visuel de Patrice avant integration et deploiement public des neuf fichiers cibles.
