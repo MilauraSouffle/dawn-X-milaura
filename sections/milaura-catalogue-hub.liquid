@@ -11,9 +11,8 @@
 
 {%- liquid
   assign hub_theme = section.settings.theme | default: 'stone'
-  assign hero_product_1 = section.settings.hero_product_1
-  assign hero_product_2 = section.settings.hero_product_2
-  assign hero_product_3 = section.settings.hero_product_3
+  assign hero_editorial_desktop = 'milaura-hero-editorial-hub-' | append: hub_theme | append: '-desktop.webp'
+  assign hero_editorial_mobile = 'milaura-hero-editorial-hub-' | append: hub_theme | append: '-mobile.webp'
   assign correspondence_count = 0
   assign product_selection_count = 0
   assign destination_count = 0
@@ -25,27 +24,10 @@
         assign correspondence_count = correspondence_count | plus: 1
       when 'product_selection'
         assign product_selection_count = product_selection_count | plus: 1
-        if hero_product_1 == blank
-          assign hero_product_1 = block.settings.product_1
-          assign hero_product_2 = block.settings.product_2
-          assign hero_product_3 = block.settings.product_3
-        endif
       when 'featured_collection'
         assign selected_collection = block.settings.collection
         if selected_collection != blank and selected_collection.products_count > 0
           assign destination_count = destination_count | plus: 1
-          if hero_product_1 == blank
-            for candidate_product in selected_collection.products limit: 3
-              case forloop.index
-                when 1
-                  assign hero_product_1 = candidate_product
-                when 2
-                  assign hero_product_2 = candidate_product
-                when 3
-                  assign hero_product_3 = candidate_product
-              endcase
-            endfor
-          endif
         endif
       when 'content'
         assign content_count = content_count | plus: 1
@@ -74,6 +56,19 @@
     data-milaura-hub
   >
     <section class="milaura-hub__hero" aria-labelledby="{{ hub_title_id }}">
+      <picture class="milaura-hub__hero-art" aria-hidden="true">
+        <source media="(max-width: 749px)" srcset="{{ hero_editorial_mobile | asset_url }}">
+        <img
+          class="milaura-hub__hero-art-image"
+          src="{{ hero_editorial_desktop | asset_url }}"
+          alt=""
+          width="1600"
+          height="1000"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </picture>
+
       <div class="milaura-hub__hero-inner">
         <div class="milaura-hub__hero-copy">
           {%- if section.settings.eyebrow != blank -%}
@@ -98,52 +93,6 @@
           {%- endif -%}
         </div>
 
-        <div class="milaura-hub__hero-stage" aria-label="Sélection de créations MilAura">
-          {%- if hero_product_1 != blank and hero_product_1.featured_image != blank -%}
-            <figure class="milaura-hub__hero-media milaura-hub__hero-media--primary">
-              {{ hero_product_1.featured_image
-                | image_url: width: 1100
-                | image_tag:
-                  widths: '360, 540, 720, 900, 1100',
-                  sizes: '(max-width: 749px) 62vw, 38vw',
-                  loading: 'eager',
-                  fetchpriority: 'high',
-                  class: 'milaura-hub__hero-image',
-                  alt: hero_product_1.title
-              }}
-            </figure>
-          {%- endif -%}
-
-          {%- if hero_product_2 != blank and hero_product_2.featured_image != blank -%}
-            <figure class="milaura-hub__hero-media milaura-hub__hero-media--secondary">
-              {{ hero_product_2.featured_image
-                | image_url: width: 720
-                | image_tag:
-                  widths: '240, 360, 540, 720',
-                  sizes: '(max-width: 749px) 32vw, 18vw',
-                  loading: 'eager',
-                  class: 'milaura-hub__hero-image',
-                  alt: hero_product_2.title
-              }}
-            </figure>
-          {%- endif -%}
-
-          {%- if hero_product_3 != blank and hero_product_3.featured_image != blank -%}
-            <figure class="milaura-hub__hero-media milaura-hub__hero-media--tertiary">
-              {{ hero_product_3.featured_image
-                | image_url: width: 540
-                | image_tag:
-                  widths: '200, 320, 420, 540',
-                  sizes: '(max-width: 749px) 24vw, 13vw',
-                  loading: 'lazy',
-                  class: 'milaura-hub__hero-image',
-                  alt: hero_product_3.title
-              }}
-            </figure>
-          {%- endif -%}
-
-          <span class="milaura-hub__hero-thread" aria-hidden="true"></span>
-        </div>
       </div>
     </section>
 
@@ -401,9 +350,6 @@
     {"type": "text", "id": "eyebrow", "label": "Signature"},
     {"type": "text", "id": "heading", "label": "Titre"},
     {"type": "richtext", "id": "introduction", "label": "Introduction"},
-    {"type": "product", "id": "hero_product_1", "label": "Produit principal du Hero"},
-    {"type": "product", "id": "hero_product_2", "label": "Produit secondaire du Hero"},
-    {"type": "product", "id": "hero_product_3", "label": "Produit tertiaire du Hero"},
     {"type": "text", "id": "hero_cta_label", "label": "Action du Hero", "default": "Découvrir"},
     {"type": "text", "id": "trust_1", "label": "Engagement 1", "default": "Pierres naturelles sélectionnées"},
     {"type": "text", "id": "trust_2", "label": "Engagement 2", "default": "Préparé dans notre atelier à Metz"},
