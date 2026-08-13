@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-08-13 17:31 CEST
+Derniere mise a jour : 2026-08-13 17:32 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -14,6 +14,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 | Lot | Proprietaire | Branche | Worktree | Fichiers ou zone exclusive | Theme | Statut | Mise a jour |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| Produits integres aux correspondances Mariage et Naissance, retrait du cross-sell generique | Codex, tache `Design UI MilAura` | `codex/milaura-hub-inline-products-20260813` | `/Users/paesano/Documents/MilAura website/_worktrees/hub-inline-products-20260813` | `sections/milaura-catalogue-hub.liquid`, `assets/milaura-catalogue-hub.css`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json`, checkpoint dedie | developpement `199421952347` uniquement avant GO visuel | actif | 2026-08-13 17:32 CEST |
 | Refonte P0 des hubs Mariage, Naissance et Bijoux par pierre | Codex, tache `Design UI MilAura` | branche ephemere retiree apres integration | worktree retire apres integration | `sections/milaura-catalogue-hub.liquid`, `assets/milaura-catalogue-hub.css`, `assets/milaura-catalogue-hub.js`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json`, `templates/page.milaura-bijoux-pierre.json`, checkpoints `1418` et `1713` | developpement `199421952347` puis live `190430282075`, pullback final 6/6 | ferme, integre et live | 2026-08-13 17:13 CEST |
 | Refonte editoriale de la selection saisonniere : titre, cartes et Hero de destination | Codex, tache `Design UI MilAura` | branche ephemere retiree apres integration | worktree retire apres integration | `assets/milaura-card.css`, `assets/milaura-section-heading.css`, `assets/milaura-editorial-purchase.js`, `assets/cart-drawer.js`, `snippets/milaura-section-heading.liquid`, `snippets/milaura-editorial-purchase.liquid`, `sections/milaura-selection-atelier.liquid`, `sections/milaura-seasonal-collection.liquid`, `templates/collection.selection-aout-2026.json`, `docs/checkpoints/2026-08-13-1010-seasonal-editorial-preview.md` | developpement `199421952347` et live `190430282075`, pullback 9/9 valide | ferme, integre et live | 2026-08-13 12:45 CEST |
 | Hotfix technique : double chargement des scripts de recherche et audit SEO en lecture seule | Claude, session frontend design, GO explicite de Patrice | branche ephemere retiree apres integration | checkout principal | `sections/milaura-navbar.liquid`, checkpoint associe | developpement `199421952347` et live `190430282075`, pullback valide | ferme et integre | 2026-08-13 12:45 CEST |
