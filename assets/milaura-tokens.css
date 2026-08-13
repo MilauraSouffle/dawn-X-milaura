@@ -1,0 +1,299 @@
+/* ==========================================================================
+   MilAura, tokens de design
+   --------------------------------------------------------------------------
+   Source unique de verite pour la couleur, la typographie et l'espacement.
+   Implemente la charte validee a 100 % par Patrice le 2026-08-04 :
+     ~/Documents/Agentic-Ops/MILAURA-BRAND-SYSTEM-2026/
+
+   Regle : aucune valeur hex ni font-family en dur dans une section.
+   Tout passe par une variable definie ici.
+
+   Note technique : ce theme herite du reglage Dawn
+   html { font-size: calc(var(--font-body-scale) * 62.5%) }, donc 1rem = 10px.
+   Les tailles de texte sont exprimees en px pour rester previsibles.
+
+   Cree le 2026-08-13.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Polices
+   Sous-ensemble latin, WOFF2. 144 Ko au total contre 416 Ko en TTF.
+   Declaration unique : ne jamais redeclarer @font-face dans une section.
+   -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Gloock';
+  src: url('milaura-gloock-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Instrument Sans';
+  src: url('milaura-instrument-sans-variable.woff2') format('woff2-variations');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Dancing Script';
+  src: url('milaura-dancing-script-variable.woff2') format('woff2-variations');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ------------------------------------------------------------------------
+     2. Colorway mineral
+     Palette validee 2026-08-04. Contrastes verifies dans COLORWAY-V2.
+     Repartition cible : Nacre 45 %, Encre prune 25 %, Aigue-marine 18 %,
+     Amethyste 9 %, Or mat 3 %.
+     ------------------------------------------------------------------------ */
+
+  /* Palette principale */
+  --milaura-nacre: #FBF8F3;
+  --milaura-prune: #2F222D;
+  --milaura-or: #B9975B;
+  --milaura-aigue: #6FA9A6;
+  --milaura-amethyste: #7A4D82;
+
+  /* Nuances aigue-marine */
+  --milaura-aigue-ecume: #DCEBE8;
+  --milaura-aigue-pierre: #B9D0CC;
+  --milaura-aigue-profonde: #3F7474;
+
+  /* Nuances amethyste */
+  --milaura-amethyste-lueur: #D8C2DA;
+  --milaura-amethyste-petale: #B68DBA;
+  --milaura-amethyste-profonde: #523059;
+
+  /* Nuances derivees, melangees en oklch pour rester perceptivement regulieres.
+     La source reste les cinq hex valides ci-dessus. */
+  --milaura-nacre-pure: color-mix(in oklch, var(--milaura-nacre) 55%, #FFFFFF);
+  --milaura-nacre-ombre: color-mix(in oklch, var(--milaura-nacre) 88%, var(--milaura-or));
+  --milaura-or-clair: color-mix(in oklch, var(--milaura-or) 58%, var(--milaura-nacre));
+  /* Or profond : seul or utilisable en texte. Dose a 65 % pour atteindre
+     4.76:1 sur Nacre, soit AA. L'ancien #8F723A ne tenait que 4.38:1. */
+  --milaura-or-profond: color-mix(in oklch, var(--milaura-or) 65%, var(--milaura-prune));
+
+  /* Encres de texte. Prune sur Nacre = 14.29:1, AAA. */
+  --milaura-encre: var(--milaura-prune);
+  --milaura-encre-secondaire: color-mix(in oklch, var(--milaura-prune) 78%, var(--milaura-nacre));
+  --milaura-encre-tertiaire: color-mix(in oklch, var(--milaura-prune) 58%, var(--milaura-nacre));
+
+  /* Surfaces */
+  --milaura-surface: var(--milaura-nacre);
+  --milaura-surface-haute: var(--milaura-nacre-pure);
+  --milaura-surface-mineral: var(--milaura-aigue-ecume);
+  --milaura-surface-profonde: var(--milaura-prune);
+
+  /* Filets et bordures.
+     L'Or mat souligne, il ne couvre jamais une grande surface. Il n'existe
+     volontairement aucun token de degrade dore dans ce systeme. */
+  --milaura-filet: 1px solid color-mix(in oklch, var(--milaura-prune) 12%, transparent);
+  --milaura-filet-or: 1px solid var(--milaura-or);
+  --milaura-filet-mineral: 1px solid var(--milaura-aigue-pierre);
+
+  /* Ombres. Teintees prune, jamais dorees ni bleutees. */
+  --milaura-ombre-douce: 0 1px 2px color-mix(in oklch, var(--milaura-prune) 6%, transparent);
+  --milaura-ombre-portee: 0 12px 32px color-mix(in oklch, var(--milaura-prune) 10%, transparent);
+
+  /* ------------------------------------------------------------------------
+     3. Typographie
+     Gloock : editorial, 24 px minimum, jamais navigation, bouton, prix ou
+              texte long, jamais de faux gras.
+     Instrument Sans : fonctionnel, 400 a 700.
+     Dancing Script : signature, 2 a 6 mots, une presence par ecran.
+     ------------------------------------------------------------------------ */
+
+  --milaura-font-display: 'Gloock', 'Iowan Old Style', Georgia, serif;
+  --milaura-font-texte: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --milaura-font-signature: 'Dancing Script', 'Snell Roundhand', cursive;
+
+  /* Echelle fluide, interpolee de 390 px a 1440 px de viewport.
+     Valeurs bornees issues de TYPOGRAPHY-V2-2026-08-04. */
+  --milaura-t-display: clamp(42px, 30.86px + 2.86vw, 72px);
+  --milaura-t-h1: clamp(38px, 31.31px + 1.71vw, 56px);
+  --milaura-t-h2: clamp(32px, 29.03px + 0.76vw, 40px);
+  --milaura-t-h3: clamp(24px, 22.51px + 0.38vw, 28px);
+  --milaura-t-signature: clamp(30px, 25.54px + 1.14vw, 42px);
+  --milaura-t-corps-large: 18px;
+  --milaura-t-corps: 16px;
+  --milaura-t-bouton: 15px;
+  --milaura-t-petit: clamp(13px, 12.63px + 0.1vw, 14px);
+  --milaura-t-label: 13px;
+
+  /* Interlignages */
+  --milaura-lh-display: 1.05;
+  --milaura-lh-h1: 1.09;
+  --milaura-lh-h2: 1.14;
+  --milaura-lh-h3: 1.21;
+  --milaura-lh-signature: 1.14;
+  --milaura-lh-corps: 1.6;
+  --milaura-lh-bouton: 1.2;
+  --milaura-lh-petit: 1.4;
+  --milaura-lh-label: 1.31;
+
+  /* Approches */
+  --milaura-ls-display: -0.015em;
+  --milaura-ls-titre: -0.01em;
+  --milaura-ls-corps: 0;
+  --milaura-ls-label: 0.12em;
+
+  /* ------------------------------------------------------------------------
+     4. Espacement
+     Echelle geometrique. Le luxe se lit d'abord dans le vide.
+     ------------------------------------------------------------------------ */
+
+  --milaura-esp-3xs: 4px;
+  --milaura-esp-2xs: 8px;
+  --milaura-esp-xs: 12px;
+  --milaura-esp-sm: 16px;
+  --milaura-esp-md: 24px;
+  --milaura-esp-lg: 40px;
+  --milaura-esp-xl: 64px;
+  --milaura-esp-2xl: 96px;
+  --milaura-esp-3xl: clamp(96px, 60px + 9vw, 160px);
+
+  /* Rayons du nouveau standard. Le rayon large est reserve aux pastilles.
+     La geometrie des sections existantes n'est pas modifiee par ce lot. */
+  --milaura-rayon-net: 0;
+  --milaura-rayon-sm: 2px;
+  --milaura-rayon-md: 4px;
+  --milaura-rayon-pastille: 999px;
+
+  /* ------------------------------------------------------------------------
+     5. Reprise des variables Dawn
+     Le reglage Shopify est encore Assistant. On force les familles MilAura
+     pour que les composants Dawn heritent de la charte.
+     ------------------------------------------------------------------------ */
+
+  --font-body-family: var(--milaura-font-texte);
+  --font-body-style: normal;
+  --font-body-weight: 400;
+  --font-body-weight-bold: 600;
+  --font-heading-family: var(--milaura-font-display);
+  --font-heading-style: normal;
+  --font-heading-weight: 400;
+
+  /* ------------------------------------------------------------------------
+     6. Compatibilite avec l'existant
+     Les anciennes variables restent valides mais pointent desormais sur la
+     charte mineral. Cela bascule d'un coup les 240 usages passant par
+     variable, sans toucher aux sections.
+     A retirer quand les sections auront ete migrees vers les tokens ci-dessus.
+     ------------------------------------------------------------------------ */
+
+  --milaura-gold: var(--milaura-or);
+  --milaura-gold-light: var(--milaura-or-clair);
+  --milaura-gold-dark: var(--milaura-or-profond);
+  --milaura-beige: var(--milaura-nacre);
+  --milaura-beige-mid: var(--milaura-nacre-ombre);
+  --milaura-surface-warm: var(--milaura-nacre);
+  --milaura-surface-warm-soft: var(--milaura-nacre-pure);
+  --milaura-surface-aqua: var(--milaura-aigue-ecume);
+  --milaura-text: var(--milaura-encre);
+  --milaura-text-light: var(--milaura-encre-secondaire);
+
+  --milaura-cta-ink: var(--milaura-prune);
+  --milaura-cta-gold-top: var(--milaura-or-clair);
+  --milaura-cta-gold-mid: var(--milaura-or-clair);
+  --milaura-cta-gold-bottom: var(--milaura-or);
+  --milaura-cta-border: color-mix(in oklch, var(--milaura-or) 40%, transparent);
+  --milaura-cta-shadow: var(--milaura-ombre-portee);
+
+  --milaura-shadow-sm: var(--milaura-ombre-douce);
+  --milaura-shadow-md: var(--milaura-ombre-portee);
+  --milaura-shadow-lg: 0 24px 56px color-mix(in oklch, var(--milaura-prune) 14%, transparent);
+
+  --milaura-font-heading: var(--milaura-font-display);
+  --milaura-font-body: var(--milaura-font-texte);
+  --milaura-font-script: var(--milaura-font-signature);
+  --milaura-font-elegant: var(--milaura-font-display);
+}
+
+/* --------------------------------------------------------------------------
+   7. Comportements typographiques de base
+   -------------------------------------------------------------------------- */
+
+body {
+  font-family: var(--milaura-font-texte);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* La charte interdit toute simulation de gras sur Gloock.
+   font-synthesis coupe le faux gras et le faux italique du navigateur. */
+h1, h2, h3,
+.milaura-display,
+.milaura-titre {
+  font-family: var(--milaura-font-display);
+  font-weight: 400;
+  font-synthesis: none;
+  letter-spacing: var(--milaura-ls-titre);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--milaura-t-h1);
+  line-height: var(--milaura-lh-h1);
+}
+
+h2 {
+  font-size: var(--milaura-t-h2);
+  line-height: var(--milaura-lh-h2);
+}
+
+h3 {
+  font-size: var(--milaura-t-h3);
+  line-height: var(--milaura-lh-h3);
+}
+
+.milaura-display {
+  font-size: var(--milaura-t-display);
+  line-height: var(--milaura-lh-display);
+  letter-spacing: var(--milaura-ls-display);
+}
+
+/* Gloock reste au-dessus de 24 px. Les titres courts de Dawn sont
+   fonctionnels et repassent donc en Instrument Sans. */
+h4, h5, h6,
+.h4, .h5, .h6,
+.card__heading,
+.cart-item__name,
+.facets__heading,
+.facet-checkbox,
+.drawer__heading,
+.totals__subtotal,
+.product__accordion .summary__title,
+.collapsible-content__header {
+  font-family: var(--milaura-font-texte);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* Signature : un geste humain, jamais une information necessaire. */
+.milaura-signature {
+  font-family: var(--milaura-font-signature);
+  font-weight: 600;
+  font-size: var(--milaura-t-signature);
+  line-height: var(--milaura-lh-signature);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Label : petites capitales espacees, voix fonctionnelle. */
+.milaura-label {
+  font-family: var(--milaura-font-texte);
+  font-weight: 600;
+  font-size: var(--milaura-t-label);
+  line-height: var(--milaura-lh-label);
+  letter-spacing: var(--milaura-ls-label);
+  text-transform: uppercase;
+}
