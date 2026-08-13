@@ -1,18 +1,13 @@
 {%- comment -%}
-  MILAURA COLLECTION GRID
-  Grille produits style homepage (cartes avec bordure dorée subtile)
-  Sans cadre doré autour pour fluidité
-  IMPORTANT: Cette section fonctionne UNIQUEMENT sur les pages collection
-  @version 2.0.1
+  Grille collection MilAura.
+  La carte et son achat vivent dans les snippets partages ; cette section ne
+  gere plus que la grille, l'etat vide et la pagination.
 {%- endcomment -%}
 
-{%- comment -%} Vérifier qu'on est sur une page collection {%- endcomment -%}
 {%- unless collection -%}
   <section id="MilauraGrid-{{ section.id }}" class="milaura-collection-grid">
-    <div class="page-width" style="padding: 40px 20px; text-align: center;">
-      <p style="color: #C0A062; font-size: 14px; margin: 0;">
-        ⚠️ Cette section "Grille Collection" fonctionne uniquement sur les pages de collection.
-      </p>
+    <div class="page-width milaura-collection-grid__notice">
+      <p>Cette section fonctionne uniquement sur les pages de collection.</p>
     </div>
   </section>
   {%- break -%}
@@ -20,459 +15,116 @@
 
 {%- style -%}
   #MilauraGrid-{{ section.id }} {
-    padding: 8px 0 12px 0;
+    padding: var(--milaura-esp-2xs) 0 var(--milaura-esp-xs);
     background: transparent;
   }
 
-  /* Grille produits */
+  #MilauraGrid-{{ section.id }} .milaura-collection-grid__notice,
+  #MilauraGrid-{{ section.id }} .grid__empty {
+    padding: var(--milaura-esp-lg) var(--milaura-esp-md);
+    color: var(--milaura-encre-secondaire);
+    text-align: center;
+  }
+
   #MilauraGrid-{{ section.id }} .grid__products {
     display: grid;
-    grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));
+    gap: var(--milaura-esp-md);
+    align-items: stretch;
   }
 
-  /* Carte produit - Style homepage */
-  #MilauraGrid-{{ section.id }} .grid__card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(192, 160, 98, 0.35);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    overflow: hidden;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card:hover {
-    border-color: var(--milaura-gold, #C0A062);
-    border-width: 2px;
-    padding: 11px;
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(192, 160, 98, 0.2);
-  }
-
-  /* Image container */
-  #MilauraGrid-{{ section.id }} .grid__card-img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    border-radius: 14px;
-    margin-bottom: 12px;
-    background: #f9f9f9;
-    position: relative;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 0.42s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-image--primary {
-    position: relative;
-    z-index: 0;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-image--secondary {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    opacity: 0;
-    transform: scale(1.025);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    #MilauraGrid-{{ section.id }} .grid__card:hover .grid__card-image--primary,
-    #MilauraGrid-{{ section.id }} .grid__card:focus-visible .grid__card-image--primary {
-      opacity: 0;
-      transform: scale(1.015);
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card:hover .grid__card-image--secondary,
-    #MilauraGrid-{{ section.id }} .grid__card:focus-visible .grid__card-image--secondary {
-      opacity: 1;
-      transform: scale(1.055);
-    }
-  }
-
-  /* Badge promo/nouveau */
-  #MilauraGrid-{{ section.id }} .grid__card-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    padding: 4px 10px;
-    border-radius: 50px;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    z-index: 2;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-badge--sale {
-    background: #E85A4F;
-    color: #ffffff;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-badge--new {
-    background: var(--milaura-gold, #C0A062);
-    color: #ffffff;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-badge--soldout {
-    background: #888888;
-    color: #ffffff;
-  }
-
-  /* Infos produit */
-  #MilauraGrid-{{ section.id }} .grid__card-info {
-    padding: 8px 4px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-vendor {
-    font-size: 10px;
-    text-transform: uppercase;
-    color: var(--milaura-text-light, #999);
-    letter-spacing: 1.5px;
-    margin-bottom: 4px;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--milaura-text, #1b1b1b);
-    margin: 0 0 8px 0;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-price {
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    font-size: 1.05rem;
-    color: var(--milaura-gold, #C0A062);
-    margin-top: auto;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-price--compare {
-    font-size: 0.85rem;
-    color: #999;
-    text-decoration: line-through;
-    margin-right: 6px;
-    font-weight: 400;
-  }
-
-  /* Container des boutons */
-  #MilauraGrid-{{ section.id }} .grid__card-actions {
-    margin-top: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  /* Bouton voir produit - toujours visible */
-  #MilauraGrid-{{ section.id }} .grid__card-btn {
-    padding: 10px 16px;
-    background: transparent;
-    color: var(--milaura-gold, #C0A062);
-    border: 1.5px solid var(--milaura-gold, #C0A062);
-    border-radius: 50px;
-    font-family: 'Lato', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    text-align: center;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card:hover .grid__card-btn {
-    background: var(--milaura-gold, #C0A062);
-    color: #ffffff;
-  }
-
-  /* Bouton ajout rapide - apparaît au hover */
-  #MilauraGrid-{{ section.id }} .grid__card-quick {
-    padding: 10px 16px;
-    background: #1a1a1a;
-    color: #ffffff;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Lato', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.25s ease;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-quick svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card:hover .grid__card-quick {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__card-quick:hover {
-    background: var(--milaura-gold, #C0A062);
-  }
-
-  /* Bouton rupture de stock - grisé */
-  #MilauraGrid-{{ section.id }} .grid__card-btn--soldout {
-    padding: 10px 16px;
-    background: #e0e0e0;
-    color: #888888;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Lato', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: not-allowed;
-    text-align: center;
-  }
-
-  /* État vide */
   #MilauraGrid-{{ section.id }} .grid__empty {
     grid-column: 1 / -1;
-    text-align: center;
-    padding: var(--milaura-spacing-lg) var(--milaura-spacing-md);
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__empty-icon {
-    font-size: 40px;
-    margin-bottom: 12px;
-    opacity: 0.6;
   }
 
   #MilauraGrid-{{ section.id }} .grid__empty-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: var(--milaura-text, #1b1b1b);
-    margin: 0 0 8px 0;
+    margin: 0 0 var(--milaura-esp-2xs);
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h3);
+    font-weight: 400;
+    line-height: var(--milaura-lh-h3);
   }
 
   #MilauraGrid-{{ section.id }} .grid__empty-text {
-    font-size: 0.9rem;
-    color: var(--milaura-text-light, #666);
-    margin: 0 0 16px 0;
+    margin: 0 0 var(--milaura-esp-sm);
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-corps);
+    line-height: var(--milaura-lh-corps);
   }
 
-  #MilauraGrid-{{ section.id }} .grid__empty-btn {
-    display: inline-block;
-    padding: 12px 24px;
-    background: var(--milaura-gold, #C0A062);
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 0.85rem;
-    text-decoration: none;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-  }
-
-  #MilauraGrid-{{ section.id }} .grid__empty-btn:hover {
-    background: #1a1a1a;
-    transform: translateY(-2px);
-  }
-
-  /* Pagination */
   #MilauraGrid-{{ section.id }} .grid__pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-    margin-top: var(--milaura-spacing-md);
+    gap: var(--milaura-esp-2xs);
+    margin-top: var(--milaura-esp-lg);
     flex-wrap: wrap;
   }
 
   #MilauraGrid-{{ section.id }} .grid__page {
-    display: flex;
+    min-width: var(--milaura-cible-tactile);
+    min-height: var(--milaura-cible-tactile);
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 36px;
-    height: 36px;
-    padding: 0 10px;
+    padding: 0 var(--milaura-esp-xs);
+    border: 0;
+    border-bottom: var(--milaura-filet);
+    border-radius: var(--milaura-rayon-net);
+    color: var(--milaura-prune);
     background: transparent;
-    border: 1px solid rgba(192, 160, 98, 0.3);
-    border-radius: 50px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--milaura-text, #333);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 600;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition:
+      color var(--milaura-transition-rapide),
+      border-color var(--milaura-transition-rapide);
   }
 
-  #MilauraGrid-{{ section.id }} .grid__page:hover {
-    border-color: var(--milaura-gold, #C0A062);
-    color: var(--milaura-gold, #C0A062);
+  #MilauraGrid-{{ section.id }} .grid__page:hover,
+  #MilauraGrid-{{ section.id }} .grid__page.is-current {
+    border-color: var(--milaura-aigue-profonde);
+    color: var(--milaura-aigue-profonde);
   }
 
   #MilauraGrid-{{ section.id }} .grid__page.is-current {
-    background: var(--milaura-gold, #C0A062);
-    border-color: var(--milaura-gold, #C0A062);
-    color: #ffffff;
+    font-weight: 700;
+  }
+
+  #MilauraGrid-{{ section.id }} .grid__page:focus-visible {
+    outline: var(--milaura-focus);
+    outline-offset: var(--milaura-focus-offset);
   }
 
   #MilauraGrid-{{ section.id }} .grid__page svg {
-    width: 14px;
-    height: 14px;
+    width: var(--milaura-t-petit);
+    height: var(--milaura-t-petit);
   }
 
   #MilauraGrid-{{ section.id }} .grid__page--dots {
-    border: none;
     min-width: auto;
-    padding: 0 4px;
+    border-bottom-color: transparent;
     pointer-events: none;
   }
 
-  /* Tablette */
   @media screen and (max-width: 1024px) {
     #MilauraGrid-{{ section.id }} .grid__products {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-quick {
-      opacity: 1;
-      transform: translateY(0);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--milaura-esp-sm);
     }
   }
 
-  /* Mobile */
-  @media screen and (max-width: 768px) {
-    #MilauraGrid-{{ section.id }} {
-      padding: var(--milaura-spacing-xs) 0 var(--milaura-spacing-sm) 0;
-    }
-
+  @media screen and (max-width: 749px) {
     #MilauraGrid-{{ section.id }} .grid__products {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card {
-      padding: 8px;
-      border-radius: 16px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card:hover {
-      padding: 7px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-img {
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-title {
-      font-size: 0.9rem;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-price {
-      font-size: 0.95rem;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-actions {
-      margin-top: 8px;
-      gap: 4px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-btn,
-    #MilauraGrid-{{ section.id }} .grid__card-quick,
-    #MilauraGrid-{{ section.id }} .grid__card-btn--soldout {
-      padding: 8px 12px;
-      font-size: 0.75rem;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-quick {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__page {
-      min-width: 32px;
-      height: 32px;
-      font-size: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--milaura-esp-xs);
     }
   }
 
-  /* Petit mobile */
-  @media screen and (max-width: 380px) {
-    #MilauraGrid-{{ section.id }} .grid__products {
-      gap: 10px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card {
-      padding: 6px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card:hover {
-      padding: 5px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-img {
-      border-radius: 10px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-title {
-      font-size: 0.8rem;
-      -webkit-line-clamp: 1;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-actions {
-      margin-top: 6px;
-      gap: 3px;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-btn,
-    #MilauraGrid-{{ section.id }} .grid__card-quick,
-    #MilauraGrid-{{ section.id }} .grid__card-btn--soldout {
-      padding: 6px 10px;
-      font-size: 0.7rem;
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card-quick svg {
-      width: 12px;
-      height: 12px;
-    }
-  }
-
-  /* Désactiver animations hover sur tactile */
-  @media (hover: none) {
-    #MilauraGrid-{{ section.id }} .grid__card:hover {
-      transform: none;
-      border-width: 1px;
-      padding: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
-    }
-
-    #MilauraGrid-{{ section.id }} .grid__card:hover .grid__card-img img {
-      transform: none;
-    }
-  }
-
-  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    #MilauraGrid-{{ section.id }} .grid__card,
-    #MilauraGrid-{{ section.id }} .grid__card-img img,
-    #MilauraGrid-{{ section.id }} .grid__card-btn,
     #MilauraGrid-{{ section.id }} .grid__page {
       transition: none;
     }
@@ -486,116 +138,38 @@
 >
   <div class="page-width">
     {%- paginate collection.products by section.settings.products_per_page -%}
-
-      <div class="grid__products">
+      <div class="grid__products milaura-cards" role="list">
         {%- if collection.products.size == 0 -%}
-          {%- comment -%} État vide {%- endcomment -%}
           <div class="grid__empty">
-            <div class="grid__empty-icon">✨</div>
             <h2 class="grid__empty-title">Aucune création trouvée</h2>
             <p class="grid__empty-text">Modifiez vos filtres ou explorez nos autres univers.</p>
-            <a href="{{ routes.collections_url }}" class="grid__empty-btn">Voir les collections</a>
+            <a href="{{ routes.collections_url }}" class="milaura-action milaura-action--editorial">Voir les collections</a>
           </div>
-
         {%- else -%}
           {%- for product in collection.products -%}
-            {%- assign lazy = true -%}
             {%- if forloop.index <= 4 -%}
-              {%- assign lazy = false -%}
+              {%- assign card_img_loading = 'eager' -%}
+            {%- else -%}
+              {%- assign card_img_loading = 'lazy' -%}
             {%- endif -%}
 
-            <a href="{{ product.url }}" class="grid__card">
-              <div class="grid__card-img">
-                {%- comment -%} Badges {%- endcomment -%}
-                {%- if section.settings.show_badges -%}
-                  {%- assign thirty_days_ago = 'now' | date: '%s' | plus: 0 | minus: 2592000 -%}
-                  {%- assign product_date = product.created_at | date: '%s' | plus: 0 -%}
-                  {%- if product.available == false -%}
-                    <span class="grid__card-badge grid__card-badge--soldout">Rupture</span>
-                  {%- elsif product.compare_at_price > product.price -%}
-                    <span class="grid__card-badge grid__card-badge--sale">Promo</span>
-                  {%- elsif product_date > thirty_days_ago -%}
-                    <span class="grid__card-badge grid__card-badge--new">Nouveau</span>
-                  {%- endif -%}
-                {%- endif -%}
-
-                {%- if product.featured_image != blank -%}
-                  <img
-                    class="grid__card-image grid__card-image--primary"
-                    src="{{ product.featured_image | image_url: width: 480 }}"
-                    srcset="{{ product.featured_image | image_url: width: 160 }} 160w,
-                            {{ product.featured_image | image_url: width: 320 }} 320w,
-                            {{ product.featured_image | image_url: width: 480 }} 480w"
-                    sizes="(max-width: 380px) 45vw, (max-width: 768px) 48vw, (max-width: 1024px) 32vw, 24vw"
-                    alt="{{ product.title | escape }}"
-                    loading="{% if lazy %}lazy{% else %}eager{% endif %}"
-                    decoding="async"
-                    width="480"
-                    height="480"
-                  >
-                  {%- assign secondary_image = product.images[1] -%}
-                  {%- if secondary_image != blank -%}
-                    <img
-                      class="grid__card-image grid__card-image--secondary"
-                      src="{{ secondary_image | image_url: width: 480 }}"
-                      srcset="{{ secondary_image | image_url: width: 160 }} 160w,
-                              {{ secondary_image | image_url: width: 320 }} 320w,
-                              {{ secondary_image | image_url: width: 480 }} 480w"
-                      sizes="(max-width: 380px) 45vw, (max-width: 768px) 48vw, (max-width: 1024px) 32vw, 24vw"
-                      alt="{{ secondary_image.alt | default: product.title | escape }}"
-                      loading="lazy"
-                      decoding="async"
-                      width="480"
-                      height="480"
-                    >
-                  {%- endif -%}
-                {%- else -%}
-                  {{ 'product-1' | placeholder_svg_tag }}
-                {%- endif -%}
-              </div>
-
-              <div class="grid__card-info">
-                {%- if section.settings.show_vendor and product.vendor != blank -%}
-                  <span class="grid__card-vendor">{{ product.vendor }}</span>
-                {%- endif -%}
-
-                <h3 class="grid__card-title">{{ product.title }}</h3>
-
-                <div class="grid__card-price">
-                  {%- if product.compare_at_price > product.price -%}
-                    <span class="grid__card-price--compare">{{ product.compare_at_price | money }}</span>
-                  {%- endif -%}
-                  {{ product.price | money }}
-                </div>
-              </div>
-
-              {%- comment -%} Boutons d'action {%- endcomment -%}
-              <div class="grid__card-actions">
-                {%- if product.available -%}
-                  <span class="grid__card-btn">Voir le produit</span>
-                  <span class="grid__card-quick" data-quick-add data-product-id="{{ product.variants.first.id }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="9" cy="21" r="1"></circle>
-                      <circle cx="20" cy="21" r="1"></circle>
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    Ajout rapide
-                  </span>
-                {%- else -%}
-                  <span class="grid__card-btn--soldout">Rupture de stock</span>
-                {%- endif -%}
-              </div>
-            </a>
+            {% render 'milaura-product-card',
+              product: product,
+              img_loading: card_img_loading,
+              show_vendor: section.settings.show_vendor,
+              show_badges: section.settings.show_badges,
+              show_secondary_image: true,
+              force_bestseller_badge: false
+            %}
           {%- endfor -%}
         {%- endif -%}
       </div>
 
-      {%- comment -%} Pagination {%- endcomment -%}
       {%- if paginate.pages > 1 -%}
         <nav class="grid__pagination" aria-label="Pagination">
           {%- if paginate.previous -%}
             <a href="{{ paginate.previous.url }}" class="grid__page" aria-label="Page précédente">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="15 18 9 12 15 6"></polyline>
               </svg>
             </a>
@@ -613,88 +187,16 @@
 
           {%- if paginate.next -%}
             <a href="{{ paginate.next.url }}" class="grid__page" aria-label="Page suivante">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </a>
           {%- endif -%}
         </nav>
       {%- endif -%}
-
     {%- endpaginate -%}
   </div>
 </section>
-
-<script>
-(function() {
-  const section = document.getElementById('MilauraGrid-{{ section.id }}');
-  if (!section) return;
-
-  // Quick Add to Cart
-  const quickAddBtns = section.querySelectorAll('[data-quick-add]');
-
-  quickAddBtns.forEach(btn => {
-    btn.addEventListener('click', async function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const variantId = this.dataset.productId;
-      if (!variantId) return;
-
-      // Visual feedback
-      const originalText = this.innerHTML;
-      this.innerHTML = '<svg class="spinner" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-dasharray="40" stroke-dashoffset="10"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/></circle></svg> Ajout...';
-      this.style.pointerEvents = 'none';
-
-      try {
-        const response = await fetch('/cart/add.js', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id: variantId,
-            quantity: 1
-          })
-        });
-
-        if (response.ok) {
-          this.innerHTML = '✓ Ajouté !';
-          this.style.background = 'var(--milaura-gold, #C0A062)';
-          if (window.milauraCartToast) window.milauraCartToast();
-
-          // Update cart count if element exists
-          const cartCount = document.querySelector('.cart-count-bubble, [data-cart-count]');
-          if (cartCount) {
-            const currentCount = parseInt(cartCount.textContent) || 0;
-            cartCount.textContent = currentCount + 1;
-          }
-
-          // Trigger cart drawer if available
-          document.dispatchEvent(new CustomEvent('cart:refresh'));
-
-          setTimeout(() => {
-            this.innerHTML = originalText;
-            this.style.background = '';
-            this.style.pointerEvents = '';
-          }, 2000);
-        } else {
-          throw new Error('Failed to add to cart');
-        }
-      } catch (error) {
-        this.innerHTML = '✗ Erreur';
-        this.style.background = '#E85A4F';
-
-        setTimeout(() => {
-          this.innerHTML = originalText;
-          this.style.background = '';
-          this.style.pointerEvents = '';
-        }, 2000);
-      }
-    });
-  });
-})();
-</script>
 
 {% schema %}
 {
@@ -704,7 +206,7 @@
   "settings": [
     {
       "type": "header",
-      "content": "📝 Affichage"
+      "content": "Affichage"
     },
     {
       "type": "range",
@@ -726,7 +228,7 @@
     },
     {
       "type": "header",
-      "content": "⚙️ Options"
+      "content": "Options"
     },
     {
       "type": "checkbox",

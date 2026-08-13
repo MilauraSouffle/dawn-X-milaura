@@ -2,7 +2,6 @@
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-search.css' | asset_url | stylesheet_tag }}
-{{ 'milaura-card.css' | asset_url | stylesheet_tag }}
 
 {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
   {{ 'component-facets.css' | asset_url | stylesheet_tag }}
@@ -257,7 +256,6 @@
                 class="grid product-grid milaura-cards grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop"
                 role="list"
               >
-                {%- assign skip_card_product_styles = false -%}
                 {%- for item in search.results -%}
                   {%- comment -%} Exclure les produits cadeaux scratch (tag milaura-gift) du search public {%- endcomment -%}
                   {%- if item.object_type == 'product' and item.tags contains 'milaura-gift' -%}
@@ -284,11 +282,14 @@
                   >
                     {%- case item.object_type -%}
                       {%- when 'product' -%}
-                        {% render 'milaura-card-product',
-                          card_product: item,
+                        {% render 'milaura-product-card',
+                          product: item,
                           img_loading: card_img_loading,
                           show_vendor: section.settings.show_vendor,
-                          show_badges: true
+                          show_badges: true,
+                          show_secondary_image: true,
+                          force_bestseller_badge: false,
+                          nested_list_item: false
                         %}
                       {%- when 'article' -%}
                         {% render 'milaura-card-article',
@@ -302,7 +303,7 @@
                         <a href="{{ item.url }}" class="grid__card grid__card--page">
                           <div class="grid__card-img grid__card-img--placeholder">
                             <span class="grid__card-badge grid__card-badge--article">Page</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:40px;height:40px;color:var(--milaura-gold,#B9975B);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+                            <svg class="grid__card-placeholder-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                               <polyline points="14 2 14 8 20 8"></polyline>
                               <line x1="16" y1="13" x2="8" y2="13"></line>
