@@ -11,9 +11,9 @@
 
 {%- liquid
   assign hub_theme = section.settings.theme | default: 'stone'
-  assign hero_product_1 = blank
-  assign hero_product_2 = blank
-  assign hero_product_3 = blank
+  assign hero_product_1 = section.settings.hero_product_1
+  assign hero_product_2 = section.settings.hero_product_2
+  assign hero_product_3 = section.settings.hero_product_3
   assign correspondence_count = 0
   assign product_selection_count = 0
   assign destination_count = 0
@@ -195,12 +195,67 @@
               {%- for block in section.blocks -%}
                 {%- if block.type == 'correspondence' -%}
                   {%- assign panel_id = 'MilauraHubPanel-' | append: section.id | append: '-' | append: block.id -%}
-                  <article id="{{ panel_id }}" class="milaura-hub__panel" role="tabpanel" tabindex="-1" data-hub-panel>
-                    <p class="milaura-hub__panel-label milaura-label">{{ block.settings.label | escape }}</p>
-                    {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading | escape }}</h3>{%- endif -%}
-                    {%- if block.settings.body != blank -%}<div class="milaura-hub__panel-body rte">{{ block.settings.body }}</div>{%- endif -%}
-                    {%- if block.settings.link != blank and block.settings.link_label != blank -%}
-                      <a class="milaura-hub__text-link" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+                  {%- assign correspondence_collection = block.settings.collection -%}
+                  {%- assign correspondence_products = block.settings.products -%}
+                  {%- capture correspondence_cards -%}
+                    {%- if correspondence_collection != blank and correspondence_collection.products_count > 0 -%}
+                      {%- for selected_product in correspondence_collection.products -%}
+                        <div class="milaura-hub__product" role="listitem">
+                          {% render 'milaura-card-product',
+                            card_product: selected_product,
+                            img_loading: 'lazy',
+                            show_vendor: false,
+                            show_badges: section.settings.show_badges,
+                            show_secondary_image: true,
+                            force_bestseller_badge: false
+                          %}
+                          {% render 'milaura-editorial-purchase', product: selected_product %}
+                        </div>
+                      {%- endfor -%}
+                    {%- elsif correspondence_products != blank -%}
+                      {%- for selected_product in correspondence_products -%}
+                        {%- if selected_product != blank -%}
+                          <div class="milaura-hub__product" role="listitem">
+                            {% render 'milaura-card-product',
+                              card_product: selected_product,
+                              img_loading: 'lazy',
+                              show_vendor: false,
+                              show_badges: section.settings.show_badges,
+                              show_secondary_image: true,
+                              force_bestseller_badge: false
+                            %}
+                            {% render 'milaura-editorial-purchase', product: selected_product %}
+                          </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+                  {%- endcapture -%}
+                  {%- assign correspondence_cards = correspondence_cards | strip -%}
+
+                  <article
+                    id="{{ panel_id }}"
+                    class="milaura-hub__panel{% if correspondence_cards != blank %} milaura-hub__panel--products{% endif %}"
+                    role="tabpanel"
+                    tabindex="-1"
+                    data-hub-panel
+                  >
+                    <div class="milaura-hub__panel-copy">
+                      <p class="milaura-hub__panel-label milaura-label">{{ block.settings.label | escape }}</p>
+                      {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading | escape }}</h3>{%- endif -%}
+                      {%- if block.settings.body != blank -%}<div class="milaura-hub__panel-body rte">{{ block.settings.body }}</div>{%- endif -%}
+                      {%- if correspondence_cards == blank and block.settings.link != blank and block.settings.link_label != blank -%}
+                        <a class="milaura-hub__text-link" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+                      {%- endif -%}
+                    </div>
+
+                    {%- if correspondence_cards != blank -%}
+                      <div
+                        class="milaura-hub__product-grid milaura-hub__product-grid--correspondence milaura-cards milaura-cards--editorial"
+                        role="list"
+                        aria-label="Créations MilAura pour {{ block.settings.heading | escape }}"
+                      >
+                        {{ correspondence_cards }}
+                      </div>
                     {%- endif -%}
                   </article>
                 {%- endif -%}
@@ -346,6 +401,9 @@
     {"type": "text", "id": "eyebrow", "label": "Signature"},
     {"type": "text", "id": "heading", "label": "Titre"},
     {"type": "richtext", "id": "introduction", "label": "Introduction"},
+    {"type": "product", "id": "hero_product_1", "label": "Produit principal du Hero"},
+    {"type": "product", "id": "hero_product_2", "label": "Produit secondaire du Hero"},
+    {"type": "product", "id": "hero_product_3", "label": "Produit tertiaire du Hero"},
     {"type": "text", "id": "hero_cta_label", "label": "Action du Hero", "default": "Découvrir"},
     {"type": "text", "id": "trust_1", "label": "Engagement 1", "default": "Pierres naturelles sélectionnées"},
     {"type": "text", "id": "trust_2", "label": "Engagement 2", "default": "Préparé dans notre atelier à Metz"},
@@ -374,6 +432,8 @@
         {"type": "text", "id": "label", "label": "Mois ou année"},
         {"type": "text", "id": "heading", "label": "Titre"},
         {"type": "richtext", "id": "body", "label": "Explication"},
+        {"type": "collection", "id": "collection", "label": "Collection affichée dans ce repère"},
+        {"type": "product_list", "id": "products", "label": "Produits affichés si aucune collection n'est choisie", "limit": 24},
         {"type": "url", "id": "link", "label": "Destination"},
         {"type": "text", "id": "link_label", "label": "Texte du lien"},
         {"type": "checkbox", "id": "is_default", "label": "Repère ouvert par défaut", "default": false}
