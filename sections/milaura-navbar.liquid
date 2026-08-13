@@ -1,8 +1,14 @@
 <link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+{%- comment -%}
+  Ne pas recharger search-form.js ni predictive-search.js ici.
+  layout/theme.liquid les sert deja, le premier sans condition, le second
+  quand settings.predictive_search_enabled est actif. Ces deux fichiers
+  declarent `class SearchForm` et `class PredictiveSearch` au niveau global :
+  une seconde execution levait `Identifier 'SearchForm' has already been
+  declared` sur toutes les pages du site. Constate et corrige le 2026-08-13.
+{%- endcomment -%}
 
 {% style %}
   #shopify-section-{{ section.id }} {
