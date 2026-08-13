@@ -81,6 +81,14 @@ Shopify CLI a recree des preferences saines, puis le pullback frais a reussi.
 - produits, prix, stock, menus, pages et collections : aucune mutation ;
 - prochaine decision : GO visuel et GO live explicites de Patrice sur les dix destinations integrees.
 
+## Git
+
+- commit du lot sur la branche ephemere : `0d6d5c42` ;
+- integration sur la branche canonique : `a3c26aaa` ;
+- le conflit d'integration etait limite aux anciennes regles CSS du collage Hero dans `assets/milaura-catalogue-hub.css` ;
+- resolution : suppression de ces regles devenues mortes et conservation des evolutions plus recentes des grilles produit et destinations ;
+- branche canonique poussee sur `origin/codex/milaura-integration` apres la documentation de fermeture.
+
 ## Regle pour les futures pages
 
 Toute nouvelle page de destination doit reprendre le systeme `Heroes editoriaux de destination` de `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md` : scene unique, vrais produits, paire desktop/mobile, palette propre a l'univers, texte HTML et aucun collage CSS ou decoration de luxe generique.
