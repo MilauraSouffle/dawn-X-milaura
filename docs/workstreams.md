@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-08-13 18:40 CEST
+Derniere mise a jour : 2026-08-13 19:00 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -14,6 +14,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 | Lot | Proprietaire | Branche | Worktree | Fichiers ou zone exclusive | Theme | Statut | Mise a jour |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| Polish Hero Pierres de naissance : triptyque editorial et retrait du fil decoratif | Codex, tache `Design UI MilAura` | `codex/milaura-birthstone-hero-triptych-20260813` | `/Users/paesano/Documents/MilAura website/_worktrees/birthstone-hero-triptych-20260813` | `assets/milaura-catalogue-hub.css`, checkpoint dedie | developpement `199421952347`, aucun live sans GO | actif, composition en cours | 2026-08-13 19:00 CEST |
 | Polish homepage Selection d'aout : filet bas pleine largeur, carte transparente et controles soulignes | Codex, tache `Design UI MilAura` | branche ephemere integree par `60634812`, miroir rattache par `869d522a`, branche retiree | worktree retire apres verification finale | `sections/milaura-selection-atelier.liquid`, `assets/milaura-section-heading.css`, checkpoints `1821` et `1840` | developpement `199421952347` puis live `190430282075`, pullback live 2/2 | ferme, integre, pousse et live | 2026-08-13 18:40 CEST |
 | Produits integres aux correspondances Mariage et Naissance, cross-sells conserves | Codex, tache `Design UI MilAura` | branche ephemere retiree apres integration `871ef137` | worktree retire apres integration | `sections/milaura-catalogue-hub.liquid`, `assets/milaura-catalogue-hub.css`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json`, checkpoints `1741` et `1752` | developpement `199421952347` puis live `190430282075`, pullback final 4/4 | ferme, integre et live | 2026-08-13 17:52 CEST |
 | Refonte P0 des hubs Mariage, Naissance et Bijoux par pierre | Codex, tache `Design UI MilAura` | branche ephemere retiree apres integration | worktree retire apres integration | `sections/milaura-catalogue-hub.liquid`, `assets/milaura-catalogue-hub.css`, `assets/milaura-catalogue-hub.js`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json`, `templates/page.milaura-bijoux-pierre.json`, checkpoints `1418` et `1713` | developpement `199421952347` puis live `190430282075`, pullback final 6/6 | ferme, integre et live | 2026-08-13 17:13 CEST |
