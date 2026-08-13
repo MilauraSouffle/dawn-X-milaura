@@ -50,6 +50,8 @@ class CartDrawer extends HTMLElement {
   async quickAdd(button) {
     const variantId = Number.parseInt(button.dataset.productId, 10);
     if (!variantId) return;
+    const requestedQuantity = Number.parseInt(button.dataset.quantity, 10);
+    const quantity = Number.isFinite(requestedQuantity) && requestedQuantity > 0 ? requestedQuantity : 1;
 
     const originalContent = button.innerHTML;
     button.dataset.milauraQuickAddPending = 'true';
@@ -61,7 +63,7 @@ class CartDrawer extends HTMLElement {
       const cartAddRoute = window.routes?.cart_add_url || '/cart/add';
       const cartAddUrl = cartAddRoute.endsWith('.js') ? cartAddRoute : `${cartAddRoute}.js`;
       const payload = {
-        items: [{ id: variantId, quantity: 1 }],
+        items: [{ id: variantId, quantity }],
         sections: this.getSectionsToRender().map((section) => section.id),
         sections_url: window.location.pathname,
       };

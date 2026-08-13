@@ -367,8 +367,7 @@
 .milaura-cards.milaura-cards--editorial .grid__card {
   position: relative;
   isolation: isolate;
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: block;
   min-width: 0;
   padding: 0;
   overflow: visible;
@@ -416,10 +415,11 @@
 .milaura-cards.milaura-cards--editorial .grid__card-info {
   position: relative;
   z-index: 1;
-  min-height: 104px;
+  min-height: 0;
   display: flex;
   justify-content: flex-start;
-  padding: var(--milaura-esp-sm) 62px 0 2px;
+  gap: 2px;
+  padding: var(--milaura-esp-xs) 2px 0;
   text-align: left;
 }
 
@@ -433,20 +433,14 @@
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-price {
-  margin-top: auto;
+  margin-top: 0;
   color: var(--milaura-or-profond);
   font-size: var(--milaura-t-bouton);
   line-height: var(--milaura-lh-bouton);
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-actions {
-  position: absolute;
-  z-index: 2;
-  right: 2px;
-  bottom: 8px;
-  margin: 0;
-  align-items: center;
-  gap: 0;
+  display: none;
 }
 
 .milaura-cards.milaura-cards--editorial .grid__card-btn {
@@ -502,6 +496,137 @@
   line-height: 1;
 }
 
+/* Controle d'achat des cartes editoriales, place hors du lien produit. */
+.milaura-editorial-purchase {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--milaura-esp-2xs);
+  margin-top: var(--milaura-esp-xs);
+}
+
+.milaura-editorial-purchase__quantity {
+  flex: 0 0 auto;
+  height: 44px;
+  display: grid;
+  grid-template-columns: 40px 28px 40px;
+  align-items: center;
+  overflow: hidden;
+  border: var(--milaura-filet);
+  border-radius: var(--milaura-rayon-pastille);
+  color: var(--milaura-prune);
+  background: var(--milaura-nacre-pure);
+  box-shadow: var(--milaura-ombre-douce);
+}
+
+.milaura-editorial-purchase__step,
+.milaura-editorial-purchase__input,
+.milaura-editorial-purchase__add {
+  font-family: var(--milaura-font-texte);
+}
+
+.milaura-editorial-purchase__step {
+  width: 40px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  color: var(--milaura-prune);
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.milaura-editorial-purchase__step:hover:not(:disabled) {
+  color: var(--milaura-aigue-profonde);
+  background: var(--milaura-aigue-ecume);
+}
+
+.milaura-editorial-purchase__step:disabled {
+  opacity: 0.34;
+  cursor: default;
+}
+
+.milaura-editorial-purchase__input {
+  width: 28px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  color: var(--milaura-prune);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 44px;
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.milaura-editorial-purchase__input::-webkit-inner-spin-button,
+.milaura-editorial-purchase__input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.milaura-editorial-purchase__add {
+  min-width: 0;
+  min-height: 44px;
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: var(--milaura-filet-or);
+  border-radius: var(--milaura-rayon-pastille);
+  color: var(--milaura-nacre-pure);
+  background: var(--milaura-prune);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--milaura-ombre-douce);
+  transition: color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.milaura-editorial-purchase__add:hover {
+  color: var(--milaura-prune);
+  border-color: var(--milaura-aigue-profonde);
+  background: var(--milaura-aigue-ecume);
+  transform: translateY(-1px);
+}
+
+.milaura-editorial-purchase__add svg {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+}
+
+.milaura-editorial-purchase__step:focus-visible,
+.milaura-editorial-purchase__input:focus-visible,
+.milaura-editorial-purchase__add:focus-visible {
+  position: relative;
+  z-index: 2;
+  outline: 3px solid var(--milaura-aigue-profonde);
+  outline-offset: 2px;
+}
+
+.milaura-editorial-purchase__unavailable {
+  width: 100%;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  border: var(--milaura-filet);
+  border-radius: var(--milaura-rayon-pastille);
+  color: var(--milaura-encre-secondaire);
+  font-family: var(--milaura-font-texte);
+  font-size: 12px;
+  background: var(--milaura-nacre-ombre);
+}
+
 @supports selector(.grid__card:has(.grid__card-image--secondary)) {
   .milaura-cards.milaura-cards--editorial .grid__card:not(:has(.grid__card-image--secondary)):hover .grid__card-image--primary,
   .milaura-cards.milaura-cards--editorial .grid__card:not(:has(.grid__card-image--secondary)):focus-visible .grid__card-image--primary {
@@ -524,8 +649,8 @@
   }
 
   .milaura-cards.milaura-cards--editorial .grid__card-info {
-    min-height: 90px;
-    padding: var(--milaura-esp-xs) 50px 0 1px;
+    min-height: 0;
+    padding: var(--milaura-esp-2xs) 1px 0;
   }
 
   .milaura-cards.milaura-cards--editorial .grid__card-title {
@@ -540,37 +665,21 @@
     font-size: 13px;
   }
 
-  .milaura-cards.milaura-cards--editorial .grid__card-actions {
-    right: 1px;
-    bottom: 5px;
+  .milaura-editorial-purchase {
+    gap: 6px;
+    margin-top: 7px;
   }
 
-  .milaura-cards.milaura-cards--editorial .grid__card-quick {
-    width: 44px;
-    min-width: 44px;
-    height: 44px;
-    min-height: 44px;
-    padding: 0;
-  }
-
-  .milaura-cards.milaura-cards--editorial .grid__card-quick svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .milaura-cards.milaura-cards--editorial .grid__card-quick::after {
-    top: 5px;
-    right: 5px;
-    width: 12px;
-    height: 12px;
-    font-size: 9px;
+  .milaura-editorial-purchase__add {
+    padding-inline: 8px;
+    font-size: 11px;
   }
 }
 
 @media screen and (max-width: 768px) {
   .milaura-season__cards.milaura-cards--editorial .grid__card-info {
-    min-height: 98px;
-    padding: var(--milaura-esp-xs) 58px 0 2px;
+    min-height: 0;
+    padding: var(--milaura-esp-xs) 2px 0;
   }
 
   .milaura-season__cards.milaura-cards--editorial .grid__card-title {
@@ -581,16 +690,8 @@
     font-size: 13px;
   }
 
-  .milaura-season__cards.milaura-cards--editorial .grid__card-actions {
-    right: 2px;
-    bottom: 6px;
-  }
-
-  .milaura-season__cards.milaura-cards--editorial .grid__card-quick {
-    width: 46px;
-    min-width: 46px;
-    height: 46px;
-    min-height: 46px;
+  .milaura-season__cards .milaura-editorial-purchase__add {
+    font-size: 12px;
   }
 }
 
@@ -609,7 +710,8 @@
 @media (prefers-reduced-motion: reduce) {
   .milaura-cards .grid__card,
   .milaura-cards .grid__card-img img,
-  .milaura-cards .grid__card-btn {
+  .milaura-cards .grid__card-btn,
+  .milaura-editorial-purchase__add {
     transition: none;
   }
 }

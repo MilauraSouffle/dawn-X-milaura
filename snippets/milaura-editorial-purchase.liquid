@@ -1,0 +1,68 @@
+{%- comment -%}
+  Controle d'achat compact des cartes editoriales MilAura.
+
+  Parametre :
+  - product: produit Shopify associe a la carte
+{%- endcomment -%}
+
+{%- liquid
+  assign purchase_variant = product.selected_or_first_available_variant
+  assign purchase_min = purchase_variant.quantity_rule.min | default: 1
+  assign purchase_step = purchase_variant.quantity_rule.increment | default: 1
+-%}
+
+<div class="milaura-editorial-purchase" data-editorial-purchase>
+  {%- if purchase_variant.available -%}
+    <div
+      class="milaura-editorial-purchase__quantity"
+      role="group"
+      aria-label="Quantité pour {{ product.title | escape }}"
+    >
+      <button
+        class="milaura-editorial-purchase__step"
+        type="button"
+        data-editorial-quantity-minus
+        aria-label="Diminuer la quantité de {{ product.title | escape }}"
+      >
+        <span aria-hidden="true">−</span>
+      </button>
+      <input
+        class="milaura-editorial-purchase__input"
+        type="number"
+        value="{{ purchase_min }}"
+        min="{{ purchase_min }}"
+        step="{{ purchase_step }}"
+        {% if purchase_variant.quantity_rule.max != null %}max="{{ purchase_variant.quantity_rule.max }}"{% endif %}
+        inputmode="numeric"
+        data-editorial-quantity-input
+        aria-label="Quantité de {{ product.title | escape }}"
+      >
+      <button
+        class="milaura-editorial-purchase__step"
+        type="button"
+        data-editorial-quantity-plus
+        aria-label="Augmenter la quantité de {{ product.title | escape }}"
+      >
+        <span aria-hidden="true">+</span>
+      </button>
+    </div>
+
+    <button
+      class="milaura-editorial-purchase__add"
+      type="button"
+      data-quick-add
+      data-product-id="{{ purchase_variant.id }}"
+      data-quantity="{{ purchase_min }}"
+      aria-label="Ajouter {{ product.title | escape }} au panier"
+    >
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="20" r="1"></circle>
+        <circle cx="19" cy="20" r="1"></circle>
+        <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 7H6"></path>
+      </svg>
+      <span>Ajouter</span>
+    </button>
+  {%- else -%}
+    <span class="milaura-editorial-purchase__unavailable">Indisponible</span>
+  {%- endif -%}
+</div>
