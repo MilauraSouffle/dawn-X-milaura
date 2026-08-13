@@ -4,7 +4,7 @@ Date : 2026-08-13 11:20 CEST
 Session : Claude, frontend et design
 Branche : `claude/milaura-design-foundation-20260813`
 Themes : developpement `199421952347`, live `190430282075`
-Statut : livre live, pullback valide, GO creatif de Patrice encore attendu
+Statut : livre sur le developpement et le live, pullback valide sur les deux, GO creatif de Patrice encore attendu
 
 ## Ce que le lot corrige
 
@@ -87,6 +87,19 @@ lisait cette charte morte et la reappliquait.
   argument de `render` : la section etait rejetee par Shopify depuis le
   2026-03-13, soit cinq mois, et les resultats produit ne rendaient pas.
 
+### Durcissement des tokens
+
+Les nuances derivees utilisaient d'abord `color-mix(in oklch, ...)`. La fonction
+n'existe pas avant Safari 16.2, sorti en decembre 2022 : sur un navigateur plus
+ancien la variable devient invalide et toute propriete qui la consomme tombe,
+ce qui aurait fait sauter des couleurs de fond et de texte sur les iPhone
+anciens. Les onze melanges sont calcules en OKLab puis figes en valeurs
+statiques, formule conservee en commentaire. Les melanges vers `transparent`
+passent en `rgba`.
+
+`--milaura-encre-tertiaire` a ete redosee de 58 a 62 % de prune : 58 % ne
+donnait que 4.26:1 sur Nacre, sous le seuil AA. A 62 % elle tient 4.83:1.
+
 ## Verification
 
 | Controle | Resultat |
@@ -100,6 +113,7 @@ lisait cette charte morte et la reappliquait.
 | H1 | un seul par page sur les dix combinaisons |
 | Debordement horizontal | aucun |
 | Pullback live | 101 fichiers sur 101 identiques bit a bit |
+| Pullback developpement | 101 fichiers sur 101 identiques bit a bit |
 | Assets experimentaux du live | preserves, push en `--nodelete` |
 | Recherche publique | `/search?q=bague` rend 11 resultats et les cartes produit |
 
@@ -139,6 +153,9 @@ Captures : `output/playwright/design-foundation-2026-08-13/`.
 - `4000cb5f` fondation design appliquee au theme
 - `6f08699b` controles de formulaire, sortie d'Arial
 - `2590fdb4` reparation de la syntaxe Liquid de la recherche
+- `34fd71c1` documentation de la livraison
+- `ead5ec43` merge dans `codex/milaura-integration`
+- `4688554d` tokens derives figes en valeurs statiques
 
 ## Note de parallelisation
 
