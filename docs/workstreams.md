@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-08-13 17:52 CEST
+Derniere mise a jour : 2026-08-13 18:14 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -14,6 +14,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 | Lot | Proprietaire | Branche | Worktree | Fichiers ou zone exclusive | Theme | Statut | Mise a jour |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| Polish homepage Selection d'aout : filet bas pleine largeur, cadre complet et controles d'achat fins | Codex, tache `Design UI MilAura` | `codex/milaura-home-seasonal-card-polish-20260813` | `/Users/paesano/Documents/MilAura website/_worktrees/home-seasonal-card-polish-20260813` | `sections/milaura-selection-atelier.liquid`, `assets/milaura-card.css`, `assets/milaura-section-heading.css`, checkpoint du lot | developpement `199421952347` uniquement avant GO live | actif, implementation | 2026-08-13 18:14 CEST |
 | Produits integres aux correspondances Mariage et Naissance, cross-sells conserves | Codex, tache `Design UI MilAura` | branche ephemere retiree apres integration `871ef137` | worktree retire apres integration | `sections/milaura-catalogue-hub.liquid`, `assets/milaura-catalogue-hub.css`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json`, checkpoints `1741` et `1752` | developpement `199421952347` puis live `190430282075`, pullback final 4/4 | ferme, integre et live | 2026-08-13 17:52 CEST |
 | Refonte P0 des hubs Mariage, Naissance et Bijoux par pierre | Codex, tache `Design UI MilAura` | branche ephemere retiree apres integration | worktree retire apres integration | `sections/milaura-catalogue-hub.liquid`, `assets/milaura-catalogue-hub.css`, `assets/milaura-catalogue-hub.js`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json`, `templates/page.milaura-bijoux-pierre.json`, checkpoints `1418` et `1713` | developpement `199421952347` puis live `190430282075`, pullback final 6/6 | ferme, integre et live | 2026-08-13 17:13 CEST |
 | Refonte editoriale de la selection saisonniere : titre, cartes et Hero de destination | Codex, tache `Design UI MilAura` | branche ephemere retiree apres integration | worktree retire apres integration | `assets/milaura-card.css`, `assets/milaura-section-heading.css`, `assets/milaura-editorial-purchase.js`, `assets/cart-drawer.js`, `snippets/milaura-section-heading.liquid`, `snippets/milaura-editorial-purchase.liquid`, `sections/milaura-selection-atelier.liquid`, `sections/milaura-seasonal-collection.liquid`, `templates/collection.selection-aout-2026.json`, `docs/checkpoints/2026-08-13-1010-seasonal-editorial-preview.md` | developpement `199421952347` et live `190430282075`, pullback 9/9 valide | ferme, integre et live | 2026-08-13 12:45 CEST |
