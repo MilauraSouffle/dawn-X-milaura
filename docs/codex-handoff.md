@@ -1,10 +1,10 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-13 17:13 CEST
+Date de mise a jour : 2026-08-13 17:52 CEST
 
 ## Mission de reprise
 
-Reprendre apres la livraison live validee des trois hubs editoriaux Mariage, Naissance et Bijoux par pierre. La session Claude du bandeau et Hero reste independante ; la prochaine priorite Codex est d'etendre le systeme chromatique aux collections Amethyste, Aigue-marine puis aux autres pierres.
+Reprendre apres la livraison live des produits directement integres aux correspondances Mariage et Naissance, avec leurs cross-sells conserves. La prochaine priorite Codex est le polish des cartes, du separateur et de l'espace vertical de la selection d'aout sur la homepage.
 
 ## Contrainte permanente : le systeme de design est en place depuis le 2026-08-13
 
@@ -72,9 +72,9 @@ a ete corrige le 2026-08-13.
 - Depot actif unique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique Shopify.
-- L'integration contient l'historique du miroir Shopify jusqu'a `b1893898`, rattache sans changement d'arbre par `d8c8053d`.
-- Le commit miroir Shopify des hubs `aee62c12` est rattache sans changement d'arbre par `82c2cc13`.
-- Les branches et worktrees temporaires saisonnier, hotfix, PDP et hubs editoriaux ont ete fermes apres integration.
+- L'integration contient l'historique du miroir Shopify jusqu'a `069cc6de`, rattache sans changement d'arbre par `f8e2dfc2`.
+- Le lot produits contextuels est integre par `871ef137`; les commits miroir Shopify `ef639621` et `069cc6de` sont rattaches sans changement d'arbre par `f8e2dfc2`.
+- Les branches et worktrees temporaires saisonnier, hotfix, PDP et hubs editoriaux ont ete fermes apres integration, y compris le lot produits contextuels.
 - Les quatre anciennes branches sont preservees par les tags `archive/2026-08-12/*`.
 - Aucun clone numerote et aucun fichier temporaire ne reste dans la zone active.
 - Aucun worktree Codex de lot ne reste actif.
@@ -97,8 +97,9 @@ Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration c
 - La homepage rend la nouvelle selection de Karine sans information superposee aux photos, avec titre reutilisable, marqueurs en Dancing Script, quantite et ajout sous chaque carte.
 - `/collections/selection-aout-2026` rend le Hero lagon compact sous la navigation, un seul H1, 20 cartes, une grille mobile a deux colonnes et aucun texte `Selection en stock`.
 - Les neuf fichiers saisonniers du live sont identiques bit a bit a Git. Les deux routes publiques repondent en HTTP 200 et ne debordent pas sur les viewports controles.
-- Les trois hubs editoriaux sont live : Mariage avec 7 annees et 3 produits, Naissance avec 12 mois et 4 produits, Bijoux par pierre avec 5 collections illustrees.
-- Les six fichiers du lot hubs sont identiques bit a bit entre `codex/milaura-integration` et le theme live. Les trois routes publiques ont un H1, un seul `main`, aucun debordement desktop ou mobile, et les interactions des reperes sont conformes.
+- Les trois hubs editoriaux sont live. Mariage affiche directement les produits de l'annee active et conserve son cross-sell de 3 cartes. Naissance affiche directement les produits du mois actif et conserve son cross-sell de 4 cartes. Bijoux par pierre reste un repertoire de 5 collections illustrees.
+- Sur le live, `48 ans` rend 11 produits Amethyste et Fevrier rend 11 produits Amethyste ; Mars rend 6 produits Aigue-marine apres interaction. Les quatre fichiers du lot contextuel sont identiques bit a bit au pullback live. Les deux routes ont un H1, une canonical correcte, aucun `noindex`, aucune erreur console et aucun debordement horizontal.
+- L'audit des autres pages nouvellement creees conclut que seules Mariage et Naissance avaient le defaut de simple redirection. Le hub Bijoux par pierre fonctionne correctement comme repertoire mais doit recevoir une sixieme destination Amethyste. Les collections de pierre rendent deja leurs propres grilles produit.
 
 - Le theme rend desormais Gloock, Instrument Sans et Dancing Script, et rien
   d'autre. Verifie sur cinq routes et deux viewports : aucune police hors charte
@@ -173,12 +174,18 @@ et fait conclure a tort a un echec de saisie.
 
 Patrice a valide le rendu puis a autorise le live le 2026-08-13. Le lot est integre en fast-forward jusqu'a `6522d42f`, pousse sur `codex/milaura-integration`, puis deploye avec six fichiers cibles sur le live `190430282075`. Pullback 6/6 et controle public desktop/mobile conformes. Checkpoint : `docs/checkpoints/2026-08-13-1713-editorial-hubs-live.md`.
 
-## Prochaine priorite Codex : collections colorees par pierre
+## Lot clos : produits integres aux correspondances
 
-- creer un systeme visuel reutilisable dont la teinte et l'atmosphere suivent la pierre ;
-- commencer par Amethyste et Aigue-marine ;
-- conserver une hierarchie, des contrastes et des composants communs pour eviter des pages speciales incoherentes ;
-- soumettre mobile et desktop a Patrice avant tout live.
+Patrice a autorise le live le 2026-08-13 et demande de conserver les deux cross-sells editoriaux. Le lot est integre par `871ef137`, deploye en deux etapes avec quatre fichiers cibles sur le live `190430282075`, puis confirme par un pullback 4/4 et des controles publics sur `48 ans`, Fevrier et Mars. Le miroir Shopify est rattache par `f8e2dfc2`. Worktree et branche ephemere ont ete retires. Checkpoint : `docs/checkpoints/2026-08-13-1752-hub-inline-products-live.md`.
+
+## Prochaine priorite Codex : polish de la selection d'aout sur la homepage
+
+- reduire l'espace vide qui precede le contenu de la section ;
+- remplacer le separateur turquoise refuse visuellement par Patrice ;
+- resserrer le titre, le prix, le selecteur de quantite et le bouton d'ajout sous les photos ;
+- conserver les photographies entierement degagees et soumettre mobile et desktop a Patrice avant tout live.
+
+Le lot suivant ajoutera Amethyste au hub Bijoux par pierre. Le systeme chromatique propre a chaque pierre reste ensuite prioritaire, en commencant par Amethyste et Aigue-marine.
 
 ## Lot parallele Claude : bandeau et Hero
 
@@ -209,4 +216,4 @@ Suivre `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
 ## Prompt de reprise
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. Les hubs Mariage, Naissance et Bijoux par pierre sont integres et live, pullback 6/6. Ouvre un nouveau worktree declare pour etendre la direction chromatique aux collections Amethyste et Aigue-marine, puis aux autres pierres. `assets/milaura-tokens.css` reste la source unique de verite ; aucune valeur hex ni `font-family` en dur dans une section, aucun clone numerote et aucun push de theme complet.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. Mariage et Naissance affichent leurs produits directement dans les correspondances et conservent leurs cross-sells ; le pullback live est 4/4. Ouvre un nouveau worktree declare pour polir la selection d'aout sur la homepage : reduire l'espace vide en haut, remplacer le separateur refuse et resserrer les controles d'achat sous les cartes sans masquer les photos. Inspecte d'abord l'ownership de `assets/milaura-card.css`, `sections/milaura-selection-atelier.liquid` et `templates/index.json`. `assets/milaura-tokens.css` reste la source unique de verite ; aucun push de theme complet.

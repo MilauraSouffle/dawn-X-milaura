@@ -1,17 +1,17 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-13 17:13 CEST
+Derniere mise a jour : 2026-08-13 17:52 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0, la selection de Karine et les trois hubs editoriaux Mariage, Naissance et Bijoux par pierre sont live ; le lot Claude bandeau et Hero reste independant, et le prochain chantier Codex doit prolonger le systeme chromatique sur les collections de chaque pierre.
+Le catalogue V1, la PDP-P0 et les trois hubs editoriaux sont live ; Mariage et Naissance affichent maintenant les produits directement dans chaque correspondance tout en conservant leur cross-selling, et le prochain chantier Codex est le polish des cartes et de l'espacement de la selection d'aout sur la homepage.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique du theme Shopify live.
-- L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `d8c8053d` apres la fondation design, le hotfix et la refonte saisonniere, sans modifier l'arbre source audite.
+- L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `f8e2dfc2` apres la livraison des produits integres aux hubs, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires saisonniere, hotfix et hubs editoriaux ont ete retirees apres integration et livraison.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Aucun worktree Codex de lot ne reste actif apres la fermeture des hubs.
@@ -46,8 +46,8 @@ Pages publiques :
 
 - `/pages/choisir-sa-pierre`
 - `/pages/bijoux-par-pierre`
-- `/pages/pierres-de-naissance`, avec 4 produits reels
-- `/pages/cadeaux-anniversaire-de-mariage`, avec 3 produits reels
+- `/pages/pierres-de-naissance`, avec des produits integres par mois et 4 produits de selection editoriale complementaire
+- `/pages/cadeaux-anniversaire-de-mariage`, avec des produits integres par annee et 3 produits de selection editoriale complementaire
 
 Collections publiques :
 
@@ -63,7 +63,8 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 ## Homepage et design
 
 - Hero actuel live et valide visuellement par Patrice.
-- La selection de Karine a ete refondue et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, informations produit resserrees, selecteur de quantite et marqueur turquoise entre sections.
+- La selection de Karine a ete refondue et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, informations produit, selecteur de quantite et ajout panier sous les cartes.
+- Patrice a refuse visuellement le separateur turquoise actuel et juge encore trop important l'espace vide avant cette section sur la homepage. Le resserrement des controles d'achat, le nouveau separateur et l'espacement vertical forment le prochain lot UI.
 - La page `/collections/selection-aout-2026` utilise le decor lagon derriere la navigation, un Hero compact, un seul H1 et une grille de 20 produits en deux colonnes sur mobile.
 - Le pullback live des neuf fichiers saisonniers est identique bit a bit a Git. Les controles publics desktop et mobile ne montrent aucun debordement.
 - Selection d'aout, guide de decouverte, `Choisir sa pierre`, dock mobile et panier 30/50/80 sont live.
@@ -77,15 +78,17 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 
 Patrice a valide visuellement puis autorise le live le 2026-08-13. Les trois pages publiques utilisent maintenant un composant reutilisable de joaillerie editoriale, construit exclusivement avec les tokens MilAura :
 
-- `/pages/cadeaux-anniversaire-de-mariage` : univers nacre chaud, guide interactif de 7 anniversaires et 3 produits reels ;
-- `/pages/pierres-de-naissance` : univers amethyste, 12 mois accessibles et 4 produits reels ;
+- `/pages/cadeaux-anniversaire-de-mariage` : univers nacre chaud, guide interactif de 7 anniversaires, produits contextuels integres par annee et 3 produits de selection editoriale complementaire ;
+- `/pages/pierres-de-naissance` : univers amethyste, 12 mois accessibles, produits contextuels integres par mois et 4 produits de selection editoriale complementaire ;
 - `/pages/bijoux-par-pierre` : univers aigue-marine, 5 collections publiques illustrees et grille chromatique compacte.
 
 Le Hero est media-first avec de vraies photos produit. Les reperes mois et annees n'affichent qu'un panneau a la fois, restent accessibles sans JavaScript et fonctionnent au clavier. Sur mobile, engagements, reperes et destinations deviennent des rails tactiles, et les produits restent sur deux colonnes.
 
-Deploiement live cible de 6 fichiers sur le theme `190430282075`, sans mutation de produit, stock, prix, metafield ou menu. Pullback final 6/6 identique bit a bit. Controles publics desktop 1440 px et mobile 390 px : un H1, un seul `main`, aucun `main` imbrique, aucun debordement horizontal et interactions `48 ans` et `Mars` conformes.
+Un second deploiement cible de 4 fichiers a ajoute les grilles contextuelles. Sur Mariage, les panneaux rendent respectivement 5, 8, 1, 1, 3, 11 et 0 produits ; sur Naissance, Fevrier rend 11 produits et Mars 6. Les cross-sells de 3 et 4 produits sont conserves sur decision de Patrice. Pullback final 4/4 identique bit a bit, canoniques, H1, absence de `noindex`, interactions et absence de debordement verifies sur le live.
 
-Checkpoint : `docs/checkpoints/2026-08-13-1713-editorial-hubs-live.md`.
+Audit des autres pages nouvelles : Mariage et Naissance etaient les seules pages avec le defaut de simple redirection. `Bijoux par pierre` est intentionnellement un repertoire de collections ; il lui manque toutefois la destination Amethyste, publique avec 11 produits. Les collections de pierre rendent deja leurs produits et ne sont pas concernees.
+
+Checkpoints : `docs/checkpoints/2026-08-13-1713-editorial-hubs-live.md` et `docs/checkpoints/2026-08-13-1752-hub-inline-products-live.md`.
 
 ## Collections
 
@@ -178,14 +181,17 @@ Pipeline actif :
 - `6522d42f` : refonte editoriale des trois hubs, preuves d'apercu et integration fast-forward
 - `aee62c12` : commit miroir Shopify automatique du push live des hubs
 - `82c2cc13` : rattachement du miroir Shopify des hubs a l'integration, arbre source inchange
+- `871ef137` : integration des produits contextuels et maintien des cross-sells dans Mariage et Naissance
+- `ef639621` et `069cc6de` : commits miroir Shopify du deploiement live des quatre fichiers du lot
+- `f8e2dfc2` : rattachement du miroir Shopify apres les produits integres, arbre source audite inchange
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 
 ## Prochain ordre d'execution
 
-1. Laisser la session Claude conclure independamment le bandeau mobile et le Hero, puis exiger son GO visuel, son integration et son deploiement cibles.
-2. Etendre le systeme chromatique aux collections de chaque pierre, en commencant par Amethyste et Aigue-marine dans un nouveau worktree declare.
-3. Auditer ensuite les autres categories page par page avec la meme grille desktop, mobile, contenu, conversion et accessibilite.
+1. Polir la selection d'aout sur la homepage : controles d'achat plus compacts, selecteur de quantite et bouton, remplacement du separateur refuse, reduction de l'espace vide en haut de section.
+2. Ajouter la destination Amethyste au hub `/pages/bijoux-par-pierre` sans transformer ce repertoire en catalogue unique.
+3. Etendre le systeme chromatique aux collections de chaque pierre, en commencant par Amethyste et Aigue-marine dans un nouveau worktree declare.
 
 ## Dependances encore ouvertes
 
@@ -210,4 +216,5 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`
 - `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md`
 - `docs/checkpoints/2026-08-13-1010-seasonal-editorial-preview.md`
+- `docs/checkpoints/2026-08-13-1752-hub-inline-products-live.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

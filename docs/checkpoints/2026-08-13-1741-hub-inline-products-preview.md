@@ -2,6 +2,8 @@
 
 Date : 2026-08-13 17:41 CEST
 
+> Etat historique d'apercu. La decision finale de Patrice conserve les deux cross-sells et le lot est desormais integre et live. Voir `docs/checkpoints/2026-08-13-1752-hub-inline-products-live.md`.
+
 ## Statut
 
 - Lot implemente, pousse sur sa branche et deploie uniquement sur le theme de developpement `199421952347`.
@@ -85,4 +87,3 @@ La section generique `Pour marquer l'instant` et son equivalent `Le choix de Kar
 3. Pousser ensuite les deux templates seuls, afin que Shopify connaisse deja le nouveau schema.
 4. Faire un pullback frais et comparer les quatre fichiers.
 5. Controler Mariage `48 ans` et Naissance `Fevrier` puis `Mars` en desktop et mobile.
-
