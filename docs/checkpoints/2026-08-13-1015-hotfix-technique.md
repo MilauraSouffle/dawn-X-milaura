@@ -3,7 +3,7 @@
 Date : 2026-08-13 10:15 CEST
 Session : Claude, frontend et design, GO explicite de Patrice
 Branche : `claude/milaura-hotfix-technique-20260813`, poussee sur origin
-Themes : developpement `199421952347` uniquement. Aucun push live.
+Themes : developpement `199421952347` puis live `190430282075`, sur GO explicite.
 Statut : defaut de code corrige, verifie et LIVRE LIVE le 2026-08-13 sur GO
 explicite de Patrice. Trois defauts de donnee identifies : Patrice a donne son
 accord, mais l'ecriture est bloquee par les scopes du jeton Admin. Valeurs
@@ -123,21 +123,12 @@ pas de majuscule initiale. Plus deux manquements de charte : tutoiement alors
 que le vouvoiement est obligatoire, et `ameliore vos emotions`, qui est une
 promesse de resultat interdite sur les pierres.
 
-## Valeurs proposees, en attente d'autorisation
+## Valeurs a saisir
 
-| Champ | Actuel | Propose |
-| --- | --- | --- |
-| Titre SEO `bijoux-par-pierre` | `Bijoux par pierreBijoux par pierre naturelle \| MilAura`, 54 | `Bijoux par pierre naturelle \| MilAura`, 37 |
-| Titre SEO `pierres-de-naissance` | `Pierres de naissancePierres de naissance par mois \| MilAura`, 59 | `Pierres de naissance par mois \| MilAura`, 39 |
-| Meta `diagnostic-emotionnel` | 116 caracteres fautifs | `Quelques questions pour trouver la pierre qui vous correspond. Le diagnostic MilAura vous oriente vers les bijoux et mineraux adaptes a votre intention.`, 152 |
-| Meta description globale | 178 caracteres | `Bijoux, mineraux et bougies en pierres naturelles. Chaque fiche precise la pierre, la matiere et les dimensions. Expedie depuis notre atelier a Metz.`, 149 |
-
-Pour les deux titres, la correction est purement soustractive : retrait du
-prefixe duplique, le titre SEO voulu est conserve tel quel.
-
-La meta description globale proposee n'avance que des faits deja publics :
-l'atelier de Metz figure deja dans le bandeau d'engagement, et la formule sur le
-contenu des fiches est une tournure sanctionnee par le guide.
+Les valeurs finales figurent plus bas, section `Valeurs finales a saisir`, apres
+la confirmation de Patrice sur la certification LFG. Pour les deux titres, la
+correction est purement soustractive : retrait du prefixe duplique, le titre SEO
+voulu est conserve tel quel.
 
 ## Verifications
 
@@ -145,9 +136,9 @@ contenu des fiches est une tournure sanctionnee par le guide.
 | --- | --- |
 | Theme Check | 29 offenses avant, 29 apres |
 | `git diff --check` | aucun probleme |
-| `title`, `H1`, `canonical` | inchanges par ce lot |
-| JSON-LD | inchange par ce lot |
-| Push live | aucun |
+| `title`, `H1`, `canonical` | inchanges par le correctif de code |
+| JSON-LD | inchange par le correctif de code |
+| Push live | `sections/milaura-navbar.liquid` uniquement, pullback identique bit a bit |
 
 ## Point releve, non retenu comme defaut
 
