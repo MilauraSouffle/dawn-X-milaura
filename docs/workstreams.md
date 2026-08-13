@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-08-13 21:50 CEST
+Derniere mise a jour : 2026-08-13 21:53 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -14,7 +14,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 | Lot | Proprietaire | Branche | Worktree | Fichiers ou zone exclusive | Theme | Statut | Mise a jour |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Heroes editoriaux GPT Image 2 : Naissance, Mariage, Bijoux par pierre et collections catalogue publiques | Codex, tache `Design UI MilAura` | commit de lot `0d6d5c42`, integre par `a3c26aaa` sur `codex/milaura-integration` | worktree et branche ephemere retires apres integration | `sections/milaura-catalogue-hub.liquid`, `sections/milaura-collection-hero.liquid`, `assets/milaura-catalogue-hub.css`, vingt assets `milaura-hero-editorial-*`, reference DA et checkpoint `2058` | developpement `199421952347`, pullback 23/23 ; live `190430282075` inchange | ferme, integre, pousse dev et en attente du GO visuel puis live de Patrice | 2026-08-13 21:05 CEST |
+| Heroes editoriaux GPT Image 2 : Naissance, Mariage, Bijoux par pierre et collections catalogue publiques | Codex, tache `Design UI MilAura` | commit de lot `0d6d5c42`, integre par `a3c26aaa` sur `codex/milaura-integration` | worktree et branche ephemere retires apres integration | `sections/milaura-catalogue-hub.liquid`, `sections/milaura-collection-hero.liquid`, `assets/milaura-catalogue-hub.css`, vingt assets `milaura-hero-editorial-*`, reference DA et checkpoint `2058` | GO live explicite de Patrice le 2026-08-13 ; developpement `199421952347` et live `190430282075`, pullback live 23/23 | ferme, integre, pousse Git et live | 2026-08-13 21:53 CEST |
 | Unification UI sitewide : cartes produit, CTA, actions et controles | Codex, tache active | lot `e8b4db31`, integre par `66585718` sur `codex/milaura-integration` | worktree retire apres verification finale | `layout/theme.liquid`, composants partages `assets/milaura-card.css`, `assets/milaura-actions.css`, snippets cartes/achat, sections homepage, collections, PDP, panier, recherche et compte hors fichiers Heroes reserves | GO visuel et live explicite de Patrice le 2026-08-13 ; live `190430282075`, pullback `35/35` | ferme, integre, pousse Git et live | 2026-08-13 21:50 CEST |
 | Correctif homepage Nouveautes : grille desktop sans coupe et carrousel tactile conserve | Codex, tache active | lot `64faddc2`, miroir `c8a2de49`, integre par `cb90c8da` | worktree retire apres verification finale | `sections/milaura-featured-products.liquid`, checkpoint `2026-08-13-1959` | inclus dans le push cible live `190430282075` du lot UI | ferme, integre et live | 2026-08-13 21:50 CEST |
 | Polish homepage Selection d'aout : filet bas pleine largeur, carte transparente et controles soulignes | Codex, tache `Design UI MilAura` | branche ephemere integree par `60634812`, miroir rattache par `869d522a`, branche retiree | worktree retire apres verification finale | `sections/milaura-selection-atelier.liquid`, `assets/milaura-section-heading.css`, checkpoints `1821` et `1840` | developpement `199421952347` puis live `190430282075`, pullback live 2/2 | ferme, integre, pousse et live | 2026-08-13 18:40 CEST |

@@ -1,15 +1,16 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-13 21:05 CEST
+Date de mise a jour : 2026-08-13 21:53 CEST
 
 ## Etat de reprise
 
-Les dix Heroes editoriaux GPT Image 2 sont integres dans Git, pousses sur le theme de developpement et techniquement valides. Ils couvrent Naissance, Mariage, Bijoux par pierre, Bagues et six collections de pierre. Le theme live est inchange : la prochaine decision est le GO visuel de Patrice, puis un GO live distinct.
+Les dix Heroes editoriaux GPT Image 2 sont live sur Naissance, Mariage, Bijoux par pierre, Bagues et six collections de pierre. Le push live a ete limite aux 23 fichiers du lot et le pullback est identique bit a bit. Les lots UI sitewide et carrousel sont egalement fermes et live.
 
-Deux autres lots independants restent declares dans le registre :
+La prochaine reprise design peut se concentrer sur :
 
-1. le correctif du carrousel Nouveautes, pret a integrer sur sa branche ;
-2. l'audit puis la migration progressive des cartes, boutons et controles du theme, encore en cours sur son worktree.
+1. le bandeau d'engagement mobile a reduire vers 56 px ;
+2. le Hero immersif de la homepage ;
+3. les ajustements de cadrage des Heroes de destination, uniquement apres retour visuel de Patrice.
 
 Ils ne doivent pas reserver les memes fichiers ni pousser simultanement sur le meme theme Shopify.
 
@@ -54,14 +55,15 @@ La palette, les polices et le logo restent ceux du Brand System du 2026-08-04. `
 - commit de production du lot Heroes : `0d6d5c42`
 - integration canonique : `a3c26aaa`
 - theme de developpement : 23 fichiers cibles, pullback 23/23 identique bit a bit
-- theme live : inchange par le lot Heroes
+- theme live : 23 fichiers cibles, pullback 23/23 identique bit a bit
+- validation publique : 10 routes HTTP 200, un H1, aucun `noindex`, deux assets Hero par page
 - Theme Check : 0 erreur, 29 avertissements historiques
 
-Le worktree et la branche ephemere du lot Heroes sont retires. Ne pas retirer les worktrees UI sitewide ou carrousel, encore possedes par leurs sessions.
+Les worktrees et branches ephemeres Heroes, UI sitewide et carrousel sont retires.
 
-## Lot suivant : GO visuel et live des Heroes de destination
+## Heroes de destination livres
 
-Ouvrir le theme de developpement sur les dix routes listees dans le checkpoint `2058`. Verifier en priorite Naissance, Mariage, Amethyste et Bagues sur mobile et desktop. Un controle technique reussi ne remplace pas le GO creatif de Patrice. Apres le GO visuel, demander ou confirmer son GO live explicite, puis pousser uniquement les 23 fichiers listes dans le checkpoint, avec `--nodelete --strict`, pullback frais et comparaison.
+Les dix routes sont listees dans le checkpoint `2058`. Toute future correction doit conserver la paire desktop/mobile, les vrais produits, le texte HTML et le push cible. Ne pas regenerer une composition deja validee pour corriger un simple cadrage CSS.
 
 ## Futur lot : Hero homepage immersif
 
@@ -96,4 +98,4 @@ Objectif : inventorier toutes les familles de cartes et actions, construire des 
 
 ## Prompt de reprise general
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md` et le checkpoint `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md`. Les dix Heroes de destination sont integres dans Git et valides sur le theme de developpement, mais pas live. Respecte les worktrees UI sitewide et carrousel deja declares. Commence par obtenir le GO visuel de Patrice, puis exige un GO live distinct avant tout deploiement des 23 fichiers cibles.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md` et le checkpoint `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md`. Les dix Heroes de destination, l'UI sitewide et le carrousel Nouveautes sont live et leurs worktrees sont fermes. Choisis un lot design precis, declare son ownership avant toute edition et conserve la direction media-first canonique.

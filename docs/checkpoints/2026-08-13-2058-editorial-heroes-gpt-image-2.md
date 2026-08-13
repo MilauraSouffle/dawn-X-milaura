@@ -2,7 +2,7 @@
 
 Date : 2026-08-13 20:58 CEST
 
-Statut : implemente, pousse sur le theme de developpement et techniquement valide. Aucun deploiement live dans ce lot sans GO live explicite de Patrice sur le rendu integre.
+Statut : implemente, valide, integre et live apres le GO explicite de Patrice le 2026-08-13.
 
 ## Perimetre livre
 
@@ -77,9 +77,16 @@ Shopify CLI a recree des preferences saines, puis le pullback frais a reussi.
 ## Etat de publication
 
 - theme de developpement : deploye et valide ;
-- theme live `190430282075` : inchange par ce lot ;
+- theme live `190430282075` : deploye le 2026-08-13 apres GO live explicite ;
 - produits, prix, stock, menus, pages et collections : aucune mutation ;
-- prochaine decision : GO visuel et GO live explicites de Patrice sur les dix destinations integrees.
+- push live : 23 fichiers uniquement, avec `--nodelete --strict --allow-live` ;
+- source de deploiement : snapshot Git immuable `017ee2e3`, isole du checkout d'integration occupe temporairement par le lot UI ;
+- pullback live frais : 23 fichiers sur 23 identiques bit a bit ;
+- controle public : 10 routes HTTP 200, exactement un H1, aucun `noindex` et deux assets Hero attendus par route ;
+- controle Playwright : Hero Naissance charge et correctement cadre sur desktop et mobile ;
+- les erreurs console relevees sont limitees au cadre Shop App refuse par sa propre politique CSP, sans lien avec le Hero.
+
+La premiere tentative de push live a ete bloquee avant mutation par `--strict`, car le dossier isole ne contenait pas les dependances requises par Theme Check. Le dossier a ensuite ete complete depuis le meme snapshot Git, puis le push cible a reussi. Aucun push complet du theme n'a ete effectue.
 
 ## Git
 

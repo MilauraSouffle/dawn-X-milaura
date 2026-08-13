@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-13 21:05 CEST
+Derniere mise a jour : 2026-08-13 21:53 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0 et les trois hubs editoriaux sont live ; dix nouveaux Heroes photographiques GPT Image 2 sont integres dans Git et valides sur le theme de developpement, mais le live attend encore le GO visuel explicite de Patrice.
+Le catalogue V1, la PDP-P0, l'UI sitewide et les dix Heroes photographiques GPT Image 2 sont live ; Git est propre et les lots UI, carrousel et Heroes sont fermes.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ Le catalogue V1, la PDP-P0 et les trois hubs editoriaux sont live ; dix nouveaux
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont retirees apres integration et fermeture de leur lot.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles en cours sont declares dans `docs/workstreams.md`. Le worktree des Heroes editoriaux est retire a la fermeture de ce lot ; les lots UI sitewide et carrousel restent la propriete de leurs sessions respectives.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Les worktrees Heroes, UI sitewide et carrousel ont ete retires apres leur integration et leur validation live.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -73,9 +73,9 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 - Le Hero doit etre etudie avec une facette plus immersive, potentiellement une video reelle de 6 a 8 secondes dans le grand cabochon.
 - Reference de qualite : `tiffany.com`, sans copie et sans decoration generique.
 - Brief : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
-- La priorite chromatique par pierre est implementee sur le theme de developpement : Amethyste, Aigue-marine, Agate, Quartz rose, Lapis-lazuli et Amazonite ont chacune leur scene et leur palette.
+- La priorite chromatique par pierre est live : Amethyste, Aigue-marine, Agate, Quartz rose, Lapis-lazuli et Amazonite ont chacune leur scene et leur palette.
 
-## Heroes editoriaux GPT Image 2 en attente de GO live
+## Heroes editoriaux GPT Image 2 live
 
 Le 2026-08-13, une nouvelle direction media-first a ete appliquee a dix destinations :
 
@@ -84,7 +84,9 @@ Le 2026-08-13, une nouvelle direction media-first a ete appliquee a dix destinat
 
 Chaque page utilise une composition desktop et une recomposition mobile dediee, soit vingt WebP pour 2 747 684 octets. Les scenes sont construites autour de vrais produits MilAura, avec une zone de respiration pour le texte HTML. Les collages CSS, filets decoratifs et flous de fond ont ete retires du Hero. Les collections non mappees conservent leur ancien Hero en repli.
 
-Validation sur le theme de developpement `199421952347` : 20 controles HTTP 200, exactement un H1 par route et viewport, bons assets desktop/mobile, aucune image en echec, aucun debordement horizontal, Theme Check sans erreur et pullback frais 23/23 identique bit a bit. Le theme live `190430282075` n'a pas ete modifie par ce lot.
+Patrice a donne son GO live explicite le 2026-08-13. Le deploiement sur le theme live `190430282075` a ete limite aux 23 fichiers du lot, depuis le snapshot Git immuable `017ee2e3`, afin de ne pas embarquer le travail UI concurrent. Pullback live : 23/23 identiques bit a bit.
+
+Validation publique : les dix routes repondent en HTTP 200, rendent exactement un H1, aucun `noindex` et les deux assets Hero attendus. Le controle Playwright desktop et mobile confirme le chargement et le cadrage du nouveau Hero Naissance. Les deux erreurs console observees viennent du cadre Shop App bloque par sa propre politique CSP et ne concernent pas le Hero.
 
 La regle est canonisee dans `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`. Checkpoint : `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md`.
 
@@ -201,15 +203,15 @@ Pipeline actif :
 - `60634812` : integration du polish transparent des cartes de la Selection d'aout
 - `0cc7ce28` : commit miroir Shopify du deploiement live des deux fichiers du polish
 - `869d522a` : rattachement du miroir Shopify apres le polish saisonnier, arbre source audite inchange
-- `a3c26aaa` : integration des dix Heroes editoriaux et de leurs vingt assets dans la branche canonique, theme live inchange
+- `a3c26aaa` : integration des dix Heroes editoriaux et de leurs vingt assets dans la branche canonique ; deploiement live cible valide ensuite le 2026-08-13
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 
 ## Prochain ordre d'execution
 
-1. Obtenir le GO visuel de Patrice sur les dix Heroes du theme de developpement, puis seulement un GO live distinct pour leur deploiement cible.
-2. Integrer et valider les lots paralleles carrousel Nouveautes et UI sitewide selon leur ownership dans `docs/workstreams.md`.
-3. Prototyper le bandeau 56 px et le Hero immersif de la homepage en reprenant la nouvelle regle media-first, sans reutiliser les fichiers reserves par les lots en cours.
+1. Controler visuellement les dix Heroes dans l'usage reel et relever uniquement les ajustements de cadrage necessaires.
+2. Prototyper le bandeau 56 px et le Hero immersif de la homepage en reprenant la nouvelle regle media-first.
+3. Ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu, puis polir les cross-sells Mariage et Naissance.
 
 ## Dependances encore ouvertes
 
