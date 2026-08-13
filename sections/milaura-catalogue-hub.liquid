@@ -56,6 +56,9 @@
   assign guide_id = 'MilauraHubGuide-' | append: section.id
   assign products_id = 'MilauraHubProducts-' | append: section.id
   assign destinations_id = 'MilauraHubDestinations-' | append: section.id
+  assign guide_title_id = guide_id | append: '-title'
+  assign products_title_id = products_id | append: '-title'
+  assign destinations_title_id = destinations_id | append: '-title'
   assign hero_target = products_id
   if correspondence_count > 0
     assign hero_target = guide_id
@@ -160,7 +163,7 @@
             title: section.settings.guide_heading,
             text: section.settings.guide_text,
             heading_tag: 'h2',
-            heading_id: guide_id | append: '-title',
+            heading_id: guide_title_id,
             align: 'center',
             size: 'section',
             eyebrow_style: 'signature'
@@ -231,6 +234,7 @@
             {%- endfor -%}
           {%- endcapture -%}
           {%- assign selection_cards = selection_cards | strip -%}
+          {%- assign selection_text = block.settings.body | strip_html -%}
 
           {%- if selection_cards != blank -%}
             <section id="{{ products_id }}" class="milaura-hub__section milaura-hub__products" aria-labelledby="{{ products_id }}-title" {{ block.shopify_attributes }}>
@@ -238,9 +242,9 @@
                 {% render 'milaura-section-heading',
                   eyebrow: block.settings.eyebrow,
                   title: block.settings.heading,
-                  text: block.settings.body | strip_html,
+                  text: selection_text,
                   heading_tag: 'h2',
-                  heading_id: products_id | append: '-title',
+                  heading_id: products_title_id,
                   align: 'center',
                   size: 'section',
                   eyebrow_style: 'signature'
@@ -263,7 +267,7 @@
             title: section.settings.destinations_heading,
             text: section.settings.destinations_text,
             heading_tag: 'h2',
-            heading_id: destinations_id | append: '-title',
+            heading_id: destinations_title_id,
             align: 'center',
             size: 'section',
             eyebrow_style: 'signature'
