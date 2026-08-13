@@ -1,4 +1,6 @@
 {{ 'milaura-card.css' | asset_url | stylesheet_tag }}
+{{ 'milaura-section-heading.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign campaign_asset = section.settings.campaign_asset | default: 'milaura-selection-aout-lagon.webp'
@@ -6,6 +8,7 @@
   assign featured_2 = section.settings.featured_product_2
   assign featured_3 = section.settings.featured_product_3
   assign featured_4 = section.settings.featured_product_4
+  assign seasonal_title_id = 'MilauraSeasonalTitle-' | append: section.id
 -%}
 
 {%- style -%}
@@ -15,375 +18,206 @@
   }
 
   #MilauraSeasonalCollection-{{ section.id }} {
-    --season-prune: #2f222d;
-    --season-prune-soft: #4a3545;
-    --season-gold: #bc9858;
-    --season-aqua: #76bcb7;
-    --season-aqua-deep: #3f8583;
-    --season-nacre: #fffdf9;
-    --season-sand: #f1e8d8;
-    --season-ink: #322a31;
-    --season-muted: #716870;
     position: relative;
     isolation: isolate;
+    margin-top: calc(-1 * var(--header-height-desktop));
     overflow: hidden;
-    color: var(--season-ink);
-    background: var(--season-nacre);
+    color: var(--milaura-encre);
+    background: var(--milaura-nacre);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
-    padding: 0 0 clamp(24px, 3vw, 34px);
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255, 253, 249, 0.18) 0%,
-        rgba(255, 253, 249, 0.42) 38%,
-        rgba(255, 253, 249, 0.9) 76%,
-        var(--season-nacre) 100%
-      ),
-      url('{{ campaign_asset | asset_url }}') center 48% / cover no-repeat;
+    position: relative;
+    min-height: clamp(520px, 42vw, 590px);
+    display: flex;
+    align-items: flex-start;
+    padding: calc(var(--header-height-desktop) + clamp(44px, 4vw, 64px)) 0 clamp(44px, 5vw, 64px);
+    overflow: hidden;
+    background: var(--milaura-nacre) url('{{ campaign_asset | asset_url }}') center 44% / cover no-repeat;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    pointer-events: none;
+    background: var(--milaura-nacre);
+    opacity: 0.58;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro-shell {
-    width: min(1400px, calc(100% - clamp(32px, 6vw, 92px)));
+    position: relative;
+    z-index: 1;
+    width: min(1400px, calc(100% - clamp(32px, 7vw, 108px)));
     margin: 0 auto;
-    text-align: center;
   }
 
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-card {
-    width: 100vw;
-    min-height: clamp(220px, 18vw, 270px);
-    display: grid;
-    grid-template-columns: 38% 62%;
-    margin-left: calc(50% - 50vw);
-    padding: 0;
-    overflow: visible;
-    border: 0;
-    border-radius: 0;
-    color: var(--season-nacre);
-    background: transparent;
-    box-shadow: none;
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-panel {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(20px, 3vw, 36px);
-    background: transparent;
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-panel::before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    inset: 0 -24% 0 0;
-    pointer-events: none;
-    background: linear-gradient(
-      90deg,
-      var(--season-prune) 0%,
-      rgba(47, 34, 45, 0.98) 72%,
-      rgba(47, 34, 45, 0) 100%
-    );
-    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 50%, rgba(0, 0, 0, 0.68) 69%, transparent 100%);
-    mask-image: linear-gradient(180deg, #000 0%, #000 50%, rgba(0, 0, 0, 0.68) 69%, transparent 100%);
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__visual {
-    position: relative;
-    min-width: 0;
-    overflow: visible;
-    border-left: 0;
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__visual::after {
-    content: '';
-    position: absolute;
-    inset: 4% 12% 12% 4%;
-    pointer-events: none;
-    background: radial-gradient(circle, rgba(255, 253, 249, 0.72), transparent 66%);
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__date {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    width: 100%;
-    height: 100%;
-    place-items: center;
-    padding: 24px;
-    color: var(--season-prune);
-    font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
-    font-size: clamp(30px, 3.2vw, 48px);
-    font-weight: 500;
-    line-height: 1;
-    text-align: center;
-    text-shadow: 0 2px 18px rgba(255, 253, 249, 0.94);
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title {
-    margin: 0;
-    color: #9dd8d4;
-    font-family: var(--milaura-font-script, 'Dancing Script'), cursive;
-    font-size: clamp(38px, 3.7vw, 56px);
-    font-weight: 700;
-    letter-spacing: 0;
-    line-height: 0.98;
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__name {
-    margin: 8px 0 0;
-    color: #e1bd78;
-    font-family: var(--milaura-font-heading, 'Playfair Display'), serif;
-    font-size: clamp(14px, 1.2vw, 17px);
-    font-weight: 500;
-    line-height: 1.35;
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__text {
-    max-width: 860px;
-    margin: clamp(2px, 0.5vw, 8px) auto 0;
-    padding: 0 20px;
-    color: var(--season-muted);
-    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
-    font-size: clamp(15px, 1.1vw, 17px);
-    line-height: 1.55;
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-section-heading {
+    width: min(100%, 720px);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 720px;
-    margin: clamp(16px, 2vw, 24px) auto 0;
-    color: var(--season-prune-soft);
-    font-family: var(--milaura-font-body, 'Lato'), sans-serif;
-    font-size: 10.5px;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    width: fit-content;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    margin: clamp(22px, 2.8vw, 34px) 0 0;
+    color: var(--milaura-aigue-profonde);
+    font-family: var(--milaura-font-signature);
+    font-size: clamp(21px, 1.8vw, 27px);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: var(--milaura-lh-signature);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span {
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    padding-right: var(--milaura-esp-md);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span + span {
-    border-left: 1px solid rgba(188, 152, 88, 0.48);
+    padding-left: var(--milaura-esp-md);
+    border-left: var(--milaura-filet-or);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products {
     position: relative;
-    padding: clamp(34px, 4vw, 54px) 0 clamp(72px, 8vw, 116px);
-    background:
-      linear-gradient(
-        180deg,
-        var(--season-nacre) 0%,
-        rgba(255, 253, 249, 0.76) 8%,
-        rgba(255, 253, 249, 0.7) 52%,
-        rgba(255, 253, 249, 0.88) 93%,
-        var(--season-nacre) 100%
-      ),
-      url('{{ campaign_asset | asset_url }}') center top / cover no-repeat;
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products::before,
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products::after {
-    content: '';
-    position: absolute;
-    z-index: 0;
-    right: 0;
-    left: 0;
-    height: 1px;
-    pointer-events: none;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(118, 188, 183, 0.58) 26%,
-      rgba(188, 152, 88, 0.58) 50%,
-      rgba(118, 188, 183, 0.58) 74%,
-      transparent 100%
-    );
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products::before {
-    top: 0;
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products::after {
-    bottom: 0;
+    padding: clamp(58px, 7vw, 96px) 0 clamp(76px, 9vw, 128px);
+    border-top: var(--milaura-filet-mineral);
+    background: var(--milaura-nacre);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__shell {
-    position: relative;
-    z-index: 1;
-    width: min(1400px, calc(100% - clamp(32px, 6vw, 92px)));
+    width: min(1400px, calc(100% - clamp(32px, 7vw, 108px)));
     margin: 0 auto;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(15px, 1.8vw, 28px);
+    gap: clamp(20px, 2.3vw, 36px) clamp(16px, 1.8vw, 28px);
     align-items: stretch;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__card {
     min-width: 0;
     display: flex;
+    flex-direction: column;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__card .grid__card {
     width: 100%;
-    height: 100%;
-    border-color: transparent;
-    background: rgba(255, 253, 249, 0.88);
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__card .grid__card:hover {
-    border-color: transparent;
+    height: auto;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .grid__card:focus-visible {
-    outline: 3px solid var(--season-aqua-deep);
+    outline: 3px solid var(--milaura-aigue-profonde);
     outline-offset: 5px;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__empty {
     margin: 0;
     padding: 60px 20px;
-    color: var(--season-muted);
+    color: var(--milaura-encre-secondaire);
     text-align: center;
   }
 
+  @media screen and (max-width: 1100px) {
+    #MilauraSeasonalCollection-{{ section.id }} {
+      margin-top: calc(-1 * var(--header-height-tablet));
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
+      padding-top: calc(var(--header-height-tablet) + 42px);
+    }
+  }
+
   @media screen and (max-width: 989px) {
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #MilauraSeasonalCollection-{{ section.id }} {
+      margin-top: calc(-1 * var(--header-height-mobile));
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
+      min-height: 470px;
+      padding: calc(var(--header-height-mobile) + 20px) 0 40px;
+      background-position: 58% center;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro::before {
+      opacity: 0.64;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro-shell {
+      width: calc(100% - 36px);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta {
+      margin-top: 20px;
+      font-size: 19px;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span {
+      min-height: 34px;
+      justify-content: center;
+      padding: 2px 12px 2px 0;
+      text-align: center;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span + span {
+      padding-left: 12px;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products {
+      padding: 38px 0 82px;
+    }
+
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__shell {
       width: 100%;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+      gap: 18px 12px;
       padding: 0 14px;
     }
 
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__card .grid__card {
-      min-width: 0;
-    }
-  }
-
-  @media screen and (max-width: 749px) {
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
-      padding: 0 0 24px;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro-shell {
-      width: calc(100% - 24px);
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-card {
-      min-height: 158px;
-      grid-template-columns: 62% 38%;
-      padding: 0;
-      border-radius: 0;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title-panel {
-      padding: 16px 10px 28px;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title {
-      font-size: clamp(28px, 8vw, 34px);
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__name {
-      max-width: 180px;
-      margin: 6px auto 0;
-      font-size: 11.5px;
-      line-height: 1.25;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__date {
-      padding: 10px;
-      font-size: clamp(17px, 5vw, 21px);
-      line-height: 1.08;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__text {
-      margin-top: 0;
-      padding: 0 4px;
-      font-size: 13.5px;
-      line-height: 1.5;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0;
-      max-width: none;
-      margin-top: 16px;
-      font-size: 9px;
-      letter-spacing: 0.06em;
-      line-height: 1.25;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span {
-      display: grid;
-      min-height: 40px;
-      padding: 6px 5px;
-      place-items: center;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span + span {
-      border-top: 0;
-      border-left: 1px solid rgba(188, 152, 88, 0.4);
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products {
-      padding-top: 30px;
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255, 253, 249, 0.98) 0%,
-          rgba(255, 253, 249, 0.76) 10%,
-          rgba(255, 253, 249, 0.42) 50%,
-          rgba(255, 253, 249, 0.78) 90%,
-          rgba(255, 253, 249, 0.98) 100%
-        ),
-        url('{{ campaign_asset | asset_url }}') center top / auto 100% no-repeat;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__card .grid__card-quick {
-      display: inline-flex;
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-editorial-purchase__add span {
+      display: none;
     }
   }
 {%- endstyle -%}
 
-<main id="MilauraSeasonalCollection-{{ section.id }}" class="milaura-seasonal-landing">
-  <section class="milaura-seasonal-landing__intro" aria-labelledby="MilauraSeasonalTitle-{{ section.id }}">
+<div id="MilauraSeasonalCollection-{{ section.id }}" class="milaura-seasonal-landing">
+  <section class="milaura-seasonal-landing__intro" aria-labelledby="{{ seasonal_title_id }}">
     <div class="milaura-seasonal-landing__intro-shell">
-      <div class="milaura-seasonal-landing__title-card">
-        <div class="milaura-seasonal-landing__title-panel">
-          <h1 id="MilauraSeasonalTitle-{{ section.id }}" class="milaura-seasonal-landing__title">
-            {{ section.settings.campaign_title | escape }}
-          </h1>
-          {%- if section.settings.campaign_name != blank -%}
-            <p class="milaura-seasonal-landing__name">{{ section.settings.campaign_name | escape }}</p>
-          {%- endif -%}
-        </div>
-        <div class="milaura-seasonal-landing__visual" aria-hidden="true">
-          <span class="milaura-seasonal-landing__date">{{ section.settings.campaign_date | escape }}</span>
-        </div>
-      </div>
-      {%- if section.settings.campaign_text != blank -%}
-        <p class="milaura-seasonal-landing__text">{{ section.settings.campaign_text | escape }}</p>
-      {%- endif -%}
+      {% render 'milaura-section-heading',
+        eyebrow: section.settings.campaign_date,
+        title: section.settings.campaign_title,
+        text: section.settings.campaign_text,
+        heading_tag: 'h1',
+        heading_id: seasonal_title_id,
+        align: 'left',
+        size: 'hero',
+        eyebrow_style: 'signature'
+      %}
+
       <div class="milaura-seasonal-landing__meta" aria-label="Informations sur la sélection">
         <span>{{ collection.products_count }} créations</span>
         {%- if section.settings.edition_label != blank -%}<span>{{ section.settings.edition_label | escape }}</span>{%- endif -%}
-        {%- if section.settings.availability_label != blank -%}<span>{{ section.settings.availability_label | escape }}</span>{%- endif -%}
       </div>
     </div>
   </section>
 
-  <section class="milaura-seasonal-products" aria-label="Les créations de la sélection d’août">
+  <section class="milaura-seasonal-products" aria-label="Les créations de la sélection">
     <div class="milaura-seasonal-products__shell">
       {%- paginate collection.products by 48 -%}
         {%- if collection.products_count > 0 -%}
@@ -391,21 +225,25 @@
             {%- if featured_1 != blank -%}
               <div class="milaura-seasonal-products__card" role="listitem">
                 {% render 'milaura-card-product', card_product: featured_1, img_loading: 'lazy', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
+                {% render 'milaura-editorial-purchase', product: featured_1 %}
               </div>
             {%- endif -%}
             {%- if featured_2 != blank -%}
               <div class="milaura-seasonal-products__card" role="listitem">
                 {% render 'milaura-card-product', card_product: featured_2, img_loading: 'lazy', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
+                {% render 'milaura-editorial-purchase', product: featured_2 %}
               </div>
             {%- endif -%}
             {%- if featured_3 != blank -%}
               <div class="milaura-seasonal-products__card" role="listitem">
                 {% render 'milaura-card-product', card_product: featured_3, img_loading: 'lazy', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
+                {% render 'milaura-editorial-purchase', product: featured_3 %}
               </div>
             {%- endif -%}
             {%- if featured_4 != blank -%}
               <div class="milaura-seasonal-products__card" role="listitem">
                 {% render 'milaura-card-product', card_product: featured_4, img_loading: 'lazy', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
+                {% render 'milaura-editorial-purchase', product: featured_4 %}
               </div>
             {%- endif -%}
 
@@ -420,6 +258,7 @@
                     show_secondary_image: true,
                     force_bestseller_badge: false
                   %}
+                  {% render 'milaura-editorial-purchase', product: product %}
                 </div>
               {%- endunless -%}
             {%- endfor -%}
@@ -430,7 +269,7 @@
       {%- endpaginate -%}
     </div>
   </section>
-</main>
+</div>
 
 {% schema %}
 {
@@ -457,12 +296,6 @@
       "default": "Août 2026"
     },
     {
-      "type": "text",
-      "id": "campaign_name",
-      "label": "Signature éditoriale",
-      "default": "La sélection de l’été"
-    },
-    {
       "type": "textarea",
       "id": "campaign_text",
       "label": "Introduction",
@@ -473,12 +306,6 @@
       "id": "edition_label",
       "label": "Édition",
       "default": "Édition août 2026"
-    },
-    {
-      "type": "text",
-      "id": "availability_label",
-      "label": "Disponibilité",
-      "default": "Sélection en stock"
     },
     {
       "type": "product",
