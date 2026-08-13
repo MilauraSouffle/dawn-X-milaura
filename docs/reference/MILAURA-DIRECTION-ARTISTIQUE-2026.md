@@ -67,6 +67,26 @@ Le detail des usages vit dans `docs/reference/MILAURA-CTA-SYSTEM-2026.md`.
 - Pas de mannequin genere pour simuler une campagne de joaillerie premium.
 - Poster reel, `prefers-reduced-motion`, economie de donnees et absence de nouvelle librairie JavaScript.
 
+### 6.1 Heroes editoriaux de destination
+
+Le systeme valide le 2026-08-13 pour les hubs et collections est une scene de joaillerie unique, construite autour de vrais produits MilAura. Il remplace les collages de cartes, superpositions CSS et traits decoratifs poses sur les photographies.
+
+- Une destination utilise une composition desktop et une recomposition mobile dediee. Le mobile n'est jamais un simple crop automatique du desktop.
+- Les produits sont regroupes dans une meme scene photographique : socles mineraux, lumiere naturelle ou studio contenue, ombres coherentes et profondeur sobre.
+- Les bijoux doivent rester fideles aux references produit. Le prompt interdit les logos inventes, les formes fantaisistes, les pierres supplementaires et le texte incruste dans l'image.
+- Une zone de respiration est reservee au texte HTML. Le H1, le fil d'Ariane, les CTA et les compteurs ne sont jamais rasterises.
+- La palette appartient a la destination : violet nocturne pour l'amethyste, eau pale pour l'aigue-marine, terres stratifiees pour l'agate, rose poudre pour le quartz rose, bleu nuit veine d'or pour le lapis-lazuli, aqua givre pour l'amazonite et ivoire lumineux pour les bagues.
+- Les overlays CSS servent uniquement a garantir la lisibilite. Aucun `backdrop-filter`, glassmorphism ou flou ne doit recouvrir la photographie.
+- Les anciens filets, points, cadres flottants et pseudo-symboles sont retires lorsque la scene photographique porte deja le geste visuel.
+- Le hero commence derriere la navbar, mais jamais derriere le bandeau d'engagement.
+- Les assets sont servis en WebP et nommes `milaura-hero-editorial-<famille>-<destination>-desktop.webp` et `-mobile.webp`.
+
+References implementees :
+
+- hubs `Naissance`, `Mariage` et `Bijoux par pierre` dans `sections/milaura-catalogue-hub.liquid` ;
+- collections `Bagues`, `Amethyste`, `Aigue-marine`, `Agate`, `Quartz rose`, `Lapis-lazuli` et `Amazonite` dans `sections/milaura-collection-hero.liquid` ;
+- checkpoint de validation : `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md`.
+
 Brief operationnel : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
 ## 7. Anti-patterns

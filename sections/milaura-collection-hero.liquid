@@ -8,7 +8,38 @@
 {%- assign title_length = collection.title | size -%}
 {%- assign typing_duration = title_length | times: 0.08 -%}
 {%- if typing_duration < 0.8 %}{% assign typing_duration = 0.8 %}{% endif -%}
+{%- liquid
+  assign editorial_hero_slug = ''
+  assign editorial_hero_dark = false
+  assign editorial_hero_title = collection.title
 
+  case collection.handle
+    when 'bagues-pierres'
+      assign editorial_hero_slug = 'bagues'
+    when 'par-pierre-amethyste'
+      assign editorial_hero_slug = 'amethyste'
+      assign editorial_hero_dark = true
+      assign editorial_hero_title = 'Bijoux en améthyste'
+    when 'par-pierre-aigue-marine'
+      assign editorial_hero_slug = 'aigue-marine'
+    when 'par-pierre-agate'
+      assign editorial_hero_slug = 'agate'
+    when 'par-pierre-quartz-rose'
+      assign editorial_hero_slug = 'quartz-rose'
+    when 'par-pierre-lapis-lazuli'
+      assign editorial_hero_slug = 'lapis-lazuli'
+      assign editorial_hero_dark = true
+    when 'par-pierre-amazonite'
+      assign editorial_hero_slug = 'amazonite'
+  endcase
+
+  if editorial_hero_slug != blank
+    assign editorial_desktop = 'milaura-hero-editorial-collection-' | append: editorial_hero_slug | append: '-desktop.webp'
+    assign editorial_mobile = 'milaura-hero-editorial-collection-' | append: editorial_hero_slug | append: '-mobile.webp'
+  endif
+-%}
+
+{%- if editorial_hero_slug == blank -%}
 {%- style -%}
   /* Section principale - collée au header */
   #MilauraCollectionHero-{{ section.id }} {
@@ -328,7 +359,226 @@
     }
   }
 {%- endstyle -%}
+{%- else -%}
+{%- style -%}
+  #MilauraCollectionHero-{{ section.id }} {
+    position: relative;
+    min-height: clamp(560px, 52vw, 760px);
+    margin-top: calc(-1 * var(--header-height-desktop)) !important;
+    overflow: hidden;
+    isolation: isolate;
+    color: var(--milaura-prune);
+    background: var(--milaura-nacre);
+  }
 
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    z-index: 0;
+    margin-top: calc(-1 * var(--header-height-desktop)) !important;
+    padding-inline: 0 !important;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__art {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    display: block;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(251, 248, 244, 0.9) 0%, rgba(251, 248, 244, 0.58) 31%, transparent 58%);
+  }
+
+  #MilauraCollectionHero-{{ section.id }}.milaura-collection-editorial--dark .milaura-collection-editorial__art::after {
+    background: linear-gradient(90deg, rgba(19, 24, 32, 0.74) 0%, rgba(19, 24, 32, 0.34) 34%, transparent 59%);
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #MainContent #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__inner.page-width {
+    width: 100%;
+    max-width: 1400px;
+    margin-inline: auto !important;
+    min-height: inherit;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--header-height-desktop) + var(--milaura-esp-lg)) clamp(32px, 4vw, 64px) var(--milaura-esp-xl) !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__copy {
+    width: min(540px, 42vw);
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--milaura-esp-xs);
+    margin-bottom: var(--milaura-esp-lg);
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-micro);
+    letter-spacing: var(--milaura-ls-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__eyebrow {
+    margin: 0 0 var(--milaura-esp-xs);
+    color: var(--milaura-aigue-profonde);
+    font-family: var(--milaura-font-signature);
+    font-size: clamp(25px, 2.25vw, 38px);
+    line-height: 1;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__title {
+    max-width: 10ch;
+    margin: 0;
+    color: inherit;
+    font-family: var(--milaura-font-display);
+    font-size: clamp(48px, 5.6vw, 86px);
+    font-weight: 500;
+    letter-spacing: var(--milaura-ls-titre);
+    line-height: 0.96;
+    text-wrap: balance;
+  }
+
+  #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__count {
+    width: fit-content;
+    margin: var(--milaura-esp-lg) 0 0;
+    padding-top: var(--milaura-esp-xs);
+    border-top: var(--milaura-filet-or);
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 650;
+    letter-spacing: var(--milaura-ls-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraCollectionHero-{{ section.id }}.milaura-collection-editorial--dark {
+    color: var(--milaura-nacre);
+  }
+
+  #MilauraCollectionHero-{{ section.id }}.milaura-collection-editorial--dark .milaura-collection-editorial__breadcrumb,
+  #MilauraCollectionHero-{{ section.id }}.milaura-collection-editorial--dark .milaura-collection-editorial__count {
+    color: rgba(251, 248, 244, 0.8);
+  }
+
+  #MilauraCollectionHero-{{ section.id }}.milaura-collection-editorial--dark .milaura-collection-editorial__eyebrow {
+    color: var(--milaura-or-clair);
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: calc(-1 * var(--header-height-mobile)) !important;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} {
+      min-height: 760px;
+      margin-top: calc(-1 * var(--header-height-mobile)) !important;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__art::after,
+    #MilauraCollectionHero-{{ section.id }}.milaura-collection-editorial--dark .milaura-collection-editorial__art::after {
+      background: linear-gradient(180deg, rgba(251, 248, 244, 0.94) 0%, rgba(251, 248, 244, 0.68) 27%, transparent 51%);
+    }
+
+    #MilauraCollectionHero-{{ section.id }}.milaura-collection-editorial--dark .milaura-collection-editorial__art::after {
+      background: linear-gradient(180deg, rgba(19, 24, 32, 0.82) 0%, rgba(19, 24, 32, 0.48) 29%, transparent 52%);
+    }
+
+    #MainContent #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__inner.page-width {
+      align-items: flex-start;
+      padding: calc(var(--header-height-mobile) + var(--milaura-esp-md)) 18px var(--milaura-esp-lg) !important;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__copy {
+      width: min(100%, 430px);
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__breadcrumb {
+      margin-bottom: var(--milaura-esp-md);
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__eyebrow {
+      font-size: 28px;
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__title {
+      max-width: 9ch;
+      font-size: clamp(44px, 13vw, 68px);
+    }
+
+    #MilauraCollectionHero-{{ section.id }} .milaura-collection-editorial__count {
+      margin-top: var(--milaura-esp-md);
+      font-size: 11px;
+    }
+  }
+{%- endstyle -%}
+{%- endif -%}
+
+{%- if editorial_hero_slug != blank -%}
+<section
+  id="MilauraCollectionHero-{{ section.id }}"
+  class="milaura-collection-editorial{% if editorial_hero_dark %} milaura-collection-editorial--dark{% endif %}"
+  aria-labelledby="MilauraCollectionHeroTitle-{{ section.id }}"
+>
+  <picture class="milaura-collection-editorial__art" aria-hidden="true">
+    <source media="(max-width: 749px)" srcset="{{ editorial_mobile | asset_url }}">
+    <img
+      class="milaura-collection-editorial__image"
+      src="{{ editorial_desktop | asset_url }}"
+      alt=""
+      width="1536"
+      height="1024"
+      loading="eager"
+      fetchpriority="high"
+    >
+  </picture>
+
+  <div class="milaura-collection-editorial__inner page-width">
+    <div class="milaura-collection-editorial__copy">
+      {%- if section.settings.show_breadcrumb -%}
+        <nav class="milaura-collection-editorial__breadcrumb" aria-label="Fil d'Ariane">
+          <a href="{{ routes.root_url }}">Accueil</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{{ editorial_hero_title }}</span>
+        </nav>
+      {%- endif -%}
+
+      <p class="milaura-collection-editorial__eyebrow">La collection MilAura</p>
+      <h1 id="MilauraCollectionHeroTitle-{{ section.id }}" class="milaura-collection-editorial__title">
+        {{ editorial_hero_title }}
+      </h1>
+
+      {%- if section.settings.show_count -%}
+        <p class="milaura-collection-editorial__count">
+          {{ collection.products_count }} {{ collection.products_count | pluralize: 'modèle', 'modèles' }}
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- else -%}
 <section
   id="MilauraCollectionHero-{{ section.id }}"
   class="milaura-collection-hero"
@@ -373,6 +623,7 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {%- if collection -%}
 <script type="application/ld+json">
