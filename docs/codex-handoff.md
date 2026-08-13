@@ -54,6 +54,7 @@ La palette, les polices et le logo restent ceux du Brand System du 2026-08-04. `
 - theme de developpement : `199421952347`
 - commit de production du lot Heroes : `0d6d5c42`
 - integration canonique : `a3c26aaa`
+- reconciliation du miroir Shopify live : `75c8171d`, arbre source inchange
 - theme de developpement : 23 fichiers cibles, pullback 23/23 identique bit a bit
 - theme live : 23 fichiers cibles, pullback 23/23 identique bit a bit
 - validation publique : 10 routes HTTP 200, un H1, aucun `noindex`, deux assets Hero par page

@@ -96,6 +96,7 @@ La premiere tentative de push live a ete bloquee avant mutation par `--strict`, 
 - resolution : suppression de ces regles devenues mortes et conservation des evolutions plus recentes des grilles produit et destinations ;
 - branche canonique poussee sur `origin/codex/milaura-integration` apres la documentation de fermeture.
 - worktree et branche ephemere retires ; les captures Playwright sont archivees temporairement sous `/private/tmp/milaura-editorial-heroes-playwright-20260813`.
+- commit miroir Shopify du push Heroes : `65b04a08` ; rattachement non-modifiant avec le miroir UI par `75c8171d`.
 
 ## Regle pour les futures pages
 

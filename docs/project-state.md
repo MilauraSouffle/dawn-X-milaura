@@ -204,6 +204,7 @@ Pipeline actif :
 - `0cc7ce28` : commit miroir Shopify du deploiement live des deux fichiers du polish
 - `869d522a` : rattachement du miroir Shopify apres le polish saisonnier, arbre source audite inchange
 - `a3c26aaa` : integration des dix Heroes editoriaux et de leurs vingt assets dans la branche canonique ; deploiement live cible valide ensuite le 2026-08-13
+- `75c8171d` : rattachement des miroirs Shopify `e9f30ec0` et `65b04a08` apres les pushes UI et Heroes, arbre source inchange
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 
