@@ -474,7 +474,8 @@
   function scrollToCard(index) {
     var visibleCards = Array.from(carousel.querySelectorAll('.qcs-card.is-match'));
     if (!visibleCards[index]) return;
-    var gap = window.innerWidth >= 600 ? 20 : 14;
+    var styles = window.getComputedStyle(carousel);
+    var gap = parseFloat(styles.columnGap || styles.gap) || 0;
     var cardWidth = visibleCards[0].offsetWidth + gap;
     carousel.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
   }
@@ -483,7 +484,8 @@
     if (!dots.length) return;
     var visibleCards = Array.from(carousel.querySelectorAll('.qcs-card.is-match'));
     if (!visibleCards.length) return;
-    var gap = window.innerWidth >= 600 ? 20 : 14;
+    var styles = window.getComputedStyle(carousel);
+    var gap = parseFloat(styles.columnGap || styles.gap) || 0;
     var cardWidth = visibleCards[0].offsetWidth + gap;
     var activeIndex = Math.round(carousel.scrollLeft / cardWidth);
     dots.forEach(function(dot, i) {

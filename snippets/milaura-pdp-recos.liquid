@@ -19,24 +19,14 @@
   {%- for item in reco_source limit: 50 -%}
     {%- if item.id == product.id -%}{%- continue -%}{%- endif -%}
     {%- if item.metafields.milaura.stone_handle == current_stone and item.metafields.milaura.product_type_handle != current_type -%}
-      <div class="milaura-pdp-reco-card">
-        <a href="{{ item.url }}" class="milaura-pdp-reco-link">
-          <div class="milaura-pdp-reco-image">
-            {%- if item.featured_image -%}
-              <img src="{{ item.featured_image | image_url: width: 400 }}" alt="{{ item.title }}" loading="lazy" width="{{ item.featured_image.width }}" height="{{ item.featured_image.height }}">
-            {%- else -%}
-              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {%- endif -%}
-          </div>
-          <div class="milaura-pdp-reco-info">
-            <h4 class="milaura-pdp-reco-title">{{ item.title }}</h4>
-            <p class="milaura-pdp-reco-price">{{ item.price | money }}</p>
-            {%- if item.metafields.milaura.baseline -%}
-              <p class="milaura-pdp-reco-baseline">{{ item.metafields.milaura.baseline }}</p>
-            {%- endif -%}
-          </div>
-        </a>
-      </div>
+      {% render 'milaura-product-card',
+        product: item,
+        img_loading: 'lazy',
+        show_vendor: false,
+        show_badges: true,
+        show_secondary_image: true,
+        force_bestseller_badge: false
+      %}
       {%- if reco_count == 0 -%}
         {%- assign reco_1_id = item.id -%}
       {%- elsif reco_count == 1 -%}
@@ -53,24 +43,14 @@
       {%- if item.id == product.id -%}{%- continue -%}{%- endif -%}
       {%- if item.id == reco_1_id or item.id == reco_2_id -%}{%- continue -%}{%- endif -%}
       {%- if item.metafields.milaura.is_bestseller == true -%}
-        <div class="milaura-pdp-reco-card">
-          <a href="{{ item.url }}" class="milaura-pdp-reco-link">
-            <div class="milaura-pdp-reco-image">
-              {%- if item.featured_image -%}
-                <img src="{{ item.featured_image | image_url: width: 400 }}" alt="{{ item.title }}" loading="lazy" width="{{ item.featured_image.width }}" height="{{ item.featured_image.height }}">
-              {%- else -%}
-                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-              {%- endif -%}
-            </div>
-            <div class="milaura-pdp-reco-info">
-              <h4 class="milaura-pdp-reco-title">{{ item.title }}</h4>
-              <p class="milaura-pdp-reco-price">{{ item.price | money }}</p>
-              {%- if item.metafields.milaura.baseline -%}
-                <p class="milaura-pdp-reco-baseline">{{ item.metafields.milaura.baseline }}</p>
-              {%- endif -%}
-            </div>
-          </a>
-        </div>
+        {% render 'milaura-product-card',
+          product: item,
+          img_loading: 'lazy',
+          show_vendor: false,
+          show_badges: true,
+          show_secondary_image: true,
+          force_bestseller_badge: false
+        %}
         {%- assign reco_count = reco_count | plus: 1 -%}
         {%- if reco_count >= max_recos -%}{%- break -%}{%- endif -%}
       {%- endif -%}
@@ -82,7 +62,7 @@
   <div class="milaura-pdp-recos">
     <div class="milaura-pdp-recos-container">
       <h3 class="milaura-pdp-recos-title">Complétez votre intention</h3>
-      <div class="milaura-pdp-recos-grid">
+      <div class="milaura-pdp-recos-grid milaura-cards" role="list">
         {{ reco_cards }}
       </div>
     </div>
@@ -90,8 +70,8 @@
 
   <style>
     .milaura-pdp-recos {
-      padding: 3rem 0;
-      background: rgba(255, 255, 255, 0.3);
+      padding: var(--milaura-esp-xl) 0;
+      background: transparent;
     }
     .milaura-pdp-recos-container {
       max-width: 1200px;
@@ -108,58 +88,12 @@
     .milaura-pdp-recos-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 1.5rem;
+      gap: var(--milaura-esp-md);
     }
     @media screen and (min-width: 768px) {
       .milaura-pdp-recos-grid {
         grid-template-columns: 1fr 1fr;
       }
-    }
-    .milaura-pdp-reco-card {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(20px);
-      border-radius: var(--milaura-border-radius, 20px);
-      padding: 1.5rem;
-      border: 1px solid rgba(185, 151, 91, 0.2);
-      transition: all 0.3s ease;
-    }
-    .milaura-pdp-reco-card:hover {
-      border-color: var(--milaura-gold, #B9975B);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(185, 151, 91, 0.2);
-    }
-    .milaura-pdp-reco-link {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-    .milaura-pdp-reco-image {
-      margin-bottom: 1rem;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .milaura-pdp-reco-image img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .milaura-pdp-reco-title {
-      font-family: var(--milaura-font-display);
-      font-size: 1.25rem;
-      margin: 0 0 0.5rem 0;
-      color: var(--milaura-text, #000000);
-    }
-    .milaura-pdp-reco-price {
-      font-size: 1.125rem;
-      font-weight: 600;
-      color: var(--milaura-gold, #B9975B);
-      margin: 0 0 0.75rem 0;
-    }
-    .milaura-pdp-reco-baseline {
-      font-size: 0.9375rem;
-      line-height: 1.5;
-      margin: 0;
-      opacity: 0.8;
     }
   </style>
 {%- endif -%}

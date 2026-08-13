@@ -9,10 +9,23 @@
   assign purchase_variant = product.selected_or_first_available_variant
   assign purchase_min = purchase_variant.quantity_rule.min | default: 1
   assign purchase_step = purchase_variant.quantity_rule.increment | default: 1
+  assign needs_choice = false
+  if product.has_only_default_variant == false
+    assign needs_choice = true
+  endif
 -%}
 
 <div class="milaura-editorial-purchase" data-editorial-purchase>
-  {%- if purchase_variant.available -%}
+  {%- if needs_choice -%}
+    <a
+      class="milaura-editorial-purchase__choose milaura-action milaura-action--card"
+      href="{{ product.url }}"
+      aria-label="Choisir les options de {{ product.title | escape }}"
+    >
+      <span>Choisir</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  {%- elsif purchase_variant.available -%}
     <div
       class="milaura-editorial-purchase__quantity"
       role="group"
@@ -48,7 +61,7 @@
     </div>
 
     <button
-      class="milaura-editorial-purchase__add"
+      class="milaura-editorial-purchase__add milaura-action milaura-action--card"
       type="button"
       data-quick-add
       data-product-id="{{ purchase_variant.id }}"
