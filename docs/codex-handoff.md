@@ -77,7 +77,7 @@ a ete corrige le 2026-08-13.
 - Les branches et worktrees temporaires saisonnier, hotfix, PDP et hubs editoriaux ont ete fermes apres integration.
 - Les quatre anciennes branches sont preservees par les tags `archive/2026-08-12/*`.
 - Aucun clone numerote et aucun fichier temporaire ne reste dans la zone active.
-- Aucun worktree Codex de lot ne reste actif. Le checkout principal porte la branche Claude `claude/milaura-hero-bandeau-20260813`, chantier independant observe au commit `a527ae09` et non integre par le lot hubs.
+- Aucun worktree Codex de lot ne reste actif. Le checkout principal porte la branche Claude `claude/milaura-hero-bandeau-20260813`, chantier independant propre et pousse sur `origin` au commit `a527ae09`, non integre par le lot hubs.
 - Les seules branches GitHub actives sont `main` et `codex/milaura-integration`.
 
 Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration courante dans `docs/workstreams.md`, creer un worktree gere, puis inscrire son ownership avant edition.
