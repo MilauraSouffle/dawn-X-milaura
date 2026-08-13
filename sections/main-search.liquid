@@ -263,9 +263,17 @@
                   {%- if item.object_type == 'product' and item.tags contains 'milaura-gift' -%}
                     {%- continue -%}
                   {%- endif -%}
-                  {% assign lazy_load = false %}
+                  {%- comment -%}
+                    Les deux premiers resultats sont charges en eager, le reste
+                    en lazy. `lazy_load` reste un booleen pour la carte article,
+                    `card_img_loading` porte la valeur attendue par la carte
+                    produit, qui veut 'eager' ou 'lazy'.
+                  {%- endcomment -%}
+                  {%- assign lazy_load = false -%}
+                  {%- assign card_img_loading = 'eager' -%}
                   {%- if forloop.index > 2 -%}
                     {%- assign lazy_load = true -%}
+                    {%- assign card_img_loading = 'lazy' -%}
                   {%- endif -%}
 
                   <li
@@ -278,7 +286,7 @@
                       {%- when 'product' -%}
                         {% render 'milaura-card-product',
                           card_product: item,
-                          img_loading: lazy_load | default: 'lazy',
+                          img_loading: card_img_loading,
                           show_vendor: section.settings.show_vendor,
                           show_badges: true
                         %}
