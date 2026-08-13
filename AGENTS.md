@@ -10,6 +10,14 @@ This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follo
 - Docs du repo (ranges 2026-07-09) : `docs/project-state.md` (etat), `docs/codex-handoff.md` (handoff), `docs/checkpoints/` (handovers de session), `docs/audits/` (SEO), `docs/playbooks/` (Higgsfield, campagnes, workflows IA), `docs/reference/` (metafields, product mapping, blog API, legal), `docs/archive-2026/` (perime).
 - Copywriting public MilAura : lire obligatoirement `docs/reference/2026-08-12-copywriting-milaura.md` avant toute creation ou modification de titre, texte commercial, CTA, navigation, page catalogue, fiche produit, email ou contenu SEO.
 
+## Identite visuelle (source unique, maj 2026-08-13)
+
+- La charte validee a 100 % par Patrice le 2026-08-04 vit dans `~/Documents/Agentic-Ops/MILAURA-BRAND-SYSTEM-2026/`. Elle est la seule reference : `MILAURA-BRAND-GUIDE-V1-2026-08-04.md`, `COLORWAY-V2-2026-08-04.md`, `TYPOGRAPHY-V2-2026-08-04.md`.
+- Son implementation dans le theme est `assets/milaura-tokens.css`. Toute couleur, taille de texte ou famille de police passe par une variable de ce fichier. Aucune valeur hex ni `font-family` en dur dans une section.
+- Couleurs : Nacre `#FBF8F3`, Encre prune `#2F222D`, Or mat `#B9975B`, Aigue-marine `#6FA9A6`, Amethyste `#7A4D82`. L'Or mat souligne, il ne couvre jamais une grande surface.
+- Polices : Gloock 400 (editorial, 24 px minimum, jamais pour navigation, bouton, prix ou texte long), Instrument Sans 400 a 700 (fonctionnel), Dancing Script 500 ou 600 (signature, 2 a 6 mots, une seule presence par ecran).
+- L'ancienne identite `Playfair Display`, `Lato`, or `#C0A062` et glassmorphism `Vision OS` est morte depuis le 2026-08-04. Elle ne doit reapparaitre dans aucun fichier. L'ancien `CLAUDE.md` qui la decrivait a ete reduit a un pointeur le 2026-08-13.
+
 ## Git, Sessions Paralleles Et Shopify
 
 - Le seul depot actif est `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.

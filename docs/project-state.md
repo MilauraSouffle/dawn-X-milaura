@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-13 08:25 CEST
+Derniere mise a jour : 2026-08-13 11:20 CEST
 
 ## Etat en une phrase
 

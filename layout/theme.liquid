@@ -85,8 +85,11 @@
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
       assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
       assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
-      assign type_body_font_url = settings.type_body_font | font_url
-      assign type_header_font_url = settings.type_header_font | font_url
+      comment
+        Les URL de police Shopify ne sont plus assignees : depuis le
+        2026-08-13 les polices MilAura sont servies depuis assets/ et
+        prechargees plus bas. Le reglage Assistant n'est plus rendu.
+      endcomment
       assign scheme_classes = ''
     %}
 
@@ -299,6 +302,12 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {%- comment -%}
+      Tokens MilAura : charte validee 2026-08-04, source unique de verite.
+      Charge apres base.css pour reprendre les variables Dawn, avant
+      milaura.css pour que les sections consomment des tokens deja definis.
+    {%- endcomment -%}
+    {{ 'milaura-tokens.css' | asset_url | stylesheet_tag }}
     {{ 'milaura.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
@@ -310,18 +319,17 @@
       {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
 
-    {%- unless settings.type_body_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload, RemoteAsset{% endcomment %}
-      <link rel="preload" as="font" href="{{ type_body_font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload, RemoteAsset{% endcomment %}
-    {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      {%- unless type_header_font_url == type_body_font_url -%}
-        {% comment %}theme-check-disable AssetPreload, RemoteAsset{% endcomment %}
-        <link rel="preload" as="font" href="{{ type_header_font_url }}" type="font/woff2" crossorigin>
-        {% comment %}theme-check-enable AssetPreload, RemoteAsset{% endcomment %}
-      {%- endunless -%}
-    {%- endunless -%}
+    {%- comment -%}
+      Polices MilAura. Le reglage Shopify (Assistant) n'est plus rendu nulle
+      part depuis que milaura-tokens.css reprend --font-body-family et
+      --font-heading-family, donc on ne prechauffe que nos deux polices
+      critiques. Dancing Script n'est pas prechargee : elle ne sert qu'a une
+      signature courte, jamais au premier rendu utile.
+    {%- endcomment -%}
+    {% comment %}theme-check-disable AssetPreload{% endcomment %}
+    <link rel="preload" as="font" type="font/woff2" href="{{ 'milaura-instrument-sans-variable.woff2' | asset_url }}" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="{{ 'milaura-gloock-regular.woff2' | asset_url }}" crossorigin>
+    {% comment %}theme-check-enable AssetPreload{% endcomment %}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
@@ -357,7 +365,7 @@
 
       body {
         /* Le Beige Doré de Madame */
-        background: radial-gradient(circle at top center, #fdfbf7 0%, #f2e8d5 60%, #e6d8c0 100%) !important;
+        background: radial-gradient(circle at top center, #FBF8F3 0%, #F3ECE1 60%, #e6d8c0 100%) !important;
 
         /* LE SECRET DU LISSAGE : Le fond ne bouge pas quand on scrolle (desktop only) */
         background-attachment: fixed !important;
