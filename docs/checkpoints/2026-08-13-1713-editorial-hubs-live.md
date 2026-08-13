@@ -12,6 +12,7 @@ Patrice a donne son GO visuel puis son autorisation explicite de commit, push et
 - Branche canonique : `codex/milaura-integration`.
 - Integration : fast-forward de `995b4bfc` vers `6522d42f`, sans conflit.
 - GitHub : `origin/codex/milaura-integration` pousse jusqu'a `6522d42f` avant la documentation de fermeture.
+- Miroir Shopify : commit automatique `aee62c12`, rattache a l'integration par `82c2cc13` avec la strategie `ours` et sans changement d'arbre.
 - Le checkout principal Claude et ses fichiers reserves n'ont pas ete modifies par l'integration.
 
 ## Deploiement Shopify

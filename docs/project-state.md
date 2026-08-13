@@ -176,6 +176,8 @@ Pipeline actif :
 - `441bb7f0` : integration de la refonte editoriale saisonniere
 - `d8c8053d` : rattachement des cinq commits miroir Shopify jusqu'a `b1893898`, arbre source audite inchange
 - `6522d42f` : refonte editoriale des trois hubs, preuves d'apercu et integration fast-forward
+- `aee62c12` : commit miroir Shopify automatique du push live des hubs
+- `82c2cc13` : rattachement du miroir Shopify des hubs a l'integration, arbre source inchange
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 

@@ -73,6 +73,7 @@ a ete corrige le 2026-08-13.
 - Branche d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique Shopify.
 - L'integration contient l'historique du miroir Shopify jusqu'a `b1893898`, rattache sans changement d'arbre par `d8c8053d`.
+- Le commit miroir Shopify des hubs `aee62c12` est rattache sans changement d'arbre par `82c2cc13`.
 - Les branches et worktrees temporaires saisonnier, hotfix, PDP et hubs editoriaux ont ete fermes apres integration.
 - Les quatre anciennes branches sont preservees par les tags `archive/2026-08-12/*`.
 - Aucun clone numerote et aucun fichier temporaire ne reste dans la zone active.
