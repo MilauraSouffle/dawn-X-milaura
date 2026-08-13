@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-12 20:00 CEST
+Date de mise a jour : 2026-08-13 08:25 CEST
 
 ## Mission de reprise
 
@@ -19,13 +19,14 @@ Reprendre apres la livraison live validee de la PDP-P0. Le lot creatif suivant e
 9. `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
 10. `docs/checkpoints/2026-08-12-1927-collection-pill-aqua.md`
 11. `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`
+12. `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md`
 
 ## Etat Git de depart
 
 - Depot actif unique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique Shopify.
-- L'integration contient l'historique `main` depuis `952d7587`, le miroir collection rattache par `8bc59704` et le miroir PDP `74553fd3` rattache par `75ae911f`.
+- L'integration contient l'historique `main` depuis `952d7587`, le miroir collection rattache par `8bc59704`, le miroir PDP-P0 rattache par `75ae911f` et le miroir `b♥nheur` `71797a16` rattache par `a6803efa`.
 - La branche temporaire PDP et son worktree ont ete fermes apres integration.
 - Les quatre anciennes branches sont preservees par les tags `archive/2026-08-12/*`.
 - Aucun clone numerote et aucun fichier temporaire ne reste dans la zone active.
@@ -43,7 +44,7 @@ Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration c
 - La homepage rend `Point relais offert dès 30 EUR` et `En point relais dès 30 EUR`. `templates/index.json` est identique bit a bit au pullback live.
 - Le quiz principal reste `/pages/diagnostic-emotionnel`.
 - La politique publique confirme point relais offert des 30 EUR, expedition sous 24 h du lundi au vendredi et livraison France sous 3 a 5 jours.
-- PDP-P0, retrait Scratch, pills mobiles, bulle sociale historique et CTA prune sont live. Les six fichiers autorises sont identiques bit a bit au pullback Shopify.
+- PDP-P0, retrait Scratch, pills mobiles, bulle sociale historique et CTA prune sont live. L'accent final affiche `b♥nheur` en Lato rose avec un coeur a la place du premier `o`, sans Dancing Script. Le Hero live est identique bit a bit a Git.
 - La capsule aigue-marine des collections est live depuis le 2026-08-12 19:37 CEST. Le fichier live est identique bit a bit a Git.
 
 ## Changements locaux historiques maintenant classes
@@ -54,7 +55,7 @@ Aucun de ces changements n'est encore local et flottant. Aucun fichier non suivi
 
 ## Lot clos : PDP-P0
 
-Patrice a donne son GO visuel le 2026-08-12 apres la derniere correction typographique. Seul `bonheur` reste en Dancing Script ; le reste du message utilise Lato. Le deploiement live cible, le pullback des six fichiers et le test panier public sont valides. Les compteurs publics controles sont 37 sur la bague Aigue-marine, 113 sur le bracelet Oeil de tigre et 49 sur la bougie Serenite.
+Patrice a donne son GO visuel final le 2026-08-13 pour `b♥nheur`. Dancing Script a ete retiree ; le mot utilise Lato, un rose poudre et un coeur accessible a la place du premier `o`. Le push live du seul Hero produit, le pullback bit a bit et le controle HTTP public sans cookie de preview sont valides. Les controles achat du lot PDP-P0 restent valides.
 
 ## Prochain lot : bandeau et Hero
 

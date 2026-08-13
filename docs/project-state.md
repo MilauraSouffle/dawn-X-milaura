@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-12 20:00 CEST
+Derniere mise a jour : 2026-08-13 08:25 CEST
 
 ## Etat en une phrase
 
@@ -11,7 +11,7 @@ Le catalogue V1, la capsule aigue-marine des collections et la PDP-P0 corrigee s
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique du theme Shopify live.
-- L'historique `main` a ete rattache a l'integration par `952d7587`, le commit automatique Shopify du deploiement collection par `8bc59704`, puis le miroir PDP `74553fd3` par `75ae911f`, sans modifier l'arbre source audite.
+- L'historique `main` a ete rattache a l'integration par `952d7587`, le miroir collection par `8bc59704`, le miroir PDP-P0 par `75ae911f`, puis le miroir de l'accent `b♥nheur` `71797a16` par `a6803efa`, sans modifier l'arbre source audite.
 - Les branches durables sont `main` et `codex/milaura-integration`. La branche temporaire PDP a ete fermee apres integration et livraison.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Aucun worktree parallele de lot ne reste actif apres la fermeture PDP.
@@ -112,7 +112,7 @@ La correction visuelle complementaire est integree dans `codex/milaura-integrati
 - pills mobiles sur une seule ligne animee en boucle, avec repli horizontal sans animation
 - une pill par information utile, sans `Premium` et sans formule `selon les usages traditionnels de la lithotherapie`
 - faits bougie explicites, grade unique, provenance quand elle existe et vertus separees
-- bulle sociale historique restauree sur decision explicite de Patrice le 2026-08-12 : cinq etoiles dorees, message lisible en Lato, seul `bonheur` en Dancing Script et aucun diamant
+- bulle sociale historique restauree sur decision explicite de Patrice : cinq etoiles dorees, message lisible en Lato, accent rose `b♥nheur` avec coeur a la place du premier `o`, aucun diamant et aucune Dancing Script
 - message restaure : `Ce produit a deja fait le bonheur de + de X client(e)s en mois annee`
 - nombre stable par produit entre 12 et 141, calcule depuis `product.id`, sans connexion aux commandes Shopify ; Patrice le rattache au volume multi-canal site, atelier et evenements
 - selecteur de quantite neutre et CTA prune, sans dore historique
@@ -129,7 +129,7 @@ Deploiement cible des six fichiers autorises :
 
 Le pullback live des six fichiers est identique bit a bit a Git. Les controles publics mobile couvrent une bague, un bracelet et une bougie : un H1, aucun debordement, aucun diamant, cinq etoiles et compteurs stables 37, 113 et 49. Le selecteur a ete teste de 1 a 2 puis restaure a 1 ; un ajout panier a ouvert le drawer et l'article de test a ensuite ete retire.
 
-Checkpoint : `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`.
+Checkpoints : `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md` et `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md`.
 
 ## Contrat produit
 
@@ -150,6 +150,9 @@ Pipeline actif :
 - `882c474b` : accent Dancing Script limite au mot `bonheur` dans la bulle sociale PDP
 - `74553fd3` : commit miroir Shopify automatique du push PDP live
 - `75ae911f` : rattachement du miroir Shopify PDP, arbre source audite inchange
+- `bf2d1fe9` : accent rose `b♥nheur` en Lato integre
+- `71797a16` : commit miroir Shopify du push live cible `b♥nheur`
+- `a6803efa` : rattachement du miroir Shopify `b♥nheur`, arbre source audite inchange
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 
@@ -180,4 +183,5 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-12-1746-three-lots-reconciliation-pdp.md`
 - `docs/checkpoints/2026-08-12-1927-collection-pill-aqua.md`
 - `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`
+- `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

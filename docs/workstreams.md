@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-08-13 08:10 CEST
+Derniere mise a jour : 2026-08-13 08:25 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -14,7 +14,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 | Lot | Proprietaire | Branche | Worktree | Fichiers ou zone exclusive | Theme | Statut | Mise a jour |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Accent rose `b♥nheur` dans la bulle sociale PDP | Codex, tache `Auditer l'avancement MilAura` | `codex/milaura-pdp-bonheur-heart-20260813` | `/Users/paesano/Documents/MilAura website/_worktrees/pdp-bonheur-heart-20260813` | `sections/milaura-product-hero.liquid`, `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md` | developpement `199421952347`, aucun live sans GO | pret a valider visuellement | 2026-08-13 08:10 CEST |
+| Accent rose `b♥nheur` dans la bulle sociale PDP | Codex, tache `Auditer l'avancement MilAura` | `codex/milaura-pdp-bonheur-heart-20260813` | retire apres integration | `sections/milaura-product-hero.liquid`, `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md` | live `190430282075`, push cible et pullback valides | ferme | 2026-08-13 08:25 CEST |
 | Correction visuelle PDP, pills mobiles et bulle sociale historique | Codex, tache `Auditer l'avancement MilAura` | `codex/milaura-pdp-visual-correction-20260812` | retire apres integration | `sections/milaura-product-hero.liquid`, `templates/product.milaura-produit.json`, checkpoint PDP associe | live `190430282075`, six fichiers cibles et pullback valides | ferme | 2026-08-12 20:00 CEST |
 | Capsule de titre des collections, variante aigue-marine | Codex, tache `Definir la voix editoriale MilAura` | `codex/milaura-collection-pill-aqua-20260812` | retire apres integration | `sections/milaura-collection-hero.liquid`, `docs/checkpoints/2026-08-12-1927-collection-pill-aqua.md` | live `190430282075`, push cible et pullback valides | ferme | 2026-08-12 19:37 CEST |
 
