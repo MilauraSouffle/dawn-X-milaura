@@ -263,9 +263,17 @@
                   {%- if item.object_type == 'product' and item.tags contains 'milaura-gift' -%}
                     {%- continue -%}
                   {%- endif -%}
-                  {% assign lazy_load = false %}
+                  {%- comment -%}
+                    Les deux premiers resultats sont charges en eager, le reste
+                    en lazy. `lazy_load` reste un booleen pour la carte article,
+                    `card_img_loading` porte la valeur attendue par la carte
+                    produit, qui veut 'eager' ou 'lazy'.
+                  {%- endcomment -%}
+                  {%- assign lazy_load = false -%}
+                  {%- assign card_img_loading = 'eager' -%}
                   {%- if forloop.index > 2 -%}
                     {%- assign lazy_load = true -%}
+                    {%- assign card_img_loading = 'lazy' -%}
                   {%- endif -%}
 
                   <li
@@ -276,7 +284,12 @@
                   >
                     {%- case item.object_type -%}
                       {%- when 'product' -%}
-                        {% render 'milaura-card-product', card_product: item, img_loading: lazy_load, default: 'lazy', show_vendor: section.settings.show_vendor, show_badges: true %}
+                        {% render 'milaura-card-product',
+                          card_product: item,
+                          img_loading: card_img_loading,
+                          show_vendor: section.settings.show_vendor,
+                          show_badges: true
+                        %}
                       {%- when 'article' -%}
                         {% render 'milaura-card-article',
                           article: item,
@@ -289,7 +302,7 @@
                         <a href="{{ item.url }}" class="grid__card grid__card--page">
                           <div class="grid__card-img grid__card-img--placeholder">
                             <span class="grid__card-badge grid__card-badge--article">Page</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:40px;height:40px;color:var(--milaura-gold,#C0A062);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:40px;height:40px;color:var(--milaura-gold,#B9975B);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)">
                               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                               <polyline points="14 2 14 8 20 8"></polyline>
                               <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -515,21 +528,3 @@
   ]
 }
 {% endschema %}
-{% comment %}
-
-This file has been rewritten to preserve the original behavior.
-
----
-Changes:
-- from: |-
-    {% render 'milaura-card-product',
-                              card_product: item,
-                              img_loading: lazy_load | default: 'lazy',
-                              show_vendor: section.settings.show_vendor,
-                              show_badges: true
-                            %}
-  to: "{% render 'milaura-card-product', card_product: item, img_loading: lazy_load,
-    default: 'lazy', show_vendor: section.settings.show_vendor, show_badges: true
-    %}"
-  position: 11724..11882
-{% endcomment %}
