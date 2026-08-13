@@ -1,20 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-13 17:52 CEST
+Derniere mise a jour : 2026-08-13 18:40 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0 et les trois hubs editoriaux sont live ; Mariage et Naissance affichent maintenant les produits directement dans chaque correspondance tout en conservant leur cross-selling, et le prochain chantier Codex est le polish des cartes et de l'espacement de la selection d'aout sur la homepage.
+Le catalogue V1, la PDP-P0 et les trois hubs editoriaux sont live ; la Selection d'aout de la homepage porte maintenant la direction artistique minerale epuree validee par Patrice, et les prochains chantiers UI sont le Hero immersif puis la propagation controlee de ce langage aux cartes et actions du site.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique du theme Shopify live.
-- L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `f8e2dfc2` apres la livraison des produits integres aux hubs, sans modifier l'arbre source audite.
+- L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires saisonniere, hotfix et hubs editoriaux ont ete retirees apres integration et livraison.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Aucun worktree Codex de lot ne reste actif apres la fermeture des hubs.
+- Aucun worktree Codex de lot ne reste actif apres la fermeture du polish saisonnier.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -62,9 +62,10 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 
 ## Homepage et design
 
-- Hero actuel live et valide visuellement par Patrice.
-- La selection de Karine a ete refondue et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, informations produit, selecteur de quantite et ajout panier sous les cartes.
-- Patrice a refuse visuellement le separateur turquoise actuel et juge encore trop important l'espace vide avant cette section sur la homepage. Le resserrement des controles d'achat, le nouveau separateur et l'espacement vertical forment le prochain lot UI.
+- Hero actuel live et valide visuellement par Patrice. Son evolution immersive reste un lot distinct.
+- La selection de Karine a ete refondue puis polie et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, cartes transparentes, cadre aigue-marine fin, informations compactes, quantite soulignee et ajout panier souligne d'or.
+- Le petit separateur court et epais refuse a ete retire. Le filet historique aigue-marine de 1 px et pleine largeur est restaure.
+- Patrice a valide cette deuxieme proposition comme nouvelle direction du site : simple, sobre, efficace et premium, sans gros boutons ni panneaux blancs ajoutes. Reference canonique : `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.
 - La page `/collections/selection-aout-2026` utilise le decor lagon derriere la navigation, un Hero compact, un seul H1 et une grille de 20 produits en deux colonnes sur mobile.
 - Le pullback live des neuf fichiers saisonniers est identique bit a bit a Git. Les controles publics desktop et mobile ne montrent aucun debordement.
 - Selection d'aout, guide de decouverte, `Choisir sa pierre`, dock mobile et panier 30/50/80 sont live.
@@ -184,14 +185,17 @@ Pipeline actif :
 - `871ef137` : integration des produits contextuels et maintien des cross-sells dans Mariage et Naissance
 - `ef639621` et `069cc6de` : commits miroir Shopify du deploiement live des quatre fichiers du lot
 - `f8e2dfc2` : rattachement du miroir Shopify apres les produits integres, arbre source audite inchange
+- `60634812` : integration du polish transparent des cartes de la Selection d'aout
+- `0cc7ce28` : commit miroir Shopify du deploiement live des deux fichiers du polish
+- `869d522a` : rattachement du miroir Shopify apres le polish saisonnier, arbre source audite inchange
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 
 ## Prochain ordre d'execution
 
-1. Polir la selection d'aout sur la homepage : controles d'achat plus compacts, selecteur de quantite et bouton, remplacement du separateur refuse, reduction de l'espace vide en haut de section.
-2. Ajouter la destination Amethyste au hub `/pages/bijoux-par-pierre` sans transformer ce repertoire en catalogue unique.
-3. Etendre le systeme chromatique aux collections de chaque pierre, en commencant par Amethyste et Aigue-marine dans un nouveau worktree declare.
+1. Prototyper le bandeau 56 px et le Hero immersif selon la direction minerale epuree, sur le theme de developpement uniquement.
+2. Auditer puis migrer progressivement les cartes produit, boutons et controles du site vers les composants partages valides, sans remplacement global aveugle.
+3. Ajouter la destination Amethyste au hub `/pages/bijoux-par-pierre`, puis etendre le systeme chromatique aux collections de chaque pierre.
 
 ## Dependances encore ouvertes
 
@@ -217,4 +221,6 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md`
 - `docs/checkpoints/2026-08-13-1010-seasonal-editorial-preview.md`
 - `docs/checkpoints/2026-08-13-1752-hub-inline-products-live.md`
+- `docs/checkpoints/2026-08-13-1840-home-seasonal-da-live-handoff.md`
+- `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

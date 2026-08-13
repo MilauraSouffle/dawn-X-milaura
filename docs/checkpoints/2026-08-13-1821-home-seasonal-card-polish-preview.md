@@ -1,7 +1,7 @@
 # Polish de la selection d'aout sur la homepage, apercu
 
 Date : 2026-08-13 18:21 CEST
-Derniere iteration : 2026-08-13 18:29 CEST
+Derniere iteration : 2026-08-13 18:40 CEST
 
 ## Decision visuelle
 
@@ -44,7 +44,9 @@ Le lot n'ajoute aucune valeur de couleur ou police en dur. Tous les choix utilis
 - Theme de developpement : `Development (c105a8-mac-1)`, ID `199421952347`.
 - Push strict limite aux deux fichiers du lot : reussi.
 - Pullback dans un dossier frais : 2 fichiers sur 2 identiques bit a bit au commit.
-- Theme live `190430282075` : non modifie par ce lot.
+- Patrice a donne son GO visuel et son GO live explicites le 2026-08-13.
+- Theme live `190430282075` : push strict des deux memes fichiers reussi.
+- Pullback live dans un dossier frais : 2 fichiers sur 2 identiques bit a bit a Git.
 
 ## Validation
 
@@ -55,8 +57,9 @@ Le lot n'ajoute aucune valeur de couleur ou police en dur. Tous les choix utilis
 - Styles calcules : aucun fond sur la carte, le selecteur ou le CTA ; aucun contour rectangulaire sur les deux controles ; filets inferieurs aigue-marine et or conformes.
 - Filet bas : 1 px de haut, 1280 px de large sur un viewport de 1280 px.
 - Interaction quantite : passage de 1 a 2 puis retour a 1 confirme ; aucun ajout panier effectue pendant le controle.
-- Les styles mobiles conservent un rail tactile, une carte minimale de 254 px et des controles compacts ; le live attend le GO visuel de Patrice.
+- Les styles mobiles conservent un rail tactile, une carte minimale de 254 px et des controles compacts.
+- Homepage publique : HTTP 200 et asset CSS exact charge depuis le theme live.
 
-## Autorisation restante
+## Cloture
 
-Patrice doit verifier le rendu du theme de developpement. Aucun deploiement live ni integration dans la branche canonique ne doit avoir lieu avant son GO explicite.
+Le lot est integre par `60634812`, le miroir Shopify `0cc7ce28` est rattache sans modification d'arbre par `869d522a`, et la direction visuelle approuvee devient la reference documentee dans `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.

@@ -2,7 +2,7 @@
 
 Date : 2026-08-08
 
-Derniere mise a jour : 2026-08-08 08:06 CEST
+Derniere mise a jour : 2026-08-13 18:40 CEST
 
 Statut : [DECISION] direction validee par Patrice le 2026-08-08
 
@@ -55,6 +55,8 @@ Les controles utilitaires utilisent des symboles lineaires simples :
 La fermeture du panneau mobile est une croix doree simple, sans cercle visible. Sa cible tactile reste de 44 px minimum.
 
 Les CTA commerciaux et editoriaux suivent `docs/reference/MILAURA-CTA-SYSTEM-2026.md`.
+
+Les cartes et actions suivent aussi `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md` : cadres de 1 px, surfaces transparentes et details soulignes. Un cadre fin autour d'une carte n'est pas le double anneau du Cercle et ne doit pas chercher a l'imiter.
 
 ## 5. Controle avant publication
 

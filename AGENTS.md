@@ -13,10 +13,12 @@ This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follo
 ## Identite visuelle (source unique, maj 2026-08-13)
 
 - La charte validee a 100 % par Patrice le 2026-08-04 vit dans `~/Documents/Agentic-Ops/MILAURA-BRAND-SYSTEM-2026/`. Elle est la seule reference : `MILAURA-BRAND-GUIDE-V1-2026-08-04.md`, `COLORWAY-V2-2026-08-04.md`, `TYPOGRAPHY-V2-2026-08-04.md`.
+- La direction d'interface validee par Patrice le 2026-08-13 vit dans `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`. Elle complete la charte : simple, sobre, efficace, premium, photographie prioritaire, surfaces transparentes, cadres fins, actions soulignees et aucune grosse pastille generique.
 - Son implementation dans le theme est `assets/milaura-tokens.css`. Toute couleur, taille de texte ou famille de police passe par une variable de ce fichier. Aucune valeur hex ni `font-family` en dur dans une section.
 - Couleurs : Nacre `#FBF8F3`, Encre prune `#2F222D`, Or mat `#B9975B`, Aigue-marine `#6FA9A6`, Amethyste `#7A4D82`. L'Or mat souligne, il ne couvre jamais une grande surface.
 - Polices : Gloock 400 (editorial, 24 px minimum, jamais pour navigation, bouton, prix ou texte long), Instrument Sans 400 a 700 (fonctionnel), Dancing Script 500 ou 600 (signature, 2 a 6 mots, une seule presence par ecran).
 - L'ancienne identite `Playfair Display`, `Lato`, or `#C0A062` et glassmorphism `Vision OS` est morte depuis le 2026-08-04. Elle ne doit reapparaitre dans aucun fichier. L'ancien `CLAUDE.md` qui la decrivait a ete reduit a un pointeur le 2026-08-13.
+- Sur une carte produit, la photo ne doit jamais etre masquee par les informations. Le fond transparent est la regle sur les univers visuels MilAura ; les panneaux blancs, gros boutons remplis, gradients decoratifs et composants natifs Dawn sans adaptation sont interdits.
 
 ## Git, Sessions Paralleles Et Shopify
 

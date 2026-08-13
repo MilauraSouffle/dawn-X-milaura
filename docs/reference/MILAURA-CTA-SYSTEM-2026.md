@@ -2,17 +2,19 @@
 
 Date : 2026-08-06
 
-Derniere mise a jour : 2026-08-08 08:06 CEST
+Derniere mise a jour : 2026-08-13 18:40 CEST
 
-Statut : direction validee et cadrage des symboles verrouille par Patrice le 2026-08-08
+Statut : direction validee, affinee par Patrice le 2026-08-13 vers une interface plus fine et moins remplie
 
 Reference complementaire obligatoire : `docs/reference/MILAURA-VISUAL-SYMBOLS-2026.md`.
+
+Direction d'interface obligatoire : `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.
 
 ## 1. Decision
 
 MilAura utilise un seul systeme de CTA avec deux niveaux visuels. Les controles utilitaires ne font pas partie de ce systeme.
 
-### Niveau principal
+### Niveau principal de conversion
 
 Usage : action commerciale dominante d'une section ou d'un ecran.
 
@@ -24,19 +26,21 @@ Exemples :
 - ajouter au panier ;
 - poursuivre vers le paiement.
 
+Ce niveau est reserve aux moments ou l'action doit etre immediatement identifiable : CTA principal de PDP, panier et paiement. Il n'est pas reproduit sur chaque carte produit.
+
 Design :
 
 - surface prune profonde `#2F222D`, utilisee par le dock et les grandes surfaces sombres ;
 - prune d'action `#493246`, releve par `#52394D` et referme vers `#2F222D`, afin qu'un petit CTA se lise prune plutot que noir ;
 - texte nacre `#FFFDF9` ;
-- cercle or `#B9975B` ;
-- fleche prune dans le cercle ;
-- bordure prune ;
+- detail or `#B9975B` limite a un filet, une bordure ou une petite fleche ;
+- bordure fine et geometrie contenue ;
 - hauteur minimale 48 px, cible 52 px sur desktop ;
-- hover : fond transparent, texte prune, translation verticale legere et fleche decalee de 3 px ;
+- aucun volume, gradient decoratif, double anneau ou ombre lourde ;
+- hover : variation de contraste et mouvement tres leger ;
 - focus visible turquoise `#6FA9A6` avec decalage de 5 px.
 
-Le CTA de la section Aigue-marine est la reference creative initiale. Le dock mobile est la reference de prune profond. Le hero de marque, le CTA `Trouver ma pierre` et les CTA de fin des selections produits utilisent le prune d'action avec compensation optique pour les petites surfaces.
+Le dock mobile est la reference de prune profond pour une action de conversion. `Trouver ma pierre` reste l'exception cabochon documentee. Le Hero et les selections editoriales utilisent en priorite le niveau editorial, sauf justification de conversion explicite.
 
 ### Niveau editorial
 
@@ -57,13 +61,29 @@ Exemples :
 - voir les conseils de Karine ;
 - poursuivre dans le Journal.
 
+### Niveau carte produit
+
+Usage : selecteur de quantite et ajout panier dans une grille ou une selection.
+
+Design :
+
+- fond transparent ;
+- informations regroupees directement sous la photographie ;
+- selecteur structure par un filet aigue-marine, sans boite visible ;
+- action d'ajout structuree par un filet or, sans gros rectangle ;
+- libelle Instrument Sans, etats hover, focus, loading et disabled explicites ;
+- cible tactile de 44 px recommandee, 40 px minimum ;
+- aucune pastille prune massive.
+
+Reference validee : `sections/milaura-selection-atelier.liquid`, decision du 2026-08-13.
+
 ## 2. Regles d'usage
 
 1. Une section contient au maximum un CTA principal.
 2. Un CTA conserve le meme libelle entre son affichage, sa destination et les evenements analytics.
 3. Un CTA principal ne sert jamais a fermer une fenetre, filtrer, paginer ou ouvrir le compte.
 4. Les controles utilitaires restent sobres et reconnaissables comme controles.
-5. Le prune et l'or signalent une action MilAura. Ils ne sont pas utilises comme decoration repetee autour du bouton.
+5. Le prune et l'or signalent une action MilAura. L'or souligne ; il n'est pas utilise comme remplissage decoratif repete.
 6. Les textes de CTA commencent par un verbe et decrivent la destination reelle.
 7. Le mouvement est supprime avec `prefers-reduced-motion`.
 8. Le double anneau croise or et aigue-marine est reserve au Cercle MilAura et aux cadres de photographies produit importantes.
@@ -89,7 +109,7 @@ Ordre de migration :
 2. CTA des selections produits homepage ;
 3. Pierre du moment ;
 4. Sur mesure ;
-5. cartes et pages collection ;
+5. cartes et pages collection, en reprenant d'abord le niveau carte produit valide ;
 6. fiches produit ;
 7. panier ;
 8. Journal, Cercle et landings.

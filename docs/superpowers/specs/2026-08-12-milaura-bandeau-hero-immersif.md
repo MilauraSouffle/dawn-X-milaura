@@ -1,8 +1,10 @@
 # MilAura - Brief creatif bandeau mobile et Hero immersif
 
 Date : 2026-08-12 17:46 CEST
-Statut : direction recommandee, aucun code ni deploiement
-Reference d'exigence : `tiffany.com`, pour la sobriete, la photographie portee et l'usage editorial de la video, sans copie de composition ni d'identite.
+Derniere mise a jour : 2026-08-13 18:40 CEST
+Statut : direction recommandee, alignee sur la DA minerale epuree validee le 2026-08-13, aucun code ni deploiement de ce lot
+Reference d'exigence : Van Cleef & Arpels pour la respiration et Tiffany pour la photographie portee et l'usage editorial de la video, sans copie de composition ni d'identite.
+Reference interne obligatoire : `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.
 
 ## Diagnostic confirme
 
@@ -45,12 +47,15 @@ KPI de validation :
 ### 2. Hero Cabochon cinema
 
 - Conserver les trois facettes et toute la typographie actuelle.
+- Faire parler le Hero dans la meme langue que les cartes validees de la Selection d'aout : media prioritaire, contours fins, surfaces transparentes et controles peu massifs.
 - Transformer uniquement la facette centrale en media principal.
 - Mobile : facette centrale portee a 72 a 78 % de la largeur, hauteur visuelle cible `62svh` au maximum, facettes laterales partiellement hors cadre pour creer de la profondeur.
 - Desktop : facette centrale a environ 62 % du bloc visuel, les deux facettes secondaires deviennent des ponctuations et non trois surfaces equivalentes.
 - Media prefere : video verticale native Shopify, 6 a 8 secondes, mannequin reel, un seul bijou, mouvement lent de cou ou de main, lumiere naturelle, cadrage macro, aucun dialogue.
 - Lecture : `muted`, `playsinline`, boucle courte, poster prioritaire, pause quand la page est masquee ou le media hors viewport.
 - Fallback : image poster pour `prefers-reduced-motion`, economie de donnees et echec video.
+- CTA compact, sans grosse pastille remplie ni effet de volume. `Trouver ma pierre` reste la seule exception cabochon validee.
+- Aucun gradient decoratif, panneau blanc ajoute, glassmorphism ou pictogramme generique de diamant.
 
 Budget technique cible :
 
@@ -79,6 +84,7 @@ Brief de tournage minimal :
 3. Mesurer poids, LCP, CLS, reduced motion et lisibilite 360/390/430 px.
 4. Soumettre les deux captures a Patrice.
 5. Appliquer au maximum trois corrections, puis attendre le GO visuel avant le live.
+6. Verifier explicitement que le rendu reste sobre a 360 px et qu'aucun controle ne concurrence le media.
 
 ## Frontiere
 
