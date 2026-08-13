@@ -77,7 +77,7 @@ a ete corrige le 2026-08-13.
 - Les branches et worktrees temporaires saisonnier, hotfix, PDP et hubs editoriaux ont ete fermes apres integration.
 - Les quatre anciennes branches sont preservees par les tags `archive/2026-08-12/*`.
 - Aucun clone numerote et aucun fichier temporaire ne reste dans la zone active.
-- Aucun worktree Codex de lot ne reste actif. Le checkout principal porte la branche Claude `claude/milaura-hero-bandeau-20260813`, chantier independant propre et pousse sur `origin` au commit `a527ae09`, non integre par le lot hubs.
+- Aucun worktree Codex de lot ne reste actif.
 - Les seules branches GitHub actives sont `main` et `codex/milaura-integration`.
 
 Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration courante dans `docs/workstreams.md`, creer un worktree gere, puis inscrire son ownership avant edition.
@@ -182,7 +182,7 @@ Patrice a valide le rendu puis a autorise le live le 2026-08-13. Le lot est inte
 
 ## Lot parallele Claude : bandeau et Hero
 
-Direction historique validee pour prototype. Le chantier est maintenant porte par la branche Claude `claude/milaura-hero-bandeau-20260813` et doit suivre son propre cycle de validation, integration et deploiement :
+Direction historique validee pour prototype, non demarree :
 
 - bandeau mobile ramene a environ 56 px sur une seule ligne
 - detail de marque issu d'un vrai bijou
@@ -209,4 +209,4 @@ Suivre `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
 ## Prompt de reprise
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. Les hubs Mariage, Naissance et Bijoux par pierre sont integres et live, pullback 6/6. Ne touche pas aux fichiers reserves par la branche Claude `claude/milaura-hero-bandeau-20260813`. Ouvre un nouveau worktree declare pour etendre la direction chromatique aux collections Amethyste et Aigue-marine, puis aux autres pierres. `assets/milaura-tokens.css` reste la source unique de verite ; aucune valeur hex ni `font-family` en dur dans une section, aucun clone numerote et aucun push de theme complet.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. Les hubs Mariage, Naissance et Bijoux par pierre sont integres et live, pullback 6/6. Ouvre un nouveau worktree declare pour etendre la direction chromatique aux collections Amethyste et Aigue-marine, puis aux autres pierres. `assets/milaura-tokens.css` reste la source unique de verite ; aucune valeur hex ni `font-family` en dur dans une section, aucun clone numerote et aucun push de theme complet.

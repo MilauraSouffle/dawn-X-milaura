@@ -14,7 +14,7 @@ Le catalogue V1, la PDP-P0, la selection de Karine et les trois hubs editoriaux 
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `d8c8053d` apres la fondation design, le hotfix et la refonte saisonniere, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires saisonniere, hotfix et hubs editoriaux ont ete retirees apres integration et livraison.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Aucun worktree Codex de lot ne reste actif apres la fermeture des hubs. La branche Claude `claude/milaura-hero-bandeau-20260813` reste un chantier independant dans le checkout principal.
+- Aucun worktree Codex de lot ne reste actif apres la fermeture des hubs.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
