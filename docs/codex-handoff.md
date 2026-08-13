@@ -1,10 +1,10 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-13 13:05 CEST
+Date de mise a jour : 2026-08-13 17:13 CEST
 
 ## Mission de reprise
 
-Reprendre apres la livraison live validee de la refonte editoriale de la selection de Karine. La priorite UI suivante est le systeme de destinations colorees par pierre, puis le bandeau mobile 56 px et le Hero immersif avec media reel.
+Reprendre apres la livraison live validee des trois hubs editoriaux Mariage, Naissance et Bijoux par pierre. La session Claude du bandeau et Hero reste independante ; la prochaine priorite Codex est d'etendre le systeme chromatique aux collections Amethyste, Aigue-marine puis aux autres pierres.
 
 ## Contrainte permanente : le systeme de design est en place depuis le 2026-08-13
 
@@ -73,10 +73,10 @@ a ete corrige le 2026-08-13.
 - Branche d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique Shopify.
 - L'integration contient l'historique du miroir Shopify jusqu'a `b1893898`, rattache sans changement d'arbre par `d8c8053d`.
-- Les branches et worktrees temporaires saisonnier, hotfix et PDP ont ete fermes apres integration.
+- Les branches et worktrees temporaires saisonnier, hotfix, PDP et hubs editoriaux ont ete fermes apres integration.
 - Les quatre anciennes branches sont preservees par les tags `archive/2026-08-12/*`.
 - Aucun clone numerote et aucun fichier temporaire ne reste dans la zone active.
-- Aucun worktree parallele de lot ne reste actif.
+- Aucun worktree Codex de lot ne reste actif. Le checkout principal porte la branche Claude `claude/milaura-hero-bandeau-20260813`, chantier independant observe au commit `a527ae09` et non integre par le lot hubs.
 - Les seules branches GitHub actives sont `main` et `codex/milaura-integration`.
 
 Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration courante dans `docs/workstreams.md`, creer un worktree gere, puis inscrire son ownership avant edition.
@@ -96,6 +96,8 @@ Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration c
 - La homepage rend la nouvelle selection de Karine sans information superposee aux photos, avec titre reutilisable, marqueurs en Dancing Script, quantite et ajout sous chaque carte.
 - `/collections/selection-aout-2026` rend le Hero lagon compact sous la navigation, un seul H1, 20 cartes, une grille mobile a deux colonnes et aucun texte `Selection en stock`.
 - Les neuf fichiers saisonniers du live sont identiques bit a bit a Git. Les deux routes publiques repondent en HTTP 200 et ne debordent pas sur les viewports controles.
+- Les trois hubs editoriaux sont live : Mariage avec 7 annees et 3 produits, Naissance avec 12 mois et 4 produits, Bijoux par pierre avec 5 collections illustrees.
+- Les six fichiers du lot hubs sont identiques bit a bit entre `codex/milaura-integration` et le theme live. Les trois routes publiques ont un H1, un seul `main`, aucun debordement desktop ou mobile, et les interactions des reperes sont conformes.
 
 - Le theme rend desormais Gloock, Instrument Sans et Dancing Script, et rien
   d'autre. Verifie sur cinq routes et deux viewports : aucune police hors charte
@@ -166,16 +168,20 @@ Shopify doit passer un parametre de contournement de cache. Le cache de page,
 visible dans l'en-tete `etag: W/"page_cache:..."`, sert encore l'etat anterieur
 et fait conclure a tort a un echec de saisie.
 
-## Prochaine priorite : destinations par pierre
+## Lot clos : hubs editoriaux
+
+Patrice a valide le rendu puis a autorise le live le 2026-08-13. Le lot est integre en fast-forward jusqu'a `6522d42f`, pousse sur `codex/milaura-integration`, puis deploye avec six fichiers cibles sur le live `190430282075`. Pullback 6/6 et controle public desktop/mobile conformes. Checkpoint : `docs/checkpoints/2026-08-13-1713-editorial-hubs-live.md`.
+
+## Prochaine priorite Codex : collections colorees par pierre
 
 - creer un systeme visuel reutilisable dont la teinte et l'atmosphere suivent la pierre ;
 - commencer par Amethyste et Aigue-marine ;
 - conserver une hierarchie, des contrastes et des composants communs pour eviter des pages speciales incoherentes ;
 - soumettre mobile et desktop a Patrice avant tout live.
 
-## Prochain lot : bandeau et Hero
+## Lot parallele Claude : bandeau et Hero
 
-Direction validee pour prototype, pas pour live :
+Direction historique validee pour prototype. Le chantier est maintenant porte par la branche Claude `claude/milaura-hero-bandeau-20260813` et doit suivre son propre cycle de validation, integration et deploiement :
 
 - bandeau mobile ramene a environ 56 px sur une seule ligne
 - detail de marque issu d'un vrai bijou
@@ -202,4 +208,4 @@ Suivre `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
 ## Prompt de reprise
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. La refonte editoriale de la selection de Karine est live et fermee, avec pullback 9/9. Ouvre un nouveau worktree declare pour le systeme de destinations colorees par pierre, en commencant par Amethyste et Aigue-marine. Conserve ensuite le brief bandeau 56 px et Hero immersif avec media reel. Le systeme de design est en place depuis le 2026-08-13 : `assets/milaura-tokens.css` est la source unique de verite, l'ancienne charte Playfair, Lato et or `#C0A062` est morte, et aucune valeur hex ou `font-family` ne doit etre ecrite en dur dans une section. Ne travaille jamais dans un clone numerote et ne pousse jamais le theme complet.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. Les hubs Mariage, Naissance et Bijoux par pierre sont integres et live, pullback 6/6. Ne touche pas aux fichiers reserves par la branche Claude `claude/milaura-hero-bandeau-20260813`. Ouvre un nouveau worktree declare pour etendre la direction chromatique aux collections Amethyste et Aigue-marine, puis aux autres pierres. `assets/milaura-tokens.css` reste la source unique de verite ; aucune valeur hex ni `font-family` en dur dans une section, aucun clone numerote et aucun push de theme complet.

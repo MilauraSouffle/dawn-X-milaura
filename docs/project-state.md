@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-13 12:45 CEST
+Derniere mise a jour : 2026-08-13 17:13 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0 corrigee et la refonte editoriale de la selection de Karine sont live ; le prochain chantier UI doit traiter les destinations colorees par pierre puis le bandeau mobile et le Hero immersif avec media reel.
+Le catalogue V1, la PDP-P0, la selection de Karine et les trois hubs editoriaux Mariage, Naissance et Bijoux par pierre sont live ; le lot Claude bandeau et Hero reste independant, et le prochain chantier Codex doit prolonger le systeme chromatique sur les collections de chaque pierre.
 
 ## Source de verite et etat du depot
 
@@ -12,9 +12,9 @@ Le catalogue V1, la PDP-P0 corrigee et la refonte editoriale de la selection de 
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique du theme Shopify live.
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `d8c8053d` apres la fondation design, le hotfix et la refonte saisonniere, sans modifier l'arbre source audite.
-- Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires saisonniere et hotfix ont ete retirees apres integration et livraison.
+- Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires saisonniere, hotfix et hubs editoriaux ont ete retirees apres integration et livraison.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Aucun worktree parallele de lot ne reste actif apres la fermeture du lot saisonnier.
+- Aucun worktree Codex de lot ne reste actif apres la fermeture des hubs. La branche Claude `claude/milaura-hero-bandeau-20260813` reste un chantier independant dans le checkout principal.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -72,6 +72,20 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 - Reference de qualite : `tiffany.com`, sans copie et sans decoration generique.
 - Brief : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 - Priorite UI ajoutee par Patrice : les pages de destination Amethyste, Aigue-marine et autres pierres doivent adopter une direction chromatique propre a chaque pierre, dans un systeme reutilisable et coherent.
+
+## Hubs editoriaux Mariage, Naissance et Bijoux par pierre
+
+Patrice a valide visuellement puis autorise le live le 2026-08-13. Les trois pages publiques utilisent maintenant un composant reutilisable de joaillerie editoriale, construit exclusivement avec les tokens MilAura :
+
+- `/pages/cadeaux-anniversaire-de-mariage` : univers nacre chaud, guide interactif de 7 anniversaires et 3 produits reels ;
+- `/pages/pierres-de-naissance` : univers amethyste, 12 mois accessibles et 4 produits reels ;
+- `/pages/bijoux-par-pierre` : univers aigue-marine, 5 collections publiques illustrees et grille chromatique compacte.
+
+Le Hero est media-first avec de vraies photos produit. Les reperes mois et annees n'affichent qu'un panneau a la fois, restent accessibles sans JavaScript et fonctionnent au clavier. Sur mobile, engagements, reperes et destinations deviennent des rails tactiles, et les produits restent sur deux colonnes.
+
+Deploiement live cible de 6 fichiers sur le theme `190430282075`, sans mutation de produit, stock, prix, metafield ou menu. Pullback final 6/6 identique bit a bit. Controles publics desktop 1440 px et mobile 390 px : un H1, un seul `main`, aucun `main` imbrique, aucun debordement horizontal et interactions `48 ans` et `Mars` conformes.
+
+Checkpoint : `docs/checkpoints/2026-08-13-1713-editorial-hubs-live.md`.
 
 ## Collections
 
@@ -161,14 +175,15 @@ Pipeline actif :
 - `a4ed7077` : retrait de quatre assets dupliques et non references
 - `441bb7f0` : integration de la refonte editoriale saisonniere
 - `d8c8053d` : rattachement des cinq commits miroir Shopify jusqu'a `b1893898`, arbre source audite inchange
+- `6522d42f` : refonte editoriale des trois hubs, preuves d'apercu et integration fast-forward
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 
 ## Prochain ordre d'execution
 
-1. Definir le systeme reutilisable de destinations colorees par pierre, avec une premiere proposition Amethyste et Aigue-marine.
-2. Ouvrir ensuite un worktree declare pour le bandeau mobile 56 px et le Hero immersif.
-3. Construire le Hero avec un media reel, un poster et le support `prefers-reduced-motion`, puis soumettre une proposition mobile et desktop a Patrice avant tout push live.
+1. Laisser la session Claude conclure independamment le bandeau mobile et le Hero, puis exiger son GO visuel, son integration et son deploiement cibles.
+2. Etendre le systeme chromatique aux collections de chaque pierre, en commencant par Amethyste et Aigue-marine dans un nouveau worktree declare.
+3. Auditer ensuite les autres categories page par page avec la meme grille desktop, mobile, contenu, conversion et accessibilite.
 
 ## Dependances encore ouvertes
 
