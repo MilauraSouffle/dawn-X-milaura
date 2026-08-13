@@ -1,20 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-13 09:57 CEST
+Derniere mise a jour : 2026-08-13 12:45 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la capsule aigue-marine des collections et la PDP-P0 corrigee sont live ; le prochain lot est le bandeau mobile 56 px et le Hero immersif avec media reel.
+Le catalogue V1, la PDP-P0 corrigee et la refonte editoriale de la selection de Karine sont live ; le prochain chantier UI doit traiter les destinations colorees par pierre puis le bandeau mobile et le Hero immersif avec media reel.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique du theme Shopify live.
-- L'historique `main` a ete rattache a l'integration par `952d7587`, le miroir collection par `8bc59704`, le miroir PDP-P0 par `75ae911f`, puis le miroir de l'accent `b♥nheur` `71797a16` par `a6803efa`, sans modifier l'arbre source audite.
-- Les branches durables sont `main` et `codex/milaura-integration`. La branche temporaire PDP a ete fermee apres integration et livraison.
+- L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `d8c8053d` apres la fondation design, le hotfix et la refonte saisonniere, sans modifier l'arbre source audite.
+- Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires saisonniere et hotfix ont ete retirees apres integration et livraison.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Aucun worktree parallele de lot ne reste actif apres la fermeture PDP.
+- Aucun worktree parallele de lot ne reste actif apres la fermeture du lot saisonnier.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -63,11 +63,15 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 ## Homepage et design
 
 - Hero actuel live et valide visuellement par Patrice.
+- La selection de Karine a ete refondue et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, informations produit resserrees, selecteur de quantite et marqueur turquoise entre sections.
+- La page `/collections/selection-aout-2026` utilise le decor lagon derriere la navigation, un Hero compact, un seul H1 et une grille de 20 produits en deux colonnes sur mobile.
+- Le pullback live des neuf fichiers saisonniers est identique bit a bit a Git. Les controles publics desktop et mobile ne montrent aucun debordement.
 - Selection d'aout, guide de decouverte, `Choisir sa pierre`, dock mobile et panier 30/50/80 sont live.
 - Le bandeau d'engagement live reste trop epais sur mobile selon Patrice.
 - Le Hero doit etre etudie avec une facette plus immersive, potentiellement une video reelle de 6 a 8 secondes dans le grand cabochon.
 - Reference de qualite : `tiffany.com`, sans copie et sans decoration generique.
 - Brief : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
+- Priorite UI ajoutee par Patrice : les pages de destination Amethyste, Aigue-marine et autres pierres doivent adopter une direction chromatique propre a chaque pierre, dans un systeme reutilisable et coherent.
 
 ## Collections
 
@@ -139,7 +143,7 @@ Pipeline actif :
 
 `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`
 
-## Commits de consolidation du 2026-08-12
+## Commits de consolidation des 2026-08-12 et 2026-08-13
 
 - `9220031e` : verite storefront et logistique
 - `6c4e6de4` : contrat produit et catalogue
@@ -153,14 +157,18 @@ Pipeline actif :
 - `bf2d1fe9` : accent rose `b♥nheur` en Lato integre
 - `71797a16` : commit miroir Shopify du push live cible `b♥nheur`
 - `a6803efa` : rattachement du miroir Shopify `b♥nheur`, arbre source audite inchange
+- `896a78d1` : integration du hotfix technique MilAura
+- `a4ed7077` : retrait de quatre assets dupliques et non references
+- `441bb7f0` : integration de la refonte editoriale saisonniere
+- `d8c8053d` : rattachement des cinq commits miroir Shopify jusqu'a `b1893898`, arbre source audite inchange
 
 Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le theme live `190430282075`. La homepage publique rend les deux nouveaux libelles 30 EUR et ne rend plus les deux anciens libelles 39 EUR. Checkpoint : `docs/checkpoints/2026-08-12-1829-homepage-shipping-labels-live.md`.
 
 ## Prochain ordre d'execution
 
-1. Ouvrir un worktree declare pour le bandeau mobile 56 px et le Hero immersif.
-2. Construire la proposition avec un media reel, un poster et le support `prefers-reduced-motion`.
-3. Soumettre une seule proposition mobile et desktop a Patrice avant tout push live.
+1. Definir le systeme reutilisable de destinations colorees par pierre, avec une premiere proposition Amethyste et Aigue-marine.
+2. Ouvrir ensuite un worktree declare pour le bandeau mobile 56 px et le Hero immersif.
+3. Construire le Hero avec un media reel, un poster et le support `prefers-reduced-motion`, puis soumettre une proposition mobile et desktop a Patrice avant tout push live.
 
 ## Dependances encore ouvertes
 
@@ -184,4 +192,5 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-12-1927-collection-pill-aqua.md`
 - `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`
 - `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md`
+- `docs/checkpoints/2026-08-13-1010-seasonal-editorial-preview.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

@@ -3,7 +3,7 @@
 Date : 2026-08-13 10:10 CEST
 Branche : `codex/milaura-seasonal-editorial-20260813`
 Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/seasonal-editorial-20260813`
-Statut : pret a integrer apres GO visuel de Patrice
+Statut : ferme, integre et live
 
 ## Objectif valide
 
@@ -173,3 +173,45 @@ Patrice a valide la direction generale et a demande cinq ajustements :
 - aucun clic d'ajout panier n'a ete execute pendant le controle.
 
 Le live `190430282075` reste intact. Le lot attend le nouveau GO visuel de Patrice avant integration et deploiement public des neuf fichiers cibles.
+
+## Fermeture et deploiement live
+
+Date : 2026-08-13 12:45 CEST
+
+Patrice a donne son GO visuel puis son autorisation explicite de deploiement live. Le lot a ete integre dans `codex/milaura-integration` par `441bb7f0`.
+
+Neuf fichiers et seulement ces neuf fichiers ont ete pousses sur le theme live `190430282075` :
+
+- `assets/cart-drawer.js` ;
+- `assets/milaura-card.css` ;
+- `assets/milaura-editorial-purchase.js` ;
+- `assets/milaura-section-heading.css` ;
+- `snippets/milaura-editorial-purchase.liquid` ;
+- `snippets/milaura-section-heading.liquid` ;
+- `sections/milaura-selection-atelier.liquid` ;
+- `sections/milaura-seasonal-collection.liquid` ;
+- `templates/collection.selection-aout-2026.json`.
+
+Le push a utilise `--nodelete --strict --allow-live`. Un pullback frais a confirme `9/9` fichiers identiques bit a bit a Git.
+
+### Preuves publiques
+
+- homepage et `/collections/selection-aout-2026` : HTTP 200 sans cookie de previsualisation ;
+- theme controle dans le navigateur : live `190430282075`, jamais le theme de developpement ;
+- homepage desktop : 4 cartes, 4 controles d'achat, Dancing Script chargee et aucun debordement ;
+- homepage mobile 390 px : 4 controles d'achat dans le rail horizontal et aucun debordement ;
+- landing desktop : un H1, Hero de `561.7 px`, 20 cartes, 20 controles d'achat et aucune ancienne action ;
+- landing mobile 390 px : Hero a `102 px`, hauteur `470 px`, grille `175 px + 175 px`, controles de `175 px` et aucun debordement ;
+- `Selection en stock` ne rend plus ;
+- le selecteur de quantite passe de `1` a `2` sans clic sur Ajouter et sans mutation produit.
+
+### Git et nettoyage
+
+- les quatre assets dupliques et non references crees pendant la passe parallele ont ete retires dans `a4ed7077` ;
+- le miroir Shopify `main` a produit cinq commits automatiques jusqu'a `b1893898` ;
+- les 48 fichiers touches par ces commits ont ete verifies identiques a l'arbre d'integration ;
+- l'historique du miroir a ete rattache par `d8c8053d` avec conservation exacte de l'arbre source audite ;
+- le worktree saisonnier a ete retire ;
+- les branches ephemeres saisonniere et hotfix ont ete supprimees localement et sur GitHub apres verification de leur integration.
+
+Aucun produit, stock, prix, metafield, menu ou statut de publication n'a ete modifie.
