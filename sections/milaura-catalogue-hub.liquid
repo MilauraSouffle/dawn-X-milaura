@@ -1,322 +1,406 @@
 {%- comment -%}
-  Structure de hub catalogue MilAura.
-  Aucun produit ni lien de collection n est rendu sans selection explicite.
+  Hub editorial MilAura pour les destinations Mariage, Naissance et Pierre.
+  Les produits et collections sont toujours selectionnes explicitement dans le template.
 {%- endcomment -%}
 
 {{ 'milaura-card.css' | asset_url | stylesheet_tag }}
+{{ 'milaura-section-heading.css' | asset_url | stylesheet_tag }}
+{{ 'milaura-catalogue-hub.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'milaura-catalogue-hub.js' | asset_url }}" defer="defer"></script>
 
-{%- if section.settings.heading != blank or section.settings.introduction != blank or section.blocks.size > 0 -%}
-  {%- style -%}
-    #MilauraCatalogueHub-{{ section.id }} {
-      padding: clamp(32px, 6vw, 72px) 16px;
-    }
+{%- liquid
+  assign hub_theme = section.settings.theme | default: 'stone'
+  assign hero_product_1 = blank
+  assign hero_product_2 = blank
+  assign hero_product_3 = blank
+  assign correspondence_count = 0
+  assign product_selection_count = 0
+  assign destination_count = 0
+  assign content_count = 0
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__inner {
-      max-width: 960px;
-      margin: 0 auto;
-    }
+  for block in section.blocks
+    case block.type
+      when 'correspondence'
+        assign correspondence_count = correspondence_count | plus: 1
+      when 'product_selection'
+        assign product_selection_count = product_selection_count | plus: 1
+        if hero_product_1 == blank
+          assign hero_product_1 = block.settings.product_1
+          assign hero_product_2 = block.settings.product_2
+          assign hero_product_3 = block.settings.product_3
+        endif
+      when 'featured_collection'
+        assign selected_collection = block.settings.collection
+        if selected_collection != blank and selected_collection.products_count > 0
+          assign destination_count = destination_count | plus: 1
+          if hero_product_1 == blank
+            for candidate_product in selected_collection.products limit: 3
+              case forloop.index
+                when 1
+                  assign hero_product_1 = candidate_product
+                when 2
+                  assign hero_product_2 = candidate_product
+                when 3
+                  assign hero_product_3 = candidate_product
+              endcase
+            endfor
+          endif
+        endif
+      when 'content'
+        assign content_count = content_count | plus: 1
+    endcase
+  endfor
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__title {
-      margin: 0;
-      font-family: var(--milaura-font-display);
-      font-size: clamp(32px, 6vw, 56px);
-      line-height: 1.1;
-    }
+  assign hub_title_id = 'MilauraCatalogueHubTitle-' | append: section.id
+  assign guide_id = 'MilauraHubGuide-' | append: section.id
+  assign products_id = 'MilauraHubProducts-' | append: section.id
+  assign destinations_id = 'MilauraHubDestinations-' | append: section.id
+  assign hero_target = products_id
+  if correspondence_count > 0
+    assign hero_target = guide_id
+  elsif destination_count > 0
+    assign hero_target = destinations_id
+  endif
+-%}
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__intro {
-      max-width: 760px;
-      margin-top: 20px;
-      font-size: 17px;
-      line-height: 1.7;
-    }
+{%- if section.settings.heading != blank or section.blocks.size > 0 -%}
+  <div
+    id="MilauraCatalogueHub-{{ section.id }}"
+    class="milaura-hub milaura-hub--{{ hub_theme }}"
+    data-milaura-hub
+  >
+    <section class="milaura-hub__hero" aria-labelledby="{{ hub_title_id }}">
+      <div class="milaura-hub__hero-inner">
+        <div class="milaura-hub__hero-copy">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="milaura-hub__signature milaura-signature">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__content {
-      margin-top: 40px;
-    }
+          {%- if section.settings.heading != blank -%}
+            <h1 id="{{ hub_title_id }}" class="milaura-hub__title milaura-display">
+              {{ section.settings.heading | escape }}
+            </h1>
+          {%- endif -%}
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__block + .milaura-catalogue-hub__block {
-      margin-top: 28px;
-    }
+          {%- if section.settings.introduction != blank -%}
+            <div class="milaura-hub__intro rte">{{ section.settings.introduction }}</div>
+          {%- endif -%}
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__block h2 {
-      margin: 0 0 10px;
-      font-size: clamp(22px, 3vw, 30px);
-    }
+          {%- if section.settings.hero_cta_label != blank -%}
+            <a class="milaura-hub__hero-link" href="#{{ hero_target }}">
+              <span>{{ section.settings.hero_cta_label | escape }}</span>
+              <span aria-hidden="true">↓</span>
+            </a>
+          {%- endif -%}
+        </div>
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__eyebrow {
-      margin: 0 0 4px;
-      color: var(--milaura-text-light, #666666);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+        <div class="milaura-hub__hero-stage" aria-label="Sélection de créations MilAura">
+          {%- if hero_product_1 != blank and hero_product_1.featured_image != blank -%}
+            <figure class="milaura-hub__hero-media milaura-hub__hero-media--primary">
+              {{ hero_product_1.featured_image
+                | image_url: width: 1100
+                | image_tag:
+                  widths: '360, 540, 720, 900, 1100',
+                  sizes: '(max-width: 749px) 62vw, 38vw',
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  class: 'milaura-hub__hero-image',
+                  alt: hero_product_1.title
+              }}
+            </figure>
+          {%- endif -%}
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__body {
-      font-size: 16px;
-      line-height: 1.7;
-    }
+          {%- if hero_product_2 != blank and hero_product_2.featured_image != blank -%}
+            <figure class="milaura-hub__hero-media milaura-hub__hero-media--secondary">
+              {{ hero_product_2.featured_image
+                | image_url: width: 720
+                | image_tag:
+                  widths: '240, 360, 540, 720',
+                  sizes: '(max-width: 749px) 32vw, 18vw',
+                  loading: 'eager',
+                  class: 'milaura-hub__hero-image',
+                  alt: hero_product_2.title
+              }}
+            </figure>
+          {%- endif -%}
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__selection {
-      padding: 20px;
-      border: 1px solid rgba(91, 44, 91, 0.2);
-      border-radius: 16px;
-      background: #ffffff;
-    }
+          {%- if hero_product_3 != blank and hero_product_3.featured_image != blank -%}
+            <figure class="milaura-hub__hero-media milaura-hub__hero-media--tertiary">
+              {{ hero_product_3.featured_image
+                | image_url: width: 540
+                | image_tag:
+                  widths: '200, 320, 420, 540',
+                  sizes: '(max-width: 749px) 24vw, 13vw',
+                  loading: 'lazy',
+                  class: 'milaura-hub__hero-image',
+                  alt: hero_product_3.title
+              }}
+            </figure>
+          {%- endif -%}
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__selection-link {
-      display: inline-flex;
-      margin-top: 12px;
-      color: var(--milaura-prune, #5b2c5b);
-      font-weight: 700;
-      text-underline-offset: 4px;
-    }
+          <span class="milaura-hub__hero-thread" aria-hidden="true"></span>
+        </div>
+      </div>
+    </section>
 
-    #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__products {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 20px;
-      margin-top: 22px;
-    }
+    <div class="milaura-hub__trust" aria-label="Les engagements MilAura">
+      <div class="milaura-hub__trust-inner">
+        {%- if section.settings.trust_1 != blank -%}<p>{{ section.settings.trust_1 | escape }}</p>{%- endif -%}
+        {%- if section.settings.trust_2 != blank -%}<p>{{ section.settings.trust_2 | escape }}</p>{%- endif -%}
+        {%- if section.settings.trust_3 != blank -%}<p>{{ section.settings.trust_3 | escape }}</p>{%- endif -%}
+      </div>
+    </div>
 
-    @media screen and (max-width: 990px) {
-      #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__products {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
+    {%- if correspondence_count > 0 -%}
+      <section id="{{ guide_id }}" class="milaura-hub__section milaura-hub__guide" aria-labelledby="{{ guide_id }}-title">
+        <div class="milaura-hub__shell">
+          {% render 'milaura-section-heading',
+            eyebrow: section.settings.guide_eyebrow,
+            title: section.settings.guide_heading,
+            text: section.settings.guide_text,
+            heading_tag: 'h2',
+            heading_id: guide_id | append: '-title',
+            align: 'center',
+            size: 'section',
+            eyebrow_style: 'signature'
+          %}
 
-    @media screen and (max-width: 480px) {
-      #MilauraCatalogueHub-{{ section.id }} {
-        padding-right: 12px;
-        padding-left: 12px;
-      }
-
-      #MilauraCatalogueHub-{{ section.id }} .milaura-catalogue-hub__products {
-        gap: 10px;
-      }
-    }
-  {%- endstyle -%}
-
-  <main id="MilauraCatalogueHub-{{ section.id }}" class="milaura-catalogue-hub milaura-section">
-    <div class="milaura-catalogue-hub__inner">
-      {%- if section.settings.heading != blank -%}
-        <h1 class="milaura-catalogue-hub__title">{{ section.settings.heading | escape }}</h1>
-      {%- endif -%}
-
-      {%- if section.settings.introduction != blank -%}
-        <div class="milaura-catalogue-hub__intro rte">{{ section.settings.introduction }}</div>
-      {%- endif -%}
-
-      {%- if section.blocks.size > 0 -%}
-        <div class="milaura-catalogue-hub__content">
-          {%- for block in section.blocks -%}
-            {%- case block.type -%}
-              {%- when 'content' -%}
-                {%- if block.settings.heading != blank or block.settings.body != blank -%}
-                  <section class="milaura-catalogue-hub__block" {{ block.shopify_attributes }}>
-                    {%- if block.settings.heading != blank -%}
-                      <h2>{{ block.settings.heading | escape }}</h2>
-                    {%- endif -%}
-                    {%- if block.settings.body != blank -%}
-                      <div class="milaura-catalogue-hub__body rte">{{ block.settings.body }}</div>
-                    {%- endif -%}
-                  </section>
+          <div class="milaura-hub__tabs" data-hub-tabs>
+            <div class="milaura-hub__tablist" role="tablist" aria-label="{{ section.settings.guide_heading | escape }}">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'correspondence' -%}
+                  {%- assign panel_id = 'MilauraHubPanel-' | append: section.id | append: '-' | append: block.id -%}
+                  <a
+                    class="milaura-hub__tab"
+                    href="#{{ panel_id }}"
+                    role="tab"
+                    aria-controls="{{ panel_id }}"
+                    aria-selected="false"
+                    tabindex="-1"
+                    data-hub-tab
+                    data-default="{{ block.settings.is_default }}"
+                    {{ block.shopify_attributes }}
+                  >
+                    <span>{{ block.settings.label | escape }}</span>
+                  </a>
                 {%- endif -%}
+              {%- endfor -%}
+            </div>
 
-              {%- when 'correspondence' -%}
-                {%- if block.settings.label != blank or block.settings.heading != blank or block.settings.body != blank -%}
-                  <section class="milaura-catalogue-hub__block" {{ block.shopify_attributes }}>
-                    {%- if block.settings.label != blank -%}
-                      <p class="milaura-catalogue-hub__eyebrow">{{ block.settings.label | escape }}</p>
+            <div class="milaura-hub__panels">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'correspondence' -%}
+                  {%- assign panel_id = 'MilauraHubPanel-' | append: section.id | append: '-' | append: block.id -%}
+                  <article id="{{ panel_id }}" class="milaura-hub__panel" role="tabpanel" tabindex="-1" data-hub-panel>
+                    <p class="milaura-hub__panel-label milaura-label">{{ block.settings.label | escape }}</p>
+                    {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading | escape }}</h3>{%- endif -%}
+                    {%- if block.settings.body != blank -%}<div class="milaura-hub__panel-body rte">{{ block.settings.body }}</div>{%- endif -%}
+                    {%- if block.settings.link != blank and block.settings.link_label != blank -%}
+                      <a class="milaura-hub__text-link" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
                     {%- endif -%}
-                    {%- if block.settings.heading != blank -%}
-                      <h2>{{ block.settings.heading | escape }}</h2>
-                    {%- endif -%}
-                    {%- if block.settings.body != blank -%}
-                      <div class="milaura-catalogue-hub__body rte">{{ block.settings.body }}</div>
-                    {%- endif -%}
-                  </section>
+                  </article>
                 {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </section>
+    {%- endif -%}
 
-              {%- when 'featured_collection' -%}
+    {%- if product_selection_count > 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'product_selection' -%}
+          {%- capture selection_cards -%}
+            {%- for index in (1..6) -%}
+              {%- assign product_setting = 'product_' | append: index -%}
+              {%- assign selected_product = block.settings[product_setting] -%}
+              {%- if selected_product != blank and selected_product.available -%}
+                <div class="milaura-hub__product" role="listitem">
+                  {% render 'milaura-card-product',
+                    card_product: selected_product,
+                    img_loading: 'lazy',
+                    show_vendor: false,
+                    show_badges: section.settings.show_badges,
+                    show_secondary_image: true,
+                    force_bestseller_badge: false
+                  %}
+                  {% render 'milaura-editorial-purchase', product: selected_product %}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- assign selection_cards = selection_cards | strip -%}
+
+          {%- if selection_cards != blank -%}
+            <section id="{{ products_id }}" class="milaura-hub__section milaura-hub__products" aria-labelledby="{{ products_id }}-title" {{ block.shopify_attributes }}>
+              <div class="milaura-hub__shell">
+                {% render 'milaura-section-heading',
+                  eyebrow: block.settings.eyebrow,
+                  title: block.settings.heading,
+                  text: block.settings.body | strip_html,
+                  heading_tag: 'h2',
+                  heading_id: products_id | append: '-title',
+                  align: 'center',
+                  size: 'section',
+                  eyebrow_style: 'signature'
+                %}
+                <div class="milaura-hub__product-grid milaura-cards milaura-cards--editorial" role="list">
+                  {{ selection_cards }}
+                </div>
+              </div>
+            </section>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if destination_count > 0 -%}
+      <section id="{{ destinations_id }}" class="milaura-hub__section milaura-hub__destinations" aria-labelledby="{{ destinations_id }}-title">
+        <div class="milaura-hub__shell">
+          {% render 'milaura-section-heading',
+            eyebrow: section.settings.destinations_eyebrow,
+            title: section.settings.destinations_heading,
+            text: section.settings.destinations_text,
+            heading_tag: 'h2',
+            heading_id: destinations_id | append: '-title',
+            align: 'center',
+            size: 'section',
+            eyebrow_style: 'signature'
+          %}
+
+          <div class="milaura-hub__destination-grid" role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'featured_collection' -%}
                 {%- assign selected_collection = block.settings.collection -%}
                 {%- if selected_collection != blank and selected_collection.products_count > 0 -%}
-                  <section class="milaura-catalogue-hub__block milaura-catalogue-hub__selection" {{ block.shopify_attributes }}>
-                    <h2>{{ block.settings.heading | default: selected_collection.title | escape }}</h2>
-                    {%- if block.settings.body != blank -%}
-                      <div class="milaura-catalogue-hub__body rte">{{ block.settings.body }}</div>
-                    {%- endif -%}
-                    <a class="milaura-catalogue-hub__selection-link" href="{{ selected_collection.url }}">Voir la sélection</a>
-                  </section>
-                {%- endif -%}
-
-              {%- when 'product_selection' -%}
-                {%- capture selection_cards -%}
-                  {%- for index in (1..6) -%}
-                    {%- assign product_setting = 'product_' | append: index -%}
-                    {%- assign selected_product = block.settings[product_setting] -%}
-                    {%- if selected_product != blank and selected_product.available -%}
-                      {% render 'milaura-card-product',
-                        card_product: selected_product,
-                        img_loading: 'lazy',
-                        show_vendor: false,
-                        show_badges: true,
-                        show_secondary_image: true,
-                        force_bestseller_badge: false
-                      %}
-                    {%- endif -%}
-                  {%- endfor -%}
-                {%- endcapture -%}
-                {%- assign selection_cards = selection_cards | strip -%}
-                {%- if selection_cards != blank -%}
-                  <section class="milaura-catalogue-hub__block" {{ block.shopify_attributes }}>
-                    {%- if block.settings.heading != blank -%}
-                      <h2>{{ block.settings.heading | escape }}</h2>
-                    {%- endif -%}
-                    {%- if block.settings.body != blank -%}
-                      <div class="milaura-catalogue-hub__body rte">{{ block.settings.body }}</div>
-                    {%- endif -%}
-                    <div class="milaura-catalogue-hub__products milaura-cards">
-                      {{ selection_cards }}
+                  {%- assign collection_product = selected_collection.products.first -%}
+                  {%- assign collection_media = collection_product.featured_image | default: selected_collection.image -%}
+                  <a class="milaura-hub__destination" href="{{ selected_collection.url }}" role="listitem" {{ block.shopify_attributes }}>
+                    <div class="milaura-hub__destination-media">
+                      {%- if collection_media != blank -%}
+                        {{ collection_media
+                          | image_url: width: 900
+                          | image_tag:
+                            widths: '320, 480, 640, 780, 900',
+                            sizes: '(max-width: 749px) 82vw, (max-width: 1100px) 45vw, 30vw',
+                            loading: 'lazy',
+                            class: 'milaura-hub__destination-image',
+                            alt: block.settings.heading
+                        }}
+                      {%- endif -%}
                     </div>
-                  </section>
+                    <div class="milaura-hub__destination-copy">
+                      <p class="milaura-hub__destination-count milaura-label">{{ selected_collection.products_count }} créations</p>
+                      <h3>{{ block.settings.heading | default: selected_collection.title | escape }}</h3>
+                      {%- if block.settings.body != blank -%}<div class="milaura-hub__destination-body rte">{{ block.settings.body }}</div>{%- endif -%}
+                      <span class="milaura-hub__destination-link">Voir les bijoux <span aria-hidden="true">→</span></span>
+                    </div>
+                  </a>
                 {%- endif -%}
-            {%- endcase -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if content_count > 0 -%}
+      <section class="milaura-hub__section milaura-hub__notes" aria-label="Conseils MilAura">
+        <div class="milaura-hub__shell milaura-hub__note-grid">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'content' and block.settings.heading != blank -%}
+              <article class="milaura-hub__note" {{ block.shopify_attributes }}>
+                <h2>{{ block.settings.heading | escape }}</h2>
+                {%- if block.settings.body != blank -%}<div class="milaura-hub__panel-body rte">{{ block.settings.body }}</div>{%- endif -%}
+              </article>
+            {%- endif -%}
           {%- endfor -%}
         </div>
-      {%- endif -%}
-    </div>
-  </main>
+      </section>
+    {%- endif -%}
+  </div>
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "Hub catalogue",
+  "name": "Hub éditorial MilAura",
   "tag": "section",
-  "class": "milaura-section",
+  "class": "section-milaura-catalogue-hub",
   "settings": [
     {
-      "type": "text",
-      "id": "heading",
-      "label": "Titre"
+      "type": "select",
+      "id": "theme",
+      "label": "Univers",
+      "default": "stone",
+      "options": [
+        {"value": "wedding", "label": "Mariage"},
+        {"value": "birthstone", "label": "Naissance"},
+        {"value": "stone", "label": "Pierres"}
+      ]
     },
-    {
-      "type": "richtext",
-      "id": "introduction",
-      "label": "Introduction"
-    }
+    {"type": "text", "id": "eyebrow", "label": "Signature"},
+    {"type": "text", "id": "heading", "label": "Titre"},
+    {"type": "richtext", "id": "introduction", "label": "Introduction"},
+    {"type": "text", "id": "hero_cta_label", "label": "Action du Hero", "default": "Découvrir"},
+    {"type": "text", "id": "trust_1", "label": "Engagement 1", "default": "Pierres naturelles sélectionnées"},
+    {"type": "text", "id": "trust_2", "label": "Engagement 2", "default": "Préparé dans notre atelier à Metz"},
+    {"type": "text", "id": "trust_3", "label": "Engagement 3", "default": "Service humain avant et après l'achat"},
+    {"type": "text", "id": "guide_eyebrow", "label": "Signature du guide"},
+    {"type": "text", "id": "guide_heading", "label": "Titre du guide"},
+    {"type": "textarea", "id": "guide_text", "label": "Introduction du guide"},
+    {"type": "text", "id": "destinations_eyebrow", "label": "Signature des destinations"},
+    {"type": "text", "id": "destinations_heading", "label": "Titre des destinations"},
+    {"type": "textarea", "id": "destinations_text", "label": "Introduction des destinations"},
+    {"type": "checkbox", "id": "show_badges", "label": "Afficher les badges produit", "default": false}
   ],
   "blocks": [
     {
       "type": "content",
-      "name": "Contenu",
+      "name": "Conseil",
       "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Titre"
-        },
-        {
-          "type": "richtext",
-          "id": "body",
-          "label": "Texte"
-        }
+        {"type": "text", "id": "heading", "label": "Titre"},
+        {"type": "richtext", "id": "body", "label": "Texte"}
       ]
     },
     {
       "type": "correspondence",
-      "name": "Correspondance",
+      "name": "Repère",
       "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Repère"
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Titre"
-        },
-        {
-          "type": "richtext",
-          "id": "body",
-          "label": "Explication"
-        }
+        {"type": "text", "id": "label", "label": "Mois ou année"},
+        {"type": "text", "id": "heading", "label": "Titre"},
+        {"type": "richtext", "id": "body", "label": "Explication"},
+        {"type": "url", "id": "link", "label": "Destination"},
+        {"type": "text", "id": "link_label", "label": "Texte du lien"},
+        {"type": "checkbox", "id": "is_default", "label": "Repère ouvert par défaut", "default": false}
       ]
     },
     {
       "type": "featured_collection",
-      "name": "Sélection réelle",
+      "name": "Destination pierre",
       "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection publique vérifiée"
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Titre"
-        },
-        {
-          "type": "richtext",
-          "id": "body",
-          "label": "Texte"
-        }
+        {"type": "collection", "id": "collection", "label": "Collection publique"},
+        {"type": "text", "id": "heading", "label": "Titre"},
+        {"type": "richtext", "id": "body", "label": "Texte"}
       ]
     },
     {
       "type": "product_selection",
-      "name": "Produits vérifiés",
+      "name": "Sélection de produits",
       "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Titre"
-        },
-        {
-          "type": "richtext",
-          "id": "body",
-          "label": "Texte"
-        },
-        {
-          "type": "product",
-          "id": "product_1",
-          "label": "Produit 1"
-        },
-        {
-          "type": "product",
-          "id": "product_2",
-          "label": "Produit 2"
-        },
-        {
-          "type": "product",
-          "id": "product_3",
-          "label": "Produit 3"
-        },
-        {
-          "type": "product",
-          "id": "product_4",
-          "label": "Produit 4"
-        },
-        {
-          "type": "product",
-          "id": "product_5",
-          "label": "Produit 5"
-        },
-        {
-          "type": "product",
-          "id": "product_6",
-          "label": "Produit 6"
-        }
+        {"type": "text", "id": "eyebrow", "label": "Signature"},
+        {"type": "text", "id": "heading", "label": "Titre"},
+        {"type": "richtext", "id": "body", "label": "Texte"},
+        {"type": "product", "id": "product_1", "label": "Produit 1"},
+        {"type": "product", "id": "product_2", "label": "Produit 2"},
+        {"type": "product", "id": "product_3", "label": "Produit 3"},
+        {"type": "product", "id": "product_4", "label": "Produit 4"},
+        {"type": "product", "id": "product_5", "label": "Produit 5"},
+        {"type": "product", "id": "product_6", "label": "Produit 6"}
       ]
     }
   ],
   "max_blocks": 40,
-  "presets": [
-    {
-      "name": "Hub catalogue"
-    }
-  ]
+  "presets": [{"name": "Hub éditorial MilAura"}]
 }
 {% endschema %}
