@@ -1,10 +1,52 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-13 12:45 CEST
+Date de mise a jour : 2026-08-13 13:05 CEST
 
 ## Mission de reprise
 
 Reprendre apres la livraison live validee de la refonte editoriale de la selection de Karine. La priorite UI suivante est le systeme de destinations colorees par pierre, puis le bandeau mobile 56 px et le Hero immersif avec media reel.
+
+## Contrainte permanente : le systeme de design est en place depuis le 2026-08-13
+
+A lire avant de toucher la moindre ligne de CSS, de Liquid ou de contenu.
+
+- `assets/milaura-tokens.css` est la source unique de verite pour la couleur, la
+  typographie et l'espacement. Il implemente la charte validee a 100 % par
+  Patrice le 2026-08-04.
+- Aucune valeur hex ni `font-family` en dur dans une section. Tout passe par une
+  variable de ce fichier.
+- Couleurs : Nacre `#FBF8F3`, Encre prune `#2F222D`, Or mat `#B9975B`,
+  Aigue-marine `#6FA9A6`, Amethyste `#7A4D82`. L'Or mat souligne, il ne couvre
+  jamais une grande surface.
+- Polices : Gloock 400 en editorial, 24 px minimum, jamais pour la navigation,
+  un bouton, un prix ou un texte long. Instrument Sans 400 a 700 en fonctionnel.
+  Dancing Script 500 ou 600 en signature, deux a six mots, une presence par
+  ecran.
+- Les trois polices sont servies en WOFF2 sous-ensemble latin et declarees une
+  seule fois dans les tokens. Ne jamais redeclarer un `@font-face` dans une
+  section : dix blocs dupliques ont ete retires le 2026-08-13.
+- Pas de `color-mix()` dans les tokens. Les nuances derivees sont calculees en
+  OKLab puis figees en valeurs statiques, formule en commentaire. La fonction
+  n'existe pas avant Safari 16.2 et une variable invalide fait tomber toute
+  propriete qui la consomme.
+- L'ancienne identite est morte : `Playfair Display`, `Lato`, l'or `#C0A062` et
+  le glassmorphism `Vision OS`. Elle ne doit reapparaitre nulle part.
+- `CLAUDE.md` du repo a ete reduit a `@AGENTS.md`. Il decrivait encore l'ancienne
+  charte et chaque session la reappliquait, ce qui expliquait 414 occurrences.
+
+Non traites volontairement et toujours ouverts : la geometrie, avec 163 rayons
+superieurs a 20 px, et le glassmorphism, avec 171 `backdrop-filter`. Le nouveau
+standard `--milaura-rayon-*` existe dans les tokens mais n'est applique nulle
+part. Toute decision sur ces deux points appartient a Patrice.
+
+## Piege JavaScript a ne pas reintroduire
+
+`layout/theme.liquid` sert deja `search-form.js`, sans condition, et
+`predictive-search.js` quand `settings.predictive_search_enabled` est actif. Ces
+deux fichiers declarent leurs classes au niveau global. Toute section qui les
+recharge provoque `Identifier 'SearchForm' has already been declared` sur toutes
+les pages publiques. Le defaut existait dans `sections/milaura-navbar.liquid` et
+a ete corrige le 2026-08-13.
 
 ## Lecture obligatoire
 
@@ -21,6 +63,9 @@ Reprendre apres la livraison live validee de la refonte editoriale de la selecti
 11. `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md`
 12. `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md`
 13. `docs/checkpoints/2026-08-13-1010-seasonal-editorial-preview.md`
+14. `docs/checkpoints/2026-08-13-0957-design-foundation-live.md`
+15. `docs/checkpoints/2026-08-13-1015-hotfix-technique.md`
+16. `~/Documents/Agentic-Ops/MILAURA-BRAND-SYSTEM-2026/`, la charte source
 
 ## Etat Git de depart
 
@@ -52,6 +97,39 @@ Ne jamais demarrer un nouveau lot depuis `main`. Lire la branche d'integration c
 - `/collections/selection-aout-2026` rend le Hero lagon compact sous la navigation, un seul H1, 20 cartes, une grille mobile a deux colonnes et aucun texte `Selection en stock`.
 - Les neuf fichiers saisonniers du live sont identiques bit a bit a Git. Les deux routes publiques repondent en HTTP 200 et ne debordent pas sur les viewports controles.
 
+- Le theme rend desormais Gloock, Instrument Sans et Dancing Script, et rien
+  d'autre. Verifie sur cinq routes et deux viewports : aucune police hors charte
+  sur le texte visible, hors deux `SF Mono` volontaires sur la touche `Esc`.
+- Les polices pesent 144 Ko au lieu de 416 Ko, soit 272 Ko economises par
+  visiteur.
+- `sections/main-search.liquid` est reparee. Elle passait un filtre Liquid dans
+  un argument de `render`, ce que Liquid interdit : la section etait rejetee par
+  Shopify depuis le 2026-03-13 et les resultats produit ne rendaient pas.
+  `/search?q=bague` rend 11 resultats.
+- Les elements `button`, `input`, `select` et `textarea` heritent de la police.
+  Sans cette regle la feuille de style du navigateur leur impose Arial 13.33px,
+  ce qui touchait onze elements visibles de la page d'accueil.
+- L'Or profond de texte vaut `#926451`, soit 4.76:1 sur Nacre, AA. L'ancien
+  `#8F723A` ne tenait que 4.38:1 et servait pourtant de couleur de texte.
+- Quatre champs SEO ont ete corriges dans Shopify Admin le 2026-08-13 par un
+  agent navigateur : titres des pages `bijoux-par-pierre` et
+  `pierres-de-naissance`, qui contenaient un prefixe duplique, meta description
+  de `diagnostic-emotionnel`, qui portait six fautes et une promesse interdite,
+  et meta description globale.
+- La meta description globale alimente trois surfaces d'un coup : meta de
+  l'accueil, `og:description` et JSON-LD `WebSite.description`. Elle ne porte
+  plus d'emoji et nomme le Laboratoire Francais de Gemmologie.
+- Patrice confirme que la totalite des pierres MilAura passe par le Laboratoire
+  Francais de Gemmologie a Paris a leur arrivee en France. Le LFG est accredite
+  COFRAC ISO 17025 et est le seul organisme accredite en France sur la totalite
+  des gemmes. La preuve est documentee et rattachee a un perimetre complet, donc
+  utilisable.
+- Le jeton Admin du pipeline produit n'a pas `read_content` ni `write_content`.
+  Toute correction de page ou de preference passe par l'interface Shopify.
+- Les erreurs console restantes sont l'iframe Shop Pay de Shopify et un en-tete
+  `X-Frame-Options: ALLOW-FROM`, directive obsolete. Les deux sont cote serveur,
+  pas cote theme.
+
 ## Changements locaux historiques maintenant classes
 
 Le commit `9220031e` a absorbe les 31 fichiers storefront auparavant non committes. Les quatre fichiers qui se chevauchaient sont documentes dans `docs/project-state.md` et dans le checkpoint de nettoyage.
@@ -65,6 +143,28 @@ Patrice a donne son GO visuel final le 2026-08-13 pour `b♥nheur`. Dancing Scri
 ## Lot clos : selection saisonniere
 
 Patrice a valide le nouveau rendu puis a autorise le live le 2026-08-13. Le lot est integre par `441bb7f0`, pousse sur le theme live `190430282075` avec neuf fichiers cibles et confirme par un pullback `9/9`. Le worktree et les branches ephemeres ont ete retires. Checkpoint : `docs/checkpoints/2026-08-13-1010-seasonal-editorial-preview.md`.
+
+## Lot clos : fondation design
+
+La charte du 2026-08-04 est appliquee au theme et live depuis le 2026-08-13.
+101 fichiers pousses en `--nodelete`, pullback 101 sur 101 identique bit a bit
+sur le developpement et sur le live, assets experimentaux preserves. Theme Check
+29 offenses avant, 29 apres. Checkpoint :
+`docs/checkpoints/2026-08-13-0957-design-foundation-live.md`.
+
+## Lot clos : hotfix technique et SEO
+
+Cinq defauts publics annonces, trois reels. Les erreurs JavaScript et le double
+chargement etaient un seul defaut. Les trois autres etaient de la donnee Shopify
+Admin, pas du code : le theme rend `page_title` une seule fois et deux pages sur
+quatre du meme template etaient saines. Verification independante apres saisie :
+neuf controles conformes, aucun ecart. Checkpoint :
+`docs/checkpoints/2026-08-13-1015-hotfix-technique.md`.
+
+Piege operationnel : toute verification SEO menee juste apres une ecriture
+Shopify doit passer un parametre de contournement de cache. Le cache de page,
+visible dans l'en-tete `etag: W/"page_cache:..."`, sert encore l'etat anterieur
+et fait conclure a tort a un echec de saisie.
 
 ## Prochaine priorite : destinations par pierre
 
@@ -94,7 +194,12 @@ Suivre `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 - Ne pas modifier les fichiers PDP clos sans nouveau lot declare.
 - Ne pas remplacer le diagnostic emotionnel.
 - Ne pas publier un produit CAN. Les produits restent draft-only jusqu'a la decision de Patrice.
+- Ne jamais reintroduire `Playfair Display`, `Lato`, l'or `#C0A062` ou le glassmorphism `Vision OS`.
+- Ne jamais ecrire une valeur hex ou un `font-family` en dur dans une section : passer par `assets/milaura-tokens.css`.
+- Ne jamais redeclarer un `@font-face` dans une section.
+- Ne jamais recharger `search-form.js` ni `predictive-search.js` depuis une section.
+- Ne pas lancer un lot a portee globale, tokens ou polices, en parallele d'un lot de section : le registre protege le merge, pas la coherence visuelle.
 
 ## Prompt de reprise
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. La refonte editoriale de la selection de Karine est live et fermee, avec pullback 9/9. Ouvre un nouveau worktree declare pour le systeme de destinations colorees par pierre, en commencant par Amethyste et Aigue-marine. Conserve ensuite le brief bandeau 56 px et Hero immersif avec media reel. Ne travaille jamais dans un clone numerote et ne pousse jamais le theme complet.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et `docs/codex-handoff.md`. La refonte editoriale de la selection de Karine est live et fermee, avec pullback 9/9. Ouvre un nouveau worktree declare pour le systeme de destinations colorees par pierre, en commencant par Amethyste et Aigue-marine. Conserve ensuite le brief bandeau 56 px et Hero immersif avec media reel. Le systeme de design est en place depuis le 2026-08-13 : `assets/milaura-tokens.css` est la source unique de verite, l'ancienne charte Playfair, Lato et or `#C0A062` est morte, et aucune valeur hex ou `font-family` ne doit etre ecrite en dur dans une section. Ne travaille jamais dans un clone numerote et ne pousse jamais le theme complet.
