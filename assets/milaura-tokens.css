@@ -70,19 +70,32 @@
   --milaura-amethyste-petale: #B68DBA;
   --milaura-amethyste-profonde: #523059;
 
-  /* Nuances derivees, melangees en oklch pour rester perceptivement regulieres.
-     La source reste les cinq hex valides ci-dessus. */
-  --milaura-nacre-pure: color-mix(in oklch, var(--milaura-nacre) 55%, #FFFFFF);
-  --milaura-nacre-ombre: color-mix(in oklch, var(--milaura-nacre) 88%, var(--milaura-or));
-  --milaura-or-clair: color-mix(in oklch, var(--milaura-or) 58%, var(--milaura-nacre));
-  /* Or profond : seul or utilisable en texte. Dose a 65 % pour atteindre
-     4.76:1 sur Nacre, soit AA. L'ancien #8F723A ne tenait que 4.38:1. */
-  --milaura-or-profond: color-mix(in oklch, var(--milaura-or) 65%, var(--milaura-prune));
+  /* Nuances derivees.
+     Chacune est un melange calcule en OKLab a partir des cinq hex valides
+     ci-dessus, puis fige en valeur statique. Volontairement pas de
+     color-mix() : la fonction n'existe pas avant Safari 16.2, et une variable
+     invalide fait tomber toute propriete qui la consomme. Un systeme de
+     couleur doit etre ennuyeux et fiable.
+     Pour regenerer une valeur, la formule est indiquee en commentaire. */
 
-  /* Encres de texte. Prune sur Nacre = 14.29:1, AAA. */
+  /* Nacre 55 % + blanc */
+  --milaura-nacre-pure: #FDFBF8;
+  /* Nacre 88 % + Or mat */
+  --milaura-nacre-ombre: #F3ECE1;
+  /* Or mat 58 % + Nacre */
+  --milaura-or-clair: #D5BF9B;
+  /* Or mat 65 % + Encre prune. Seul or utilisable en texte : 4.76:1 sur
+     Nacre, soit AA. L'ancien #8F723A ne tenait que 4.38:1 et servait
+     pourtant de couleur de texte. */
+  --milaura-or-profond: #926451;
+
+  /* Encres de texte. Encre prune sur Nacre = 14.29:1, AAA. */
   --milaura-encre: var(--milaura-prune);
-  --milaura-encre-secondaire: color-mix(in oklch, var(--milaura-prune) 78%, var(--milaura-nacre));
-  --milaura-encre-tertiaire: color-mix(in oklch, var(--milaura-prune) 58%, var(--milaura-nacre));
+  /* Encre prune 78 % + Nacre, 7.83:1 sur Nacre, AAA */
+  --milaura-encre-secondaire: #5A4A50;
+  /* Encre prune 62 % + Nacre, 4.83:1 sur Nacre, AA.
+     Dosee a 62 et non 58 % : 58 % ne donnait que 4.26:1, sous le seuil. */
+  --milaura-encre-tertiaire: #7A6A6C;
 
   /* Surfaces */
   --milaura-surface: var(--milaura-nacre);
@@ -93,13 +106,13 @@
   /* Filets et bordures.
      L'Or mat souligne, il ne couvre jamais une grande surface. Il n'existe
      volontairement aucun token de degrade dore dans ce systeme. */
-  --milaura-filet: 1px solid color-mix(in oklch, var(--milaura-prune) 12%, transparent);
+  --milaura-filet: 1px solid rgba(47, 34, 45, 0.12);
   --milaura-filet-or: 1px solid var(--milaura-or);
   --milaura-filet-mineral: 1px solid var(--milaura-aigue-pierre);
 
   /* Ombres. Teintees prune, jamais dorees ni bleutees. */
-  --milaura-ombre-douce: 0 1px 2px color-mix(in oklch, var(--milaura-prune) 6%, transparent);
-  --milaura-ombre-portee: 0 12px 32px color-mix(in oklch, var(--milaura-prune) 10%, transparent);
+  --milaura-ombre-douce: 0 1px 2px rgba(47, 34, 45, 0.06);
+  --milaura-ombre-portee: 0 12px 32px rgba(47, 34, 45, 0.1);
 
   /* ------------------------------------------------------------------------
      3. Typographie
@@ -202,12 +215,12 @@
   --milaura-cta-gold-top: var(--milaura-or-clair);
   --milaura-cta-gold-mid: var(--milaura-or-clair);
   --milaura-cta-gold-bottom: var(--milaura-or);
-  --milaura-cta-border: color-mix(in oklch, var(--milaura-or) 40%, transparent);
+  --milaura-cta-border: rgba(185, 151, 91, 0.4);
   --milaura-cta-shadow: var(--milaura-ombre-portee);
 
   --milaura-shadow-sm: var(--milaura-ombre-douce);
   --milaura-shadow-md: var(--milaura-ombre-portee);
-  --milaura-shadow-lg: 0 24px 56px color-mix(in oklch, var(--milaura-prune) 14%, transparent);
+  --milaura-shadow-lg: 0 24px 56px rgba(47, 34, 45, 0.14);
 
   --milaura-font-heading: var(--milaura-font-display);
   --milaura-font-body: var(--milaura-font-texte);
