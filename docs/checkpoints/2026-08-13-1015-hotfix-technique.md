@@ -4,10 +4,9 @@ Date : 2026-08-13 10:15 CEST
 Session : Claude, frontend et design, GO explicite de Patrice
 Branche : `claude/milaura-hotfix-technique-20260813`, poussee sur origin
 Themes : developpement `199421952347` puis live `190430282075`, sur GO explicite.
-Statut : defaut de code corrige, verifie et LIVRE LIVE le 2026-08-13 sur GO
-explicite de Patrice. Trois defauts de donnee identifies : Patrice a donne son
-accord, mais l'ecriture est bloquee par les scopes du jeton Admin. Valeurs
-finales fournies pour saisie manuelle.
+Statut : CLOS. Le defaut de code est livre live et verifie. Les quatre champs de
+donnee ont ete saisis dans Shopify Admin par un agent navigateur pilote par
+Patrice le 2026-08-13, puis verifies independamment sur les URL publiques.
 
 ## Methode
 
@@ -212,3 +211,59 @@ utilisable, et gagne a nommer le laboratoire plutot qu'a ecrire
 
 La description globale alimente trois surfaces d'un coup : meta description de
 l'accueil, `og:description` et JSON-LD `WebSite.description`.
+
+
+## Livraison des quatre champs SEO, 2026-08-13 12:45 CEST
+
+Le jeton Admin du pipeline produit n'ayant pas les scopes `read_content` et
+`write_content`, la voie API etait fermee. Patrice a fait executer les quatre
+saisies par un agent navigateur agissant dans sa session Shopify authentifiee,
+ce qui contourne la question des scopes sans elargir les droits du jeton.
+
+### Verification independante des URL publiques
+
+Controle mene depuis cette session, sans se fier au rapport de l'agent.
+
+| Surface | Resultat |
+| --- | --- |
+| `/pages/bijoux-par-pierre`, `title` | conforme |
+| `/pages/bijoux-par-pierre`, `og:title` | conforme |
+| `/pages/pierres-de-naissance`, `title` | conforme |
+| `/pages/pierres-de-naissance`, `og:title` | conforme |
+| `/pages/diagnostic-emotionnel`, meta description | conforme |
+| Accueil, meta description | conforme |
+| Accueil, `og:description` | conforme |
+| Accueil, JSON-LD `WebSite.description` | conforme, mention LFG presente |
+| Emoji sur les trois surfaces de l'accueil | absent |
+
+Bilan : neuf controles conformes, aucun ecart.
+
+### Piege de cache rencontre
+
+Le premier controle a signale un ecart sur `/pages/pierres-de-naissance`, dont le
+`title` apparaissait encore double. Verification faite avec contournement de
+cache, la valeur servie est correcte. L'ecart venait du cache de page Shopify,
+visible dans l'en-tete `etag: W/"page_cache:..."`, et non d'une saisie manquante.
+
+Toute verification SEO menee juste apres une ecriture Shopify doit passer un
+parametre de contournement de cache, sinon elle mesure l'etat anterieur.
+
+### Etat final des quatre champs
+
+| Champ | Valeur en production |
+| --- | --- |
+| Titre SEO `bijoux-par-pierre` | `Bijoux par pierre naturelle \| MilAura` |
+| Titre SEO `pierres-de-naissance` | `Pierres de naissance par mois \| MilAura` |
+| Meta `diagnostic-emotionnel` | `Quelques questions pour trouver la pierre qui vous correspond. Le diagnostic MilAura vous oriente vers les bijoux et mineraux adaptes a votre intention.` |
+| Meta description globale | `Bijoux, mineraux et bougies en pierres naturelles, toutes certifiees par le Laboratoire Francais de Gemmologie. Expedie depuis notre atelier a Metz.` |
+
+Le titre de la page d'accueil n'a pas ete touche. Aucun produit, prix, stock,
+collection, theme ou reglage n'a ete modifie.
+
+## Observation relevee a la cloture
+
+Certaines routes renvoient un en-tete `X-Frame-Options: ALLOW-FROM https://milaura.fr`.
+La directive `ALLOW-FROM` est obsolete et n'est reconnue par aucun navigateur
+moderne, ce qui produit une erreur console. Cet en-tete est defini cote serveur,
+pas par le theme, donc probablement par Shopify ou par une application installee.
+Non traite, hors perimetre theme. A verifier lors d'un futur lot securite.
