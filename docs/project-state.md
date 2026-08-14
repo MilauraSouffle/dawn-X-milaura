@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-14 09:47 CEST
+Derniere mise a jour : 2026-08-14 19:22 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0, l'UI sitewide et les dix Heroes photographiques GPT Image 2 sont live ; les lots UI, carrousel et Heroes sont fermes, et leur direction artistique est transmise aux futures sessions.
+Le catalogue V1, la PDP-P0, l'UI sitewide, les dix Heroes de destination et le nouveau Hero de marque de la homepage sont live ; Navigation V2 et Recommandation restent deux lots de developpement distincts sans autorisation live.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ Le catalogue V1, la PDP-P0, l'UI sitewide et les dix Heroes photographiques GPT 
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont retirees apres integration et fermeture de leur lot.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Les worktrees Heroes, UI sitewide et carrousel ont ete retires apres leur integration et leur validation live.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Navigation V2 et Recommandation restent actifs ; le worktree Hero homepage doit etre retire apres son commit final de documentation live.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -62,17 +62,18 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 
 ## Homepage et design
 
-- Hero actuel live et valide visuellement par Patrice. Son evolution immersive reste un lot distinct.
+- Le Hero de marque V2 est live depuis le 2026-08-14 19:22 CEST apres GO visuel et GO live explicites de Patrice.
+- Il presente MilAura par trois scenes photographiques et trois parcours manuels : choisir par pierre, choisir par bijou et se laisser guider. Le texte HTML reste fixe et aucun media ne defile automatiquement.
+- La signature `MilAura`, le filet or et `Bijoux & mineraux naturels` tiennent sur une seule ligne de 360 a 1440 px. La navbar conserve le logo colore et devient aigue-marine clair au scroll.
+- Le label LFG reste en bas a droite. Les trois preuves LFG, Karine et Metz sont encore affichees au pont entre le Hero et la Selection d'aout ; leur reutilisation dans le futur bandeau reste la prochaine decision creative.
+- Le deploiement live a ete limite a neuf fichiers. Pullback 9/9 identique bit a bit et controles publics desktop/mobile valides. Checkpoint : `docs/checkpoints/2026-08-14-1715-homepage-hero-v2-dev.md`.
 - La selection de Karine a ete refondue puis polie et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, cartes transparentes, cadre aigue-marine fin, informations compactes, quantite soulignee et ajout panier souligne d'or.
 - Le petit separateur court et epais refuse a ete retire. Le filet historique aigue-marine de 1 px et pleine largeur est restaure.
 - Patrice a valide cette deuxieme proposition comme nouvelle direction du site : simple, sobre, efficace et premium, sans gros boutons ni panneaux blancs ajoutes. Reference canonique : `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.
 - La page `/collections/selection-aout-2026` utilise le decor lagon derriere la navigation, un Hero compact, un seul H1 et une grille de 20 produits en deux colonnes sur mobile.
 - Le pullback live des neuf fichiers saisonniers est identique bit a bit a Git. Les controles publics desktop et mobile ne montrent aucun debordement.
 - Selection d'aout, guide de decouverte, `Choisir sa pierre`, dock mobile et panier 30/50/80 sont live.
-- Le bandeau d'engagement live reste trop epais sur mobile selon Patrice.
-- Le Hero doit etre etudie avec une facette plus immersive, potentiellement une video reelle de 6 a 8 secondes dans le grand cabochon.
-- Reference de qualite : `tiffany.com`, sans copie et sans decoration generique.
-- Brief : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
+- Le bandeau d'engagement est maintenant compact mais doit recevoir une passe creative dediee. Les preuves LFG, Karine et Metz sont candidates pour cette future composition.
 - La priorite chromatique par pierre est live : Amethyste, Aigue-marine, Agate, Quartz rose, Lapis-lazuli et Amazonite ont chacune leur scene et leur palette.
 
 ## Heroes editoriaux GPT Image 2 live
@@ -210,11 +211,11 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Prototyper le bandeau d'engagement mobile vers 56 px sans perdre les trois preuves essentielles.
-2. Prototyper le Hero immersif de la homepage avec une image forte ou une video reelle courte.
-3. Corriger uniquement les cadrages de destination signales precisement par Patrice, sans regeneration reflexe.
-4. Ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu.
-5. Polir les cross-sells Mariage et Naissance sans les supprimer.
+1. Concevoir la passe dediee du bandeau superieur et decider si les trois preuves du pont Hero doivent y etre transferees.
+2. Continuer Navigation et homepage V2 uniquement sur le theme de developpement, sans embarquer ses changements dans le live sans nouveau GO visuel.
+3. Continuer le systeme de recommandation dans son worktree distinct.
+4. Corriger uniquement les cadrages de destination signales precisement par Patrice, sans regeneration reflexe.
+5. Ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu.
 
 ## Dependances encore ouvertes
 
@@ -243,6 +244,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-13-1840-home-seasonal-da-live-handoff.md`
 - `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md`
 - `docs/checkpoints/2026-08-14-0947-editorial-hero-da-session-handoff.md`
+- `docs/checkpoints/2026-08-14-1715-homepage-hero-v2-dev.md`
 - `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

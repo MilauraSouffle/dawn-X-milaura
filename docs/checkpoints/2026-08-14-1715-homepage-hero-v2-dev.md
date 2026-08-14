@@ -2,7 +2,7 @@
 
 Date : 2026-08-14 17:15 CEST
 
-Statut : implementation terminee sur le theme de developpement, aucun live, validation visuelle finale de Patrice requise avant integration.
+Statut : valide visuellement par Patrice, integre et live sur le theme `190430282075` depuis le 2026-08-14 19:22 CEST.
 
 ## Resultat livre
 
@@ -91,3 +91,17 @@ Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO v
 - Theme Check : 0 erreur et 28 avertissements historiques ;
 - pullback du theme de developpement `199421952347` : `sections/milaura-hero-portal.liquid` identique bit a bit au fichier local ;
 - theme live `190430282075` non modifie.
+
+## Deploiement live du 2026-08-14 a 19:22 CEST
+
+- GO visuel et GO live explicites de Patrice dans la tache Hero homepage V2 ;
+- commits du lot : `f88c9c36`, `204ef589` et `cc57efef` ;
+- integration dans `codex/milaura-integration` par le merge `abb301fd` ;
+- push live limite a neuf fichiers : les trois sections du lot et les six medias Hero, avec `--nodelete` ;
+- theme live cible : `190430282075` ;
+- pullback live : 9 fichiers sur 9 identiques bit a bit au checkout d'integration ;
+- controle public direct sur `https://milaura.fr` aux largeurs 1440, 430, 390 et 360 px : largeur exacte, signature sur une ligne, trois parcours actifs, trois preuves chargees et aucun chevauchement du label LFG ;
+- navbar scrollee mesuree a `rgb(220, 235, 232)`, liens prune `rgb(47, 34, 45)` et filtre du logo `none` ;
+- captures live : `output/playwright/milaura-home-hero-v2-live-desktop-1440.png`, `output/playwright/milaura-home-hero-v2-live-desktop-1440-bridge.png`, `output/playwright/milaura-home-hero-v2-live-mobile-390.png` et `output/playwright/milaura-home-hero-v2-live-mobile-390-bridge.png` ;
+- aucune PDP, carte produit, collection, produit, stock, prix ou donnee catalogue modifies ;
+- les travaux Navigation et Recommandation restent sur leurs worktrees de developpement et n'ont pas ete deployes.

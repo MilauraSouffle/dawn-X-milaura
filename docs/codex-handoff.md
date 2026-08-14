@@ -1,18 +1,18 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-14 09:47 CEST
+Date de mise a jour : 2026-08-14 19:22 CEST
 
 ## Etat de reprise
 
-Les dix Heroes editoriaux GPT Image 2 sont live sur Naissance, Mariage, Bijoux par pierre, Bagues et six collections de pierre. Le push live a ete limite aux 23 fichiers du lot et le pullback est identique bit a bit. Les lots UI sitewide et carrousel sont egalement fermes et live. La direction artistique est maintenant transferee dans un brief autonome pour les futures sessions.
+Le Hero de marque V2 de la homepage est live sur `milaura.fr` apres validation visuelle et autorisation live explicites de Patrice. Le push a ete limite aux neuf fichiers du lot et le pullback est identique bit a bit. Les dix Heroes de destination, l'UI sitewide et le carrousel restent egalement live. Navigation V2 et Recommandation sont deux lots actifs sur le theme de developpement uniquement.
 
 La prochaine reprise design peut se concentrer sur :
 
-1. le bandeau d'engagement mobile a reduire vers 56 px ;
-2. le Hero immersif de la homepage ;
-3. les ajustements de cadrage des Heroes de destination, uniquement apres retour visuel de Patrice ;
-4. l'ajout d'Amethyste au hub Bijoux par pierre ;
-5. le polish des cross-sells Mariage et Naissance.
+1. la refonte creative du bandeau superieur et le devenir des trois preuves LFG, Karine et Metz ;
+2. Navigation et homepage V2 dans son worktree deja actif ;
+3. le systeme de recommandation dans son worktree distinct ;
+4. les ajustements de cadrage des Heroes de destination, uniquement apres retour visuel de Patrice ;
+5. l'ajout d'Amethyste au hub Bijoux par pierre.
 
 Ils ne doivent pas reserver les memes fichiers ni pousser simultanement sur le meme theme Shopify.
 
@@ -73,11 +73,14 @@ Les worktrees et branches ephemeres Heroes, UI sitewide et carrousel sont retire
 
 Les dix routes sont listees dans le checkpoint `2058`. Toute future correction doit conserver la paire desktop/mobile, les vrais produits, le texte HTML et le push cible. Ne pas regenerer une composition deja validee pour corriger un simple cadrage CSS.
 
-## Futur lot : Hero homepage immersif
+## Hero homepage V2 live
 
-Brief copiable : `docs/prompts/2026-08-13-hero-refonte-direction-minerale.md`.
-
-Objectif : conserver le Hero valide, agrandir la facette centrale et accueillir une video reelle de 6 a 8 secondes ou un poster MilAura valide. Le media domine ; le texte et les actions restent discrets. Aucune grosse pastille, aucun mannequin IA et aucun live avant le GO visuel de Patrice.
+- commits du lot : `f88c9c36`, `204ef589` et `cc57efef` ;
+- merge d'integration : `abb301fd` ;
+- theme live : `190430282075` ;
+- pullback : 9/9 identique bit a bit ;
+- controle public direct : 1440, 430, 390 et 360 px, trois parcours actifs, aucune largeur excedentaire, navbar aigue-marine au scroll ;
+- checkpoint : `docs/checkpoints/2026-08-14-1715-homepage-hero-v2-dev.md`.
 
 ## Baseline UI sitewide live
 
@@ -89,7 +92,7 @@ Le lot est ferme et live. Ses variantes partagees sont la baseline actuelle. Tou
 
 - ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu ;
 - polir legerement les cross-sells Mariage et Naissance sans les supprimer ;
-- bandeau d'engagement mobile a reduire vers 56 px ;
+- bandeau superieur a retravailler visuellement, avec decision sur le transfert des trois preuves du Hero ;
 - verifier plus tard GSC, GA4, Merchant Center, Pinterest et le parcours reel du point relais.
 
 ## Interdits de reprise
@@ -106,4 +109,4 @@ Le lot est ferme et live. Ses variantes partagees sont la baseline actuelle. Tou
 
 ## Prompt de reprise general
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/prompts/2026-08-14-hero-destination-da-reprise.md`, `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md` et `docs/checkpoints/2026-08-14-0947-editorial-hero-da-session-handoff.md`. Les dix Heroes de destination, l'UI sitewide et le carrousel Nouveautes sont live. Commence en lecture seule, choisis un seul lot, declare son worktree et son ownership, puis preserve la hierarchie produit, scene, texte, action. Aucun live sans GO explicite de Patrice.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md` et `docs/checkpoints/2026-08-14-1715-homepage-hero-v2-dev.md`. Le Hero homepage V2, les dix Heroes de destination, l'UI sitewide et le carrousel Nouveautes sont live. Navigation V2 et Recommandation restent sur leurs worktrees de developpement. Commence en lecture seule, choisis un seul lot et respecte les reservations actives. Aucun nouveau live sans GO explicite de Patrice.
