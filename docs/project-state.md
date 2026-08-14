@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-13 21:53 CEST
+Derniere mise a jour : 2026-08-14 09:47 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0, l'UI sitewide et les dix Heroes photographiques GPT Image 2 sont live ; Git est propre et les lots UI, carrousel et Heroes sont fermes.
+Le catalogue V1, la PDP-P0, l'UI sitewide et les dix Heroes photographiques GPT Image 2 sont live ; les lots UI, carrousel et Heroes sont fermes, et leur direction artistique est transmise aux futures sessions.
 
 ## Source de verite et etat du depot
 
@@ -88,7 +88,7 @@ Patrice a donne son GO live explicite le 2026-08-13. Le deploiement sur le theme
 
 Validation publique : les dix routes repondent en HTTP 200, rendent exactement un H1, aucun `noindex` et les deux assets Hero attendus. Le controle Playwright desktop et mobile confirme le chargement et le cadrage du nouveau Hero Naissance. Les deux erreurs console observees viennent du cadre Shop App bloque par sa propre politique CSP et ne concernent pas le Hero.
 
-La regle est canonisee dans `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`. Checkpoint : `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md`.
+La regle est canonisee dans `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`. Le contrat de reprise complet, la cartographie technique et le prompt GPT Image 2 vivent dans `docs/prompts/2026-08-14-hero-destination-da-reprise.md`. Checkpoints : `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md` et `docs/checkpoints/2026-08-14-0947-editorial-hero-da-session-handoff.md`.
 
 ## Hubs editoriaux Mariage, Naissance et Bijoux par pierre
 
@@ -210,9 +210,11 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Controler visuellement les dix Heroes dans l'usage reel et relever uniquement les ajustements de cadrage necessaires.
-2. Prototyper le bandeau 56 px et le Hero immersif de la homepage en reprenant la nouvelle regle media-first.
-3. Ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu, puis polir les cross-sells Mariage et Naissance.
+1. Prototyper le bandeau d'engagement mobile vers 56 px sans perdre les trois preuves essentielles.
+2. Prototyper le Hero immersif de la homepage avec une image forte ou une video reelle courte.
+3. Corriger uniquement les cadrages de destination signales precisement par Patrice, sans regeneration reflexe.
+4. Ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu.
+5. Polir les cross-sells Mariage et Naissance sans les supprimer.
 
 ## Dependances encore ouvertes
 
@@ -240,5 +242,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-13-1752-hub-inline-products-live.md`
 - `docs/checkpoints/2026-08-13-1840-home-seasonal-da-live-handoff.md`
 - `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md`
+- `docs/checkpoints/2026-08-14-0947-editorial-hero-da-session-handoff.md`
+- `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

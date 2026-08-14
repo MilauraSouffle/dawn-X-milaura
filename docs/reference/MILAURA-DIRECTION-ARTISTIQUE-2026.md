@@ -89,6 +89,17 @@ References implementees :
 
 Brief operationnel : `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`.
 
+### 6.2 Contrat de reprise des Heroes
+
+Toute future session qui cree, etend ou polit un Hero de destination doit commencer par :
+
+- `docs/prompts/2026-08-14-hero-destination-da-reprise.md` pour la hierarchie visuelle, la cartographie des dix destinations, les formats, le prompt GPT Image 2 et les controles ;
+- `docs/checkpoints/2026-08-14-0947-editorial-hero-da-session-handoff.md` pour l'etat live et Git confirme a la fermeture du lot.
+
+La hierarchie reste immuable : produit exact, scene et matiere, texte HTML, action discrete. Un simple probleme de cadrage se corrige en CSS sans regenerer l'image. Une nouvelle composition utilise les vrais visuels produit comme references et l'outil OpenAI imagegen, puis reste sur le theme de developpement jusqu'au GO visuel explicite de Patrice.
+
+Cette regle vaut aussi pour les futures pages de destination. Elles peuvent recevoir une palette propre a leur pierre, mais jamais au prix de la fidelite du produit, de la lisibilite du H1 ou de la coherence globale MilAura.
+
 ## 7. Anti-patterns
 
 - panneau blanc ajoute sous une photo uniquement pour contenir les informations ;
