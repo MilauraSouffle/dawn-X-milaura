@@ -105,3 +105,19 @@ Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO v
 - captures live : `output/playwright/milaura-home-hero-v2-live-desktop-1440.png`, `output/playwright/milaura-home-hero-v2-live-desktop-1440-bridge.png`, `output/playwright/milaura-home-hero-v2-live-mobile-390.png` et `output/playwright/milaura-home-hero-v2-live-mobile-390-bridge.png` ;
 - aucune PDP, carte produit, collection, produit, stock, prix ou donnee catalogue modifies ;
 - les travaux Navigation et Recommandation restent sur leurs worktrees de developpement et n'ont pas ete deployes.
+
+## Hotfix live du 2026-08-14 a 19:37 CEST
+
+- GO live direct explicite de Patrice dans la tache Hero homepage V2 ;
+- texte descriptif realigne avec le bord gauche du H1 sur desktop et mobile ;
+- ancien bandeau superieur retire du DOM public, variable `--milaura-announcement-height` ramenee a `0px` et padding haut du body a `0px` ;
+- label compact `LFG Paris · Certificats presentes sur les fiches concernees` retire du Hero ;
+- trois preuves LFG, Karine et Metz conservees au pont du Hero en attendant leur transfert dans le futur bandeau-vitrine ;
+- commit du hotfix : `be2705e7` ; merge d'integration : `969f6c49` ;
+- push live strict limite a `sections/milaura-announcement.liquid` et `sections/milaura-hero-portal.liquid`, avec `--nodelete --strict --allow-live` ;
+- pullback live : 2 fichiers sur 2 identiques bit a bit au checkout d'integration ;
+- controle public direct sur `https://milaura.fr` aux largeurs 1440, 430, 390 et 360 px : largeur exacte, texte aligne avec le H1, bandeau absent, label absent, trois preuves chargees ;
+- captures live : `output/playwright/milaura-home-hero-hotfix-live-desktop-1440.png`, `output/playwright/milaura-home-hero-hotfix-live-mobile-390.png` et `output/playwright/milaura-home-hero-hotfix-live-mobile-390-bridge.png` ;
+- Theme Check : 0 erreur et 28 avertissements historiques dans 11 fichiers ;
+- aucune PDP, carte produit, collection, menu, produit, stock, prix ou donnee catalogue modifies ;
+- le lot Navigation V2 doit synchroniser le merge `969f6c49` avant tout futur preview ou deploiement de ses versions de `milaura-announcement.liquid` et `milaura-hero-portal.liquid`.
