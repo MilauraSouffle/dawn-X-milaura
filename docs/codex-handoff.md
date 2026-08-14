@@ -1,18 +1,17 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-14 19:37 CEST
+Date de mise a jour : 2026-08-14 20:07 CEST
 
 ## Etat de reprise
 
-Le Hero de marque V2 de la homepage est live sur `milaura.fr` apres validation visuelle et autorisation live explicites de Patrice. Le hotfix du 2026-08-14 a aligne le texte descriptif avec le H1, retire le label LFG compact et masque l'ancien bandeau superieur. Le push a ete limite aux deux sections concernees et le pullback est identique bit a bit. Les trois preuves restent temporairement au pont du Hero. Navigation V2 et Recommandation sont deux lots actifs sur le theme de developpement uniquement.
+Le Hero de marque V2 et son nouveau bandeau-vitrine sont live sur `milaura.fr` apres validation visuelle et autorisation live explicites de Patrice. Les trois bulles du pont Hero ont ete retirees. Le bandeau presente successivement une preuve LFG, la selection de Karine et l'atelier de Metz, avec une photographie reelle, une rotation de six secondes et un controle manuel. La phrase validee est `Tous nos minéraux et bijoux sont soigneusement sélectionnés par Karine.` Le push a ete limite aux deux sections et deux vignettes, puis le pullback live 4/4 a ete confirme identique bit a bit. Navigation V2 et Recommandation sont deux lots actifs sur le theme de developpement uniquement.
 
 La prochaine reprise design peut se concentrer sur :
 
-1. la refonte creative du bandeau superieur en vitrine publicitaire, puis le retrait coordonne des trois preuves LFG, Karine et Metz du pont du Hero ;
-2. Navigation et homepage V2 dans son worktree deja actif ;
-3. le systeme de recommandation dans son worktree distinct ;
-4. les ajustements de cadrage des Heroes de destination, uniquement apres retour visuel de Patrice ;
-5. l'ajout d'Amethyste au hub Bijoux par pierre.
+1. Navigation et homepage V2 dans son worktree deja actif ; la synchronisation locale de `254edefd` est confirmee par `15d74eb3`, sans push Shopify ni deploiement ;
+2. le systeme de recommandation dans son worktree distinct ;
+3. les ajustements de cadrage des Heroes de destination, uniquement apres retour visuel de Patrice ;
+4. l'ajout d'Amethyste au hub Bijoux par pierre.
 
 Ils ne doivent pas reserver les memes fichiers ni pousser simultanement sur le meme theme Shopify.
 
