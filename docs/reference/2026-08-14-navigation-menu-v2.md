@@ -2,7 +2,16 @@
 
 Date : 2026-08-14
 
-Statut : prêt pour preview sur le thème de développement. Aucun changement du menu Shopify public avant GO visuel explicite.
+Statut : prêt sur le thème de preview isolé `199957807451`, `MilAura Navigation V2 2026-08-14`. Aucun changement du menu Shopify public avant GO visuel explicite.
+
+Preview globale : `https://milaura-2.myshopify.com?preview_theme_id=199957807451`.
+
+Les deux templates de guide peuvent être contrôlés avant création des pages Admin avec ces routes de preview temporaires :
+
+- pierres : `https://milaura-2.myshopify.com/pages/bijoux-par-pierre?view=milaura-guide-pierres&preview_theme_id=199957807451` ;
+- senteurs : `https://milaura-2.myshopify.com/pages/bijoux-par-pierre?view=milaura-guide-senteurs&preview_theme_id=199957807451`.
+
+Ces deux URLs de contrôle ne sont pas les routes canoniques futures. Les routes canoniques restent `/pages/guide-des-pierres` et `/pages/guide-des-senteurs`.
 
 ## Objectif
 

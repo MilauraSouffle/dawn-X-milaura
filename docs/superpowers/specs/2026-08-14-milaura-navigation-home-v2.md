@@ -2,7 +2,7 @@
 
 Date : 2026-08-14
 
-Statut : contrat de conception et d implementation pour preview sur le theme de developpement `199421952347`. Aucun live sans GO visuel explicite de Patrice.
+Statut : implementation disponible sur le theme de preview isole `199957807451`, `MilAura Navigation V2 2026-08-14`. Aucun live sans GO visuel explicite de Patrice.
 
 ## 1. Mission
 
