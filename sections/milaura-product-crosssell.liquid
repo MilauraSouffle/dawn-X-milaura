@@ -1,435 +1,296 @@
 {%- comment -%}
   MILAURA PRODUCT CROSSSELL
-  Version 7.0 - Carousel + cartes Milaura + cascade intelligente
+  Version 8.0 : recommandations coherentes et rail produit partage.
 
-  Utilise le snippet milaura-card-product (identique aux pages collection)
-  Cascade de recommandations (par priorite) :
-  1. Metafield milaura.crosssell_products (curation manuelle par produit)
-  2. Meme pierre (stone_handle) - automatique
-  3. Meme type de produit (product_type_handle) - automatique
-  4. Collection fallback - filet de securite
+  Une seule famille est affichee par ordre de priorite :
+  1. selection manuelle milaura.crosssell_products ;
+  2. meme pierre ;
+  3. meme type de produit ;
+  4. collection de repli.
 
-  Scan limite a 50 produits par tier (150 max) pour la performance
+  Les familles ne sont jamais melangees dans le meme rail.
 {%- endcomment -%}
 
+{{ 'milaura-section-heading.css' | asset_url | stylesheet_tag }}
+
 {%- liquid
-  assign max_products = section.settings.products_to_show | default: 4
+  assign max_products = section.settings.products_to_show | default: 4 | at_most: 4
   assign min_products = section.settings.min_products | default: 1
   assign current_product_id = product.id | default: 0
   assign scan_limit = 50
 
-  assign current_stone = product.metafields.milaura.stone_handle
-  assign current_type = product.metafields.milaura.product_type_handle | default: product.type | downcase | handleize
-
-  assign metafield_products = product.metafields.milaura.crosssell_products.value
-  assign use_metafield = false
-  if metafield_products != blank and metafield_products.size > 0
-    assign use_metafield = true
+  assign current_stone = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
+  assign stone_label = product.metafields.milaura.stone_name.value | default: product.metafields.milaura.stone_name
+  if stone_label == blank and current_stone != blank
+    assign stone_label = current_stone | replace: '-', ' ' | capitalize
   endif
 
-  assign the_collection = collections[section.settings.fallback_collection]
+  assign current_type = product.metafields.milaura.product_type_handle.value | default: product.metafields.milaura.product_type_handle | default: product.type | downcase | handleize
+  assign metafield_products = product.metafields.milaura.crosssell_products.value
+  assign fallback_collection = collections[section.settings.fallback_collection]
 
-  assign has_products = false
-  if use_metafield and metafield_products.size >= min_products
-    assign has_products = true
-  elsif the_collection != blank and the_collection.products.size > 1
-    assign has_products = true
+  assign recommendation_cards = ''
+  assign recommendation_mode = ''
+  assign shown_count = 0
+-%}
+
+{%- if metafield_products != blank -%}
+  {%- assign candidate_count = 0 -%}
+  {%- assign candidate_ids = ',' -%}
+  {%- capture candidate_cards -%}
+    {%- for rec_product in metafield_products -%}
+      {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
+      {%- if candidate_count >= max_products -%}{%- break -%}{%- endif -%}
+      {%- assign rec_key = ',' | append: rec_product.id | append: ',' -%}
+      {%- if candidate_ids contains rec_key -%}{%- continue -%}{%- endif -%}
+      {%- assign candidate_count = candidate_count | plus: 1 -%}
+      {%- if candidate_count <= 2 -%}{%- assign image_loading = 'eager' -%}{%- else -%}{%- assign image_loading = 'lazy' -%}{%- endif -%}
+      {% render 'milaura-product-card',
+        product: rec_product,
+        img_loading: image_loading,
+        show_vendor: section.settings.show_vendor,
+        show_badges: true,
+        show_secondary_image: true,
+        force_bestseller_badge: false
+      %}
+      {%- assign candidate_ids = candidate_ids | append: rec_product.id | append: ',' -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if candidate_count >= min_products -%}
+    {%- assign recommendation_cards = candidate_cards -%}
+    {%- assign recommendation_mode = 'curated' -%}
+    {%- assign shown_count = candidate_count -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if shown_count < min_products and current_stone != blank and fallback_collection != blank -%}
+  {%- assign candidate_count = 0 -%}
+  {%- assign candidate_ids = ',' -%}
+  {%- capture candidate_cards -%}
+    {%- for rec_product in fallback_collection.products limit: scan_limit -%}
+      {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
+      {%- if candidate_count >= max_products -%}{%- break -%}{%- endif -%}
+      {%- assign rec_key = ',' | append: rec_product.id | append: ',' -%}
+      {%- if candidate_ids contains rec_key -%}{%- continue -%}{%- endif -%}
+      {%- assign rec_stone = rec_product.metafields.milaura.stone_handle.value | default: rec_product.metafields.milaura.stone_handle -%}
+      {%- unless rec_stone == current_stone -%}{%- continue -%}{%- endunless -%}
+      {%- assign candidate_count = candidate_count | plus: 1 -%}
+      {%- if candidate_count <= 2 -%}{%- assign image_loading = 'eager' -%}{%- else -%}{%- assign image_loading = 'lazy' -%}{%- endif -%}
+      {% render 'milaura-product-card',
+        product: rec_product,
+        img_loading: image_loading,
+        show_vendor: section.settings.show_vendor,
+        show_badges: true,
+        show_secondary_image: true,
+        force_bestseller_badge: false
+      %}
+      {%- assign candidate_ids = candidate_ids | append: rec_product.id | append: ',' -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if candidate_count >= min_products -%}
+    {%- assign recommendation_cards = candidate_cards -%}
+    {%- assign recommendation_mode = 'stone' -%}
+    {%- assign shown_count = candidate_count -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if shown_count < min_products and current_type != blank and fallback_collection != blank -%}
+  {%- assign candidate_count = 0 -%}
+  {%- assign candidate_ids = ',' -%}
+  {%- capture candidate_cards -%}
+    {%- for rec_product in fallback_collection.products limit: scan_limit -%}
+      {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
+      {%- if candidate_count >= max_products -%}{%- break -%}{%- endif -%}
+      {%- assign rec_key = ',' | append: rec_product.id | append: ',' -%}
+      {%- if candidate_ids contains rec_key -%}{%- continue -%}{%- endif -%}
+      {%- assign rec_type = rec_product.metafields.milaura.product_type_handle.value | default: rec_product.metafields.milaura.product_type_handle | default: rec_product.type | downcase | handleize -%}
+      {%- unless rec_type == current_type -%}{%- continue -%}{%- endunless -%}
+      {%- assign candidate_count = candidate_count | plus: 1 -%}
+      {%- if candidate_count <= 2 -%}{%- assign image_loading = 'eager' -%}{%- else -%}{%- assign image_loading = 'lazy' -%}{%- endif -%}
+      {% render 'milaura-product-card',
+        product: rec_product,
+        img_loading: image_loading,
+        show_vendor: section.settings.show_vendor,
+        show_badges: true,
+        show_secondary_image: true,
+        force_bestseller_badge: false
+      %}
+      {%- assign candidate_ids = candidate_ids | append: rec_product.id | append: ',' -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if candidate_count >= min_products -%}
+    {%- assign recommendation_cards = candidate_cards -%}
+    {%- assign recommendation_mode = 'type' -%}
+    {%- assign shown_count = candidate_count -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if shown_count < min_products and fallback_collection != blank -%}
+  {%- assign candidate_count = 0 -%}
+  {%- assign candidate_ids = ',' -%}
+  {%- capture candidate_cards -%}
+    {%- for rec_product in fallback_collection.products limit: scan_limit -%}
+      {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
+      {%- if candidate_count >= max_products -%}{%- break -%}{%- endif -%}
+      {%- assign rec_key = ',' | append: rec_product.id | append: ',' -%}
+      {%- if candidate_ids contains rec_key -%}{%- continue -%}{%- endif -%}
+      {%- assign candidate_count = candidate_count | plus: 1 -%}
+      {%- if candidate_count <= 2 -%}{%- assign image_loading = 'eager' -%}{%- else -%}{%- assign image_loading = 'lazy' -%}{%- endif -%}
+      {% render 'milaura-product-card',
+        product: rec_product,
+        img_loading: image_loading,
+        show_vendor: section.settings.show_vendor,
+        show_badges: true,
+        show_secondary_image: true,
+        force_bestseller_badge: false
+      %}
+      {%- assign candidate_ids = candidate_ids | append: rec_product.id | append: ',' -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if candidate_count >= min_products -%}
+    {%- assign recommendation_cards = candidate_cards -%}
+    {%- assign recommendation_mode = 'fallback' -%}
+    {%- assign shown_count = candidate_count -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- liquid
+  assign heading_title = 'À découvrir aussi'
+  assign crosssell_heading_id = 'MilauraCrosssellTitle-' | append: section.id
+
+  if recommendation_mode == 'curated'
+    assign heading_title = 'À associer à ce produit'
+  elsif recommendation_mode == 'stone'
+    assign heading_title = 'D’autres créations avec cette pierre'
+    if stone_label != blank
+      assign heading_title = 'D’autres créations en ' | append: stone_label
+    endif
+  elsif recommendation_mode == 'type'
+    if current_type contains 'collier'
+      assign heading_title = 'D’autres colliers'
+    elsif current_type contains 'bracelet'
+      assign heading_title = 'D’autres bracelets'
+    elsif current_type contains 'bague'
+      assign heading_title = 'D’autres bagues'
+    elsif current_type contains 'boucle'
+      assign heading_title = 'D’autres boucles d’oreilles'
+    elsif current_type contains 'bougie'
+      assign heading_title = 'D’autres bougies'
+    elsif current_type contains 'pierre' or current_type contains 'mineral'
+      assign heading_title = 'D’autres pierres'
+    endif
   endif
 -%}
 
-{%- if has_products -%}
-{% style %}
-  #MilauraCrosssell-{{ section.id }} {
-    padding: 20px 0;
-    background: transparent;
-    overflow: hidden;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 var(--milaura-spacing-sm);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-header {
-    text-align: center;
-    margin-bottom: var(--milaura-spacing-md);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-title {
-    font-family: var(--milaura-font-display);
-    font-size: {{ section.settings.title_size_mobile }}px;
-    font-weight: 600;
-    color: {{ section.settings.title_color }};
-    margin: 0 0 8px 0;
-    line-height: 1.2;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-subtitle {
-    font-family: var(--milaura-font-texte);
-    font-size: {{ section.settings.subtitle_size_mobile }}px;
-    color: {{ section.settings.subtitle_color }};
-    opacity: 0.8;
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  /* Carousel */
-  #MilauraCrosssell-{{ section.id }} .crosssell-carousel-wrapper {
-    position: relative;
-    margin: 0 calc(-1 * var(--milaura-spacing-sm));
-    padding: 0 var(--milaura-spacing-sm);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 10px 0 20px 0;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-carousel::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Cartes dans le carousel */
-  #MilauraCrosssell-{{ section.id }} .crosssell-carousel .milaura-product-card {
-    flex: 0 0 auto;
-    width: 260px;
-    scroll-snap-align: start;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-carousel .milaura-product-card:first-child {
-    margin-left: var(--milaura-spacing-sm);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-carousel .milaura-product-card:last-child {
-    margin-right: var(--milaura-spacing-sm);
-  }
-
-  /* Dots */
-  #MilauraCrosssell-{{ section.id }} .crosssell-dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--milaura-esp-2xs);
-    margin-top: var(--milaura-esp-sm);
-    padding: var(--milaura-esp-2xs) var(--milaura-esp-sm);
-    background: transparent;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-dot {
-    width: var(--milaura-cible-tactile);
-    height: var(--milaura-cible-tactile);
-    position: relative;
-    border-radius: var(--milaura-rayon-net);
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-dot::after {
-    content: '';
-    position: absolute;
-    right: var(--milaura-esp-xs);
-    bottom: calc(50% - var(--milaura-rayon-sm));
-    left: var(--milaura-esp-xs);
-    height: var(--milaura-rayon-sm);
-    background: var(--milaura-aigue-pierre);
-    transition: background-color var(--milaura-transition-rapide);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-dot:hover::after,
-  #MilauraCrosssell-{{ section.id }} .crosssell-dot.is-active::after {
-    background: var(--milaura-or);
-  }
-
-  #MilauraCrosssell-{{ section.id }} .crosssell-dot:focus-visible {
-    outline: var(--milaura-focus);
-    outline-offset: var(--milaura-focus-offset);
-  }
-
-  /* Desktop */
-  @media screen and (min-width: 1024px) {
-    #MilauraCrosssell-{{ section.id }} .crosssell-title {
-      font-size: {{ section.settings.title_size_desktop }}px;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-subtitle {
-      font-size: {{ section.settings.subtitle_size_desktop }}px;
-    }
-  }
-
-  @media screen and (min-width: 1200px) {
-    #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
-      justify-content: center;
-      overflow-x: visible;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-carousel .milaura-product-card:first-child {
-      margin-left: 0;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-carousel .milaura-product-card:last-child {
-      margin-right: 0;
-    }
-
-    #MilauraCrosssell-{{ section.id }} .crosssell-dots {
-      display: none;
-    }
-  }
-
-  /* Tablette */
-  @media screen and (max-width: 1023px) and (min-width: 601px) {
-    #MilauraCrosssell-{{ section.id }} .crosssell-carousel .milaura-product-card {
-      width: 220px;
-    }
-  }
-
-  /* Mobile */
-  @media screen and (max-width: 600px) {
+{%- if shown_count >= min_products -%}
+  {% style %}
     #MilauraCrosssell-{{ section.id }} {
-      padding: 20px 0;
+      padding: var(--milaura-esp-lg) 0 var(--milaura-esp-xl);
+      overflow: hidden;
+      background: transparent;
     }
 
-    #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
-      gap: 14px;
+    #MilauraCrosssell-{{ section.id }} .crosssell-header {
+      max-width: 1200px;
+      margin: 0 auto var(--milaura-esp-md);
+      padding-inline: var(--milaura-esp-sm);
     }
 
-    #MilauraCrosssell-{{ section.id }} .crosssell-carousel .milaura-product-card {
-      width: 254px;
-    }
-  }
-
-  /* Petit mobile */
-  @media screen and (max-width: 380px) {
-    #MilauraCrosssell-{{ section.id }} .crosssell-carousel {
-      gap: 10px;
+    #MilauraCrosssell-{{ section.id }} .crosssell-carousel-wrapper {
+      --milaura-rail-gap: var(--milaura-esp-md);
+      --milaura-rail-card-desktop: clamp(270px, 24vw, 300px);
     }
 
-    #MilauraCrosssell-{{ section.id }} .crosssell-carousel .milaura-product-card {
-      width: 238px;
-    }
-  }
+    @media screen and (max-width: 749px) {
+      #MilauraCrosssell-{{ section.id }} {
+        padding: var(--milaura-esp-md) 0 var(--milaura-esp-lg);
+      }
 
-  @media (prefers-reduced-motion: reduce) {
-    #MilauraCrosssell-{{ section.id }} .crosssell-dot {
-      transition: none;
+      #MilauraCrosssell-{{ section.id }} .crosssell-header {
+        margin-bottom: var(--milaura-esp-sm);
+      }
     }
-  }
-{% endstyle %}
+  {% endstyle %}
 
-<section
-  id="MilauraCrosssell-{{ section.id }}"
-  class="milaura-product-crosssell"
-  data-section-id="{{ section.id }}"
-  aria-label="{{ section.settings.title }}"
->
-  <div class="crosssell-container">
+  <section
+    id="MilauraCrosssell-{{ section.id }}"
+    class="milaura-product-crosssell"
+    data-section-id="{{ section.id }}"
+    {% if section.settings.show_title %}aria-labelledby="{{ crosssell_heading_id }}"{% else %}aria-label="{{ heading_title | escape }}"{% endif %}
+  >
     {%- if section.settings.show_title -%}
-      <header class="crosssell-header">
-        <h2 class="crosssell-title">{{ section.settings.title }}</h2>
-        {%- if section.settings.subtitle != blank -%}
-          <p class="crosssell-subtitle">{{ section.settings.subtitle }}</p>
-        {%- endif -%}
-      </header>
-    {%- endif -%}
-  </div>
-
-  <div class="crosssell-carousel-wrapper">
-    <div class="crosssell-carousel milaura-cards">
-
-      {%- assign shown_count = 0 -%}
-      {%- assign shown_ids = '' -%}
-      {%- assign shown_titles = '' -%}
-
-      {%- if use_metafield -%}
-        {%- comment -%} TIER 1 : Metafield cure manuellement {%- endcomment -%}
-        {%- for rec_product in metafield_products -%}
-          {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
-          {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
-          {%- assign rec_id_check = rec_product.id | append: ',' -%}
-          {%- if shown_ids contains rec_id_check -%}{%- continue -%}{%- endif -%}
-          {%- assign title_check = rec_product.title | downcase | append: ',' -%}
-          {%- if shown_titles contains title_check -%}{%- continue -%}{%- endif -%}
-          {%- assign shown_count = shown_count | plus: 1 -%}
-          {%- if shown_count <= 2 -%}{%- assign lazy_load = 'eager' -%}{%- else -%}{%- assign lazy_load = 'lazy' -%}{%- endif -%}
-
-          {% render 'milaura-product-card',
-            product: rec_product,
-            img_loading: lazy_load,
-            show_vendor: section.settings.show_vendor,
-            show_badges: true,
-            show_secondary_image: true,
-            force_bestseller_badge: false
+      <div class="crosssell-header">
+        {%- if recommendation_mode == 'curated' -%}
+          {% render 'milaura-section-heading',
+            eyebrow: 'Sélection de Karine',
+            title: heading_title,
+            heading_tag: 'h2',
+            heading_id: crosssell_heading_id,
+            align: 'center',
+            size: 'section',
+            eyebrow_style: 'utility'
           %}
-          {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
-          {%- assign shown_titles = shown_titles | append: rec_product.title | downcase | append: ',' -%}
-        {%- endfor -%}
-
-      {%- else -%}
-        {%- comment -%} TIER 2 : Meme pierre (stone_handle) {%- endcomment -%}
-        {%- if current_stone != blank and shown_count < max_products -%}
-          {%- for rec_product in the_collection.products limit: scan_limit -%}
-            {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
-            {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
-            {%- assign rec_id_check = rec_product.id | append: ',' -%}
-            {%- if shown_ids contains rec_id_check -%}{%- continue -%}{%- endif -%}
-            {%- assign title_check = rec_product.title | downcase | append: ',' -%}
-            {%- if shown_titles contains title_check -%}{%- continue -%}{%- endif -%}
-            {%- assign rec_stone = rec_product.metafields.milaura.stone_handle -%}
-            {%- if rec_stone == current_stone -%}
-              {%- assign shown_count = shown_count | plus: 1 -%}
-              {%- if shown_count <= 2 -%}{%- assign lazy_load = 'eager' -%}{%- else -%}{%- assign lazy_load = 'lazy' -%}{%- endif -%}
-
-              {% render 'milaura-product-card',
-                product: rec_product,
-                img_loading: lazy_load,
-                show_vendor: section.settings.show_vendor,
-                show_badges: true,
-                show_secondary_image: true,
-                force_bestseller_badge: false
-              %}
-              {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
-              {%- assign shown_titles = shown_titles | append: rec_product.title | downcase | append: ',' -%}
-            {%- endif -%}
-          {%- endfor -%}
+        {%- else -%}
+          {% render 'milaura-section-heading',
+            title: heading_title,
+            heading_tag: 'h2',
+            heading_id: crosssell_heading_id,
+            align: 'center',
+            size: 'section',
+            eyebrow_style: 'utility'
+          %}
         {%- endif -%}
+      </div>
+    {%- endif -%}
 
-        {%- comment -%} TIER 3 : Meme type de produit {%- endcomment -%}
-        {%- if current_type != blank and shown_count < max_products -%}
-          {%- for rec_product in the_collection.products limit: scan_limit -%}
-            {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
-            {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
-            {%- assign rec_id_check = rec_product.id | append: ',' -%}
-            {%- if shown_ids contains rec_id_check -%}{%- continue -%}{%- endif -%}
-            {%- assign title_check = rec_product.title | downcase | append: ',' -%}
-            {%- if shown_titles contains title_check -%}{%- continue -%}{%- endif -%}
-            {%- assign rec_type = rec_product.metafields.milaura.product_type_handle | default: rec_product.type | downcase | handleize -%}
-            {%- if rec_type == current_type -%}
-              {%- assign shown_count = shown_count | plus: 1 -%}
-              {%- if shown_count <= 2 -%}{%- assign lazy_load = 'eager' -%}{%- else -%}{%- assign lazy_load = 'lazy' -%}{%- endif -%}
+    <div class="crosssell-carousel-wrapper milaura-product-rail-shell milaura-product-rail-shell--carousel" data-milaura-product-rail-root>
+      <button
+        type="button"
+        class="milaura-product-rail__arrow milaura-product-rail__arrow--previous"
+        data-milaura-rail-previous
+        aria-label="Produits précédents"
+        disabled
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
 
-              {% render 'milaura-product-card',
-                product: rec_product,
-                img_loading: lazy_load,
-                show_vendor: section.settings.show_vendor,
-                show_badges: true,
-                show_secondary_image: true,
-                force_bestseller_badge: false
-              %}
-              {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
-              {%- assign shown_titles = shown_titles | append: rec_product.title | downcase | append: ',' -%}
-            {%- endif -%}
+      <div
+        class="crosssell-carousel milaura-cards milaura-product-rail milaura-product-rail--desktop-carousel"
+        data-milaura-product-rail
+        role="list"
+        tabindex="0"
+        aria-label="{{ heading_title | escape }}"
+      >
+        {{ recommendation_cards }}
+      </div>
+
+      <button
+        type="button"
+        class="milaura-product-rail__arrow milaura-product-rail__arrow--next"
+        data-milaura-rail-next
+        aria-label="Produits suivants"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+
+      {%- if shown_count > 1 -%}
+        <div class="milaura-product-rail__navigation" data-milaura-rail-navigation aria-label="Navigation produits" hidden>
+          {%- for i in (1..shown_count) -%}
+            <button
+              type="button"
+              class="milaura-product-rail__dot{% if forloop.first %} is-active{% endif %}"
+              data-milaura-rail-dot="{{ forloop.index0 }}"
+              aria-label="Voir le produit {{ forloop.index }} sur {{ shown_count }}"
+            ></button>
           {%- endfor -%}
-        {%- endif -%}
-
-        {%- comment -%} TIER 4 : Filet de securite {%- endcomment -%}
-        {%- if shown_count < max_products -%}
-          {%- for rec_product in the_collection.products limit: scan_limit -%}
-            {%- if rec_product.id == current_product_id -%}{%- continue -%}{%- endif -%}
-            {%- if shown_count >= max_products -%}{%- break -%}{%- endif -%}
-            {%- assign rec_id_check = rec_product.id | append: ',' -%}
-            {%- if shown_ids contains rec_id_check -%}{%- continue -%}{%- endif -%}
-            {%- assign title_check = rec_product.title | downcase | append: ',' -%}
-            {%- if shown_titles contains title_check -%}{%- continue -%}{%- endif -%}
-            {%- assign shown_count = shown_count | plus: 1 -%}
-            {%- if shown_count <= 2 -%}{%- assign lazy_load = 'eager' -%}{%- else -%}{%- assign lazy_load = 'lazy' -%}{%- endif -%}
-
-            {% render 'milaura-product-card',
-              product: rec_product,
-              img_loading: lazy_load,
-              show_vendor: section.settings.show_vendor,
-              show_badges: true,
-              show_secondary_image: true,
-              force_bestseller_badge: false
-            %}
-            {%- assign shown_ids = shown_ids | append: rec_product.id | append: ',' -%}
-            {%- assign shown_titles = shown_titles | append: rec_product.title | downcase | append: ',' -%}
-          {%- endfor -%}
-        {%- endif -%}
-
+        </div>
       {%- endif -%}
-
     </div>
-  </div>
-
-  {%- if shown_count > 1 -%}
-    <div class="crosssell-dots" aria-label="Navigation produits">
-      {%- for i in (1..shown_count) -%}
-        <button
-          type="button"
-          class="crosssell-dot {% if forloop.first %}is-active{% endif %}"
-          data-dot-index="{{ forloop.index0 }}"
-          aria-label="Voir produit {{ forloop.index }}"
-        ></button>
-      {%- endfor -%}
-    </div>
-  {%- endif -%}
-
-</section>
-
-<script>
-(function() {
-  var sectionId = '{{ section.id }}';
-  var root = document.getElementById('MilauraCrosssell-' + sectionId);
-  if (!root) return;
-
-  /* Carousel dots */
-  var carousel = root.querySelector('.crosssell-carousel');
-  if (!carousel) return;
-
-  var dots = Array.from(root.querySelectorAll('.crosssell-dot[data-dot-index]'));
-  var cards = Array.from(carousel.querySelectorAll('.milaura-product-card'));
-
-  if (!cards.length) return;
-
-  function getCarouselGap() {
-    var styles = window.getComputedStyle(carousel);
-    return parseFloat(styles.columnGap || styles.gap) || 0;
-  }
-
-  function updateDots() {
-    if (!dots.length) return;
-    var scrollLeft = carousel.scrollLeft;
-    var cardWidth = cards[0].offsetWidth + getCarouselGap();
-    var activeIndex = Math.round(scrollLeft / cardWidth);
-
-    dots.forEach(function(dot, i) {
-      dot.classList.toggle('is-active', i === activeIndex);
-    });
-  }
-
-  function scrollToCard(index) {
-    var cardWidth = cards[0].offsetWidth + getCarouselGap();
-    carousel.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
-  }
-
-  var scrollTimeout;
-  carousel.addEventListener('scroll', function() {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(updateDots, 50);
-  }, { passive: true });
-
-  dots.forEach(function(dot) {
-    dot.addEventListener('click', function(e) {
-      e.preventDefault();
-      var idx = parseInt(this.getAttribute('data-dot-index'), 10);
-      if (!isNaN(idx)) scrollToCard(idx);
-    });
-  });
-
-  updateDots();
-})();
-</script>
+  </section>
 {%- endif -%}
 
 {% schema %}
@@ -445,14 +306,14 @@
       "type": "collection",
       "id": "fallback_collection",
       "label": "Collection de recherche",
-      "info": "Collection ou chercher les produits similaires. Recommande: 'Tous les produits' ou collection principale."
+      "info": "Collection utilisée pour rechercher une famille cohérente de produits."
     },
     {
       "type": "range",
       "id": "products_to_show",
       "label": "Nombre de produits",
       "min": 2,
-      "max": 6,
+      "max": 4,
       "step": 1,
       "default": 4
     },
@@ -464,97 +325,21 @@
       "max": 4,
       "step": 1,
       "default": 1,
-      "info": "Section cachee si moins de produits trouves"
+      "info": "La section est masquée si aucune famille ne contient ce minimum."
     },
     {
       "type": "paragraph",
-      "content": "Cascade intelligente : 1. Metafield crosssell_products (manuel) - 2. Meme pierre - 3. Meme type - 4. Autres produits"
+      "content": "La première famille disponible est affichée seule : sélection manuelle, même pierre, même type, puis collection de repli."
     },
     {
       "type": "header",
-      "content": "Titre"
+      "content": "Présentation"
     },
     {
       "type": "checkbox",
       "id": "show_title",
-      "label": "Afficher le titre",
+      "label": "Afficher le titre contextuel",
       "default": true
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titre",
-      "default": "Dans la même intention"
-    },
-    {
-      "type": "textarea",
-      "id": "subtitle",
-      "label": "Sous-titre",
-      "default": "Quelques produits qui prolongent l'énergie de celui-ci, sans changer votre choix."
-    },
-    {
-      "type": "header",
-      "content": "Style Titre"
-    },
-    {
-      "type": "range",
-      "id": "title_size_desktop",
-      "label": "Taille titre (desktop)",
-      "min": 24,
-      "max": 44,
-      "step": 1,
-      "unit": "px",
-      "default": 32
-    },
-    {
-      "type": "range",
-      "id": "title_size_mobile",
-      "label": "Taille titre (mobile)",
-      "min": 20,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Couleur du titre",
-      "default": "#000000"
-    },
-    {
-      "type": "header",
-      "content": "Style Sous-titre"
-    },
-    {
-      "type": "range",
-      "id": "subtitle_size_desktop",
-      "label": "Taille sous-titre (desktop)",
-      "min": 14,
-      "max": 22,
-      "step": 1,
-      "unit": "px",
-      "default": 17
-    },
-    {
-      "type": "range",
-      "id": "subtitle_size_mobile",
-      "label": "Taille sous-titre (mobile)",
-      "min": 13,
-      "max": 18,
-      "step": 1,
-      "unit": "px",
-      "default": 15
-    },
-    {
-      "type": "color",
-      "id": "subtitle_color",
-      "label": "Couleur sous-titre",
-      "default": "#666666"
-    },
-    {
-      "type": "header",
-      "content": "Options"
     },
     {
       "type": "checkbox",

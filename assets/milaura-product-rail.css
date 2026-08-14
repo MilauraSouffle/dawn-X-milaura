@@ -1,0 +1,204 @@
+/* Rail de cartes produit partage MilAura.
+   Les sections choisissent leur comportement desktop avec une variante :
+   - desktop-carousel : rail scrollable avec controles lorsque necessaire ;
+   - desktop-grid : grille de quatre cartes sans controles. */
+
+.milaura-product-rail-shell {
+  --milaura-rail-gap: var(--milaura-esp-sm);
+  --milaura-rail-edge: var(--milaura-esp-sm);
+  --milaura-rail-card-mobile: min(84vw, 310px);
+  --milaura-rail-card-tablet: min(42vw, 300px);
+  --milaura-rail-card-desktop: clamp(270px, 24vw, 300px);
+  position: relative;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.milaura-product-rail {
+  display: flex;
+  gap: var(--milaura-rail-gap);
+  width: 100%;
+  margin: 0;
+  padding: var(--milaura-esp-2xs) var(--milaura-rail-edge) var(--milaura-esp-sm);
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-padding-inline: var(--milaura-rail-edge);
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.milaura-product-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.milaura-product-rail:focus-visible {
+  outline: var(--milaura-focus);
+  outline-offset: var(--milaura-focus-offset);
+}
+
+.milaura-product-rail > .milaura-product-card {
+  flex: 0 0 var(--milaura-rail-card-mobile);
+  width: var(--milaura-rail-card-mobile);
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+.milaura-product-rail__arrow {
+  display: none;
+  width: var(--milaura-cible-tactile);
+  min-width: var(--milaura-cible-tactile);
+  height: var(--milaura-cible-tactile);
+  align-items: center;
+  justify-content: center;
+  border: var(--milaura-filet-mineral);
+  border-radius: var(--milaura-rayon-md);
+  color: var(--milaura-prune);
+  background: var(--milaura-surface);
+  box-shadow: none;
+  cursor: pointer;
+  transition:
+    color var(--milaura-transition-rapide),
+    border-color var(--milaura-transition-rapide),
+    background-color var(--milaura-transition-rapide);
+}
+
+.milaura-product-rail__arrow svg {
+  width: var(--milaura-esp-sm);
+  height: var(--milaura-esp-sm);
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.75;
+}
+
+.milaura-product-rail__arrow:hover:not(:disabled) {
+  border-color: var(--milaura-or);
+  color: var(--milaura-aigue-profonde);
+  background: transparent;
+}
+
+.milaura-product-rail__arrow:focus-visible,
+.milaura-product-rail__dot:focus-visible {
+  outline: var(--milaura-focus);
+  outline-offset: var(--milaura-focus-offset);
+}
+
+.milaura-product-rail__arrow:disabled {
+  opacity: var(--milaura-opacite-disabled);
+  cursor: not-allowed;
+}
+
+.milaura-product-rail__navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--milaura-esp-2xs);
+  width: fit-content;
+  margin: var(--milaura-esp-2xs) auto 0;
+  padding-inline: var(--milaura-esp-sm);
+}
+
+.milaura-product-rail__navigation[hidden] {
+  display: none;
+}
+
+.milaura-product-rail__dot {
+  position: relative;
+  width: var(--milaura-cible-tactile);
+  min-width: var(--milaura-cible-tactile);
+  height: var(--milaura-cible-tactile);
+  padding: 0;
+  border: 0;
+  border-radius: var(--milaura-rayon-net);
+  color: var(--milaura-aigue-pierre);
+  background: transparent;
+  cursor: pointer;
+}
+
+.milaura-product-rail__dot::after {
+  content: '';
+  position: absolute;
+  right: var(--milaura-esp-xs);
+  bottom: calc(50% - var(--milaura-rayon-sm));
+  left: var(--milaura-esp-xs);
+  height: var(--milaura-rayon-sm);
+  background: currentColor;
+  transition: background-color var(--milaura-transition-rapide);
+}
+
+.milaura-product-rail__dot:hover,
+.milaura-product-rail__dot.is-active {
+  color: var(--milaura-or);
+}
+
+@media screen and (min-width: 601px) {
+  .milaura-product-rail > .milaura-product-card {
+    flex-basis: var(--milaura-rail-card-tablet);
+    width: var(--milaura-rail-card-tablet);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .milaura-product-rail-shell--carousel {
+    max-width: 1320px;
+    padding-inline: calc(var(--milaura-cible-tactile) + var(--milaura-esp-xs));
+  }
+
+  .milaura-product-rail--desktop-carousel > .milaura-product-card {
+    flex-basis: var(--milaura-rail-card-desktop);
+    width: var(--milaura-rail-card-desktop);
+  }
+
+  .milaura-product-rail-shell--carousel.is-static .milaura-product-rail--desktop-carousel {
+    justify-content: center;
+  }
+
+  .milaura-product-rail-shell--carousel.is-overflowing .milaura-product-rail__arrow {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    display: inline-flex;
+    transform: translateY(-50%);
+  }
+
+  .milaura-product-rail__arrow--previous {
+    left: 0;
+  }
+
+  .milaura-product-rail__arrow--next {
+    right: 0;
+  }
+
+  .milaura-product-rail--desktop-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--milaura-esp-md);
+    align-items: stretch;
+    padding-inline: 0;
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+
+  .milaura-product-rail--desktop-grid > .milaura-product-card {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    scroll-snap-align: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milaura-product-rail {
+    scroll-behavior: auto;
+  }
+
+  .milaura-product-rail__arrow,
+  .milaura-product-rail__dot::after {
+    transition: none;
+  }
+}

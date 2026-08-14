@@ -60,6 +60,13 @@ class CartDrawer extends HTMLElement {
     button.textContent = 'Ajout...';
 
     try {
+      let cartBeforeAdd = null;
+      try {
+        cartBeforeAdd = await this.fetchCart();
+      } catch (error) {
+        console.warn('MilAura quick add preflight cart check failed:', error);
+      }
+
       const cartAddRoute = window.routes?.cart_add_url || '/cart/add';
       const cartAddUrl = cartAddRoute.endsWith('.js') ? cartAddRoute : `${cartAddRoute}.js`;
       const payload = {
@@ -69,6 +76,8 @@ class CartDrawer extends HTMLElement {
       };
 
       let data;
+      let cartAfterAdd = null;
+      let partialAvailabilityMessage = '';
       try {
         const response = await fetch(cartAddUrl, {
           method: 'POST',
@@ -81,7 +90,26 @@ class CartDrawer extends HTMLElement {
         });
         data = await response.json().catch(() => null);
         if (!response.ok || !data || data.status) {
-          throw new Error(data?.description || data?.message || `cart_add_${response.status}`);
+          const errorMessage = data?.description || data?.message || `cart_add_${response.status}`;
+
+          if (response.status === 422 && cartBeforeAdd) {
+            cartAfterAdd = await this.fetchCart();
+            const quantityBefore = this.getVariantQuantity(cartBeforeAdd, variantId);
+            const quantityAfter = this.getVariantQuantity(cartAfterAdd, variantId);
+
+            if (quantityAfter > quantityBefore) {
+              data = {
+                id: variantId,
+                item_count: cartAfterAdd.item_count,
+                sections: await this.fetchCartSections(),
+              };
+              partialAvailabilityMessage = errorMessage;
+            } else {
+              throw new Error(errorMessage);
+            }
+          } else {
+            throw new Error(errorMessage);
+          }
         }
       } catch (error) {
         console.error('MilAura quick add request failed:', error);
@@ -89,8 +117,10 @@ class CartDrawer extends HTMLElement {
         return;
       }
 
-      button.textContent = 'Ajouté';
-      if (typeof window.milauraCartToast === 'function') window.milauraCartToast('Ajouté au panier');
+      button.textContent = partialAvailabilityMessage ? 'Stock ajouté' : 'Ajouté';
+      if (typeof window.milauraCartToast === 'function') {
+        window.milauraCartToast(partialAvailabilityMessage || 'Ajouté au panier');
+      }
 
       this.setActiveElement(button);
       try {
@@ -100,11 +130,7 @@ class CartDrawer extends HTMLElement {
       }
 
       try {
-        const cartRoute = window.routes?.cart_url || '/cart';
-        const cartJsonUrl = cartRoute.endsWith('.js') ? cartRoute : `${cartRoute}.js`;
-        const cartResponse = await fetch(cartJsonUrl, { credentials: 'same-origin' });
-        const cart = await cartResponse.json();
-        if (!cartResponse.ok) throw new Error(`cart_refresh_${cartResponse.status}`);
+        const cart = cartAfterAdd || (await this.fetchCart());
 
         document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
         window.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
@@ -119,6 +145,33 @@ class CartDrawer extends HTMLElement {
         delete button.dataset.milauraQuickAddPending;
       }, 1400);
     }
+  }
+
+  async fetchCart() {
+    const cartRoute = window.routes?.cart_url || '/cart';
+    const cartJsonUrl = cartRoute.endsWith('.js') ? cartRoute : `${cartRoute}.js`;
+    const response = await fetch(cartJsonUrl, { credentials: 'same-origin' });
+    const cart = await response.json();
+    if (!response.ok) throw new Error(`cart_refresh_${response.status}`);
+    return cart;
+  }
+
+  async fetchCartSections() {
+    const cartRoute = window.routes?.cart_url || '/cart';
+    const sectionIds = this.getSectionsToRender().map((section) => section.id).join(',');
+    const separator = cartRoute.includes('?') ? '&' : '?';
+    const response = await fetch(`${cartRoute}${separator}sections=${encodeURIComponent(sectionIds)}`, {
+      credentials: 'same-origin',
+    });
+    const sections = await response.json();
+    if (!response.ok) throw new Error(`cart_sections_${response.status}`);
+    return sections;
+  }
+
+  getVariantQuantity(cart, variantId) {
+    return (cart?.items || []).reduce((total, item) => {
+      return Number(item.variant_id) === variantId ? total + Number(item.quantity || 0) : total;
+    }, 0);
   }
 
   setEmptyState(isEmpty) {
