@@ -11,7 +11,7 @@ Statut : implementation terminee sur le theme de developpement, aucun live, vali
 - Hero plein ecran avec texte HTML fixe et trois scenes photographiques ;
 - trois parcours manuels : `Choisir par pierre`, `Choisir par bijou`, `Me laisser guider` ;
 - chaque parcours change uniquement le media et conserve un vrai lien ;
-- navigation existante conservee, avec traitement transparent limite a la homepage et fond nacre au scroll ;
+- navigation existante conservee, avec traitement transparent limite a la homepage et fond aigue-marine au scroll ;
 - aucun autoplay, aucune video, aucune nouvelle bibliotheque JavaScript et aucun mannequin IA.
 
 ## Fichiers du lot
@@ -65,3 +65,16 @@ Statut : implementation terminee sur le theme de developpement, aucun live, vali
 ## Frontiere et prochaine decision
 
 Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO visuel explicite de Patrice. Apres ce GO, le proprietaire du checkout d'integration pourra merger le commit, verifier l'absence de conflit avec le lot PDP actif, puis decider d'un push live cible et de son pullback. Un GO technique ou un push de previsualisation ne vaut pas GO live.
+
+## Correction apres retour visuel du 2026-08-14 a 17:48 CEST
+
+- la navigation conserve maintenant son fond aigue-marine apres le scroll au lieu de redevenir nacre ;
+- le filtre blanc du logo a ete retire, le logo Shopify reste dans ses couleurs natives ;
+- les parcours restent plus lisibles sur les medias et passent a l'or clair au survol ou au focus ;
+- le label `LFG Paris · Certificats presentes sur les fiches concernees` a ete deplace dans l'angle inferieur droit du Hero ;
+- les trois preuves historiques ont ete restaurees avec leurs vrais assets : certificat LFG, Karine et atelier de Metz ;
+- le pont de preuves chevauche proprement la limite Hero et Selection d'aout, sans recouvrir les liens ni le titre suivant ;
+- controles navigateur sur 1440 x 900, 430 x 932, 390 x 844 et 360 x 800 : aucune largeur excedentaire, trois preuves chargees, aucun chevauchement geometrique entre le label LFG et les parcours ;
+- couleur de la navigation scrollee mesuree : `rgb(63, 116, 116)` ; filtre du logo : `none` ; hover du parcours : `rgb(213, 191, 155)` ;
+- pullback correctif : `sections/milaura-hero-portal.liquid` identique bit a bit au theme de developpement ;
+- le bandeau superieur reste volontairement inchange dans cette correction. Une passe specifique est a planifier apres validation du Hero.

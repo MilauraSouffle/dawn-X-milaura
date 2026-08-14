@@ -6,6 +6,17 @@
   assign hero_body = section.settings.body | default: 'Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.'
   assign hero_proof_source = section.settings.proof_source | default: 'LFG Paris'
   assign hero_proof_detail = section.settings.proof_detail | default: 'Certificats présentés sur les fiches concernées'
+  assign proof_1_label = section.settings.proof_1 | default: 'Pierres certifiées'
+  assign proof_2_label = section.settings.proof_2 | default: 'Préparées par Karine'
+  assign proof_3_label = section.settings.proof_3 | default: 'Expédiées depuis Metz'
+
+  if proof_1_label == 'Pierres naturelles certifiées'
+    assign proof_1_label = 'Pierres certifiées'
+  endif
+
+  if proof_3_label == 'Expédiées depuis notre atelier en France'
+    assign proof_3_label = 'Expédiées depuis Metz'
+  endif
 
   assign stone_link = section.settings.stone_link | default: '/pages/bijoux-par-pierre'
   assign jewelry_link = section.settings.jewelry_link | default: '/collections/bijoux-pierres-naturelles'
@@ -21,7 +32,7 @@
     position: relative;
     z-index: 2;
     margin-top: calc(var(--header-height-desktop, 110px) * -1) !important;
-    overflow: hidden;
+    overflow: visible;
     background: var(--milaura-aigue-profonde);
   }
 
@@ -31,6 +42,10 @@
 
   #MainContent > .shopify-section.milaura-hero-homepage + .shopify-section::before {
     content: none !important;
+  }
+
+  #MainContent > .shopify-section.milaura-hero-homepage + .section-milaura-selection-atelier .milaura-season__shell {
+    padding-top: clamp(48px, 4.2vw, 62px) !important;
   }
 
   #MilauraPortal-{{ section.id }} {
@@ -158,18 +173,26 @@
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__proof {
+    position: absolute;
+    right: clamp(48px, 7vw, 112px);
+    bottom: 88px;
+    z-index: 4;
     display: inline-flex;
     min-height: var(--milaura-cible-tactile);
     align-items: center;
-    margin: 18px 0 0 44px;
+    justify-content: flex-end;
+    max-width: 430px;
+    margin: 0;
     border-top: var(--milaura-filet-or);
     color: var(--milaura-nacre);
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.07em;
     line-height: 1.35;
+    text-align: right;
     text-transform: uppercase;
-    opacity: 0.84;
+    opacity: 0.9;
+    text-shadow: 0 2px 18px var(--milaura-aigue-profonde);
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__proof-source {
@@ -183,7 +206,7 @@
     bottom: 10px;
     left: clamp(48px, 7vw, 112px);
     display: grid;
-    width: min(850px, 64vw);
+    width: min(810px, 56vw);
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -208,8 +231,10 @@
     color: var(--milaura-nacre);
     text-align: left;
     text-decoration: none;
-    opacity: 0.66;
-    transition: opacity var(--milaura-transition-rapide);
+    opacity: 0.82;
+    transition:
+      color var(--milaura-transition-rapide),
+      opacity var(--milaura-transition-rapide);
   }
 
   #MilauraPortal-{{ section.id }} .portal-journey + .portal-journey {
@@ -240,8 +265,13 @@
   }
 
   #MilauraPortal-{{ section.id }} .portal-journey.is-active,
+  #MilauraPortal-{{ section.id }} .portal-journey:focus-visible {
+    opacity: 1;
+  }
+
   #MilauraPortal-{{ section.id }} .portal-journey:hover,
   #MilauraPortal-{{ section.id }} .portal-journey:focus-visible {
+    color: var(--milaura-or-clair);
     opacity: 1;
   }
 
@@ -268,6 +298,7 @@
     font-size: clamp(17px, 1.45vw, 21px);
     letter-spacing: -0.01em;
     line-height: 1.12;
+    text-shadow: 0 2px 18px var(--milaura-aigue-profonde);
   }
 
   #MilauraPortal-{{ section.id }} .portal-journey__label--short {
@@ -292,8 +323,132 @@
     transform: translateX(0);
   }
 
+  #shopify-section-{{ section.id }} .portal-proof-bridge {
+    position: absolute;
+    bottom: 0;
+    left: clamp(40px, 7vw, 112px);
+    z-index: 4;
+    display: grid;
+    width: min(760px, 58vw);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: clamp(24px, 4vw, 58px);
+    padding: 0 var(--milaura-esp-sm);
+    color: var(--milaura-prune);
+    pointer-events: none;
+    transform: translateY(84%);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof {
+    display: grid;
+    min-width: 0;
+    justify-items: center;
+    gap: var(--milaura-esp-2xs);
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof--karine {
+    transform: translateY(-10px);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof--atelier {
+    transform: translateY(7px);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__media {
+    --proof-shape: 48% 52% 47% 53% / 52% 46% 54% 48%;
+    position: relative;
+    width: clamp(88px, 7vw, 106px);
+    aspect-ratio: 1;
+    isolation: isolate;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof--karine .portal-proof__media {
+    --proof-shape: 52% 48% 54% 46% / 47% 53% 49% 51%;
+    width: clamp(98px, 7.8vw, 116px);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof--atelier .portal-proof__media {
+    --proof-shape: 46% 54% 50% 50% / 55% 45% 53% 47%;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__outline,
+  #shopify-section-{{ section.id }} .portal-proof__image-wrap {
+    position: absolute;
+    border-radius: var(--proof-shape);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__outline {
+    z-index: 1;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__outline--gold {
+    inset: 6px -5px -4px 7px;
+    border: var(--milaura-filet-or);
+    transform: rotate(3deg);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__outline--aqua {
+    inset: -5px 7px 6px -5px;
+    border: var(--milaura-filet-mineral);
+    transform: rotate(-2.5deg);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__image-wrap {
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    border: 1px solid var(--milaura-nacre);
+    background: var(--milaura-nacre);
+    box-shadow: var(--milaura-ombre-douce);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof--certificate .portal-proof__image {
+    object-fit: contain;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof--karine .portal-proof__image {
+    object-position: 50% 34%;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof--atelier .portal-proof__image {
+    object-position: 48% 60%;
+    transform: scale(1.14);
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__copy,
+  #shopify-section-{{ section.id }} .portal-proof__title,
+  #shopify-section-{{ section.id }} .portal-proof__detail {
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__title {
+    color: var(--milaura-prune);
+    font-size: clamp(12px, 0.95vw, 14px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .portal-proof__detail {
+    margin-top: 3px;
+    color: var(--milaura-aigue-profonde);
+    font-size: clamp(9px, 0.7vw, 10px);
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
   /* La navigation conserve ses liens et ses fonctions. Seule sa surface
-     devient editoriale sur la homepage, puis nacree apres le Hero. */
+     devient editoriale et reste aigue-marine sur la homepage. */
   [id^='MilauraNav-'].milaura-home-hero-nav {
     padding: 0 !important;
   }
@@ -328,8 +483,7 @@
 
   [id^='MilauraNav-'].milaura-home-hero-nav .nav-logo-img {
     height: 50px !important;
-    filter: brightness(0) invert(1) !important;
-    transition: filter var(--milaura-transition-rapide);
+    filter: none !important;
   }
 
   [id^='MilauraNav-'].milaura-home-hero-nav .nav-logo-text,
@@ -369,7 +523,7 @@
   }
 
   [id^='MilauraNav-'].milaura-home-hero-nav.is-home-hero-scrolled .nav-inner {
-    background: var(--milaura-nacre) !important;
+    background: var(--milaura-aigue-profonde) !important;
     box-shadow: var(--milaura-ombre-douce) !important;
   }
 
@@ -381,7 +535,7 @@
   [id^='MilauraNav-'].milaura-home-hero-nav.is-home-hero-scrolled .nav-link,
   [id^='MilauraNav-'].milaura-home-hero-nav.is-home-hero-scrolled .nav-icon,
   [id^='MilauraNav-'].milaura-home-hero-nav.is-home-hero-scrolled .nav-quiz-badge {
-    color: var(--milaura-prune) !important;
+    color: var(--milaura-nacre) !important;
   }
 
   @media screen and (max-width: 1100px) {
@@ -439,8 +593,11 @@
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__proof {
+      right: 18px;
+      bottom: 82px;
       min-height: 28px;
-      margin: var(--milaura-esp-2xs) 0 0 31px;
+      max-width: 290px;
+      margin: 0;
       font-size: 8px;
       letter-spacing: 0.045em;
       white-space: nowrap;
@@ -456,6 +613,49 @@
       bottom: auto;
       left: 18px;
       width: auto;
+    }
+
+    #shopify-section-{{ section.id }} .portal-proof-bridge {
+      right: 12px;
+      left: 12px;
+      width: auto;
+      gap: 7px;
+      padding: 0 3px;
+      transform: translateY(61%);
+    }
+
+    #shopify-section-{{ section.id }} .portal-proof {
+      gap: 5px;
+    }
+
+    #shopify-section-{{ section.id }} .portal-proof--karine {
+      transform: translateY(-7px);
+    }
+
+    #shopify-section-{{ section.id }} .portal-proof--atelier {
+      transform: translateY(6px);
+    }
+
+    #shopify-section-{{ section.id }} .portal-proof__media {
+      width: clamp(64px, 18vw, 76px);
+    }
+
+    #shopify-section-{{ section.id }} .portal-proof--karine .portal-proof__media {
+      width: clamp(72px, 20.5vw, 86px);
+    }
+
+    #shopify-section-{{ section.id }} .portal-proof__title {
+      font-size: clamp(10px, 2.8vw, 12px);
+    }
+
+    #shopify-section-{{ section.id }} .portal-proof__detail {
+      margin-top: 2px;
+      font-size: clamp(7.5px, 2.15vw, 9px);
+      letter-spacing: 0.055em;
+    }
+
+    #MainContent > .shopify-section.milaura-hero-homepage + .section-milaura-selection-atelier .milaura-season__shell {
+      padding-top: 42px !important;
     }
 
     #MilauraPortal-{{ section.id }} .portal-journey {
@@ -506,7 +706,7 @@
     [id^='MilauraNav-'].milaura-home-hero-nav .nav-logo-img {
       height: 48px !important;
       transform: none !important;
-      filter: brightness(0) invert(1) !important;
+      filter: none !important;
     }
 
     [id^='MilauraNav-'].milaura-home-hero-nav .nav-quiz-badge {
@@ -553,6 +753,12 @@
       left: 14px;
     }
 
+    #MilauraPortal-{{ section.id }} .portal-hero__proof {
+      right: 14px;
+      max-width: 268px;
+      font-size: 7.5px;
+    }
+
     [id^='MilauraNav-'].milaura-home-hero-nav .nav-logo-link {
       min-width: 58px !important;
     }
@@ -577,8 +783,7 @@
     #MilauraPortal-{{ section.id }} .portal-journey,
     #MilauraPortal-{{ section.id }} .portal-journey::before,
     #MilauraPortal-{{ section.id }} .portal-journey__arrow,
-    [id^='MilauraNav-'].milaura-home-hero-nav .nav-inner,
-    [id^='MilauraNav-'].milaura-home-hero-nav .nav-logo-img {
+    [id^='MilauraNav-'].milaura-home-hero-nav .nav-inner {
       transition: none;
     }
   }
@@ -653,10 +858,6 @@
       <span class="portal-hero__title-line">{{ hero_title_second | escape }}</span>
     </h1>
     <p class="portal-hero__body">{{ hero_body | escape }}</p>
-    <p class="portal-hero__proof">
-      <span class="portal-hero__proof-source">{{ hero_proof_source | escape }}</span>
-      <span>{{ hero_proof_detail | escape }}</span>
-    </p>
   </div>
 
   <nav class="portal-hero__journeys" aria-label="Explorer MilAura">
@@ -697,7 +898,80 @@
       <span class="portal-journey__arrow" aria-hidden="true">↗</span>
     </a>
   </nav>
+
+  <p class="portal-hero__proof">
+    <span class="portal-hero__proof-source">{{ hero_proof_source | escape }}</span>
+    <span>{{ hero_proof_detail | escape }}</span>
+  </p>
 </section>
+
+<aside class="portal-proof-bridge" aria-label="Les engagements MilAura">
+  <div class="portal-proof portal-proof--certificate">
+    <div class="portal-proof__media">
+      <span class="portal-proof__outline portal-proof__outline--gold" aria-hidden="true"></span>
+      <span class="portal-proof__outline portal-proof__outline--aqua" aria-hidden="true"></span>
+      <span class="portal-proof__image-wrap">
+        <img
+          class="portal-proof__image"
+          src="{{ 'milaura-hero-proof-certificat-lfg.webp' | asset_url }}"
+          alt="Extrait d’un certificat gemmologique LFG Paris"
+          width="310"
+          height="192"
+          loading="lazy"
+          decoding="async"
+        >
+      </span>
+    </div>
+    <span class="portal-proof__copy">
+      <span class="portal-proof__title">{{ proof_1_label }}</span>
+      <span class="portal-proof__detail">LFG Paris</span>
+    </span>
+  </div>
+
+  <div class="portal-proof portal-proof--karine">
+    <div class="portal-proof__media">
+      <span class="portal-proof__outline portal-proof__outline--gold" aria-hidden="true"></span>
+      <span class="portal-proof__outline portal-proof__outline--aqua" aria-hidden="true"></span>
+      <span class="portal-proof__image-wrap">
+        <img
+          class="portal-proof__image"
+          src="{{ 'milaura-hero-proof-karine-v2.webp' | asset_url }}"
+          alt="Karine, fondatrice de MilAura"
+          width="1043"
+          height="1508"
+          loading="lazy"
+          decoding="async"
+        >
+      </span>
+    </div>
+    <span class="portal-proof__copy">
+      <span class="portal-proof__title">{{ proof_2_label }}</span>
+      <span class="portal-proof__detail">Fondatrice MilAura</span>
+    </span>
+  </div>
+
+  <div class="portal-proof portal-proof--atelier">
+    <div class="portal-proof__media">
+      <span class="portal-proof__outline portal-proof__outline--gold" aria-hidden="true"></span>
+      <span class="portal-proof__outline portal-proof__outline--aqua" aria-hidden="true"></span>
+      <span class="portal-proof__image-wrap">
+        <img
+          class="portal-proof__image"
+          src="{{ 'milaura-hero-proof-atelier-metz.webp' | asset_url }}"
+          alt="L’atelier MilAura à Metz"
+          width="781"
+          height="1200"
+          loading="lazy"
+          decoding="async"
+        >
+      </span>
+    </div>
+    <span class="portal-proof__copy">
+      <span class="portal-proof__title">{{ proof_3_label }}</span>
+      <span class="portal-proof__detail">Atelier en France</span>
+    </span>
+  </div>
+</aside>
 
 <script>
   (() => {
@@ -827,6 +1101,28 @@
       "id": "proof_detail",
       "label": "Détail de preuve",
       "default": "Certificats présentés sur les fiches concernées"
+    },
+    {
+      "type": "header",
+      "content": "Engagements sous le Hero"
+    },
+    {
+      "type": "text",
+      "id": "proof_1",
+      "label": "Engagement certificat",
+      "default": "Pierres certifiées"
+    },
+    {
+      "type": "text",
+      "id": "proof_2",
+      "label": "Engagement préparation",
+      "default": "Préparées par Karine"
+    },
+    {
+      "type": "text",
+      "id": "proof_3",
+      "label": "Engagement expédition",
+      "default": "Expédiées depuis Metz"
     },
     {
       "type": "header",
