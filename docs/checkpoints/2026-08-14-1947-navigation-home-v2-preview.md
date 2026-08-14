@@ -46,19 +46,23 @@ Mise à jour de coordination, 2026-08-14 19:52 CEST : Patrice a depuis validé d
 
 Synchronisation confirmée localement, 2026-08-14 20:04 CEST : le merge canonique Hero `254edefd`, issu du lot `fa33829c`, est intégré dans Navigation V2. `sections/milaura-announcement.liquid` est identique à la version canonique. `sections/milaura-hero-portal.liquid` conserve le retrait intégral des trois bulles et de l ancien proof bridge ; ses seuls écarts au commit canonique sont les trois lignes d intégration de la nouvelle navbar : surface initiale transparente et couleur du burger avant et après scroll. La navbar reste positionnée à `top: var(--milaura-announcement-height)`, soit 72 px sur desktop et 70 px sur mobile. Aucun push Shopify supplémentaire n a été effectué pendant cette réconciliation.
 
+Preview finale resynchronisée, 2026-08-14 20:50 CEST : le contrat quartz rose canonique `82873b97`, puis l état d intégration `797e088c`, sont repris par Navigation V2. Le bandeau utilise `#F0D9E0`, mesure 58 px sur desktop et 54 px sur mobile, conserve ses médaillons 52/46 px et son bouton de 44 px. La navbar reste transparente sur le Hero et se place exactement sous le bandeau. L ancien dock mobile a été désactivé dans `sections/footer-group.json` afin de supprimer le doublon de navigation que la barre Shopify de preview masquait. Les pushes de cette reprise concernent uniquement le thème non publié `199957807451`.
+
 La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux recommandations, ni aux produits, ni aux stocks.
 
 ## Contrôles réalisés
 
-- desktop `1440 x 1000` : un seul H1, aucun débordement horizontal, Header et Hero alignés ;
-- mobile `390 x 844` : aucun débordement horizontal, Header sur une ligne, menu ouvert et page verrouillée ;
+- desktop `1440 x 1000` : un seul H1, aucun débordement horizontal, bandeau 58 px, Header et Hero alignés ;
+- mobile `430 x 932`, `390 x 844` et `360 x 800` : aucun débordement horizontal, bandeau 54 px, Header sur une ligne et cibles tactiles de 44 px ;
 - accordéon Pierres : sept destinations visibles ;
 - recherche mobile : overlay ouvert, champ visible, actif et focalisé ;
 - fermeture et états ARIA contrôlés ;
+- ancien dock mobile : zéro instance visible après désactivation et rechargement ;
 - `node --check assets/milaura-navigation.js` : succès ;
 - validation JSON des fichiers touchés : succès ;
 - contrôle du bandeau resynchronisé : trois preuves, bouton de 44 px, rotation, pause, swipe et `prefers-reduced-motion` conservés ;
 - comparaison au commit `254edefd` : bandeau identique, Hero limité aux trois lignes d intégration navbar attendues ;
+- pullbacks Shopify : contrat quartz rose 2/2, désactivation du dock 1/1, parité octet par octet ;
 - correction du défaut antérieur dans `templates/page.json` : virgule terminale supprimée ;
 - `git diff --check` : succès ;
 - Theme Check : zéro erreur, 18 avertissements préexistants dans dix fichiers hors lot.
@@ -72,7 +76,7 @@ Créé dans Shopify Admin :
 - un thème non publié `199957807451` ;
 - un menu privé `322508423515`.
 
-Poussé uniquement sur le thème non publié : fichiers de navigation, homepage, guides, Header, Footer et templates du lot.
+Poussé uniquement sur le thème non publié : fichiers de navigation, homepage, guides, Header, Footer et templates du lot, puis synchronisation quartz rose et désactivation de l ancien dock mobile.
 
 Non modifié :
 
@@ -84,11 +88,10 @@ Non modifié :
 
 ## Blocages avant activation publique
 
-1. nouvelle validation visuelle de la preview globale après push ciblé de la branche resynchronisée ;
-2. GO visuel explicite de Patrice sur cette preview resynchronisée ;
-3. création et publication coordonnée des deux pages guides avec leurs templates et métadonnées ;
-4. remplacement simultané des liens guides dans le menu public ;
-5. contrôle de la collection best-sellers et de son ordre réel ;
-6. ajout de `Offres du moment` uniquement après création d une vraie promotion ;
-7. polish séparé du bandeau cookies, encore trop massif sur mobile et détenu par les fichiers globaux actuellement réservés à une autre session ;
-8. contrôle sitemap puis Search Console dès qu un accès légitime est disponible.
+1. GO visuel explicite de Patrice sur la preview `199957807451` ;
+2. création et publication coordonnée des deux pages guides avec leurs templates et métadonnées ;
+3. remplacement simultané des liens guides dans le menu public ;
+4. contrôle de la collection best-sellers et de son ordre réel ;
+5. ajout de `Offres du moment` uniquement après création d une vraie promotion ;
+6. polish séparé du bandeau cookies, encore trop massif sur mobile et détenu par les fichiers globaux actuellement réservés à une autre session ;
+7. contrôle sitemap puis Search Console dès qu un accès légitime est disponible.
