@@ -1,0 +1,224 @@
+{{ 'milaura-home-paths.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign path_count = 0
+  for block in section.blocks
+    if block.type == 'path'
+      assign path_count = path_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if path_count > 0 -%}
+  <section
+    class="milaura-home-paths"
+    aria-labelledby="MilauraHomePathsTitle-{{ section.id }}"
+  >
+    <div class="milaura-home-paths__inner">
+      <header class="milaura-home-paths__header">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="milaura-home-paths__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 id="MilauraHomePathsTitle-{{ section.id }}" class="milaura-home-paths__title">
+            {{ section.settings.title | escape }}
+          </h2>
+        </div>
+        {%- if section.settings.lead != blank -%}
+          <p class="milaura-home-paths__lead">{{ section.settings.lead | escape }}</p>
+        {%- endif -%}
+      </header>
+
+      <div class="milaura-home-paths__grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'path' -%}
+            {%- liquid
+              assign path_image = block.settings.image
+              if path_image == blank and block.settings.product != blank
+                assign path_image = block.settings.product.featured_image
+              endif
+              if path_image == blank and block.settings.collection != blank
+                assign path_image = block.settings.collection.image
+              endif
+
+              assign path_url = block.settings.link
+              if path_url == blank and block.settings.collection != blank
+                assign path_url = block.settings.collection.url
+              endif
+              if path_url == blank and block.settings.product != blank
+                assign path_url = block.settings.product.url
+              endif
+              if path_url == blank
+                assign path_url = routes.all_products_collection_url
+              endif
+
+              assign path_variant = block.settings.variant | default: 'jewelry'
+              assign loading_mode = 'lazy'
+              if forloop.first
+                assign loading_mode = 'eager'
+              endif
+            -%}
+            <article class="milaura-home-paths__path milaura-home-paths__path--{{ path_variant }}" {{ block.shopify_attributes }}>
+              <a class="milaura-home-paths__path-link" href="{{ path_url }}">
+                <span class="milaura-home-paths__path-media">
+                  {%- if path_image != blank -%}
+                    {{- path_image
+                      | image_url: width: 1400
+                      | image_tag:
+                        class: 'milaura-home-paths__path-image',
+                        widths: '420, 620, 840, 1100, 1400',
+                        sizes: '(max-width: 989px) calc(100vw - 32px), 50vw',
+                        loading: loading_mode,
+                        alt: block.settings.image_alt
+                    -}}
+                  {%- elsif block.settings.asset_name != blank -%}
+                    <picture>
+                      {%- if block.settings.mobile_asset_name != blank -%}
+                        <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_asset_name | asset_url }}">
+                      {%- endif -%}
+                      <img
+                        class="milaura-home-paths__path-image"
+                        src="{{ block.settings.asset_name | asset_url }}"
+                        alt="{{ block.settings.image_alt | escape }}"
+                        width="1400"
+                        height="1050"
+                        loading="{{ loading_mode }}"
+                      >
+                    </picture>
+                  {%- endif -%}
+                </span>
+                <span class="milaura-home-paths__path-copy">
+                  <span>
+                    {%- if block.settings.label != blank -%}
+                      <span class="milaura-home-paths__path-label">{{ block.settings.label | escape }}</span>
+                    {%- endif -%}
+                    <span class="milaura-home-paths__path-title">{{ block.settings.title | escape }}</span>
+                    {%- if block.settings.text != blank -%}
+                      <span class="milaura-home-paths__path-text">{{ block.settings.text | escape }}</span>
+                    {%- endif -%}
+                  </span>
+                  <span class="milaura-home-paths__path-action">{{ block.settings.action | escape }}</span>
+                </span>
+              </a>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "MilAura chemins de choix",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Trois façons de choisir"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Commencez par ce qui compte pour vous."
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Introduction",
+      "default": "Une forme à porter, une pierre à découvrir ou un ressenti du moment : choisissez votre point de départ."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "path",
+      "name": "Chemin",
+      "settings": [
+        {
+          "type": "select",
+          "id": "variant",
+          "label": "Univers",
+          "options": [
+            { "value": "jewelry", "label": "Bijou" },
+            { "value": "stone", "label": "Pierre" },
+            { "value": "guided", "label": "Ressenti" }
+          ],
+          "default": "jewelry"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Repère",
+          "default": "Je sais ce que je veux porter"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Choisir un bijou"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texte",
+          "default": "Bracelets, colliers, boucles d’oreilles, pendentifs et bagues."
+        },
+        {
+          "type": "text",
+          "id": "action",
+          "label": "Action",
+          "default": "Voir les bijoux"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection de repli"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produit pour la photographie"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photographie"
+        },
+        {
+          "type": "text",
+          "id": "asset_name",
+          "label": "Asset desktop de repli"
+        },
+        {
+          "type": "text",
+          "id": "mobile_asset_name",
+          "label": "Asset mobile de repli"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Texte alternatif"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura chemins de choix",
+      "blocks": [
+        { "type": "path" },
+        { "type": "path" },
+        { "type": "path" }
+      ]
+    }
+  ]
+}
+{% endschema %}
