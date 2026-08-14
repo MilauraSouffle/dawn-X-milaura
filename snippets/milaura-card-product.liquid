@@ -12,6 +12,9 @@
   - show_secondary_image: boolean (defaut: true)
   - force_bestseller_badge: boolean
   - badge_label: texte du badge (defaut: 'Bestseller')
+  - recommendation_media: boolean, active des sources plus larges pour une mise
+    en avant editoriale sans modifier les cartes standard
+  - recommendation_focal: boolean, ajuste le hint responsive du media focal
 {%- endcomment -%}
 
 {%- liquid
@@ -20,6 +23,17 @@
     assign secondary_image_enabled = false
   endif
   assign secondary_image = card_product.images[1]
+  assign primary_alt = card_product.featured_image.alt | default: card_product.title
+  assign secondary_alt = secondary_image.alt | default: card_product.title
+  assign recommendation_video = blank
+  if recommendation_media and recommendation_focal
+    assign product_videos = card_product.media | where: 'media_type', 'video'
+    assign recommendation_video = product_videos.first
+  endif
+  assign recommendation_sizes = '(max-width: 749px) 82vw, (max-width: 989px) 60vw, 25vw'
+  if recommendation_focal
+    assign recommendation_sizes = '(max-width: 749px) 100vw, (max-width: 989px) 82vw, 50vw'
+  endif
 -%}
 
 <a href="{{ card_product.url }}" class="grid__card">
@@ -40,34 +54,72 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- if card_product.featured_image != blank -%}
-      <img
-        class="grid__card-image grid__card-image--primary"
-        src="{{ card_product.featured_image | image_url: width: 480 }}"
-        srcset="{{ card_product.featured_image | image_url: width: 160 }} 160w,
-                {{ card_product.featured_image | image_url: width: 320 }} 320w,
-                {{ card_product.featured_image | image_url: width: 480 }} 480w"
-        sizes="(max-width: 380px) 45vw, (max-width: 768px) 48vw, 25vw"
-        alt="{{ card_product.title | escape }}"
-        loading="{{ img_loading | default: 'lazy' }}"
-        decoding="async"
-        width="480"
-        height="480"
-      >
-      {%- if secondary_image_enabled and secondary_image != blank -%}
+    {%- if recommendation_video != blank -%}
+      {{ recommendation_video
+        | video_tag:
+          image_size: '960x',
+          autoplay: false,
+          loop: true,
+          muted: true,
+          controls: false,
+          preload: 'metadata',
+          playsinline: true,
+          class: 'grid__card-image grid__card-image--primary milaura-recommendation-card__video'
+      }}
+    {%- elsif card_product.featured_image != blank -%}
+      {%- if recommendation_media -%}
+        {{ card_product.featured_image
+          | image_url: width: 960
+          | image_tag:
+            class: 'grid__card-image grid__card-image--primary',
+            loading: img_loading,
+            widths: '240, 360, 480, 640, 800, 960',
+            sizes: recommendation_sizes,
+            alt: primary_alt,
+            decoding: 'async'
+        }}
+      {%- else -%}
         <img
-          class="grid__card-image grid__card-image--secondary"
-          src="{{ secondary_image | image_url: width: 480 }}"
-          srcset="{{ secondary_image | image_url: width: 160 }} 160w,
-                  {{ secondary_image | image_url: width: 320 }} 320w,
-                  {{ secondary_image | image_url: width: 480 }} 480w"
+          class="grid__card-image grid__card-image--primary"
+          src="{{ card_product.featured_image | image_url: width: 480 }}"
+          srcset="{{ card_product.featured_image | image_url: width: 160 }} 160w,
+                  {{ card_product.featured_image | image_url: width: 320 }} 320w,
+                  {{ card_product.featured_image | image_url: width: 480 }} 480w"
           sizes="(max-width: 380px) 45vw, (max-width: 768px) 48vw, 25vw"
-          alt="{{ secondary_image.alt | default: card_product.title | escape }}"
-          loading="lazy"
+          alt="{{ primary_alt | escape }}"
+          loading="{{ img_loading | default: 'lazy' }}"
           decoding="async"
           width="480"
           height="480"
         >
+      {%- endif -%}
+      {%- if secondary_image_enabled and secondary_image != blank -%}
+        {%- if recommendation_media -%}
+          {{ secondary_image
+            | image_url: width: 960
+            | image_tag:
+              class: 'grid__card-image grid__card-image--secondary',
+              loading: 'lazy',
+              widths: '240, 360, 480, 640, 800, 960',
+              sizes: recommendation_sizes,
+              alt: secondary_alt,
+              decoding: 'async'
+          }}
+        {%- else -%}
+          <img
+            class="grid__card-image grid__card-image--secondary"
+            src="{{ secondary_image | image_url: width: 480 }}"
+            srcset="{{ secondary_image | image_url: width: 160 }} 160w,
+                    {{ secondary_image | image_url: width: 320 }} 320w,
+                    {{ secondary_image | image_url: width: 480 }} 480w"
+            sizes="(max-width: 380px) 45vw, (max-width: 768px) 48vw, 25vw"
+            alt="{{ secondary_alt | escape }}"
+            loading="lazy"
+            decoding="async"
+            width="480"
+            height="480"
+          >
+        {%- endif -%}
       {%- endif -%}
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag }}

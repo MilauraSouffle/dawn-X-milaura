@@ -3,7 +3,6 @@
   Les produits et collections sont toujours selectionnes explicitement dans le template.
 {%- endcomment -%}
 
-{{ 'milaura-card.css' | asset_url | stylesheet_tag }}
 {{ 'milaura-section-heading.css' | asset_url | stylesheet_tag }}
 {{ 'milaura-catalogue-hub.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
@@ -39,7 +38,6 @@
   assign products_id = 'MilauraHubProducts-' | append: section.id
   assign destinations_id = 'MilauraHubDestinations-' | append: section.id
   assign guide_title_id = guide_id | append: '-title'
-  assign products_title_id = products_id | append: '-title'
   assign destinations_title_id = destinations_id | append: '-title'
   assign hero_target = products_id
   if correspondence_count > 0
@@ -219,21 +217,22 @@
       {%- for block in section.blocks -%}
         {%- if block.type == 'product_selection' -%}
           {%- capture selection_cards -%}
+            {%- assign selection_count = 0 -%}
             {%- for index in (1..6) -%}
               {%- assign product_setting = 'product_' | append: index -%}
               {%- assign selected_product = block.settings[product_setting] -%}
               {%- if selected_product != blank and selected_product.available -%}
-                <div class="milaura-hub__product" role="listitem">
-                  {% render 'milaura-card-product',
-                    card_product: selected_product,
-                    img_loading: 'lazy',
-                    show_vendor: false,
-                    show_badges: section.settings.show_badges,
-                    show_secondary_image: true,
-                    force_bestseller_badge: false
-                  %}
-                  {% render 'milaura-editorial-purchase', product: selected_product %}
-                </div>
+                {%- assign selection_count = selection_count | plus: 1 -%}
+                {%- assign recommendation_role = 'secondary' -%}
+                {%- if selection_count == 1 -%}{%- assign recommendation_role = 'focal' -%}{%- endif -%}
+                {% render 'milaura-recommendation-card',
+                  recommendation_product: selected_product,
+                  recommendation_intent: 'curated',
+                  recommendation_reason: block.settings.card_reason,
+                  recommendation_role: recommendation_role,
+                  img_loading: 'lazy',
+                  show_purchase: true
+                %}
               {%- endif -%}
             {%- endfor -%}
           {%- endcapture -%}
@@ -241,23 +240,25 @@
           {%- assign selection_text = block.settings.body | strip_html -%}
 
           {%- if selection_cards != blank -%}
-            <section id="{{ products_id }}" class="milaura-hub__section milaura-hub__products" aria-labelledby="{{ products_id }}-title" {{ block.shopify_attributes }}>
-              <div class="milaura-hub__shell">
-                {% render 'milaura-section-heading',
-                  eyebrow: block.settings.eyebrow,
-                  title: block.settings.heading,
-                  text: selection_text,
-                  heading_tag: 'h2',
-                  heading_id: products_title_id,
-                  align: 'center',
-                  size: 'section',
-                  eyebrow_style: 'signature'
-                %}
-                <div class="milaura-hub__product-grid milaura-cards milaura-cards--editorial" role="list">
-                  {{ selection_cards }}
-                </div>
-              </div>
-            </section>
+            <div id="{{ products_id }}" class="milaura-hub__section milaura-hub__products" {{ block.shopify_attributes }}>
+              {% render 'milaura-recommendation-shell',
+                recommendation_context: 'editorial',
+                recommendation_instance_id: block.id,
+                source_product_ids: blank,
+                excluded_product_ids: blank,
+                recommendation_intents: 'curated',
+                recommendation_limit: 6,
+                recommendation_minimum: 1,
+                recommendation_cards: selection_cards,
+                eyebrow: block.settings.eyebrow,
+                title: block.settings.heading,
+                subtitle: selection_text,
+                complementary_title: blank,
+                complementary_subtitle: blank,
+                related_title: blank,
+                related_subtitle: blank
+              %}
+            </div>
           {%- endif -%}
         {%- endif -%}
       {%- endfor -%}
@@ -401,6 +402,7 @@
         {"type": "text", "id": "eyebrow", "label": "Signature"},
         {"type": "text", "id": "heading", "label": "Titre"},
         {"type": "richtext", "id": "body", "label": "Texte"},
+        {"type": "text", "id": "card_reason", "label": "Raison affichée sur les cartes", "default": "Choisie pour cette sélection."},
         {"type": "product", "id": "product_1", "label": "Produit 1"},
         {"type": "product", "id": "product_2", "label": "Produit 2"},
         {"type": "product", "id": "product_3", "label": "Produit 3"},

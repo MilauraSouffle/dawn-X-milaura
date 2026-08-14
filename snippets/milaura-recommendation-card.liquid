@@ -1,0 +1,82 @@
+{%- comment -%}
+  Carte unique du systeme de recommandations MilAura.
+
+  Parametres :
+  - recommendation_product: produit Shopify a afficher
+  - source_product: produit qui motive la recommandation, facultatif
+  - recommendation_intent: complementary, related, curated ou recent
+  - recommendation_reason: raison explicite, prioritaire si renseignee
+  - recommendation_role: focal ou secondary
+  - img_loading: eager ou lazy
+  - show_purchase: false pour masquer l'ajout direct, sans persister le catalogue
+{%- endcomment -%}
+
+{%- liquid
+  assign recommendation_variant = recommendation_product.selected_or_first_available_variant
+  assign source_stone = source_product.metafields.milaura.stone_handle.value | default: source_product.metafields.milaura.stone_handle
+  assign source_type = source_product.metafields.milaura.product_type_handle.value | default: source_product.type | downcase | handleize
+  assign source_intention = source_product.metafields.milaura.primary_intention.value | default: source_product.metafields.milaura.intention_handle.value
+  assign recommended_stone = recommendation_product.metafields.milaura.stone_handle.value | default: recommendation_product.metafields.milaura.stone_handle
+  assign recommended_type = recommendation_product.metafields.milaura.product_type_handle.value | default: recommendation_product.type | downcase | handleize
+  assign recommended_intention = recommendation_product.metafields.milaura.primary_intention.value | default: recommendation_product.metafields.milaura.intention_handle.value
+
+  assign reason = recommendation_reason
+  if reason == blank
+    case recommendation_intent
+      when 'complementary'
+        if source_stone != blank and source_stone == recommended_stone and source_type != recommended_type
+          assign reason = 'Même pierre, autre forme.'
+        elsif source_intention != blank and source_intention == recommended_intention
+          assign reason = 'Même intention, autre pièce.'
+        else
+          assign reason = 'Sélectionnée pour compléter votre choix.'
+        endif
+      when 'related'
+        if source_stone != blank and source_stone == recommended_stone
+          assign reason = 'Même pierre, autre proposition.'
+        elsif source_type != blank and source_type == recommended_type
+          assign reason = 'Même type de pièce à comparer.'
+        else
+          assign reason = 'Une autre pièce à comparer.'
+        endif
+      when 'recent'
+        assign reason = 'Reprendre votre visite.'
+      else
+        assign reason = 'Sélection MilAura.'
+    endcase
+  endif
+
+  assign is_focal = false
+  if recommendation_role == 'focal'
+    assign is_focal = true
+  endif
+-%}
+
+<article
+  class="milaura-recommendation-card{% if is_focal %} milaura-recommendation-card--focal{% else %} milaura-recommendation-card--secondary{% endif %}"
+  role="listitem"
+  data-milaura-recommendation-card
+  data-product-id="{{ recommendation_product.id }}"
+  data-variant-id="{{ recommendation_variant.id }}"
+  data-product-available="{{ recommendation_product.available }}"
+  data-stone-handle="{{ recommended_stone | escape }}"
+>
+  {% render 'milaura-card-product',
+    card_product: recommendation_product,
+    img_loading: img_loading,
+    show_vendor: false,
+    show_badges: false,
+    show_secondary_image: false,
+    force_bestseller_badge: false,
+    recommendation_media: true,
+    recommendation_focal: is_focal
+  %}
+
+  {%- if reason != blank -%}
+    <p class="milaura-recommendation-card__reason">{{ reason }}</p>
+  {%- endif -%}
+
+  {%- unless show_purchase == false -%}
+    {% render 'milaura-editorial-purchase', product: recommendation_product %}
+  {%- endunless -%}
+</article>

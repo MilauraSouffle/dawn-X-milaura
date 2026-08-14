@@ -405,14 +405,6 @@ if (!customElements.get('product-info')) {
         return this.querySelector('variant-selects');
       }
 
-      get relatedProducts() {
-        const relatedProductsSectionId = SectionId.getIdForSection(
-          SectionId.parseId(this.sectionId),
-          'related-products'
-        );
-        return document.querySelector(`product-recommendations[data-section-id^="${relatedProductsSectionId}"]`);
-      }
-
       get quickOrderList() {
         const quickOrderListSectionId = SectionId.getIdForSection(
           SectionId.parseId(this.sectionId),
