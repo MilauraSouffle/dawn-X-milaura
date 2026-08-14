@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-14 19:22 CEST
+Date de mise a jour : 2026-08-14 19:24 CEST
 
 ## Etat de reprise
 
@@ -67,7 +67,7 @@ La palette, les polices et le logo restent ceux du Brand System du 2026-08-04. `
 - Theme Check : 0 erreur, 29 avertissements historiques
 - nouvelle verification publique le 2026-08-14 a 09:47 CEST : dix routes HTTP 200, un H1, aucun `noindex`, deux assets Hero par route
 
-Les worktrees et branches ephemeres Heroes, UI sitewide et carrousel sont retires.
+Les worktrees et branches ephemeres des Heroes livres, de l'UI sitewide et du carrousel sont retires. Seuls les worktrees actifs Navigation V2 et Recommandation restent declares.
 
 ## Heroes de destination livres
 

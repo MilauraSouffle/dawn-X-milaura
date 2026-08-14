@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-14 19:22 CEST
+Derniere mise a jour : 2026-08-14 19:24 CEST
 
 ## Etat en une phrase
 
@@ -14,7 +14,7 @@ Le catalogue V1, la PDP-P0, l'UI sitewide, les dix Heroes de destination et le n
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont retirees apres integration et fermeture de leur lot.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Navigation V2 et Recommandation restent actifs ; le worktree Hero homepage doit etre retire apres son commit final de documentation live.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Navigation V2 et Recommandation restent actifs ; le worktree et la branche ephemere du Hero homepage ont ete retires apres integration et validation live.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
