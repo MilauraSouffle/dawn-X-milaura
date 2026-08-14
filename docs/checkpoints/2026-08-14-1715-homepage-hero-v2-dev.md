@@ -1,0 +1,67 @@
+# Checkpoint - Bandeau compact et Hero homepage V2
+
+Date : 2026-08-14 17:15 CEST
+
+Statut : implementation terminee sur le theme de developpement, aucun live, validation visuelle finale de Patrice requise avant integration.
+
+## Resultat livre
+
+- bandeau fixe reduit a 48 px sur desktop et 52 px sur mobile ;
+- promesse mobile unique, sans retour a la ligne aux largeurs 360, 390 et 430 px ;
+- Hero plein ecran avec texte HTML fixe et trois scenes photographiques ;
+- trois parcours manuels : `Choisir par pierre`, `Choisir par bijou`, `Me laisser guider` ;
+- chaque parcours change uniquement le media et conserve un vrai lien ;
+- navigation existante conservee, avec traitement transparent limite a la homepage et fond nacre au scroll ;
+- aucun autoplay, aucune video, aucune nouvelle bibliotheque JavaScript et aucun mannequin IA.
+
+## Fichiers du lot
+
+- `sections/milaura-announcement.liquid` ;
+- `sections/milaura-hero-portal.liquid` ;
+- `sections/milaura-navbar.liquid` ;
+- `assets/milaura-home-hero-v2-stone-desktop.webp` : 177712 octets, 1672 x 941 ;
+- `assets/milaura-home-hero-v2-stone-mobile.webp` : 107392 octets, 941 x 1671 ;
+- `assets/milaura-home-hero-v2-jewelry-desktop.webp` : 158772 octets, 1672 x 941 ;
+- `assets/milaura-home-hero-v2-jewelry-mobile.webp` : 131426 octets, 941 x 1672 ;
+- `assets/milaura-home-hero-v2-guide-desktop.webp` : 174506 octets, 1672 x 941 ;
+- `assets/milaura-home-hero-v2-guide-mobile.webp` : 109100 octets, 941 x 1672.
+
+## Liens des parcours
+
+- pierre : `/pages/bijoux-par-pierre` ;
+- bijou : `/collections/bijoux-pierres-naturelles` ;
+- guide : `/pages/diagnostic-emotionnel`.
+
+## Validation technique
+
+- `git diff --check` : valide ;
+- `shopify theme check --fail-level error` : 0 erreur, 28 avertissements historiques dans 11 fichiers ;
+- Playwright sur 1440 x 900, 430 x 932, 390 x 844 et 360 x 800 : largeur exacte, un seul H1, aucune zone de parcours sous 44 px et un seul media actif ;
+- changement des trois scenes, navigation clavier par fleches et changement de fond de la navigation au scroll : valides ;
+- `prefers-reduced-motion` : transitions supprimees ;
+- CLS mesure : 0,0103 desktop au maximum et 0,0024 mobile au maximum ;
+- LCP mesure sur le media Hero : 2644 ms desktop au premier chargement distant, puis 1556 ms ou moins sur les trois largeurs mobiles ;
+- chaque asset est inferieur au budget de 180 Ko ;
+- les six medias sont volontairement charges au-dessus de la ligne de flottaison, soit environ 487 Ko desktop et 335 Ko mobile, afin de rendre le changement de parcours immediat.
+
+## Etat Shopify
+
+- theme de developpement : `199421952347` ;
+- URL de previsualisation : `https://milaura-2.myshopify.com/?preview_theme_id=199421952347&_fd=0&pb=0` ;
+- pullback cible : 9 fichiers sur 9 identiques bit a bit au theme de developpement ;
+- theme live : `190430282075`, non modifie ;
+- aucune PDP, carte produit, collection, menu ou donnee catalogue modifiee ;
+- les erreurs console de la previsualisation viennent du cadre Shop App bloque par CSP et du domaine de previsualisation Shopify, pas du script du Hero.
+
+## Captures
+
+- `output/playwright/milaura-home-hero-v2-desktop-1440.png` ;
+- `output/playwright/milaura-home-hero-v2-desktop-jewelry.png` ;
+- `output/playwright/milaura-home-hero-v2-desktop-guide.png` ;
+- `output/playwright/milaura-home-hero-v2-mobile-360.png` ;
+- `output/playwright/milaura-home-hero-v2-mobile-390.png` ;
+- `output/playwright/milaura-home-hero-v2-mobile-430.png`.
+
+## Frontiere et prochaine decision
+
+Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO visuel explicite de Patrice. Apres ce GO, le proprietaire du checkout d'integration pourra merger le commit, verifier l'absence de conflit avec le lot PDP actif, puis decider d'un push live cible et de son pullback. Un GO technique ou un push de previsualisation ne vaut pas GO live.
