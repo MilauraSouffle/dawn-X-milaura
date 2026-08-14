@@ -121,3 +121,40 @@ Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO v
 - Theme Check : 0 erreur et 28 avertissements historiques dans 11 fichiers ;
 - aucune PDP, carte produit, collection, menu, produit, stock, prix ou donnee catalogue modifies ;
 - le lot Navigation V2 doit synchroniser le merge `969f6c49` avant tout futur preview ou deploiement de ses versions de `milaura-announcement.liquid` et `milaura-hero-portal.liquid`.
+
+## Bandeau-vitrine de preuves live du 2026-08-14 a 20:06 CEST
+
+- GO d'execution et de mise en ligne donne par Patrice dans la tache Hero homepage V2 ;
+- l'ancien bandeau vide est remplace par une vitrine editoriale a une preuve active, haute de 72 px sur desktop et 70 px sur mobile ;
+- les trois preuves sont `LFG Paris`, `La selection MilAura` et `Atelier de Metz`, chacune accompagnee d'un visuel reel ;
+- formulation validee : `Tous nos minéraux et bijoux sont soigneusement sélectionnés par Karine.` ;
+- les trois bulles historiques LFG, Karine et Metz sont retirees du pont entre le Hero et la section suivante ;
+- rotation automatique toutes les six secondes, bouton suivant de 44 px, balayage tactile, pause au survol, au focus, hors viewport et quand la page est masquee ;
+- `prefers-reduced-motion` desactive la rotation et les transitions ;
+- vignettes Karine et atelier optimisees a 4 360 et 3 756 octets, soit 8 116 octets cumules ; avec le visuel LFG existant, le budget photographique du bandeau reste proche de 12 Ko ;
+- commit du lot : `fa33829c` ; merge d'integration : `254edefd` ; branche et worktree ephemeres retires apres integration ;
+- push de developpement puis push live strictement limites a `sections/milaura-announcement.liquid`, `sections/milaura-hero-portal.liquid`, `assets/milaura-proof-showcase-karine.webp` et `assets/milaura-proof-showcase-atelier.webp`, avec `--nodelete --strict` ;
+- pullback du theme de developpement puis pullback live : 4 fichiers sur 4 identiques bit a bit au checkout d'integration ;
+- controle public direct sur `https://milaura.fr` aux largeurs 1440, 430, 390 et 360 px : HTTP 200, largeur exacte, navbar alignee sous le bandeau, une seule preuve visible, trois images chargees et anciennes bulles absentes ;
+- controle des trois etats manuels, de la rotation automatique et de `prefers-reduced-motion` valide ;
+- captures live : `output/playwright/milaura-proof-showcase-live-desktop-1440-lfg.png`, `output/playwright/milaura-proof-showcase-live-mobile-390-karine.png` et variantes LFG, Karine et atelier aux quatre largeurs ;
+- Theme Check : 0 erreur et 28 avertissements historiques dans 11 fichiers ;
+- aucune PDP, carte produit, collection, menu, produit, stock, prix ou donnee catalogue modifies ;
+- synchronisation Navigation V2 confirmee localement par `15d74eb3` : `milaura-announcement.liquid` identique au canon, ancien pont toujours absent, navbar positionnee par `top: var(--milaura-announcement-height)` et aucun push Shopify ni deploiement effectue par ce lot.
+
+## Variante quartz rose amincie live du 2026-08-14 a 20:36 CEST
+
+- Patrice a valide la version quartz rose amincie et a donne son GO explicite pour le commit, le push Git et le deploiement live ;
+- ajout du token canonique `--milaura-quartz-rose-poudre: #F0D9E0` dans `assets/milaura-tokens.css` ;
+- bandeau passe a 58 px sur desktop et 54 px sur mobile, sans reduire les medaillons de 52 px et 46 px ni le bouton suivant de 44 px ;
+- texte prune, reperes amethyste et filets or conserves dans la palette MilAura ;
+- commits du lot : `f5d561e1` et `55ca81b0` ; merge d'integration : `82873b97` ; branche et worktree ephemeres retires ;
+- push de developpement puis push live strictement limites a `assets/milaura-tokens.css` et `sections/milaura-announcement.liquid`, avec `--nodelete --strict` et `--allow-live` pour la production ;
+- sauvegarde des deux fichiers live anterieurs dans `/private/tmp/milaura-proof-rose-live-backup.S32zkg` ;
+- pullback du theme de developpement puis pullback live : 2 fichiers sur 2 identiques bit a bit au checkout d'integration ;
+- Theme Check : 0 erreur et 28 avertissements historiques dans 11 fichiers sans rapport avec ce lot ;
+- controle public direct sur `https://milaura.fr` aux largeurs 1440, 430, 390 et 360 px : HTTP 200, hauteur exacte, variable et padding concordants, navbar alignee, aucune largeur excedentaire, une preuve visible, trois images chargees et anciennes bulles absentes ;
+- rotation automatique validee de l'etat 0 vers 1 apres 6,3 secondes ; avec `prefers-reduced-motion`, etat conserve de 0 vers 0 ;
+- seules erreurs console : cadre Shop App bloque par sa propre CSP et ressource Shop App en 403, sans rapport avec le bandeau ;
+- captures live : `output/playwright/milaura-proof-showcase-rose-live-desktop-1440-lfg.png`, `output/playwright/milaura-proof-showcase-rose-live-mobile-390-karine.png` et variantes LFG, Karine et atelier aux quatre largeurs ;
+- Navigation V2 a confirme le contrat `82873b97` pour sa future integration : `#F0D9E0`, 58/54 px, medaillons 52/46 px et bouton 44 px, sans synchronisation ni push de son theme isole.

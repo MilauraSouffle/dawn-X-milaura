@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-14 19:37 CEST
+Derniere mise a jour : 2026-08-14 20:36 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0, l'UI sitewide, les dix Heroes de destination et le nouveau Hero de marque de la homepage sont live ; Navigation V2 et Recommandation restent deux lots de developpement distincts sans autorisation live.
+Le catalogue V1, la PDP-P0, l'UI sitewide, les dix Heroes de destination, le Hero de marque de la homepage et son bandeau-vitrine de preuves sont live ; Navigation V2 et Recommandation restent deux lots de developpement distincts sans autorisation live.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ Le catalogue V1, la PDP-P0, l'UI sitewide, les dix Heroes de destination et le n
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont retirees apres integration et fermeture de leur lot.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Navigation V2 et Recommandation restent actifs ; les worktrees ephemeres du Hero homepage et de son hotfix ont ete retires apres integration et validation live.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Navigation V2 et Recommandation restent actifs ; les worktrees ephemeres du Hero homepage, de son hotfix, du bandeau-vitrine et de sa variante quartz rose ont ete retires apres integration et validation live.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -65,16 +65,18 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 - Le Hero de marque V2 est live depuis le 2026-08-14 19:22 CEST apres GO visuel et GO live explicites de Patrice.
 - Il presente MilAura par trois scenes photographiques et trois parcours manuels : choisir par pierre, choisir par bijou et se laisser guider. Le texte HTML reste fixe et aucun media ne defile automatiquement.
 - La signature `MilAura`, le filet or et `Bijoux & mineraux naturels` tiennent sur une seule ligne de 360 a 1440 px. La navbar conserve le logo colore et devient aigue-marine clair au scroll.
-- Le texte descriptif est aligne avec le H1. Le label LFG compact et l'ancien bandeau superieur ont ete retires du rendu public le 2026-08-14 a 19:37 CEST.
-- Les trois preuves LFG, Karine et Metz sont encore affichees au pont entre le Hero et la Selection d'aout. Elles seront retirees seulement quand leur contenu aura ete reintegre dans un nouveau bandeau-vitrine valide.
-- Le hotfix live a ete limite a `sections/milaura-announcement.liquid` et `sections/milaura-hero-portal.liquid`. Pullback 2/2 identique bit a bit et controles publics 1440/430/390/360 valides. Checkpoint : `docs/checkpoints/2026-08-14-1715-homepage-hero-v2-dev.md`.
+- Le texte descriptif est aligne avec le H1. Le label LFG compact a ete retire du Hero et les trois anciennes bulles LFG, Karine et Metz ont ete supprimees du pont avec la section suivante.
+- Le bandeau superieur est devenu une vitrine editoriale a une preuve active : certificats LFG sur les pieces concernees, selection attentive par Karine et preparation des commandes dans l'atelier de Metz. La phrase validee est `Tous nos minéraux et bijoux sont soigneusement sélectionnés par Karine.`
+- Le bandeau utilise maintenant la surface `Quartz rose poudre` `#F0D9E0`, avec texte prune, reperes amethyste et filets or. Il mesure 58 px sur desktop et 54 px sur mobile sans reduction des medaillons, conserves a 52 px et 46 px. Il change de preuve par bouton, balayage ou rotation toutes les six secondes, avec pause au survol, au focus, hors viewport et quand la page est masquee. La rotation automatique est desactivee avec `prefers-reduced-motion`.
+- Le deploiement du bandeau-vitrine a ete limite a deux sections et deux vignettes WebP le 2026-08-14 a 20:06 CEST. Pullback live 4/4 identique bit a bit et controles publics 1440/430/390/360 valides. Commit de lot `fa33829c`, merge d'integration `254edefd`. Checkpoint : `docs/checkpoints/2026-08-14-1715-homepage-hero-v2-dev.md`.
+- La variante quartz rose amincie a ete livree live le 2026-08-14 a 20:36 CEST avec un push strict limite a `assets/milaura-tokens.css` et `sections/milaura-announcement.liquid`. Commits `f5d561e1`, `55ca81b0`, merge `82873b97`, pullback live 2/2 identique et controles publics 1440/430/390/360 valides.
 - La selection de Karine a ete refondue puis polie et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, cartes transparentes, cadre aigue-marine fin, informations compactes, quantite soulignee et ajout panier souligne d'or.
 - Le petit separateur court et epais refuse a ete retire. Le filet historique aigue-marine de 1 px et pleine largeur est restaure.
 - Patrice a valide cette deuxieme proposition comme nouvelle direction du site : simple, sobre, efficace et premium, sans gros boutons ni panneaux blancs ajoutes. Reference canonique : `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.
 - La page `/collections/selection-aout-2026` utilise le decor lagon derriere la navigation, un Hero compact, un seul H1 et une grille de 20 produits en deux colonnes sur mobile.
 - Le pullback live des neuf fichiers saisonniers est identique bit a bit a Git. Les controles publics desktop et mobile ne montrent aucun debordement.
 - Selection d'aout, guide de decouverte, `Choisir sa pierre`, dock mobile et panier 30/50/80 sont live.
-- L'ancien bandeau d'engagement ne rend plus de contenu. Sa prochaine version doit devenir une vitrine publicitaire editoriale utilisant successivement les preuves LFG, Karine et Metz, sans trois colonnes denses sur mobile.
+- Le bandeau d'engagement est maintenant la vitrine publicitaire editoriale validee : une photographie et une preuve a la fois, surface quartz rose poudre, filet or fin et aucun panneau dense sur mobile.
 - La priorite chromatique par pierre est live : Amethyste, Aigue-marine, Agate, Quartz rose, Lapis-lazuli et Amazonite ont chacune leur scene et leur palette.
 
 ## Heroes editoriaux GPT Image 2 live
@@ -212,11 +214,10 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Concevoir la passe dediee du bandeau superieur et decider si les trois preuves du pont Hero doivent y etre transferees.
-2. Continuer Navigation et homepage V2 uniquement sur le theme de developpement, sans embarquer ses changements dans le live sans nouveau GO visuel.
-3. Continuer le systeme de recommandation dans son worktree distinct.
-4. Corriger uniquement les cadrages de destination signales precisement par Patrice, sans regeneration reflexe.
-5. Ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu.
+1. Continuer Navigation et homepage V2 uniquement sur le theme de developpement. La synchronisation de `254edefd` est confirmee localement par son commit `15d74eb3` ; aucun changement Navigation ne doit aller en live sans nouveau GO visuel.
+2. Continuer le systeme de recommandation dans son worktree distinct.
+3. Corriger uniquement les cadrages de destination signales precisement par Patrice, sans regeneration reflexe.
+4. Ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu.
 
 ## Dependances encore ouvertes
 
