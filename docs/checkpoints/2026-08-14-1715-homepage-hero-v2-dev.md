@@ -78,3 +78,16 @@ Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO v
 - couleur de la navigation scrollee mesuree : `rgb(63, 116, 116)` ; filtre du logo : `none` ; hover du parcours : `rgb(213, 191, 155)` ;
 - pullback correctif : `sections/milaura-hero-portal.liquid` identique bit a bit au theme de developpement ;
 - le bandeau superieur reste volontairement inchange dans cette correction. Une passe specifique est a planifier apres validation du Hero.
+
+## Peaufinage apres retour visuel du 2026-08-14 a 19:07 CEST
+
+- la signature `MilAura`, le filet or et `Bijoux & mineraux naturels` forment maintenant une seule ligne sur desktop et aux largeurs 430, 390 et 360 px ;
+- la navigation scrollee reprend le fond `--milaura-aigue-ecume` du systeme MilAura, mesure a `rgb(220, 235, 232)`, avec texte prune `rgb(47, 34, 45)` et logo colore conserve ;
+- le label `LFG Paris` est descendu a 24 px du bas du Hero sur desktop et a 72 px sur mobile, soit juste au-dessus du dock de 70 px ;
+- aucune largeur excedentaire et aucun chevauchement entre le label LFG et les parcours sur 1440, 430, 390 et 360 px ;
+- les trois preuves LFG, Karine et Metz restent volontairement en place jusqu'a la decision dediee sur leur suppression et leur reutilisation dans le futur bandeau ;
+- le bandeau superieur reste inchange ;
+- captures de controle : `output/playwright/milaura-home-hero-v2-polished-desktop-1440.png`, `output/playwright/milaura-home-hero-v2-polished-desktop-1440-bridge.png`, `output/playwright/milaura-home-hero-v2-polished-mobile-390.png` et `output/playwright/milaura-home-hero-v2-polished-mobile-390-bridge.png` ;
+- Theme Check : 0 erreur et 28 avertissements historiques ;
+- pullback du theme de developpement `199421952347` : `sections/milaura-hero-portal.liquid` identique bit a bit au fichier local ;
+- theme live `190430282075` non modifie.
