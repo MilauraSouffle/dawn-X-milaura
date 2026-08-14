@@ -44,6 +44,8 @@ La navigation permanente contient six intentions : Nouveautés, Bijoux, Pierres,
 
 Mise à jour de coordination, 2026-08-14 19:52 CEST : Patrice a depuis validé dans la tâche Hero un bandeau-vitrine LFG, Karine et Metz ainsi que le retrait coordonné des trois bulles. La tâche Hero reprend la propriété exclusive de `sections/milaura-announcement.liquid` et `sections/milaura-hero-portal.liquid`. Navigation V2 gèle ces deux fichiers dans leur état local actuel, ne les édite plus et ne les pousse plus. La preview `199957807451` documentée ici ne constitue donc plus la référence finale du Hero. Aucun nouveau push de preview ni aucun déploiement ne doit avoir lieu avant réception et synchronisation du commit d intégration Hero.
 
+Synchronisation confirmée localement, 2026-08-14 20:04 CEST : le merge canonique Hero `254edefd`, issu du lot `fa33829c`, est intégré dans Navigation V2. `sections/milaura-announcement.liquid` est identique à la version canonique. `sections/milaura-hero-portal.liquid` conserve le retrait intégral des trois bulles et de l ancien proof bridge ; ses seuls écarts au commit canonique sont les trois lignes d intégration de la nouvelle navbar : surface initiale transparente et couleur du burger avant et après scroll. La navbar reste positionnée à `top: var(--milaura-announcement-height)`, soit 72 px sur desktop et 70 px sur mobile. Aucun push Shopify supplémentaire n a été effectué pendant cette réconciliation.
+
 La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux recommandations, ni aux produits, ni aux stocks.
 
 ## Contrôles réalisés
@@ -55,6 +57,8 @@ La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux reco
 - fermeture et états ARIA contrôlés ;
 - `node --check assets/milaura-navigation.js` : succès ;
 - validation JSON des fichiers touchés : succès ;
+- contrôle du bandeau resynchronisé : trois preuves, bouton de 44 px, rotation, pause, swipe et `prefers-reduced-motion` conservés ;
+- comparaison au commit `254edefd` : bandeau identique, Hero limité aux trois lignes d intégration navbar attendues ;
 - correction du défaut antérieur dans `templates/page.json` : virgule terminale supprimée ;
 - `git diff --check` : succès ;
 - Theme Check : zéro erreur, 18 avertissements préexistants dans dix fichiers hors lot.
@@ -80,12 +84,11 @@ Non modifié :
 
 ## Blocages avant activation publique
 
-1. réception et synchronisation du commit d intégration Hero validé par Patrice ;
-2. nouvelle validation technique de la preview globale après cette synchronisation ;
-3. GO visuel explicite de Patrice sur cette preview resynchronisée ;
-4. création et publication coordonnée des deux pages guides avec leurs templates et métadonnées ;
-5. remplacement simultané des liens guides dans le menu public ;
-6. contrôle de la collection best-sellers et de son ordre réel ;
-7. ajout de `Offres du moment` uniquement après création d une vraie promotion ;
-8. polish séparé du bandeau cookies, encore trop massif sur mobile et détenu par les fichiers globaux actuellement réservés à une autre session ;
-9. contrôle sitemap puis Search Console dès qu un accès légitime est disponible.
+1. nouvelle validation visuelle de la preview globale après push ciblé de la branche resynchronisée ;
+2. GO visuel explicite de Patrice sur cette preview resynchronisée ;
+3. création et publication coordonnée des deux pages guides avec leurs templates et métadonnées ;
+4. remplacement simultané des liens guides dans le menu public ;
+5. contrôle de la collection best-sellers et de son ordre réel ;
+6. ajout de `Offres du moment` uniquement après création d une vraie promotion ;
+7. polish séparé du bandeau cookies, encore trop massif sur mobile et détenu par les fichiers globaux actuellement réservés à une autre session ;
+8. contrôle sitemap puis Search Console dès qu un accès légitime est disponible.
