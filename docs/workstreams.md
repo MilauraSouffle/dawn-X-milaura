@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-08-15 11:38 CEST
+Derniere mise a jour : 2026-08-15 11:42 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 

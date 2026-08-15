@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-15 11:38 CEST
+Derniere mise a jour : 2026-08-15 11:42 CEST
 
 ## Etat en une phrase
 
@@ -78,6 +78,7 @@ Les deux dernieres collections ont ete controlees en HTTP 200, avec canonique pr
 - Livraison du polish : commit `14b2ee7b`, merge d'integration `4d0b3c39`, pushes cibles sur les themes de developpement `199421952347` et live `190430282075`, pullbacks 2/2 identiques bit a bit. Controles publics 390 px et 1440 px : HTTP 200, aucune largeur excedentaire, texte conforme, pierres visibles et masquage/restauration du bandeau avec le panier valides.
 - Livraison du polish final : commit `46d793d3`, merge d'integration `6d986c20`, push Git puis pushes Shopify strictement limites a `sections/milaura-hero-portal.liquid` sur les themes de developpement et live. Pullbacks 1/1 identiques bit a bit, controles 1440/390/360 sans debordement, une seule image et aucun parcours, HTTP public 200.
 - Micro-patch navbar live : commit `24aaa5db`, merge `8b781461`, push live direct limite a `sections/milaura-hero-portal.liquid` sans theme de developpement ni Playwright a la demande de Patrice ; pullback live 1/1 identique.
+- La synchronisation finale Navigation V2 a repris le Hero par `c3083a53`, le micro-patch canonique `8b781461` par `a11dafed`, puis sa documentation par `5100e945`. Sur sa branche, le Hero ne conserve que trois lignes d'integration navbar en plus du canonique. Son theme prive `199957807451` a ete controle par pullback 1/1, sans nouveau push live.
 - Navigation V2 est live depuis le 2026-08-15 a 10:39 CEST. Le menu principal organise les acces autour de `Nouveautés`, `Bijoux`, `Pierres`, `Rituels & bien-être`, `Cadeaux` et `Guides`. Les bougies restent une sous-categorie de `Rituels & bien-être`, pas une entree principale. `Pierre de naissance` reste dans `Cadeaux`, sans doublon dans `Pierres`.
 - Le menu `Pierres` donne acces a tous les bijoux par pierre, au guide `Pierres de A à Z`, a `Histoire et symbolique`, au choix selon l'émotion du moment et a six pierres mises en avant : Améthyste, Quartz rose, Œil de tigre, Lapis-lazuli, Aigue-marine et Aventurine. Les routes Œil de tigre et Aventurine sont publiques et canoniques.
 - Le deploiement Navigation V2 a ete limite a 23 fichiers sur le theme live `190430282075`. Merge d'integration `ddb0ca90`, pullback 23/23 identique, Theme Check sans erreur, controle desktop 1440 px et mobile 390 px sans debordement ni erreur JavaScript. Checkpoint : `docs/checkpoints/2026-08-15-1039-navigation-home-v2-live.md`.
@@ -264,6 +265,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-15-1039-navigation-home-v2-live.md`
 - `docs/checkpoints/2026-08-15-1054-home-paths-open-gold-live.md`
 - `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`
+- `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`
 - `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`

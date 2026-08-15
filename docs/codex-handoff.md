@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-15 11:38 CEST
+Date de mise a jour : 2026-08-15 11:42 CEST
 
 ## Etat de reprise
 
@@ -19,6 +19,8 @@ Le menu `Pierres` propose :
 La section 3 de la homepage conserve trois parcours : `Choisir par bijou`, `Choisir par pierre` et `Me laisser guider`. Elle utilise maintenant trois cadres ouverts Or mat, sans trait inferieur, sans fond bleu-vert repris du Hero et avec des panneaux et photographies plus compacts. Le diagnostic de Karine reste la destination du troisieme parcours.
 
 Le Hero final et son bandeau-vitrine restent inchanges : `MilAura`, point or, slogan `Bijoux & émotions`, une seule scene minerale, H1 `La beauté des bijoux rencontre les vertus des minéraux`, bandeau Quartz rose poudre et masquage pendant l'ouverture du panier.
+
+La navbar utilise au scroll la version finale nacree transparente : 16 % de Nacre, flou de 12 px et filet fin, sans retour au fond aigue-marine plein. Commit canonique `24aaa5db`, merge d'integration `8b781461`, pullback live 1/1 identique. Navigation V2 a repris ce canonique par `a11dafed` et conserve uniquement ses trois lignes d'integration navbar. Checkpoint : `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`.
 
 Le chantier Recommandations est le seul worktree encore actif. Il reste reserve a sa tache, sur le theme de developpement uniquement. Ses sept fichiers modifies n'ont pas ete touches pendant la cloture Navigation V2.
 
@@ -98,6 +100,7 @@ Commits de lot : `979e0223`, puis `486d6cae` pour le focus Or mat. Merges d'inte
 7. `docs/checkpoints/2026-08-15-1039-navigation-home-v2-live.md`
 8. `docs/checkpoints/2026-08-15-1054-home-paths-open-gold-live.md`
 9. `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`
+10. `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`
 
 ## Interdits de reprise
 
@@ -112,4 +115,4 @@ Commits de lot : `979e0223`, puis `486d6cae` pour le focus Or mat. Merges d'inte
 
 ## Prompt de reprise general
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md` et `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`. Navigation V2, les guides Pierres, les collections Œil de tigre et Aventurine, ainsi que la section 3 aux cadres ouverts Or mat sont live sur le theme `190430282075`. Le worktree Navigation a ete retire. Seul le worktree Recommandations reste actif et contient des modifications concurrentes a preserver. Commence en lecture seule, choisis un seul lot, respecte le registre et ne publie rien sans GO visuel puis GO live explicites de Patrice.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md` et `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`. Navigation V2, le Hero final, le bandeau Quartz rose, la navbar nacree transparente au scroll et la section 3 sont live sur le theme `190430282075`. Le worktree Navigation a ete retire. Seul le worktree Recommandations reste actif et contient des modifications concurrentes a preserver. Commence en lecture seule, choisis un seul lot, respecte le registre et ne publie rien sans GO visuel puis GO live explicites de Patrice.
