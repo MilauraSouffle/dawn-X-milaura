@@ -9,6 +9,7 @@
   const RECOMMENDATION_FRAGMENT = 'milaura-recommendation-fragment';
   const PRODUCT_FRAGMENT = 'milaura-product-fragment';
   const RECENT_FRAGMENT = 'milaura-recent-fragment';
+  const RIBBON_SELECTION_RESUME_DELAY = 6000;
 
   function storefrontRoot() {
     const root = window.Shopify?.routes?.root || '/';
@@ -477,7 +478,9 @@
       this.ribbonManualPaused = false;
       this.ribbonInteractionPaused = false;
       this.ribbonReducedMotion = reducedMotion;
-      cards[0].dataset.active = 'true';
+      this.ribbonCompactInteraction = window.matchMedia('(max-width: 989px), (hover: none), (pointer: coarse)').matches;
+      this.ribbonSelectedCard = null;
+      cards[0].dataset.active = String(!this.ribbonCompactInteraction);
       this.setupRibbonMotion();
     }
 
@@ -533,6 +536,8 @@
       this.ribbonTrack = null;
       this.ribbonCards = [];
       this.ribbonCycleWidth = 0;
+      this.ribbonSelectedCard = null;
+      this.ribbonCompactInteraction = false;
     }
 
     shouldRunRibbon() {
@@ -594,6 +599,70 @@
       this.updateRibbonMotionState();
     }
 
+    clearRibbonSelection() {
+      if (this.dataset.layout !== 'ribbon') return;
+      this.ribbonSelectedCard = null;
+      this.list?.querySelectorAll('[data-milaura-recommendation-card]').forEach((card) => {
+        card.dataset.ribbonUserSelected = 'false';
+        if (this.ribbonCompactInteraction) card.dataset.active = 'false';
+      });
+      this.setRibbonInteractionPaused(false);
+    }
+
+    scheduleRibbonResume() {
+      window.clearTimeout(this.ribbonResumeTimer);
+      this.ribbonResumeTimer = window.setTimeout(() => {
+        this.clearRibbonSelection();
+      }, RIBBON_SELECTION_RESUME_DELAY);
+    }
+
+    selectRibbonCard(card) {
+      if (this.dataset.layout !== 'ribbon' || !card) return;
+      this.activateRibbonCard(card);
+      this.list?.querySelectorAll('[data-milaura-recommendation-card]').forEach((candidate) => {
+        candidate.dataset.ribbonUserSelected = String(candidate === card);
+      });
+      this.ribbonSelectedCard = card;
+      this.setRibbonInteractionPaused(true);
+      this.centerRibbonCard(card);
+      this.ensureRibbonCardVisible(card);
+      this.scheduleRibbonResume();
+    }
+
+    ensureRibbonCardVisible(card) {
+      if (!this.ribbonCompactInteraction || !card) return;
+      window.requestAnimationFrame(() => {
+        if (!this.isConnected || !this.list?.contains(card)) return;
+        const cardRect = card.getBoundingClientRect();
+        const nav = document.querySelector('[data-milaura-navigation] .nav-snake-wrapper');
+        const blockers = [
+          document.querySelector('.milaura-sticky-bar.is-visible'),
+          document.querySelector('.milaura-dock'),
+        ].filter((element) => {
+          if (!element) return false;
+          const styles = window.getComputedStyle(element);
+          return styles.display !== 'none' && styles.visibility !== 'hidden';
+        });
+        const blockerTops = blockers.map((element) => element.getBoundingClientRect().top).filter(Number.isFinite);
+        const safeTop = nav ? nav.getBoundingClientRect().bottom + 12 : 12;
+        const safeBottom = Math.min(window.innerHeight, ...blockerTops) - 12;
+        const availableHeight = Math.max(0, safeBottom - safeTop);
+        let delta = 0;
+
+        if (cardRect.height > availableHeight || cardRect.top < safeTop) {
+          delta = cardRect.top - safeTop;
+        } else if (cardRect.bottom > safeBottom) {
+          delta = cardRect.bottom - safeBottom;
+        }
+
+        if (Math.abs(delta) < 2) return;
+        window.scrollBy({
+          top: delta,
+          behavior: this.ribbonReducedMotion ? 'auto' : 'smooth',
+        });
+      });
+    }
+
     centerRibbonCard(card) {
       if (!card || !this.list) return;
       const left = card.offsetLeft - (this.list.clientWidth - card.offsetWidth) / 2;
@@ -631,6 +700,7 @@
 
     bindInteractions() {
       this.addEventListener('pointerover', (event) => {
+        if (this.ribbonCompactInteraction || (event.pointerType && event.pointerType !== 'mouse')) return;
         const card = event.target.closest('[data-milaura-recommendation-card]');
         if (!card) return;
         this.activateRibbonCard(card);
@@ -647,23 +717,13 @@
 
       this.addEventListener('focusout', (event) => {
         if (event.relatedTarget?.closest?.('[data-milaura-recommendation-card]')) return;
+        if (this.ribbonSelectedCard) return;
         this.setRibbonInteractionPaused(false);
       });
 
-      this.list?.addEventListener('pointerleave', () => {
+      this.list?.addEventListener('pointerleave', (event) => {
+        if (this.ribbonCompactInteraction || (event.pointerType && event.pointerType !== 'mouse')) return;
         this.setRibbonInteractionPaused(false);
-      });
-
-      this.list?.addEventListener('pointerdown', (event) => {
-        if (event.pointerType === 'mouse') return;
-        window.clearTimeout(this.ribbonResumeTimer);
-        this.setRibbonInteractionPaused(true);
-      });
-
-      this.list?.addEventListener('pointerup', (event) => {
-        if (event.pointerType === 'mouse') return;
-        window.clearTimeout(this.ribbonResumeTimer);
-        this.ribbonResumeTimer = window.setTimeout(() => this.setRibbonInteractionPaused(false), 1200);
       });
 
       this.addEventListener('click', (event) => {
@@ -675,10 +735,18 @@
           return;
         }
 
-        const link = event.target.closest('.grid__card');
-        if (!link) return;
-        const card = link.closest('[data-milaura-recommendation-card]');
+        const card = event.target.closest('[data-milaura-recommendation-card]');
         if (!card) return;
+        const link = event.target.closest('.grid__card');
+
+        if (this.dataset.layout === 'ribbon' && this.ribbonCompactInteraction) {
+          const alreadySelected = this.ribbonSelectedCard === card && card.dataset.ribbonUserSelected === 'true';
+          if (link && !alreadySelected) event.preventDefault();
+          this.selectRibbonCard(card);
+          if (!link || !alreadySelected) return;
+        }
+
+        if (!link) return;
         publishAnalytics('milaura:recommendation_click', {
           context: this.context,
           intent: this.currentIntent,
