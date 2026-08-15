@@ -1,0 +1,78 @@
+{%- comment -%}
+  Coquille semantique unique des recommandations.
+
+  Parametres principaux :
+  - recommendation_context
+  - source_product_ids, chaine d'identifiants separes par des virgules
+  - excluded_product_ids, chaine d'identifiants separes par des virgules
+  - recommendation_intents, ex: complementary,related
+  - recommendation_limit
+  - recommendation_minimum
+  - recommendation_cards, HTML serveur facultatif
+  - eyebrow, title, subtitle
+  - complementary_title, complementary_subtitle
+  - related_title, related_subtitle
+  - current_product_id et current_product_handle pour l'historique recent
+{%- endcomment -%}
+
+{%- liquid
+  assign shell_context = recommendation_context | default: 'editorial'
+  assign shell_limit = recommendation_limit | default: 3
+  assign shell_minimum = recommendation_minimum | default: 1
+  assign shell_state = 'idle'
+  if recommendation_cards != blank and recommendation_requires_filter != true
+    assign shell_state = 'ready'
+  endif
+  assign shell_instance = recommendation_instance_id | default: shell_context
+  assign shell_heading_id = 'MilauraRecommendationsHeading-' | append: section.id | append: '-' | append: shell_instance
+-%}
+
+<milaura-recommendations
+  class="milaura-recommendations milaura-recommendations--{{ shell_context }}"
+  data-milaura-recommendations
+  data-context="{{ shell_context }}"
+  data-source-product-ids="{{ source_product_ids | escape }}"
+  data-excluded-product-ids="{{ excluded_product_ids | escape }}"
+  data-intents="{{ recommendation_intents | default: 'complementary' | escape }}"
+  data-limit="{{ shell_limit }}"
+  data-minimum="{{ shell_minimum }}"
+  data-state="{{ shell_state }}"
+  data-current-product-id="{{ current_product_id }}"
+  data-current-product-handle="{{ current_product_handle | escape }}"
+  data-filter-by-diagnostic="{{ recommendation_requires_filter }}"
+  data-complementary-title="{{ complementary_title | escape }}"
+  data-complementary-subtitle="{{ complementary_subtitle | escape }}"
+  data-related-title="{{ related_title | escape }}"
+  data-related-subtitle="{{ related_subtitle | escape }}"
+>
+  <section class="milaura-recommendations__section" aria-labelledby="{{ shell_heading_id }}">
+    <div class="milaura-recommendations__inner">
+      <header class="milaura-recommendations__intro">
+        {%- if eyebrow != blank -%}
+          <p class="milaura-recommendations__eyebrow">{{ eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="milaura-recommendations__title" id="{{ shell_heading_id }}" data-milaura-recommendation-title>
+          {{ title }}
+        </h2>
+        {%- if subtitle != blank -%}
+          <p class="milaura-recommendations__subtitle" data-milaura-recommendation-subtitle>{{ subtitle }}</p>
+        {%- endif -%}
+        <button
+          class="milaura-recommendations__motion-toggle"
+          type="button"
+          aria-pressed="false"
+          data-milaura-ribbon-toggle
+          hidden
+        >
+          <span data-milaura-ribbon-toggle-label>Mettre en pause</span>
+        </button>
+      </header>
+
+      <div class="milaura-recommendations__products milaura-cards" role="list" data-milaura-recommendation-list>
+        {{ recommendation_cards }}
+      </div>
+
+      <p class="visually-hidden" aria-live="polite" data-milaura-recommendation-status></p>
+    </div>
+  </section>
+</milaura-recommendations>
