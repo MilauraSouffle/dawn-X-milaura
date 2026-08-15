@@ -37,6 +37,12 @@
       mobileOverlay.setAttribute('aria-hidden', open ? 'false' : 'true');
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
       lockPage(open || (searchOverlay && searchOverlay.classList.contains('is-open')));
+      document.dispatchEvent(new CustomEvent('milaura:menu-state', {
+        detail: {
+          expanded: open,
+          controls: mobileOverlay.id
+        }
+      }));
 
       if (open) {
         lastFocus = document.activeElement;
