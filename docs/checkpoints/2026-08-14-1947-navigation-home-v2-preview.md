@@ -82,6 +82,23 @@ La section homepage `Trois façons de choisir` utilise désormais trois onglets 
 
 La seconde image des cartes produit sur appareil tactile n a pas été modifiée dans ce lot. Les cartes partagées sont détenues par la tâche Recommandations. Le contrat recommandé pour une passe coordonnée est un bouton tactile explicite de 44 px pour basculer l image, plutôt qu un geste horizontal imbriqué dans les rails produits de la homepage.
 
+## Sélection SEO des pierres du 2026-08-15 09:56 CEST
+
+Le sous-menu `Pierres` présente désormais `Choisir selon son émotion du moment`, puis six pierres choisies en croisant estimation de demande France, difficulté SEO, nombre réel de produits dans la collection publique et existence d une destination canonique HTTP 200.
+
+| Pierre | Volume France estimé | Difficulté estimée | Produits dans la collection publique | Route |
+| --- | ---: | ---: | ---: | --- |
+| Améthyste | 40 500 | 57 | 11 | `/collections/par-pierre-amethyste` |
+| Lapis-lazuli | 33 100 | 58 | 6 | `/collections/par-pierre-lapis-lazuli` |
+| Aigue-marine | 18 100 | 59 | 6 | `/collections/par-pierre-aigue-marine` |
+| Quartz rose | 14 800 | 56 | 8 | `/collections/par-pierre-quartz-rose` |
+| Agate | 8 100 | 27 | 10 | `/collections/par-pierre-agate` |
+| Amazonite | 8 100 | 45 | 6 | `/collections/par-pierre-amazonite` |
+
+Source de comparaison consultée le 2026-08-15 : `https://freudix.studio/datasets/mineraux-pierres/cristaux-vertus`. Les volumes sont des estimations tierces de requêtes mensuelles France, pas des données Search Console MilAura ni des chiffres Google garantis. Ils servent au classement relatif. La sélection devra être réévaluée avec GSC et Google Keyword Planner dès qu un accès légitime sera disponible.
+
+`Œil de tigre` reste le premier candidat à activer ensuite : la demande estimée est de 12 100 recherches mensuelles et 13 produits publics comportent ce terme, mais aucune collection canonique publique n existe encore. `Jaspe rouge` reste hors des six malgré le potentiel du terme générique `Jaspe`, car sa collection dédiée ne contient actuellement que deux produits.
+
 ## Contrôles réalisés
 
 - desktop `1440 x 1000` : un seul H1, aucun débordement horizontal, bandeau 58 px, Header et Hero alignés ;
@@ -106,6 +123,7 @@ La seconde image des cartes produit sur appareil tactile n a pas été modifiée
 - contrôle du parcours à onglets : desktop 1440 x 1000, mobile 390 x 844 et 360 x 800, un seul panneau visible, cibles tactiles de 85 px et aucun débordement horizontal ;
 - contrôle du menu mobile à 390 px : `Rituels & bien-être` ouvert avec collection générale, Savons naturels, Bols chantants et Bougies émotionnelles ;
 - contrôle HTTP des 21 destinations du menu privé : 21 réponses publiques HTTP 200 ;
+- contrôle des six collections pierres mises en avant : six routes HTTP 200 et 47 produits cumulés dans leurs collections publiques ;
 - contrôle des erreurs navigateur du lot taxonomie et parcours : aucune erreur ;
 - pullback Shopify du lot taxonomie et parcours : 7/7 identique après nettoyage des anciens réglages Hero devenus invalides dans `templates/index.json` ;
 - correction du défaut antérieur dans `templates/page.json` : virgule terminale supprimée ;
