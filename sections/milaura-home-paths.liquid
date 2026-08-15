@@ -1,4 +1,5 @@
 {{ 'milaura-home-paths.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-home-paths.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign path_count = 0
@@ -11,8 +12,10 @@
 
 {%- if path_count > 0 -%}
   <section
+    id="MilauraHomePaths-{{ section.id }}"
     class="milaura-home-paths"
     aria-labelledby="MilauraHomePathsTitle-{{ section.id }}"
+    data-milaura-home-paths
   >
     <div class="milaura-home-paths__inner">
       <header class="milaura-home-paths__header">
@@ -29,10 +32,51 @@
         {%- endif -%}
       </header>
 
-      <div class="milaura-home-paths__grid">
+      <div class="milaura-home-paths__tabs" role="tablist" aria-label="Choisir un point de départ">
+        {%- assign tab_index = 0 -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'path' -%}
             {%- liquid
+              assign tab_index = tab_index | plus: 1
+              assign path_variant = block.settings.variant | default: 'jewelry'
+              assign tab_label = block.settings.tab_label
+              if tab_label == blank
+                case path_variant
+                  when 'stone'
+                    assign tab_label = 'Choisir par pierre'
+                  when 'guided'
+                    assign tab_label = 'Me laisser guider'
+                  else
+                    assign tab_label = 'Choisir par bijou'
+                endcase
+              endif
+              assign tab_number = tab_index | prepend: '0' | slice: -2, 2
+            -%}
+            <button
+              id="MilauraHomePathTab-{{ section.id }}-{{ block.id }}"
+              class="milaura-home-paths__tab"
+              type="button"
+              role="tab"
+              aria-controls="MilauraHomePathPanel-{{ section.id }}-{{ block.id }}"
+              aria-selected="{% if tab_index == 1 %}true{% else %}false{% endif %}"
+              tabindex="{% if tab_index == 1 %}0{% else %}-1{% endif %}"
+              data-home-path-tab
+              {{ block.shopify_attributes }}
+            >
+              <span class="milaura-home-paths__tab-number" aria-hidden="true">{{ tab_number }}</span>
+              <span class="milaura-home-paths__tab-label">{{ tab_label | escape }}</span>
+              <span class="milaura-home-paths__tab-arrow" aria-hidden="true">↗</span>
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="milaura-home-paths__panels">
+        {%- assign panel_index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'path' -%}
+            {%- liquid
+              assign panel_index = panel_index | plus: 1
               assign path_image = block.settings.image
               if path_image == blank and block.settings.product != blank
                 assign path_image = block.settings.product.featured_image
@@ -54,20 +98,28 @@
 
               assign path_variant = block.settings.variant | default: 'jewelry'
               assign loading_mode = 'lazy'
-              if forloop.first
+              if panel_index == 1
                 assign loading_mode = 'eager'
               endif
             -%}
-            <article class="milaura-home-paths__path milaura-home-paths__path--{{ path_variant }}" {{ block.shopify_attributes }}>
-              <a class="milaura-home-paths__path-link" href="{{ path_url }}">
-                <span class="milaura-home-paths__path-media">
+            <article
+              id="MilauraHomePathPanel-{{ section.id }}-{{ block.id }}"
+              class="milaura-home-paths__panel milaura-home-paths__panel--{{ path_variant }}"
+              role="tabpanel"
+              aria-labelledby="MilauraHomePathTab-{{ section.id }}-{{ block.id }}"
+              tabindex="0"
+              data-home-path-panel
+              {% unless panel_index == 1 %}hidden{% endunless %}
+            >
+              <a class="milaura-home-paths__panel-link" href="{{ path_url }}">
+                <span class="milaura-home-paths__panel-media">
                   {%- if path_image != blank -%}
                     {{- path_image
-                      | image_url: width: 1400
+                      | image_url: width: 1600
                       | image_tag:
-                        class: 'milaura-home-paths__path-image',
-                        widths: '420, 620, 840, 1100, 1400',
-                        sizes: '(max-width: 989px) calc(100vw - 32px), 50vw',
+                        class: 'milaura-home-paths__panel-image',
+                        widths: '420, 620, 840, 1100, 1400, 1600',
+                        sizes: '(max-width: 749px) calc(100vw - 32px), 62vw',
                         loading: loading_mode,
                         alt: block.settings.image_alt
                     -}}
@@ -77,33 +129,42 @@
                         <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_asset_name | asset_url }}">
                       {%- endif -%}
                       <img
-                        class="milaura-home-paths__path-image"
+                        class="milaura-home-paths__panel-image"
                         src="{{ block.settings.asset_name | asset_url }}"
                         alt="{{ block.settings.image_alt | escape }}"
-                        width="1400"
-                        height="1050"
+                        width="1600"
+                        height="1067"
                         loading="{{ loading_mode }}"
                       >
                     </picture>
                   {%- endif -%}
                 </span>
-                <span class="milaura-home-paths__path-copy">
+                <span class="milaura-home-paths__panel-copy">
                   <span>
                     {%- if block.settings.label != blank -%}
-                      <span class="milaura-home-paths__path-label">{{ block.settings.label | escape }}</span>
+                      <span class="milaura-home-paths__panel-label">{{ block.settings.label | escape }}</span>
                     {%- endif -%}
-                    <span class="milaura-home-paths__path-title">{{ block.settings.title | escape }}</span>
+                    <span class="milaura-home-paths__panel-title">{{ block.settings.title | escape }}</span>
                     {%- if block.settings.text != blank -%}
-                      <span class="milaura-home-paths__path-text">{{ block.settings.text | escape }}</span>
+                      <span class="milaura-home-paths__panel-text">{{ block.settings.text | escape }}</span>
                     {%- endif -%}
                   </span>
-                  <span class="milaura-home-paths__path-action">{{ block.settings.action | escape }}</span>
+                  <span class="milaura-home-paths__panel-action">
+                    <span>{{ block.settings.action | escape }}</span>
+                    <span aria-hidden="true">↗</span>
+                  </span>
                 </span>
               </a>
             </article>
           {%- endif -%}
         {%- endfor -%}
       </div>
+
+      <noscript>
+        <style>
+          #MilauraHomePaths-{{ section.id }} .milaura-home-paths__panel[hidden] { display: block !important; }
+        </style>
+      </noscript>
     </div>
   </section>
 {%- endif -%}
@@ -147,6 +208,11 @@
             { "value": "guided", "label": "Ressenti" }
           ],
           "default": "jewelry"
+        },
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Libellé de l’onglet"
         },
         {
           "type": "text",

@@ -51,8 +51,14 @@
           {%- for link in primary_menu.links -%}
             {%- liquid
               assign link_handle = link.title | handleize
+              assign nav_group = link_handle
+              assign nav_display_title = link.title
+              if link_handle == 'bougies-et-senteurs' or link_handle == 'bougies-senteurs' or link_handle == 'rituels-et-bien-etre' or link_handle == 'rituels-bien-etre'
+                assign nav_group = 'rituels-bien-etre'
+                assign nav_display_title = 'Rituels & bien-être'
+              endif
               assign has_curated_children = false
-              if link_handle == 'pierres' or link_handle == 'bougies-et-senteurs' or link_handle == 'cadeaux' or link_handle == 'guides'
+              if nav_group == 'bijoux' or nav_group == 'pierres' or nav_group == 'rituels-bien-etre' or nav_group == 'cadeaux' or nav_group == 'guides'
                 assign has_curated_children = true
               endif
             -%}
@@ -65,75 +71,56 @@
                   aria-controls="MilauraDropdown-{{ section.id }}-{{ forloop.index }}"
                   data-nav-desktop-toggle
                 >
-                  {{ link.title | escape }}
+                  {{ nav_display_title | escape }}
                   <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="m7 9 5 5 5-5" />
                   </svg>
                 </button>
 
                 <div class="nav-dropdown" id="MilauraDropdown-{{ section.id }}-{{ forloop.index }}">
-                  <ul class="nav-dropdown-list{% if link.links.size == 1 %} nav-dropdown-list--single{% endif %}" role="list">
-                    {%- for child in link.links -%}
-                      {%- liquid
-                        assign skip_child = false
-                        if child.type == 'collection_link'
-                          if child.object == blank or child.object.products_count == 0
-                            assign skip_child = true
+                  <ul class="nav-dropdown-list{% unless nav_group == 'bijoux' %} nav-dropdown-list--single{% endunless %}" role="list">
+                    {%- if has_curated_children -%}
+                      {%- render 'milaura-nav-curated-links', group: nav_group, mobile: false -%}
+                    {%- else -%}
+                      {%- for child in link.links -%}
+                        {%- liquid
+                          assign skip_child = false
+                          if child.type == 'collection_link'
+                            if child.object == blank or child.object.products_count == 0
+                              assign skip_child = true
+                            endif
                           endif
-                        endif
-                      -%}
-                      {%- unless skip_child -%}
-                        {%- if child.links.size > 0 -%}
-                          <li class="nav-dropdown-column">
-                            <a class="nav-dropdown-column-title" href="{{ child.url }}">{{ child.title | escape }}</a>
-                            <ul role="list">
-                              {%- for grandchild in child.links -%}
-                                {%- liquid
-                                  assign skip_grandchild = false
-                                  if grandchild.type == 'collection_link'
-                                    if grandchild.object == blank or grandchild.object.products_count == 0
-                                      assign skip_grandchild = true
+                        -%}
+                        {%- unless skip_child -%}
+                          {%- if child.links.size > 0 -%}
+                            <li class="nav-dropdown-column">
+                              <a class="nav-dropdown-column-title" href="{{ child.url }}">{{ child.title | escape }}</a>
+                              <ul role="list">
+                                {%- for grandchild in child.links -%}
+                                  {%- liquid
+                                    assign skip_grandchild = false
+                                    if grandchild.type == 'collection_link'
+                                      if grandchild.object == blank or grandchild.object.products_count == 0
+                                        assign skip_grandchild = true
+                                      endif
                                     endif
-                                  endif
-                                -%}
-                                {%- unless skip_grandchild -%}
-                                  <li>
-                                    <a class="nav-dropdown-link" href="{{ grandchild.url }}">{{ grandchild.title | escape }}</a>
-                                  </li>
-                                {%- endunless -%}
-                              {%- endfor -%}
-                            </ul>
-                          </li>
-                        {%- else -%}
-                          <li>
-                            <a class="nav-dropdown-link" href="{{ child.url }}">{{ child.title | escape }}</a>
-                          </li>
-                        {%- endif -%}
-                      {%- endunless -%}
-                    {%- endfor -%}
-                    {%- case link_handle -%}
-                      {%- when 'pierres' -%}
-                        <li><a class="nav-dropdown-link" href="/pages/bijoux-par-pierre">Bijoux par pierre</a></li>
-                        <li><a class="nav-dropdown-link" href="/pages/guide-des-pierres">Pierres de A à Z</a></li>
-                        <li><a class="nav-dropdown-link" href="/pages/guide-des-pierres#histoire-symbolique">Histoire et symbolique</a></li>
-                        <li><a class="nav-dropdown-link" href="/pages/pierres-de-naissance">Pierre de naissance</a></li>
-                        <li><a class="nav-dropdown-link" href="{{ routes.collections_url }}/par-pierre-aigue-marine">Aigue-marine</a></li>
-                        <li><a class="nav-dropdown-link" href="{{ routes.collections_url }}/par-pierre-amethyste">Améthyste</a></li>
-                        <li><a class="nav-dropdown-link" href="{{ routes.collections_url }}/par-pierre-agate">Agate</a></li>
-                      {%- when 'bougies-et-senteurs' -%}
-                        <li><a class="nav-dropdown-link" href="{{ routes.collections_url }}/bougies-senteurs">Toutes les bougies</a></li>
-                        <li><a class="nav-dropdown-link" href="/pages/guide-des-senteurs">Senteurs de A à Z</a></li>
-                        <li><a class="nav-dropdown-link" href="{{ routes.collections_url }}/bougies-emotionnelles">Bougies émotionnelles</a></li>
-                      {%- when 'cadeaux' -%}
-                        <li><a class="nav-dropdown-link" href="/pages/pierres-de-naissance">Pierre de naissance</a></li>
-                        <li><a class="nav-dropdown-link" href="/pages/cadeaux-anniversaire-de-mariage">Anniversaire de mariage</a></li>
-                        <li><a class="nav-dropdown-link" href="{{ routes.collections_url }}/selection-aout-2026">Sélection du moment</a></li>
-                      {%- when 'guides' -%}
-                        <li><a class="nav-dropdown-link" href="/pages/choisir-sa-pierre">Choisir selon son ressenti</a></li>
-                        <li><a class="nav-dropdown-link" href="/pages/diagnostic-emotionnel">Faire le diagnostic</a></li>
-                        <li><a class="nav-dropdown-link" href="/blogs/journal">Le Journal</a></li>
-                        <li><a class="nav-dropdown-link" href="/pages/notre-histoire">Notre histoire</a></li>
-                    {%- endcase -%}
+                                  -%}
+                                  {%- unless skip_grandchild -%}
+                                    <li>
+                                      <a class="nav-dropdown-link" href="{{ grandchild.url }}">{{ grandchild.title | escape }}</a>
+                                    </li>
+                                  {%- endunless -%}
+                                {%- endfor -%}
+                              </ul>
+                            </li>
+                          {%- else -%}
+                            <li>
+                              <a class="nav-dropdown-link" href="{{ child.url }}">{{ child.title | escape }}</a>
+                            </li>
+                          {%- endif -%}
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    {%- endif -%}
                   </ul>
                 </div>
               </li>
@@ -222,8 +209,14 @@
           {%- for link in primary_menu.links -%}
             {%- liquid
               assign mobile_link_handle = link.title | handleize
+              assign mobile_nav_group = mobile_link_handle
+              assign mobile_nav_display_title = link.title
+              if mobile_link_handle == 'bougies-et-senteurs' or mobile_link_handle == 'bougies-senteurs' or mobile_link_handle == 'rituels-et-bien-etre' or mobile_link_handle == 'rituels-bien-etre'
+                assign mobile_nav_group = 'rituels-bien-etre'
+                assign mobile_nav_display_title = 'Rituels & bien-être'
+              endif
               assign mobile_has_curated_children = false
-              if mobile_link_handle == 'pierres' or mobile_link_handle == 'bougies-et-senteurs' or mobile_link_handle == 'cadeaux' or mobile_link_handle == 'guides'
+              if mobile_nav_group == 'bijoux' or mobile_nav_group == 'pierres' or mobile_nav_group == 'rituels-bien-etre' or mobile_nav_group == 'cadeaux' or mobile_nav_group == 'guides'
                 assign mobile_has_curated_children = true
               endif
             -%}
@@ -231,71 +224,52 @@
               {%- if link.links.size > 0 or mobile_has_curated_children -%}
                 <details>
                   <summary class="nav-mobile-summary">
-                    <span>{{ link.title | escape }}</span>
+                    <span>{{ mobile_nav_display_title | escape }}</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
                       <path d="m7 9 5 5 5-5" />
                     </svg>
                   </summary>
                   <ul class="nav-mobile-sublist" role="list">
-                    {%- for child in link.links -%}
-                      {%- liquid
-                        assign skip_mobile_child = false
-                        if child.type == 'collection_link'
-                          if child.object == blank or child.object.products_count == 0
-                            assign skip_mobile_child = true
+                    {%- if mobile_has_curated_children -%}
+                      {%- render 'milaura-nav-curated-links', group: mobile_nav_group, mobile: true -%}
+                    {%- else -%}
+                      {%- for child in link.links -%}
+                        {%- liquid
+                          assign skip_mobile_child = false
+                          if child.type == 'collection_link'
+                            if child.object == blank or child.object.products_count == 0
+                              assign skip_mobile_child = true
+                            endif
                           endif
-                        endif
-                      -%}
-                      {%- unless skip_mobile_child -%}
-                        <li>
-                          <a class="{% if child.links.size > 0 %}nav-mobile-group-title{% else %}nav-mobile-sublink{% endif %}" href="{{ child.url }}" data-nav-close-mobile>
-                            {{ child.title | escape }}
-                          </a>
-                          {%- if child.links.size > 0 -%}
-                            <ul class="nav-mobile-sublist" role="list">
-                              {%- for grandchild in child.links -%}
-                                {%- liquid
-                                  assign skip_mobile_grandchild = false
-                                  if grandchild.type == 'collection_link'
-                                    if grandchild.object == blank or grandchild.object.products_count == 0
-                                      assign skip_mobile_grandchild = true
+                        -%}
+                        {%- unless skip_mobile_child -%}
+                          <li>
+                            <a class="{% if child.links.size > 0 %}nav-mobile-group-title{% else %}nav-mobile-sublink{% endif %}" href="{{ child.url }}" data-nav-close-mobile>
+                              {{ child.title | escape }}
+                            </a>
+                            {%- if child.links.size > 0 -%}
+                              <ul class="nav-mobile-sublist" role="list">
+                                {%- for grandchild in child.links -%}
+                                  {%- liquid
+                                    assign skip_mobile_grandchild = false
+                                    if grandchild.type == 'collection_link'
+                                      if grandchild.object == blank or grandchild.object.products_count == 0
+                                        assign skip_mobile_grandchild = true
+                                      endif
                                     endif
-                                  endif
-                                -%}
-                                {%- unless skip_mobile_grandchild -%}
-                                  <li>
-                                    <a class="nav-mobile-sublink" href="{{ grandchild.url }}" data-nav-close-mobile>{{ grandchild.title | escape }}</a>
-                                  </li>
-                                {%- endunless -%}
-                              {%- endfor -%}
-                            </ul>
-                          {%- endif -%}
-                        </li>
-                      {%- endunless -%}
-                    {%- endfor -%}
-                    {%- case mobile_link_handle -%}
-                      {%- when 'pierres' -%}
-                        <li><a class="nav-mobile-sublink" href="/pages/bijoux-par-pierre" data-nav-close-mobile>Bijoux par pierre</a></li>
-                        <li><a class="nav-mobile-sublink" href="/pages/guide-des-pierres" data-nav-close-mobile>Pierres de A à Z</a></li>
-                        <li><a class="nav-mobile-sublink" href="/pages/guide-des-pierres#histoire-symbolique" data-nav-close-mobile>Histoire et symbolique</a></li>
-                        <li><a class="nav-mobile-sublink" href="/pages/pierres-de-naissance" data-nav-close-mobile>Pierre de naissance</a></li>
-                        <li><a class="nav-mobile-sublink" href="{{ routes.collections_url }}/par-pierre-aigue-marine" data-nav-close-mobile>Aigue-marine</a></li>
-                        <li><a class="nav-mobile-sublink" href="{{ routes.collections_url }}/par-pierre-amethyste" data-nav-close-mobile>Améthyste</a></li>
-                        <li><a class="nav-mobile-sublink" href="{{ routes.collections_url }}/par-pierre-agate" data-nav-close-mobile>Agate</a></li>
-                      {%- when 'bougies-et-senteurs' -%}
-                        <li><a class="nav-mobile-sublink" href="{{ routes.collections_url }}/bougies-senteurs" data-nav-close-mobile>Toutes les bougies</a></li>
-                        <li><a class="nav-mobile-sublink" href="/pages/guide-des-senteurs" data-nav-close-mobile>Senteurs de A à Z</a></li>
-                        <li><a class="nav-mobile-sublink" href="{{ routes.collections_url }}/bougies-emotionnelles" data-nav-close-mobile>Bougies émotionnelles</a></li>
-                      {%- when 'cadeaux' -%}
-                        <li><a class="nav-mobile-sublink" href="/pages/pierres-de-naissance" data-nav-close-mobile>Pierre de naissance</a></li>
-                        <li><a class="nav-mobile-sublink" href="/pages/cadeaux-anniversaire-de-mariage" data-nav-close-mobile>Anniversaire de mariage</a></li>
-                        <li><a class="nav-mobile-sublink" href="{{ routes.collections_url }}/selection-aout-2026" data-nav-close-mobile>Sélection du moment</a></li>
-                      {%- when 'guides' -%}
-                        <li><a class="nav-mobile-sublink" href="/pages/choisir-sa-pierre" data-nav-close-mobile>Choisir selon son ressenti</a></li>
-                        <li><a class="nav-mobile-sublink" href="/pages/diagnostic-emotionnel" data-nav-close-mobile>Faire le diagnostic</a></li>
-                        <li><a class="nav-mobile-sublink" href="/blogs/journal" data-nav-close-mobile>Le Journal</a></li>
-                        <li><a class="nav-mobile-sublink" href="/pages/notre-histoire" data-nav-close-mobile>Notre histoire</a></li>
-                    {%- endcase -%}
+                                  -%}
+                                  {%- unless skip_mobile_grandchild -%}
+                                    <li>
+                                      <a class="nav-mobile-sublink" href="{{ grandchild.url }}" data-nav-close-mobile>{{ grandchild.title | escape }}</a>
+                                    </li>
+                                  {%- endunless -%}
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </li>
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    {%- endif -%}
                   </ul>
                 </details>
               {%- else -%}
@@ -355,7 +329,7 @@
               type="search"
               name="q"
               value="{{ search.terms | escape }}"
-              placeholder="Un bijou, une pierre, une senteur"
+              placeholder="Un bijou, une pierre, un rituel"
               data-nav-search-input
               {% if settings.predictive_search_enabled %}
                 role="combobox"
@@ -376,7 +350,7 @@
           <ul class="nav-search-links" role="list" aria-label="Accès rapides">
             <li><a href="{{ routes.collections_url }}/bijoux-pierres-naturelles">Tous les bijoux</a></li>
             <li><a href="/pages/bijoux-par-pierre">Bijoux par pierre</a></li>
-            <li><a href="{{ routes.collections_url }}/bougies-senteurs">Bougies et senteurs</a></li>
+            <li><a href="{{ routes.collections_url }}/rituels-bien-etre">Rituels & bien-être</a></li>
             <li><a href="{{ routes.collections_url }}/nouveautes">Nouveautés</a></li>
           </ul>
 

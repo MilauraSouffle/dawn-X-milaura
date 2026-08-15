@@ -25,7 +25,7 @@ La homepage rend huit mouvements visibles, dans cet ordre :
 7. Naissance et Mariage ;
 8. Karine et Journal.
 
-La navigation permanente contient six intentions : Nouveautés, Bijoux, Pierres, Bougies et senteurs, Cadeaux et Guides. Recherche, diagnostic, Cercle, contact et panier restent des utilitaires. Le Cercle renvoie exclusivement vers `/account`.
+La navigation permanente contient six intentions : Nouveautés, Bijoux, Pierres, Rituels et bien-être, Cadeaux et Guides. Recherche, diagnostic, Cercle, contact et panier restent des utilitaires. Le Cercle renvoie exclusivement vers `/account`.
 
 `Offres du moment` reste conditionnel. Aucun lien promotionnel n est affiché sans sélection commerciale, prix et durée vérifiés.
 
@@ -56,6 +56,32 @@ Synchronisation finale de la navbar au scroll, 2026-08-15 08:51 CEST : le micro-
 
 La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux recommandations, ni aux produits, ni aux stocks.
 
+## Ajustement taxonomie et parcours du 2026-08-15 09:36 CEST
+
+Le menu et la section `Trois façons de choisir` ont été repris sur le seul thème privé `199957807451` après le retour de Patrice.
+
+Constat public vérifié au moment du lot :
+
+- 268 produits accessibles par les flux publics Shopify ;
+- 116 produits dans `bijoux-pierres-naturelles` ;
+- 33 produits dans `pierres-mineraux` ;
+- 66 produits dans `rituels-bien-etre` ;
+- cinq références seulement dans `bougies-emotionnelles`, famille appelée à disparaître après écoulement du stock.
+
+Contrat de navigation retenu :
+
+- `Pierre de naissance` apparaît uniquement dans `Cadeaux`, avec `Anniversaire de mariage` et `Sélection du moment` ;
+- `Bijoux` donne accès à tous les bijoux puis à six types : Bracelets, Colliers, Bagues, Boucles d oreilles, Pendentifs et Chaînes ;
+- `Pierres` ne présente plus une sélection arbitraire de cinq noms : elle mène vers tous les bijoux par pierre, le guide A à Z, l histoire et la symbolique, puis le choix selon le ressenti ;
+- `Rituels & bien-être` remplace `Bougies et senteurs` au premier niveau et contient la collection générale, les Savons naturels, les Bols chantants et les Bougies émotionnelles ;
+- `Guides` conserve le diagnostic, le choix selon le ressenti, le Journal et l histoire de MilAura.
+
+La navigation rend ces groupes depuis `snippets/milaura-nav-curated-links.liquid`, partagé entre desktop et mobile, afin d éviter deux taxonomies divergentes. Le menu Shopify Admin privé conserve encore son ancien intitulé source ; le thème de preview le normalise de façon déterministe et aucune mutation du menu public `main-menu` n a été faite.
+
+La section homepage `Trois façons de choisir` utilise désormais trois onglets inspirés du langage du Hero : `Choisir par bijou`, `Choisir par pierre` et `Me laisser guider`. Un seul panneau et une seule photo sont visibles à la fois. Le composant conserve le clavier, les états ARIA, les cibles tactiles et un repli `noscript`. Le troisième parcours mène au diagnostic `/pages/diagnostic-emotionnel`.
+
+La seconde image des cartes produit sur appareil tactile n a pas été modifiée dans ce lot. Les cartes partagées sont détenues par la tâche Recommandations. Le contrat recommandé pour une passe coordonnée est un bouton tactile explicite de 44 px pour basculer l image, plutôt qu un geste horizontal imbriqué dans les rails produits de la homepage.
+
 ## Contrôles réalisés
 
 - desktop `1440 x 1000` : un seul H1, aucun débordement horizontal, bandeau 58 px, Header et Hero alignés ;
@@ -77,6 +103,11 @@ La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux reco
 - contrôle statique du micro-patch `8b781461` : nacre 16 %, blur 12 px, saturation 112 % et filet nacré fin ;
 - comparaison au commit `8b781461` : Hero limité aux trois lignes d intégration navbar attendues ;
 - pullbacks Shopify du Hero final et du micro-patch scroll : 1/1 puis 1/1, parité octet par octet ;
+- contrôle du parcours à onglets : desktop 1440 x 1000, mobile 390 x 844 et 360 x 800, un seul panneau visible, cibles tactiles de 85 px et aucun débordement horizontal ;
+- contrôle du menu mobile à 390 px : `Rituels & bien-être` ouvert avec collection générale, Savons naturels, Bols chantants et Bougies émotionnelles ;
+- contrôle HTTP des 21 destinations du menu privé : 21 réponses publiques HTTP 200 ;
+- contrôle des erreurs navigateur du lot taxonomie et parcours : aucune erreur ;
+- pullback Shopify du lot taxonomie et parcours : 7/7 identique après nettoyage des anciens réglages Hero devenus invalides dans `templates/index.json` ;
 - correction du défaut antérieur dans `templates/page.json` : virgule terminale supprimée ;
 - `git diff --check` : succès ;
 - Theme Check : zéro erreur, 18 avertissements préexistants dans dix fichiers hors lot.
@@ -91,6 +122,16 @@ Créé dans Shopify Admin :
 - un menu privé `322508423515`.
 
 Poussé uniquement sur le thème non publié : fichiers de navigation, homepage, guides, Header, Footer et templates du lot, puis synchronisation quartz rose, désactivation de l ancien dock mobile, reprise du Hero final canonique `6d986c20` et du micro-patch scroll canonique `8b781461`.
+
+Dernière mutation privée du 2026-08-15 :
+
+- `assets/milaura-home-paths.css` ;
+- `assets/milaura-home-paths.js` ;
+- `assets/milaura-navigation.css` ;
+- `sections/milaura-home-paths.liquid` ;
+- `sections/milaura-navbar.liquid` ;
+- `snippets/milaura-nav-curated-links.liquid` ;
+- `templates/index.json`.
 
 Non modifié :
 
