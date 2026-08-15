@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-15 08:50 CEST
+Derniere mise a jour : 2026-08-15 11:38 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0, l'UI sitewide, les dix Heroes de destination, le Hero de marque de la homepage et son bandeau-vitrine de preuves sont live ; Navigation V2 et Recommandation restent deux lots de developpement distincts sans autorisation live.
+Le catalogue V1, la PDP-P0, l'UI sitewide, les Heroes, Navigation V2, les guides Pierres et la section 3 de la homepage sont live ; seul le systeme de recommandation reste un lot de developpement distinct sans autorisation live.
 
 ## Source de verite et etat du depot
 
@@ -12,9 +12,9 @@ Le catalogue V1, la PDP-P0, l'UI sitewide, les dix Heroes de destination, le Her
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `main` reste le miroir automatique du theme Shopify live.
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
-- Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont retirees apres integration et fermeture de leur lot.
+- Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Navigation V2 et Recommandation restent actifs ; les worktrees ephemeres du Hero homepage, de son hotfix, du bandeau-vitrine, de sa variante quartz rose et des deux polish du 2026-08-15 ont ete retires apres integration et validation live.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Le worktree Navigation V2 a ete retire le 2026-08-15 a 11:38 CEST apres verification de sa fusion. Seul le worktree Recommandation reste actif et ses modifications concurrentes ont ete preservees sans edition.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -52,13 +52,16 @@ Pages publiques :
 Collections publiques :
 
 - `/collections/bagues-pierres`, 6 produits
+- `/collections/par-pierre-amethyste`, 11 produits au dernier controle documente
 - `/collections/par-pierre-aigue-marine`, 6 produits
 - `/collections/par-pierre-agate`, 10 produits
 - `/collections/par-pierre-quartz-rose`, 8 produits
 - `/collections/par-pierre-lapis-lazuli`, 6 produits
 - `/collections/par-pierre-amazonite`, 6 produits
+- `/collections/par-pierre-oeil-de-tigre`, 4 bijoux actifs, publiee le 2026-08-15 a 10:31:48 CEST
+- `/collections/par-pierre-aventurine`, 7 bijoux actifs, publiee le 2026-08-15 a 10:31:49 CEST
 
-Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, aucun `noindex`, presence sitemap, Theme Check sans erreur et `productMutations: 0`.
+Les deux dernieres collections ont ete controlees en HTTP 200, avec canonique propre et presence dans le sitemap. Leur publication n'a entraine aucune mutation produit. La collection Œil de tigre reste sous le seuil editorial prefere de cinq bijoux et devra etre recontrolee apres stabilisation de l'inventaire.
 
 ## Homepage et design
 
@@ -75,6 +78,11 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 - Livraison du polish : commit `14b2ee7b`, merge d'integration `4d0b3c39`, pushes cibles sur les themes de developpement `199421952347` et live `190430282075`, pullbacks 2/2 identiques bit a bit. Controles publics 390 px et 1440 px : HTTP 200, aucune largeur excedentaire, texte conforme, pierres visibles et masquage/restauration du bandeau avec le panier valides.
 - Livraison du polish final : commit `46d793d3`, merge d'integration `6d986c20`, push Git puis pushes Shopify strictement limites a `sections/milaura-hero-portal.liquid` sur les themes de developpement et live. Pullbacks 1/1 identiques bit a bit, controles 1440/390/360 sans debordement, une seule image et aucun parcours, HTTP public 200.
 - Micro-patch navbar live : commit `24aaa5db`, merge `8b781461`, push live direct limite a `sections/milaura-hero-portal.liquid` sans theme de developpement ni Playwright a la demande de Patrice ; pullback live 1/1 identique.
+- Navigation V2 est live depuis le 2026-08-15 a 10:39 CEST. Le menu principal organise les acces autour de `Nouveautés`, `Bijoux`, `Pierres`, `Rituels & bien-être`, `Cadeaux` et `Guides`. Les bougies restent une sous-categorie de `Rituels & bien-être`, pas une entree principale. `Pierre de naissance` reste dans `Cadeaux`, sans doublon dans `Pierres`.
+- Le menu `Pierres` donne acces a tous les bijoux par pierre, au guide `Pierres de A à Z`, a `Histoire et symbolique`, au choix selon l'émotion du moment et a six pierres mises en avant : Améthyste, Quartz rose, Œil de tigre, Lapis-lazuli, Aigue-marine et Aventurine. Les routes Œil de tigre et Aventurine sont publiques et canoniques.
+- Le deploiement Navigation V2 a ete limite a 23 fichiers sur le theme live `190430282075`. Merge d'integration `ddb0ca90`, pullback 23/23 identique, Theme Check sans erreur, controle desktop 1440 px et mobile 390 px sans debordement ni erreur JavaScript. Checkpoint : `docs/checkpoints/2026-08-15-1039-navigation-home-v2-live.md`.
+- La section 3 de la homepage est live depuis le 2026-08-15 a 10:54 CEST. Ses trois parcours `Choisir par bijou`, `Choisir par pierre` et `Me laisser guider` utilisent des cadres ouverts Or mat, sans reprise du fond bleu-vert du Hero. Les panneaux et photographies ont ete compactes, le focus clavier est Or mat et les destinations fonctionnelles restent les bijoux, le hub Pierres et le diagnostic de Karine.
+- Le polish de la section 3 correspond aux commits de lot `979e0223` et `486d6cae`, integres par `5bc962ac` et `2a77605f`. Pullbacks 2/2 puis 1/1 identiques, controles 1440/390/360, navigation clavier, un seul H1 et aucune erreur JavaScript. Checkpoint : `docs/checkpoints/2026-08-15-1054-home-paths-open-gold-live.md`.
 - La selection de Karine a ete refondue puis polie et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, cartes transparentes, cadre aigue-marine fin, informations compactes, quantite soulignee et ajout panier souligne d'or.
 - Le petit separateur court et epais refuse a ete retire. Le filet historique aigue-marine de 1 px et pleine largeur est restaure.
 - Patrice a valide cette deuxieme proposition comme nouvelle direction du site : simple, sobre, efficace et premium, sans gros boutons ni panneaux blancs ajoutes. Reference canonique : `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.
@@ -219,10 +227,10 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Continuer Navigation et homepage V2 uniquement sur le theme de developpement. La synchronisation de `254edefd` est confirmee localement par son commit `15d74eb3` ; aucun changement Navigation ne doit aller en live sans nouveau GO visuel.
-2. Continuer le systeme de recommandation dans son worktree distinct.
-3. Corriger uniquement les cadrages de destination signales precisement par Patrice, sans regeneration reflexe.
-4. Ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu.
+1. Continuer le systeme de recommandation uniquement dans son worktree distinct et sur le theme de developpement `199421952347`. Aucun live sans nouveau GO visuel et live de Patrice.
+2. Recontroler les membres et le stock reel des collections publiques apres la session Inventaire, en priorite Œil de tigre qui ne compte que quatre bijoux actifs au dernier controle.
+3. Evaluer la navigation live avec des donnees d'usage lorsque GA4 et Search Console seront accessibles, sans multiplier les routes avant cette mesure.
+4. Programmer le remplacement de la Selection d'aout par la campagne de rentree avant septembre 2026.
 
 ## Dependances encore ouvertes
 
@@ -230,6 +238,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - treize anciennes collections sans metas definitives
 - pages mensuelles de naissance et pages enfants mariage
 - GSC, GA4, Merchant Center et Pinterest non verifies
+- collection Œil de tigre publique avec quatre bijoux, sous le seuil editorial prefere de cinq
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
@@ -252,6 +261,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-13-2058-editorial-heroes-gpt-image-2.md`
 - `docs/checkpoints/2026-08-14-0947-editorial-hero-da-session-handoff.md`
 - `docs/checkpoints/2026-08-14-1715-homepage-hero-v2-dev.md`
+- `docs/checkpoints/2026-08-15-1039-navigation-home-v2-live.md`
+- `docs/checkpoints/2026-08-15-1054-home-paths-open-gold-live.md`
+- `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`
 - `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
