@@ -48,6 +48,8 @@ Synchronisation confirmée localement, 2026-08-14 20:04 CEST : le merge canoniqu
 
 Preview finale resynchronisée, 2026-08-14 20:50 CEST : le contrat quartz rose canonique `82873b97`, puis l état d intégration `797e088c`, sont repris par Navigation V2. Le bandeau utilise `#F0D9E0`, mesure 58 px sur desktop et 54 px sur mobile, conserve ses médaillons 52/46 px et son bouton de 44 px. La navbar reste transparente sur le Hero et se place exactement sous le bandeau. L ancien dock mobile a été désactivé dans `sections/footer-group.json` afin de supprimer le doublon de navigation que la barre Shopify de preview masquait. Les pushes de cette reprise concernent uniquement le thème non publié `199957807451`.
 
+Synchronisation du polish Hero, 2026-08-15 08:18 CEST : le lot `14b2ee7b`, intégré dans le canonique par `4d0b3c39`, est repris sur Navigation V2 par le merge local `2d25f5e6`. Le H1 est désormais `La beauté des bijoux rencontre les vertus des minéraux`, le descriptif conserve ses deux lignes éditoriales prévues, la scène pierre mobile est remontée de 70 px et le bandeau se masque puis se restaure avec l ouverture et la fermeture du panier. `sections/milaura-announcement.liquid` est identique au canonique. Le diff de `sections/milaura-hero-portal.liquid` par rapport à `4d0b3c39` reste strictement limité aux trois lignes nécessaires à la navbar : fond initial transparent et couleur du burger avant et après scroll. Ces deux sections ont été poussées uniquement sur le thème privé `199957807451`, avec pullback 2/2 identique. Aucun push live n a été effectué par Navigation V2.
+
 La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux recommandations, ni aux produits, ni aux stocks.
 
 ## Contrôles réalisés
@@ -63,6 +65,10 @@ La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux reco
 - contrôle du bandeau resynchronisé : trois preuves, bouton de 44 px, rotation, pause, swipe et `prefers-reduced-motion` conservés ;
 - comparaison au commit `254edefd` : bandeau identique, Hero limité aux trois lignes d intégration navbar attendues ;
 - pullbacks Shopify : contrat quartz rose 2/2, désactivation du dock 1/1, parité octet par octet ;
+- contrôle du polish Hero sur la preview privée : `1440 x 1000`, `390 x 844` et `360 x 800`, H1 unique et exact, descriptif sur deux lignes, scène mobile à `translateY(-70px)`, aucun débordement horizontal ;
+- panier sur la preview privée : ouverture avec bandeau masqué, fermeture avec bandeau restauré ;
+- comparaison au commit `4d0b3c39` : bandeau identique, Hero limité aux trois lignes d intégration navbar attendues ;
+- pullback Shopify du polish Hero : 2/2, parité octet par octet ;
 - correction du défaut antérieur dans `templates/page.json` : virgule terminale supprimée ;
 - `git diff --check` : succès ;
 - Theme Check : zéro erreur, 18 avertissements préexistants dans dix fichiers hors lot.
@@ -76,7 +82,7 @@ Créé dans Shopify Admin :
 - un thème non publié `199957807451` ;
 - un menu privé `322508423515`.
 
-Poussé uniquement sur le thème non publié : fichiers de navigation, homepage, guides, Header, Footer et templates du lot, puis synchronisation quartz rose et désactivation de l ancien dock mobile.
+Poussé uniquement sur le thème non publié : fichiers de navigation, homepage, guides, Header, Footer et templates du lot, puis synchronisation quartz rose, désactivation de l ancien dock mobile et reprise des deux sections du polish Hero canonique `4d0b3c39`.
 
 Non modifié :
 
