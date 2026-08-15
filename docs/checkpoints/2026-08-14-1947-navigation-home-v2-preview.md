@@ -50,6 +50,10 @@ Preview finale resynchronisée, 2026-08-14 20:50 CEST : le contrat quartz rose c
 
 Synchronisation du polish Hero, 2026-08-15 08:18 CEST : le lot `14b2ee7b`, intégré dans le canonique par `4d0b3c39`, est repris sur Navigation V2 par le merge local `2d25f5e6`. Le H1 est désormais `La beauté des bijoux rencontre les vertus des minéraux`, le descriptif conserve ses deux lignes éditoriales prévues, la scène pierre mobile est remontée de 70 px et le bandeau se masque puis se restaure avec l ouverture et la fermeture du panier. `sections/milaura-announcement.liquid` est identique au canonique. Le diff de `sections/milaura-hero-portal.liquid` par rapport à `4d0b3c39` reste strictement limité aux trois lignes nécessaires à la navbar : fond initial transparent et couleur du burger avant et après scroll. Ces deux sections ont été poussées uniquement sur le thème privé `199957807451`, avec pullback 2/2 identique. Aucun push live n a été effectué par Navigation V2.
 
+Synchronisation du Hero final, 2026-08-15 08:43 CEST : le canonique `6d986c20`, issu du lot `46d793d3`, est repris par le merge Navigation V2 `c3083a53`. Le slogan devient `Bijoux & émotions`, le séparateur est un point or de 5 px et les trois parcours ainsi que les deux scènes secondaires sont intégralement retirés. La preview privée a confirmé à 390 px un seul H1, une seule image, aucun lien, bouton ou parcours dans le Hero et aucun débordement horizontal. Le fichier a été poussé uniquement sur `199957807451`, avec pullback 1/1 identique.
+
+Synchronisation finale de la navbar au scroll, 2026-08-15 08:51 CEST : le micro-patch `24aaa5db`, intégré par `8b781461`, est repris par le merge Navigation V2 `a11dafed`. La surface au scroll utilise désormais la nacre à 16 % sur fond transparent, un blur de 12 px, une saturation de 112 % et un filet nacré fin. Conformément au workflow raccourci validé par Patrice, cette ultime reprise a été contrôlée statiquement sans Playwright. Le diff de `sections/milaura-hero-portal.liquid` par rapport à `8b781461` reste strictement limité aux trois lignes navbar attendues. Le push a concerné uniquement le thème privé `199957807451`, avec pullback 1/1 identique. Aucun push live n a été effectué par Navigation V2.
+
 La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux recommandations, ni aux produits, ni aux stocks.
 
 ## Contrôles réalisés
@@ -69,6 +73,10 @@ La session n a touché ni au panier, ni à la livraison, ni aux PDP, ni aux reco
 - panier sur la preview privée : ouverture avec bandeau masqué, fermeture avec bandeau restauré ;
 - comparaison au commit `4d0b3c39` : bandeau identique, Hero limité aux trois lignes d intégration navbar attendues ;
 - pullback Shopify du polish Hero : 2/2, parité octet par octet ;
+- contrôle du Hero final à 390 px avant le micro-patch scroll : slogan et point or conformes, un seul H1, une seule image, zéro lien, zéro bouton, zéro parcours et aucun débordement horizontal ;
+- contrôle statique du micro-patch `8b781461` : nacre 16 %, blur 12 px, saturation 112 % et filet nacré fin ;
+- comparaison au commit `8b781461` : Hero limité aux trois lignes d intégration navbar attendues ;
+- pullbacks Shopify du Hero final et du micro-patch scroll : 1/1 puis 1/1, parité octet par octet ;
 - correction du défaut antérieur dans `templates/page.json` : virgule terminale supprimée ;
 - `git diff --check` : succès ;
 - Theme Check : zéro erreur, 18 avertissements préexistants dans dix fichiers hors lot.
@@ -82,7 +90,7 @@ Créé dans Shopify Admin :
 - un thème non publié `199957807451` ;
 - un menu privé `322508423515`.
 
-Poussé uniquement sur le thème non publié : fichiers de navigation, homepage, guides, Header, Footer et templates du lot, puis synchronisation quartz rose, désactivation de l ancien dock mobile et reprise des deux sections du polish Hero canonique `4d0b3c39`.
+Poussé uniquement sur le thème non publié : fichiers de navigation, homepage, guides, Header, Footer et templates du lot, puis synchronisation quartz rose, désactivation de l ancien dock mobile, reprise du Hero final canonique `6d986c20` et du micro-patch scroll canonique `8b781461`.
 
 Non modifié :
 
