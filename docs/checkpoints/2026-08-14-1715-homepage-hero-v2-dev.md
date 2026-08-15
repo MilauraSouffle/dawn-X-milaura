@@ -176,3 +176,20 @@ Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO v
 - seules erreurs console : cadre Shop App bloque par sa propre CSP et ressource Shop App en 403, sans rapport avec le Hero ni le panier ;
 - captures live : `output/playwright/milaura-hero-polish-live-mobile-390.png`, `output/playwright/milaura-hero-polish-live-desktop-1440.png` et `output/playwright/milaura-hero-polish-live-cart-mobile-390.png` ;
 - Navigation V2 a recu le contrat canonique final `4d0b3c39` et la liberation definitive des deux sections, avec obligation de preserver ses lignes d'integration navbar.
+
+## Slogan et simplification finale du Hero live le 2026-08-15 a 08:42 CEST
+
+- Patrice a valide `Bijoux & émotions`, formulation issue de l'identite d'origine MilAura et retenue a la place de `Bijoux émotionnels` ;
+- le trait or entre `MilAura` et le slogan est remplace par un point or circulaire de 5 px ;
+- les trois parcours numerotes, leur logique JavaScript et leurs reglages Shopify sont retires ;
+- les deux scenes secondaires Bijou et Guide sont retirees du DOM ; seule la scene minerale preferee de Patrice reste chargee ;
+- aucun CTA n'est ajoute dans ce lot. L'eventuel lien discret `Découvrir` vers la section suivante reste une decision future liee a la navigation finale ;
+- commit du lot `46d793d3`, merge d'integration `6d986c20`, branche distante et worktree ephemeres retires ;
+- pushes Shopify strictement limites a `sections/milaura-hero-portal.liquid` sur le theme de developpement `199421952347`, puis le live `190430282075` avec `--nodelete --strict` et `--allow-live` ;
+- sauvegarde live anterieure : `/private/tmp/milaura-hero-final-live-backup.9hFdKa` ;
+- pullbacks developpement et live : 1 fichier sur 1 identique bit a bit au checkout d'integration ;
+- Theme Check : 0 erreur et 28 avertissements historiques dans 11 fichiers sans rapport avec ce lot ;
+- controles preview 1440/390/360 : slogan et point conformes, identite sur une ligne, une seule image, aucun parcours, aucun debordement et aucune erreur console ;
+- controle public : HTTP 200, slogan et point presents dans le HTML, aucune trace des parcours ni des deux medias secondaires ;
+- captures : `output/playwright/milaura-hero-final-dev-desktop-1440.png` et `output/playwright/milaura-hero-final-dev-mobile-390.png` ;
+- nouveau canonique `6d986c20` transmis a Navigation V2 avec obligation de conserver ses trois lignes d'integration navbar et de ne faire aucun push live.
