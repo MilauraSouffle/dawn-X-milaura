@@ -1,75 +1,153 @@
 {{ 'milaura-home-occasions.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-home-occasions.js' | asset_url }}" defer="defer"></script>
 
-<section
-  class="milaura-home-occasions"
-  aria-labelledby="MilauraHomeOccasionsTitle-{{ section.id }}"
->
-  <div class="milaura-home-occasions__inner">
-    <header class="milaura-home-occasions__header">
-      <div>
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="milaura-home-occasions__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+{%- liquid
+  assign occasion_count = 0
+  for block in section.blocks
+    if block.type == 'occasion'
+      assign occasion_count = occasion_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if occasion_count > 0 -%}
+  <section
+    id="MilauraHomeOccasions-{{ section.id }}"
+    class="milaura-home-occasions"
+    aria-labelledby="MilauraHomeOccasionsTitle-{{ section.id }}"
+    data-milaura-home-occasions
+  >
+    <div class="milaura-home-occasions__inner">
+      <header class="milaura-home-occasions__header">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="milaura-home-occasions__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 id="MilauraHomeOccasionsTitle-{{ section.id }}" class="milaura-home-occasions__title">
+            {{ section.settings.title | escape }}
+          </h2>
+        </div>
+        {%- if section.settings.lead != blank -%}
+          <p class="milaura-home-occasions__lead">{{ section.settings.lead | escape }}</p>
         {%- endif -%}
-        <h2 id="MilauraHomeOccasionsTitle-{{ section.id }}" class="milaura-home-occasions__title">
-          {{ section.settings.title | escape }}
-        </h2>
-      </div>
-      {%- if section.settings.lead != blank -%}
-        <p class="milaura-home-occasions__lead">{{ section.settings.lead | escape }}</p>
-      {%- endif -%}
-    </header>
+      </header>
 
-    <div class="milaura-home-occasions__grid">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'occasion' -%}
-          <article class="milaura-home-occasions__card" {{ block.shopify_attributes }}>
-            <a class="milaura-home-occasions__link" href="{{ block.settings.link }}">
-              <span class="milaura-home-occasions__media">
-                {%- if block.settings.image != blank -%}
-                  {{- block.settings.image
-                    | image_url: width: 1400
-                    | image_tag:
-                      class: 'milaura-home-occasions__image',
-                      widths: '420, 640, 840, 1100, 1400',
-                      sizes: '(max-width: 989px) calc(100vw - 32px), 50vw',
-                      loading: 'lazy',
-                      alt: block.settings.image_alt
-                  -}}
-                {%- elsif block.settings.desktop_asset != blank -%}
-                  <picture>
-                    {%- if block.settings.mobile_asset != blank -%}
-                      <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_asset | asset_url }}">
-                    {%- endif -%}
-                    <img
-                      class="milaura-home-occasions__image"
-                      src="{{ block.settings.desktop_asset | asset_url }}"
-                      alt="{{ block.settings.image_alt | escape }}"
-                      width="1400"
-                      height="1050"
-                      loading="lazy"
-                    >
-                  </picture>
-                {%- endif -%}
-              </span>
-              <span class="milaura-home-occasions__copy">
-                <span>
-                  {%- if block.settings.label != blank -%}
-                    <span class="milaura-home-occasions__label">{{ block.settings.label | escape }}</span>
-                  {%- endif -%}
-                  <span class="milaura-home-occasions__card-title">{{ block.settings.title | escape }}</span>
-                  {%- if block.settings.text != blank -%}
-                    <span class="milaura-home-occasions__text">{{ block.settings.text | escape }}</span>
+      <div class="milaura-home-occasions__tabs" role="tablist" aria-label="Choisir un guide cadeau">
+        {%- assign tab_index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'occasion' -%}
+            {%- liquid
+              assign tab_index = tab_index | plus: 1
+              assign tab_label = block.settings.tab_label
+              assign normalized_label = block.settings.label | downcase
+              if tab_label == blank
+                if normalized_label contains 'naissance'
+                  assign tab_label = 'Cadeau de naissance'
+                elsif normalized_label contains 'mariage'
+                  assign tab_label = 'Cadeau de mariage'
+                else
+                  assign tab_label = block.settings.label | default: 'Guide cadeau'
+                endif
+              endif
+              assign tab_number = tab_index | prepend: '0' | slice: -2, 2
+            -%}
+            <button
+              id="MilauraHomeOccasionTab-{{ section.id }}-{{ block.id }}"
+              class="milaura-home-occasions__tab"
+              type="button"
+              role="tab"
+              aria-controls="MilauraHomeOccasionPanel-{{ section.id }}-{{ block.id }}"
+              aria-selected="{% if tab_index == 1 %}true{% else %}false{% endif %}"
+              tabindex="{% if tab_index == 1 %}0{% else %}-1{% endif %}"
+              data-home-occasion-tab
+              {{ block.shopify_attributes }}
+            >
+              <span class="milaura-home-occasions__tab-number" aria-hidden="true">{{ tab_number }}</span>
+              <span class="milaura-home-occasions__tab-label">{{ tab_label | escape }}</span>
+              <span class="milaura-home-occasions__tab-arrow" aria-hidden="true">↗</span>
+            </button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="milaura-home-occasions__panels">
+        {%- assign panel_index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'occasion' -%}
+            {%- liquid
+              assign panel_index = panel_index | plus: 1
+              assign loading_mode = 'lazy'
+              if panel_index == 1
+                assign loading_mode = 'eager'
+              endif
+            -%}
+            <article
+              id="MilauraHomeOccasionPanel-{{ section.id }}-{{ block.id }}"
+              class="milaura-home-occasions__panel"
+              role="tabpanel"
+              aria-labelledby="MilauraHomeOccasionTab-{{ section.id }}-{{ block.id }}"
+              tabindex="0"
+              data-home-occasion-panel
+              {% unless panel_index == 1 %}hidden{% endunless %}
+            >
+              <a class="milaura-home-occasions__panel-link" href="{{ block.settings.link }}">
+                <span class="milaura-home-occasions__media">
+                  {%- if block.settings.image != blank -%}
+                    {{- block.settings.image
+                      | image_url: width: 1600
+                      | image_tag:
+                        class: 'milaura-home-occasions__image',
+                        widths: '420, 640, 840, 1100, 1400, 1600',
+                        sizes: '(max-width: 749px) calc(100vw - 32px), (max-width: 989px) 50vw, 46vw',
+                        loading: loading_mode,
+                        alt: block.settings.image_alt
+                    -}}
+                  {%- elsif block.settings.desktop_asset != blank -%}
+                    <picture>
+                      {%- if block.settings.mobile_asset != blank -%}
+                        <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_asset | asset_url }}">
+                      {%- endif -%}
+                      <img
+                        class="milaura-home-occasions__image"
+                        src="{{ block.settings.desktop_asset | asset_url }}"
+                        alt="{{ block.settings.image_alt | escape }}"
+                        width="1400"
+                        height="1050"
+                        loading="{{ loading_mode }}"
+                      >
+                    </picture>
                   {%- endif -%}
                 </span>
-                <span class="milaura-home-occasions__action">{{ block.settings.action | escape }}</span>
-              </span>
-            </a>
-          </article>
-        {%- endif -%}
-      {%- endfor -%}
+                <span class="milaura-home-occasions__copy">
+                  <span>
+                    {%- if block.settings.label != blank -%}
+                      <span class="milaura-home-occasions__label">{{ block.settings.label | escape }}</span>
+                    {%- endif -%}
+                    <span class="milaura-home-occasions__card-title">{{ block.settings.title | escape }}</span>
+                    {%- if block.settings.text != blank -%}
+                      <span class="milaura-home-occasions__text">{{ block.settings.text | escape }}</span>
+                    {%- endif -%}
+                  </span>
+                  <span class="milaura-home-occasions__action">
+                    <span>{{ block.settings.action | escape }}</span>
+                    <span aria-hidden="true">↗</span>
+                  </span>
+                </span>
+              </a>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <noscript>
+        <style>
+          #MilauraHomeOccasions-{{ section.id }} .milaura-home-occasions__tabs { display: none; }
+          #MilauraHomeOccasions-{{ section.id }} .milaura-home-occasions__panel[hidden] { display: block !important; margin-top: 32px; }
+        </style>
+      </noscript>
     </div>
-  </div>
-</section>
+  </section>
+{%- endif -%}
 
 {% schema %}
 {
@@ -100,6 +178,11 @@
       "type": "occasion",
       "name": "Occasion",
       "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Libellé de l’onglet"
+        },
         {
           "type": "text",
           "id": "label",
