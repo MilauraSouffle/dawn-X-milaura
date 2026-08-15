@@ -1,4 +1,4 @@
-# Titre du diagnostic, preview de developpement
+# Titre du diagnostic, preview et deploiement live
 
 Date : 2026-08-15 12:23 CEST
 
@@ -33,8 +33,19 @@ Le titre du Ruban Vivant reste `Composer votre ensemble`. La formule `La pierre 
 
 ## Deploiement
 
-Le theme live `190430282075` n'a pas ete modifie. Le lot attend le GO visuel et live explicite de Patrice sur cette preview.
+Patrice a donne son GO de commit, push et deploiement live le 2026-08-15.
+
+- merge d'integration : `e2812fe1 merge: integrate quiz title branding` ;
+- branche d'integration poussee sur `origin` ;
+- push live cible des deux fichiers sur le theme `190430282075` avec `--allow-live --nodelete` ;
+- controle public desktop : H1 correct, Gloock 400, encre prune, aucun debordement, aucune erreur JavaScript ;
+- controle public mobile 390 x 844 : titre sur deux lignes, 38 px, aucun debordement, aucune erreur JavaScript ;
+- pullback live : 2/2 fichiers strictement identiques.
 
 Sauvegarde avant preview : `/private/tmp/milaura-quiz-title-dev-backup-20260815-1225`.
 
-Pullback : `/private/tmp/milaura-quiz-title-dev-pullback-20260815-1230`.
+Pullback developpement : `/private/tmp/milaura-quiz-title-dev-pullback-20260815-1230`.
+
+Sauvegarde avant live : `/private/tmp/milaura-quiz-title-live-backup-20260815-1240`.
+
+Pullback live : `/private/tmp/milaura-quiz-title-live-pullback-20260815-1245`.
