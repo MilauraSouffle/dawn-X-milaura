@@ -1,0 +1,646 @@
+{{ 'milaura-product-experience.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-product-experience.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign catalogue_family = product.metafields.milaura.catalogue_family.value | default: ''
+  assign product_type = product.metafields.milaura.product_type_handle.value | default: product.type | handleize
+  assign stone_handle = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
+  assign scent_handle = product.metafields.milaura.scent_handle.value | default: product.metafields.milaura.scent_handle
+
+  assign first_tab_label = 'Le produit'
+  assign second_tab_label = 'Son histoire'
+  assign first_panel_title = 'La pièce en détail'
+  assign second_panel_title = 'Ce qui la distingue'
+
+  if catalogue_family == 'bijou' or product_type == 'bijou' or product_type == 'bracelet' or product_type == 'collier' or product_type == 'bague' or product_type == 'pendentif' or product_type == 'fil-de-perles'
+    assign first_tab_label = 'Le bijou'
+    assign second_tab_label = 'La pierre'
+    assign first_panel_title = 'Le bijou en détail'
+    assign second_panel_title = 'L’histoire de la pierre'
+  elsif catalogue_family == 'pierre-mineral' or product_type == 'pierre' or product_type == 'mineral' or product_type == 'pierre-roulee' or product_type == 'cabochon'
+    assign first_tab_label = 'Le minéral'
+    assign second_tab_label = 'La pierre'
+    assign first_panel_title = 'Le minéral en détail'
+    assign second_panel_title = 'L’histoire de la pierre'
+  elsif catalogue_family == 'bougie-senteur' or product_type == 'bougie'
+    assign first_tab_label = 'La bougie'
+    assign second_tab_label = 'La senteur'
+    assign first_panel_title = 'La bougie en détail'
+    assign second_panel_title = 'L’histoire de la senteur'
+  elsif catalogue_family == 'rituel' or product_type == 'sauge' or product_type == 'encens' or product_type == 'bol-chantant'
+    assign first_tab_label = 'Le rituel'
+    assign second_tab_label = 'Son usage'
+    assign first_panel_title = 'Le rituel en détail'
+    assign second_panel_title = 'Comment l’utiliser'
+  endif
+
+  assign detail_image = product.media[1].preview_image
+  if detail_image == blank
+    assign detail_image = product.featured_image
+  endif
+  assign story_image = product.media[2].preview_image
+  if story_image == blank
+    assign story_image = detail_image
+  endif
+
+  assign description_plain = product.description | replace: '</p>', ' </p>' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | strip
+  assign description_words = description_plain | split: ' '
+  assign specifications = product.metafields.milaura.specifications.value
+  assign materials = product.metafields.milaura.materials.value
+  assign story_text = product.metafields.milaura.story_text.value
+  assign stone_name = product.metafields.milaura.stone_name.value
+  assign stone_description = product.metafields.milaura.stone_description.value
+  assign stone_benefits = product.metafields.milaura.stone_benefits.value
+  assign product_quality = product.metafields.milaura.qualite.value
+  assign product_provenance = product.metafields.milaura.provenance.value
+  assign gem_origin = product.metafields.milaura.gem_origin.value
+  assign gem_treatments = product.metafields.milaura.gem_treatments.value
+  assign faq_data = product.metafields.milaura.faq_json.value
+  assign certificate_file = product.metafields.milaura.certificate_file.value
+  assign certificate_lab = product.metafields.milaura.certificate_lab.value | default: 'LFG Paris'
+  assign certificate_reference = product.metafields.milaura.certificate_reference.value
+  assign certificate_url = certificate_file.url
+
+  assign has_stone = false
+  if stone_handle != blank or stone_name != blank
+    assign has_stone = true
+  endif
+
+  assign payment_whitelist = 'visa,master,american_express,apple_pay,shop_pay,shopify_pay,klarna,cartes_bancaires,carte_bleue,cb' | split: ','
+  assign payment_count = 0
+  assign klarna_enabled = false
+  for type in shop.enabled_payment_types
+    if payment_whitelist contains type
+      assign payment_count = payment_count | plus: 1
+    endif
+    if type == 'klarna'
+      assign klarna_enabled = true
+    endif
+  endfor
+
+  assign phone_href = section.settings.advice_phone | remove: ' ' | remove: '.'
+-%}
+
+<section
+  id="MilauraProductExperience-{{ section.id }}"
+  class="milaura-product-experience"
+  aria-labelledby="MilauraProductGuideTitle-{{ section.id }}"
+>
+  <div class="milaura-product-proof" aria-label="Services MilAura">
+    <div class="milaura-product-proof__track" role="list">
+      <a class="milaura-product-proof__item" href="tel:{{ phone_href }}" role="listitem">
+        <span class="milaura-product-proof__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-2v-6h4M4 12v5a2 2 0 0 0 2 2h2v-6H4m4 7c1 1 2.3 1.5 4 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="milaura-product-proof__copy">
+          <span class="milaura-product-proof__title">{{ section.settings.advice_title | escape }}</span>
+          <span class="milaura-product-proof__text">{{ section.settings.advice_text | escape }}</span>
+        </span>
+      </a>
+
+      <div class="milaura-product-proof__item" role="listitem">
+        <span class="milaura-product-proof__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 20h16M6 20v-8l6-4 6 4v8M9 20v-5h6v5M4 9l8-5 8 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="milaura-product-proof__copy">
+          <span class="milaura-product-proof__title">{{ section.settings.atelier_title | escape }}</span>
+          <span class="milaura-product-proof__text">{{ section.settings.atelier_text | escape }}</span>
+        </span>
+      </div>
+
+      {%- if has_stone -%}
+        {%- if certificate_url != blank -%}
+          <a class="milaura-product-proof__item" href="{{ certificate_url }}" target="_blank" rel="noopener" role="listitem">
+            <span class="milaura-product-proof__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M7 3.5h7l3 3V14M14 3.5V7h3M8 17l2 2 4-4M5 3.5v17h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="milaura-product-proof__copy">
+              <span class="milaura-product-proof__title">Certificat {{ certificate_lab | escape }}</span>
+              <span class="milaura-product-proof__text">
+                Disponible pour cette pièce{% if certificate_reference != blank %} · {{ certificate_reference | escape }}{% endif %}
+              </span>
+            </span>
+          </a>
+        {%- else -%}
+          <div class="milaura-product-proof__item" role="listitem">
+            <span class="milaura-product-proof__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M7 3.5h7l3 3V14M14 3.5V7h3M8 17l2 2 4-4M5 3.5v17h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="milaura-product-proof__copy">
+              <span class="milaura-product-proof__title">Certificats produits</span>
+              <span class="milaura-product-proof__text">Indiqués lorsqu’ils sont disponibles</span>
+            </span>
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <div class="milaura-product-proof__item" role="listitem">
+          <span class="milaura-product-proof__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="m12 3 2.2 4.8L19 10l-4.8 2.2L12 17l-2.2-4.8L5 10l4.8-2.2L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="milaura-product-proof__copy">
+            <span class="milaura-product-proof__title">Sélection MilAura</span>
+            <span class="milaura-product-proof__text">Contrôlée à réception par Karine</span>
+          </span>
+        </div>
+      {%- endif -%}
+
+      {%- if klarna_enabled -%}
+        <div class="milaura-product-proof__item" role="listitem">
+          <span class="milaura-product-proof__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 5v14M18 5l-7 7 7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="milaura-product-proof__copy">
+            <span class="milaura-product-proof__title">Klarna</span>
+            <span class="milaura-product-proof__text">
+              Paiement en 3 fois sans frais<span class="visually-hidden"> sous réserve d’éligibilité</span>
+            </span>
+          </span>
+        </div>
+      {%- endif -%}
+
+      {%- if payment_count > 0 -%}
+        <div class="milaura-product-proof__item" role="listitem">
+          <span class="milaura-product-proof__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3.5 7.5h17v11h-17zM3.5 11h17M7 15.2h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="milaura-product-proof__copy">
+            <span class="milaura-product-proof__title">Paiement</span>
+            <ul class="milaura-product-proof__payments" aria-label="Moyens de paiement acceptés">
+              {%- for type in shop.enabled_payment_types -%}
+                {%- if payment_whitelist contains type -%}
+                  <li class="milaura-product-proof__payment">{{ type | payment_type_svg_tag }}</li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </span>
+        </div>
+      {%- endif -%}
+
+      <div class="milaura-product-proof__item" role="listitem">
+        <span class="milaura-product-proof__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 7H4v-3M4.5 7a8 8 0 1 1-.2 9M4 4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="milaura-product-proof__copy">
+          <span class="milaura-product-proof__title">Retours</span>
+          <span class="milaura-product-proof__text">Sous 14 jours pour les articles éligibles</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div id="ProductTabs" class="milaura-product-guide" data-milaura-product-guide>
+    <div class="milaura-product-guide__inner">
+      <header class="milaura-product-guide__header">
+        <div>
+          <p class="milaura-product-guide__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          <h2 id="MilauraProductGuideTitle-{{ section.id }}" class="milaura-product-guide__title">
+            {{ section.settings.title | escape }}
+          </h2>
+        </div>
+        <p class="milaura-product-guide__lead">{{ section.settings.lead | escape }}</p>
+      </header>
+
+      <div class="milaura-product-guide__tabs" role="tablist" aria-label="Informations sur le produit">
+        <button
+          id="MilauraProductGuideTab-{{ section.id }}-product"
+          class="milaura-product-guide__tab"
+          type="button"
+          role="tab"
+          aria-controls="MilauraProductGuidePanel-{{ section.id }}-product"
+          aria-selected="true"
+          tabindex="0"
+          data-product-guide-tab
+          data-product-guide-key="details-product"
+        >
+          <span>{{ first_tab_label }}</span><span class="milaura-product-guide__tab-marker" aria-hidden="true">↗</span>
+        </button>
+        <button
+          id="MilauraProductGuideTab-{{ section.id }}-story"
+          class="milaura-product-guide__tab"
+          type="button"
+          role="tab"
+          aria-controls="MilauraProductGuidePanel-{{ section.id }}-story"
+          aria-selected="false"
+          tabindex="-1"
+          data-product-guide-tab
+          data-product-guide-key="details-story"
+        >
+          <span>{{ second_tab_label }}</span><span class="milaura-product-guide__tab-marker" aria-hidden="true">↗</span>
+        </button>
+        <button
+          id="MilauraProductGuideTab-{{ section.id }}-services"
+          class="milaura-product-guide__tab"
+          type="button"
+          role="tab"
+          aria-controls="MilauraProductGuidePanel-{{ section.id }}-services"
+          aria-selected="false"
+          tabindex="-1"
+          data-product-guide-tab
+          data-product-guide-key="details-services"
+        >
+          <span>Services & réponses</span><span class="milaura-product-guide__tab-marker" aria-hidden="true">↗</span>
+        </button>
+      </div>
+
+      <div class="milaura-product-guide__panels">
+        <article
+          id="MilauraProductGuidePanel-{{ section.id }}-product"
+          class="milaura-product-panel"
+          role="tabpanel"
+          aria-labelledby="MilauraProductGuideTab-{{ section.id }}-product"
+          tabindex="0"
+          data-product-guide-panel
+        >
+          <div class="milaura-product-panel__layout">
+            <div class="milaura-product-panel__media">
+              {%- if detail_image != blank -%}
+                {{- detail_image
+                  | image_url: width: 1200
+                  | image_tag:
+                    class: 'milaura-product-panel__image',
+                    widths: '420, 620, 840, 1000, 1200',
+                    sizes: '(max-width: 749px) calc(100vw - 64px), 42vw',
+                    loading: 'lazy',
+                    alt: product.title
+                -}}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="milaura-product-panel__content">
+              <p class="milaura-product-panel__eyebrow">{{ first_tab_label }}</p>
+              <h3 class="milaura-product-panel__title">{{ first_panel_title }}</h3>
+
+              {%- if description_plain != blank -%}
+                <p class="milaura-product-panel__summary">{{ description_plain | truncatewords: 52 }}</p>
+                {%- if description_words.size > 52 -%}
+                  <details class="milaura-product-panel__disclosure">
+                    <summary>Lire la description complète</summary>
+                    <div class="milaura-product-panel__body milaura-product-panel__full-description rte">
+                      {{ product.description }}
+                    </div>
+                  </details>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- if specifications != blank or materials != blank -%}
+                <div class="milaura-product-specs">
+                  {%- if materials != blank -%}
+                    <div class="milaura-product-specs__item">
+                      <span class="milaura-product-specs__label">Matières</span>
+                      <span class="milaura-product-specs__value">{{ materials | join: ', ' | replace: '-', ' ' }}</span>
+                    </div>
+                  {%- endif -%}
+                  {%- for spec in specifications limit: 8 -%}
+                    {%- if spec.label != blank and spec.value != blank -%}
+                      <div class="milaura-product-specs__item">
+                        <span class="milaura-product-specs__label">{{ spec.label | escape }}</span>
+                        <span class="milaura-product-specs__value">{{ spec.value | escape }}</span>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </article>
+
+        <article
+          id="MilauraProductGuidePanel-{{ section.id }}-story"
+          class="milaura-product-panel"
+          role="tabpanel"
+          aria-labelledby="MilauraProductGuideTab-{{ section.id }}-story"
+          tabindex="0"
+          data-product-guide-panel
+          hidden
+        >
+          <div class="milaura-product-panel__layout">
+            <div class="milaura-product-panel__media">
+              {%- if story_image != blank -%}
+                {{- story_image
+                  | image_url: width: 1200
+                  | image_tag:
+                    class: 'milaura-product-panel__image',
+                    widths: '420, 620, 840, 1000, 1200',
+                    sizes: '(max-width: 749px) calc(100vw - 64px), 42vw',
+                    loading: 'lazy',
+                    alt: second_panel_title
+                -}}
+              {%- else -%}
+                {{ 'product-2' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="milaura-product-panel__content">
+              <p class="milaura-product-panel__eyebrow">{{ second_tab_label }}</p>
+              <h3 class="milaura-product-panel__title">{{ second_panel_title }}</h3>
+
+              {%- if story_text != blank -%}
+                <div class="milaura-product-panel__story rte">{{ story_text | newline_to_br }}</div>
+              {%- elsif stone_description != blank -%}
+                <div class="milaura-product-panel__story rte">{{ stone_description | newline_to_br }}</div>
+              {%- elsif description_plain != blank -%}
+                <p class="milaura-product-panel__summary">{{ description_plain | truncatewords: 44 }}</p>
+              {%- endif -%}
+
+              <div class="milaura-product-stone-facts">
+                {%- if stone_name != blank or stone_handle != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">Pierre</span>
+                    <p class="milaura-product-stone-fact__text">{{ stone_name | default: stone_handle | replace: '-', ' ' | capitalize }}</p>
+                  </div>
+                {%- elsif scent_handle != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">Senteur</span>
+                    <p class="milaura-product-stone-fact__text">{{ scent_handle | replace: '-', ' ' | capitalize }}</p>
+                  </div>
+                {%- endif -%}
+                {%- if stone_benefits != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">Symbolique traditionnelle</span>
+                    <p class="milaura-product-stone-fact__text">{{ stone_benefits | escape }}</p>
+                  </div>
+                {%- endif -%}
+                {%- if product_quality != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">Sélection</span>
+                    <p class="milaura-product-stone-fact__text">{{ product_quality | escape }}</p>
+                  </div>
+                {%- endif -%}
+                {%- if product_provenance != blank or gem_origin != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">Origine documentée</span>
+                    <p class="milaura-product-stone-fact__text">{{ gem_origin | default: product_provenance | escape }}</p>
+                  </div>
+                {%- endif -%}
+                {%- if gem_treatments != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">Traitements déclarés</span>
+                    <p class="milaura-product-stone-fact__text">{{ gem_treatments | escape }}</p>
+                  </div>
+                {%- endif -%}
+              </div>
+
+              {%- if certificate_url != blank -%}
+                <a class="milaura-product-panel__action" href="{{ certificate_url }}" target="_blank" rel="noopener">
+                  Voir le certificat {{ certificate_lab | escape }} <span aria-hidden="true">↗</span>
+                </a>
+              {%- elsif section.settings.quiz_url != blank -%}
+                <a class="milaura-product-panel__action" href="{{ section.settings.quiz_url }}">
+                  {{ section.settings.quiz_label | escape }} <span aria-hidden="true">↗</span>
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </article>
+
+        <article
+          id="MilauraProductGuidePanel-{{ section.id }}-services"
+          class="milaura-product-panel milaura-product-panel--services"
+          role="tabpanel"
+          aria-labelledby="MilauraProductGuideTab-{{ section.id }}-services"
+          tabindex="0"
+          data-product-guide-panel
+          hidden
+        >
+          <div class="milaura-product-panel__layout">
+            <div class="milaura-product-panel__content">
+              <p class="milaura-product-panel__eyebrow">Avant & après l’achat</p>
+              <h3 class="milaura-product-panel__title">Services & réponses</h3>
+              <div class="milaura-product-services">
+                <div class="milaura-product-service-card">
+                  <span class="milaura-product-service-card__title">{{ section.settings.shipping_title | escape }}</span>
+                  <p class="milaura-product-service-card__text">{{ section.settings.shipping_text | escape }}</p>
+                </div>
+                <div class="milaura-product-service-card">
+                  <span class="milaura-product-service-card__title">{{ section.settings.returns_title | escape }}</span>
+                  <p class="milaura-product-service-card__text">{{ section.settings.returns_text | escape }}</p>
+                </div>
+                <div class="milaura-product-service-card">
+                  <span class="milaura-product-service-card__title">{{ section.settings.payment_title | escape }}</span>
+                  <p class="milaura-product-service-card__text">{{ section.settings.payment_text | escape }}</p>
+                </div>
+              </div>
+              <a class="milaura-product-panel__action" href="{{ section.settings.contact_url }}">
+                Demander un conseil <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+
+            <div class="milaura-product-faq">
+              <h3 class="milaura-product-faq__title">Questions fréquentes</h3>
+              {%- if faq_data != blank and faq_data.size > 0 -%}
+                {%- for item in faq_data limit: 6 -%}
+                  <details class="milaura-product-faq__item">
+                    <summary>{{ item.question | escape }}</summary>
+                    <div class="milaura-product-faq__answer rte">{{ item.answer }}</div>
+                  </details>
+                {%- endfor -%}
+              {%- else -%}
+                {%- for block in section.blocks -%}
+                  <details class="milaura-product-faq__item" {{ block.shopify_attributes }}>
+                    <summary>{{ block.settings.question | escape }}</summary>
+                    <div class="milaura-product-faq__answer rte">{{ block.settings.answer }}</div>
+                  </details>
+                {%- endfor -%}
+              {%- endif -%}
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <noscript>
+        <style>
+          #MilauraProductExperience-{{ section.id }} .milaura-product-guide__tabs { display: none; }
+          #MilauraProductExperience-{{ section.id }} .milaura-product-panel[hidden] { display: block !important; }
+          #MilauraProductExperience-{{ section.id }} .milaura-product-panel + .milaura-product-panel { margin-top: var(--milaura-esp-lg); }
+        </style>
+      </noscript>
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.enable_faq_schema -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- if faq_data != blank and faq_data.size > 0 -%}
+        {%- for item in faq_data limit: 6 -%}
+          {
+            "@type": "Question",
+            "name": {{ item.question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ item.answer | strip_html | json }}
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | strip_html | json }}
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      {%- endif -%}
+    ]
+  }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "MilAura fiche produit",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "La pièce en détail"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Tout savoir sur cette pièce."
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Introduction",
+      "default": "Matières, histoire et services : l’essentiel au même endroit."
+    },
+    {
+      "type": "header",
+      "content": "Bande de services"
+    },
+    {
+      "type": "text",
+      "id": "advice_title",
+      "label": "Titre conseil",
+      "default": "Besoin d’un conseil ?"
+    },
+    {
+      "type": "text",
+      "id": "advice_text",
+      "label": "Texte conseil",
+      "default": "Parler à un conseiller"
+    },
+    {
+      "type": "text",
+      "id": "advice_phone",
+      "label": "Téléphone",
+      "default": "+33 3 72 39 64 73"
+    },
+    {
+      "type": "text",
+      "id": "atelier_title",
+      "label": "Titre atelier",
+      "default": "Atelier à Metz"
+    },
+    {
+      "type": "text",
+      "id": "atelier_text",
+      "label": "Texte atelier",
+      "default": "Commandes préparées et expédiées sur place"
+    },
+    {
+      "type": "header",
+      "content": "Services détaillés"
+    },
+    {
+      "type": "text",
+      "id": "shipping_title",
+      "label": "Titre livraison",
+      "default": "Expédition & livraison"
+    },
+    {
+      "type": "textarea",
+      "id": "shipping_text",
+      "label": "Texte livraison",
+      "default": "Expédition sous 24 h du lundi au vendredi. Livraison en France sous 3 à 5 jours."
+    },
+    {
+      "type": "text",
+      "id": "returns_title",
+      "label": "Titre retours",
+      "default": "Retours"
+    },
+    {
+      "type": "textarea",
+      "id": "returns_text",
+      "label": "Texte retours",
+      "default": "Retour possible sous 14 jours après réception pour les articles éligibles."
+    },
+    {
+      "type": "text",
+      "id": "payment_title",
+      "label": "Titre paiement",
+      "default": "Paiements"
+    },
+    {
+      "type": "textarea",
+      "id": "payment_text",
+      "label": "Texte paiement",
+      "default": "Cartes, Apple Pay et Shop Pay. Paiement Klarna en 3 fois sans frais sous réserve d’éligibilité."
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Page de contact"
+    },
+    {
+      "type": "text",
+      "id": "quiz_label",
+      "label": "Libellé du diagnostic",
+      "default": "La pierre qui vous ressemble"
+    },
+    {
+      "type": "url",
+      "id": "quiz_url",
+      "label": "Lien vers le diagnostic"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_faq_schema",
+      "label": "Activer le balisage FAQ",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Quand ma commande sera-t-elle expédiée ?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Réponse",
+          "default": "<p>Les commandes sont préparées et expédiées depuis notre atelier à Metz sous 24 h du lundi au vendredi.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura fiche produit",
+      "blocks": [
+        { "type": "question" },
+        { "type": "question" },
+        { "type": "question" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,164 @@
+{{ 'milaura-product-experience.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign advisor_image = section.settings.image
+  assign phone_href = section.settings.phone | remove: ' ' | remove: '.'
+  assign email_subject = 'Conseil sur ' | append: product.title | url_encode
+-%}
+
+<section
+  id="MilauraProductAdvisor-{{ section.id }}"
+  class="milaura-product-advisor"
+  aria-labelledby="MilauraProductAdvisorTitle-{{ section.id }}"
+>
+  <div class="milaura-product-advisor__inner">
+    <div class="milaura-product-advisor__layout">
+      <div class="milaura-product-advisor__media">
+        {%- if advisor_image != blank -%}
+          {{- advisor_image
+            | image_url: width: 1200
+            | image_tag:
+              widths: '420, 620, 840, 1000, 1200',
+              sizes: '(max-width: 749px) calc(100vw - 64px), 40vw',
+              loading: 'lazy',
+              alt: section.settings.image_alt
+          -}}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'milaura-product-advisor__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      <div class="milaura-product-advisor__copy">
+        <p class="milaura-product-advisor__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        <h2 id="MilauraProductAdvisorTitle-{{ section.id }}" class="milaura-product-advisor__title">
+          {{ section.settings.title | escape }}
+        </h2>
+        <p class="milaura-product-advisor__text">{{ section.settings.text | escape }}</p>
+
+        <div class="milaura-product-advisor__actions">
+          <a class="milaura-product-advisor__action" href="tel:{{ phone_href }}">
+            {{ section.settings.phone_label | escape }} <span aria-hidden="true">↗</span>
+          </a>
+          <a class="milaura-product-advisor__action" href="mailto:{{ section.settings.email }}?subject={{ email_subject }}">
+            {{ section.settings.email_label | escape }} <span aria-hidden="true">↗</span>
+          </a>
+          {%- if section.settings.contact_url != blank -%}
+            <a class="milaura-product-advisor__action" href="{{ section.settings.contact_url }}">
+              {{ section.settings.contact_label | escape }} <span aria-hidden="true">↗</span>
+            </a>
+          {%- endif -%}
+        </div>
+
+        <div class="milaura-product-advisor__facts" aria-label="Engagements de service">
+          <div class="milaura-product-advisor__fact">
+            <span class="milaura-product-advisor__fact-label">Disponibilité</span>
+            <span class="milaura-product-advisor__fact-text">{{ section.settings.availability_text | escape }}</span>
+          </div>
+          <div class="milaura-product-advisor__fact">
+            <span class="milaura-product-advisor__fact-label">Préparation</span>
+            <span class="milaura-product-advisor__fact-text">{{ section.settings.preparation_text | escape }}</span>
+          </div>
+          <div class="milaura-product-advisor__fact">
+            <span class="milaura-product-advisor__fact-label">Accompagnement</span>
+            <span class="milaura-product-advisor__fact-text">{{ section.settings.support_text | escape }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MilAura conseil produit",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo de Karine ou de l’atelier"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Texte alternatif",
+      "default": "Karine, fondatrice de MilAura"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Le service MilAura"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Un conseil avant de choisir ?"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texte",
+      "default": "Karine et l’équipe MilAura vous répondent sur la pierre, la taille ou le modèle le plus adapté à votre recherche."
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Téléphone",
+      "default": "+33 3 72 39 64 73"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Action téléphone",
+      "default": "Parler à un conseiller"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Adresse e-mail",
+      "default": "contact@milaura.fr"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Action e-mail",
+      "default": "Écrire à l’équipe"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Page de contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_label",
+      "label": "Action page contact",
+      "default": "Voir toutes les coordonnées"
+    },
+    {
+      "type": "text",
+      "id": "availability_text",
+      "label": "Disponibilité",
+      "default": "Équipe disponible 6j/7"
+    },
+    {
+      "type": "text",
+      "id": "preparation_text",
+      "label": "Préparation",
+      "default": "Commandes préparées à Metz"
+    },
+    {
+      "type": "text",
+      "id": "support_text",
+      "label": "Accompagnement",
+      "default": "Avant et après votre achat"
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura conseil produit"
+    }
+  ]
+}
+{% endschema %}
