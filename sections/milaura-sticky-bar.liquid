@@ -225,6 +225,7 @@
   <div
     id="MilauraStickyBarSection"
     class="milaura-sticky-bar"
+    aria-hidden="true"
   >
     
     <!-- Info Gauche -->
@@ -291,24 +292,17 @@
       const bubbleTrigger = document.querySelector('.milaura-bubble-trigger');
       const bubbleLabel = document.querySelector('.milaura-bubble-label');
 
-      // Trouver le footer pour masquer la sticky bar quand on y arrive
-      const footer = document.querySelector('footer') || document.querySelector('.footer') || document.querySelector('#shopify-section-footer');
-
       // 1. Logique d'affichage (Scroll)
       if (stickyBar && mainButton) {
+        let hasPassedMainButton = false;
+
         const handleScroll = () => {
-          const rect = mainButton.getBoundingClientRect();
-          const footerRect = footer ? footer.getBoundingClientRect() : null;
-
-          // Vérifier si le footer est visible (entre dans le viewport)
-          const footerVisible = footerRect && footerRect.top < window.innerHeight;
-
-          // Afficher la sticky uniquement après la disparition complète du CTA principal.
-          if (rect.bottom <= 0 && !footerVisible) {
-            stickyBar.classList.add('is-visible');
-          } else {
-            stickyBar.classList.remove('is-visible');
+          if (!hasPassedMainButton && mainButton.getBoundingClientRect().bottom <= 0) {
+            hasPassedMainButton = true;
           }
+
+          stickyBar.classList.toggle('is-visible', hasPassedMainButton);
+          stickyBar.setAttribute('aria-hidden', hasPassedMainButton ? 'false' : 'true');
 
           // Push floating bubble above sticky bar on ALL viewports (desktop + mobile)
           if (bubbleTrigger) {
@@ -332,12 +326,15 @@
         handleScroll();
       } else {
         // Fallback si pas de bouton trouvé (ex: page bizarre), on affiche après un certain scroll
-        window.addEventListener('scroll', () => {
-          const footerRect = footer ? footer.getBoundingClientRect() : null;
-          const footerVisible = footerRect && footerRect.top < window.innerHeight;
+        let hasPassedFallbackThreshold = window.scrollY > 800;
 
-          if (window.scrollY > 800 && !footerVisible) stickyBar.classList.add('is-visible');
-          else stickyBar.classList.remove('is-visible');
+        window.addEventListener('scroll', () => {
+          if (!hasPassedFallbackThreshold && window.scrollY > 800) {
+            hasPassedFallbackThreshold = true;
+          }
+
+          stickyBar.classList.toggle('is-visible', hasPassedFallbackThreshold);
+          stickyBar.setAttribute('aria-hidden', hasPassedFallbackThreshold ? 'false' : 'true');
         }, { passive: true });
       }
 

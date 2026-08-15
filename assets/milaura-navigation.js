@@ -33,6 +33,7 @@
 
     function setMobile(open) {
       if (!mobileOverlay || !burger) return;
+      root.classList.toggle('is-mobile-panel-open', open);
       mobileOverlay.classList.toggle('is-open', open);
       mobileOverlay.setAttribute('aria-hidden', open ? 'false' : 'true');
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
