@@ -42,10 +42,9 @@ Aucun changement sur les recommandations, la PDP, la sticky produit, le panier, 
 ## Etat de diffusion
 
 - Theme de developpement : a jour.
-- Git : lot pret a committer et pousser sur `codex/milaura-mobile-polish-20260815`.
+- Git : commit fonctionnel `7e92776a` pousse sur `codex/milaura-mobile-polish-20260815`.
 - Live `190430282075` : non touche par ce lot, en attente du GO visuel explicite de Patrice.
 
 ## Preview
 
 `https://milaura-2.myshopify.com?preview_theme_id=199421952347`
-
