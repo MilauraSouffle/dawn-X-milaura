@@ -158,3 +158,21 @@ Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO v
 - seules erreurs console : cadre Shop App bloque par sa propre CSP et ressource Shop App en 403, sans rapport avec le bandeau ;
 - captures live : `output/playwright/milaura-proof-showcase-rose-live-desktop-1440-lfg.png`, `output/playwright/milaura-proof-showcase-rose-live-mobile-390-karine.png` et variantes LFG, Karine et atelier aux quatre largeurs ;
 - Navigation V2 a confirme le contrat `82873b97` pour sa future integration : `#F0D9E0`, 58/54 px, medaillons 52/46 px et bouton 44 px, sans synchronisation ni push de son theme isole.
+
+## Polish Hero et panier live du 2026-08-15 a 08:14 CEST
+
+- GO live explicite de Patrice pour le masquage du bandeau avec le panier, le cadrage mobile, le texte du Hero et le deploiement immediat ;
+- bandeau quartz rose masque pendant l'etat actif de `cart-drawer`, puis restaure a sa fermeture via observation de classe dans `sections/milaura-announcement.liquid` ; aucune modification de `assets/cart-drawer.js` ;
+- scene minerale principale remontee de 70 px sur mobile afin que toutes les pierres soient visibles des l'arrivee ;
+- H1 public : `La beauté des bijoux rencontre les vertus des minéraux` ;
+- descriptif public verrouille sur deux lignes : `Des pierres naturelles choisies avec exigence pour leur beauté,` puis `leur qualité et leur symbolique en lithothérapie.` ;
+- aucun slogan de marque definitif publie sans validation de Patrice ; les trois parcours et leurs liens sont conserves en attendant la decision creative ;
+- commit du lot `14b2ee7b`, merge d'integration `4d0b3c39`, branche et worktree ephemeres retires ;
+- pushes Shopify strictement limites a `sections/milaura-announcement.liquid` et `sections/milaura-hero-portal.liquid` sur le theme de developpement `199421952347`, puis le live `190430282075` avec `--nodelete --strict` et `--allow-live` ;
+- sauvegarde des deux fichiers live anterieurs dans `/private/tmp/milaura-hero-polish-live-backup.zPwnjX` ;
+- pullbacks developpement et live : 2 fichiers sur 2 identiques bit a bit au checkout d'integration ;
+- Theme Check : 0 erreur et 28 avertissements historiques dans 11 fichiers sans rapport avec ce lot ;
+- controle public direct a 390 px et 1440 px : HTTP 200, texte conforme, aucune largeur excedentaire, pierres visibles, masquage du bandeau a l'ouverture du panier et restauration a sa fermeture ;
+- seules erreurs console : cadre Shop App bloque par sa propre CSP et ressource Shop App en 403, sans rapport avec le Hero ni le panier ;
+- captures live : `output/playwright/milaura-hero-polish-live-mobile-390.png`, `output/playwright/milaura-hero-polish-live-desktop-1440.png` et `output/playwright/milaura-hero-polish-live-cart-mobile-390.png` ;
+- Navigation V2 a recu le contrat canonique final `4d0b3c39` et la liberation definitive des deux sections, avec obligation de preserver ses lignes d'integration navbar.
