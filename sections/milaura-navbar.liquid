@@ -1,2520 +1,387 @@
-<link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
+{{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}
+{{ 'component-predictive-search.css' | asset_url | stylesheet_tag }}
+{{ 'milaura-navigation.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
-{%- comment -%}
-  Ne pas recharger search-form.js ni predictive-search.js ici.
-  layout/theme.liquid les sert deja, le premier sans condition, le second
-  quand settings.predictive_search_enabled est actif. Ces deux fichiers
-  declarent `class SearchForm` et `class PredictiveSearch` au niveau global :
-  une seconde execution levait `Identifier 'SearchForm' has already been
-  declared` sur toutes les pages du site. Constate et corrige le 2026-08-13.
-{%- endcomment -%}
-
-{% style %}
-  #shopify-section-{{ section.id }} {
-    z-index: 1000000 !important;
-  }
-
-  /* ============================================
-     MILAURA NAVBAR - VERSION CTA & CRO
-     Badge Quiz visible sur TOUS les écrans
-     ============================================ */
-
-  /* --- CONTENEUR PRINCIPAL --- */
-  #MilauraNav-{{ section.id }} {
-    position: fixed;
-    top: var(--milaura-announcement-height, 50px);
-    left: 0;
-    width: 100%;
-    z-index: 1000000;
-    display: flex;
-    justify-content: center;
-    padding: 0 24px;
-    pointer-events: none;
-    transition: top 0.3s ease;
-    box-sizing: border-box;
-  }
-
-  /* --- WRAPPER SNAKE (contient l'ombre) --- */
-  #MilauraNav-{{ section.id }} .nav-snake-wrapper {
-    position: relative;
-    padding: 2px;
-    border-radius: 100px;
-    pointer-events: auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
-    animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    max-width: 1280px;
-    width: 100%;
-  }
-
-  /* Animation de balayage subtile */
-  #MilauraNav-{{ section.id }} .nav-snake-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(185, 151, 91, 0.1) 50%,
-      transparent 100%
-    );
-    animation: breathSweep 5s ease-in-out infinite;
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 100px;
-  }
-
-  /* --- INTÉRIEUR GLASSMORPHISM --- */
-  #MilauraNav-{{ section.id }} .nav-inner {
-    position: relative;
-    z-index: 1;
-    background: rgba(253, 251, 247, 0.92);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 6px 12px 6px 24px;
-    gap: 16px;
-    border: 1px solid rgba(185, 151, 91, 0.15);
-  }
-
-  /* --- LOGO --- */
-  #MilauraNav-{{ section.id }} .nav-logo-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    flex-shrink: 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-logo-img {
-    height: 52px;
-    width: auto;
-    object-fit: contain;
-    display: block;
-    transition: height 0.3s ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-logo-text {
-    font-family: var(--milaura-font-texte);
-    font-size: 1.5rem;
-    color: var(--milaura-text);
-    font-weight: 600;
-  }
-
-  /* --- LIENS DU MENU (Desktop uniquement) --- */
-  #MilauraNav-{{ section.id }} .nav-links {
-    display: flex;
-    gap: 18px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    align-items: center;
-    flex: 1;
-    justify-content: center;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-link {
-    font-family: var(--milaura-font-texte);
-    font-size: 0.85rem;
-    color: var(--milaura-text);
-    text-decoration: none;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
-    position: relative;
-    white-space: nowrap;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -4px;
-    left: 50%;
-    background: linear-gradient(90deg, var(--milaura-gold), var(--milaura-gold-light));
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateX(-50%);
-    border-radius: 2px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-link:hover {
-    color: var(--milaura-gold-dark);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-link:hover::after {
-    width: 100%;
-  }
-
-  /* --- DROPDOWN DESKTOP --- */
-  #MilauraNav-{{ section.id }} .nav-item {
-    position: relative;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-item-has-children > .nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-link-chevron {
-    width: 12px;
-    height: 12px;
-    transition: transform 0.3s ease;
-    flex-shrink: 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-item-has-children:hover .nav-link-chevron {
-    transform: rotate(180deg);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-dropdown {
-    position: absolute;
-    top: calc(100% + 12px);
-    left: 50%;
-    transform: translateX(-50%) translateY(8px);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(185, 151, 91, 0.15);
-    border-radius: 16px;
-    padding: 12px 8px;
-    min-width: 220px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
-    list-style: none;
-    margin: 0;
-    z-index: 100;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-item-has-children:hover .nav-dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  /* Zone invisible pour maintenir le hover entre le lien et le dropdown */
-  #MilauraNav-{{ section.id }} .nav-item-has-children::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 16px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-dropdown li {
-    margin: 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-dropdown-link {
-    display: block;
-    padding: 10px 16px;
-    font-family: var(--milaura-font-texte);
-    font-size: 0.85rem;
-    color: var(--milaura-text);
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    border-radius: 10px;
-    transition: background 0.2s ease, color 0.2s ease;
-    white-space: nowrap;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-dropdown-link:hover {
-    background: rgba(185, 151, 91, 0.1);
-    color: var(--milaura-gold-dark);
-  }
-
-  /* ============================================
-     MEGA-MENU DESKTOP - Subcategories 3 niveaux
-     ============================================ */
-  #MilauraNav-{{ section.id }} .nav-megamenu {
-    position: absolute;
-    top: calc(100% + 12px);
-    left: 50%;
-    transform: translateX(-50%) translateY(8px);
-    background: rgba(255, 255, 255, 0.97);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(185, 151, 91, 0.18);
-    border-radius: 20px;
-    padding: 28px 32px;
-    min-width: 480px;
-    box-shadow:
-      0 16px 48px rgba(0, 0, 0, 0.1),
-      0 2px 8px rgba(0, 0, 0, 0.04),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
-    z-index: 100;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-item-has-megamenu:hover .nav-megamenu,
-  #MilauraNav-{{ section.id }} .nav-item-has-megamenu:focus-within .nav-megamenu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  /* Accessibilite : focus-within pour le dropdown simple aussi */
-  #MilauraNav-{{ section.id }} .nav-item-has-children:focus-within .nav-dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  /* Bridge hover entre le lien et le mega-menu */
-  #MilauraNav-{{ section.id }} .nav-megamenu::before {
-    content: '';
-    position: absolute;
-    top: -16px;
-    left: 0;
-    right: 0;
-    height: 16px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-megamenu-columns {
-    display: flex;
-    gap: 28px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-megamenu-column {
-    flex: 1;
-    min-width: 130px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-megamenu-column--single {
-    flex: 0 0 auto;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-megamenu-column-title {
-    display: block;
-    font-family: var(--milaura-font-texte);
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--milaura-gold-dark);
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    padding-bottom: 10px;
-    margin-bottom: 6px;
-    border-bottom: 1px solid rgba(185, 151, 91, 0.2);
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-megamenu-column-title:hover {
-    color: var(--milaura-gold);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-megamenu-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-megamenu-link {
-    display: block;
-    padding: 7px 12px;
-    font-family: var(--milaura-font-texte);
-    font-size: 0.82rem;
-    color: var(--milaura-text);
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-    border-radius: 8px;
-    transition: background 0.2s ease, color 0.2s ease;
-    white-space: nowrap;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-megamenu-link:hover {
-    background: rgba(185, 151, 91, 0.1);
-    color: var(--milaura-gold-dark);
-  }
-
-  /* --- LIEN NOUVEAUTES : micro-badge dore --- */
-  #MilauraNav-{{ section.id }} .nav-link--nouveautes {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-link--nouveautes::after {
-    content: 'NEW';
-    font-family: var(--milaura-font-texte);
-    font-size: 0.55rem;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    color: #fff;
-    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-light) 100%);
-    padding: 2px 6px;
-    border-radius: 20px;
-    line-height: 1;
-    flex-shrink: 0;
-    animation: badgeShimmer 3s ease-in-out infinite;
-    background-size: 200% 200%;
-  }
-
-  /* Mobile : badge Nouveautes dore */
-  #MilauraNav-{{ section.id }} .nav-mobile-link--nouveautes {
-    color: var(--milaura-gold-light) !important;
-  }
-
-  /* ============================================
-     SUPER CTA BADGE QUIZ - LE CŒUR DU FUNNEL
-     Visible sur TOUS les écrans avec halo pulsant
-     ============================================ */
-  #MilauraNav-{{ section.id }} .nav-quiz-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: linear-gradient(145deg, #52394d 0%, #493246 48%, #382733 100%);
-    color: #fff;
-    padding: 12px 24px;
-    border: 1px solid rgba(215, 184, 223, 0.34);
-    border-radius: 50px;
-    text-decoration: none;
-    box-shadow: 0 6px 20px rgba(47, 34, 45, 0.24);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    white-space: nowrap;
-    position: relative;
-    flex-shrink: 0;
-    animation: none;
-  }
-
-  /* Filet or statique : le CTA reste visible sans animation concurrente. */
-  #MilauraNav-{{ section.id }} .nav-quiz-badge::before {
-    content: '';
-    position: absolute;
-    inset: -4px 2px;
-    border-radius: 50px;
-    border: 1px solid rgba(185, 151, 91, 0.78);
-    box-shadow: none;
-    animation: none;
-    pointer-events: none;
-  }
-
-  @keyframes haloPulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(185, 151, 91, 0.6);
-    }
-    50% {
-      box-shadow: 0 0 0 12px rgba(185, 151, 91, 0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(185, 151, 91, 0);
-    }
-  }
-
-  @keyframes badgeShimmer {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  #MilauraNav-{{ section.id }} .nav-quiz-badge:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 28px rgba(47, 34, 45, 0.3);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-quiz-badge:hover::before {
-    animation: none;
-  }
-
-  #MilauraNav-{{ section.id }} .badge-icon {
-    font-size: 1.4rem;
-    animation: iconBounce 2s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-
-  @keyframes iconBounce {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-2px) scale(1.1); }
-  }
-
-  #MilauraNav-{{ section.id }} .badge-content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.2;
-  }
-
-  #MilauraNav-{{ section.id }} .badge-title {
-    font-family: var(--milaura-font-texte);
-    font-size: 1.1rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-
-  #MilauraNav-{{ section.id }} .badge-subtitle {
-    display: none;
-  }
-
-  /* --- ZONE DROITE (badge + icônes) --- */
-  #MilauraNav-{{ section.id }} .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-shrink: 0;
-  }
-
-  /* --- ICÔNES --- */
-  #MilauraNav-{{ section.id }} .nav-icons {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--milaura-text);
-    transition: transform 0.3s ease, color 0.3s ease;
-    text-decoration: none;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-icon:hover {
-    color: var(--milaura-gold);
-    transform: scale(1.1);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  /* Lien contact (memes styles que les autres nav-icon) */
-  #MilauraNav-{{ section.id }} .nav-contact-icon {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    line-height: 1;
-  }
-
-  /* Badge compteur panier (header) */
-  #MilauraNav-{{ section.id }} .nav-cart-icon {
-    position: relative;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-cart-count {
-    position: absolute;
-    top: -6px;
-    right: -8px;
-    min-width: 18px;
-    height: 18px;
-    background: linear-gradient(135deg, var(--milaura-gold) 0%, var(--milaura-gold-dark) 100%);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 4px;
-    pointer-events: none;
-  }
-
-  /* --- MENU TOGGLE - 2 traits dores (luxe) --- */
-  #MilauraNav-{{ section.id }} .nav-burger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-    cursor: pointer;
-    padding: 10px;
-    background: transparent;
-    border: none;
-    z-index: 10;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-burger span {
-    width: 20px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--milaura-gold), var(--milaura-gold-light));
-    border-radius: 2px;
-    display: block;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: center;
-  }
-
-  /* 2e trait plus court - asymetrie luxe */
-  #MilauraNav-{{ section.id }} .nav-burger span:nth-child(2) {
-    width: 14px;
-    margin-left: auto;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-burger:hover span {
-    background: linear-gradient(90deg, var(--milaura-gold-light), var(--milaura-gold));
-  }
-
-  #MilauraNav-{{ section.id }} .nav-burger:hover span:nth-child(2) {
-    width: 20px;
-  }
-
-  /* Active → X */
-  #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(1) {
-    transform: rotate(45deg) translate(2.8px, 2.8px);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-burger.active span:nth-child(2) {
-    width: 20px;
-    transform: rotate(-45deg) translate(2.8px, -2.8px);
-  }
-
-  /* ============================================
-     MENU MOBILE - ECRIN MILAURA
-     ============================================ */
-
-  #MilauraNav-{{ section.id }} .nav-mobile-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 999998;
-    background: rgba(47, 34, 45, 0.28);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 220ms ease, visibility 220ms ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-overlay.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-menu {
-    position: fixed;
-    inset: 0;
-    z-index: 999999;
-    display: block;
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    padding: 126px 28px 36px;
-    overflow-y: auto;
-    color: #fbf8f3;
-    background:
-      radial-gradient(circle at 88% 24%, rgba(111, 169, 166, 0.13), transparent 30%),
-      linear-gradient(155deg, #2f222d 0%, #382733 52%, #261b24 100%);
-    box-sizing: border-box;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-14px);
-    transition:
-      opacity 240ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 240ms ease;
-    pointer-events: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-menu.active,
-  #MilauraNav-{{ section.id }} .nav-mobile-menu.opening {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-menu.closing {
-    opacity: 0;
-    visibility: visible;
-    transform: translateY(-10px);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-shell {
-    position: relative;
-    width: min(100%, 680px);
-    min-height: 100%;
-    margin: 0 auto;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 0 0 14px;
-    border-bottom: 1px solid rgba(111, 169, 166, 0.46);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-heading {
-    min-width: 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-kicker {
-    display: block;
-    margin-bottom: 3px;
-    color: #b9975b;
-    font-family: var(--milaura-font-texte);
-    font-size: 0.66rem;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-title {
-    margin: 0;
-    color: #fbf8f3;
-    font-family: var(--milaura-font-texte);
-    font-size: clamp(1.42rem, 4vw, 1.8rem);
-    font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: 0.1px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-back {
-    display: grid;
-    width: 44px;
-    height: 44px;
-    flex: 0 0 44px;
-    padding: 0;
-    place-items: center;
-    color: #b9975b;
-    background: transparent;
-    border: 0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-back:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-back:focus-visible {
-    color: #D5BF9B;
-    background: rgba(185, 151, 91, 0.08);
-    transform: scale(1.06);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-back:focus-visible {
-    outline: 2px solid #6fa9a6;
-    outline-offset: 2px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-back svg {
-    width: 24px;
-    height: 24px;
-    filter: drop-shadow(0 2px 5px rgba(185, 151, 91, 0.18));
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-links {
-    display: flex;
-    position: relative;
-    z-index: 1;
-    flex-direction: column;
-    gap: 0;
-    margin: 8px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-link {
-    display: flex;
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    min-height: 55px;
-    padding: 14px 2px;
-    align-items: center;
-    justify-content: space-between;
-    color: #fbf8f3;
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid rgba(111, 169, 166, 0.28);
-    font-family: var(--milaura-font-texte);
-    font-size: clamp(1.08rem, 3.6vw, 1.34rem);
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: 0.15px;
-    text-align: left;
-    text-decoration: none;
-    cursor: pointer;
-    transition: color 180ms ease, padding-left 180ms ease, background-color 180ms ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-link:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-link:focus-visible,
-  #MilauraNav-{{ section.id }} .nav-mobile-link.open {
-    padding-left: 9px;
-    color: #efdaf2;
-    background: rgba(111, 169, 166, 0.08);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-link:focus-visible,
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink:focus-visible,
-  #MilauraNav-{{ section.id }} .nav-mobile-group-title:focus-visible,
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-link:focus-visible {
-    outline: 2px solid #6fa9a6;
-    outline-offset: -2px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-link--nouveautes {
-    color: #d8bd84 !important;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-parent .nav-link-chevron {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    color: #6fa9a6;
-    transition: transform 200ms ease, color 200ms ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-parent.open .nav-link-chevron {
-    color: #b9975b;
-    transform: rotate(180deg);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-submenu {
-    max-height: 0;
-    margin: 0;
-    padding: 0 10px;
-    overflow: hidden;
-    visibility: hidden;
-    list-style: none;
-    background: rgba(251, 248, 243, 0.045);
-    border-left: 1px solid rgba(111, 169, 166, 0.56);
-    border-radius: 0 16px 16px 0;
-    opacity: 0;
-    transition:
-      max-height 260ms cubic-bezier(0.22, 1, 0.36, 1),
-      margin 200ms ease,
-      padding 200ms ease,
-      opacity 180ms ease,
-      visibility 180ms ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-submenu.open {
-    max-height: 1200px;
-    margin: 8px 0 10px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    visibility: visible;
-    opacity: 1;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink {
-    display: block;
-    position: relative;
-    padding: 11px 14px 11px 22px;
-    color: rgba(251, 248, 243, 0.82);
-    border-bottom: 1px solid rgba(215, 184, 223, 0.1);
-    font-family: var(--milaura-font-texte);
-    font-size: 0.88rem;
-    font-weight: 600;
-    line-height: 1.35;
-    text-decoration: none;
-    transition: color 180ms ease, background-color 180ms ease, padding-left 180ms ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 8px;
-    width: 5px;
-    height: 5px;
-    background: #b9975b;
-    border-radius: 50%;
-    opacity: 0.72;
-    transform: translateY(-50%);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink:focus-visible {
-    padding-left: 27px;
-    color: #ffffff;
-    background: rgba(111, 169, 166, 0.09);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-sublink--all {
-    color: #d7b8df;
-    font-weight: 800;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-group {
-    padding: 4px 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-group-title {
-    display: block;
-    padding: 12px 14px 4px;
-    color: #d8bd84;
-    font-family: var(--milaura-font-texte);
-    font-size: 0.7rem;
-    font-weight: 800;
-    line-height: 1.3;
-    letter-spacing: 1.15px;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-group-links {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle {
-    position: relative;
-    z-index: 1;
-    margin-top: 18px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-link {
-    display: flex;
-    min-height: 76px;
-    padding: 13px 15px;
-    align-items: center;
-    gap: 14px;
-    color: #fbf8f3;
-    background: rgba(251, 248, 243, 0.055);
-    border: 1px solid rgba(111, 169, 166, 0.42);
-    border-radius: 22px;
-    text-decoration: none;
-    transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-link:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-link:focus-visible {
-    background: rgba(111, 169, 166, 0.12);
-    border-color: rgba(185, 151, 91, 0.68);
-    transform: translateY(-1px);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-mark {
-    position: relative;
-    display: block;
-    width: 44px;
-    height: 44px;
-    flex: 0 0 44px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-ring {
-    position: absolute;
-    display: block;
-    border: 1.4px solid;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-ring--gold {
-    inset: 8px 2px 7px 4px;
-    border-color: #b9975b;
-    border-radius: 48% 52% 46% 54% / 53% 45% 55% 47%;
-    transform: rotate(10deg);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-ring--aqua {
-    inset: 4px 8px 4px 6px;
-    border-color: #6fa9a6;
-    border-radius: 53% 47% 55% 45% / 46% 54% 48% 52%;
-    transform: rotate(-13deg);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-copy {
-    min-width: 0;
-    flex: 1;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-title,
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-subtitle {
-    display: block;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-title {
-    font-family: var(--milaura-font-texte);
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.2;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-subtitle {
-    margin-top: 3px;
-    color: rgba(251, 248, 243, 0.58);
-    font-family: var(--milaura-font-texte);
-    font-size: 0.68rem;
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: 0.45px;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-cercle-arrow {
-    flex: 0 0 auto;
-    color: #b9975b;
-    font-size: 1.15rem;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-secondary {
-    display: flex;
-    margin-top: 14px;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-secondary a {
-    position: relative;
-    padding: 8px 14px;
-    color: rgba(251, 248, 243, 0.68);
-    font-family: var(--milaura-font-texte);
-    font-size: 0.68rem;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: 0.9px;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: color 180ms ease;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-secondary a + a::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 3px;
-    height: 3px;
-    background: #6fa9a6;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-secondary a:hover,
-  #MilauraNav-{{ section.id }} .nav-mobile-secondary a:focus-visible {
-    color: #efdaf2;
-  }
-
-  #MilauraNav-{{ section.id }} .nav-mobile-secondary a:focus-visible {
-    outline: 1px solid #6fa9a6;
-    outline-offset: 2px;
-  }
-
-  /* --- ANIMATIONS --- */
-  @keyframes breathSweep {
-    0% { left: -100%; opacity: 0; }
-    50% { opacity: 1; }
-    100% { left: 150%; opacity: 0; }
-  }
-
-  @keyframes slideDown {
-    from { transform: translateY(-100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  /* ============================================
-     RESPONSIVE - Badge TOUJOURS visible
-     ============================================ */
-
-  /* DESKTOP LARGE (> 1100px) : Tout visible */
-  @media screen and (min-width: 1101px) {
-    #MilauraNav-{{ section.id }} .nav-burger {
-      display: none;
-    }
-  }
-
-  /* TABLETTE (768px - 1100px) : Menu burger, badge visible */
-  @media screen and (max-width: 1100px) {
-    #MilauraNav-{{ section.id }} .nav-links {
-      display: none;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-burger {
-      display: flex;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-inner {
-      padding: 6px 12px 6px 16px;
-      gap: 12px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-logo-img {
-      height: 46px;
-    }
-
-    /* Badge plus compact sur tablette */
-    #MilauraNav-{{ section.id }} .nav-quiz-badge {
-      padding: 10px 18px;
-      gap: 10px;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-title {
-      font-size: 0.85rem;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-subtitle {
-      font-size: 0.7rem;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-icon {
-      font-size: 1.2rem;
-    }
-
-    /* Icônes plus confortables sur tablette */
-    #MilauraNav-{{ section.id }} .nav-icons {
-      gap: 18px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-icon {
-      padding: 6px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-icon svg {
-      width: 22px;
-      height: 22px;
-    }
-  }
-
-  /* MOBILE LARGE (481px - 767px) : Badge simplifié */
-  @media screen and (max-width: 767px) {
-    #MilauraNav-{{ section.id }} {
-      padding: 0 16px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-inner {
-      padding: 6px 10px 6px 14px;
-      gap: 10px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-logo-img {
-      height: 40px;
-    }
-
-    /* Badge sans subtitle sur mobile */
-    #MilauraNav-{{ section.id }} .nav-quiz-badge {
-      padding: 10px 16px;
-      gap: 8px;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-subtitle {
-      display: none;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-title {
-      font-size: 0.8rem;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-icon {
-      font-size: 1.1rem;
-    }
-
-    /* Icones masquees sur mobile - remplacees par le dock fixe en bas */
-    #MilauraNav-{{ section.id }} .nav-icons {
-      display: none;
-    }
-
-  }
-
-  /* MOBILE PETIT (< 480px) : Badge icône uniquement */
-  @media screen and (max-width: 480px) {
-    #MilauraNav-{{ section.id }} {
-      padding: 0 10px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-inner {
-      padding: 5px 8px 5px 12px;
-      gap: 8px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-logo-img {
-      height: 36px;
-    }
-
-    /* Badge ultra compact - icône + texte court */
-    #MilauraNav-{{ section.id }} .nav-quiz-badge {
-      padding: 8px 14px;
-      gap: 6px;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-content {
-      display: flex;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-title {
-      font-size: 0.7rem;
-      letter-spacing: 0;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-icon {
-      font-size: 1rem;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-burger {
-      padding: 8px;
-      gap: 5px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-burger span {
-      width: 18px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-burger span:nth-child(2) {
-      width: 12px;
-    }
-  }
-
-  /* TRÈS PETIT ÉCRAN (< 360px) : Ajustements extrêmes */
-  @media screen and (max-width: 360px) {
-    #MilauraNav-{{ section.id }} .nav-logo-img {
-      height: 32px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-quiz-badge {
-      padding: 7px 12px;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-title {
-      font-size: 0.65rem;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-icon {
-      font-size: 0.9rem;
-    }
-  }
-
-  /* MOBILE : mini-header de marque, navigation principale dans le dock */
-  @media screen and (max-width: 768px) {
-    #MilauraNav-{{ section.id }} {
-      padding: 0 12px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-snake-wrapper {
-      max-width: none;
-      padding: 0;
-      border-radius: 0;
-      box-shadow: none;
-      animation: none;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-snake-wrapper::before {
-      display: none;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-inner {
-      padding: 7px 2px;
-      gap: 14px;
-      background: transparent;
-      border: 0;
-      border-radius: 0;
-      box-shadow: none;
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-burger,
-    #MilauraNav-{{ section.id }} .nav-icons {
-      display: none !important;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-logo-link {
-      min-width: 70px;
-      min-height: 64px;
-      justify-content: flex-start;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-logo-img {
-      width: auto;
-      height: 68px;
-      transform: scale(1.08);
-      transform-origin: left center;
-      filter: drop-shadow(0 5px 10px rgba(47, 34, 45, 0.12));
-    }
-
-    #MilauraNav-{{ section.id }} .nav-right {
-      margin-left: auto;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-quiz-badge {
-      min-height: 47px;
-      padding: 10px 18px;
-      color: #fbf8f3;
-      background: linear-gradient(145deg, #52394d 0%, #493246 48%, #382733 100%);
-      border: 1px solid rgba(215, 184, 223, 0.34);
-      border-radius: 56% 44% 52% 48% / 52% 47% 53% 48%;
-      box-shadow: 0 9px 22px rgba(47, 34, 45, 0.24);
-      isolation: isolate;
-      animation: none;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-quiz-badge::before,
-    #MilauraNav-{{ section.id }} .nav-quiz-badge::after {
-      content: '';
-      position: absolute;
-      pointer-events: none;
-      border-radius: inherit;
-      box-shadow: none;
-      animation: none;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-quiz-badge::before {
-      inset: -4px 2px;
-      border: 1px solid rgba(185, 151, 91, 0.88);
-      transform: rotate(1.4deg);
-    }
-
-    #MilauraNav-{{ section.id }} .nav-quiz-badge::after {
-      inset: -7px 5px;
-      border: 1px solid rgba(111, 169, 166, 0.88);
-      transform: rotate(-1.5deg);
-    }
-
-    #MilauraNav-{{ section.id }} .nav-quiz-badge:hover {
-      transform: none;
-      box-shadow: 0 9px 22px rgba(47, 34, 45, 0.2);
-    }
-
-    #MilauraNav-{{ section.id }} .badge-content {
-      position: relative;
-      z-index: 1;
-      align-items: center;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-title {
-      color: #fbf8f3;
-      font-size: 0.76rem;
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: 0.45px;
-      text-shadow: none;
-    }
-  }
-
-  @media screen and (max-width: 359px) {
-    #MilauraNav-{{ section.id }} {
-      padding: 0 9px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-logo-link {
-      min-width: 60px;
-      min-height: 58px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-logo-img {
-      height: 60px;
-      transform: scale(1.05);
-    }
-
-    #MilauraNav-{{ section.id }} .nav-quiz-badge {
-      min-height: 44px;
-      padding: 9px 14px;
-    }
-
-    #MilauraNav-{{ section.id }} .badge-title {
-      font-size: 0.68rem;
-    }
-  }
-
-  /* ============================================
-     RESPONSIVE MENU MOBILE
-     ============================================ */
-
-  @media screen and (max-width: 1100px) {
-    #MilauraNav-{{ section.id }} .nav-snake-wrapper {
-      z-index: 1000000;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-menu {
-      padding: 122px 28px 36px;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    #MilauraNav-{{ section.id }} .nav-mobile-menu {
-      padding: 124px 18px calc(var(--milaura-mobile-dock-total, 88px) + 18px);
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-sublink {
-      font-size: 0.84rem;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    #MilauraNav-{{ section.id }} .nav-mobile-menu {
-      padding-top: 118px;
-      padding-right: 16px;
-      padding-left: 16px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-link {
-      min-height: 52px;
-      padding-top: 12px;
-      padding-bottom: 12px;
-    }
-  }
-
-  @media screen and (max-width: 360px) {
-    #MilauraNav-{{ section.id }} .nav-mobile-menu {
-      padding-top: 108px;
-      padding-right: 13px;
-      padding-left: 13px;
-    }
-
-    #MilauraNav-{{ section.id }} .nav-mobile-cercle-link {
-      min-height: 70px;
-      padding: 10px 12px;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      transition: none !important;
-      animation: none !important;
-    }
-  }
-
-{% endstyle %}
-
-{%- assign stone_guide_url = pages['choisir-sa-pierre'].url | default: '/pages/choisir-sa-pierre' -%}
+<script src="{{ 'milaura-navigation.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign primary_menu = linklists[section.settings.menu]
+  assign quiz_url = section.settings.quiz_link | default: '/pages/diagnostic-emotionnel'
+  assign contact_url = section.settings.contact_page_url | default: '/pages/contact-milaura'
+-%}
 
 <div
   id="MilauraNav-{{ section.id }}"
-  {% if request.page_type == 'index' %}class="milaura-home-hero-nav"{% endif %}
+  class="milaura-navigation{% if request.page_type == 'index' %} milaura-home-hero-nav{% endif %}"
+  data-milaura-navigation
 >
-  <div class="nav-snake-wrapper">
+  <header class="nav-snake-wrapper">
     <div class="nav-inner">
-
-      <!-- Menu toggle (mobile/tablette) - 2 traits dores -->
       <button
         type="button"
         class="nav-burger"
-        aria-label="Menu"
-        aria-controls="mobile-menu-{{ section.id }}"
+        aria-label="Ouvrir le menu"
+        aria-controls="MilauraMobileNav-{{ section.id }}"
         aria-expanded="false"
-        id="burger-{{ section.id }}"
+        data-nav-burger
       >
-        <span></span>
-        <span></span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 8h16M4 16h16" />
+        </svg>
       </button>
 
-      <!-- Logo -->
-      <a href="{{ routes.root_url }}" class="nav-logo-link">
-        {% if section.settings.logo != blank %}
-          {{ section.settings.logo | image_url: height: 120 | image_tag: class: 'nav-logo-img', loading: 'eager' }}
-        {% else %}
-          <span class="nav-logo-text">Mil'Aura</span>
-        {% endif %}
+      <a href="{{ routes.root_url }}" class="nav-logo-link" aria-label="{{ shop.name | escape }}, accueil">
+        {%- if section.settings.logo != blank -%}
+          {{- section.settings.logo
+            | image_url: height: 120
+            | image_tag:
+              class: 'nav-logo-img',
+              loading: 'eager',
+              widths: '180, 240',
+              sizes: '120px',
+              alt: shop.name
+          -}}
+        {%- else -%}
+          <span class="nav-logo-text">MilAura</span>
+        {%- endif -%}
       </a>
 
-      <!-- Liens Desktop (cachés sur mobile/tablette) -->
-      <ul class="nav-links">
-        {%- for link in linklists[section.settings.menu].links -%}
-          {%- assign top_link_handle = link.title | handleize -%}
-          {%- assign is_stones_menu = false -%}
-          {%- if top_link_handle == 'pierres-mineraux' -%}
-            {%- assign is_stones_menu = true -%}
-          {%- endif -%}
-          {%- assign has_stone_guide_link = false -%}
-          {%- if is_stones_menu -%}
-            {%- for child in link.links -%}
-              {%- if child.url contains '/pages/choisir-sa-pierre' -%}
-                {%- assign has_stone_guide_link = true -%}
-                {%- break -%}
-              {%- endif -%}
-              {%- for grandchild in child.links -%}
-                {%- if grandchild.url contains '/pages/choisir-sa-pierre' -%}
-                  {%- assign has_stone_guide_link = true -%}
-                  {%- break -%}
-                {%- endif -%}
-              {%- endfor -%}
-              {%- if has_stone_guide_link -%}
-                {%- break -%}
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endif -%}
-          {%- if link.links.size > 0 -%}
-            {%- assign has_grandchildren = false -%}
-            {%- for child in link.links -%}
-              {%- if child.links.size > 0 -%}
-                {%- assign has_grandchildren = true -%}
-                {%- break -%}
-              {%- endif -%}
-            {%- endfor -%}
-            <li class="nav-item nav-item-has-children{% if has_grandchildren %} nav-item-has-megamenu{% endif %}">
-              <a href="{{ link.url }}" class="nav-link">
-                {{ link.title }}
-                <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </a>
-              {%- if has_grandchildren -%}
-                <!-- MEGA-MENU : colonnes par sous-categorie -->
-                <div class="nav-megamenu">
-                  <div class="nav-megamenu-columns">
-                    {%- for child in link.links -%}
-                      {%- if child.links.size > 0 -%}
-                        <div class="nav-megamenu-column">
-                          <a href="{{ child.url }}" class="nav-megamenu-column-title">{{ child.title }}</a>
-                          <ul class="nav-megamenu-links">
-                            {%- for grandchild in child.links -%}
-                              {%- assign _skip = false -%}
-                              {%- if grandchild.type == 'collection_link' -%}
-                                {%- if grandchild.object == blank or grandchild.object.products_count == 0 -%}
-                                  {%- assign _skip = true -%}
-                                {%- endif -%}
-                              {%- endif -%}
-                              {%- unless _skip -%}
-                                <li><a href="{{ grandchild.url }}" class="nav-megamenu-link">{{ grandchild.title }}</a></li>
-                              {%- endunless -%}
-                            {%- endfor -%}
-                          </ul>
-                        </div>
-                      {%- else -%}
-                        {%- assign _skip = false -%}
-                        {%- if child.type == 'collection_link' -%}
-                          {%- if child.object == blank or child.object.products_count == 0 -%}
-                            {%- assign _skip = true -%}
+      <nav class="nav-desktop" aria-label="Navigation principale">
+        <ul class="nav-links" role="list">
+          {%- for link in primary_menu.links -%}
+            {%- liquid
+              assign link_handle = link.title | handleize
+              assign nav_group = link_handle
+              assign nav_display_title = link.title
+              if link_handle == 'bougies-et-senteurs' or link_handle == 'bougies-senteurs' or link_handle == 'rituels-et-bien-etre' or link_handle == 'rituels-bien-etre'
+                assign nav_group = 'rituels-bien-etre'
+                assign nav_display_title = 'Rituels & bien-être'
+              endif
+              assign has_curated_children = false
+              if nav_group == 'bijoux' or nav_group == 'pierres' or nav_group == 'rituels-bien-etre' or nav_group == 'cadeaux' or nav_group == 'guides'
+                assign has_curated_children = true
+              endif
+            -%}
+            {%- if link.links.size > 0 or has_curated_children -%}
+              <li class="nav-item">
+                <button
+                  type="button"
+                  class="nav-link"
+                  aria-expanded="false"
+                  aria-controls="MilauraDropdown-{{ section.id }}-{{ forloop.index }}"
+                  data-nav-desktop-toggle
+                >
+                  {{ nav_display_title | escape }}
+                  <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m7 9 5 5 5-5" />
+                  </svg>
+                </button>
+
+                <div class="nav-dropdown" id="MilauraDropdown-{{ section.id }}-{{ forloop.index }}">
+                  <ul class="nav-dropdown-list{% unless nav_group == 'bijoux' %} nav-dropdown-list--single{% endunless %}" role="list">
+                    {%- if has_curated_children -%}
+                      {%- render 'milaura-nav-curated-links', group: nav_group, mobile: false -%}
+                    {%- else -%}
+                      {%- for child in link.links -%}
+                        {%- liquid
+                          assign skip_child = false
+                          if child.type == 'collection_link'
+                            if child.object == blank or child.object.products_count == 0
+                              assign skip_child = true
+                            endif
+                          endif
+                        -%}
+                        {%- unless skip_child -%}
+                          {%- if child.links.size > 0 -%}
+                            <li class="nav-dropdown-column">
+                              <a class="nav-dropdown-column-title" href="{{ child.url }}">{{ child.title | escape }}</a>
+                              <ul role="list">
+                                {%- for grandchild in child.links -%}
+                                  {%- liquid
+                                    assign skip_grandchild = false
+                                    if grandchild.type == 'collection_link'
+                                      if grandchild.object == blank or grandchild.object.products_count == 0
+                                        assign skip_grandchild = true
+                                      endif
+                                    endif
+                                  -%}
+                                  {%- unless skip_grandchild -%}
+                                    <li>
+                                      <a class="nav-dropdown-link" href="{{ grandchild.url }}">{{ grandchild.title | escape }}</a>
+                                    </li>
+                                  {%- endunless -%}
+                                {%- endfor -%}
+                              </ul>
+                            </li>
+                          {%- else -%}
+                            <li>
+                              <a class="nav-dropdown-link" href="{{ child.url }}">{{ child.title | escape }}</a>
+                            </li>
                           {%- endif -%}
-                        {%- endif -%}
-                        {%- unless _skip -%}
-                          <div class="nav-megamenu-column nav-megamenu-column--single">
-                            <a href="{{ child.url }}" class="nav-megamenu-link">{{ child.title }}</a>
-                          </div>
-                        {%- endunless -%}
-                      {%- endif -%}
-                    {%- endfor -%}
-                    {%- if is_stones_menu and has_stone_guide_link == false -%}
-                      <div class="nav-megamenu-column nav-megamenu-column--single">
-                        <a href="{{ stone_guide_url }}" class="nav-megamenu-link">Choisir sa pierre</a>
-                      </div>
-                    {%- endif -%}
-                  </div>
-                </div>
-              {%- else -%}
-                <!-- DROPDOWN SIMPLE (2 niveaux) -->
-                <ul class="nav-dropdown">
-                  {%- for child in link.links -%}
-                    {%- assign _skip = false -%}
-                    {%- if child.type == 'collection_link' -%}
-                      {%- if child.object == blank or child.object.products_count == 0 -%}
-                        {%- assign _skip = true -%}
-                      {%- endif -%}
-                    {%- endif -%}
-                    {%- unless _skip -%}
-                      <li><a href="{{ child.url }}" class="nav-dropdown-link">{{ child.title }}</a></li>
-                    {%- endunless -%}
-                  {%- endfor -%}
-                  {%- if is_stones_menu and has_stone_guide_link == false -%}
-                    <li><a href="{{ stone_guide_url }}" class="nav-dropdown-link">Choisir sa pierre</a></li>
-                  {%- endif -%}
-                </ul>
-              {%- endif -%}
-            </li>
-          {%- else -%}
-            <li class="nav-item">
-              <a href="{{ link.url }}" class="nav-link{% if link.title contains 'Nouveaut' or link.title contains 'nouveaut' %} nav-link--nouveautes{% endif %}">{{ link.title }}</a>
-            </li>
-          {%- endif -%}
-        {%- endfor -%}
-      </ul>
-
-      <!-- Zone Droite : Badge Quiz + Icônes (TOUJOURS visible) -->
-      <div class="nav-right">
-        <!-- Badge Quiz Super CTA - Visible sur TOUS les écrans -->
-        <a href="{{ section.settings.quiz_link | default: '/pages/diagnostic-emotionnel' }}" class="nav-quiz-badge">
-          <div class="badge-content">
-            <span class="badge-title">{{ section.settings.quiz_label | default: 'Trouver ma pierre' }}</span>
-            {%- if section.settings.quiz_subtitle != blank -%}
-              <span class="badge-subtitle">{{ section.settings.quiz_subtitle }}</span>
-            {%- endif -%}
-          </div>
-        </a>
-
-        <!-- Icônes -->
-        <div class="nav-icons">
-        <button type="button" class="nav-icon nav-search-toggle" aria-label="Rechercher" data-milaura-search-toggle>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-        </button>
-        <a href="{{ routes.account_url }}" class="nav-icon" aria-label="Compte">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </a>
-        {% if section.settings.show_contact_icon %}
-          <a href="{{ section.settings.contact_page_url | default: '/pages/contact' }}" class="nav-icon nav-contact-icon" aria-label="Contact">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-            </svg>
-          </a>
-        {% endif %}
-        <a href="{{ routes.cart_url }}" class="nav-icon nav-cart-icon" aria-label="Panier">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <path d="M16 10a4 4 0 0 1-8 0"/>
-          </svg>
-          <div id="cart-icon-bubble">
-            {%- if cart != empty -%}
-              <span class="nav-cart-count" id="desktop-cart-count-{{ section.id }}">{{ cart.item_count }}</span>
-            {%- endif -%}
-          </div>
-        </a>
-        </div>
-      </div><!-- fin nav-right -->
-
-    </div>
-  </div>
-
-  <!-- Overlay du menu mobile -->
-  <div class="nav-mobile-overlay" id="mobile-overlay-{{ section.id }}"></div>
-
-  <!-- Menu mobile : écrin prune entre l'en-tête et le dock -->
-  <div
-    class="nav-mobile-menu"
-    id="mobile-menu-{{ section.id }}"
-    role="dialog"
-    aria-modal="true"
-    aria-hidden="true"
-    aria-labelledby="mobile-menu-title-{{ section.id }}"
-    tabindex="-1"
-  >
-    <div class="nav-mobile-shell">
-      <div class="nav-mobile-header">
-        <div class="nav-mobile-heading">
-          <span class="nav-mobile-kicker">Créateur d'émotions</span>
-          <h2 class="nav-mobile-title" id="mobile-menu-title-{{ section.id }}">Explorer MilAura</h2>
-        </div>
-
-        <!-- Controle utilitaire : croix or simple. Le double anneau est reserve au Cercle et aux cadres photo importants. -->
-        <button type="button" class="nav-mobile-back" id="close-menu-{{ section.id }}" aria-label="Fermer le menu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
-            <path d="M6 6l12 12M18 6 6 18"/>
-          </svg>
-        </button>
-      </div>
-
-      <ul class="nav-mobile-links">
-      {%- for link in linklists[section.settings.menu].links -%}
-        {%- assign top_link_handle = link.title | handleize -%}
-        {%- assign is_stones_menu = false -%}
-        {%- if top_link_handle == 'pierres-mineraux' -%}
-          {%- assign is_stones_menu = true -%}
-        {%- endif -%}
-        {%- assign has_stone_guide_link = false -%}
-        {%- if is_stones_menu -%}
-          {%- for child in link.links -%}
-            {%- if child.url contains '/pages/choisir-sa-pierre' -%}
-              {%- assign has_stone_guide_link = true -%}
-              {%- break -%}
-            {%- endif -%}
-            {%- for grandchild in child.links -%}
-              {%- if grandchild.url contains '/pages/choisir-sa-pierre' -%}
-                {%- assign has_stone_guide_link = true -%}
-                {%- break -%}
-              {%- endif -%}
-            {%- endfor -%}
-            {%- if has_stone_guide_link -%}
-              {%- break -%}
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endif -%}
-        {%- if link.links.size > 0 -%}
-          <li>
-            <button
-              type="button"
-              class="nav-mobile-link nav-mobile-parent"
-              data-toggle-submenu
-              aria-expanded="false"
-              aria-controls="mobile-submenu-{{ section.id }}-{{ forloop.index }}"
-            >
-              <span>{{ link.title }}</span>
-              <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <ul
-              class="nav-mobile-submenu"
-              id="mobile-submenu-{{ section.id }}-{{ forloop.index }}"
-              aria-hidden="true"
-            >
-              <li>
-                <a href="{{ link.url }}" class="nav-mobile-sublink nav-mobile-sublink--all" data-close-menu>Tout découvrir</a>
-              </li>
-              {%- if is_stones_menu and has_stone_guide_link == false -%}
-                <li>
-                  <a href="{{ stone_guide_url }}" class="nav-mobile-sublink" data-close-menu>Choisir sa pierre</a>
-                </li>
-              {%- endif -%}
-              {%- for child in link.links -%}
-                {%- if child.links.size > 0 -%}
-                  <li class="nav-mobile-group">
-                    <a href="{{ child.url }}" class="nav-mobile-group-title" data-close-menu>{{ child.title }}</a>
-                    <ul class="nav-mobile-group-links">
-                      {%- for grandchild in child.links -%}
-                        {%- assign _skip = false -%}
-                        {%- if grandchild.type == 'collection_link' -%}
-                          {%- if grandchild.object == blank or grandchild.object.products_count == 0 -%}
-                            {%- assign _skip = true -%}
-                          {%- endif -%}
-                        {%- endif -%}
-                        {%- unless _skip -%}
-                          <li><a href="{{ grandchild.url }}" class="nav-mobile-sublink" data-close-menu>{{ grandchild.title }}</a></li>
                         {%- endunless -%}
                       {%- endfor -%}
-                    </ul>
-                  </li>
-                {%- else -%}
-                  {%- assign _skip = false -%}
-                  {%- if child.type == 'collection_link' -%}
-                    {%- if child.object == blank or child.object.products_count == 0 -%}
-                      {%- assign _skip = true -%}
                     {%- endif -%}
-                  {%- endif -%}
-                  {%- unless _skip -%}
-                    <li><a href="{{ child.url }}" class="nav-mobile-sublink" data-close-menu>{{ child.title }}</a></li>
-                  {%- endunless -%}
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-          </li>
-        {%- else -%}
-          <li>
-            <a href="{{ link.url }}" class="nav-mobile-link{% if link.title contains 'Nouveaut' or link.title contains 'nouveaut' %} nav-mobile-link--nouveautes{% endif %}" data-close-menu>
-              {{ link.title }}
-            </a>
-          </li>
-        {%- endif -%}
-      {%- endfor -%}
-      </ul>
-
-      <div class="nav-mobile-cercle">
-        <a href="{{ routes.account_url }}" class="nav-mobile-cercle-link" data-close-menu>
-          <span class="nav-mobile-cercle-mark" aria-hidden="true">
-            <span class="nav-mobile-cercle-ring nav-mobile-cercle-ring--gold"></span>
-            <span class="nav-mobile-cercle-ring nav-mobile-cercle-ring--aqua"></span>
-          </span>
-          <span class="nav-mobile-cercle-copy">
-            <span class="nav-mobile-cercle-title">Le Cercle MilAura</span>
-            <span class="nav-mobile-cercle-subtitle">Votre espace personnel</span>
-          </span>
-          <span class="nav-mobile-cercle-arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-
-      <nav class="nav-mobile-secondary" aria-label="Découvrir MilAura">
-        <a href="{{ routes.root_url }}pages/notre-histoire" data-close-menu>Notre histoire</a>
-        <a href="{{ routes.root_url }}blogs/journal" data-close-menu>Le Journal</a>
+                  </ul>
+                </div>
+              </li>
+            {%- else -%}
+              <li class="nav-item">
+                <a
+                  href="{{ link.url }}"
+                  class="nav-link{% if link.title contains 'Nouveaut' or link.title contains 'nouveaut' %} nav-link--nouveautes{% endif %}"
+                  {% if link.current %}aria-current="page"{% endif %}
+                >
+                  {{ link.title | escape }}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
       </nav>
-    </div>
-  </div>
-</div>
 
-<!-- ============ SEARCH OVERLAY MILAURA ============ -->
-<div class="milaura-search-overlay" id="milaura-search-overlay-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Rechercher">
-  <div class="milaura-search-backdrop"></div>
-  <div class="milaura-search-panel">
-    <div class="milaura-search-header">
-      <span class="milaura-search-title">Rechercher</span>
-      <button type="button" class="milaura-search-close" aria-label="Fermer la recherche">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="milaura-search-body">
+      <div class="nav-actions">
+        <a href="{{ quiz_url }}" class="nav-quiz-badge">
+          <span class="badge-title">{{ section.settings.quiz_label | default: 'Trouver ma pierre' | escape }}</span>
+        </a>
 
-    {%- if settings.predictive_search_enabled -%}
-      <predictive-search class="milaura-search-form-wrapper" data-loading-text="{{ 'accessibility.loading' | t }}">
-    {%- else -%}
-      <search-form class="milaura-search-form-wrapper">
-    {%- endif -%}
+        <div class="nav-icons">
+          <button type="button" class="nav-icon" aria-label="Rechercher" data-milaura-search-toggle>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-4-4" />
+            </svg>
+          </button>
 
-    <form action="{{ routes.search_url }}" method="get" role="search" class="milaura-search-form">
-      <div class="milaura-search-input-wrapper">
-        <svg class="milaura-search-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input
-          class="milaura-search-input search__input field__input"
-          id="MilauraSearch-{{ section.id }}"
-          type="search"
-          name="q"
-          value="{{ search.terms | escape }}"
-          placeholder="Que cherchez-vous ?"
-          {%- if settings.predictive_search_enabled -%}
-            role="combobox"
-            aria-expanded="false"
-            aria-owns="predictive-search-results"
-            aria-controls="predictive-search-results"
-            aria-haspopup="listbox"
-            aria-autocomplete="list"
-            autocorrect="off"
-            autocomplete="off"
-            autocapitalize="off"
-            spellcheck="false"
+          <a href="{{ routes.account_url }}" class="nav-icon nav-account-icon" aria-label="Le Cercle, mon compte">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.4" />
+              <path d="M5.5 20c.7-4 3-6 6.5-6s5.8 2 6.5 6" />
+            </svg>
+          </a>
+
+          {%- if section.settings.show_contact_icon -%}
+            <a href="{{ contact_url }}" class="nav-icon nav-contact-icon" aria-label="Contacter MilAura">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 5.5h16v11H8l-4 3v-14Z" />
+                <path d="M8 10h8M8 13h5" />
+              </svg>
+            </a>
           {%- endif -%}
-        >
-        <input type="hidden" name="options[prefix]" value="last">
-        <button type="reset" class="reset__button field__button{% if search.terms == blank %} hidden{% endif %}" aria-label="Effacer">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+
+          <a href="{{ routes.cart_url }}" class="nav-icon nav-cart-icon" aria-label="Panier">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 8h14l-1 12H6L5 8Z" />
+              <path d="M9 9V6a3 3 0 0 1 6 0v3" />
+            </svg>
+            <span id="cart-icon-bubble">
+              {%- if cart != empty -%}
+                <span class="nav-cart-count">{{ cart.item_count }}</span>
+              {%- endif -%}
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div
+    class="nav-overlay"
+    id="MilauraMobileNav-{{ section.id }}"
+    aria-hidden="true"
+    data-nav-mobile
+  >
+    <button type="button" class="nav-overlay-backdrop" aria-label="Fermer le menu" data-nav-mobile-backdrop></button>
+    <div class="nav-mobile-panel" role="dialog" aria-modal="true" aria-labelledby="MilauraMobileTitle-{{ section.id }}">
+      <div class="nav-mobile-header">
+        <div>
+          <span class="nav-mobile-eyebrow">MilAura</span>
+          <h2 class="nav-mobile-title" id="MilauraMobileTitle-{{ section.id }}">Explorer</h2>
+        </div>
+        <button type="button" class="nav-panel-close" aria-label="Fermer le menu" data-nav-mobile-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
         </button>
       </div>
 
-      <div class="milaura-search-hint">
-        <span class="milaura-search-kbd">Esc</span> pour fermer
-        <span class="milaura-search-hint-sep">·</span>
-        <span class="milaura-search-kbd">⌘K</span> pour ouvrir
-      </div>
+      <nav aria-label="Navigation mobile">
+        <ul class="nav-mobile-list" role="list">
+          {%- for link in primary_menu.links -%}
+            {%- liquid
+              assign mobile_link_handle = link.title | handleize
+              assign mobile_nav_group = mobile_link_handle
+              assign mobile_nav_display_title = link.title
+              if mobile_link_handle == 'bougies-et-senteurs' or mobile_link_handle == 'bougies-senteurs' or mobile_link_handle == 'rituels-et-bien-etre' or mobile_link_handle == 'rituels-bien-etre'
+                assign mobile_nav_group = 'rituels-bien-etre'
+                assign mobile_nav_display_title = 'Rituels & bien-être'
+              endif
+              assign mobile_has_curated_children = false
+              if mobile_nav_group == 'bijoux' or mobile_nav_group == 'pierres' or mobile_nav_group == 'rituels-bien-etre' or mobile_nav_group == 'cadeaux' or mobile_nav_group == 'guides'
+                assign mobile_has_curated_children = true
+              endif
+            -%}
+            <li>
+              {%- if link.links.size > 0 or mobile_has_curated_children -%}
+                <details>
+                  <summary class="nav-mobile-summary">
+                    <span>{{ mobile_nav_display_title | escape }}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                      <path d="m7 9 5 5 5-5" />
+                    </svg>
+                  </summary>
+                  <ul class="nav-mobile-sublist" role="list">
+                    {%- if mobile_has_curated_children -%}
+                      {%- render 'milaura-nav-curated-links', group: mobile_nav_group, mobile: true -%}
+                    {%- else -%}
+                      {%- for child in link.links -%}
+                        {%- liquid
+                          assign skip_mobile_child = false
+                          if child.type == 'collection_link'
+                            if child.object == blank or child.object.products_count == 0
+                              assign skip_mobile_child = true
+                            endif
+                          endif
+                        -%}
+                        {%- unless skip_mobile_child -%}
+                          <li>
+                            <a class="{% if child.links.size > 0 %}nav-mobile-group-title{% else %}nav-mobile-sublink{% endif %}" href="{{ child.url }}" data-nav-close-mobile>
+                              {{ child.title | escape }}
+                            </a>
+                            {%- if child.links.size > 0 -%}
+                              <ul class="nav-mobile-sublist" role="list">
+                                {%- for grandchild in child.links -%}
+                                  {%- liquid
+                                    assign skip_mobile_grandchild = false
+                                    if grandchild.type == 'collection_link'
+                                      if grandchild.object == blank or grandchild.object.products_count == 0
+                                        assign skip_mobile_grandchild = true
+                                      endif
+                                    endif
+                                  -%}
+                                  {%- unless skip_mobile_grandchild -%}
+                                    <li>
+                                      <a class="nav-mobile-sublink" href="{{ grandchild.url }}" data-nav-close-mobile>{{ grandchild.title | escape }}</a>
+                                    </li>
+                                  {%- endunless -%}
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </li>
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+                  </ul>
+                </details>
+              {%- else -%}
+                <a class="nav-mobile-direct" href="{{ link.url }}" data-nav-close-mobile>{{ link.title | escape }}</a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
 
-      <div class="milaura-search-filters">
-        <span class="milaura-search-filters-label">Recherches rapides</span>
-        <div class="milaura-search-pills">
-          <button type="button" class="milaura-search-pill" data-search-term="pierres">💎 Pierres</button>
-          <button type="button" class="milaura-search-pill" data-search-term="bracelet">📿 Bracelets</button>
-          <button type="button" class="milaura-search-pill" data-search-term="bougies">🕯️ Bougies</button>
-          <button type="button" class="milaura-search-pill" data-search-term="bijoux">✨ Bijoux</button>
-          <button type="button" class="milaura-search-pill" data-search-term="senteurs">🌸 Senteurs</button>
-          <button type="button" class="milaura-search-pill" data-search-term="améthyste">Améthyste</button>
-          <button type="button" class="milaura-search-pill" data-search-term="quartz rose">Quartz rose</button>
-          <button type="button" class="milaura-search-pill" data-search-term="labradorite">Labradorite</button>
-          <button type="button" class="milaura-search-pill" data-search-term="œil de tigre">Oeil de tigre</button>
+      <div class="nav-mobile-utilities">
+        <a class="nav-mobile-utility" href="{{ quiz_url }}">Trouver ma pierre</a>
+        <button type="button" class="nav-mobile-utility" data-milaura-search-toggle>Rechercher</button>
+        <a class="nav-mobile-utility" href="{{ contact_url }}">Nous contacter</a>
+        <a class="nav-mobile-utility" href="{{ routes.cart_url }}">Voir le panier</a>
+        <a class="nav-mobile-circle" href="{{ routes.account_url }}">
+          <span class="nav-mobile-circle-mark" aria-hidden="true"></span>
+          <span>
+            <span class="nav-mobile-circle-title">Le Cercle MilAura</span>
+            <span class="nav-mobile-circle-copy">Votre compte, vos choix, votre histoire</span>
+          </span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-search-overlay" aria-hidden="true" data-nav-search>
+    <button type="button" class="nav-search-backdrop" aria-label="Fermer la recherche" data-nav-search-backdrop></button>
+    <div class="nav-search-panel" role="dialog" aria-modal="true" aria-labelledby="MilauraSearchTitle-{{ section.id }}">
+      <div class="nav-search-header">
+        <div>
+          <span class="nav-search-eyebrow">Recherche</span>
+          <h2 class="nav-search-title" id="MilauraSearchTitle-{{ section.id }}">Que cherchez-vous ?</h2>
         </div>
+        <button type="button" class="nav-search-close" aria-label="Fermer la recherche" data-nav-search-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
       </div>
 
       {%- if settings.predictive_search_enabled -%}
-        <div class="predictive-search predictive-search--header milaura-search-results" tabindex="-1" data-predictive-search>
-          {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
-        </div>
-        <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+        <predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
+      {%- else -%}
+        <search-form>
       {%- endif -%}
-    </form>
+        <form action="{{ routes.search_url }}" method="get" role="search" class="nav-search-form">
+          <div class="nav-search-field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-4-4" />
+            </svg>
+            <input
+              id="MilauraSearchInput-{{ section.id }}"
+              class="nav-search-input search__input"
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              placeholder="Un bijou, une pierre, un rituel"
+              data-nav-search-input
+              {% if settings.predictive_search_enabled %}
+                role="combobox"
+                aria-expanded="false"
+                aria-owns="predictive-search-results"
+                aria-controls="predictive-search-results"
+                aria-haspopup="listbox"
+                aria-autocomplete="list"
+                autocorrect="off"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+              {% endif %}
+            >
+            <input type="hidden" name="options[prefix]" value="last">
+          </div>
 
-    {%- if settings.predictive_search_enabled -%}
-      </predictive-search>
-    {%- else -%}
-      </search-form>
-    {%- endif -%}
-    </div>{%- comment -%} fin milaura-search-body {%- endcomment -%}
+          <ul class="nav-search-links" role="list" aria-label="Accès rapides">
+            <li><a href="{{ routes.collections_url }}/bijoux-pierres-naturelles">Tous les bijoux</a></li>
+            <li><a href="/pages/bijoux-par-pierre">Bijoux par pierre</a></li>
+            <li><a href="{{ routes.collections_url }}/rituels-bien-etre">Rituels & bien-être</a></li>
+            <li><a href="{{ routes.collections_url }}/nouveautes">Nouveautés</a></li>
+          </ul>
+
+          {%- if settings.predictive_search_enabled -%}
+            <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+              {%- render 'loading-spinner', class: 'predictive-search__loading-state' -%}
+            </div>
+            <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+          {%- endif -%}
+        </form>
+      {%- if settings.predictive_search_enabled -%}
+        </predictive-search>
+      {%- else -%}
+        </search-form>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 
-<style>
-  /* ============================================
-     MILAURA SEARCH OVERLAY - VISION OS
-     ============================================ */
-  .milaura-search-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 1000001;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 110px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-
-  .milaura-search-overlay.active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .milaura-search-backdrop {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-
-  .milaura-search-panel {
-    position: relative;
-    width: 92%;
-    max-width: 640px;
-    background: rgba(253, 251, 247, 0.96);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(185, 151, 91, 0.3);
-    border-radius: 24px;
-    box-shadow:
-      0 24px 80px rgba(0, 0, 0, 0.12),
-      0 0 0 1px rgba(185, 151, 91, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    transform: translateY(-20px) scale(0.98);
-    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-    max-height: 75vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .milaura-search-overlay.active .milaura-search-panel {
-    transform: translateY(0) scale(1);
-  }
-
-  /* Search header (title + close) - always visible */
-  .milaura-search-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 24px 16px 24px;
-    flex-shrink: 0;
-    border-bottom: 1px solid rgba(185, 151, 91, 0.1);
-  }
-
-  @media screen and (max-width: 767px) {
-    .milaura-search-header {
-      padding: 16px 18px 14px 18px;
-    }
-  }
-
-  /* Scrollable body */
-  .milaura-search-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 24px 24px 24px;
-  }
-
-  @media screen and (max-width: 767px) {
-    .milaura-search-body {
-      padding: 16px 18px 20px 18px;
-    }
-  }
-
-  .milaura-search-title {
-    font-family: var(--milaura-font-display);
-    font-size: 18px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.7);
-    letter-spacing: 0.02em;
-  }
-
-  /* Close button */
-  .milaura-search-close {
-    width: 36px; height: 36px;
-    min-width: 36px;
-    border: 1px solid rgba(185, 151, 91, 0.25);
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    padding: 0;
-    flex-shrink: 0;
-  }
-
-  @media screen and (max-width: 767px) {
-    .milaura-search-close {
-      width: 40px; height: 40px;
-      min-width: 40px;
-    }
-  }
-
-  .milaura-search-close svg {
-    width: 16px; height: 16px;
-    color: rgba(0, 0, 0, 0.5);
-  }
-
-  .milaura-search-close:hover {
-    background: rgba(185, 151, 91, 0.12);
-    border-color: rgba(185, 151, 91, 0.4);
-  }
-
-  .milaura-search-close:hover svg {
-    color: var(--milaura-gold-dark, #926451);
-  }
-
-  /* Search input */
-  .milaura-search-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .milaura-search-input-icon {
-    position: absolute;
-    left: 20px;
-    width: 20px; height: 20px;
-    color: var(--milaura-gold, #B9975B);
-    pointer-events: none;
-  }
-
-  .milaura-search-input {
-    width: 100%;
-    padding: 16px 50px 16px 52px;
-    font-family: var(--milaura-font-texte);
-    font-size: 1.05rem;
-    border: 1px solid rgba(185, 151, 91, 0.25);
-    border-radius: 50px;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    outline: none;
-    color: #000;
-    transition: all 0.3s ease;
-    -webkit-appearance: none;
-  }
-
-  .milaura-search-input::placeholder {
-    color: rgba(0, 0, 0, 0.3);
-    font-style: italic;
-  }
-
-  .milaura-search-input:focus {
-    border-color: var(--milaura-gold, #B9975B);
-    box-shadow: 0 0 0 4px rgba(185, 151, 91, 0.12);
-    background: rgba(255, 255, 255, 0.9);
-  }
-
-  .milaura-search-input-wrapper .reset__button {
-    position: absolute;
-    right: 14px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    color: rgba(0, 0, 0, 0.3);
-  }
-
-  .milaura-search-input-wrapper .reset__button:hover {
-    color: rgba(0, 0, 0, 0.6);
-  }
-
-  /* Keyboard hints */
-  .milaura-search-hint {
-    display: none;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 10px;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.3);
-  }
-
-  @media screen and (min-width: 768px) {
-    .milaura-search-hint {
-      display: flex;
-    }
-  }
-
-  .milaura-search-kbd {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 7px;
-    background: rgba(0, 0, 0, 0.06);
-    border-radius: 5px;
-    font-family: 'SF Mono', 'Menlo', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-  }
-
-  .milaura-search-hint-sep {
-    color: rgba(0, 0, 0, 0.15);
-  }
-
-  /* Quick filter pills */
-  .milaura-search-filters {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(185, 151, 91, 0.1);
-  }
-
-  .milaura-search-filters-label {
-    display: block;
-    font-family: var(--milaura-font-display);
-    font-size: 13px;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.5);
-    margin-bottom: 12px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .milaura-search-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .milaura-search-pill {
-    padding: 7px 16px;
-    border: 1px solid rgba(185, 151, 91, 0.25);
-    border-radius: 50px;
-    background: rgba(185, 151, 91, 0.06);
-    font-family: var(--milaura-font-texte);
-    font-size: 13px;
-    color: var(--milaura-gold-dark, #926451);
-    cursor: pointer;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-  }
-
-  .milaura-search-pill:hover {
-    background: rgba(185, 151, 91, 0.15);
-    border-color: rgba(185, 151, 91, 0.4);
-    transform: translateY(-1px);
-  }
-
-  .milaura-search-pill.active {
-    background: var(--milaura-gold, #B9975B);
-    color: #fff;
-    border-color: var(--milaura-gold, #B9975B);
-    box-shadow: 0 4px 12px rgba(185, 151, 91, 0.3);
-  }
-
-  /* Predictive search results overrides */
-  .milaura-search-results {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    margin-top: 16px;
-    max-height: 35vh;
-    overflow-y: auto;
-    border-top: 1px solid rgba(185, 151, 91, 0.1) !important;
-    padding-top: 12px;
-  }
-
-  .milaura-search-results .predictive-search__results-groups-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .milaura-search-results .predictive-search__heading {
-    font-family: var(--milaura-font-display);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--milaura-gold-dark, #926451);
-    padding-bottom: 6px;
-    border-bottom: 1px solid rgba(185, 151, 91, 0.1);
-  }
-
-  .milaura-search-results .predictive-search__item {
-    border-radius: 12px;
-    padding: 8px 12px;
-    transition: background 0.2s ease;
-  }
-
-  .milaura-search-results .predictive-search__item:hover {
-    background: rgba(185, 151, 91, 0.08);
-  }
-
-  .milaura-search-results .predictive-search__image {
-    border-radius: 8px;
-    object-fit: cover;
-  }
-
-  .milaura-search-results .predictive-search__item-heading {
-    color: #000;
-    font-weight: 500;
-  }
-
-  .milaura-search-results .predictive-search__item--term .svg-wrapper {
-    color: var(--milaura-gold, #B9975B);
-  }
-
-  /* Search toggle button styling */
-  .nav-search-toggle {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    line-height: 1;
-  }
-
-  /* Mobile */
-  @media screen and (max-width: 767px) {
-    .milaura-search-overlay {
-      padding-top: 20px;
-      align-items: flex-start;
-    }
-
-    .milaura-search-panel {
-      width: 95%;
-      padding: 24px 18px;
-      border-radius: 20px;
-      max-height: 85vh;
-    }
-
-    .milaura-search-input {
-      font-size: 1rem;
-      padding: 14px 44px 14px 46px;
-      border-radius: 50px;
-    }
-
-    .milaura-search-panel {
-      max-height: 85vh;
-    }
-
-    .milaura-search-pill {
-      font-size: 12px;
-      padding: 6px 12px;
-    }
-
-    .milaura-search-results {
-      max-height: 40vh;
-    }
-  }
-
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .milaura-search-overlay,
-    .milaura-search-panel,
-    .milaura-search-pill {
-      transition: none;
-    }
-  }
-</style>
-
-<script>
-  (function() {
-    const sectionId = '{{ section.id }}';
-    const burger = document.getElementById('burger-' + sectionId);
-    const closeBtn = document.getElementById('close-menu-' + sectionId);
-    const mobileMenu = document.getElementById('mobile-menu-' + sectionId);
-    const overlay = document.getElementById('mobile-overlay-' + sectionId);
-    const desktopCartCount = document.getElementById('desktop-cart-count-' + sectionId);
-
-    let isAnimating = false;
-    let lastFocusedElement = null;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const menuTransitionDuration = reduceMotion ? 0 : 240;
-    function setPageInert(isInert) {
-      Array.from(document.querySelectorAll('main, footer')).forEach(function(target) {
-        if (target.querySelector('.milaura-dock')) return;
-        target.inert = isInert;
-      });
-    }
-
-    function notifyMenuState(isOpen) {
-      document.dispatchEvent(new CustomEvent('milaura:menu-state', {
-        detail: {
-          expanded: isOpen,
-          controls: mobileMenu.id
-        }
-      }));
-    }
-
-    function openMenu() {
-      if (isAnimating) return;
-      isAnimating = true;
-      lastFocusedElement = document.activeElement;
-
-      burger.classList.add('active');
-      burger.setAttribute('aria-expanded', 'true');
-      overlay.classList.add('active');
-      mobileMenu.classList.remove('closing');
-      mobileMenu.classList.add('opening');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      setPageInert(true);
-      document.body.style.overflow = 'hidden';
-      notifyMenuState(true);
-
-      setTimeout(function() {
-        mobileMenu.classList.remove('opening');
-        mobileMenu.classList.add('active');
-        isAnimating = false;
-        if (closeBtn) closeBtn.focus();
-      }, menuTransitionDuration);
-    }
-
-    function closeMenu() {
-      if (isAnimating) return;
-      isAnimating = true;
-
-      burger.classList.remove('active');
-      burger.setAttribute('aria-expanded', 'false');
-      overlay.classList.remove('active');
-      mobileMenu.classList.remove('active');
-      mobileMenu.classList.remove('opening');
-      mobileMenu.classList.add('closing');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      notifyMenuState(false);
-
-      setTimeout(function() {
-        mobileMenu.classList.remove('closing');
-        isAnimating = false;
-        document.body.style.overflow = '';
-        setPageInert(false);
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-          lastFocusedElement.focus();
-        }
-      }, menuTransitionDuration);
-    }
-
-    // Événements burger
-    if (burger) {
-      burger.addEventListener('click', function() {
-        if (mobileMenu.classList.contains('active') || mobileMenu.classList.contains('opening')) {
-          closeMenu();
-        } else {
-          openMenu();
-        }
-      });
-    }
-
-    if (closeBtn) {
-      closeBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        closeMenu();
-      });
-    }
-
-    // Fermer au clic sur l'overlay
-    if (overlay) {
-      overlay.addEventListener('click', closeMenu);
-    }
-
-    const closeLinks = mobileMenu.querySelectorAll('[data-close-menu]');
-    closeLinks.forEach(function(link) {
-      link.addEventListener('click', function() {
-        setTimeout(closeMenu, 100);
-      });
-    });
-
-    document.addEventListener('keydown', function(e) {
-      const isOpen = mobileMenu.classList.contains('active') || mobileMenu.classList.contains('opening');
-      if (!isOpen) return;
-
-      if (e.key === 'Escape') {
-        closeMenu();
-        return;
-      }
-
-      if (e.key === 'Tab') {
-        const focusableElements = Array.from(mobileMenu.querySelectorAll(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        )).filter(function(element) {
-          return element.offsetParent !== null && window.getComputedStyle(element).visibility !== 'hidden';
-        });
-
-        if (focusableElements.length === 0) {
-          e.preventDefault();
-          mobileMenu.focus();
-          return;
-        }
-
-        const firstFocusable = focusableElements[0];
-        const lastFocusable = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey && document.activeElement === firstFocusable) {
-          e.preventDefault();
-          lastFocusable.focus();
-        } else if (!e.shiftKey && document.activeElement === lastFocusable) {
-          e.preventDefault();
-          firstFocusable.focus();
-        }
-      }
-    });
-
-    var parentItems = mobileMenu.querySelectorAll('[data-toggle-submenu]');
-    parentItems.forEach(function(item) {
-      item.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        var submenu = item.nextElementSibling;
-        var isOpen = item.getAttribute('aria-expanded') === 'true';
-
-        parentItems.forEach(function(other) {
-          other.classList.remove('open');
-          other.setAttribute('aria-expanded', 'false');
-          if (other.nextElementSibling) {
-            other.nextElementSibling.classList.remove('open');
-            other.nextElementSibling.setAttribute('aria-hidden', 'true');
-          }
-        });
-
-        if (!isOpen) {
-          item.classList.add('open');
-          item.setAttribute('aria-expanded', 'true');
-          if (submenu) {
-            submenu.classList.add('open');
-            submenu.setAttribute('aria-hidden', 'false');
-          }
-        }
-      });
-    });
-
-    window.addEventListener('resize', function() {
-      if (window.innerWidth > 1100 && (mobileMenu.classList.contains('active') || mobileMenu.classList.contains('opening'))) {
-        closeMenu();
-      }
-    });
-
-    // --- MISE À JOUR DU COMPTEUR PANIER ---
-    function updateCartCount() {
-      if (typeof fetch !== 'undefined') {
-        fetch('/cart.js')
-          .then(function(response) { return response.json(); })
-          .then(function(cart) {
-            [desktopCartCount].forEach(function(el) {
-              if (el) {
-                if (cart.item_count > 0) {
-                  el.textContent = cart.item_count;
-                  el.style.display = 'flex';
-                } else {
-                  el.style.display = 'none';
-                }
-              }
-            });
-          })
-          .catch(function() {});
-      }
-    }
-
-    // Initialiser le compteur
-    updateCartCount();
-
-    // Écouter les changements de panier (Shopify standard)
-    document.addEventListener('cart:updated', updateCartCount);
-
-    // --- SEARCH OVERLAY ---
-    var searchOverlay = document.getElementById('milaura-search-overlay-' + sectionId);
-    var searchToggle = document.querySelector('#MilauraNav-' + sectionId + ' [data-milaura-search-toggle]');
-    var searchInput = document.getElementById('MilauraSearch-' + sectionId);
-    var searchBackdrop = searchOverlay ? searchOverlay.querySelector('.milaura-search-backdrop') : null;
-    var searchCloseBtn = searchOverlay ? searchOverlay.querySelector('.milaura-search-close') : null;
-
-    function openSearch() {
-      if (!searchOverlay) return;
-      searchOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-      setTimeout(function() { if (searchInput) searchInput.focus(); }, 350);
-    }
-
-    function closeSearch() {
-      if (!searchOverlay) return;
-      searchOverlay.classList.remove('active');
-      document.body.style.overflow = '';
-      if (searchInput) searchInput.blur();
-    }
-
-    if (searchToggle) searchToggle.addEventListener('click', openSearch);
-    if (searchBackdrop) searchBackdrop.addEventListener('click', closeSearch);
-    if (searchCloseBtn) searchCloseBtn.addEventListener('click', closeSearch);
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && searchOverlay && searchOverlay.classList.contains('active')) {
-        closeSearch();
-      }
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        if (searchOverlay && searchOverlay.classList.contains('active')) {
-          closeSearch();
-        } else {
-          openSearch();
-        }
-      }
-    });
-
-    // Quick filter pills
-    var searchPills = searchOverlay ? searchOverlay.querySelectorAll('[data-search-term]') : [];
-    searchPills.forEach(function(pill) {
-      pill.addEventListener('click', function() {
-        var term = pill.getAttribute('data-search-term');
-        if (searchInput) {
-          searchInput.value = term;
-          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-        searchPills.forEach(function(p) { p.classList.remove('active'); });
-        pill.classList.add('active');
-      });
-    });
-
-    // Expose globally for dock
-    window.milauraOpenSearch = openSearch;
-
-    // --- LOGO SCROLL TO TOP ---
-    const logoLink = document.querySelector('#MilauraNav-' + sectionId + ' .nav-logo-link');
-    if (logoLink) {
-      logoLink.addEventListener('click', function(e) {
-        const currentPath = window.location.pathname;
-        const rootUrl = '{{ routes.root_url }}';
-        const isHomepage = currentPath === rootUrl || (rootUrl === '/' && currentPath === '/');
-
-        if (isHomepage) {
-          e.preventDefault();
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        }
-      });
-    }
-  })();
-</script>
-
-<!-- ============ TOAST GLOBAL PANIER ============ -->
-<div id="milaura-cart-toast" class="milaura-cart-toast" aria-live="polite" role="status">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-  <span id="milaura-cart-toast-msg">Ajouté au panier</span>
+<div class="milaura-cart-toast" aria-live="polite" role="status" data-milaura-cart-toast>
+  <span aria-hidden="true">✓</span>
+  <span data-milaura-cart-toast-copy>Ajouté au panier</span>
 </div>
 
-<style>
-  .milaura-cart-toast {
-    position: fixed;
-    top: -80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(27, 27, 27, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    color: #fff;
-    padding: 14px 28px;
-    border-radius: 50px;
-    font-family: var(--milaura-font-texte);
-    font-size: 15px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 10000000;
-    transition: top 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    white-space: nowrap;
-    pointer-events: none;
-  }
-  .milaura-cart-toast svg {
-    color: #4CAF50;
-    flex-shrink: 0;
-  }
-  .milaura-cart-toast.is-visible {
-    top: 24px;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .milaura-cart-toast { transition: none; }
-  }
-</style>
-
-<script>
-(function() {
-  'use strict';
-  var toastEl = document.getElementById('milaura-cart-toast');
-  var msgEl = document.getElementById('milaura-cart-toast-msg');
-  var timer = null;
-
-  window.milauraCartToast = function(msg) {
-    if (!toastEl || !msgEl) return;
-    msgEl.textContent = msg || 'Ajouté au panier';
-    toastEl.classList.add('is-visible');
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(function() {
-      toastEl.classList.remove('is-visible');
-    }, 3000);
-  };
-})();
-</script>
-
-{%- if settings.cart_type == "notification" -%}
+{%- if settings.cart_type == 'notification' -%}
   {%- render 'cart-notification' -%}
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "Milaura Navbar",
+  "name": "Navigation MilAura",
   "settings": [
     {
       "type": "image_picker",
@@ -2524,48 +391,43 @@
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu",
+      "label": "Menu principal",
       "default": "main-menu"
     },
     {
       "type": "header",
-      "content": "Badge Quiz (CTA Principal)"
+      "content": "Orientation"
     },
     {
       "type": "text",
       "id": "quiz_label",
-      "label": "Titre du badge",
+      "label": "Libellé du diagnostic",
       "default": "Trouver ma pierre"
-    },
-    {
-      "type": "text",
-      "id": "quiz_subtitle",
-      "label": "Sous-titre (caché sur mobile)"
     },
     {
       "type": "url",
       "id": "quiz_link",
-      "label": "Lien du quiz"
+      "label": "Lien du diagnostic"
     },
     {
       "type": "header",
-      "content": "Icone Contact"
+      "content": "Contact"
     },
     {
       "type": "checkbox",
       "id": "show_contact_icon",
-      "label": "Afficher icone contact",
+      "label": "Afficher le contact",
       "default": true
     },
     {
       "type": "url",
       "id": "contact_page_url",
-      "label": "Lien page contact"
+      "label": "Page de contact"
     }
   ],
   "presets": [
     {
-      "name": "Milaura Navbar"
+      "name": "Navigation MilAura"
     }
   ]
 }

@@ -1,0 +1,165 @@
+{{ 'milaura-home-occasions.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="milaura-home-occasions"
+  aria-labelledby="MilauraHomeOccasionsTitle-{{ section.id }}"
+>
+  <div class="milaura-home-occasions__inner">
+    <header class="milaura-home-occasions__header">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="milaura-home-occasions__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 id="MilauraHomeOccasionsTitle-{{ section.id }}" class="milaura-home-occasions__title">
+          {{ section.settings.title | escape }}
+        </h2>
+      </div>
+      {%- if section.settings.lead != blank -%}
+        <p class="milaura-home-occasions__lead">{{ section.settings.lead | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="milaura-home-occasions__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'occasion' -%}
+          <article class="milaura-home-occasions__card" {{ block.shopify_attributes }}>
+            <a class="milaura-home-occasions__link" href="{{ block.settings.link }}">
+              <span class="milaura-home-occasions__media">
+                {%- if block.settings.image != blank -%}
+                  {{- block.settings.image
+                    | image_url: width: 1400
+                    | image_tag:
+                      class: 'milaura-home-occasions__image',
+                      widths: '420, 640, 840, 1100, 1400',
+                      sizes: '(max-width: 989px) calc(100vw - 32px), 50vw',
+                      loading: 'lazy',
+                      alt: block.settings.image_alt
+                  -}}
+                {%- elsif block.settings.desktop_asset != blank -%}
+                  <picture>
+                    {%- if block.settings.mobile_asset != blank -%}
+                      <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_asset | asset_url }}">
+                    {%- endif -%}
+                    <img
+                      class="milaura-home-occasions__image"
+                      src="{{ block.settings.desktop_asset | asset_url }}"
+                      alt="{{ block.settings.image_alt | escape }}"
+                      width="1400"
+                      height="1050"
+                      loading="lazy"
+                    >
+                  </picture>
+                {%- endif -%}
+              </span>
+              <span class="milaura-home-occasions__copy">
+                <span>
+                  {%- if block.settings.label != blank -%}
+                    <span class="milaura-home-occasions__label">{{ block.settings.label | escape }}</span>
+                  {%- endif -%}
+                  <span class="milaura-home-occasions__card-title">{{ block.settings.title | escape }}</span>
+                  {%- if block.settings.text != blank -%}
+                    <span class="milaura-home-occasions__text">{{ block.settings.text | escape }}</span>
+                  {%- endif -%}
+                </span>
+                <span class="milaura-home-occasions__action">{{ block.settings.action | escape }}</span>
+              </span>
+            </a>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MilAura occasions",
+  "max_blocks": 2,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Offrir"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Un bijou pour marquer une date."
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Introduction",
+      "default": "Deux guides pour relier une pierre à un mois de naissance ou à un anniversaire de mariage."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "occasion",
+      "name": "Occasion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Repère",
+          "default": "Pierre de naissance"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Choisir selon le mois"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texte",
+          "default": "Retrouvez les correspondances et uniquement les bijoux réellement disponibles."
+        },
+        {
+          "type": "text",
+          "id": "action",
+          "label": "Action",
+          "default": "Voir le guide"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photographie"
+        },
+        {
+          "type": "text",
+          "id": "desktop_asset",
+          "label": "Asset desktop de repli"
+        },
+        {
+          "type": "text",
+          "id": "mobile_asset",
+          "label": "Asset mobile de repli"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Texte alternatif"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura occasions",
+      "blocks": [
+        { "type": "occasion" },
+        { "type": "occasion" }
+      ]
+    }
+  ]
+}
+{% endschema %}
