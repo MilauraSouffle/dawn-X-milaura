@@ -92,6 +92,22 @@ class CartDrawer extends HTMLElement {
       button.textContent = 'Ajouté';
       if (typeof window.milauraCartToast === 'function') window.milauraCartToast('Ajouté au panier');
 
+      const recommendationRoot = button.closest('[data-milaura-recommendations]');
+      const recommendationCard = button.closest('[data-milaura-recommendation-card]');
+      if (recommendationRoot && recommendationCard) {
+        document.dispatchEvent(
+          new CustomEvent('milaura:recommendation-added', {
+            detail: {
+              context: recommendationRoot.dataset.context || '',
+              intent: recommendationRoot.dataset.intent || '',
+              productId: recommendationCard.dataset.productId || '',
+              variantId: String(variantId),
+              quantity,
+            },
+          })
+        );
+      }
+
       this.setActiveElement(button);
       try {
         this.renderContents(data);

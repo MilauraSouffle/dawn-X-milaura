@@ -150,8 +150,7 @@
   }
 
   .dash-review-link:focus-visible,
-  .dash-benefit-pill:focus-visible,
-  .dash-product-tab:focus-visible {
+  .dash-benefit-pill:focus-visible {
     outline: var(--milaura-focus);
     outline-offset: var(--milaura-focus-offset);
   }
@@ -259,77 +258,6 @@
     color: var(--milaura-text);
     line-height: 1.55;
     margin: 0;
-  }
-
-  /* Product tabs */
-  .dash-product-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 14px;
-  }
-  .dash-product-tab {
-    min-height: var(--milaura-cible-tactile);
-    padding: var(--milaura-esp-2xs) var(--milaura-esp-xs);
-    border: 0;
-    border-bottom: var(--milaura-filet-mineral);
-    border-radius: var(--milaura-rayon-net);
-    background: transparent;
-    font-family: var(--milaura-font-body);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--milaura-text-light);
-    cursor: pointer;
-    transition: color var(--milaura-transition-rapide), border-color var(--milaura-transition-rapide);
-    -webkit-tap-highlight-color: transparent;
-  }
-  .dash-product-tab:hover {
-    border-color: var(--dash-accent);
-    color: var(--dash-accent);
-  }
-  .dash-product-tab.is-active {
-    background: transparent;
-    border-color: var(--milaura-or);
-    color: var(--milaura-prune);
-  }
-
-  /* Product card in hero */
-  .dash-hero-product {
-    width: min(100%, 360px);
-    margin: 0 auto;
-  }
-  .dash-hero-product-btn {
-    width: auto;
-    margin: var(--milaura-esp-xs) var(--milaura-esp-sm) var(--milaura-esp-sm);
-  }
-  .dash-product-reason {
-    margin-top: 14px;
-    padding: 14px;
-    border-radius: var(--milaura-rayon-carte-mobile);
-    background: transparent;
-    border: var(--milaura-filet-mineral);
-    text-align: left;
-  }
-  .dash-product-reason-title {
-    font-family: var(--milaura-font-heading);
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--dash-accent);
-    margin: 0 0 6px;
-  }
-  .dash-product-reason-text {
-    font-family: var(--milaura-font-body);
-    font-size: 13px;
-    color: var(--milaura-text);
-    line-height: 1.6;
-    margin: 0;
-  }
-  .dash-hero-product-empty {
-    padding: 20px;
-    text-align: center;
-    font-family: var(--milaura-font-body);
-    font-size: 13px;
-    color: var(--milaura-text-light);
   }
 
   /* ============================================
@@ -721,16 +649,6 @@
     .dash-stone-title {
       font-size: 30px;
     }
-    .dash-product-tab {
-      padding: 6px 12px;
-      font-size: 11px;
-    }
-    .dash-hero-product {
-      width: 100%;
-    }
-    .dash-hero-product-btn {
-      text-align: center;
-    }
     .dash-kpi {
       padding: 8px 12px;
     }
@@ -822,23 +740,6 @@
 
         <p class="dash-pain" data-dash-pain></p>
 
-        {%- comment -%} Product tabs [Bracelet] [Bougie] [Collier] {%- endcomment -%}
-        <div class="dash-product-tabs" data-dash-product-tabs role="tablist" aria-label="Type de création recommandé">
-          <button type="button" class="dash-product-tab is-active" data-dash-tab="bracelet" role="tab" aria-selected="true">Bracelet</button>
-          <button type="button" class="dash-product-tab" data-dash-tab="bougie" role="tab" aria-selected="false">Bougie</button>
-          <button type="button" class="dash-product-tab" data-dash-tab="collier" role="tab" aria-selected="false">Collier</button>
-        </div>
-
-        <div class="milaura-cards" data-dash-product-panel aria-live="polite">
-          <div class="dash-hero-product-empty" data-dash-product-empty style="display:none">
-            Produit bientôt disponible
-          </div>
-        </div>
-
-        <div class="dash-product-reason" data-dash-product-reason>
-          <h3 class="dash-product-reason-title" data-dash-product-reason-title></h3>
-          <p class="dash-product-reason-text" data-dash-product-reason-text></p>
-        </div>
       </div>
 
       {%- comment -%} MANTRA {%- endcomment -%}
@@ -928,6 +829,24 @@
     <!-- /dash-col-right -->
   </div>
   <!-- /dash-main -->
+
+  <div class="dash-recommendations" data-dash-recommendations-wrap>
+    {% render 'milaura-recommendation-shell',
+      recommendation_context: 'account',
+      source_product_ids: blank,
+      excluded_product_ids: blank,
+      recommendation_intents: 'curated',
+      recommendation_limit: 3,
+      recommendation_minimum: 1,
+      eyebrow: 'SÉLECTION PERSONNELLE',
+      title: 'Sélection pour votre profil',
+      subtitle: 'La sélection reprend les produits associés à votre diagnostic.',
+      complementary_title: blank,
+      complementary_subtitle: blank,
+      related_title: blank,
+      related_subtitle: blank
+    %}
+  </div>
 </div>
 <!-- /MilauraDashboard -->
 
@@ -942,12 +861,7 @@
           {%- assign pid = "profile_" | append: p | append: "_" | append: cat -%}
           {%- assign prod = section.settings[pid] -%}
           "{{ cat }}": {% if prod %}{
-            "title": {{ prod.title | json }},
-            "url": {{ prod.url | json }},
-            "price": {{ prod.price | money | json }},
-            "featured_image": {% if prod.featured_image %}{{ prod.featured_image | image_url: width: 600 | json }}{% else %}null{% endif %},
-            "handle": {{ prod.handle | json }},
-            "variant_id": {% if prod.selected_or_first_available_variant %}{{ prod.selected_or_first_available_variant.id }}{% else %}null{% endif %}
+            "handle": {{ prod.handle | json }}
           }{% else %}null{% endif %}{% unless forloop.last %},{% endunless %}
         {%- endfor -%}
       }{% unless forloop.last %},{% endunless %}
@@ -1080,12 +994,7 @@
       benefitTitle: root.querySelector('[data-dash-benefit-title]'),
       benefitText: root.querySelector('[data-dash-benefit-text]'),
       pain: root.querySelector('[data-dash-pain]'),
-      productTabs: root.querySelector('[data-dash-product-tabs]'),
-      productPanel: root.querySelector('[data-dash-product-panel]'),
-      productEmpty: root.querySelector('[data-dash-product-empty]'),
-      productReason: root.querySelector('[data-dash-product-reason]'),
-      productReasonTitle: root.querySelector('[data-dash-product-reason-title]'),
-      productReasonText: root.querySelector('[data-dash-product-reason-text]'),
+      accountRecommendations: root.querySelector('milaura-recommendations[data-context="account"]'),
       kpiProfile: root.querySelector('[data-dash-kpi-profile]'),
       kpiProfileIcon: root.querySelector('[data-dash-kpi-profile-icon]'),
       kpiStone: root.querySelector('[data-dash-kpi-stone]'),
@@ -1132,46 +1041,26 @@
     }
 
     function getProductReason(category, profile, data) {
-      if (data && data.productReasons && data.productReasons[category]) return data.productReasons[category];
-
-      var stoneArticle = getStoneWithArticle((data && data.stone) || profile.stone || '');
+      var stoneArticle = getStoneWithArticle((data && data.stone) || profile.stone || 'votre pierre');
       var reasons = {
-        bracelet: {
-          title: 'Pourquoi ce bracelet ?',
-          text: 'Parce qu’il reste sur vous quand la journée reprend ses automatismes. Avec ' + stoneArticle + ', il transforme votre résultat en rappel quotidien : toucher la pierre, respirer, revenir à votre intention avant de repartir en pilote automatique. Rechargez-le régulièrement pour que ce geste reste vivant.'
-        },
-        bougie: {
-          title: 'Pourquoi cette bougie ?',
-          text: 'Parce qu’elle donne un vrai moment à ce résultat. Le soir, près d’un bain, d’un feu, d’un carnet ou simplement dans votre espace préféré, la flamme pose une limite nette : la journée s’arrête, vous revenez à ce que vous ressentez, et ' + stoneArticle + ' devient le centre du rituel.'
-        },
-        collier: {
-          title: 'Pourquoi ce collier ?',
-          text: 'Parce qu’il garde la pierre près du centre du corps, là où respiration, posture et émotion se rencontrent. Avec ' + stoneArticle + ' dans votre axe, vous avez un rappel discret de ne pas laisser le mental reprendre toute la place. Rechargez-le souvent, comme vous rechargez votre propre énergie.'
-        }
+        bracelet: 'Un bracelet associé à ' + stoneArticle + ', facile à porter au quotidien.',
+        bougie: 'Une bougie associée à ' + stoneArticle + ' pour un rituel à la maison.',
+        collier: 'Un collier associé à ' + stoneArticle + ' pour un autre porté.'
       };
 
-      return reasons[category] || {
-        title: 'Pourquoi ce produit ?',
-        text: 'Parce qu’il transforme votre diagnostic en geste concret, facile à retrouver dans votre quotidien.'
-      };
-    }
-
-    function getProductCtaLabel(category) {
-      if (category === 'bracelet') return 'Découvrir mon bracelet';
-      if (category === 'bougie') return 'Découvrir ma bougie';
-      if (category === 'collier') return 'Découvrir mon collier';
-      return 'Découvrir ce produit';
+      return reasons[category] || 'Un produit sélectionné à partir de votre diagnostic.';
     }
 
     function normalizeProduct(product) {
-      if (!product || (!product.title && !product.handle && !product.url)) return null;
+      if (!product || (!product.handle && !product.url)) return null;
+      var handle = product.handle || '';
+      if (!handle && product.url) {
+        var match = String(product.url).match(/\/products\/([^/?#]+)/);
+        if (match) handle = match[1];
+      }
+      if (!handle) return null;
       return {
-        title: product.title || '',
-        url: product.url || (product.handle ? '/products/' + product.handle : '#'),
-        price: product.price || '',
-        featured_image: product.featured_image || null,
-        handle: product.handle || null,
-        variant_id: product.variant_id || null
+        handle: handle
       };
     }
 
@@ -1277,80 +1166,27 @@
       }
     }
 
-    /* RENDER PRODUCT TABS */
-    var currentProfileId = null;
-    var currentDashboardData = null;
-    var currentDashboardProfile = null;
-    var currentTab = 'bracelet';
+    /* RENDER RECOMMENDATIONS */
+    function renderAccountRecommendations(data, profile, profileId) {
+      if (!els.accountRecommendations) return;
+      var profileProducts = getProductsForProfile(data, profileId);
+      var categories = ['bracelet', 'bougie', 'collier'];
+      var products = categories
+        .map(function(category) {
+          var selectedProduct = profileProducts[category];
+          if (!selectedProduct || !selectedProduct.handle) return null;
+          return {
+            handle: selectedProduct.handle,
+            reason: getProductReason(category, profile, data)
+          };
+        })
+        .filter(Boolean);
 
-    function renderProductCard(profileId, category) {
-      var profileProducts = getProductsForProfile(currentDashboardData, profileId);
-      var prod = profileProducts ? profileProducts[category] : null;
-
-      /* Remove existing card */
-      var existing = els.productPanel.querySelector('.dash-hero-product');
-      if (existing) existing.remove();
-
-      if (!prod) {
-        if (els.productEmpty) els.productEmpty.style.display = 'block';
-        if (els.productReason) els.productReason.style.display = 'none';
-        return;
-      }
-
-      if (els.productEmpty) els.productEmpty.style.display = 'none';
-      if (els.productReason) els.productReason.style.display = '';
-
-      var card = document.createElement('div');
-      card.className = 'milaura-product-card dash-hero-product';
-      card.innerHTML =
-        '<a class="grid__card" href="' + esc(prod.url || '#') + '">' +
-          '<div class="grid__card-img">' +
-            '<img src="' + esc(prod.featured_image || '') + '" alt="' + esc(prod.title || '') + '" loading="lazy" decoding="async">' +
-          '</div>' +
-          '<div class="grid__card-info">' +
-            '<h3 class="grid__card-title">' + esc(prod.title || '') + '</h3>' +
-            '<p class="grid__card-price">' + esc(prod.price || '') + '</p>' +
-          '</div>' +
-        '</a>' +
-        '<a href="' + esc(prod.url || '#') + '" class="milaura-action milaura-action--card dash-hero-product-btn">' + getProductCtaLabel(category) + '</a>';
-
-      els.productPanel.insertBefore(card, els.productEmpty);
-
-      var reason = getProductReason(category, currentDashboardProfile || PROFILES[profileId], currentDashboardData);
-      if (els.productReasonTitle) els.productReasonTitle.textContent = reason.title || '';
-      if (els.productReasonText) els.productReasonText.textContent = reason.text || '';
-    }
-
-    function initProductTabs(profileId) {
-      currentProfileId = profileId;
-      var profileProducts = getProductsForProfile(currentDashboardData, profileId);
-
-      if (els.productTabs) {
-        var tabs = els.productTabs.querySelectorAll('[data-dash-tab]');
-        var firstVisibleTab = null;
-        tabs.forEach(function(tab) {
-          var cat = tab.getAttribute('data-dash-tab');
-          var hasProd = profileProducts[cat] != null;
-          tab.style.display = hasProd ? '' : 'none';
-          tab.classList.remove('is-active');
-          tab.setAttribute('aria-selected', 'false');
-          if (hasProd && !firstVisibleTab) firstVisibleTab = tab;
-        });
-
-        /* Default to bracelet, fallback to first available */
-        var defaultTab = els.productTabs.querySelector('[data-dash-tab="bracelet"]');
-        if (defaultTab && defaultTab.style.display !== 'none') {
-          defaultTab.classList.add('is-active');
-          defaultTab.setAttribute('aria-selected', 'true');
-          currentTab = 'bracelet';
-        } else if (firstVisibleTab) {
-          firstVisibleTab.classList.add('is-active');
-          firstVisibleTab.setAttribute('aria-selected', 'true');
-          currentTab = firstVisibleTab.getAttribute('data-dash-tab');
+      customElements.whenDefined('milaura-recommendations').then(function() {
+        if (typeof els.accountRecommendations.renderHandles === 'function') {
+          els.accountRecommendations.renderHandles(products, 'curated');
         }
-      }
-
-      renderProductCard(profileId, currentTab);
+      });
     }
 
     /* RENDER DIAGNOSTIC BLOCK */
@@ -1457,14 +1293,12 @@
       var profile = PROFILES[profileId];
       if (!profile) { showState('empty'); return; }
 
-      currentDashboardData = data;
-      currentDashboardProfile = profile;
       setAccentColor(data.profileAccent || profile.colorAccent, data.profileAccentRgb || profile.colorAccentRgb);
       renderBadge(profile);
       renderResultHero(data, profile);
       renderPain(profile);
       renderKPIs(data, profile);
-      initProductTabs(profileId);
+      renderAccountRecommendations(data, profile, profileId);
       renderDiagnostic(data, profile, profileId);
       renderMantra(profileId);
       renderRitual(profile, data);
@@ -1483,23 +1317,14 @@
     }
 
     /* INIT */
-    function init() {
+    async function init() {
       showState('loading');
 
-      /* Product tab click handlers */
-      if (els.productTabs) {
-        els.productTabs.addEventListener('click', function(e) {
-          var tab = e.target.closest('[data-dash-tab]');
-          if (!tab || tab.classList.contains('is-active')) return;
-          els.productTabs.querySelectorAll('[data-dash-tab]').forEach(function(t) {
-            t.classList.remove('is-active');
-            t.setAttribute('aria-selected', 'false');
-          });
-          tab.classList.add('is-active');
-          tab.setAttribute('aria-selected', 'true');
-          currentTab = tab.getAttribute('data-dash-tab');
-          if (currentProfileId) renderProductCard(currentProfileId, currentTab);
-        });
+      await customElements.whenDefined('milaura-recommendations');
+      var privacy = await window.MilauraRecommendations.getPreferenceState();
+      if (!privacy.available || !privacy.allowed) {
+        showState('empty');
+        return;
       }
 
       var raw = null;
@@ -1526,12 +1351,25 @@
       try { data = JSON.parse(raw); } catch (e) { showState('empty'); return; }
       if (!data || !data.profileId || !PROFILES[data.profileId]) { showState('empty'); return; }
 
-      setTimeout(function() { showDashboard(data); }, 350);
+      showDashboard(data);
     }
 
     /* LISTEN FOR QUIZ UPDATE */
     window.addEventListener('milaura:quiz-result', function(e) {
-      if (e.detail && e.detail.profileId) showDashboard(e.detail);
+      if (!e.detail || !e.detail.profileId) return;
+      customElements.whenDefined('milaura-recommendations').then(function() {
+        return window.MilauraRecommendations.getPreferenceState();
+      }).then(function(privacy) {
+        if (privacy.available && privacy.allowed) showDashboard(e.detail);
+      });
+    });
+
+    document.addEventListener('visitorConsentCollected', function(event) {
+      if (event.detail && event.detail.preferencesAllowed === false) {
+        showState('empty');
+        return;
+      }
+      window.setTimeout(init, 0);
     });
 
     /* STYLE SHOPIFY ACCOUNT ZONE — empty state override */

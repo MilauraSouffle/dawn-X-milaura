@@ -1,0 +1,37 @@
+{%- comment -%}
+  Fragment HTML appele par l'Ajax Product Recommendations API de Shopify.
+  Aucun style et aucun controleur ne vivent ici.
+{%- endcomment -%}
+
+<div
+  data-milaura-recommendation-fragment
+  data-recommendation-intent="{{ recommendations.intent }}"
+>
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    {%- assign rendered_count = 0 -%}
+    {%- for recommended_product in recommendations.products limit: 4 -%}
+      {%- unless recommended_product.available -%}{%- continue -%}{%- endunless -%}
+      {%- assign rendered_count = rendered_count | plus: 1 -%}
+      {%- assign recommendation_role = 'secondary' -%}
+      {%- if rendered_count == 1 -%}
+        {%- assign recommendation_role = 'focal' -%}
+      {%- endif -%}
+      {% render 'milaura-recommendation-card',
+        recommendation_product: recommended_product,
+        source_product: product,
+        recommendation_intent: recommendations.intent,
+        recommendation_role: recommendation_role,
+        img_loading: 'lazy'
+      %}
+    {%- endfor -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Milaura reco fragment",
+  "tag": "section",
+  "class": "milaura-recommendation-fragment-section",
+  "settings": []
+}
+{% endschema %}

@@ -55,4 +55,8 @@
   document.addEventListener('shopify:section:load', function (event) {
     initializePurchaseControls(event.target);
   });
+
+  document.addEventListener('milaura:recommendations:loaded', function (event) {
+    initializePurchaseControls(event.detail?.root || document);
+  });
 })();

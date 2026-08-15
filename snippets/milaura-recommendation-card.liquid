@@ -1,0 +1,132 @@
+{%- comment -%}
+  Carte unique du systeme de recommandations MilAura.
+
+  Parametres :
+  - recommendation_product: produit Shopify a afficher
+  - source_product: produit qui motive la recommandation, facultatif
+  - recommendation_intent: complementary, related, curated ou recent
+  - recommendation_reason: raison explicite, prioritaire si renseignee
+  - recommendation_role: focal ou secondary
+  - img_loading: eager ou lazy
+  - show_purchase: false pour masquer l'ajout direct, sans persister le catalogue
+{%- endcomment -%}
+
+{%- liquid
+  assign recommendation_variant = recommendation_product.selected_or_first_available_variant
+  assign source_stone = source_product.metafields.milaura.stone_handle.value | default: source_product.metafields.milaura.stone_handle
+  assign source_type = source_product.metafields.milaura.product_type_handle.value | default: source_product.type | downcase | handleize
+  assign source_intention = source_product.metafields.milaura.primary_intention.value | default: source_product.metafields.milaura.intention_handle.value
+  assign recommended_stone = recommendation_product.metafields.milaura.stone_handle.value | default: recommendation_product.metafields.milaura.stone_handle
+  assign recommended_type = recommendation_product.metafields.milaura.product_type_handle.value | default: recommendation_product.type | downcase | handleize
+  assign recommended_intention = recommendation_product.metafields.milaura.primary_intention.value | default: recommendation_product.metafields.milaura.intention_handle.value
+
+  assign reason = recommendation_reason
+  if reason == blank
+    case recommendation_intent
+      when 'complementary'
+        if source_stone != blank and source_stone == recommended_stone and source_type != recommended_type
+          assign reason = 'Même pierre, autre forme.'
+        elsif source_intention != blank and source_intention == recommended_intention
+          assign reason = 'Même intention, autre pièce.'
+        else
+          assign reason = 'Sélectionnée pour compléter votre choix.'
+        endif
+      when 'related'
+        if source_stone != blank and source_stone == recommended_stone
+          assign reason = 'Même pierre, autre proposition.'
+        elsif source_type != blank and source_type == recommended_type
+          assign reason = 'Même type de pièce à comparer.'
+        else
+          assign reason = 'Une autre pièce à comparer.'
+        endif
+      when 'recent'
+        assign reason = 'Reprendre votre visite.'
+      else
+        assign reason = 'Sélection MilAura.'
+    endcase
+  endif
+
+  assign is_focal = false
+  if recommendation_role == 'focal'
+    assign is_focal = true
+  endif
+
+  assign recommendation_object_asset = blank
+  assign recommendation_object_width = 1
+  assign recommendation_object_height = 1
+  case recommendation_product.handle
+    when 'bracelet-dore-en-aigue-marine-naturelle-16-a-21-cm'
+      assign recommendation_object_asset = 'milaura-ribbon-cutout-aigue-marine-bracelet-v1.png'
+      assign recommendation_object_width = 1533
+      assign recommendation_object_height = 898
+    when 'bague-reglable-en-argent-925-et-amethyste-naturelle'
+      assign recommendation_object_asset = 'milaura-ribbon-cutout-amethyste-ring-v1.png'
+      assign recommendation_object_width = 827
+      assign recommendation_object_height = 597
+    when 'collier-argente-en-amethyste-naturelle-40-a-45-cm'
+      assign recommendation_object_asset = 'milaura-ribbon-cutout-amethyste-necklace-v1.png'
+      assign recommendation_object_width = 1073
+      assign recommendation_object_height = 1272
+    when 'boucles-d-oreilles-dorees-en-aigue-marine-naturelle-36-mm'
+      assign recommendation_object_asset = 'milaura-ribbon-cutout-aigue-marine-earrings-v1.png'
+      assign recommendation_object_width = 704
+      assign recommendation_object_height = 942
+    when 'bracelet-aventurine-rouge-1'
+      assign recommendation_object_asset = 'milaura-ribbon-cutout-red-aventurine-bracelet-v1.png'
+      assign recommendation_object_width = 1064
+      assign recommendation_object_height = 625
+    when 'collier-aventurine-verte-boho-dore'
+      assign recommendation_object_asset = 'milaura-reco-cutout-aventurine-v1.png'
+      assign recommendation_object_width = 752
+      assign recommendation_object_height = 1140
+    when 'bracelet-amazonite-1'
+      assign recommendation_object_asset = 'milaura-ribbon-cutout-amazonite-bracelet-v1.png'
+      assign recommendation_object_width = 1189
+      assign recommendation_object_height = 433
+    when 'bracelet-elye-dore-nacre-lapis-lazuli-aa'
+      assign recommendation_object_asset = 'milaura-ribbon-cutout-lapis-nacre-bracelet-v1.png'
+      assign recommendation_object_width = 1039
+      assign recommendation_object_height = 765
+    when 'collier-quartz-rose-boho-dore'
+      assign recommendation_object_asset = 'milaura-reco-cutout-quartz-rose-v1.png'
+      assign recommendation_object_width = 694
+      assign recommendation_object_height = 1337
+    when 'boucles-doreilles-obsidienne-noire'
+      assign recommendation_object_asset = 'milaura-reco-cutout-obsidienne-earrings-v1.png'
+      assign recommendation_object_width = 658
+      assign recommendation_object_height = 442
+  endcase
+-%}
+
+<article
+  class="milaura-recommendation-card{% if is_focal %} milaura-recommendation-card--focal{% else %} milaura-recommendation-card--secondary{% endif %}{% if recommendation_object_asset != blank %} milaura-recommendation-card--object{% endif %}"
+  role="listitem"
+  data-milaura-recommendation-card
+  data-product-id="{{ recommendation_product.id }}"
+  data-variant-id="{{ recommendation_variant.id }}"
+  data-product-available="{{ recommendation_product.available }}"
+  data-stone-handle="{{ recommended_stone | escape }}"
+  {% if recommendation_object_asset != blank %}data-object-media="true"{% endif %}
+>
+  {% render 'milaura-card-product',
+    card_product: recommendation_product,
+    img_loading: img_loading,
+    show_vendor: false,
+    show_badges: false,
+    show_secondary_image: false,
+    force_bestseller_badge: false,
+    recommendation_media: true,
+    recommendation_focal: is_focal,
+    recommendation_object_asset: recommendation_object_asset,
+    recommendation_object_width: recommendation_object_width,
+    recommendation_object_height: recommendation_object_height
+  %}
+
+  {%- if reason != blank -%}
+    <p class="milaura-recommendation-card__reason">{{ reason }}</p>
+  {%- endif -%}
+
+  {%- unless show_purchase == false -%}
+    {% render 'milaura-editorial-purchase', product: recommendation_product %}
+  {%- endunless -%}
+</article>

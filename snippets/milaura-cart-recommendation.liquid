@@ -1,0 +1,37 @@
+{%- comment -%}
+  Adaptateur mince des recommandations dans le panier lateral.
+  La source, le rendu et les interactions restent partages.
+{%- endcomment -%}
+
+{%- liquid
+  assign drawer_source_ids = ''
+  assign drawer_excluded_ids = ''
+  if cart != blank and cart.item_count > 0
+    for cart_item in cart.items
+      unless drawer_source_ids == blank
+        assign drawer_source_ids = drawer_source_ids | append: ','
+        assign drawer_excluded_ids = drawer_excluded_ids | append: ','
+      endunless
+      assign drawer_source_ids = drawer_source_ids | append: cart_item.product_id
+      assign drawer_excluded_ids = drawer_excluded_ids | append: cart_item.product_id
+    endfor
+  endif
+-%}
+
+{%- if drawer_source_ids != blank -%}
+  {% render 'milaura-recommendation-shell',
+    recommendation_context: 'cart-drawer',
+    source_product_ids: drawer_source_ids,
+    excluded_product_ids: drawer_excluded_ids,
+    recommendation_intents: 'complementary',
+    recommendation_limit: 1,
+    recommendation_minimum: 1,
+    eyebrow: blank,
+    title: 'Compléter votre sélection',
+    subtitle: blank,
+    complementary_title: 'Compléter votre sélection',
+    complementary_subtitle: blank,
+    related_title: blank,
+    related_subtitle: blank
+  %}
+{%- endif -%}
