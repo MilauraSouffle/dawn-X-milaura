@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-15 08:42 CEST
+Derniere mise a jour : 2026-08-15 08:50 CEST
 
 ## Etat en une phrase
 
@@ -64,7 +64,7 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 
 - Le Hero de marque V2 est live depuis le 2026-08-14 19:22 CEST apres GO visuel et GO live explicites de Patrice.
 - Il presente maintenant MilAura avec une seule scene minerale fixe. Les deux scenes secondaires, le faux slider et les trois parcours numerotes ont ete retires du DOM ; aucun CTA n'est ajoute tant que le futur lien discret vers la section suivante n'est pas decide avec la navigation finale.
-- La signature `MilAura`, un point or de 5 px et le slogan valide `Bijoux & émotions` tiennent sur une seule ligne de 360 a 1440 px. La navbar conserve le logo colore et devient aigue-marine clair au scroll.
+- La signature `MilAura`, un point or de 5 px et le slogan valide `Bijoux & émotions` tiennent sur une seule ligne de 360 a 1440 px. La navbar conserve le logo colore et utilise au scroll une surface nacree transparente a 16 %, un flou de 12 px et un filet fin, sans retour au fond aigue-marine plein.
 - Le texte descriptif est aligne avec le H1. Le label LFG compact a ete retire du Hero et les trois anciennes bulles LFG, Karine et Metz ont ete supprimees du pont avec la section suivante.
 - Le bandeau superieur est devenu une vitrine editoriale a une preuve active : certificats LFG sur les pieces concernees, selection attentive par Karine et preparation des commandes dans l'atelier de Metz. La phrase validee est `Tous nos minéraux et bijoux sont soigneusement sélectionnés par Karine.`
 - Le bandeau utilise maintenant la surface `Quartz rose poudre` `#F0D9E0`, avec texte prune, reperes amethyste et filets or. Il mesure 58 px sur desktop et 54 px sur mobile sans reduction des medaillons, conserves a 52 px et 46 px. Il change de preuve par bouton, balayage ou rotation toutes les six secondes, avec pause au survol, au focus, hors viewport et quand la page est masquee. La rotation automatique est desactivee avec `prefers-reduced-motion`.
@@ -74,6 +74,7 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 - Patrice a valide le retour a l'ADN de marque d'origine avec le slogan `Bijoux & émotions`. La variante `Bijoux émotionnels` a ete ecartee car moins claire et plus restrictive.
 - Livraison du polish : commit `14b2ee7b`, merge d'integration `4d0b3c39`, pushes cibles sur les themes de developpement `199421952347` et live `190430282075`, pullbacks 2/2 identiques bit a bit. Controles publics 390 px et 1440 px : HTTP 200, aucune largeur excedentaire, texte conforme, pierres visibles et masquage/restauration du bandeau avec le panier valides.
 - Livraison du polish final : commit `46d793d3`, merge d'integration `6d986c20`, push Git puis pushes Shopify strictement limites a `sections/milaura-hero-portal.liquid` sur les themes de developpement et live. Pullbacks 1/1 identiques bit a bit, controles 1440/390/360 sans debordement, une seule image et aucun parcours, HTTP public 200.
+- Micro-patch navbar live : commit `24aaa5db`, merge `8b781461`, push live direct limite a `sections/milaura-hero-portal.liquid` sans theme de developpement ni Playwright a la demande de Patrice ; pullback live 1/1 identique.
 - La selection de Karine a ete refondue puis polie et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, cartes transparentes, cadre aigue-marine fin, informations compactes, quantite soulignee et ajout panier souligne d'or.
 - Le petit separateur court et epais refuse a ete retire. Le filet historique aigue-marine de 1 px et pleine largeur est restaure.
 - Patrice a valide cette deuxieme proposition comme nouvelle direction du site : simple, sobre, efficace et premium, sans gros boutons ni panneaux blancs ajoutes. Reference canonique : `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.

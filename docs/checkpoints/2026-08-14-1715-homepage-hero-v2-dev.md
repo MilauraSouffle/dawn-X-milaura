@@ -193,3 +193,13 @@ Le lot doit rester sur sa branche et sur le theme de developpement jusqu'au GO v
 - controle public : HTTP 200, slogan et point presents dans le HTML, aucune trace des parcours ni des deux medias secondaires ;
 - captures : `output/playwright/milaura-hero-final-dev-desktop-1440.png` et `output/playwright/milaura-hero-final-dev-mobile-390.png` ;
 - nouveau canonique `6d986c20` transmis a Navigation V2 avec obligation de conserver ses trois lignes d'integration navbar et de ne faire aucun push live.
+
+## Verre transparent de la navbar au scroll live le 2026-08-15 a 08:50 CEST
+
+- le fond aigue-marine plein au scroll est remplace par une surface nacree transparente a 16 %, un flou de 12 px, une saturation de 112 % et un filet nacre fin ;
+- seul le bloc CSS scroll de `sections/milaura-hero-portal.liquid` est modifie ;
+- a la demande de Patrice, aucun theme de developpement, aucune capture et aucun controle Playwright ;
+- commit `24aaa5db`, merge `8b781461`, push Git et push live cible sur le theme `190430282075` ;
+- Theme Check du push strict : 0 erreur et 28 avertissements historiques hors lot ;
+- pullback live : 1 fichier sur 1 identique bit a bit ;
+- canonique `8b781461` transmis a Navigation V2, sans autorisation de push live depuis ce lot.

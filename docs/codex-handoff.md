@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-15 08:42 CEST
+Date de mise a jour : 2026-08-15 08:50 CEST
 
 ## Etat de reprise
 
@@ -10,9 +10,11 @@ Le polish du 2026-08-15 est egalement live : le bandeau disparait quand le panie
 
 Le polish final du Hero est live depuis le 2026-08-15 a 08:42 CEST. Le slogan valide est `Bijoux & émotions`, place apres `MilAura` et un point or de 5 px. Les trois parcours, leur logique de changement d'image et les deux scenes secondaires ont ete retires entierement ; le Hero conserve uniquement la scene minerale preferee de Patrice. Aucun CTA n'est ajoute avant la decision future sur un eventuel lien `Découvrir` vers la section suivante. Commit `46d793d3`, merge canonique `6d986c20`, pullbacks developpement et live 1/1 identiques. Navigation V2 a recu ce nouveau contrat et doit preserver ses trois lignes d'integration navbar. Recommandation reste un lot de developpement distinct.
 
+Le micro-patch navbar du 2026-08-15 a 08:50 CEST remplace le fond aigue-marine au scroll par une surface nacree transparente a 16 %, un flou de 12 px et un filet nacre fin. Patrice a demande un workflow court : aucun theme de developpement ni Playwright, push live direct cible puis pullback 1/1 identique. Commit `24aaa5db`, merge canonique `8b781461`, transmis a Navigation V2.
+
 La prochaine reprise design peut se concentrer sur :
 
-1. Navigation et homepage V2 dans son worktree deja actif ; le nouveau contrat canonique `6d986c20` est transmis pour la future integration, sans push live autorise ;
+1. Navigation et homepage V2 dans son worktree deja actif ; le nouveau contrat canonique `8b781461` est transmis pour la future integration, sans push live autorise ;
 2. le systeme de recommandation dans son worktree distinct ;
 3. les ajustements de cadrage des Heroes de destination, uniquement apres retour visuel de Patrice ;
 4. l'ajout d'Amethyste au hub Bijoux par pierre.
@@ -110,7 +112,7 @@ Le lot est ferme et live. Ses variantes partagees sont la baseline actuelle. Tou
 
 - ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu ;
 - polir legerement les cross-sells Mariage et Naissance sans les supprimer ;
-- conserver le contrat canonique final `6d986c20`, le quartz rose et les hauteurs 58/54 px lors de l'integration future de Navigation V2 ;
+- conserver le contrat canonique final `8b781461`, le quartz rose et les hauteurs 58/54 px lors de l'integration future de Navigation V2 ;
 - verifier plus tard GSC, GA4, Merchant Center, Pinterest et le parcours reel du point relais.
 
 ## Interdits de reprise
