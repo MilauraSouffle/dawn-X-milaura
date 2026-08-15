@@ -42,8 +42,10 @@ Aucun changement sur les recommandations, la PDP, la sticky produit, le panier, 
 ## Etat de diffusion
 
 - Theme de developpement : a jour.
-- Git : commit fonctionnel `7e92776a` pousse sur `codex/milaura-mobile-polish-20260815`.
-- Live `190430282075` : non touche par ce lot, en attente du GO visuel explicite de Patrice.
+- Git : commits `7e92776a` et `66f09791` integres par fast-forward et pousses sur `codex/milaura-integration`.
+- Live `190430282075` : push cible des 6 fichiers apres GO explicite de Patrice le 2026-08-15.
+- Sauvegarde pre-deploiement : `/private/tmp/milaura-mobile-polish-live-backup-20260815.odKGp0`.
+- Pullback live : `/private/tmp/milaura-mobile-polish-live-pullback-20260815.04kWDu`, 6 fichiers sur 6 identiques bit a bit.
 
 ## Preview
 
