@@ -3,7 +3,7 @@
 Date : 2026-08-14
 Mise à jour : 2026-08-15
 
-Statut : prêt sur le thème de preview isolé `199957807451`, `MilAura Navigation V2 2026-08-14`. Aucun changement du menu Shopify public avant GO visuel explicite.
+Statut : intégré et publié sur le thème live `190430282075` le 2026-08-15 après GO explicite. La preview isolée `199957807451` reste un historique de validation.
 
 Preview globale : `https://milaura-2.myshopify.com?preview_theme_id=199957807451`.
 
@@ -37,10 +37,10 @@ Le Cercle MilAura est l espace personnel `/account`. Il reste un utilitaire au m
 | Pierres | Choisir selon son émotion du moment | `/pages/choisir-sa-pierre` | publique |
 | Pierres | Améthyste | `/collections/par-pierre-amethyste` | publique |
 | Pierres | Quartz rose | `/collections/par-pierre-quartz-rose` | publique |
-| Pierres | Œil de tigre | `/collections/par-pierre-oeil-de-tigre` | créée privée, 4 bijoux, publication bloquée |
+| Pierres | Œil de tigre | `/collections/par-pierre-oeil-de-tigre` | publique depuis le 2026-08-15, 4 bijoux, seuil préféré à surveiller |
 | Pierres | Lapis-lazuli | `/collections/par-pierre-lapis-lazuli` | publique |
 | Pierres | Aigue-marine | `/collections/par-pierre-aigue-marine` | publique |
-| Pierres | Aventurine | `/collections/par-pierre-aventurine` | créée privée, 7 bijoux, publication à valider |
+| Pierres | Aventurine | `/collections/par-pierre-aventurine` | publique depuis le 2026-08-15, 7 bijoux |
 | Rituels et bien-être | Tout voir | `/collections/rituels-bien-etre` | publique |
 | Rituels et bien-être | Savons naturels | `/collections/savons-naturels` | publique |
 | Rituels et bien-être | Bols chantants | `/collections/bols-chantants` | publique |
