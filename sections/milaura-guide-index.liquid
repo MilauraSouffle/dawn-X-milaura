@@ -1,0 +1,268 @@
+{{ 'milaura-guide-index.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign hero_image = section.settings.hero_image
+  if hero_image == blank and section.settings.hero_product != blank
+    assign hero_image = section.settings.hero_product.featured_image
+  endif
+  assign home_label = 'Accueil'
+  assign current_letter = ''
+-%}
+
+<section class="milaura-guide-index" aria-labelledby="MilauraGuideTitle-{{ section.id }}">
+  <div class="milaura-guide-index__hero">
+    <div class="milaura-guide-index__hero-copy">
+      <div>
+        <nav class="milaura-guide-index__breadcrumbs" aria-label="Fil d’Ariane">
+          <a href="{{ routes.root_url }}">{{ home_label }}</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{{ section.settings.title | escape }}</span>
+        </nav>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="milaura-guide-index__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1 id="MilauraGuideTitle-{{ section.id }}" class="milaura-guide-index__title">
+          {{ section.settings.title | escape }}
+        </h1>
+        {%- if section.settings.intro != blank -%}
+          <p class="milaura-guide-index__intro">{{ section.settings.intro | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="milaura-guide-index__hero-media">
+      {%- if hero_image != blank -%}
+        {{- hero_image
+          | image_url: width: 1800
+          | image_tag:
+            class: 'milaura-guide-index__hero-image',
+            widths: '640, 900, 1200, 1500, 1800',
+            sizes: '(max-width: 989px) 100vw, 56vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: section.settings.hero_alt
+        -}}
+      {%- elsif section.settings.hero_asset != blank -%}
+        <picture>
+          {%- if section.settings.hero_mobile_asset != blank -%}
+            <source media="(max-width: 749px)" srcset="{{ section.settings.hero_mobile_asset | asset_url }}">
+          {%- endif -%}
+          <img
+            class="milaura-guide-index__hero-image"
+            src="{{ section.settings.hero_asset | asset_url }}"
+            alt="{{ section.settings.hero_alt | escape }}"
+            width="1800"
+            height="1200"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </picture>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="milaura-guide-index__body">
+    <header class="milaura-guide-index__section-heading">
+      <h2 class="milaura-guide-index__section-title">{{ section.settings.index_title | escape }}</h2>
+      {%- if section.settings.index_text != blank -%}
+        <p class="milaura-guide-index__section-text">{{ section.settings.index_text | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <nav aria-label="Accès alphabétique">
+      <ul class="milaura-guide-index__letters" role="list">
+        {%- assign letter_nav = '' -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'entry' and block.settings.letter != blank and block.settings.letter != letter_nav -%}
+            {%- assign letter_nav = block.settings.letter -%}
+            <li>
+              <a class="milaura-guide-index__letter-link" href="#GuideLetter-{{ section.id }}-{{ letter_nav | handleize }}">
+                {{ letter_nav | escape }}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="milaura-guide-index__groups">
+      {%- assign current_letter = '' -%}
+      {%- for letter_block in section.blocks -%}
+        {%- if letter_block.type == 'entry' and letter_block.settings.letter != blank and letter_block.settings.letter != current_letter -%}
+          {%- assign current_letter = letter_block.settings.letter -%}
+          <div class="milaura-guide-index__group" id="GuideLetter-{{ section.id }}-{{ current_letter | handleize }}">
+            <h2 class="milaura-guide-index__letter">{{ current_letter | escape }}</h2>
+            <ul class="milaura-guide-index__entries" role="list">
+              {%- for entry_block in section.blocks -%}
+                {%- if entry_block.type == 'entry' and entry_block.settings.letter == current_letter -%}
+                  {%- liquid
+                    assign entry_url = entry_block.settings.link
+                    if entry_url == blank and entry_block.settings.product != blank
+                      assign entry_url = entry_block.settings.product.url
+                    endif
+                  -%}
+                  <li id="guide-{{ entry_block.settings.title | handleize }}" {{ entry_block.shopify_attributes }}>
+                    {%- if entry_url != blank -%}
+                      <a class="milaura-guide-index__entry-link" href="{{ entry_url }}">
+                        <span>
+                          <span class="milaura-guide-index__entry-title">{{ entry_block.settings.title | escape }}</span>
+                          {%- if entry_block.settings.summary != blank -%}
+                            <span class="milaura-guide-index__entry-summary">{{ entry_block.settings.summary | escape }}</span>
+                          {%- endif -%}
+                        </span>
+                        <span class="milaura-guide-index__entry-status">{{ entry_block.settings.active_label | default: 'Découvrir' | escape }} ↗</span>
+                      </a>
+                    {%- else -%}
+                      <span class="milaura-guide-index__entry-static">
+                        <span>
+                          <span class="milaura-guide-index__entry-title">{{ entry_block.settings.title | escape }}</span>
+                          {%- if entry_block.settings.summary != blank -%}
+                            <span class="milaura-guide-index__entry-summary">{{ entry_block.settings.summary | escape }}</span>
+                          {%- endif -%}
+                        </span>
+                        <span class="milaura-guide-index__entry-status">{{ entry_block.settings.inactive_label | default: 'Référence' | escape }}</span>
+                      </span>
+                    {%- endif -%}
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <div class="milaura-guide-index__editorial" id="histoire-symbolique">
+    <div class="milaura-guide-index__editorial-inner">
+      <header class="milaura-guide-index__section-heading">
+        <h2 class="milaura-guide-index__section-title">{{ section.settings.editorial_heading | escape }}</h2>
+        {%- if section.settings.editorial_lead != blank -%}
+          <p class="milaura-guide-index__section-text">{{ section.settings.editorial_lead | escape }}</p>
+        {%- endif -%}
+      </header>
+
+      <div class="milaura-guide-index__editorial-grid">
+        {%- for index in (1..3) -%}
+          {%- capture title_key -%}editorial_title_{{ index }}{%- endcapture -%}
+          {%- capture text_key -%}editorial_text_{{ index }}{%- endcapture -%}
+          {%- assign editorial_title = section.settings[title_key] -%}
+          {%- assign editorial_text = section.settings[text_key] -%}
+          {%- if editorial_title != blank or editorial_text != blank -%}
+            <article class="milaura-guide-index__editorial-card">
+              {%- if editorial_title != blank -%}
+                <h3 class="milaura-guide-index__editorial-title">{{ editorial_title | escape }}</h3>
+              {%- endif -%}
+              {%- if editorial_text != blank -%}
+                <p class="milaura-guide-index__editorial-text">{{ editorial_text | escape }}</p>
+              {%- endif -%}
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.sources != blank or section.settings.content_updated_at != blank -%}
+        <p class="milaura-guide-index__sources">
+          <span class="milaura-guide-index__source-label">Sources et vérification</span>
+          <span>
+            {{ section.settings.sources | escape }}
+            {%- if section.settings.content_updated_at != blank -%}
+              · Mis à jour le <time datetime="{{ section.settings.content_updated_at | escape }}">{{ section.settings.content_updated_at | escape }}</time>
+            {%- endif -%}
+          </span>
+        </p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="milaura-guide-index__crosslinks">
+    <header class="milaura-guide-index__section-heading">
+      <h2 class="milaura-guide-index__section-title">{{ section.settings.crosslinks_title | escape }}</h2>
+    </header>
+    <div class="milaura-guide-index__crosslink-grid">
+      {%- for index in (1..3) -%}
+        {%- capture label_key -%}crosslink_label_{{ index }}{%- endcapture -%}
+        {%- capture url_key -%}crosslink_url_{{ index }}{%- endcapture -%}
+        {%- assign crosslink_label = section.settings[label_key] -%}
+        {%- assign crosslink_url = section.settings[url_key] -%}
+        {%- if crosslink_label != blank and crosslink_url != blank -%}
+          <a class="milaura-guide-index__crosslink" href="{{ crosslink_url }}">{{ crosslink_label | escape }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Accueil",
+      "item": {{ shop.url | append: routes.root_url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ section.settings.title | json }},
+      "item": {{ canonical_url | json }}
+    }
+  ]
+}
+</script>
+
+{% schema %}
+{
+  "name": "MilAura guide index",
+  "max_blocks": 50,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Le guide MilAura" },
+    { "type": "text", "id": "title", "label": "Titre H1", "default": "Guide des pierres" },
+    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Explorez les pierres par ordre alphabétique et ouvrez uniquement les destinations déjà documentées." },
+    { "type": "image_picker", "id": "hero_image", "label": "Image du hero" },
+    { "type": "product", "id": "hero_product", "label": "Produit de repli pour le hero" },
+    { "type": "text", "id": "hero_asset", "label": "Asset desktop de repli" },
+    { "type": "text", "id": "hero_mobile_asset", "label": "Asset mobile de repli" },
+    { "type": "text", "id": "hero_alt", "label": "Texte alternatif" },
+    { "type": "text", "id": "index_title", "label": "Titre de l index", "default": "Pierres de A à Z" },
+    { "type": "textarea", "id": "index_text", "label": "Texte de l index", "default": "Une destination est cliquable seulement lorsqu elle contient un guide ou une sélection réelle." },
+    { "type": "text", "id": "editorial_heading", "label": "Titre éditorial", "default": "Histoire, symbolique et entretien" },
+    { "type": "textarea", "id": "editorial_lead", "label": "Introduction éditoriale" },
+    { "type": "text", "id": "editorial_title_1", "label": "Titre éditorial 1" },
+    { "type": "textarea", "id": "editorial_text_1", "label": "Texte éditorial 1" },
+    { "type": "text", "id": "editorial_title_2", "label": "Titre éditorial 2" },
+    { "type": "textarea", "id": "editorial_text_2", "label": "Texte éditorial 2" },
+    { "type": "text", "id": "editorial_title_3", "label": "Titre éditorial 3" },
+    { "type": "textarea", "id": "editorial_text_3", "label": "Texte éditorial 3" },
+    { "type": "text", "id": "sources", "label": "Sources" },
+    { "type": "text", "id": "content_updated_at", "label": "Date de mise à jour YYYY-MM-DD" },
+    { "type": "text", "id": "crosslinks_title", "label": "Titre des liens", "default": "Poursuivre votre recherche" },
+    { "type": "text", "id": "crosslink_label_1", "label": "Lien 1, libellé" },
+    { "type": "url", "id": "crosslink_url_1", "label": "Lien 1, URL" },
+    { "type": "text", "id": "crosslink_label_2", "label": "Lien 2, libellé" },
+    { "type": "url", "id": "crosslink_url_2", "label": "Lien 2, URL" },
+    { "type": "text", "id": "crosslink_label_3", "label": "Lien 3, libellé" },
+    { "type": "url", "id": "crosslink_url_3", "label": "Lien 3, URL" }
+  ],
+  "blocks": [
+    {
+      "type": "entry",
+      "name": "Entrée",
+      "settings": [
+        { "type": "text", "id": "letter", "label": "Lettre" },
+        { "type": "text", "id": "title", "label": "Nom" },
+        { "type": "textarea", "id": "summary", "label": "Repère court" },
+        { "type": "url", "id": "link", "label": "Destination" },
+        { "type": "product", "id": "product", "label": "Produit lié" },
+        { "type": "text", "id": "active_label", "label": "Libellé actif", "default": "Découvrir" },
+        { "type": "text", "id": "inactive_label", "label": "Libellé sans lien", "default": "Référence" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "MilAura guide index" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,166 @@
+{{ 'milaura-home-editorial.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign journal_blog = blogs[section.settings.blog_handle]
+  assign journal_article = journal_blog.articles.first
+  assign journal_url = journal_blog.url | default: '/blogs/journal'
+  assign portrait_alt = section.settings.portrait_alt | default: 'Karine, fondatrice de MilAura'
+-%}
+
+<section
+  class="milaura-home-editorial"
+  aria-labelledby="MilauraHomeEditorialTitle-{{ section.id }}"
+>
+  <div class="milaura-home-editorial__inner">
+    <div class="milaura-home-editorial__layout">
+      <div class="milaura-home-editorial__portrait">
+        {%- if section.settings.portrait != blank -%}
+          {{- section.settings.portrait
+            | image_url: width: 1200
+            | image_tag:
+              class: 'milaura-home-editorial__portrait-image',
+              widths: '420, 640, 840, 1000, 1200',
+              sizes: '(max-width: 989px) calc(100vw - 32px), 38vw',
+              loading: 'lazy',
+              alt: portrait_alt
+          -}}
+        {%- elsif section.settings.portrait_asset != blank -%}
+          <img
+            class="milaura-home-editorial__portrait-image"
+            src="{{ section.settings.portrait_asset | asset_url }}"
+            alt="{{ portrait_alt | escape }}"
+            width="1043"
+            height="1508"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+
+      <div class="milaura-home-editorial__content">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="milaura-home-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 id="MilauraHomeEditorialTitle-{{ section.id }}" class="milaura-home-editorial__title">
+            {{ section.settings.title | escape }}
+          </h2>
+          {%- if section.settings.text != blank -%}
+            <p class="milaura-home-editorial__text">{{ section.settings.text | escape }}</p>
+          {%- endif -%}
+          <div class="milaura-home-editorial__links">
+            <a class="milaura-home-editorial__link" href="{{ journal_url }}">{{ section.settings.journal_label | escape }}</a>
+            {%- if section.settings.story_link != blank and section.settings.story_label != blank -%}
+              <a class="milaura-home-editorial__link" href="{{ section.settings.story_link }}">{{ section.settings.story_label | escape }}</a>
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- if journal_article != blank -%}
+          <a class="milaura-home-editorial__article" href="{{ journal_article.url }}">
+            <span class="milaura-home-editorial__article-media">
+              {%- if journal_article.image != blank -%}
+                {{- journal_article.image
+                  | image_url: width: 900
+                  | image_tag:
+                    class: 'milaura-home-editorial__article-image',
+                    widths: '320, 480, 680, 900',
+                    sizes: '(max-width: 749px) calc(100vw - 32px), 30vw',
+                    loading: 'lazy',
+                    alt: journal_article.image.alt
+                -}}
+              {%- endif -%}
+            </span>
+            <span class="milaura-home-editorial__article-copy">
+              <span class="milaura-home-editorial__article-label">{{ section.settings.article_label | escape }}</span>
+              <span class="milaura-home-editorial__article-title">{{ journal_article.title | escape }}</span>
+              <span class="milaura-home-editorial__article-meta">{{ section.settings.article_action | escape }} ↗</span>
+            </span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MilAura Karine et Journal",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Le regard de Karine"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Choisir avec des repères simples."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texte",
+      "default": "Des guides pour comprendre les pierres, choisir un bijou et entretenir les pièces que vous portez."
+    },
+    {
+      "type": "image_picker",
+      "id": "portrait",
+      "label": "Portrait de Karine"
+    },
+    {
+      "type": "text",
+      "id": "portrait_asset",
+      "label": "Asset portrait de repli",
+      "default": "milaura-hero-proof-karine-v2.webp"
+    },
+    {
+      "type": "text",
+      "id": "portrait_alt",
+      "label": "Texte alternatif",
+      "default": "Karine, fondatrice de MilAura"
+    },
+    {
+      "type": "text",
+      "id": "blog_handle",
+      "label": "Handle du Journal",
+      "default": "journal"
+    },
+    {
+      "type": "text",
+      "id": "journal_label",
+      "label": "Lien Journal",
+      "default": "Lire le Journal"
+    },
+    {
+      "type": "text",
+      "id": "article_label",
+      "label": "Repère article",
+      "default": "À lire"
+    },
+    {
+      "type": "text",
+      "id": "article_action",
+      "label": "Action article",
+      "default": "Lire l’article"
+    },
+    {
+      "type": "url",
+      "id": "story_link",
+      "label": "Lien histoire"
+    },
+    {
+      "type": "text",
+      "id": "story_label",
+      "label": "Libellé histoire",
+      "default": "Découvrir MilAura"
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura Karine et Journal"
+    }
+  ]
+}
+{% endschema %}
