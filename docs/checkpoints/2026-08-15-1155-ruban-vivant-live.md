@@ -55,6 +55,12 @@ Page controlee : fiche produit `collier-obsidienne-noire-boho-dore` sur le theme
 - mobile 390 x 844 : aucun debordement horizontal de la page ;
 - aucune erreur JavaScript, uniquement deux messages informatifs Shopify de desactivation du hot reload.
 
+Echantillon sitewide complementaire, sans mutation du panier :
+
+- panier live avec trois lignes : trois shells partages presents, aucun debordement et aucune erreur JavaScript ;
+- le contexte `cart-page` passe proprement de `idle` a `empty` lorsqu'aucune recommandation eligible n'est renvoyee ;
+- diagnostic live : quiz present, shell `diagnostic` en attente normale du resultat, aucun debordement et aucune erreur JavaScript.
+
 ## Pullback live
 
 - copie de controle : `/private/tmp/milaura-recommendation-live-pullback-20260815-1205` ;
