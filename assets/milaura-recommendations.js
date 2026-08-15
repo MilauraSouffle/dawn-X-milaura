@@ -181,6 +181,7 @@
       this.status = this.querySelector('[data-milaura-recommendation-status]');
       this.headingElement = this.querySelector('[data-milaura-recommendation-title]');
       this.subtitleElement = this.querySelector('[data-milaura-recommendation-subtitle]');
+      this.motionToggle = this.querySelector('[data-milaura-ribbon-toggle]');
       this.context = this.dataset.context || 'editorial';
       this.limit = Number.parseInt(this.dataset.limit, 10) || 3;
       this.minimum = Number.parseInt(this.dataset.minimum, 10) || 1;
@@ -227,6 +228,7 @@
       if (this.cartBusUnsubscriber) this.cartBusUnsubscriber();
       if (this.diagnosticHandler) window.removeEventListener('milaura:quiz-result', this.diagnosticHandler);
       this.pdpVisibilityObserver?.disconnect();
+      this.teardownRibbon();
       if (this.context === 'pdp') document.documentElement.classList.remove('milaura-recommendations-in-view');
     }
 
@@ -415,35 +417,189 @@
         this.prepareMotionMedia(card);
       });
 
+      const renderedCount = this.list.children.length;
       this.currentIntent = intent;
       this.dataset.intent = intent;
-      this.list.dataset.cardCount = String(this.list.children.length);
-      this.configureLivingComposition();
+      this.list.dataset.cardCount = String(renderedCount);
+      this.configureRibbonComposition();
       this.updateCopy(intent);
       this.setState('ready');
       this.announce(
-        `${this.list.children.length} ${this.list.children.length > 1 ? 'produits proposés' : 'produit proposé'}.`
+        `${renderedCount} ${renderedCount > 1 ? 'produits proposés' : 'produit proposé'}.`
       );
       this.observeImpression();
       document.dispatchEvent(new CustomEvent('milaura:recommendations:loaded', { detail: { root: this } }));
     }
 
-    configureLivingComposition() {
+    configureRibbonComposition() {
+      this.teardownRibbon();
       const cards = Array.from(this.list?.querySelectorAll('[data-milaura-recommendation-card]') || []);
       const objectCards = cards.filter((card) => card.dataset.objectMedia === 'true');
-      const living = this.context === 'pdp' && cards.length >= 2 && objectCards.length === cards.length;
+      const ribbon = this.context === 'pdp' && cards.length >= 4 && objectCards.length === cards.length;
 
-      this.dataset.layout = living ? 'living' : 'gallery';
+      this.dataset.layout = ribbon ? 'ribbon' : 'gallery';
+      if (this.motionToggle) this.motionToggle.hidden = true;
       cards.forEach((card, index) => {
         card.style.setProperty('--milaura-reco-order', String(index));
-        card.dataset.active = String(living && index === 0);
+        card.dataset.active = 'false';
+        card.dataset.ribbonPosition = String(index + 1);
+        card.dataset.ribbonSlot = String(index % 8);
+      });
+
+      if (!ribbon) return;
+
+      const track = document.createElement('div');
+      track.className = 'milaura-recommendations__ribbon-track';
+      track.setAttribute('role', 'presentation');
+      cards.forEach((card) => track.appendChild(card));
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reducedMotion) {
+        cards.forEach((card) => {
+          const clone = card.cloneNode(true);
+          clone.dataset.ribbonClone = 'true';
+          clone.dataset.active = 'false';
+          clone.setAttribute('aria-hidden', 'true');
+          clone.querySelectorAll('[id], [for]').forEach((element) => {
+            element.removeAttribute('id');
+            element.removeAttribute('for');
+          });
+          clone.querySelectorAll('a, button, input, select, textarea').forEach((element) => {
+            element.tabIndex = -1;
+          });
+          track.appendChild(clone);
+        });
+      }
+
+      this.list.replaceChildren(track);
+      this.ribbonTrack = track;
+      this.ribbonCards = cards;
+      this.ribbonManualPaused = false;
+      this.ribbonInteractionPaused = false;
+      this.ribbonReducedMotion = reducedMotion;
+      cards[0].dataset.active = 'true';
+      this.setupRibbonMotion();
+    }
+
+    activateRibbonCard(card) {
+      if (this.dataset.layout !== 'ribbon' || !card || !this.list?.contains(card)) return;
+      this.list.querySelectorAll('[data-milaura-recommendation-card]').forEach((candidate) => {
+        candidate.dataset.active = String(candidate === card);
       });
     }
 
-    activateLivingCard(card) {
-      if (this.dataset.layout !== 'living' || !card || !this.list?.contains(card)) return;
-      this.list.querySelectorAll('[data-milaura-recommendation-card]').forEach((candidate) => {
-        candidate.dataset.active = String(candidate === card);
+    setupRibbonMotion() {
+      if (!this.ribbonTrack || !this.list) return;
+      this.ribbonReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.ribbonCycleWidth = this.ribbonReducedMotion ? this.ribbonTrack.scrollWidth : this.ribbonTrack.scrollWidth / 2;
+      this.list.scrollLeft = 0;
+      if (this.motionToggle) this.motionToggle.hidden = this.ribbonReducedMotion;
+      this.updateRibbonMotionState();
+
+      if (this.ribbonReducedMotion) return;
+
+      this.ribbonInView = true;
+      if ('IntersectionObserver' in window) {
+        this.ribbonObserver = new IntersectionObserver(
+          (entries) => {
+            this.ribbonInView = Boolean(entries[0]?.isIntersecting);
+            this.updateRibbonMotionState();
+          },
+          { threshold: 0.05 }
+        );
+        this.ribbonObserver.observe(this.list);
+      }
+
+      this.ribbonVisibilityHandler = () => this.updateRibbonMotionState();
+      document.addEventListener('visibilitychange', this.ribbonVisibilityHandler);
+      window.requestAnimationFrame(() => {
+        if (!this.ribbonTrack) return;
+        this.ribbonCycleWidth = this.ribbonTrack.scrollWidth / 2;
+        this.updateRibbonMotionState();
+      });
+    }
+
+    teardownRibbon() {
+      if (this.ribbonFrame) window.cancelAnimationFrame(this.ribbonFrame);
+      this.ribbonFrame = null;
+      this.ribbonLastTimestamp = null;
+      this.ribbonObserver?.disconnect();
+      this.ribbonObserver = null;
+      window.clearTimeout(this.ribbonResumeTimer);
+      if (this.ribbonVisibilityHandler) {
+        document.removeEventListener('visibilitychange', this.ribbonVisibilityHandler);
+      }
+      this.ribbonVisibilityHandler = null;
+      this.ribbonTrack = null;
+      this.ribbonCards = [];
+      this.ribbonCycleWidth = 0;
+    }
+
+    shouldRunRibbon() {
+      return Boolean(
+        this.dataset.layout === 'ribbon' &&
+        this.ribbonTrack &&
+        this.ribbonCycleWidth > 0 &&
+        !this.ribbonReducedMotion &&
+        !this.ribbonManualPaused &&
+        !this.ribbonInteractionPaused &&
+        this.ribbonInView !== false &&
+        !document.hidden
+      );
+    }
+
+    updateRibbonMotionState() {
+      const paused = Boolean(this.ribbonManualPaused || this.ribbonInteractionPaused || this.ribbonReducedMotion);
+      this.dataset.ribbonPaused = String(paused);
+      if (this.motionToggle) {
+        this.motionToggle.setAttribute('aria-pressed', String(Boolean(this.ribbonManualPaused)));
+        const label = this.motionToggle.querySelector('[data-milaura-ribbon-toggle-label]');
+        if (label) label.textContent = this.ribbonManualPaused ? 'Reprendre le défilement' : 'Mettre en pause';
+      }
+
+      if (!this.shouldRunRibbon()) {
+        if (this.ribbonFrame) window.cancelAnimationFrame(this.ribbonFrame);
+        this.ribbonFrame = null;
+        this.ribbonLastTimestamp = null;
+        return;
+      }
+      if (this.ribbonFrame) return;
+
+      const step = (timestamp) => {
+        if (!this.shouldRunRibbon()) {
+          this.ribbonFrame = null;
+          this.ribbonLastTimestamp = null;
+          return;
+        }
+
+        if (this.ribbonLastTimestamp !== null) {
+          const elapsed = Math.min(timestamp - this.ribbonLastTimestamp, 40);
+          const duration = Number.parseFloat(
+            window.getComputedStyle(this).getPropertyValue('--milaura-ribbon-duration')
+          ) || 72;
+          this.list.scrollLeft += (this.ribbonCycleWidth / (duration * 1000)) * elapsed;
+          if (this.list.scrollLeft >= this.ribbonCycleWidth) this.list.scrollLeft -= this.ribbonCycleWidth;
+        }
+
+        this.ribbonLastTimestamp = timestamp;
+        this.ribbonFrame = window.requestAnimationFrame(step);
+      };
+
+      this.ribbonFrame = window.requestAnimationFrame(step);
+    }
+
+    setRibbonInteractionPaused(paused) {
+      if (this.dataset.layout !== 'ribbon') return;
+      this.ribbonInteractionPaused = paused;
+      this.updateRibbonMotionState();
+    }
+
+    centerRibbonCard(card) {
+      if (!card || !this.list) return;
+      const left = card.offsetLeft - (this.list.clientWidth - card.offsetWidth) / 2;
+      this.list.scrollTo({
+        left: Math.max(0, left),
+        behavior: this.ribbonReducedMotion ? 'auto' : 'smooth',
       });
     }
 
@@ -475,14 +631,50 @@
 
     bindInteractions() {
       this.addEventListener('pointerover', (event) => {
-        this.activateLivingCard(event.target.closest('[data-milaura-recommendation-card]'));
+        const card = event.target.closest('[data-milaura-recommendation-card]');
+        if (!card) return;
+        this.activateRibbonCard(card);
+        this.setRibbonInteractionPaused(true);
       });
 
       this.addEventListener('focusin', (event) => {
-        this.activateLivingCard(event.target.closest('[data-milaura-recommendation-card]'));
+        const card = event.target.closest('[data-milaura-recommendation-card]');
+        if (!card) return;
+        this.activateRibbonCard(card);
+        this.setRibbonInteractionPaused(true);
+        this.centerRibbonCard(card);
+      });
+
+      this.addEventListener('focusout', (event) => {
+        if (event.relatedTarget?.closest?.('[data-milaura-recommendation-card]')) return;
+        this.setRibbonInteractionPaused(false);
+      });
+
+      this.list?.addEventListener('pointerleave', () => {
+        this.setRibbonInteractionPaused(false);
+      });
+
+      this.list?.addEventListener('pointerdown', (event) => {
+        if (event.pointerType === 'mouse') return;
+        window.clearTimeout(this.ribbonResumeTimer);
+        this.setRibbonInteractionPaused(true);
+      });
+
+      this.list?.addEventListener('pointerup', (event) => {
+        if (event.pointerType === 'mouse') return;
+        window.clearTimeout(this.ribbonResumeTimer);
+        this.ribbonResumeTimer = window.setTimeout(() => this.setRibbonInteractionPaused(false), 1200);
       });
 
       this.addEventListener('click', (event) => {
+        const motionToggle = event.target.closest('[data-milaura-ribbon-toggle]');
+        if (motionToggle) {
+          event.preventDefault();
+          this.ribbonManualPaused = !this.ribbonManualPaused;
+          this.updateRibbonMotionState();
+          return;
+        }
+
         const link = event.target.closest('.grid__card');
         if (!link) return;
         const card = link.closest('[data-milaura-recommendation-card]');
@@ -491,7 +683,7 @@
           context: this.context,
           intent: this.currentIntent,
           productId: card.dataset.productId,
-          position: Array.from(this.list?.children || []).indexOf(card) + 1,
+          position: Number(card.dataset.ribbonPosition) || Array.from(this.list?.children || []).indexOf(card) + 1,
         });
       });
 
@@ -501,15 +693,18 @@
         if (!this.list) return;
         const direction = event.key === 'ArrowRight' ? 1 : -1;
 
-        if (this.dataset.layout === 'living' && this.list.scrollWidth <= this.list.clientWidth) {
-          const cards = Array.from(this.list.querySelectorAll('[data-milaura-recommendation-card]'));
-          const activeIndex = Math.max(0, cards.findIndex((card) => card.dataset.active === 'true'));
-          const nextIndex = Math.min(cards.length - 1, Math.max(0, activeIndex + direction));
+        if (this.dataset.layout === 'ribbon') {
+          const cards = this.ribbonCards || [];
+          const activeCard = this.list.querySelector('[data-milaura-recommendation-card][data-active="true"]');
+          const activeProductId = activeCard?.dataset.productId;
+          const activeIndex = Math.max(0, cards.findIndex((card) => card.dataset.productId === activeProductId));
+          const nextIndex = (activeIndex + direction + cards.length) % cards.length;
           const nextCard = cards[nextIndex];
-          if (!nextCard || nextIndex === activeIndex) return;
+          if (!nextCard) return;
           event.preventDefault();
-          this.activateLivingCard(nextCard);
-          nextCard.querySelector('.grid__card')?.focus();
+          this.activateRibbonCard(nextCard);
+          this.centerRibbonCard(nextCard);
+          nextCard.querySelector('.grid__card')?.focus({ preventScroll: true });
           return;
         }
 
@@ -660,9 +855,9 @@
       publishAnalytics('milaura:recommendation_impression', {
         context: this.context,
         intent: this.currentIntent,
-        productIds: Array.from(this.list?.querySelectorAll('[data-milaura-recommendation-card]') || []).map(
-          (card) => card.dataset.productId
-        ),
+        productIds: Array.from(
+          this.list?.querySelectorAll('[data-milaura-recommendation-card]:not([data-ribbon-clone])') || []
+        ).map((card) => card.dataset.productId),
       });
     }
   }

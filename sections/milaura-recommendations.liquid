@@ -13,6 +13,7 @@
   assign current_product_id = blank
   assign current_product_handle = blank
   assign recommendation_requires_filter = false
+  assign use_curated_pdp = false
 
   if product != blank
     assign source_product_ids = product.id
@@ -32,7 +33,12 @@
 
   case recommendation_context
     when 'pdp'
-      assign recommendation_intents = 'complementary,related'
+      if section.settings.curated_products != blank
+        assign recommendation_intents = 'curated'
+        assign use_curated_pdp = true
+      else
+        assign recommendation_intents = 'complementary,related'
+      endif
       assign recommendation_minimum = 2
     when 'cart-page'
       assign recommendation_intents = 'complementary'
@@ -51,11 +57,12 @@
 -%}
 
 {%- capture recommendation_cards -%}
-  {%- if recommendation_context == 'editorial' -%}
+  {%- if recommendation_context == 'editorial' or use_curated_pdp -%}
     {%- assign rendered_count = 0 -%}
     {%- if section.settings.curated_products != blank -%}
       {%- for curated_product in section.settings.curated_products -%}
         {%- unless curated_product.available -%}{%- continue -%}{%- endunless -%}
+        {%- if product != blank and curated_product.id == product.id -%}{%- continue -%}{%- endif -%}
         {%- if rendered_count >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
         {%- assign rendered_count = rendered_count | plus: 1 -%}
         {%- assign recommendation_role = 'secondary' -%}
@@ -69,7 +76,7 @@
           show_purchase: section.settings.show_purchase
         %}
       {%- endfor -%}
-    {%- elsif section.settings.source_collection != blank -%}
+    {%- elsif recommendation_context == 'editorial' and section.settings.source_collection != blank -%}
       {%- for curated_product in section.settings.source_collection.products limit: 24 -%}
         {%- unless curated_product.available -%}{%- continue -%}{%- endunless -%}
         {%- if rendered_count >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
@@ -182,7 +189,7 @@
       "type": "product_list",
       "id": "curated_products",
       "label": "Produits sélectionnés",
-      "limit": 4
+      "limit": 8
     },
     {
       "type": "collection",
@@ -200,7 +207,7 @@
       "id": "products_to_show",
       "label": "Nombre maximum de produits",
       "min": 1,
-      "max": 4,
+      "max": 8,
       "step": 1,
       "default": 3
     },

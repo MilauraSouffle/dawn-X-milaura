@@ -2,7 +2,7 @@
 
 Date : 2026-08-14
 
-Statut : moteur termine, prototype `Composition Vivante` disponible sur le theme de developpement, GO visuel en attente
+Statut : moteur termine, prototype `Ruban Vivant` a huit produits disponible sur le theme de developpement, GO visuel en attente
 
 Proprietaire du GO creatif final : Patrice Allié
 
@@ -12,9 +12,9 @@ Theme autorise avant GO : developpement `199421952347`
 
 Transformer chaque recommandation MilAura en moment editorial attendu, utile et mesurable. Le systeme ne doit plus ressembler a une rangee de produits ajoutee par obligation. Il doit aider a composer un ensemble, comparer une alternative ou reprendre une visite, avec une hierarchie visuelle digne d'une maison de joaillerie.
 
-Le geste visuel signe est la `Composition Vivante` : une scene pleine largeur dans laquelle les produits detoures tombent successivement, se posent sur un filet mineral et deviennent selectionnables. Ce ne sont plus des cartes alignees. La piece active prend de l'ampleur et revele son nom, son prix, la raison de recommandation et l'action Ajouter. Les autres restent visibles comme objets de composition.
+Le geste visuel signe est le `Ruban Vivant` : une scene pleine largeur dans laquelle huit produits detoures defilent continuellement de droite a gauche, a des echelles et hauteurs distinctes. Ce ne sont plus des cartes alignees. La piece selectionnee prend de l'ampleur et revele son nom, son prix, la raison de recommandation et l'action Ajouter. Les autres restent visibles comme objets flottants.
 
-La section doit pouvoir etre comprise d'un seul regard sur desktop. Chaque bijou est affiche entierement, sans crop ni image portrait plus haute que le viewport. La scene est bornee en hauteur. Une recommandation faible, vide ou depourvue d'assets detoures valides revient au layout galerie propre sans casser le moteur.
+La section doit pouvoir etre comprise d'un seul regard sur desktop. Chaque bijou est affiche entierement, sans crop ni image portrait plus haute que le viewport. La scene est bornee en hauteur, le defilement peut etre mis en pause et le scroll horizontal reste natif. Une recommandation faible, vide ou depourvue d'assets detoures valides revient au layout galerie propre sans casser le moteur.
 
 ## 2. Regles non negociables
 
@@ -43,11 +43,11 @@ Un produit lie par `related` ne doit jamais etre presente comme un complement. D
 
 ### 4.1 PDP
 
-1. Charger les produits `complementary` pour le produit courant.
+1. Si le template porte une selection `curated_products`, utiliser cette bibliotheque comme distribution editoriale du Ruban Vivant.
 2. Exclure le produit courant, les indisponibles et les doublons.
-3. Si au moins deux complements restent, afficher la composition `complement`.
-4. Sinon charger les produits `related` et afficher la composition `alternative` avec un titre distinct.
-5. Si aucune recommandation pertinente ne reste, ne rien afficher.
+3. Afficher le Ruban Vivant seulement avec au moins quatre produits possedant tous un detourage valide.
+4. Sans curation explicite, charger les produits `complementary`, puis `related` si le minimum credible n'est pas atteint.
+5. Une selection insuffisante ou sans detourages valides revient a la galerie partagee. Si aucune recommandation pertinente ne reste, ne rien afficher.
 
 ### 4.2 Panier page
 
@@ -119,18 +119,18 @@ Cette frontiere evite de manquer une surface commerciale tout en empechant le no
 ### 5.3 Desktop, largeur utile 1200 a 1440 px
 
 ```text
-┌────────────────────────────────────────────────────────────────────┐
-│ COMPOSITION MILAURA          Titre                 Raison courte   │
-│                                                                    │
-│       bijou 1          BIJOU 2 ACTIF          bijou 3             │
-│          \                  |                    /                │
-│ ───────────────────── filet mineral ───────────────────────────── │
-│                     nom / prix / raison                            │
-│                     quantité      Ajouter                          │
-└────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│ COMPOSITION MILAURA      Titre      Raison courte      Mettre en pause │
+│                                                                        │
+│   bijou 1      BIJOU 2 ACTIF       bijou 3         bijou 4      ...   │
+│      \               |                /               /              │
+│ ─────────────────────── filet mineral continu ─────────────────────── │
+│                 nom / prix / raison / Ajouter                          │
+└────────────────────────────────────────────────────────────────────────┘
+                       defilement continu vers la gauche
 ```
 
-Les produits peuvent se chevaucher legerement et utiliser des echelles differentes, mais restent tous visibles en entier. Au chargement, ils descendent avec un decalage court puis se stabilisent. Le survol, le focus et les fleches gauche/droite changent la piece active. Le mouvement est unique, fonctionnel et supprime avec `prefers-reduced-motion`. Aucune carte, panneau ou fond artificiel n'est ajoute.
+Les produits utilisent des echelles, largeurs et hauteurs distinctes, mais restent tous visibles en entier. La boucle est continue et sans saut visible. Le survol, le focus et les fleches gauche/droite changent la piece active. Le survol, le focus, le geste tactile, la sortie du viewport et l'onglet masque suspendent le mouvement. Une commande soulignee permet aussi de mettre la boucle en pause. `prefers-reduced-motion` supprime la boucle et conserve un rail horizontal statique. Aucune carte, panneau ou fond artificiel n'est ajoute.
 
 Le detourage est un asset produit controle, pas une generation libre. Un asset qui modifie la pierre, la chaine, la monture ou la couleur est refuse. Tant que la bibliotheque n'est pas validee produit par produit, le layout galerie photographie reste le repli canonique.
 
@@ -150,9 +150,15 @@ Le detourage est un asset produit controle, pas une generation libre. Un asset q
 └──────────────────────────┘
 ```
 
-Le scroll horizontal est natif, avec `scroll-snap`, cibles tactiles de 44 px, apercu du produit suivant et controles clavier. Le produit reste entier sur une hauteur bornee. Le desktop n'est pas un rail et le mobile n'est pas un crop du desktop.
+Le scroll horizontal est natif, avec `scroll-snap`, cibles tactiles de 44 px, apercu du produit suivant et controles clavier. Le produit reste entier sur une hauteur bornee. Le desktop n'est pas une rangee standard et le mobile n'est pas un crop du desktop.
 
-### 5.5 Panier drawer
+### 5.5 Bibliotheque de lancement du Ruban Vivant
+
+Le prototype du 2026-08-15 utilise exactement huit references configurees dans les deux templates produit : bracelet dore en aigue-marine, bague argent 925 et amethyste, collier argente en amethyste, boucles dorees en aigue-marine, bracelet aventurine rouge, collier aventurine verte, bracelet amazonite et bracelet Elye dore nacre lapis-lazuli. Le produit courant est retire de son propre ruban. Sept detourages ont ete produits avec GPT Image 2 puis controles sur fond transparent ; le detourage aventurine verte deja valide est reutilise.
+
+Ces images restent des assets de prototype tant que la conformite exacte au SKU n'a pas ete approuvee produit par produit par Patrice. Aucun deploiement live n'est autorise sur la seule base du controle technique.
+
+### 5.6 Panier drawer
 
 ```text
 ┌────────────────────────────────┐
@@ -171,8 +177,8 @@ La section tient dans le flux du drawer, sans modal supplementaire, sans carrous
 
 | Fichier cible | Responsabilite |
 | --- | --- |
-| `assets/milaura-recommendations.css` | Composition Vivante, galerie de repli, rail mobile, compact panier et etats |
-| `assets/milaura-recommendations.js` | Chargement API, filtrage, rail, consentement, recent, analytics et ajout panier |
+| `assets/milaura-recommendations.css` | Ruban Vivant, galerie de repli, rail mobile, compact panier et etats |
+| `assets/milaura-recommendations.js` | Chargement API, filtrage, boucle du ruban, pause, consentement, recent, analytics et ajout panier |
 | `snippets/milaura-recommendation-card.liquid` | Carte produit unique, variantes focal, compact et standard |
 | `snippets/milaura-recommendation-shell.liquid` | Entete, liste, live region et donnees de contexte |
 | `sections/milaura-recommendations.liquid` | Adaptateur de section pour PDP, panier, diagnostic et editorial |
@@ -253,11 +259,11 @@ La suppression n'intervient qu'apres preuve que chaque inclusion a ete remplacee
 
 ### Reponse de design
 
-- trois objets de tailles et de positions distinctes, une seule piece active et une raison lisible ;
+- huit objets de tailles et de positions distinctes, une seule piece active et une raison lisible ;
 - une distinction publique entre complement, alternative et reprise ;
-- une scene pleine largeur stable, pas un masonry aleatoire ;
+- une scene pleine largeur continue, pas un masonry aleatoire ;
 - un detail or reserve a l'action ;
-- une seule choregraphie de chute, puis un agrandissement discret de l'objet actif ;
+- une seule choregraphie horizontale, puis un agrandissement discret de l'objet actif ;
 - aucune recommandation lorsque le moteur n'a rien de credible.
 
 ## 9. Accessibilite et navigation
@@ -271,15 +277,15 @@ La suppression n'intervient qu'apres preuve que chaque inclusion a ete remplacee
 - scroll tactile libre et clavier par fleches lorsque le rail a le focus ;
 - focus toujours visible ;
 - boutons de 44 px minimum ;
-- aucun mouvement continu apres la pose des objets ;
-- aucune animation de chute avec `prefers-reduced-motion: reduce`.
+- commande de pause visible, arret au survol, au focus, au geste tactile, hors viewport et dans un onglet masque ;
+- aucune boucle ni duplication technique avec `prefers-reduced-motion: reduce`.
 
 ## 10. Performance
 
 - CSS et JS charges une fois ;
 - aucun framework ni nouvelle dependance ;
 - section chargee paresseusement a 400 px du viewport ;
-- au maximum quatre produits demandes par produit source ;
+- au maximum quatre produits demandes par produit source via l'API, ou huit produits dans une curation editoriale explicite ;
 - images responsives avec dimensions explicites ;
 - detourage transparent uniquement si l'asset produit a ete valide ;
 - aucune mutation de hauteur brutale : espace reserve par ratio ;
