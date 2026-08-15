@@ -587,6 +587,7 @@ milaura-recommendations {
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card--secondary {
   --milaura-ribbon-lift: 0%;
   --milaura-ribbon-tilt: 0deg;
+  --milaura-ribbon-halo: var(--milaura-aigue-ecume);
   width: var(--milaura-ribbon-width, clamp(280px, 25vw, 380px));
   min-width: var(--milaura-ribbon-width, clamp(280px, 25vw, 380px));
   height: 100%;
@@ -597,7 +598,7 @@ milaura-recommendations {
   overflow: visible;
   border: 0;
   border-radius: var(--milaura-rayon-net);
-  opacity: 0.68;
+  opacity: 1;
   background: transparent;
   box-shadow: none;
   container-type: normal;
@@ -608,48 +609,56 @@ milaura-recommendations {
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='0'] {
+  --milaura-ribbon-halo: var(--milaura-aigue-pierre);
   --milaura-ribbon-width: clamp(340px, 30vw, 460px);
   --milaura-ribbon-lift: 6%;
   --milaura-ribbon-tilt: -1.2deg;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='1'] {
+  --milaura-ribbon-halo: var(--milaura-amethyste-lueur);
   --milaura-ribbon-width: clamp(230px, 19vw, 290px);
   --milaura-ribbon-lift: -4%;
   --milaura-ribbon-tilt: 1.4deg;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='2'] {
+  --milaura-ribbon-halo: var(--milaura-amethyste-petale);
   --milaura-ribbon-width: clamp(270px, 23vw, 340px);
   --milaura-ribbon-lift: 1%;
   --milaura-ribbon-tilt: -1deg;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='3'] {
+  --milaura-ribbon-halo: var(--milaura-aigue-ecume);
   --milaura-ribbon-width: clamp(220px, 18vw, 280px);
   --milaura-ribbon-lift: -6%;
   --milaura-ribbon-tilt: 1.8deg;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='4'] {
+  --milaura-ribbon-halo: var(--milaura-quartz-rose-poudre);
   --milaura-ribbon-width: clamp(300px, 26vw, 390px);
   --milaura-ribbon-lift: 5%;
   --milaura-ribbon-tilt: 1deg;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='5'] {
+  --milaura-ribbon-halo: var(--milaura-aigue-pierre);
   --milaura-ribbon-width: clamp(250px, 21vw, 320px);
   --milaura-ribbon-lift: -3%;
   --milaura-ribbon-tilt: -1.5deg;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='6'] {
+  --milaura-ribbon-halo: var(--milaura-or-clair);
   --milaura-ribbon-width: clamp(300px, 25vw, 380px);
   --milaura-ribbon-lift: 6%;
   --milaura-ribbon-tilt: 1.2deg;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='7'] {
+  --milaura-ribbon-halo: var(--milaura-amethyste-lueur);
   --milaura-ribbon-width: clamp(280px, 24vw, 360px);
   --milaura-ribbon-lift: -5%;
   --milaura-ribbon-tilt: -1.2deg;
@@ -687,6 +696,22 @@ milaura-recommendations {
   animation-delay: calc(var(--milaura-reco-order) * 100ms);
 }
 
+.milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-img::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: 68%;
+  height: 46%;
+  border-radius: 50%;
+  background: var(--milaura-ribbon-halo);
+  filter: blur(42px);
+  opacity: 0.34;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
 .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card:focus-visible .grid__card-img {
   outline: var(--milaura-focus);
   outline-offset: var(--milaura-focus-offset);
@@ -697,7 +722,8 @@ milaura-recommendations {
   height: 100%;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(var(--milaura-ombre-portee));
+  z-index: 1;
+  filter: saturate(1.2) contrast(1.12) brightness(0.97) drop-shadow(var(--milaura-ombre-portee));
   transform: scale(0.94);
   transform-origin: center;
   transition: transform var(--milaura-transition-rapide), opacity var(--milaura-transition-rapide);
@@ -776,10 +802,14 @@ milaura-recommendations {
     grid-column: 1;
     grid-row: 4;
     justify-self: start;
+    display: none;
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products {
     height: clamp(470px, 68vh, 590px);
+    overflow-x: hidden;
+    touch-action: pan-y;
+    cursor: default;
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__ribbon-track {
@@ -818,6 +848,12 @@ milaura-recommendations {
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card__reason {
     margin-inline: var(--milaura-esp-xs);
+  }
+
+  .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-img::before {
+    width: 76%;
+    height: 52%;
+    opacity: 0.42;
   }
 }
 
