@@ -7,7 +7,7 @@ Date : 2026-08-15 19:42 CEST
 - Branche : `codex/milaura-ruban-polish-20260815`
 - Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/ruban-polish-20260815`
 - Theme Shopify : developpement `199421952347`
-- Live `190430282075` : inchange
+- Live `190430282075` : deploye apres GO explicite de Patrice a 19:48 CEST
 - Fichiers fonctionnels : `assets/milaura-recommendations.css`, `assets/milaura-recommendations.js`
 - Hors perimetre preserves : assets produits, templates, Hero, sticky, dock, panier, drawer, PDP et contenu public
 
@@ -45,4 +45,10 @@ Date : 2026-08-15 19:42 CEST
 
 Preview : `https://milaura-2.myshopify.com/products/collier-obsidienne-noire-boho-dore?preview_theme_id=199421952347`
 
-Le lot est pret pour le GO visuel de Patrice. Aucun push live ne doit etre fait sans un nouveau GO explicite.
+## Deploiement live
+
+- GO live explicite donne par Patrice le 2026-08-15.
+- Commit fonctionnel `09fb3fce` integre en fast-forward sur `codex/milaura-integration` et pousse sur GitHub.
+- Push Shopify strict et cible sur les deux assets, avec `--nodelete` et `--allow-live`.
+- Pullback du theme live : CSS 1/1 et JS 1/1 identiques par octets.
+- Aucun autre fichier du theme live modifie.
