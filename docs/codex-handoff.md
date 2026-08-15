@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-15 11:42 CEST
+Date de mise a jour : 2026-08-15 11:56 CEST
 
 ## Etat de reprise
 
@@ -22,7 +22,7 @@ Le Hero final et son bandeau-vitrine restent inchanges : `MilAura`, point or, sl
 
 La navbar utilise au scroll la version finale nacree transparente : 16 % de Nacre, flou de 12 px et filet fin, sans retour au fond aigue-marine plein. Commit canonique `24aaa5db`, merge d'integration `8b781461`, pullback live 1/1 identique. Navigation V2 a repris ce canonique par `a11dafed` et conserve uniquement ses trois lignes d'integration navbar. Checkpoint : `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`.
 
-Le chantier Recommandations est le seul worktree encore actif. Il reste reserve a sa tache, sur le theme de developpement uniquement. Ses sept fichiers modifies n'ont pas ete touches pendant la cloture Navigation V2.
+Le Ruban Vivant et le moteur de recommandations sitewide sont egalement live apres GO visuel a 100 % et GO live explicite de Patrice. Commit de lot `413596f7`, merge d'integration `f89f57b5`, documentation live `ab28ee99`, QA complementaire `137bb321`, pullback live 46/46 identique. Le worktree Recommandations a ete retire proprement. Aucun de ses fichiers n'a ete touche par la session Navigation V2.
 
 ## Git et worktrees
 
@@ -32,9 +32,10 @@ Le chantier Recommandations est le seul worktree encore actif. Il reste reserve 
 - theme de developpement partage : `199421952347` ;
 - branche Navigation V2 : `codex/milaura-navigation-home-v2-20260814`, conservee localement et sur origin ;
 - worktree Navigation V2 : retire le 2026-08-15 a 11:38 CEST apres verification que `486d6cae` est bien ancetre de l'integration ;
-- worktree Recommandations : `/Users/paesano/Documents/MilAura website/_worktrees/recommendation-system-20260814` ;
-- branche Recommandations : `codex/milaura-recommendation-system-20260814` ;
-- etat Recommandations a la cloture : sept fichiers modifies et preserves, sans integration ni publication par cette session.
+- branche Recommandations : `codex/milaura-recommendation-system-20260814`, conservee localement et sur origin ;
+- merge Recommandations : `f89f57b5`, documentation live `ab28ee99`, QA complementaire `137bb321` ;
+- worktree Recommandations : retire proprement apres integration et validation live ;
+- aucun worktree secondaire MilAura actif a 11:56 CEST.
 
 ## Livraisons Navigation V2
 
@@ -60,6 +61,10 @@ Le polish de la section 3 a ensuite ete livre avec deux fichiers cibles :
 
 Commits de lot : `979e0223`, puis `486d6cae` pour le focus Or mat. Merges d'integration : `5bc962ac`, puis `2a77605f`. Pullbacks live : 2/2, puis CSS final 1/1, tous identiques.
 
+### Recommandations live
+
+Le moteur editorial partage et le Ruban Vivant PDP sont live sur `190430282075`. Huit references uniques produisent seize cartes pour la boucle continue. Pause, reprise, clavier, desktop 1280 px, mobile 390 px et absence de debordement ont ete controles. Le panier live et le diagnostic ont aussi ete controles sans debordement ni erreur JavaScript. Le push live a porte sur 46 fichiers actifs, sans suppression distante, puis le pullback a confirme 46/46 fichiers identiques. Checkpoint : `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`.
+
 ## Validation finale
 
 - Theme Check : 293 fichiers, 0 erreur, 18 avertissements historiques hors lot ;
@@ -74,9 +79,9 @@ Commits de lot : `979e0223`, puis `486d6cae` pour le focus Or mat. Merges d'inte
 
 ## Prochain ordre d'execution
 
-1. Continuer le systeme de recommandation dans son worktree et sur le theme de developpement uniquement. Ne pas le publier sans GO visuel puis GO live explicites.
+1. Corriger dans un lot SEO distinct la valeur Shopify `shop.description` qui alimente le JSON-LD avec un claim global LFG non prouve.
 2. Laisser la session Inventaire controler les membres, les stocks et les statuts produit. Reauditer ensuite Œil de tigre et les anciennes collections.
-3. Mesurer les parcours du menu quand GSC et GA4 seront accessibles. Ne pas ajouter de nouvelles routes sur intuition seule.
+3. Mesurer les parcours du menu et les interactions du Ruban Vivant quand GSC et GA4 seront accessibles. Ne pas ajouter de nouvelles routes sur intuition seule.
 4. Preparer le remplacement de la Selection d'aout par la campagne de rentree avant septembre 2026.
 
 ## Dependances et risques ouverts
@@ -86,8 +91,9 @@ Commits de lot : `979e0223`, puis `486d6cae` pour le focus Or mat. Merges d'inte
 - 13 anciennes collections sans metas definitives tant que membres, stock et contenu ne sont pas fiables ;
 - pages mensuelles Naissance et pages enfants Mariage reservees, non creees ;
 - GSC, GA4, Merchant Center et Pinterest non verifies faute d'acces legitime configure ;
+- `layout/theme.liquid` injecte `shop.description` dans le JSON-LD public ; la valeur Shopify Admin affirme que les pierres sont toutes certifiees LFG sans preuve au bon perimetre ;
 - Journal, netlinking, activation Pinterest, tracking et Ads restent des chantiers du plan directeur ;
-- systeme de recommandation non publie et modifications concurrentes en cours.
+- navigation et recommandations live sans donnees GA4 ou Search Console encore disponibles pour mesurer leurs usages.
 
 ## Lecture obligatoire
 
@@ -101,11 +107,13 @@ Commits de lot : `979e0223`, puis `486d6cae` pour le focus Or mat. Merges d'inte
 8. `docs/checkpoints/2026-08-15-1054-home-paths-open-gold-live.md`
 9. `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`
 10. `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`
+11. `docs/checkpoints/2026-08-15-1145-navigation-handoff-addendum.md`
+12. `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`
 
 ## Interdits de reprise
 
 - ne pas modifier un fichier reserve dans `docs/workstreams.md` ;
-- ne pas toucher aux modifications non commitees du worktree Recommandations ;
+- ne pas reintroduire les anciens systemes cross-sell retires par le moteur de recommandations partage ;
 - ne pas pousser le theme complet ;
 - ne pas modifier produit, stock, prix ou publication dans un lot UI ;
 - ne pas reintroduire une entree principale `Bougies` ;
@@ -115,4 +123,4 @@ Commits de lot : `979e0223`, puis `486d6cae` pour le focus Or mat. Merges d'inte
 
 ## Prompt de reprise general
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md` et `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`. Navigation V2, le Hero final, le bandeau Quartz rose, la navbar nacree transparente au scroll et la section 3 sont live sur le theme `190430282075`. Le worktree Navigation a ete retire. Seul le worktree Recommandations reste actif et contient des modifications concurrentes a preserver. Commence en lecture seule, choisis un seul lot, respecte le registre et ne publie rien sans GO visuel puis GO live explicites de Patrice.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`, `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`, `docs/checkpoints/2026-08-15-1145-navigation-handoff-addendum.md` et `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`. Navigation V2, le Hero final, le bandeau Quartz rose, la navbar nacree transparente, la section 3 et le Ruban Vivant sont live sur `190430282075`. Aucun worktree secondaire MilAura n'est actif. Commence en lecture seule, choisis un seul lot, respecte le registre et traite en priorite le claim LFG non prouve porte par `shop.description`. Aucun nouveau live sans GO explicite de Patrice.

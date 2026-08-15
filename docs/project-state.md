@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-15 11:42 CEST
+Derniere mise a jour : 2026-08-15 11:56 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0, l'UI sitewide, les Heroes, Navigation V2, les guides Pierres et la section 3 de la homepage sont live ; seul le systeme de recommandation reste un lot de developpement distinct sans autorisation live.
+Le catalogue V1, la PDP-P0, l'UI sitewide, les Heroes, Navigation V2, les guides Pierres, la section 3 de la homepage et le moteur de recommandations avec Ruban Vivant sont live.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ Le catalogue V1, la PDP-P0, l'UI sitewide, les Heroes, Navigation V2, les guides
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Le worktree Navigation V2 a ete retire le 2026-08-15 a 11:38 CEST apres verification de sa fusion. Seul le worktree Recommandation reste actif et ses modifications concurrentes ont ete preservees sans edition.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Les worktrees Navigation V2 et Recommandations ont ete retires proprement apres leurs integrations. Aucun worktree secondaire MilAura ne reste actif a 11:56 CEST.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -228,9 +228,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Continuer le systeme de recommandation uniquement dans son worktree distinct et sur le theme de developpement `199421952347`. Aucun live sans nouveau GO visuel et live de Patrice.
+1. Corriger dans un lot SEO distinct la description Shopify `shop.description` qui alimente le JSON-LD public avec un claim global LFG non prouve.
 2. Recontroler les membres et le stock reel des collections publiques apres la session Inventaire, en priorite Œil de tigre qui ne compte que quatre bijoux actifs au dernier controle.
-3. Evaluer la navigation live avec des donnees d'usage lorsque GA4 et Search Console seront accessibles, sans multiplier les routes avant cette mesure.
+3. Evaluer Navigation V2 et le Ruban Vivant avec des donnees d'usage lorsque GA4 et Search Console seront accessibles, sans multiplier les routes avant cette mesure.
 4. Programmer le remplacement de la Selection d'aout par la campagne de rentree avant septembre 2026.
 
 ## Dependances encore ouvertes
@@ -240,6 +240,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - pages mensuelles de naissance et pages enfants mariage
 - GSC, GA4, Merchant Center et Pinterest non verifies
 - collection Œil de tigre publique avec quatre bijoux, sous le seuil editorial prefere de cinq
+- `layout/theme.liquid` injecte `shop.description` dans le JSON-LD public ; la valeur Shopify Admin affirme globalement que les pierres sont toutes certifiees LFG, sans preuve au bon perimetre
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
@@ -266,6 +267,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-15-1054-home-paths-open-gold-live.md`
 - `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`
 - `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`
+- `docs/checkpoints/2026-08-15-1145-navigation-handoff-addendum.md`
+- `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`
 - `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
