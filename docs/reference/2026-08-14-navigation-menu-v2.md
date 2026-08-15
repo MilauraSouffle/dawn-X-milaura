@@ -1,6 +1,7 @@
 # MilAura - Contrat de navigation V2
 
 Date : 2026-08-14
+Mise à jour : 2026-08-15
 
 Statut : prêt sur le thème de preview isolé `199957807451`, `MilAura Navigation V2 2026-08-14`. Aucun changement du menu Shopify public avant GO visuel explicite.
 
@@ -33,21 +34,26 @@ Le Cercle MilAura est l espace personnel `/account`. Il reste un utilitaire au m
 | Pierres | Bijoux par pierre | `/pages/bijoux-par-pierre` | publique |
 | Pierres | Pierres de A à Z | `/pages/guide-des-pierres` | template local, page à créer après GO |
 | Pierres | Histoire et symbolique | `/pages/guide-des-pierres#histoire-symbolique` | même dépendance |
-| Pierres | Pierre de naissance | `/pages/pierres-de-naissance` | publique |
-| Pierres | Aigue-marine | `/collections/par-pierre-aigue-marine` | publique |
+| Pierres | Choisir selon son émotion du moment | `/pages/choisir-sa-pierre` | publique |
 | Pierres | Améthyste | `/collections/par-pierre-amethyste` | publique |
-| Pierres | Agate | `/collections/par-pierre-agate` | publique |
-| Bougies et senteurs | Toutes les bougies | `/collections/bougies-senteurs` | publique |
-| Bougies et senteurs | Senteurs de A à Z | `/pages/guide-des-senteurs` | template local, page à créer après GO |
+| Pierres | Quartz rose | `/collections/par-pierre-quartz-rose` | publique |
+| Pierres | Œil de tigre | `/collections/par-pierre-oeil-de-tigre` | créée privée, 4 bijoux, publication bloquée |
+| Pierres | Lapis-lazuli | `/collections/par-pierre-lapis-lazuli` | publique |
+| Pierres | Aigue-marine | `/collections/par-pierre-aigue-marine` | publique |
+| Pierres | Aventurine | `/collections/par-pierre-aventurine` | créée privée, 7 bijoux, publication à valider |
+| Rituels et bien-être | Tout voir | `/collections/rituels-bien-etre` | publique |
+| Rituels et bien-être | Savons naturels | `/collections/savons-naturels` | publique |
+| Rituels et bien-être | Bols chantants | `/collections/bols-chantants` | publique |
+| Rituels et bien-être | Bougies émotionnelles | `/collections/bougies-emotionnelles` | publique, arrêt après épuisement du stock |
 | Cadeaux | Pierre de naissance | `/pages/pierres-de-naissance` | publique |
 | Cadeaux | Anniversaire de mariage | `/pages/cadeaux-anniversaire-de-mariage` | publique |
 | Cadeaux | Sélection de saison | `/collections/selection-aout-2026` | publique, à remplacer en septembre |
-| Guides | Choisir selon son ressenti | `/pages/choisir-sa-pierre` | publique, nouveau H1 à valider |
+| Guides | Choisir selon son émotion du moment | `/pages/choisir-sa-pierre` | publique, nouveau H1 à valider |
 | Guides | Faire le diagnostic | `/pages/diagnostic-emotionnel` | publique |
 | Guides | Le Journal | `/blogs/journal` | public, contenu à reprendre |
 | Guides | Notre histoire | `/pages/notre-histoire` | publique |
 
-Le sous-menu Pierres ne doit pas devenir une liste arbitraire. Trois pierres commerciales suffisent dans le premier écran. L index alphabétique porte l exhaustivité et affiche les autres destinations actives.
+Le sous-menu Pierres ne doit pas devenir une liste arbitraire. Le groupe `Pierres incontournables` contient six destinations choisies en croisant demande, intention commerciale et profondeur réelle du catalogue. L index alphabétique porte l exhaustivité et affiche les autres destinations actives.
 
 ## Utilitaires
 

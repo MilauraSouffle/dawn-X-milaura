@@ -82,28 +82,28 @@ La section homepage `Trois façons de choisir` utilise désormais trois onglets 
 
 La seconde image des cartes produit sur appareil tactile n a pas été modifiée dans ce lot. Les cartes partagées sont détenues par la tâche Recommandations. Le contrat recommandé pour une passe coordonnée est un bouton tactile explicite de 44 px pour basculer l image, plutôt qu un geste horizontal imbriqué dans les rails produits de la homepage.
 
-## Sélection SEO des pierres du 2026-08-15 09:56 CEST
+## Sélection Pierres incontournables du 2026-08-15 10:13 CEST
 
-Le sous-menu `Pierres` présente désormais `Choisir selon son émotion du moment`, puis six pierres choisies en croisant estimation de demande France, difficulté SEO, nombre réel de produits dans la collection publique et existence d une destination canonique HTTP 200.
+La première sélection fondée principalement sur des volumes génériques a été corrigée après validation de Patrice et contrôle du catalogue Shopify Admin. Le menu ne prétend plus présenter un classement Google certain. Le libellé retenu est `Pierres incontournables`.
 
-| Pierre | Volume France estimé | Difficulté estimée | Produits dans la collection publique | Route |
-| --- | ---: | ---: | ---: | --- |
-| Améthyste | 40 500 | 57 | 11 | `/collections/par-pierre-amethyste` |
-| Lapis-lazuli | 33 100 | 58 | 6 | `/collections/par-pierre-lapis-lazuli` |
-| Aigue-marine | 18 100 | 59 | 6 | `/collections/par-pierre-aigue-marine` |
-| Quartz rose | 14 800 | 56 | 8 | `/collections/par-pierre-quartz-rose` |
-| Agate | 8 100 | 27 | 10 | `/collections/par-pierre-agate` |
-| Amazonite | 8 100 | 45 | 6 | `/collections/par-pierre-amazonite` |
+| Pierre | Profondeur retenue | Route | Statut |
+| --- | ---: | --- | --- |
+| Améthyste | 11 produits dans la collection | `/collections/par-pierre-amethyste` | publique |
+| Quartz rose | 8 produits dans la collection | `/collections/par-pierre-quartz-rose` | publique |
+| Œil de tigre | 4 bijoux canoniques | `/collections/par-pierre-oeil-de-tigre` | créée privée, sous le seuil de publication |
+| Lapis-lazuli | 6 produits dans la collection | `/collections/par-pierre-lapis-lazuli` | publique |
+| Aigue-marine | 6 produits dans la collection | `/collections/par-pierre-aigue-marine` | publique |
+| Aventurine | 7 bijoux canoniques | `/collections/par-pierre-aventurine` | créée privée, publication à valider |
 
-Source de comparaison consultée le 2026-08-15 : `https://freudix.studio/datasets/mineraux-pierres/cristaux-vertus`. Les volumes sont des estimations tierces de requêtes mensuelles France, pas des données Search Console MilAura ni des chiffres Google garantis. Ils servent au classement relatif. La sélection devra être réévaluée avec GSC et Google Keyword Planner dès qu un accès légitime sera disponible.
+La lecture Admin exclut explicitement les baguettes minérales, les pendules, les sphères, les pointes, les porte-clés, la bougie et les autres objets hors bijou. Les estimations de recherche restent un indice secondaire. La décision finale devra être mesurée avec Search Console et Google Keyword Planner dès qu un accès légitime sera disponible.
 
-`Œil de tigre` reste le premier candidat à activer ensuite : la demande estimée est de 12 100 recherches mensuelles et 13 produits publics comportent ce terme, mais aucune collection canonique publique n existe encore. `Jaspe rouge` reste hors des six malgré le potentiel du terme générique `Jaspe`, car sa collection dédiée ne contient actuellement que deux produits.
+Le détail des deux créations privées et des membres retenus est consigné dans `docs/checkpoints/2026-08-15-1013-pierres-incontournables-privees.md`.
 
 ## Contrôles réalisés
 
 - desktop `1440 x 1000` : un seul H1, aucun débordement horizontal, bandeau 58 px, Header et Hero alignés ;
 - mobile `430 x 932`, `390 x 844` et `360 x 800` : aucun débordement horizontal, bandeau 54 px, Header sur une ligne et cibles tactiles de 44 px ;
-- accordéon Pierres : sept destinations visibles ;
+- accordéon Pierres : quatre parcours puis six pierres incontournables visibles ;
 - recherche mobile : overlay ouvert, champ visible, actif et focalisé ;
 - fermeture et états ARIA contrôlés ;
 - ancien dock mobile : zéro instance visible après désactivation et rechargement ;
@@ -123,7 +123,7 @@ Source de comparaison consultée le 2026-08-15 : `https://freudix.studio/dataset
 - contrôle du parcours à onglets : desktop 1440 x 1000, mobile 390 x 844 et 360 x 800, un seul panneau visible, cibles tactiles de 85 px et aucun débordement horizontal ;
 - contrôle du menu mobile à 390 px : `Rituels & bien-être` ouvert avec collection générale, Savons naturels, Bols chantants et Bougies émotionnelles ;
 - contrôle HTTP des 21 destinations du menu privé : 21 réponses publiques HTTP 200 ;
-- contrôle des six collections pierres mises en avant : six routes HTTP 200 et 47 produits cumulés dans leurs collections publiques ;
+- contrôle des six destinations pierres mises en avant : quatre collections publiques et deux fallbacks de preview vers le guide A à Z, sans lien vers une collection privée en 404 ;
 - contrôle des erreurs navigateur du lot taxonomie et parcours : aucune erreur ;
 - pullback Shopify du lot taxonomie et parcours : 7/7 identique après nettoyage des anciens réglages Hero devenus invalides dans `templates/index.json` ;
 - correction du défaut antérieur dans `templates/page.json` : virgule terminale supprimée ;
@@ -137,25 +137,23 @@ Les deux erreurs console observées dans le contexte de preview concernent l ifr
 Créé dans Shopify Admin :
 
 - un thème non publié `199957807451` ;
-- un menu privé `322508423515`.
+- un menu privé `322508423515` ;
+- la collection privée Œil de tigre `678216892763`, 4 bijoux actifs ;
+- la collection privée Aventurine `678216925531`, 7 bijoux actifs.
 
 Poussé uniquement sur le thème non publié : fichiers de navigation, homepage, guides, Header, Footer et templates du lot, puis synchronisation quartz rose, désactivation de l ancien dock mobile, reprise du Hero final canonique `6d986c20` et du micro-patch scroll canonique `8b781461`.
 
 Dernière mutation privée du 2026-08-15 :
 
-- `assets/milaura-home-paths.css` ;
-- `assets/milaura-home-paths.js` ;
-- `assets/milaura-navigation.css` ;
-- `sections/milaura-home-paths.liquid` ;
-- `sections/milaura-navbar.liquid` ;
+- `sections/milaura-guide-index.liquid` ;
 - `snippets/milaura-nav-curated-links.liquid` ;
-- `templates/index.json`.
+- `templates/page.milaura-guide-pierres.json`.
 
 Non modifié :
 
 - thème live `190430282075` ;
 - menu public `main-menu` ;
-- produits, statuts produit, collections, stocks, livraison et panier ;
+- produits, statuts produit, stocks, livraison et panier ;
 - pages Shopify des deux guides ;
 - GSC, GA4, Merchant Center, Pinterest et campagnes Ads.
 
@@ -168,3 +166,4 @@ Non modifié :
 5. ajout de `Offres du moment` uniquement après création d une vraie promotion ;
 6. polish séparé du bandeau cookies, encore trop massif sur mobile et détenu par les fichiers globaux actuellement réservés à une autre session ;
 7. contrôle sitemap puis Search Console dès qu un accès légitime est disponible.
+8. publier les collections Œil de tigre et Aventurine dans la même fenêtre que le remplacement de leurs fallbacks de preview par les routes canoniques.
