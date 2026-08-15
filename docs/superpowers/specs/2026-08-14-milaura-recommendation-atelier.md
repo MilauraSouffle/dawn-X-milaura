@@ -2,7 +2,7 @@
 
 Date : 2026-08-14
 
-Statut : implementation terminee, validation technique et visuelle en cours
+Statut : implementation terminee, correction horizontale disponible sur le theme de developpement, GO visuel en attente
 
 Proprietaire du GO creatif final : Patrice Allié
 
@@ -12,9 +12,9 @@ Theme autorise avant GO : developpement `199421952347`
 
 Transformer chaque recommandation MilAura en moment editorial attendu, utile et mesurable. Le systeme ne doit plus ressembler a une rangee de produits ajoutee par obligation. Il doit aider a composer un ensemble, comparer une alternative ou reprendre une visite, avec une hierarchie visuelle digne d'une maison de joaillerie.
 
-Le geste visuel signe est une bento grid editoriale asymetrique : une piece focale tres grande, deux pieces secondaires plus compactes, du vide et une raison de recommandation explicite. La photographie porte l'attention. L'interface ne la recouvre pas.
+Le geste visuel signe est une galerie editoriale horizontale asymetrique : une piece focale large, deux ou trois pieces secondaires plus compactes sur la meme ligne, du vide et une raison de recommandation explicite. La photographie porte l'attention. L'interface ne la recouvre pas.
 
-Le risque est assume : la section occupe plus d'espace qu'un carrousel standard. Ce choix est justifie seulement lorsque la recommandation est forte. Une recommandation faible ou vide ne s'affiche pas.
+La section doit pouvoir etre comprise d'un seul regard sur desktop. Sa hauteur de media est bornee et aucune composition verticale ne peut forcer un deuxieme ecran. Une recommandation faible ou vide ne s'affiche pas.
 
 ## 2. Regles non negociables
 
@@ -61,7 +61,7 @@ Un produit lie par `related` ne doit jamais etre presente comme un complement. D
 
 1. Meme source que le panier page.
 2. Un seul complement, avec une raison courte et une action d'ajout directe.
-3. Aucune grande bento grid dans l'espace contraint du drawer.
+3. Aucune grande galerie dans l'espace contraint du drawer.
 4. Le drawer reste utilisable pendant le chargement, l'erreur ou l'absence de recommandation.
 
 ### 4.4 Diagnostic
@@ -120,23 +120,19 @@ Cette frontiere evite de manquer une surface commerciale tout en empechant le no
 
 ```text
 ┌────────────────────────────────────────────────────────────────────┐
-│ COMPOSITION MILAURA                                                │
+│ COMPOSITION MILAURA          Titre                 Raison courte   │
 │                                                                    │
-│ ┌──────────────┐  ┌──────────────────────────┐  ┌───────────────┐ │
-│ │ Titre court  │  │                          │  │ Produit 2     │ │
-│ │ et raison    │  │  Produit focal           │  │ image         │ │
-│ │              │  │  image ou video reelle  │  │ nom / prix    │ │
-│ │ Lien guide   │  │                          │  │ raison        │ │
-│ │              │  │  nom / prix / raison    │  ├───────────────┤ │
-│ │              │  │  Ajouter                │  │ Produit 3     │ │
-│ │              │  │                          │  │ image         │ │
-│ └──────────────┘  └──────────────────────────┘  │ nom / prix    │ │
-│                                                 └───────────────┘ │
+│ ┌────────────────────────────┐ ┌──────────────┐ ┌──────────────┐ │
+│ │ Produit focal              │ │ Produit 2    │ │ Produit 3    │ │
+│ │ image ou video large       │ │ image        │ │ image        │ │
+│ │ nom / prix / raison        │ │ nom / prix   │ │ nom / prix   │ │
+│ │ Ajouter                    │ │ Ajouter      │ │ Ajouter      │ │
+│ └────────────────────────────┘ └──────────────┘ └──────────────┘ │
 └────────────────────────────────────────────────────────────────────┘
-   3 colonnes               6 colonnes                 3 colonnes
+        6 colonnes                3 colonnes        3 colonnes
 ```
 
-La piece focale peut utiliser une video produit reelle. Elle ne demarre qu'au survol ou a la prise de focus et s'arrete a la sortie. Sans video validee, elle utilise la photographie produit. Aucun mannequin genere n'est introduit.
+Toutes les cartes restent sur une seule ligne. Le media a une hauteur commune bornee afin que la composition complete reste visible dans un viewport desktop courant. La piece focale peut utiliser une video produit reelle. Elle ne demarre qu'au survol ou a la prise de focus et s'arrete a la sortie. Sans video validee, elle utilise la photographie produit. Aucun mannequin genere n'est introduit.
 
 ### 5.4 Mobile, 360 a 430 px
 
@@ -176,7 +172,7 @@ La section tient dans le flux du drawer, sans modal supplementaire, sans carrous
 
 | Fichier cible | Responsabilite |
 | --- | --- |
-| `assets/milaura-recommendations.css` | Tous les layouts bento, rail et compact, plus les etats |
+| `assets/milaura-recommendations.css` | Tous les layouts de galerie horizontale, rail et compact, plus les etats |
 | `assets/milaura-recommendations.js` | Chargement API, filtrage, rail, consentement, recent, analytics et ajout panier |
 | `snippets/milaura-recommendation-card.liquid` | Carte produit unique, variantes focal, compact et standard |
 | `snippets/milaura-recommendation-shell.liquid` | Entete, liste, live region et donnees de contexte |
@@ -260,7 +256,7 @@ La suppression n'intervient qu'apres preuve que chaque inclusion a ete remplacee
 
 - une seule piece focale, deux secondes roles et une raison lisible ;
 - une distinction publique entre complement, alternative et reprise ;
-- une asymetrie stable, pas un masonry aleatoire ;
+- une asymetrie horizontale stable, pas un masonry aleatoire ;
 - un detail or reserve a l'action ;
 - une transition principale sur le media focal uniquement ;
 - aucune recommandation lorsque le moteur n'a rien de credible.
@@ -349,7 +345,8 @@ La suppression n'intervient qu'apres preuve que chaque inclusion a ete remplacee
 ### Visuelle
 
 - photographie clairement prioritaire ;
-- asymetrie lisible en moins de deux secondes ;
+- hierarchie horizontale lisible en moins de deux secondes ;
+- section desktop complete visible sans empilement vertical de cartes ;
 - aucune trace de Dawn natif ;
 - aucun panneau blanc ajoute ;
 - aucune grosse pastille prune ;

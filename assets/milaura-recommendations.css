@@ -1,17 +1,18 @@
 /* ==========================================================================
    MilAura Recommendation Atelier 2026
-   Une bento grid editoriale, un rail mobile et un adaptateur panier compact.
+   Une galerie horizontale editoriale, un rail mobile et un adaptateur panier compact.
    Toutes les valeurs de marque viennent de milaura-tokens.css.
    ========================================================================== */
 
 milaura-recommendations {
+  --milaura-reco-media-desktop: min(28vw, calc(var(--milaura-esp-2xl) * 3.5));
   min-height: 1px;
   display: block;
   color: var(--milaura-encre);
 }
 
 .milaura-recommendations__section {
-  padding: var(--milaura-esp-2xl) 0;
+  padding: var(--milaura-esp-xl) 0;
   border-top: var(--milaura-filet-mineral);
   background: transparent;
 }
@@ -20,21 +21,26 @@ milaura-recommendations {
   width: 100%;
   max-width: var(--milaura-largeur-contenu);
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--milaura-esp-md);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--milaura-esp-lg);
   margin: 0 auto;
   padding: 0 var(--milaura-esp-md);
 }
 
 .milaura-recommendations__intro {
-  grid-column: 1 / span 3;
-  align-self: start;
-  position: sticky;
-  top: var(--milaura-esp-lg);
-  padding-top: var(--milaura-esp-2xs);
+  grid-column: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: end;
+  gap: var(--milaura-esp-xs) var(--milaura-esp-lg);
+  position: static;
+  padding: 0;
 }
 
 .milaura-recommendations__eyebrow {
+  grid-column: 1;
+  grid-row: 1;
   margin: 0 0 var(--milaura-esp-sm);
   color: var(--milaura-aigue-profonde);
   font-family: var(--milaura-font-texte);
@@ -46,6 +52,9 @@ milaura-recommendations {
 }
 
 .milaura-recommendations__title {
+  grid-column: 1;
+  grid-row: 2;
+  max-width: 18ch;
   margin: 0;
   color: var(--milaura-prune);
   font-family: var(--milaura-font-display);
@@ -57,8 +66,11 @@ milaura-recommendations {
 }
 
 .milaura-recommendations__subtitle {
-  max-width: 34ch;
-  margin: var(--milaura-esp-md) 0 0;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  max-width: 44ch;
+  margin: 0;
+  justify-self: end;
   color: var(--milaura-encre-secondaire);
   font-family: var(--milaura-font-texte);
   font-size: var(--milaura-t-corps);
@@ -67,11 +79,11 @@ milaura-recommendations {
 }
 
 .milaura-recommendations__products {
-  grid-column: 4 / -1;
+  grid-column: 1;
   display: grid;
-  grid-template-columns: repeat(9, minmax(0, 1fr));
-  grid-auto-flow: row;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: var(--milaura-esp-md);
+  align-items: stretch;
   min-width: 0;
 }
 
@@ -90,12 +102,11 @@ milaura-recommendations {
 }
 
 .milaura-recommendation-card--focal {
-  grid-column: span 5;
-  grid-row: span 2;
+  grid-row: auto;
 }
 
 .milaura-recommendation-card--secondary {
-  grid-column: span 4;
+  grid-row: auto;
 }
 
 .milaura-recommendation-card:focus-within {
@@ -146,24 +157,45 @@ milaura-recommendations {
   margin-top: auto;
 }
 
-.milaura-recommendations__products[data-card-count='4'] .milaura-recommendation-card:nth-child(4) {
-  grid-column: 1 / -1;
+.milaura-recommendations__products[data-card-count='1'] .milaura-recommendation-card {
+  grid-column: 1 / span 7;
 }
 
-.milaura-recommendations__products[data-card-count='4'] .milaura-recommendation-card:nth-child(4) .grid__card-img {
-  aspect-ratio: var(--milaura-ratio-cinema);
+.milaura-recommendations__products[data-card-count='2'] .milaura-recommendation-card--focal {
+  grid-column: span 7;
 }
 
-.milaura-recommendations__products[data-card-count='5'] .milaura-recommendation-card:nth-child(4) {
+.milaura-recommendations__products[data-card-count='2'] .milaura-recommendation-card--secondary {
   grid-column: span 5;
 }
 
-.milaura-recommendations__products[data-card-count='5'] .milaura-recommendation-card:nth-child(5) {
-  grid-column: span 4;
+.milaura-recommendations__products[data-card-count='3'] .milaura-recommendation-card--focal {
+  grid-column: span 6;
 }
 
-.milaura-recommendations__products[data-card-count='6'] .milaura-recommendation-card:nth-child(n + 4) {
+.milaura-recommendations__products[data-card-count='3'] .milaura-recommendation-card--secondary {
   grid-column: span 3;
+}
+
+.milaura-recommendations__products[data-card-count='4'] .milaura-recommendation-card--focal {
+  grid-column: span 6;
+}
+
+.milaura-recommendations__products[data-card-count='4'] .milaura-recommendation-card--secondary {
+  grid-column: span 2;
+}
+
+.milaura-recommendations__products[data-card-count='5'] {
+  grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr));
+}
+
+.milaura-recommendations__products[data-card-count='6'] {
+  grid-template-columns: minmax(0, 1.5fr) repeat(5, minmax(0, 1fr));
+}
+
+.milaura-recommendations__products[data-card-count='5'] .milaura-recommendation-card,
+.milaura-recommendations__products[data-card-count='6'] .milaura-recommendation-card {
+  grid-column: auto;
 }
 
 .milaura-recommendations[data-state='idle'] .milaura-recommendations__section,
@@ -182,12 +214,8 @@ milaura-recommendations {
   visibility: visible;
 }
 
-.milaura-recommendations--recent .milaura-recommendations__intro {
-  grid-column: 1 / span 3;
-}
-
 .milaura-recommendations--recent .milaura-recommendations__products {
-  grid-column: 4 / -1;
+  grid-column: 1;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -196,18 +224,14 @@ milaura-recommendations {
   grid-row: auto;
 }
 
+.milaura-recommendations--recent .milaura-recommendations__products[data-card-count] .milaura-recommendation-card,
+.milaura-recommendations--diagnostic .milaura-recommendations__products[data-card-count] .milaura-recommendation-card {
+  grid-column: auto;
+  grid-row: auto;
+}
+
 .milaura-recommendations--recent .grid__card-img {
   aspect-ratio: var(--milaura-ratio-produit);
-}
-
-.milaura-recommendations--cart-page .milaura-recommendations__products[data-card-count='1'] .milaura-recommendation-card,
-.milaura-recommendations--pdp .milaura-recommendations__products[data-card-count='1'] .milaura-recommendation-card,
-.milaura-recommendations--editorial .milaura-recommendations__products[data-card-count='1'] .milaura-recommendation-card {
-  grid-column: 1 / span 6;
-}
-
-.milaura-recommendations__products[data-card-count='2'] .milaura-recommendation-card--secondary {
-  grid-row: span 2;
 }
 
 .milaura-recommendations--diagnostic .milaura-recommendations__section {
@@ -221,6 +245,7 @@ milaura-recommendations {
 }
 
 .milaura-recommendations--diagnostic .milaura-recommendations__intro {
+  display: block;
   position: static;
   margin-bottom: var(--milaura-esp-md);
   padding: 0;
@@ -233,7 +258,7 @@ milaura-recommendations {
 }
 
 .milaura-recommendations--diagnostic .milaura-recommendation-card--focal {
-  grid-column: 1 / -1;
+  grid-column: auto;
   grid-row: auto;
 }
 
@@ -256,6 +281,7 @@ milaura-recommendations {
 }
 
 .milaura-recommendations--cart-drawer .milaura-recommendations__intro {
+  display: block;
   position: static;
   margin-bottom: var(--milaura-esp-sm);
   padding: 0;
@@ -314,18 +340,14 @@ milaura-recommendations {
 }
 
 @media screen and (min-width: 990px) {
-  .milaura-recommendations .milaura-recommendation-card--focal .grid__card {
-    min-height: 0;
-  }
-
-  .milaura-recommendations .milaura-recommendation-card--focal .grid__card-img {
-    min-height: 0;
-    flex: 1 1 0;
+  .milaura-recommendations:not(.milaura-recommendations--cart-drawer) .milaura-recommendation-card .grid__card-img {
+    height: var(--milaura-reco-media-desktop);
+    flex: 0 0 auto;
     aspect-ratio: auto;
   }
 
-  .milaura-recommendations .milaura-recommendation-card--focal .grid__card-info {
-    flex: 0 0 auto;
+  .milaura-recommendations:not(.milaura-recommendations--cart-drawer) .milaura-recommendation-card .grid__card-info {
+    flex: 1 1 auto;
   }
 }
 
@@ -340,6 +362,7 @@ milaura-recommendations {
   }
 
   .milaura-recommendations__intro {
+    display: block;
     position: static;
     margin-bottom: var(--milaura-esp-md);
     padding: 0;
