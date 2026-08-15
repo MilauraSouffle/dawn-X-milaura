@@ -1,99 +1,78 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-15 11:56 CEST
+Date de mise a jour : 2026-08-15 13:34 CEST
 
 ## Etat de reprise
 
-Navigation V2 et le polish de la section 3 de la homepage sont live sur `https://milaura.fr/` apres validation et GO live explicites de Patrice.
+La nouvelle experience fiche produit est live sur le theme `190430282075` apres GO visuel et GO live explicites de Patrice. Elle complete le Hero et la sticky bar existants avec une bande fine de services et paiements, un guide en trois portes, puis un service conseiller apres le Ruban Vivant.
 
-Le menu public donne maintenant six entrees structurantes : `Nouveautés`, `Bijoux`, `Pierres`, `Rituels & bien-être`, `Cadeaux` et `Guides`. Les bougies ne sont plus une categorie principale : elles vivent dans `Rituels & bien-être`. `Pierre de naissance` vit dans `Cadeaux`, sans doublon dans `Pierres`.
+Le lot de six fichiers a ete integre en fast-forward jusqu'a `ceaeb1e7`, pousse sur `origin/codex/milaura-integration`, deploye avec `--nodelete`, puis confirme par un pullback live 6/6 identique octet par octet.
 
-Le menu `Pierres` propose :
+Le moteur de recommandations et le Ruban Vivant n'ont pas ete modifies par ce lot. Patrice signale maintenant un P0 : le Ruban fonctionne mal sur mobile et les images paraissent pales, presque floues et fortement degradees. Avec 80 % du trafic sur mobile, ce correctif devient le prochain chantier prioritaire.
 
-- tous les bijoux par pierre ;
-- `Pierres de A à Z` ;
-- `Histoire et symbolique` ;
-- `Choisir selon son émotion du moment` ;
-- six pierres mises en avant : Améthyste, Quartz rose, Œil de tigre, Lapis-lazuli, Aigue-marine et Aventurine.
+## Parcours PDP live
 
-La section 3 de la homepage conserve trois parcours : `Choisir par bijou`, `Choisir par pierre` et `Me laisser guider`. Elle utilise maintenant trois cadres ouverts Or mat, sans trait inferieur, sans fond bleu-vert repris du Hero et avec des panneaux et photographies plus compacts. Le diagnostic de Karine reste la destination du troisieme parcours.
+1. Hero produit existant ;
+2. sticky bar existante ;
+3. bande de services, preuves et paiements reels ;
+4. guide produit en trois portes ;
+5. Ruban Vivant existant ;
+6. service conseiller MilAura.
 
-Le Hero final et son bandeau-vitrine restent inchanges : `MilAura`, point or, slogan `Bijoux & émotions`, une seule scene minerale, H1 `La beauté des bijoux rencontre les vertus des minéraux`, bandeau Quartz rose poudre et masquage pendant l'ouverture du panier.
+Les portes s'adaptent aux bijoux, mineraux, bougies et rituels. Les certificats sont conditionnes aux donnees du produit. Klarna est conditionne au moyen de paiement Shopify. Le conseiller donne acces au telephone, a l'e-mail et a la page contact.
 
-La navbar utilise au scroll la version finale nacree transparente : 16 % de Nacre, flou de 12 px et filet fin, sans retour au fond aigue-marine plein. Commit canonique `24aaa5db`, merge d'integration `8b781461`, pullback live 1/1 identique. Navigation V2 a repris ce canonique par `a11dafed` et conserve uniquement ses trois lignes d'integration navbar. Checkpoint : `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`.
+## Git, themes et worktrees
 
-Le Ruban Vivant et le moteur de recommandations sitewide sont egalement live apres GO visuel a 100 % et GO live explicite de Patrice. Commit de lot `413596f7`, merge d'integration `f89f57b5`, documentation live `ab28ee99`, QA complementaire `137bb321`, pullback live 46/46 identique. Le worktree Recommandations a ete retire proprement. Aucun de ses fichiers n'a ete touche par la session Navigation V2.
-
-## Git et worktrees
-
-- depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
-- branche d'integration : `codex/milaura-integration` ;
+- depot : `/Users/paesano/Documents/MilAura website/dawn-X-milaura` ;
+- integration : `codex/milaura-integration` ;
+- commit fonctionnel PDP : `9762d1b8` ;
+- commit de preuve preview : `ceaeb1e7` ;
+- theme de developpement : `199421952347` ;
 - theme live : `190430282075` ;
-- theme de developpement partage : `199421952347` ;
-- branche Navigation V2 : `codex/milaura-navigation-home-v2-20260814`, conservee localement et sur origin ;
-- worktree Navigation V2 : retire le 2026-08-15 a 11:38 CEST apres verification que `486d6cae` est bien ancetre de l'integration ;
-- branche Recommandations : `codex/milaura-recommendation-system-20260814`, conservee localement et sur origin ;
-- merge Recommandations : `f89f57b5`, documentation live `ab28ee99`, QA complementaire `137bb321` ;
-- worktree Recommandations : retire proprement apres integration et validation live ;
-- aucun worktree secondaire MilAura actif a 11:56 CEST.
+- worktree PDP : retire proprement apres integration et validation live ;
+- worktree Recommandations historique : retire ;
+- prochaine session Ruban : creer une nouvelle branche et un nouveau worktree, puis declarer ses fichiers dans `docs/workstreams.md`.
 
-## Livraisons Navigation V2
+## Validation PDP live
 
-### Catalogue Shopify
+- push Shopify strict limite a six fichiers, sans suppression ;
+- pullback live 6/6 identique ;
+- HTML public sans cookie : HTTP 200, aucun artefact de preview ;
+- ordre public confirme : experience, Ruban, conseiller ;
+- mobile 390 px : trois tabs, cible `#ProductTabs`, rail de preuves interne scrollable ;
+- clic et clavier `ArrowRight` : `aria-selected` correct ;
+- page maintenue a `scrollX = 0` pendant les interactions testees ;
+- aucune erreur JavaScript applicative observee ;
+- aucune mutation de produit, stock, prix, publication, panier ou moyen de paiement.
 
-Deux collections existantes ont ete publiees sur le canal Boutique en ligne le 2026-08-15. Aucun produit n'a ete modifie.
+## Nettoyage et dette explicite
 
-| ID Shopify | Route | Publication | Selection controlee |
-| --- | --- | --- | ---: |
-| `678216892763` | `/collections/par-pierre-oeil-de-tigre` | `2026-08-15 10:31:48 CEST` | 4 bijoux actifs |
-| `678216925531` | `/collections/par-pierre-aventurine` | `2026-08-15 10:31:49 CEST` | 7 bijoux actifs |
+Les templates ont perdu 640 lignes de definitions anciennes et inactives. Les anciennes sections ne sont plus rendues.
 
-Les deux routes sont en HTTP 200, canoniques et presentes dans le sitemap. Œil de tigre reste sous le seuil editorial prefere de cinq bijoux. La session Inventaire doit recontroler ce seuil apres consolidation du stock reel.
+Douze fichiers sources historiques restent dans le depot mais ne sont plus references. Leur suppression physique est un lot destructif distinct, a faire seulement apres controle exhaustif et autorisation explicite.
 
-### Theme live
+## P0 Ruban Vivant mobile
 
-Le lot Navigation V2 a ete pousse sur le theme live `190430282075` avec 23 fichiers cibles, sans suppression. Merge canonique : `ddb0ca90`. Le pullback live est identique 23/23.
+La prochaine session doit :
 
-Le polish de la section 3 a ensuite ete livre avec deux fichiers cibles :
+1. reproduire le probleme sur 360, 390 et 430 px ;
+2. tester gestes tactiles, pause, reprise, clic, quantite, ajout panier et mouvement reduit ;
+3. mesurer dimensions, poids, alpha, compression et ratio d'affichage des sept detourages ;
+4. comparer les detourages aux vraies photos des huit references ;
+5. corriger le layout mobile ;
+6. remplacer ou regenerer uniquement les images dont la source est insuffisante ;
+7. obtenir un nouveau GO visuel sur le theme de developpement avant tout live.
 
-- `assets/milaura-home-paths.css` ;
-- `sections/milaura-home-paths.liquid`.
+Un filtre de nettete CSS n'est pas une correction suffisante sans diagnostic de la source.
 
-Commits de lot : `979e0223`, puis `486d6cae` pour le focus Or mat. Merges d'integration : `5bc962ac`, puis `2a77605f`. Pullbacks live : 2/2, puis CSS final 1/1, tous identiques.
+## Autres risques ouverts
 
-### Recommandations live
-
-Le moteur editorial partage et le Ruban Vivant PDP sont live sur `190430282075`. Huit references uniques produisent seize cartes pour la boucle continue. Pause, reprise, clavier, desktop 1280 px, mobile 390 px et absence de debordement ont ete controles. Le panier live et le diagnostic ont aussi ete controles sans debordement ni erreur JavaScript. Le push live a porte sur 46 fichiers actifs, sans suppression distante, puis le pullback a confirme 46/46 fichiers identiques. Checkpoint : `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`.
-
-## Validation finale
-
-- Theme Check : 293 fichiers, 0 erreur, 18 avertissements historiques hors lot ;
-- validation JSON : succes ;
-- `git diff --check` : succes ;
-- homepage publique : theme `190430282075`, un seul H1 ;
-- desktop 1440 px : mega-menu Pierres et trois panneaux de la section 3 controles ;
-- mobile 390 et 360 px : aucune largeur excedentaire, libelles lisibles et un seul panneau actif ;
-- clavier : fleches gauche et droite, focus Or mat et `aria-selected` valides ;
-- erreurs JavaScript pendant les parcours : aucune ;
-- aucun produit, stock, prix, metafield produit, panier, livraison ou PDP modifie par le polish de la section 3.
-
-## Prochain ordre d'execution
-
-1. Corriger dans un lot SEO distinct la valeur Shopify `shop.description` qui alimente le JSON-LD avec un claim global LFG non prouve.
-2. Laisser la session Inventaire controler les membres, les stocks et les statuts produit. Reauditer ensuite Œil de tigre et les anciennes collections.
-3. Mesurer les parcours du menu et les interactions du Ruban Vivant quand GSC et GA4 seront accessibles. Ne pas ajouter de nouvelles routes sur intuition seule.
-4. Preparer le remplacement de la Selection d'aout par la campagne de rentree avant septembre 2026.
-
-## Dependances et risques ouverts
-
-- Œil de tigre : 4 bijoux actifs au dernier controle ;
-- 18 baguettes minerales a retirer du catalogue public apres controles URL, commandes et Search Console ;
-- 13 anciennes collections sans metas definitives tant que membres, stock et contenu ne sont pas fiables ;
-- pages mensuelles Naissance et pages enfants Mariage reservees, non creees ;
-- GSC, GA4, Merchant Center et Pinterest non verifies faute d'acces legitime configure ;
-- `layout/theme.liquid` injecte `shop.description` dans le JSON-LD public ; la valeur Shopify Admin affirme que les pierres sont toutes certifiees LFG sans preuve au bon perimetre ;
-- Journal, netlinking, activation Pinterest, tracking et Ads restent des chantiers du plan directeur ;
-- navigation et recommandations live sans donnees GA4 ou Search Console encore disponibles pour mesurer leurs usages.
+- `shop.description` alimente le JSON-LD avec un claim global LFG non prouve ;
+- collection Œil de tigre avec quatre bijoux actifs au dernier controle ;
+- 18 baguettes minerales a retirer apres controles ;
+- 13 anciennes collections sans metas definitives ;
+- GSC, GA4, Merchant Center et Pinterest non verifies ;
+- mesure d'usage de Navigation V2 et des recommandations encore absente.
 
 ## Lecture obligatoire
 
@@ -103,24 +82,18 @@ Le moteur editorial partage et le Ruban Vivant PDP sont live sur `190430282075`.
 4. `docs/reference/2026-08-12-repository-workflow.md`
 5. `docs/reference/2026-08-12-copywriting-milaura.md`
 6. `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
-7. `docs/checkpoints/2026-08-15-1039-navigation-home-v2-live.md`
-8. `docs/checkpoints/2026-08-15-1054-home-paths-open-gold-live.md`
-9. `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`
-10. `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`
-11. `docs/checkpoints/2026-08-15-1145-navigation-handoff-addendum.md`
-12. `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`
+7. `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`
+8. `docs/checkpoints/2026-08-15-1334-pdp-experience-live-handoff.md`
 
 ## Interdits de reprise
 
 - ne pas modifier un fichier reserve dans `docs/workstreams.md` ;
-- ne pas reintroduire les anciens systemes cross-sell retires par le moteur de recommandations partage ;
 - ne pas pousser le theme complet ;
-- ne pas modifier produit, stock, prix ou publication dans un lot UI ;
-- ne pas reintroduire une entree principale `Bougies` ;
-- ne pas dupliquer `Pierre de naissance` dans `Pierres` ;
-- ne pas reintroduire les trois parcours dans le Hero ;
+- ne pas retoucher Hero, sticky, panier, drawer ou nouveaux composants PDP sans preuve de conflit ;
+- ne pas masquer la degradation des images par un simple filtre CSS ;
+- ne pas regenerer un bijou sans reference produit et controle de fidelite ;
 - ne pas confondre validation technique, GO visuel et GO live.
 
-## Prompt de reprise general
+## Prompt de reprise copiable
 
-> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/checkpoints/2026-08-15-1138-navigation-home-v2-handoff.md`, `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`, `docs/checkpoints/2026-08-15-1145-navigation-handoff-addendum.md` et `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`. Navigation V2, le Hero final, le bandeau Quartz rose, la navbar nacree transparente, la section 3 et le Ruban Vivant sont live sur `190430282075`. Aucun worktree secondaire MilAura n'est actif. Commence en lecture seule, choisis un seul lot, respecte le registre et traite en priorite le claim LFG non prouve porte par `shop.description`. Aucun nouveau live sans GO explicite de Patrice.
+> Reprends MilAura depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md` et `docs/checkpoints/2026-08-15-1334-pdp-experience-live-handoff.md`. La nouvelle experience PDP est live sur `190430282075`, avec pullback 6/6 identique. Priorite P0 exclusive : auditer puis corriger le Ruban Vivant sur mobile 360, 390 et 430 px, ainsi que la paleur et le flou de ses images. Commence en lecture seule, declare un worktree dedie et reserve uniquement les fichiers du moteur de recommandations. Ne touche pas aux composants PDP, Hero, sticky, panier ou drawer sans preuve de conflit. Controle les dimensions et la compression des sources avant toute regeneration. Preview sur `199421952347`, aucun live sans nouveau GO visuel explicite de Patrice.

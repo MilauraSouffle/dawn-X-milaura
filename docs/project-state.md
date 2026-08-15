@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-15 11:56 CEST
+Derniere mise a jour : 2026-08-15 13:34 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la PDP-P0, l'UI sitewide, les Heroes, Navigation V2, les guides Pierres, la section 3 de la homepage et le moteur de recommandations avec Ruban Vivant sont live.
+Le catalogue V1, la nouvelle experience PDP, l'UI sitewide, les Heroes, Navigation V2, les guides Pierres, la section 3 de la homepage et le moteur de recommandations avec Ruban Vivant sont live ; le Ruban Vivant mobile et la qualite de ses images sont le prochain P0.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ Le catalogue V1, la PDP-P0, l'UI sitewide, les Heroes, Navigation V2, les guides
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Les worktrees Navigation V2 et Recommandations ont ete retires proprement apres leurs integrations. Aucun worktree secondaire MilAura ne reste actif a 11:56 CEST.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Les worktrees Navigation V2, Recommandations et PDP ont ete retires proprement apres leurs integrations. Aucun worktree secondaire MilAura ne reste actif a 13:34 CEST.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -186,6 +186,24 @@ Le pullback live des six fichiers est identique bit a bit a Git. Les controles p
 
 Checkpoints : `docs/checkpoints/2026-08-12-1931-pdp-visual-correction.md` et `docs/checkpoints/2026-08-13-0810-pdp-bonheur-heart.md`.
 
+### Experience PDP 2026 live
+
+Patrice a donne son GO visuel puis son GO live explicites le 2026-08-15. Les deux templates produit actifs partagent maintenant ce parcours :
+
+1. Hero produit et sticky bar existants ;
+2. bande fine de services et moyens de paiement reels ;
+3. guide produit en trois portes, adapte aux bijoux, mineraux, bougies et rituels ;
+4. Ruban Vivant existant ;
+5. service conseiller avec telephone, e-mail et page contact.
+
+Le lot est porte par `assets/milaura-product-experience.css`, `assets/milaura-product-experience.js`, `sections/milaura-product-experience.liquid`, `sections/milaura-product-advisor.liquid`, `templates/product.json` et `templates/product.milaura-produit.json`. Commits fonctionnels `9762d1b8` et `ceaeb1e7`, integres en fast-forward sur `codex/milaura-integration`.
+
+Le deploiement live sur `190430282075` a ete strictement limite a ces six fichiers, avec `--nodelete`. Le pullback live est identique 6/6 a Git. Le HTML public sans cookie repond en HTTP 200 et confirme `#ProductTabs`, la nouvelle experience, le Ruban et le conseiller dans le bon ordre. Les trois portes fonctionnent au clic et au clavier, le rail de preuves mobile defile independamment et la page reste a `scrollX = 0` pendant ces interactions.
+
+Douze anciens fichiers de sections PDP restent physiquement dans le depot mais ne sont plus references par les templates actifs. Leur suppression reste un lot destructif distinct a autoriser apres verification de toutes les references.
+
+Point P0 declare par Patrice apres la livraison : le Ruban Vivant fonctionne mal sur mobile et ses images paraissent pales, floues ou fortement degradees. Ce probleme appartient au moteur de recommandations partage, pas au nouveau composant PDP. Il doit etre audite sur 360, 390 et 430 px avant toute autre evolution visuelle. Checkpoint : `docs/checkpoints/2026-08-15-1334-pdp-experience-live-handoff.md`.
+
 ## Contrat produit
 
 Le commit `6c4e6de4` fixe le contrat canonique complet : pierres, matieres, couleurs, intentions, occasions, disponibilite, fulfillment, provenance et six images minimum. Le pipeline reste draft-only et ne modifie ni hub ni collection publique.
@@ -228,10 +246,10 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Corriger dans un lot SEO distinct la description Shopify `shop.description` qui alimente le JSON-LD public avec un claim global LFG non prouve.
-2. Recontroler les membres et le stock reel des collections publiques apres la session Inventaire, en priorite Œil de tigre qui ne compte que quatre bijoux actifs au dernier controle.
-3. Evaluer Navigation V2 et le Ruban Vivant avec des donnees d'usage lorsque GA4 et Search Console seront accessibles, sans multiplier les routes avant cette mesure.
-4. Programmer le remplacement de la Selection d'aout par la campagne de rentree avant septembre 2026.
+1. Auditer et corriger le Ruban Vivant sur mobile, puis remplacer ou regenerer ses images si les sources detourees sont reellement degradees.
+2. Corriger dans un lot SEO distinct la description Shopify `shop.description` qui alimente le JSON-LD public avec un claim global LFG non prouve.
+3. Recontroler les membres et le stock reel des collections publiques apres la session Inventaire, en priorite Œil de tigre qui ne compte que quatre bijoux actifs au dernier controle.
+4. Evaluer Navigation V2 et le Ruban Vivant avec des donnees d'usage lorsque GA4 et Search Console seront accessibles, sans multiplier les routes avant cette mesure.
 
 ## Dependances encore ouvertes
 
@@ -244,6 +262,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
+- Ruban Vivant : UX mobile signalee comme defaillante par Patrice et sept detourages a controler pour paleur, flou, dimensions sources, compression, transparence et mise a l'echelle
 
 ## References de reprise
 
@@ -269,6 +288,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-15-1142-homepage-hero-bandeau-navbar-handoff.md`
 - `docs/checkpoints/2026-08-15-1145-navigation-handoff-addendum.md`
 - `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`
+- `docs/checkpoints/2026-08-15-1334-pdp-experience-live-handoff.md`
 - `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
