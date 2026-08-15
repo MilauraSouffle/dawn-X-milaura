@@ -424,6 +424,23 @@
       timer = window.setInterval(() => render(activeIndex + 1), interval);
     };
 
+    const cartDrawer = document.querySelector('cart-drawer');
+    const syncCartDrawer = () => {
+      const drawerIsOpen = cartDrawer?.classList.contains('active') || false;
+      root.hidden = drawerIsOpen;
+
+      if (drawerIsOpen) stop();
+      else start();
+    };
+    const cartDrawerObserver = cartDrawer
+      ? new MutationObserver(syncCartDrawer)
+      : null;
+
+    cartDrawerObserver?.observe(cartDrawer, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
     const advance = () => {
       render(activeIndex + 1);
       start();
@@ -457,11 +474,12 @@
     document.addEventListener('shopify:section:unload', (event) => {
       if (event.detail.sectionId !== '{{ section.id }}') return;
       stop();
+      cartDrawerObserver?.disconnect();
       controller.abort();
     }, { signal: controller.signal });
 
     render(0);
-    start();
+    syncCartDrawer();
   })();
 </script>
 
