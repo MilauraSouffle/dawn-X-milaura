@@ -16,7 +16,7 @@
     #shopify-section-{{ section.id }} {
       --sticky-bg: {{ section.settings.bg_color }};
       --sticky-text: {{ section.settings.text_color }};
-      --sticky-gold: var(--milaura-gold, #C0A062);
+      --sticky-gold: var(--milaura-gold, #B9975B);
       --sticky-ink: #1a1a2e;
       --sticky-cream: #fffaf0;
       z-index: 999;
@@ -44,7 +44,7 @@
       
       transform: translateY(101%);
       transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      border-top: 1px solid rgba(192, 160, 98, 0.26);
+      border-top: 1px solid rgba(185, 151, 91, 0.26);
       backdrop-filter: blur(18px);
     }
 
@@ -65,8 +65,8 @@
       border-radius: 12px;
       overflow: hidden;
       flex: 0 0 56px;
-      background: rgba(192, 160, 98, 0.08);
-      border: 1px solid rgba(192, 160, 98, 0.18);
+      background: rgba(185, 151, 91, 0.08);
+      border: 1px solid rgba(185, 151, 91, 0.18);
       box-shadow: 0 5px 16px rgba(0, 0, 0, 0.08);
     }
 
@@ -85,7 +85,7 @@
     }
 
     .sticky-title {
-      font-family: var(--milaura-font-heading, serif);
+      font-family: var(--milaura-font-display);
       font-size: {{ section.settings.title_size }}px;
       font-weight: 600;
       color: var(--sticky-text);
@@ -139,7 +139,7 @@
       border-radius: 999px;
       background: rgba(26, 26, 46, 0.14);
       color: #1a1a2e;
-      font-family: 'Lato', sans-serif;
+      font-family: var(--milaura-font-texte);
       font-size: 12px;
       font-weight: 900;
       line-height: 1;
@@ -225,6 +225,7 @@
   <div
     id="MilauraStickyBarSection"
     class="milaura-sticky-bar"
+    aria-hidden="true"
   >
     
     <!-- Info Gauche -->
@@ -291,24 +292,17 @@
       const bubbleTrigger = document.querySelector('.milaura-bubble-trigger');
       const bubbleLabel = document.querySelector('.milaura-bubble-label');
 
-      // Trouver le footer pour masquer la sticky bar quand on y arrive
-      const footer = document.querySelector('footer') || document.querySelector('.footer') || document.querySelector('#shopify-section-footer');
-
       // 1. Logique d'affichage (Scroll)
       if (stickyBar && mainButton) {
+        let hasPassedMainButton = false;
+
         const handleScroll = () => {
-          const rect = mainButton.getBoundingClientRect();
-          const footerRect = footer ? footer.getBoundingClientRect() : null;
-
-          // Vérifier si le footer est visible (entre dans le viewport)
-          const footerVisible = footerRect && footerRect.top < window.innerHeight;
-
-          // Afficher la sticky uniquement après la disparition complète du CTA principal.
-          if (rect.bottom <= 0 && !footerVisible) {
-            stickyBar.classList.add('is-visible');
-          } else {
-            stickyBar.classList.remove('is-visible');
+          if (!hasPassedMainButton && mainButton.getBoundingClientRect().bottom <= 0) {
+            hasPassedMainButton = true;
           }
+
+          stickyBar.classList.toggle('is-visible', hasPassedMainButton);
+          stickyBar.setAttribute('aria-hidden', hasPassedMainButton ? 'false' : 'true');
 
           // Push floating bubble above sticky bar on ALL viewports (desktop + mobile)
           if (bubbleTrigger) {
@@ -332,12 +326,15 @@
         handleScroll();
       } else {
         // Fallback si pas de bouton trouvé (ex: page bizarre), on affiche après un certain scroll
-        window.addEventListener('scroll', () => {
-          const footerRect = footer ? footer.getBoundingClientRect() : null;
-          const footerVisible = footerRect && footerRect.top < window.innerHeight;
+        let hasPassedFallbackThreshold = window.scrollY > 800;
 
-          if (window.scrollY > 800 && !footerVisible) stickyBar.classList.add('is-visible');
-          else stickyBar.classList.remove('is-visible');
+        window.addEventListener('scroll', () => {
+          if (!hasPassedFallbackThreshold && window.scrollY > 800) {
+            hasPassedFallbackThreshold = true;
+          }
+
+          stickyBar.classList.toggle('is-visible', hasPassedFallbackThreshold);
+          stickyBar.setAttribute('aria-hidden', hasPassedFallbackThreshold ? 'false' : 'true');
         }, { passive: true });
       }
 
@@ -449,7 +446,7 @@
       "type": "color",
       "id": "price_color",
       "label": "Couleur prix",
-      "default": "#C0A062"
+      "default": "#B9975B"
     },
     {
       "type": "header",
