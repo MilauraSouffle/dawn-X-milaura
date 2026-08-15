@@ -1,161 +1,506 @@
 {%- liquid
-  assign announcement_statement = section.settings.statement | strip
-  assign announcement_statement_mobile = section.settings.statement_mobile | strip
-  assign announcement_service = section.settings.service | strip
-
-  if announcement_statement == blank or announcement_statement == 'Karine choisit chaque pièce et prépare chaque commande à Metz.' or announcement_statement == 'Pierres naturelles sélectionnées avec exigence. Service humain avant et après votre achat.'
-    assign announcement_statement = 'Pierres choisies avec exigence. Conseils humains 6j/7.'
-  endif
-
-  if announcement_statement_mobile == blank or announcement_statement_mobile == 'Pierres sélectionnées avec exigence. Service humain avant et après l’achat.'
-    assign announcement_statement_mobile = 'Pierres choisies avec exigence. Conseils humains 6j/7.'
-  endif
-
-  if announcement_service == blank or announcement_service == 'Pierres naturelles · Bijoux · Conseil avant et après l’achat' or announcement_service == 'Équipe disponible 6j/7 · Commandes préparées et expédiées depuis notre atelier à Metz'
-    assign announcement_service = 'Commandes préparées et expédiées depuis notre atelier à Metz.'
-  endif
+  assign proof_interval = section.settings.rotation_speed | default: 6 | times: 1000
 -%}
 
 {% style %}
   :root {
-    --milaura-announcement-height: 0px;
-  }
-
-  #MilauraAnnouncement-{{ section.id }} {
-    position: fixed;
-    inset: 0 0 auto;
-    z-index: 1000001;
-    display: flex;
-    height: var(--milaura-announcement-height);
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-bottom: var(--milaura-filet-mineral);
-    color: var(--milaura-prune);
-    background: var(--milaura-nacre);
-    font-family: var(--milaura-font-texte);
+    --milaura-announcement-height: 58px;
   }
 
   body {
-    padding-top: 0;
+    padding-top: var(--milaura-announcement-height);
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
-    display: flex;
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    z-index: 1000001;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} {
+    --proof-progress-offset: 0%;
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 1000001;
+    height: var(--milaura-announcement-height);
+    overflow: hidden;
+    border-bottom: var(--milaura-filet-or);
+    color: var(--milaura-prune);
+    background: var(--milaura-quartz-rose-poudre);
+    font-family: var(--milaura-font-texte);
+  }
+
+  #MilauraProofShowcase-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__inner {
+    position: relative;
+    display: grid;
     width: min(100%, 1640px);
-    min-width: 0;
+    height: 100%;
+    grid-template-columns: minmax(0, 1fr) 74px;
     align-items: center;
-    justify-content: center;
-    padding: var(--milaura-esp-2xs) 32px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.085em;
-    line-height: 1.2;
-    text-align: center;
-    text-transform: uppercase;
+    gap: var(--milaura-esp-sm);
+    padding: 0 clamp(24px, 4vw, 64px);
+    margin: 0 auto;
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mark {
-    width: 26px;
-    height: 1px;
-    flex: 0 0 auto;
-    margin-right: 14px;
-    background: var(--milaura-or);
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__stage {
+    position: relative;
+    width: min(100%, 940px);
+    height: 100%;
+    min-width: 0;
+    margin: 0 auto;
+    touch-action: pan-y;
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
-    margin: 0;
-    color: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    letter-spacing: inherit;
-    line-height: inherit;
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__slide {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    min-width: 0;
+    grid-template-columns: 52px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--milaura-esp-sm);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(5px);
+    transition:
+      opacity var(--milaura-transition-base),
+      transform var(--milaura-transition-base),
+      visibility 0s linear var(--milaura-transition-base);
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement-mobile {
-    display: none;
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__slide.is-active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0s;
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__media {
+    position: relative;
+    display: block;
+    width: 52px;
+    height: 52px;
+    overflow: hidden;
+    border: var(--milaura-filet-or);
+    border-radius: 48% 52% 47% 53% / 52% 46% 54% 48%;
+    background: var(--milaura-nacre);
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__media::after {
+    position: absolute;
+    inset: 3px;
+    border: var(--milaura-filet-mineral);
+    border-radius: inherit;
+    content: '';
+    pointer-events: none;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__slide--certificate .milaura-proof-showcase__image {
+    object-fit: contain;
+    padding: 4px;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__slide--karine .milaura-proof-showcase__image {
+    object-position: 50% 32%;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__slide--atelier .milaura-proof-showcase__image {
+    object-position: 48% 58%;
+    transform: scale(1.12);
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__copy {
+    display: grid;
+    min-width: 0;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: center;
+    gap: var(--milaura-esp-sm);
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__label {
     display: inline-flex;
     align-items: center;
-    color: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    letter-spacing: inherit;
-    line-height: inherit;
+    min-height: 28px;
+    padding-right: var(--milaura-esp-sm);
+    border-right: var(--milaura-filet-or);
+    color: var(--milaura-amethyste);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    line-height: 1.25;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
-  #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service::before {
-    width: 1px;
-    height: 14px;
-    margin: 0 18px;
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__statement {
+    min-width: 0;
+    margin: 0;
+    color: var(--milaura-prune);
+    font-size: clamp(12px, 1vw, 14px);
+    font-weight: 500;
+    letter-spacing: 0.015em;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__next {
+    display: inline-grid;
+    min-width: 64px;
+    min-height: var(--milaura-cible-tactile);
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 9px;
+    padding: 0;
+    border: 0;
+    color: var(--milaura-prune);
+    background: transparent;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__counter {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__arrow {
+    color: var(--milaura-amethyste);
+    font-size: 18px;
+    line-height: 1;
+    transform: translateX(0);
+    transition: transform var(--milaura-transition-rapide);
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__next:hover .milaura-proof-showcase__arrow,
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__next:focus-visible .milaura-proof-showcase__arrow {
+    transform: translateX(4px);
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__next:focus-visible {
+    outline: 1px solid var(--milaura-amethyste);
+    outline-offset: 3px;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__progress {
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
     background: var(--milaura-prune);
+    opacity: 0.16;
+  }
+
+  #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__progress::after {
+    display: block;
+    width: 33.333%;
+    height: 1px;
+    background: var(--milaura-amethyste);
     content: '';
-    opacity: 0.22;
+    opacity: 1;
+    transform: translateX(var(--proof-progress-offset));
+    transition: transform var(--milaura-transition-base);
   }
 
   @media screen and (max-width: 820px) {
     :root {
-      --milaura-announcement-height: 0px;
+      --milaura-announcement-height: 54px;
     }
 
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
-      padding: 7px 10px;
-      font-size: 8.5px;
-      letter-spacing: 0.035em;
-      white-space: nowrap;
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__inner {
+      grid-template-columns: minmax(0, 1fr) 52px;
+      gap: 5px;
+      padding: 0 10px 0 12px;
     }
 
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__mark,
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement-desktop,
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__service {
-      display: none;
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__slide {
+      grid-template-columns: 46px minmax(0, 1fr);
+      gap: 9px;
     }
 
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement-mobile {
-      display: inline;
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__media {
+      width: 46px;
+      height: 46px;
     }
 
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__statement {
-      white-space: nowrap;
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__copy {
+      display: block;
+    }
+
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__label {
+      display: block;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      font-size: 7.8px;
+      letter-spacing: 0.11em;
+      line-height: 1.2;
+    }
+
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__statement {
+      display: -webkit-box;
+      margin-top: 3px;
+      overflow: hidden;
+      font-size: clamp(10px, 2.8vw, 11.5px);
+      line-height: 1.25;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__next {
+      min-width: 44px;
+      gap: 4px;
+    }
+
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__counter {
+      font-size: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__arrow {
+      font-size: 16px;
     }
   }
 
-  @media screen and (max-width: 360px) {
-    #MilauraAnnouncement-{{ section.id }} .milaura-announcement__inner {
-      font-size: 8px;
-      letter-spacing: 0.025em;
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__slide,
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__progress::after,
+    #MilauraProofShowcase-{{ section.id }} .milaura-proof-showcase__arrow {
+      transition: none;
     }
   }
 {% endstyle %}
 
+<aside
+  id="MilauraProofShowcase-{{ section.id }}"
+  class="milaura-proof-showcase"
+  aria-label="Les engagements MilAura"
+  data-milaura-proof-showcase
+  data-rotation-interval="{{ proof_interval }}"
+>
+  <div class="milaura-proof-showcase__inner">
+    <div class="milaura-proof-showcase__stage" data-proof-stage>
+      <div
+        class="milaura-proof-showcase__slide milaura-proof-showcase__slide--certificate is-active"
+        id="MilauraProofSlide-{{ section.id }}-1"
+        data-proof-slide
+        aria-hidden="false"
+      >
+        <span class="milaura-proof-showcase__media">
+          <img
+            class="milaura-proof-showcase__image"
+            src="{{ 'milaura-hero-proof-certificat-lfg.webp' | asset_url }}"
+            alt="Extrait d’un certificat gemmologique LFG Paris"
+            width="310"
+            height="192"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          >
+        </span>
+        <span class="milaura-proof-showcase__copy">
+          <span class="milaura-proof-showcase__label">LFG Paris</span>
+          <span class="milaura-proof-showcase__statement">Certificats LFG présentés sur les pièces concernées.</span>
+        </span>
+      </div>
+
+      <div
+        class="milaura-proof-showcase__slide milaura-proof-showcase__slide--karine"
+        id="MilauraProofSlide-{{ section.id }}-2"
+        data-proof-slide
+        aria-hidden="true"
+      >
+        <span class="milaura-proof-showcase__media">
+          <img
+            class="milaura-proof-showcase__image"
+            src="{{ 'milaura-proof-showcase-karine.webp' | asset_url }}"
+            alt="Karine, fondatrice de MilAura"
+            width="111"
+            height="160"
+            loading="lazy"
+            fetchpriority="low"
+            decoding="async"
+          >
+        </span>
+        <span class="milaura-proof-showcase__copy">
+          <span class="milaura-proof-showcase__label">La sélection MilAura</span>
+          <span class="milaura-proof-showcase__statement">Tous nos minéraux et bijoux sont soigneusement sélectionnés par Karine.</span>
+        </span>
+      </div>
+
+      <div
+        class="milaura-proof-showcase__slide milaura-proof-showcase__slide--atelier"
+        id="MilauraProofSlide-{{ section.id }}-3"
+        data-proof-slide
+        aria-hidden="true"
+      >
+        <span class="milaura-proof-showcase__media">
+          <img
+            class="milaura-proof-showcase__image"
+            src="{{ 'milaura-proof-showcase-atelier.webp' | asset_url }}"
+            alt="L’atelier MilAura à Metz"
+            width="104"
+            height="160"
+            loading="lazy"
+            fetchpriority="low"
+            decoding="async"
+          >
+        </span>
+        <span class="milaura-proof-showcase__copy">
+          <span class="milaura-proof-showcase__label">Atelier de Metz</span>
+          <span class="milaura-proof-showcase__statement">Vos commandes sont préparées et expédiées depuis notre atelier à Metz.</span>
+        </span>
+      </div>
+    </div>
+
+    <button
+      class="milaura-proof-showcase__next"
+      type="button"
+      aria-label="Afficher l’engagement suivant"
+      aria-controls="MilauraProofSlide-{{ section.id }}-1 MilauraProofSlide-{{ section.id }}-2 MilauraProofSlide-{{ section.id }}-3"
+      data-proof-next
+    >
+      <span class="milaura-proof-showcase__counter" aria-hidden="true">
+        <span data-proof-current>1</span>/3
+      </span>
+      <span class="milaura-proof-showcase__arrow" aria-hidden="true">→</span>
+    </button>
+  </div>
+  <span class="milaura-proof-showcase__progress" aria-hidden="true"></span>
+</aside>
+
+<script>
+  (() => {
+    const root = document.getElementById('MilauraProofShowcase-{{ section.id }}');
+    if (!root || root.dataset.initialized === 'true') return;
+
+    root.dataset.initialized = 'true';
+
+    const slides = Array.from(root.querySelectorAll('[data-proof-slide]'));
+    const stage = root.querySelector('[data-proof-stage]');
+    const nextButton = root.querySelector('[data-proof-next]');
+    const counter = root.querySelector('[data-proof-current]');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const interval = Number(root.dataset.rotationInterval) || 6000;
+    const controller = new AbortController();
+    let activeIndex = 0;
+    let timer = null;
+    let pointerStart = null;
+
+    if (slides.length < 2 || !stage || !nextButton) return;
+
+    const render = (index) => {
+      activeIndex = (index + slides.length) % slides.length;
+      root.style.setProperty('--proof-progress-offset', `${activeIndex * 100}%`);
+
+      slides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === activeIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+
+      if (counter) counter.textContent = String(activeIndex + 1);
+    };
+
+    const stop = () => {
+      if (!timer) return;
+      window.clearInterval(timer);
+      timer = null;
+    };
+
+    const start = () => {
+      stop();
+      if (reducedMotion.matches || document.hidden) return;
+      timer = window.setInterval(() => render(activeIndex + 1), interval);
+    };
+
+    const cartDrawer = document.querySelector('cart-drawer');
+    const syncCartDrawer = () => {
+      const drawerIsOpen = cartDrawer?.classList.contains('active') || false;
+      root.hidden = drawerIsOpen;
+
+      if (drawerIsOpen) stop();
+      else start();
+    };
+    const cartDrawerObserver = cartDrawer
+      ? new MutationObserver(syncCartDrawer)
+      : null;
+
+    cartDrawerObserver?.observe(cartDrawer, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    const advance = () => {
+      render(activeIndex + 1);
+      start();
+    };
+
+    nextButton.addEventListener('click', advance, { signal: controller.signal });
+    root.addEventListener('mouseenter', stop, { signal: controller.signal });
+    root.addEventListener('mouseleave', start, { signal: controller.signal });
+    root.addEventListener('focusin', stop, { signal: controller.signal });
+    root.addEventListener('focusout', start, { signal: controller.signal });
+
+    stage.addEventListener('pointerdown', (event) => {
+      pointerStart = event.clientX;
+    }, { signal: controller.signal });
+
+    stage.addEventListener('pointerup', (event) => {
+      if (pointerStart === null) return;
+      const distance = event.clientX - pointerStart;
+      pointerStart = null;
+      if (Math.abs(distance) < 35) return;
+      render(activeIndex + (distance < 0 ? 1 : -1));
+      start();
+    }, { signal: controller.signal });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else start();
+    }, { signal: controller.signal });
+
+    reducedMotion.addEventListener('change', start, { signal: controller.signal });
+    document.addEventListener('shopify:section:unload', (event) => {
+      if (event.detail.sectionId !== '{{ section.id }}') return;
+      stop();
+      cartDrawerObserver?.disconnect();
+      controller.abort();
+    }, { signal: controller.signal });
+
+    render(0);
+    syncCartDrawer();
+  })();
+</script>
+
 {% schema %}
 {
-  "name": "Signature MilAura",
+  "name": "Vitrine des engagements",
   "settings": [
     {
-      "type": "text",
-      "id": "statement",
-      "label": "Promesse",
-      "default": "Pierres choisies avec exigence. Conseils humains 6j/7."
-    },
-    {
-      "type": "text",
-      "id": "statement_mobile",
-      "label": "Promesse sur mobile",
-      "default": "Pierres choisies avec exigence. Conseils humains 6j/7."
-    },
-    {
-      "type": "text",
-      "id": "service",
-      "label": "Détail sur ordinateur",
-      "default": "Commandes préparées et expédiées depuis notre atelier à Metz."
+      "type": "range",
+      "id": "rotation_speed",
+      "label": "Durée de chaque engagement",
+      "min": 5,
+      "max": 9,
+      "step": 1,
+      "unit": "s",
+      "default": 6
     }
   ],
   "presets": [
     {
-      "name": "Signature MilAura"
+      "name": "Vitrine des engagements"
     }
   ]
 }
