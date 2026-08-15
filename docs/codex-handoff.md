@@ -1,14 +1,16 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-14 20:36 CEST
+Date de mise a jour : 2026-08-15 08:14 CEST
 
 ## Etat de reprise
 
-Le Hero de marque V2 et son bandeau-vitrine sont live sur `milaura.fr` apres validation visuelle et autorisation live explicites de Patrice. Les trois bulles du pont Hero ont ete retirees. Le bandeau presente successivement une preuve LFG, la selection de Karine et l'atelier de Metz, avec une photographie reelle, une rotation de six secondes et un controle manuel. La phrase validee est `Tous nos minéraux et bijoux sont soigneusement sélectionnés par Karine.` Sa version canonique utilise le Quartz rose poudre `#F0D9E0`, mesure 58 px sur desktop et 54 px sur mobile, avec medaillons inchanges a 52 px et 46 px. Le correctif a ete limite a deux fichiers et son pullback live 2/2 est identique bit a bit. Navigation V2 a recu le contrat `82873b97` sans synchroniser ni pousser son theme isole. Recommandation reste un lot de developpement distinct.
+Le Hero de marque V2 et son bandeau-vitrine sont live sur `milaura.fr` apres validation visuelle et autorisation live explicites de Patrice. Les trois bulles du pont Hero ont ete retirees. Le bandeau presente successivement une preuve LFG, la selection de Karine et l'atelier de Metz, avec une photographie reelle, une rotation de six secondes et un controle manuel. La phrase validee est `Tous nos minéraux et bijoux sont soigneusement sélectionnés par Karine.` Sa version canonique utilise le Quartz rose poudre `#F0D9E0`, mesure 58 px sur desktop et 54 px sur mobile, avec medaillons inchanges a 52 px et 46 px.
+
+Le polish du 2026-08-15 est egalement live : le bandeau disparait quand le panier s'ouvre et revient a sa fermeture, la scene minerale principale remonte de 70 px sur mobile, le H1 est `La beauté des bijoux rencontre les vertus des minéraux` et le descriptif est verrouille sur les deux lignes validees. Le correctif reste limite a `sections/milaura-announcement.liquid` et `sections/milaura-hero-portal.liquid`, sans modification du panier ni de la navbar. Commit de lot `14b2ee7b`, merge canonique `4d0b3c39`, pullbacks developpement et live 2/2 identiques. Navigation V2 a recu ce dernier contrat et la liberation definitive des deux sections. Recommandation reste un lot de developpement distinct.
 
 La prochaine reprise design peut se concentrer sur :
 
-1. Navigation et homepage V2 dans son worktree deja actif ; le contrat quartz rose `82873b97` est recu pour la future integration, sans synchronisation ni push Shopify du theme isole ;
+1. Navigation et homepage V2 dans son worktree deja actif ; le contrat canonique final `4d0b3c39` est transmis pour la future integration, sans synchronisation ni push Shopify documente du theme isole ;
 2. le systeme de recommandation dans son worktree distinct ;
 3. les ajustements de cadrage des Heroes de destination, uniquement apres retour visuel de Patrice ;
 4. l'ajout d'Amethyste au hub Bijoux par pierre.
@@ -87,6 +89,10 @@ Les dix routes sont listees dans le checkpoint `2058`. Toute future correction d
 - bandeau-vitrine quartz rose : commits `f5d561e1`, `55ca81b0`, merge `82873b97`, live `190430282075`, pullback 2/2 identique ;
 - etat public actuel : 58 px desktop, 54 px mobile, medaillons 52/46 px inchanges, navbar alignee, aucune largeur excedentaire, rotation 0 vers 1 et `prefers-reduced-motion` 0 vers 0 ;
 - captures : `output/playwright/milaura-proof-showcase-rose-live-desktop-1440-lfg.png`, `output/playwright/milaura-proof-showcase-rose-live-mobile-390-karine.png` et variantes aux quatre largeurs.
+- polish panier, cadrage et copy : commit `14b2ee7b`, merge `4d0b3c39`, live `190430282075`, pullback 2/2 identique ;
+- etat public du polish : bandeau masque avec le panier puis restaure, scene minerale remontee de 70 px sur mobile, H1 et deux lignes descriptives conformes, aucune largeur excedentaire ;
+- captures : `output/playwright/milaura-hero-polish-live-mobile-390.png`, `output/playwright/milaura-hero-polish-live-desktop-1440.png` et `output/playwright/milaura-hero-polish-live-cart-mobile-390.png` ;
+- decision restante : valider un slogan de marque definitif et simplifier ou clarifier les trois parcours, qui restent actuellement de vrais liens mais sont percus comme des onglets de changement d'image.
 
 ## Baseline UI sitewide live
 
@@ -98,7 +104,7 @@ Le lot est ferme et live. Ses variantes partagees sont la baseline actuelle. Tou
 
 - ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu ;
 - polir legerement les cross-sells Mariage et Naissance sans les supprimer ;
-- conserver le contrat quartz rose et les hauteurs 58/54 px lors de l'integration future de Navigation V2 ;
+- conserver le contrat canonique final `4d0b3c39`, le quartz rose et les hauteurs 58/54 px lors de l'integration future de Navigation V2 ;
 - verifier plus tard GSC, GA4, Merchant Center, Pinterest et le parcours reel du point relais.
 
 ## Interdits de reprise

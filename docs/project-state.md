@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-14 20:36 CEST
+Derniere mise a jour : 2026-08-15 08:14 CEST
 
 ## Etat en une phrase
 
@@ -14,7 +14,7 @@ Le catalogue V1, la PDP-P0, l'UI sitewide, les dix Heroes de destination, le Her
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont retirees apres integration et fermeture de leur lot.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Navigation V2 et Recommandation restent actifs ; les worktrees ephemeres du Hero homepage, de son hotfix, du bandeau-vitrine et de sa variante quartz rose ont ete retires apres integration et validation live.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Navigation V2 et Recommandation restent actifs ; les worktrees ephemeres du Hero homepage, de son hotfix, du bandeau-vitrine, de sa variante quartz rose et du polish du 2026-08-15 ont ete retires apres integration et validation live.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -70,6 +70,9 @@ Validation : 9 routes HTTP 200, un H1 par route, canoniques auto-referentes, auc
 - Le bandeau utilise maintenant la surface `Quartz rose poudre` `#F0D9E0`, avec texte prune, reperes amethyste et filets or. Il mesure 58 px sur desktop et 54 px sur mobile sans reduction des medaillons, conserves a 52 px et 46 px. Il change de preuve par bouton, balayage ou rotation toutes les six secondes, avec pause au survol, au focus, hors viewport et quand la page est masquee. La rotation automatique est desactivee avec `prefers-reduced-motion`.
 - Le deploiement du bandeau-vitrine a ete limite a deux sections et deux vignettes WebP le 2026-08-14 a 20:06 CEST. Pullback live 4/4 identique bit a bit et controles publics 1440/430/390/360 valides. Commit de lot `fa33829c`, merge d'integration `254edefd`. Checkpoint : `docs/checkpoints/2026-08-14-1715-homepage-hero-v2-dev.md`.
 - La variante quartz rose amincie a ete livree live le 2026-08-14 a 20:36 CEST avec un push strict limite a `assets/milaura-tokens.css` et `sections/milaura-announcement.liquid`. Commits `f5d561e1`, `55ca81b0`, merge `82873b97`, pullback live 2/2 identique et controles publics 1440/430/390/360 valides.
+- Le polish du 2026-08-15 est live : le bandeau quartz rose se masque pendant l'ouverture du panier puis revient a sa fermeture, sans modification de `assets/cart-drawer.js`. Sur mobile, la scene minerale principale remonte de 70 px afin de rendre visibles toutes les pierres des l'arrivee. Le H1 public est `La beauté des bijoux rencontre les vertus des minéraux` et le descriptif est force sur deux lignes : `Des pierres naturelles choisies avec exigence pour leur beauté,` puis `leur qualité et leur symbolique en lithothérapie.`
+- Le slogan de marque definitif n'a pas ete invente ni publie sans validation de Patrice. Les trois parcours et leurs liens reels restent en place temporairement ; leur hierarchie et leur comportement de changement d'image doivent faire l'objet de la prochaine decision creative.
+- Livraison du polish : commit `14b2ee7b`, merge d'integration `4d0b3c39`, pushes cibles sur les themes de developpement `199421952347` et live `190430282075`, pullbacks 2/2 identiques bit a bit. Controles publics 390 px et 1440 px : HTTP 200, aucune largeur excedentaire, texte conforme, pierres visibles et masquage/restauration du bandeau avec le panier valides.
 - La selection de Karine a ete refondue puis polie et livree live le 2026-08-13 : titre reutilisable, marqueurs saisonniers en Dancing Script, photographies non masquees, cartes transparentes, cadre aigue-marine fin, informations compactes, quantite soulignee et ajout panier souligne d'or.
 - Le petit separateur court et epais refuse a ete retire. Le filet historique aigue-marine de 1 px et pleine largeur est restaure.
 - Patrice a valide cette deuxieme proposition comme nouvelle direction du site : simple, sobre, efficace et premium, sans gros boutons ni panneaux blancs ajoutes. Reference canonique : `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`.
