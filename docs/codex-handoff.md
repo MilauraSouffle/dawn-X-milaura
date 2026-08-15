@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-15 08:14 CEST
+Date de mise a jour : 2026-08-15 08:42 CEST
 
 ## Etat de reprise
 
@@ -8,9 +8,11 @@ Le Hero de marque V2 et son bandeau-vitrine sont live sur `milaura.fr` apres val
 
 Le polish du 2026-08-15 est egalement live : le bandeau disparait quand le panier s'ouvre et revient a sa fermeture, la scene minerale principale remonte de 70 px sur mobile, le H1 est `La beauté des bijoux rencontre les vertus des minéraux` et le descriptif est verrouille sur les deux lignes validees. Le correctif reste limite a `sections/milaura-announcement.liquid` et `sections/milaura-hero-portal.liquid`, sans modification du panier ni de la navbar. Commit de lot `14b2ee7b`, merge canonique `4d0b3c39`, pullbacks developpement et live 2/2 identiques. Navigation V2 a recu ce dernier contrat et la liberation definitive des deux sections. Recommandation reste un lot de developpement distinct.
 
+Le polish final du Hero est live depuis le 2026-08-15 a 08:42 CEST. Le slogan valide est `Bijoux & émotions`, place apres `MilAura` et un point or de 5 px. Les trois parcours, leur logique de changement d'image et les deux scenes secondaires ont ete retires entierement ; le Hero conserve uniquement la scene minerale preferee de Patrice. Aucun CTA n'est ajoute avant la decision future sur un eventuel lien `Découvrir` vers la section suivante. Commit `46d793d3`, merge canonique `6d986c20`, pullbacks developpement et live 1/1 identiques. Navigation V2 a recu ce nouveau contrat et doit preserver ses trois lignes d'integration navbar. Recommandation reste un lot de developpement distinct.
+
 La prochaine reprise design peut se concentrer sur :
 
-1. Navigation et homepage V2 dans son worktree deja actif ; le contrat canonique final `4d0b3c39` est transmis pour la future integration, sans synchronisation ni push Shopify documente du theme isole ;
+1. Navigation et homepage V2 dans son worktree deja actif ; le nouveau contrat canonique `6d986c20` est transmis pour la future integration, sans push live autorise ;
 2. le systeme de recommandation dans son worktree distinct ;
 3. les ajustements de cadrage des Heroes de destination, uniquement apres retour visuel de Patrice ;
 4. l'ajout d'Amethyste au hub Bijoux par pierre.
@@ -92,7 +94,11 @@ Les dix routes sont listees dans le checkpoint `2058`. Toute future correction d
 - polish panier, cadrage et copy : commit `14b2ee7b`, merge `4d0b3c39`, live `190430282075`, pullback 2/2 identique ;
 - etat public du polish : bandeau masque avec le panier puis restaure, scene minerale remontee de 70 px sur mobile, H1 et deux lignes descriptives conformes, aucune largeur excedentaire ;
 - captures : `output/playwright/milaura-hero-polish-live-mobile-390.png`, `output/playwright/milaura-hero-polish-live-desktop-1440.png` et `output/playwright/milaura-hero-polish-live-cart-mobile-390.png` ;
-- decision restante : valider un slogan de marque definitif et simplifier ou clarifier les trois parcours, qui restent actuellement de vrais liens mais sont percus comme des onglets de changement d'image.
+- polish final du Hero : commit `46d793d3`, merge `6d986c20`, live `190430282075`, pullback 1/1 identique ;
+- etat public final : `MilAura • Bijoux & émotions`, point or de 5 px, une seule scene minerale, aucun parcours ni CTA dans le Hero ;
+- controles : 1440, 390 et 360 px, aucune largeur excedentaire, aucun avertissement ou erreur console dans la preview ; HTTP public 200 ;
+- captures : `output/playwright/milaura-hero-final-dev-desktop-1440.png` et `output/playwright/milaura-hero-final-dev-mobile-390.png` ;
+- decision differee : choisir avec la navigation finale si un lien discret `Découvrir` doit faire defiler vers la section suivante.
 
 ## Baseline UI sitewide live
 
@@ -104,7 +110,7 @@ Le lot est ferme et live. Ses variantes partagees sont la baseline actuelle. Tou
 
 - ajouter Amethyste au hub `/pages/bijoux-par-pierre` si la destination manque encore dans le contenu ;
 - polir legerement les cross-sells Mariage et Naissance sans les supprimer ;
-- conserver le contrat canonique final `4d0b3c39`, le quartz rose et les hauteurs 58/54 px lors de l'integration future de Navigation V2 ;
+- conserver le contrat canonique final `6d986c20`, le quartz rose et les hauteurs 58/54 px lors de l'integration future de Navigation V2 ;
 - verifier plus tard GSC, GA4, Merchant Center, Pinterest et le parcours reel du point relais.
 
 ## Interdits de reprise
