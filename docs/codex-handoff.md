@@ -1,6 +1,6 @@
 # MilAura - Handoff Codex actif
 
-Date de mise a jour : 2026-08-15 13:34 CEST
+Date de mise a jour : 2026-08-15 18:23 CEST
 
 ## Etat de reprise
 
@@ -32,6 +32,8 @@ Les portes s'adaptent aux bijoux, mineraux, bougies et rituels. Les certificats 
 - worktree PDP : retire proprement apres integration et validation live ;
 - worktree Recommandations historique : retire ;
 - prochaine session Ruban : creer une nouvelle branche et un nouveau worktree, puis declarer ses fichiers dans `docs/workstreams.md`.
+
+Verification de cloture du 2026-08-15 a 18:23 CEST : HEAD `9bef8eef`, identique a `origin/codex/milaura-integration`, depot propre et aucun worktree secondaire actif.
 
 ## Validation PDP live
 

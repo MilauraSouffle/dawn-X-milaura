@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-15 13:34 CEST
+Derniere mise a jour : 2026-08-15 18:23 CEST
 
 ## Etat en une phrase
 
@@ -14,7 +14,7 @@ Le catalogue V1, la nouvelle experience PDP, l'UI sitewide, les Heroes, Navigati
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Les worktrees Navigation V2, Recommandations et PDP ont ete retires proprement apres leurs integrations. Aucun worktree secondaire MilAura ne reste actif a 13:34 CEST.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Les worktrees Navigation V2, Recommandations et PDP ont ete retires proprement apres leurs integrations. Aucun worktree secondaire MilAura ne reste actif a 18:23 CEST.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
