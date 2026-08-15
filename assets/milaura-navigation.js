@@ -7,6 +7,7 @@
 
     var burger = root.querySelector('[data-nav-burger]');
     var mobileOverlay = root.querySelector('[data-nav-mobile]');
+    var mobilePanel = root.querySelector('.nav-mobile-panel');
     var mobileClose = root.querySelector('[data-nav-mobile-close]');
     var mobileBackdrop = root.querySelector('[data-nav-mobile-backdrop]');
     var searchButtons = root.querySelectorAll('[data-milaura-search-toggle]');
@@ -47,8 +48,12 @@
 
       if (open) {
         lastFocus = document.activeElement;
+        if (mobilePanel) mobilePanel.scrollTop = 0;
         var target = mobileOverlay.querySelector('[data-nav-mobile-close]');
-        if (target) target.focus();
+        if (target) target.focus({ preventScroll: true });
+        window.requestAnimationFrame(function () {
+          if (mobilePanel) mobilePanel.scrollTop = 0;
+        });
       } else if (lastFocus && typeof lastFocus.focus === 'function') {
         lastFocus.focus();
       }

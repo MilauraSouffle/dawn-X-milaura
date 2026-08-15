@@ -1,6 +1,6 @@
 {% comment %}
   MILAURA DOCK MOBILE
-  Navigation principale mobile : Menu, Recherche, Contact, Cercle et Panier.
+  Navigation principale mobile : Menu, Recherche, Contact, Compte et Panier.
 {% endcomment %}
 
 {%- liquid
@@ -80,6 +80,28 @@
     background: rgba(63, 116, 116, 0.42);
   }
 
+  .milaura-dock-item::after {
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: 50%;
+    z-index: 0;
+    width: 64px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--milaura-quartz-rose-poudre);
+    filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) scale(0.78);
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
+
+  .milaura-dock-item > * {
+    position: relative;
+    z-index: 1;
+  }
+
   .milaura-dock-item svg {
     width: 23px;
     height: 23px;
@@ -128,8 +150,15 @@
   .milaura-dock-item:hover,
   .milaura-dock-item:focus-visible,
   .milaura-dock-item.is-current {
-    color: #2f222d;
-    background: rgba(251, 248, 243, 0.56);
+    color: var(--milaura-prune);
+    background: transparent;
+  }
+
+  .milaura-dock-item:hover::after,
+  .milaura-dock-item:focus-visible::after,
+  .milaura-dock-item.is-current::after {
+    opacity: 0.92;
+    transform: translateX(-50%) scale(1);
   }
 
   .milaura-dock-item:hover svg,
@@ -275,13 +304,13 @@
   <a
     href="{{ routes.account_url }}"
     class="milaura-dock-item{% if request.path contains '/account' %} is-current{% endif %}"
-    aria-label="{{ section.settings.account_label | default: 'Cercle' }}"
+    aria-label="{{ section.settings.account_label | default: 'Compte' }}"
   >
-    <span class="milaura-dock-circle-mark" aria-hidden="true">
-      <span class="milaura-dock-circle-mark__ring milaura-dock-circle-mark__ring--gold"></span>
-      <span class="milaura-dock-circle-mark__ring milaura-dock-circle-mark__ring--aqua"></span>
-    </span>
-    <span class="milaura-dock-label">{{ section.settings.account_label | default: 'Cercle' }}</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="8" r="3.4"/>
+      <path d="M5.5 20c.7-4 3-6 6.5-6s5.8 2 6.5 6"/>
+    </svg>
+    <span class="milaura-dock-label">{{ section.settings.account_label | default: 'Compte' }}</span>
   </a>
 
   <a
@@ -407,8 +436,8 @@
     {
       "type": "text",
       "id": "account_label",
-      "label": "Label Cercle",
-      "default": "Cercle"
+      "label": "Label compte",
+      "default": "Compte"
     },
     {
       "type": "text",
