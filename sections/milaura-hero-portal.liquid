@@ -2,14 +2,19 @@
   assign hero_eyebrow = section.settings.eyebrow | default: 'Bijoux & minéraux naturels'
   assign hero_signature = section.settings.signature | default: 'MilAura'
   assign hero_title_first = section.settings.title_first | default: 'La beauté des bijoux'
-  assign hero_title_second = section.settings.title_second | default: 'rencontre la lithothérapie.'
-  assign hero_body = section.settings.body | default: 'Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.'
+  assign hero_title_second = section.settings.title_second | default: 'rencontre les vertus des minéraux'
+  assign hero_body_standard = 'Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.'
+  assign hero_body = section.settings.body | default: hero_body_standard
   assign stone_link = section.settings.stone_link | default: '/pages/bijoux-par-pierre'
   assign jewelry_link = section.settings.jewelry_link | default: '/collections/bijoux-pierres-naturelles'
   assign guide_link = section.settings.guide_link | default: '/pages/diagnostic-emotionnel'
 
+  if hero_title_second == blank or hero_title_second == 'rencontre la lithothérapie.'
+    assign hero_title_second = 'rencontre les vertus des minéraux'
+  endif
+
   if hero_body == blank or hero_body == 'Bagues, bracelets, colliers et boucles d’oreilles en pierres naturelles, choisis pour leur beauté, leur qualité et leur symbolique en lithothérapie.'
-    assign hero_body = 'Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.'
+    assign hero_body = hero_body_standard
   endif
 -%}
 
@@ -428,10 +433,21 @@
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__body {
-      max-width: 310px;
+      width: calc(100vw - 36px);
+      max-width: 354px;
       margin: 10px 0 0;
-      font-size: 11.7px;
+      font-size: clamp(10px, 2.8vw, 11.7px);
+      letter-spacing: -0.004em;
       line-height: 1.38;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__body-line {
+      display: block;
+      white-space: nowrap;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__media--stone .portal-hero__image {
+      transform: translateY(-70px);
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__journeys {
@@ -642,7 +658,14 @@
       <span class="portal-hero__title-line">{{ hero_title_first | escape }}</span>
       <span class="portal-hero__title-line">{{ hero_title_second | escape }}</span>
     </h1>
-    <p class="portal-hero__body">{{ hero_body | escape }}</p>
+    <p class="portal-hero__body">
+      {%- if hero_body == hero_body_standard -%}
+        <span class="portal-hero__body-line">Des pierres naturelles choisies avec exigence pour leur beauté,</span>
+        <span class="portal-hero__body-line">leur qualité et leur symbolique en lithothérapie.</span>
+      {%- else -%}
+        {{- hero_body | escape -}}
+      {%- endif -%}
+    </p>
   </div>
 
   <nav class="portal-hero__journeys" aria-label="Explorer MilAura">
@@ -795,7 +818,7 @@
       "type": "text",
       "id": "title_second",
       "label": "Titre, seconde ligne",
-      "default": "rencontre la lithothérapie."
+      "default": "rencontre les vertus des minéraux"
     },
     {
       "type": "textarea",
