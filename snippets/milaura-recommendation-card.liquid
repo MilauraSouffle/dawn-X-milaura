@@ -50,16 +50,35 @@
   if recommendation_role == 'focal'
     assign is_focal = true
   endif
+
+  assign recommendation_object_asset = blank
+  assign recommendation_object_width = 1
+  assign recommendation_object_height = 1
+  case recommendation_product.handle
+    when 'collier-aventurine-verte-boho-dore'
+      assign recommendation_object_asset = 'milaura-reco-cutout-aventurine-v1.png'
+      assign recommendation_object_width = 752
+      assign recommendation_object_height = 1140
+    when 'collier-quartz-rose-boho-dore'
+      assign recommendation_object_asset = 'milaura-reco-cutout-quartz-rose-v1.png'
+      assign recommendation_object_width = 694
+      assign recommendation_object_height = 1337
+    when 'boucles-doreilles-obsidienne-noire'
+      assign recommendation_object_asset = 'milaura-reco-cutout-obsidienne-earrings-v1.png'
+      assign recommendation_object_width = 658
+      assign recommendation_object_height = 442
+  endcase
 -%}
 
 <article
-  class="milaura-recommendation-card{% if is_focal %} milaura-recommendation-card--focal{% else %} milaura-recommendation-card--secondary{% endif %}"
+  class="milaura-recommendation-card{% if is_focal %} milaura-recommendation-card--focal{% else %} milaura-recommendation-card--secondary{% endif %}{% if recommendation_object_asset != blank %} milaura-recommendation-card--object{% endif %}"
   role="listitem"
   data-milaura-recommendation-card
   data-product-id="{{ recommendation_product.id }}"
   data-variant-id="{{ recommendation_variant.id }}"
   data-product-available="{{ recommendation_product.available }}"
   data-stone-handle="{{ recommended_stone | escape }}"
+  {% if recommendation_object_asset != blank %}data-object-media="true"{% endif %}
 >
   {% render 'milaura-card-product',
     card_product: recommendation_product,
@@ -69,7 +88,10 @@
     show_secondary_image: false,
     force_bestseller_badge: false,
     recommendation_media: true,
-    recommendation_focal: is_focal
+    recommendation_focal: is_focal,
+    recommendation_object_asset: recommendation_object_asset,
+    recommendation_object_width: recommendation_object_width,
+    recommendation_object_height: recommendation_object_height
   %}
 
   {%- if reason != blank -%}

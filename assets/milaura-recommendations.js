@@ -418,6 +418,7 @@
       this.currentIntent = intent;
       this.dataset.intent = intent;
       this.list.dataset.cardCount = String(this.list.children.length);
+      this.configureLivingComposition();
       this.updateCopy(intent);
       this.setState('ready');
       this.announce(
@@ -425,6 +426,25 @@
       );
       this.observeImpression();
       document.dispatchEvent(new CustomEvent('milaura:recommendations:loaded', { detail: { root: this } }));
+    }
+
+    configureLivingComposition() {
+      const cards = Array.from(this.list?.querySelectorAll('[data-milaura-recommendation-card]') || []);
+      const objectCards = cards.filter((card) => card.dataset.objectMedia === 'true');
+      const living = this.context === 'pdp' && cards.length >= 2 && objectCards.length === cards.length;
+
+      this.dataset.layout = living ? 'living' : 'gallery';
+      cards.forEach((card, index) => {
+        card.style.setProperty('--milaura-reco-order', String(index));
+        card.dataset.active = String(living && index === 0);
+      });
+    }
+
+    activateLivingCard(card) {
+      if (this.dataset.layout !== 'living' || !card || !this.list?.contains(card)) return;
+      this.list.querySelectorAll('[data-milaura-recommendation-card]').forEach((candidate) => {
+        candidate.dataset.active = String(candidate === card);
+      });
     }
 
     updateCopy(intent) {
@@ -454,6 +474,14 @@
     }
 
     bindInteractions() {
+      this.addEventListener('pointerover', (event) => {
+        this.activateLivingCard(event.target.closest('[data-milaura-recommendation-card]'));
+      });
+
+      this.addEventListener('focusin', (event) => {
+        this.activateLivingCard(event.target.closest('[data-milaura-recommendation-card]'));
+      });
+
       this.addEventListener('click', (event) => {
         const link = event.target.closest('.grid__card');
         if (!link) return;
@@ -470,13 +498,27 @@
       this.addEventListener('keydown', (event) => {
         if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
         if (event.target.closest('button, input, select, textarea')) return;
-        if (!this.list || this.list.scrollWidth <= this.list.clientWidth) return;
+        if (!this.list) return;
+        const direction = event.key === 'ArrowRight' ? 1 : -1;
+
+        if (this.dataset.layout === 'living' && this.list.scrollWidth <= this.list.clientWidth) {
+          const cards = Array.from(this.list.querySelectorAll('[data-milaura-recommendation-card]'));
+          const activeIndex = Math.max(0, cards.findIndex((card) => card.dataset.active === 'true'));
+          const nextIndex = Math.min(cards.length - 1, Math.max(0, activeIndex + direction));
+          const nextCard = cards[nextIndex];
+          if (!nextCard || nextIndex === activeIndex) return;
+          event.preventDefault();
+          this.activateLivingCard(nextCard);
+          nextCard.querySelector('.grid__card')?.focus();
+          return;
+        }
+
+        if (this.list.scrollWidth <= this.list.clientWidth) return;
         const card = this.list.querySelector('[data-milaura-recommendation-card]');
         if (!card) return;
         event.preventDefault();
         const styles = window.getComputedStyle(this.list);
         const gap = Number.parseFloat(styles.columnGap || styles.gap) || 0;
-        const direction = event.key === 'ArrowRight' ? 1 : -1;
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.list.scrollBy({
           left: direction * (card.getBoundingClientRect().width + gap),

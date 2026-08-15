@@ -2,7 +2,7 @@
 
 Date : 2026-08-14
 
-Statut : implementation terminee, correction horizontale disponible sur le theme de developpement, GO visuel en attente
+Statut : moteur termine, prototype `Composition Vivante` disponible sur le theme de developpement, GO visuel en attente
 
 Proprietaire du GO creatif final : Patrice Allié
 
@@ -12,9 +12,9 @@ Theme autorise avant GO : developpement `199421952347`
 
 Transformer chaque recommandation MilAura en moment editorial attendu, utile et mesurable. Le systeme ne doit plus ressembler a une rangee de produits ajoutee par obligation. Il doit aider a composer un ensemble, comparer une alternative ou reprendre une visite, avec une hierarchie visuelle digne d'une maison de joaillerie.
 
-Le geste visuel signe est une galerie editoriale horizontale asymetrique : une piece focale large, deux ou trois pieces secondaires plus compactes sur la meme ligne, du vide et une raison de recommandation explicite. La photographie porte l'attention. L'interface ne la recouvre pas.
+Le geste visuel signe est la `Composition Vivante` : une scene pleine largeur dans laquelle les produits detoures tombent successivement, se posent sur un filet mineral et deviennent selectionnables. Ce ne sont plus des cartes alignees. La piece active prend de l'ampleur et revele son nom, son prix, la raison de recommandation et l'action Ajouter. Les autres restent visibles comme objets de composition.
 
-La section doit pouvoir etre comprise d'un seul regard sur desktop. Sa hauteur de media est bornee et aucune composition verticale ne peut forcer un deuxieme ecran. Une recommandation faible ou vide ne s'affiche pas.
+La section doit pouvoir etre comprise d'un seul regard sur desktop. Chaque bijou est affiche entierement, sans crop ni image portrait plus haute que le viewport. La scene est bornee en hauteur. Une recommandation faible, vide ou depourvue d'assets detoures valides revient au layout galerie propre sans casser le moteur.
 
 ## 2. Regles non negociables
 
@@ -122,17 +122,17 @@ Cette frontiere evite de manquer une surface commerciale tout en empechant le no
 ┌────────────────────────────────────────────────────────────────────┐
 │ COMPOSITION MILAURA          Titre                 Raison courte   │
 │                                                                    │
-│ ┌────────────────────────────┐ ┌──────────────┐ ┌──────────────┐ │
-│ │ Produit focal              │ │ Produit 2    │ │ Produit 3    │ │
-│ │ image ou video large       │ │ image        │ │ image        │ │
-│ │ nom / prix / raison        │ │ nom / prix   │ │ nom / prix   │ │
-│ │ Ajouter                    │ │ Ajouter      │ │ Ajouter      │ │
-│ └────────────────────────────┘ └──────────────┘ └──────────────┘ │
+│       bijou 1          BIJOU 2 ACTIF          bijou 3             │
+│          \                  |                    /                │
+│ ───────────────────── filet mineral ───────────────────────────── │
+│                     nom / prix / raison                            │
+│                     quantité      Ajouter                          │
 └────────────────────────────────────────────────────────────────────┘
-        6 colonnes                3 colonnes        3 colonnes
 ```
 
-Toutes les cartes restent sur une seule ligne. Le media a une hauteur commune bornee afin que la composition complete reste visible dans un viewport desktop courant. La piece focale peut utiliser une video produit reelle. Elle ne demarre qu'au survol ou a la prise de focus et s'arrete a la sortie. Sans video validee, elle utilise la photographie produit. Aucun mannequin genere n'est introduit.
+Les produits peuvent se chevaucher legerement et utiliser des echelles differentes, mais restent tous visibles en entier. Au chargement, ils descendent avec un decalage court puis se stabilisent. Le survol, le focus et les fleches gauche/droite changent la piece active. Le mouvement est unique, fonctionnel et supprime avec `prefers-reduced-motion`. Aucune carte, panneau ou fond artificiel n'est ajoute.
+
+Le detourage est un asset produit controle, pas une generation libre. Un asset qui modifie la pierre, la chaine, la monture ou la couleur est refuse. Tant que la bibliotheque n'est pas validee produit par produit, le layout galerie photographie reste le repli canonique.
 
 ### 5.4 Mobile, 360 a 430 px
 
@@ -142,16 +142,15 @@ Toutes les cartes restent sur une seule ligne. Le media a une hauteur commune bo
 │ Titre                    │
 │ Raison courte            │
 ├──────────────────────────┤
-│ Produit focal            │
-│ grande photographie      │
+│ bijou entier detoure      │
 │ nom / prix / raison      │
 │ Ajouter                  │
 ├──────────────────────────┤
-│ Produit 2  →  Produit 3  │  rail tactile, apercu suivant visible
+│ Produit 2  →  Produit 3  │  scene tactile, apercu suivant visible
 └──────────────────────────┘
 ```
 
-Le scroll horizontal est natif, avec `scroll-snap`, cibles tactiles de 44 px, apercu de la carte suivante et controles clavier. Le desktop n'est pas un rail et le mobile n'est pas un crop du desktop.
+Le scroll horizontal est natif, avec `scroll-snap`, cibles tactiles de 44 px, apercu du produit suivant et controles clavier. Le produit reste entier sur une hauteur bornee. Le desktop n'est pas un rail et le mobile n'est pas un crop du desktop.
 
 ### 5.5 Panier drawer
 
@@ -172,7 +171,7 @@ La section tient dans le flux du drawer, sans modal supplementaire, sans carrous
 
 | Fichier cible | Responsabilite |
 | --- | --- |
-| `assets/milaura-recommendations.css` | Tous les layouts de galerie horizontale, rail et compact, plus les etats |
+| `assets/milaura-recommendations.css` | Composition Vivante, galerie de repli, rail mobile, compact panier et etats |
 | `assets/milaura-recommendations.js` | Chargement API, filtrage, rail, consentement, recent, analytics et ajout panier |
 | `snippets/milaura-recommendation-card.liquid` | Carte produit unique, variantes focal, compact et standard |
 | `snippets/milaura-recommendation-shell.liquid` | Entete, liste, live region et donnees de contexte |
@@ -254,11 +253,11 @@ La suppression n'intervient qu'apres preuve que chaque inclusion a ete remplacee
 
 ### Reponse de design
 
-- une seule piece focale, deux secondes roles et une raison lisible ;
+- trois objets de tailles et de positions distinctes, une seule piece active et une raison lisible ;
 - une distinction publique entre complement, alternative et reprise ;
-- une asymetrie horizontale stable, pas un masonry aleatoire ;
+- une scene pleine largeur stable, pas un masonry aleatoire ;
 - un detail or reserve a l'action ;
-- une transition principale sur le media focal uniquement ;
+- une seule choregraphie de chute, puis un agrandissement discret de l'objet actif ;
 - aucune recommandation lorsque le moteur n'a rien de credible.
 
 ## 9. Accessibilite et navigation
@@ -272,9 +271,8 @@ La suppression n'intervient qu'apres preuve que chaque inclusion a ete remplacee
 - scroll tactile libre et clavier par fleches lorsque le rail a le focus ;
 - focus toujours visible ;
 - boutons de 44 px minimum ;
-- video sans autoplay, lue uniquement au survol ou au focus et arretee a la sortie ;
-- poster, video muette et `playsinline` ;
-- aucune lecture automatique avec `prefers-reduced-motion: reduce` ou economie de donnees.
+- aucun mouvement continu apres la pose des objets ;
+- aucune animation de chute avec `prefers-reduced-motion: reduce`.
 
 ## 10. Performance
 
@@ -283,7 +281,7 @@ La suppression n'intervient qu'apres preuve que chaque inclusion a ete remplacee
 - section chargee paresseusement a 400 px du viewport ;
 - au maximum quatre produits demandes par produit source ;
 - images responsives avec dimensions explicites ;
-- video uniquement si asset valide, poster obligatoire ;
+- detourage transparent uniquement si l'asset produit a ete valide ;
 - aucune mutation de hauteur brutale : espace reserve par ratio ;
 - budget cible du nouveau JavaScript minifie : moins de 16 Ko ;
 - budget cible du nouveau CSS minifie : moins de 20 Ko ;
@@ -345,8 +343,8 @@ La suppression n'intervient qu'apres preuve que chaque inclusion a ete remplacee
 ### Visuelle
 
 - photographie clairement prioritaire ;
-- hierarchie horizontale lisible en moins de deux secondes ;
-- section desktop complete visible sans empilement vertical de cartes ;
+- scene horizontale lisible en moins de deux secondes ;
+- bijoux complets et section desktop visible sans empilement vertical de cartes ;
 - aucune trace de Dawn natif ;
 - aucun panneau blanc ajoute ;
 - aucune grosse pastille prune ;

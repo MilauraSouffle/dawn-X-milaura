@@ -1,6 +1,6 @@
 /* ==========================================================================
    MilAura Recommendation Atelier 2026
-   Une galerie horizontale editoriale, un rail mobile et un adaptateur panier compact.
+   Une composition produit vivante, un rail mobile et un adaptateur panier compact.
    Toutes les valeurs de marque viennent de milaura-tokens.css.
    ========================================================================== */
 
@@ -130,6 +130,12 @@ milaura-recommendations {
   height: 100%;
   display: block;
   object-fit: cover;
+}
+
+.milaura-recommendation-card__object-image {
+  display: none;
+  object-fit: contain;
+  background: transparent;
 }
 
 .milaura-recommendations .grid__card-img {
@@ -450,9 +456,282 @@ milaura-recommendations {
   }
 }
 
+/* Composition Vivante : prototype PDP avec medias produit detoures valides. */
+@keyframes milaura-recommendation-settle {
+  0% {
+    opacity: 0;
+    transform: translateY(-28%);
+  }
+
+  72% {
+    opacity: 1;
+    transform: translateY(2.5%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__section {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding: var(--milaura-esp-lg) 0 var(--milaura-esp-md);
+    overflow: clip;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__inner {
+    max-width: none;
+    min-height: clamp(560px, 72vh, 720px);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: var(--milaura-esp-sm);
+    padding-inline: max(var(--milaura-esp-md), calc((100vw - var(--milaura-largeur-contenu)) / 2));
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__intro {
+    width: 100%;
+    max-width: var(--milaura-largeur-contenu);
+    margin-inline: auto;
+    padding-inline: var(--milaura-esp-lg);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__products {
+    width: 100%;
+    max-width: var(--milaura-largeur-contenu);
+    min-height: clamp(460px, 58vh, 600px);
+    display: block;
+    position: relative;
+    margin-inline: auto;
+    isolation: isolate;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__products::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 68%;
+    right: 0;
+    left: 0;
+    border-top: var(--milaura-filet-mineral);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card {
+    --milaura-reco-rest-rotate: 0deg;
+    width: 32%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    border: 0;
+    border-radius: var(--milaura-rayon-net);
+    opacity: 0.58;
+    background: transparent;
+    box-shadow: none;
+    container-type: normal;
+    cursor: pointer;
+    transition: opacity var(--milaura-transition-rapide), transform var(--milaura-transition-rapide);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card:nth-child(1) {
+    left: 1%;
+    width: 43%;
+    --milaura-reco-rest-rotate: -1.5deg;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card:nth-child(2) {
+    left: 42%;
+    width: 33%;
+    --milaura-reco-rest-rotate: 1.25deg;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card:nth-child(3) {
+    right: 1%;
+    width: 25%;
+    --milaura-reco-rest-rotate: -2deg;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card[data-active='true'] {
+    z-index: 2;
+    opacity: 1;
+    transform: translateY(calc(-1 * var(--milaura-esp-2xs)));
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card:focus-within {
+    outline: 0;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card {
+    min-height: 0;
+    height: 100%;
+    position: static;
+    flex: 0 0 100%;
+    display: flex;
+    flex-direction: column;
+    color: var(--milaura-encre);
+    text-decoration: none;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card-img {
+    width: 100%;
+    height: 70%;
+    min-height: 0;
+    flex: 0 0 70%;
+    overflow: visible;
+    border-radius: var(--milaura-rayon-net);
+    background: transparent;
+    animation: milaura-recommendation-settle 820ms cubic-bezier(0.22, 0.8, 0.22, 1) both;
+    animation-delay: calc(var(--milaura-reco-order) * 150ms);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card:focus-visible .grid__card-img {
+    outline: var(--milaura-focus);
+    outline-offset: var(--milaura-focus-offset);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card__object-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(var(--milaura-ombre-douce));
+    transform: rotate(var(--milaura-reco-rest-rotate)) scale(0.9);
+    transform-origin: center 68%;
+    transition: transform var(--milaura-transition-rapide), opacity var(--milaura-transition-rapide);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card-image:not(.milaura-recommendation-card__object-image) {
+    display: none;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card[data-active='true'] .milaura-recommendation-card__object-image {
+    transform: rotate(0) scale(1.06);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card-info,
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card__reason,
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-editorial-purchase {
+    opacity: 0;
+    transform: translateY(var(--milaura-esp-2xs));
+    pointer-events: none;
+    transition: opacity var(--milaura-transition-rapide), transform var(--milaura-transition-rapide);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card-info {
+    position: absolute;
+    top: 70%;
+    right: var(--milaura-esp-sm);
+    left: var(--milaura-esp-sm);
+    padding: var(--milaura-esp-sm) 0 0;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card__reason {
+    position: absolute;
+    top: calc(70% + var(--milaura-esp-xl));
+    right: var(--milaura-esp-sm);
+    left: var(--milaura-esp-sm);
+    margin: 0;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-editorial-purchase {
+    position: absolute;
+    right: var(--milaura-esp-sm);
+    bottom: 0;
+    left: var(--milaura-esp-sm);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card[data-active='true'] .grid__card-info,
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card[data-active='true'] .milaura-recommendation-card__reason,
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card[data-active='true'] .milaura-editorial-purchase {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__section {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding: var(--milaura-esp-xl) 0 var(--milaura-esp-lg);
+    overflow: clip;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__inner {
+    padding: 0;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__intro {
+    padding-inline: var(--milaura-esp-sm);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__products {
+    position: relative;
+    gap: 0;
+    margin: 0;
+    padding: 0 var(--milaura-esp-sm) var(--milaura-esp-sm);
+    scroll-padding-inline: var(--milaura-esp-sm);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendations__products::before {
+    content: '';
+    position: absolute;
+    top: clamp(340px, 46vh, 430px);
+    right: 0;
+    left: 0;
+    border-top: var(--milaura-filet-mineral);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card,
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card--focal,
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card--secondary {
+    width: 86vw;
+    min-width: 86vw;
+    flex: 0 0 86vw;
+    border: 0;
+    border-radius: var(--milaura-rayon-net);
+    background: transparent;
+    scroll-snap-align: center;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card-img {
+    height: clamp(340px, 46vh, 430px);
+    aspect-ratio: auto;
+    overflow: visible;
+    border-radius: var(--milaura-rayon-net);
+    background: transparent;
+    animation: milaura-recommendation-settle 720ms cubic-bezier(0.22, 0.8, 0.22, 1) both;
+    animation-delay: calc(var(--milaura-reco-order) * 110ms);
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card__object-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card-image:not(.milaura-recommendation-card__object-image) {
+    display: none;
+  }
+
+  .milaura-recommendations--pdp[data-layout='living'] .grid__card-info,
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-recommendation-card__reason,
+  .milaura-recommendations--pdp[data-layout='living'] .milaura-editorial-purchase {
+    position: relative;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .milaura-recommendation-card,
-  .milaura-recommendation-card .grid__card-image {
+  .milaura-recommendation-card .grid__card-image,
+  .milaura-recommendation-card .grid__card-img {
+    animation: none;
     scroll-behavior: auto;
     transition: none;
   }
