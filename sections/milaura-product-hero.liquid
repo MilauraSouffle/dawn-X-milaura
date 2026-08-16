@@ -422,157 +422,8 @@
     display: contents;
   }
 
-  /* DESKTOP MEDIA GRID (≥ 990px) */
-  @media screen and (min-width: 990px) {
-    .milaura-hero-wrapper {
-      display: grid;
-      grid-template-columns: 1fr 0.8fr;
-      grid-template-areas:
-        "gallery header"
-        "gallery video-bubble"
-        "gallery actions"
-        "scratch scratch";
-      gap: 16px;
-      padding: 22px 16px; /* Marge top/bottom desktop pour aerer vs cadre dore */
-      overflow: visible;
-      align-items: start;
-    }
-
-    .milaura-video-bubble-wrapper {
-      grid-area: video-bubble;
-      /* No justify-self: center — wrapper stretches to fill grid column.
-         Bubble is centered via flex justify-content on the wrapper. */
-    }
-
-    .milaura-hero-header-group {
-      grid-area: header;
-      text-align: left;
-      position: static !important;
-      background: transparent !important;
-      border: none !important;
-      padding: 0 !important;
-      margin-bottom: 0;
-    }
-
-    .milaura-hero-actions-group {
-      grid-area: actions;
-      position: sticky;
-      top: calc(var(--header-height, 80px) + 20px);
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(73, 50, 70, 0.1);
-      border-radius: 16px;
-      padding: 18px 20px; /* Équilibré */
-    }
-
-    /* Grille Media Desktop */
-    .milaura-hero-gallery-column {
-      grid-area: gallery;
-      margin: 0;
-      overflow: visible;
-      border-radius: 0;
-    }
-
-    .product__media-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      overflow: visible;
-      scroll-snap-type: none;
-      padding: 0;
-    }
-
-    /* Image principale : pleine largeur */
-    .product__media-item:first-child {
-      flex: 0 0 100%;
-      width: 100%;
-    }
-
-    .product__media-item:first-child .product-media-container {
-      padding-top: 100%;
-      border-radius: 16px;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-
-    /* Miniatures : petites, en ligne */
-    .product__media-item:not(:first-child) {
-      flex: 0 0 auto;
-      width: auto;
-      min-width: 0;
-      max-width: none;
-    }
-
-    .product__media-item:not(:first-child) .product-media-container {
-      padding-top: 0;
-      width: 80px;
-      height: 80px;
-      border-radius: 10px;
-      border: 2px solid transparent;
-      position: relative;
-      overflow: hidden;
-      background: var(--milaura-beige, #FBF8F3);
-    }
-
-    .product__media-item:not(:first-child) .product-media-container img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* Spotlight slide: hidden on desktop (uses external thumb instead) */
-    .product__media-item--spotlight {
-      /* Visible on mobile via carousel, hidden on desktop via JS-injected style */
-    }
-
-    .product__media-item--spotlight .milaura-hotspot {
-      display: none; /* Hide hotspots in thumbnail mode on desktop */
-    }
-
-    .slider-buttons {
-      display: none;
-    }
-
-    .slider-button {
-      display: none;
-    }
-
-    /* Desktop Zoom on hover */
-    .product__media-item:first-child .product-media-container {
-      cursor: zoom-in;
-    }
-
-    .product__media-item:first-child .product-media-container.is-zoomed {
-      cursor: zoom-out;
-    }
-
-    .product__media-item:first-child .product-media-container.is-zoomed img {
-      transform: scale(2.2);
-      transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
-      transition: transform-origin 0.05s ease-out;
-    }
-
-    /* Desktop Clickable Thumbnails */
-    .product__media-item:not(:first-child) .product-media-container {
-      cursor: pointer;
-      transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-
-    .product__media-item:not(:first-child) .product-media-container:hover {
-      border-color: var(--milaura-gold);
-      box-shadow: 0 4px 16px rgba(185, 151, 91, 0.25);
-    }
-
-    /* Desktop pills : reste sur la grid area "meta" (1 ligne centree au-dessus de la galerie).
-       Refonte 2026-05-28 : retrait du flotting badges sur la photo, plus fiable + lisible. */
-    .milaura-meta-badge {
-      padding: 7px 16px;
-      font-size: 0.85rem;
-      box-shadow: 0 2px 12px rgba(185, 151, 91, 0.12);
-    }
-
-  }
+  /* La composition desktop est definie une seule fois en fin de feuille,
+     apres les styles des sous-composants, afin d'eviter les overrides concurrents. */
 
   /* AVIS */
   .rating-badge {
@@ -1267,10 +1118,9 @@
     }
   }
 
-  /* PLEIN ÉCRAN (≥1400px): Encore plus compact pour tout voir */
+  /* GRAND DESKTOP : largeur editoriale stable, sans etirer la galerie. */
   @media screen and (min-width: 1400px) {
     .milaura-hero-wrapper {
-      grid-template-columns: 1fr 0.7fr; /* Colonne droite encore plus étroite */
       max-width: 1400px;
       margin: 0 auto;
     }
@@ -2005,47 +1855,10 @@
     opacity: 1;
   }
 
-  /* Desktop : hide thumb strip (thumbnails are already inline) */
+  /* Desktop : le rail dedie vit sous le bloc Karine. */
   @media screen and (min-width: 990px) {
     .milaura-thumb-strip {
       display: none;
-    }
-  }
-
-  /* ===========================================
-     SPOTLIGHT DESKTOP THUMBNAIL (outside slider)
-     =========================================== */
-  .milaura-spotlight-desktop-thumb {
-    display: none; /* Hidden on mobile — mobile uses carousel slide */
-  }
-
-  @media screen and (min-width: 990px) {
-    .milaura-spotlight-desktop-thumb {
-      display: inline-block;
-      cursor: pointer;
-      transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-
-    .milaura-spotlight-desktop-thumb__img-wrap {
-      width: 80px;
-      height: 80px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 2px solid rgba(185, 151, 91, 0.3);
-      position: relative;
-      background: var(--milaura-beige, #FBF8F3);
-    }
-
-    .milaura-spotlight-desktop-thumb:hover .milaura-spotlight-desktop-thumb__img-wrap {
-      border-color: var(--milaura-gold, #B9975B);
-      box-shadow: 0 4px 16px rgba(185, 151, 91, 0.25);
-    }
-
-    .milaura-spotlight-desktop-thumb__img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
     }
   }
 
@@ -4199,16 +4012,85 @@
   /* Phrase reassurance sous CTA supprimee (cf user request 2026-05-28) */
   .milaura-hero-cta-reassurance { display: none; }
 
-  /* Desktop : grid avec social + meta full width + gallery/rightcol (header + actions ensembles).
-     Refonte 2026-05-28 evening : header + actions wrappes ensemble pour eviter le trou vertical. */
+  .milaura-desktop-thumbnails {
+    display: none;
+  }
+
+  /* Desktop : une seule composition autoritaire. La galerie est bornee par le viewport,
+     la preuve sociale ouvre la colonne d'achat et les miniatures vivent sous Karine. */
   @media screen and (min-width: 990px) {
     .milaura-hero-wrapper {
+      display: grid;
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
       grid-template-areas:
-        "social   social"
-        "gallery  rightcol" !important;
-      grid-template-rows: auto auto !important;
+        "gallery  social"
+        "gallery  rightcol";
+      grid-template-rows: auto 1fr;
       align-items: start;
+      column-gap: 16px;
       row-gap: 12px;
+      padding: 12px 16px 16px;
+      overflow: visible;
+    }
+
+    .milaura-hero-social--top {
+      grid-area: social;
+      width: 100%;
+      max-width: 100%;
+      justify-self: stretch;
+      margin: 0;
+    }
+
+    .milaura-hero-gallery-column {
+      grid-area: gallery;
+      min-width: 0;
+      margin: 0;
+      overflow: visible;
+      border-radius: 0;
+    }
+
+    .milaura-hero-gallery-column .product__media-list {
+      display: block;
+      overflow: visible;
+      scroll-snap-type: none;
+      padding: 0;
+    }
+
+    .milaura-hero-gallery-column .product__media-item:first-child {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+    }
+
+    .milaura-hero-gallery-column .product__media-item:not(:first-child) {
+      display: none;
+    }
+
+    .milaura-hero-gallery-column .product__media-item:first-child .product-media-container {
+      width: 100%;
+      height: clamp(500px, calc(100svh - 192px), 680px);
+      min-height: 0;
+      max-height: none;
+      padding-top: 0;
+      border: var(--milaura-filet);
+      border-radius: 16px;
+      cursor: zoom-in;
+    }
+
+    .milaura-hero-gallery-column .product__media-item:first-child .product-media-container.is-zoomed {
+      cursor: zoom-out;
+    }
+
+    .milaura-hero-gallery-column .product__media-item:first-child .product-media-container.is-zoomed img {
+      transform: scale(2.2);
+      transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+      transition: transform-origin 0.05s ease-out;
+    }
+
+    .milaura-hero-gallery-column .slider-buttons,
+    .milaura-hero-gallery-column .slider-button {
+      display: none;
     }
 
     .milaura-hero-rightcol {
@@ -4236,6 +4118,11 @@
       position: static !important;
       align-self: stretch;
       gap: 12px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(73, 50, 70, 0.1);
+      border-radius: 16px;
+      padding: 18px 20px;
     }
 
     .milaura-video-bubble-wrapper {
@@ -4247,6 +4134,57 @@
       position: static;
       padding: 0;
       pointer-events: auto;
+    }
+
+    .milaura-meta-badge {
+      padding: 7px 16px;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 12px rgba(185, 151, 91, 0.12);
+    }
+
+    .milaura-desktop-thumbnails {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      overflow-x: auto;
+      padding: 0 1px 2px;
+      scrollbar-width: none;
+    }
+
+    .milaura-desktop-thumbnails::-webkit-scrollbar {
+      display: none;
+    }
+
+    .milaura-desktop-thumbnail {
+      flex: 0 0 44px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      overflow: hidden;
+      border: var(--milaura-filet-mineral);
+      border-radius: 8px;
+      background: var(--milaura-nacre);
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .milaura-desktop-thumbnail:hover,
+    .milaura-desktop-thumbnail[aria-pressed='true'] {
+      border-color: var(--milaura-or);
+      box-shadow: var(--milaura-ombre-douce);
+    }
+
+    .milaura-desktop-thumbnail:focus-visible {
+      outline: var(--milaura-focus);
+      outline-offset: 2px;
+    }
+
+    .milaura-desktop-thumbnail img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
@@ -4637,19 +4575,6 @@
 
           {%- comment -%} Overlay variantes supprimé — les variantes sont gérées dans la zone d'achat {%- endcomment -%}
         </slider-component>
-
-        {%- comment -%} ========== SPOTLIGHT DESKTOP THUMBNAIL (outside slider) ========== {%- endcomment -%}
-        {%- if section.settings.show_spotlight and section.settings.spotlight_image != blank -%}
-          <div class="milaura-spotlight-desktop-thumb" data-spotlight-slide="Slide-{{ section.id }}-{{ product.media.size | plus: 1 }}">
-            <div class="milaura-spotlight-desktop-thumb__img-wrap">
-              {{
-                section.settings.spotlight_image
-                | image_url: width: 200
-                | image_tag: loading: 'lazy', decoding: 'async', class: 'milaura-spotlight-desktop-thumb__img'
-              }}
-            </div>
-          </div>
-        {%- endif -%}
 
         {%- comment -%} La description courte et la preuve humaine restent dans la colonne d'achat sur tous les écrans. {%- endcomment -%}
       </div>
@@ -5198,7 +5123,46 @@
             </div>
           {%- endif -%}
 
-          {%- comment -%} Bulle social proof deplacee au-dessus de la galerie (refonte 2026-05-28) {%- endcomment -%}
+          {%- assign desktop_image_media = product.media | where: 'media_type', 'image' -%}
+          {%- assign show_desktop_thumbnails = false -%}
+          {%- if desktop_image_media.size > 1 -%}
+            {%- assign show_desktop_thumbnails = true -%}
+          {%- endif -%}
+          {%- if section.settings.show_spotlight and section.settings.spotlight_image != blank -%}
+            {%- assign show_desktop_thumbnails = true -%}
+          {%- endif -%}
+          {%- if show_desktop_thumbnails -%}
+            <div class="milaura-desktop-thumbnails no-js-hidden" role="group" aria-label="Choisir une vue du produit">
+              {%- for media in desktop_image_media -%}
+                <button
+                  type="button"
+                  class="milaura-desktop-thumbnail"
+                  aria-label="Vue {{ forloop.index }} : {{ media.alt | default: product.title | escape }}"
+                  aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+                  data-desktop-media-src="{{ media | image_url: width: 1600 }}"
+                  data-desktop-media-srcset="{{ media | image_url: width: 640 }} 640w, {{ media | image_url: width: 960 }} 960w, {{ media | image_url: width: 1280 }} 1280w, {{ media | image_url: width: 1600 }} 1600w"
+                  data-desktop-media-alt="{{ media.alt | default: product.title | escape }}"
+                >
+                  {{ media | image_url: width: 120 | image_tag: loading: 'lazy', decoding: 'async' }}
+                </button>
+              {%- endfor -%}
+              {%- if section.settings.show_spotlight and section.settings.spotlight_image != blank -%}
+                <button
+                  type="button"
+                  class="milaura-desktop-thumbnail"
+                  aria-label="Vue mise en scène"
+                  aria-pressed="false"
+                  data-desktop-media-src="{{ section.settings.spotlight_image | image_url: width: 1600 }}"
+                  data-desktop-media-srcset="{{ section.settings.spotlight_image | image_url: width: 640 }} 640w, {{ section.settings.spotlight_image | image_url: width: 960 }} 960w, {{ section.settings.spotlight_image | image_url: width: 1280 }} 1280w, {{ section.settings.spotlight_image | image_url: width: 1600 }} 1600w"
+                  data-desktop-media-alt="Mise en scène de {{ product.title | escape }}"
+                >
+                  {{ section.settings.spotlight_image | image_url: width: 120 | image_tag: loading: 'lazy', decoding: 'async' }}
+                </button>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} La preuve sociale reste le premier element de la grille desktop. {%- endcomment -%}
         </div>
       </div>
         <!-- Fin GROUPE 3: Actions -->
@@ -6852,48 +6816,33 @@
     }
 
     /* ============================
-     2. CLICKABLE THUMBNAILS (Desktop)
-     Click a thumbnail to swap it with main image
+     2. DESKTOP THUMBNAIL RAIL
+     The rail is rendered under Karine and updates one stable main image.
      ============================ */
     function initThumbnails() {
-      const mediaList = document.querySelector('.product__media-list');
-      if (!mediaList) return;
+      const rail = document.querySelector('.milaura-desktop-thumbnails');
+      const mainContainer = document.querySelector('.product__media-item:first-child .product-media-container');
+      const mainImg = mainContainer ? mainContainer.querySelector('img.image-magnify-hover') : null;
+      if (!rail || !mainContainer || !mainImg) return;
 
-      const items = mediaList.querySelectorAll('.product__media-item');
-      if (items.length < 2) return;
-
-      items.forEach(function (item, index) {
-        if (index === 0) return; // Skip main image
-        // Skip spotlight and video slides (handled separately)
-        if (item.classList.contains('product__media-item--spotlight') || item.classList.contains('product__media-item--video-slide')) return;
-
-        item.querySelector('.product-media-container').addEventListener('click', function (e) {
+      const thumbnails = rail.querySelectorAll('.milaura-desktop-thumbnail');
+      thumbnails.forEach(function (thumbnail) {
+        thumbnail.addEventListener('click', function (event) {
           if (!isDesktop()) return;
-          e.preventDefault();
+          event.preventDefault();
 
-          const firstItem = items[0];
-          const clickedItem = item;
+          const nextSrc = thumbnail.dataset.desktopMediaSrc;
+          if (!nextSrc) return;
 
-          // Swap the image sources
-          const mainImg = firstItem.querySelector('img.image-magnify-hover');
-          const thumbImg = clickedItem.querySelector('img.image-magnify-hover');
-          if (!mainImg || !thumbImg) return;
+          const nextSrcset = thumbnail.dataset.desktopMediaSrcset;
+          if (nextSrcset) mainImg.srcset = nextSrcset;
+          mainImg.src = nextSrc;
+          mainImg.alt = thumbnail.dataset.desktopMediaAlt || mainImg.alt;
+          mainContainer.classList.remove('is-zoomed');
 
-          // Swap src and srcset
-          const tmpSrc = mainImg.src;
-          const tmpSrcset = mainImg.srcset || '';
-          const tmpAlt = mainImg.alt || '';
-
-          mainImg.src = thumbImg.src;
-          mainImg.srcset = thumbImg.srcset || '';
-          mainImg.alt = thumbImg.alt || '';
-
-          thumbImg.src = tmpSrc;
-          thumbImg.srcset = tmpSrcset;
-          thumbImg.alt = tmpAlt;
-
-          // Remove zoom state
-          firstItem.querySelector('.product-media-container').classList.remove('is-zoomed');
+          thumbnails.forEach(function (item) {
+            item.setAttribute('aria-pressed', item === thumbnail ? 'true' : 'false');
+          });
         });
       });
     }
@@ -7161,72 +7110,6 @@
       return embedUrl;
     }
 
-    /* ============================
-     7. SPOTLIGHT DESKTOP THUMBNAIL
-     Move outside slider into thumbnail row + click to swap
-     ============================ */
-    function initSpotlightDesktop() {
-      var desktopThumb = document.querySelector('.milaura-spotlight-desktop-thumb');
-      if (!desktopThumb) return;
-
-      var mediaList = document.querySelector('.product__media-list');
-      if (!mediaList) return;
-
-      // On desktop, move the spotlight thumbnail into the media list (as last child)
-      // so it appears in the flex thumbnail row naturally
-      function positionSpotlight() {
-        if (isDesktop()) {
-          if (desktopThumb.parentElement !== mediaList) {
-            mediaList.appendChild(desktopThumb);
-          }
-        } else {
-          // On mobile, move it back outside (hidden via CSS anyway)
-          var galleryCol = document.querySelector('.milaura-hero-gallery-column');
-          if (galleryCol && desktopThumb.parentElement !== galleryCol) {
-            galleryCol.appendChild(desktopThumb);
-          }
-        }
-      }
-
-      positionSpotlight();
-      window.addEventListener('resize', positionSpotlight);
-
-      // Hide the spotlight <li> inside the slider on desktop
-      var spotlightSlide = document.querySelector('.product__media-item--spotlight');
-      if (spotlightSlide) {
-        // Add CSS to hide it on desktop only (mobile still uses it)
-        spotlightSlide.style.cssText += ';';
-        var style = document.createElement('style');
-        style.textContent = '@media(min-width:990px){.product__media-item--spotlight{display:none!important;}}';
-        document.head.appendChild(style);
-      }
-
-      // Click handler: swap spotlight image with main image
-      desktopThumb.addEventListener('click', function() {
-        if (!isDesktop()) return;
-
-        var firstItem = mediaList.querySelector('.product__media-item:first-child');
-        if (!firstItem) return;
-        var mainImg = firstItem.querySelector('img.image-magnify-hover');
-        var spotlightImg = desktopThumb.querySelector('.milaura-spotlight-desktop-thumb__img');
-        if (!mainImg || !spotlightImg) return;
-
-        var tmpSrc = mainImg.src;
-        var tmpSrcset = mainImg.srcset || '';
-        var tmpAlt = mainImg.alt || '';
-
-        mainImg.src = spotlightImg.src;
-        mainImg.srcset = spotlightImg.srcset || '';
-        mainImg.alt = spotlightImg.alt || 'Spotlight';
-
-        spotlightImg.src = tmpSrc;
-        spotlightImg.srcset = tmpSrcset;
-        spotlightImg.alt = tmpAlt;
-
-        firstItem.querySelector('.product-media-container').classList.remove('is-zoomed');
-      });
-    }
-
     function init() {
       initZoom();
       initThumbnails();
@@ -7235,7 +7118,6 @@
       initVideoSlide();
       initVideoSlidePlay();
       initMobileThumbStrip();
-      initSpotlightDesktop();
     }
   })();
 </script>
