@@ -42,4 +42,5 @@ Date : 2026-08-16 10:42 CEST
 
 - Live deploye et valide le 2026-08-16.
 - Checkout d'integration propre apres le commit documentaire final.
+- Worktree dedie retire proprement et branche locale ephemere supprimee ; branche distante conservee pour tracabilite.
 - Preview `200007352667` conservee pour comparaison visuelle.
