@@ -451,62 +451,86 @@ milaura-recommendations {
 
 }
 
-/* Ruban Vivant : signature horizontale PDP avec objets produit detoures. */
-@keyframes milaura-recommendation-settle {
-  0% {
+/* Ruban de parure V2 : rail PDP tactile, statique et contextualise. */
+@keyframes milaura-parure-enter {
+  from {
     opacity: 0;
-    transform: translateY(-18%);
+    transform: translateY(var(--milaura-esp-md));
   }
 
-  72% {
-    opacity: 1;
-    transform: translateY(2%);
-  }
-
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.milaura-recommendations__motion-toggle[hidden] {
+.milaura-recommendations__rail-controls[hidden],
+.milaura-recommendations__rail-meter[hidden] {
   display: none;
 }
 
-.milaura-recommendations__motion-toggle {
-  min-height: 44px;
-  align-self: end;
+html.milaura-recommendations-in-view #MilauraStickyBarSection.milaura-sticky-bar {
+  transform: translateY(101%) !important;
+  pointer-events: none;
+}
+
+.milaura-recommendations__rail-controls {
+  min-height: var(--milaura-cible-tactile);
+  display: inline-grid;
+  grid-template-columns: var(--milaura-cible-tactile) auto var(--milaura-cible-tactile);
+  align-items: center;
+  gap: var(--milaura-esp-2xs);
   justify-self: end;
-  padding: var(--milaura-esp-2xs) 0;
+}
+
+.milaura-recommendations__rail-control {
+  width: var(--milaura-cible-tactile);
+  height: var(--milaura-cible-tactile);
+  display: grid;
+  place-items: center;
+  padding: 0;
   border: 0;
-  border-bottom: var(--milaura-filet-or);
+  border-bottom: var(--milaura-filet-mineral);
   border-radius: var(--milaura-rayon-net);
-  color: var(--milaura-encre);
+  color: var(--milaura-prune);
   background: transparent;
   font-family: var(--milaura-font-texte);
-  font-size: var(--milaura-t-label);
-  font-weight: 700;
-  line-height: var(--milaura-lh-label);
-  letter-spacing: var(--milaura-ls-label);
-  text-transform: uppercase;
+  font-size: var(--milaura-t-corps-large);
+  line-height: 1;
   cursor: pointer;
   transition: color var(--milaura-transition-rapide), border-color var(--milaura-transition-rapide);
 }
 
-.milaura-recommendations__motion-toggle:focus-visible {
+.milaura-recommendations__rail-control:disabled {
+  color: var(--milaura-encre-tertiaire);
+  border-bottom-color: transparent;
+  opacity: var(--milaura-opacite-disabled);
+  cursor: default;
+}
+
+.milaura-recommendations__rail-control:focus-visible,
+.milaura-recommendations__products:focus-visible {
   outline: var(--milaura-focus);
   outline-offset: var(--milaura-focus-offset);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .milaura-recommendations__motion-toggle:hover {
-    color: var(--milaura-aigue-profonde);
-    border-bottom-color: var(--milaura-aigue);
-  }
+.milaura-recommendations__rail-count {
+  min-width: calc(var(--milaura-esp-lg) + var(--milaura-esp-md));
+  color: var(--milaura-encre-secondaire);
+  font-family: var(--milaura-font-texte);
+  font-size: var(--milaura-t-label);
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+  line-height: var(--milaura-lh-label);
+  letter-spacing: var(--milaura-ls-label);
+  text-align: center;
 }
 
-.milaura-recommendations--pdp[data-layout='ribbon'] {
-  --milaura-ribbon-duration: 72;
+@media (hover: hover) and (pointer: fine) {
+  .milaura-recommendations__rail-control:hover:not(:disabled) {
+    color: var(--milaura-aigue-profonde);
+    border-bottom-color: var(--milaura-or);
+  }
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__section {
@@ -518,160 +542,90 @@ milaura-recommendations {
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__inner {
   max-width: none;
-  gap: var(--milaura-esp-sm);
+  gap: var(--milaura-esp-md);
   padding: 0;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__intro {
   width: 100%;
   max-width: var(--milaura-largeur-contenu);
-  grid-template-rows: auto auto auto;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) auto;
   margin-inline: auto;
   padding-inline: var(--milaura-esp-md);
 }
 
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__motion-toggle {
+.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__subtitle {
   grid-column: 2;
-  grid-row: 3;
+}
+
+.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__rail-controls {
+  grid-column: 3;
+  grid-row: 1 / span 2;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products {
   width: 100%;
   max-width: none;
-  height: clamp(500px, 60vh, 640px);
-  display: block;
-  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: clamp(var(--milaura-esp-sm), 2vw, var(--milaura-esp-lg));
   margin: 0;
-  padding: 0;
+  padding:
+    var(--milaura-esp-sm)
+    max(var(--milaura-esp-md), calc((100vw - var(--milaura-largeur-contenu)) / 2 + var(--milaura-esp-md)))
+    var(--milaura-esp-md);
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-inline: contain;
-  scroll-snap-type: none;
+  scroll-padding-inline: max(var(--milaura-esp-md), calc((100vw - var(--milaura-largeur-contenu)) / 2 + var(--milaura-esp-md)));
+  scroll-snap-type: inline mandatory;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  cursor: grab;
-  isolation: isolate;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products:active {
-  cursor: grabbing;
+  touch-action: pan-x pan-y;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products::-webkit-scrollbar {
   display: none;
 }
 
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products::before {
-  content: '';
-  position: sticky;
-  z-index: -1;
-  top: 68%;
-  left: 0;
-  width: 100vw;
-  display: block;
-  border-top: var(--milaura-filet-mineral);
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__ribbon-track {
-  width: max-content;
-  min-width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: stretch;
-  gap: clamp(var(--milaura-esp-md), 4vw, var(--milaura-esp-xl));
-  padding: var(--milaura-esp-sm) max(var(--milaura-esp-lg), 6vw) var(--milaura-esp-2xs);
-}
-
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card,
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card--focal,
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card--secondary {
-  --milaura-ribbon-lift: 0%;
-  --milaura-ribbon-tilt: 0deg;
-  --milaura-ribbon-halo: var(--milaura-aigue-ecume);
-  width: var(--milaura-ribbon-width, clamp(280px, 25vw, 380px));
-  min-width: var(--milaura-ribbon-width, clamp(280px, 25vw, 380px));
-  height: 100%;
-  flex: 0 0 var(--milaura-ribbon-width, clamp(280px, 25vw, 380px));
-  position: relative;
+  width: clamp(300px, 27vw, 400px);
+  min-width: clamp(300px, 27vw, 400px);
+  flex: 0 0 clamp(300px, 27vw, 400px);
   display: flex;
   flex-direction: column;
+  position: relative;
   overflow: visible;
   border: 0;
+  border-top: var(--milaura-filet-mineral);
+  border-bottom: var(--milaura-filet);
   border-radius: var(--milaura-rayon-net);
-  opacity: 1;
+  color: var(--milaura-encre);
   background: transparent;
   box-shadow: none;
-  container-type: normal;
-  cursor: pointer;
-  transform: translateY(var(--milaura-ribbon-lift)) rotate(var(--milaura-ribbon-tilt)) scale(0.94);
-  transform-origin: center 68%;
-  transition: opacity var(--milaura-transition-rapide), transform var(--milaura-transition-rapide);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  opacity: 0;
+  transform: translateY(var(--milaura-esp-md));
+  transition:
+    border-color var(--milaura-transition-rapide),
+    opacity var(--milaura-transition-rapide),
+    transform var(--milaura-transition-rapide);
 }
 
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='0'] {
-  --milaura-ribbon-halo: var(--milaura-aigue-pierre);
-  --milaura-ribbon-width: clamp(340px, 30vw, 460px);
-  --milaura-ribbon-lift: 6%;
-  --milaura-ribbon-tilt: -1.2deg;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='1'] {
-  --milaura-ribbon-halo: var(--milaura-amethyste-lueur);
-  --milaura-ribbon-width: clamp(230px, 19vw, 290px);
-  --milaura-ribbon-lift: -4%;
-  --milaura-ribbon-tilt: 1.4deg;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='2'] {
-  --milaura-ribbon-halo: var(--milaura-amethyste-petale);
-  --milaura-ribbon-width: clamp(270px, 23vw, 340px);
-  --milaura-ribbon-lift: 1%;
-  --milaura-ribbon-tilt: -1deg;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='3'] {
-  --milaura-ribbon-halo: var(--milaura-aigue-ecume);
-  --milaura-ribbon-width: clamp(220px, 18vw, 280px);
-  --milaura-ribbon-lift: -6%;
-  --milaura-ribbon-tilt: 1.8deg;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='4'] {
-  --milaura-ribbon-halo: var(--milaura-quartz-rose-poudre);
-  --milaura-ribbon-width: clamp(300px, 26vw, 390px);
-  --milaura-ribbon-lift: 5%;
-  --milaura-ribbon-tilt: 1deg;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='5'] {
-  --milaura-ribbon-halo: var(--milaura-aigue-pierre);
-  --milaura-ribbon-width: clamp(250px, 21vw, 320px);
-  --milaura-ribbon-lift: -3%;
-  --milaura-ribbon-tilt: -1.5deg;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='6'] {
-  --milaura-ribbon-halo: var(--milaura-or-clair);
-  --milaura-ribbon-width: clamp(300px, 25vw, 380px);
-  --milaura-ribbon-lift: 6%;
-  --milaura-ribbon-tilt: 1.2deg;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='7'] {
-  --milaura-ribbon-halo: var(--milaura-amethyste-lueur);
-  --milaura-ribbon-width: clamp(280px, 24vw, 360px);
-  --milaura-ribbon-lift: -5%;
-  --milaura-ribbon-tilt: -1.2deg;
+.milaura-recommendations--pdp[data-layout='ribbon'][data-ribbon-revealed='true'] .milaura-recommendation-card {
+  animation: milaura-parure-enter 720ms cubic-bezier(0.22, 0.8, 0.22, 1) both;
+  animation-delay: calc(var(--milaura-reco-order) * 90ms);
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] {
-  z-index: 2;
-  opacity: 1;
-  transform: translateY(var(--milaura-ribbon-lift)) rotate(0) scale(1.04);
+  border-top-color: var(--milaura-or);
+  border-bottom-color: var(--milaura-aigue);
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card:focus-within {
-  border: 0;
   outline: 0;
 }
 
@@ -686,35 +640,23 @@ milaura-recommendations {
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-img {
   width: 100%;
-  height: 66%;
-  min-height: 0;
-  flex: 0 0 66%;
+  height: auto;
+  flex: 0 0 auto;
+  aspect-ratio: var(--milaura-ratio-produit);
+  overflow: hidden;
+  border: var(--milaura-filet-mineral);
+  border-radius: var(--milaura-rayon-sm);
+  background: var(--milaura-surface-haute);
+}
+
+.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card--object .grid__card-img {
   overflow: visible;
-  border-radius: var(--milaura-rayon-net);
+  border-color: transparent;
   background: transparent;
-  animation: milaura-recommendation-settle 820ms cubic-bezier(0.22, 0.8, 0.22, 1) both;
-  animation-delay: calc(var(--milaura-reco-order) * 100ms);
 }
 
-.milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-img::before {
-  content: '';
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  left: 50%;
-  width: 68%;
-  height: 46%;
-  border-radius: 50%;
-  background: var(--milaura-ribbon-halo);
-  filter: blur(42px);
-  opacity: 0.34;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.milaura-recommendations--pdp[data-layout='ribbon'] .grid__card:focus-visible .grid__card-img {
-  outline: var(--milaura-focus);
-  outline-offset: var(--milaura-focus-offset);
+.milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-image {
+  transition: transform var(--milaura-transition-rapide), opacity var(--milaura-transition-rapide);
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card__object-image {
@@ -722,35 +664,32 @@ milaura-recommendations {
   height: 100%;
   display: block;
   object-fit: contain;
-  z-index: 1;
-  filter: saturate(1.2) contrast(1.12) brightness(0.97) drop-shadow(var(--milaura-ombre-portee));
-  transform: scale(0.94);
-  transform-origin: center;
-  transition: transform var(--milaura-transition-rapide), opacity var(--milaura-transition-rapide);
+  padding: var(--milaura-esp-xs);
+  background: transparent;
+  filter: drop-shadow(var(--milaura-ombre-douce));
+  transform: scale(0.96);
 }
 
-.milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-image:not(.milaura-recommendation-card__object-image) {
-  display: none;
+.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] .grid__card-image {
+  transform: scale(1.015);
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] .milaura-recommendation-card__object-image {
-  transform: scale(1.04);
+  transform: scale(1);
 }
 
-.milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-info,
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card__reason,
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-editorial-purchase {
-  opacity: 0;
-  transform: translateY(var(--milaura-esp-2xs));
-  pointer-events: none;
-  transition: opacity var(--milaura-transition-rapide), transform var(--milaura-transition-rapide);
+.milaura-recommendations--pdp[data-layout='ribbon'] .grid__card:focus-visible .grid__card-img {
+  outline: var(--milaura-focus);
+  outline-offset: var(--milaura-focus-offset);
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-info {
-  padding: var(--milaura-esp-xs) var(--milaura-esp-sm) 0;
+  min-height: calc(var(--milaura-esp-xl) + var(--milaura-esp-md));
+  padding: var(--milaura-esp-sm) var(--milaura-esp-sm) 0;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card__reason {
+  min-height: calc(var(--milaura-esp-lg) + var(--milaura-esp-2xs));
   margin: var(--milaura-esp-3xs) var(--milaura-esp-sm) 0;
 }
 
@@ -758,119 +697,152 @@ milaura-recommendations {
   margin-top: auto;
 }
 
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] .grid__card-info,
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] .milaura-recommendation-card__reason,
-.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] .milaura-editorial-purchase {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+.milaura-recommendations__rail-meter {
+  width: calc(100% - 2 * var(--milaura-esp-md));
+  max-width: calc(var(--milaura-largeur-contenu) - 2 * var(--milaura-esp-md));
+  height: 1px;
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--milaura-aigue-pierre);
+}
+
+.milaura-recommendations__rail-meter > span {
+  width: 0;
+  height: 100%;
+  display: block;
+  background: var(--milaura-or);
+  transition: width var(--milaura-transition-rapide);
 }
 
 @media screen and (max-width: 989px) {
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__section {
-    padding: var(--milaura-esp-xl) 0 var(--milaura-esp-md);
+    padding: var(--milaura-esp-lg) 0 var(--milaura-esp-md);
+  }
+
+  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__inner {
+    display: grid;
+    gap: var(--milaura-esp-sm);
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__intro {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--milaura-esp-sm);
+    grid-template-rows: auto auto auto;
+    gap: var(--milaura-esp-2xs) var(--milaura-esp-sm);
     margin-bottom: 0;
     padding-inline: var(--milaura-esp-sm);
   }
 
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__eyebrow,
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__title,
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__subtitle {
-    grid-column: 1 / -1;
-  }
-
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__eyebrow {
+    grid-column: 1 / -1;
     grid-row: 1;
+    margin-bottom: var(--milaura-esp-2xs);
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__title {
+    grid-column: 1;
     grid-row: 2;
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__subtitle {
+    grid-column: 1 / -1;
     grid-row: 3;
-    margin-top: 0;
+    justify-self: start;
+    margin-top: var(--milaura-esp-2xs);
   }
 
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__motion-toggle {
-    grid-column: 1;
-    grid-row: 4;
-    justify-self: start;
-    display: none;
+  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__rail-controls {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: end;
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products {
-    height: clamp(470px, 68vh, 590px);
-    overflow-x: hidden;
-    touch-action: pan-y;
-    cursor: default;
-  }
-
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__ribbon-track {
-    gap: var(--milaura-esp-md);
-    padding-inline: var(--milaura-esp-sm);
+    gap: var(--milaura-esp-xs);
+    padding:
+      var(--milaura-esp-2xs)
+      var(--milaura-esp-sm)
+      var(--milaura-esp-sm);
+    scroll-padding-inline: var(--milaura-esp-sm);
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card,
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card--focal,
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card--secondary {
-    --milaura-ribbon-width: clamp(240px, 68vw, 300px);
-    width: var(--milaura-ribbon-width);
-    min-width: var(--milaura-ribbon-width);
-    flex-basis: var(--milaura-ribbon-width);
-  }
-
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='0'],
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='4'],
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='6'] {
-    --milaura-ribbon-width: clamp(270px, 78vw, 340px);
-  }
-
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='1'],
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-ribbon-slot='3'] {
-    --milaura-ribbon-width: clamp(210px, 58vw, 250px);
-  }
-
-  .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-img {
-    height: 64%;
-    flex-basis: 64%;
+    width: min(84vw, 360px);
+    min-width: min(84vw, 360px);
+    flex-basis: min(84vw, 360px);
+    scroll-snap-align: start;
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-info {
-    padding-inline: var(--milaura-esp-xs);
+    min-height: auto;
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: var(--milaura-esp-xs);
+    padding: var(--milaura-esp-xs) var(--milaura-esp-xs) 0;
+  }
+
+  .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-img {
+    aspect-ratio: 1.12 / 1;
+  }
+
+  .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-image {
+    object-fit: contain;
+  }
+
+  .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-title {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-price {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+    white-space: nowrap;
   }
 
   .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card__reason {
+    min-height: auto;
     margin-inline: var(--milaura-esp-xs);
   }
 
-  .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-img::before {
-    width: 76%;
-    height: 52%;
-    opacity: 0.42;
+  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-editorial-purchase {
+    margin-inline: var(--milaura-esp-xs);
+  }
+
+  .milaura-recommendations__rail-count {
+    min-width: var(--milaura-esp-xl);
+  }
+
+  .milaura-recommendations__rail-meter {
+    width: calc(100% - 2 * var(--milaura-esp-sm));
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__rail-count {
+    display: none;
+  }
+
+  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__rail-controls {
+    grid-template-columns: var(--milaura-cible-tactile) var(--milaura-cible-tactile);
+    gap: var(--milaura-esp-3xs);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .milaura-recommendation-card,
-  .milaura-recommendation-card .grid__card-image,
-  .milaura-recommendation-card .grid__card-img {
+  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card,
+  .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-image,
+  .milaura-recommendations__rail-meter > span {
     animation: none;
+    opacity: 1;
+    transform: none;
     scroll-behavior: auto;
     transition: none;
-  }
-
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products {
-    scroll-snap-type: inline mandatory;
-  }
-
-  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card {
-    scroll-snap-align: center;
   }
 }

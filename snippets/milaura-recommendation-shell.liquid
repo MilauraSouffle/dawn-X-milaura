@@ -25,6 +25,13 @@
   endif
   assign shell_instance = recommendation_instance_id | default: shell_context
   assign shell_heading_id = 'MilauraRecommendationsHeading-' | append: section.id | append: '-' | append: shell_instance
+  assign shell_list_id = 'MilauraRecommendationsList-' | append: section.id | append: '-' | append: shell_instance
+  assign shell_list_label = 'Produits proposés'
+  if shell_context == 'pdp' or shell_context == 'cart-page' or shell_context == 'cart-drawer'
+    assign shell_list_label = 'Produits complémentaires'
+  elsif shell_context == 'recent'
+    assign shell_list_label = 'Produits consultés récemment'
+  endif
 -%}
 
 <milaura-recommendations
@@ -57,19 +64,46 @@
         {%- if subtitle != blank -%}
           <p class="milaura-recommendations__subtitle" data-milaura-recommendation-subtitle>{{ subtitle }}</p>
         {%- endif -%}
-        <button
-          class="milaura-recommendations__motion-toggle"
-          type="button"
-          aria-pressed="false"
-          data-milaura-ribbon-toggle
+        <div
+          class="milaura-recommendations__rail-controls"
+          data-milaura-recommendation-controls
           hidden
         >
-          <span data-milaura-ribbon-toggle-label>Mettre en pause</span>
-        </button>
+          <button
+            class="milaura-recommendations__rail-control"
+            type="button"
+            aria-controls="{{ shell_list_id }}"
+            aria-label="Voir la pièce précédente"
+            data-milaura-rail-control="previous"
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+          <span class="milaura-recommendations__rail-count" aria-hidden="true" data-milaura-rail-count>01 / 01</span>
+          <button
+            class="milaura-recommendations__rail-control"
+            type="button"
+            aria-controls="{{ shell_list_id }}"
+            aria-label="Voir la pièce suivante"
+            data-milaura-rail-control="next"
+          >
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
       </header>
 
-      <div class="milaura-recommendations__products milaura-cards" role="list" data-milaura-recommendation-list>
+      <div
+        class="milaura-recommendations__products milaura-cards"
+        id="{{ shell_list_id }}"
+        role="list"
+        tabindex="0"
+        aria-label="{{ shell_list_label }}"
+        data-milaura-recommendation-list
+      >
         {{ recommendation_cards }}
+      </div>
+
+      <div class="milaura-recommendations__rail-meter" aria-hidden="true" data-milaura-rail-meter hidden>
+        <span data-milaura-rail-meter-value></span>
       </div>
 
       <p class="visually-hidden" aria-live="polite" data-milaura-recommendation-status></p>

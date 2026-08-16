@@ -1,0 +1,234 @@
+{%- comment -%}
+  Section unique du systeme de recommandations MilAura.
+  La logique d'API, de rail, de consentement et de panier vit dans
+  assets/milaura-recommendations.js.
+{%- endcomment -%}
+
+{%- liquid
+  assign recommendation_context = section.settings.context | default: 'pdp'
+  assign source_product_ids = ''
+  assign excluded_product_ids = ''
+  assign recommendation_intents = 'complementary'
+  assign recommendation_minimum = section.settings.minimum_products | default: 1
+  assign recommendation_limit = section.settings.products_to_show | default: 3
+  assign current_product_id = blank
+  assign current_product_handle = blank
+  assign recommendation_requires_filter = false
+
+  if product != blank
+    assign source_product_ids = product.id
+    assign excluded_product_ids = product.id
+    assign current_product_id = product.id
+    assign current_product_handle = product.handle
+  elsif cart != blank and cart.item_count > 0
+    for cart_item in cart.items
+      unless source_product_ids == blank
+        assign source_product_ids = source_product_ids | append: ','
+        assign excluded_product_ids = excluded_product_ids | append: ','
+      endunless
+      assign source_product_ids = source_product_ids | append: cart_item.product_id
+      assign excluded_product_ids = excluded_product_ids | append: cart_item.product_id
+    endfor
+  endif
+
+  case recommendation_context
+    when 'pdp'
+      assign recommendation_intents = 'complementary'
+      assign recommendation_minimum = 1
+      if recommendation_limit > 5
+        assign recommendation_limit = 5
+      endif
+    when 'cart-page'
+      assign recommendation_intents = 'complementary'
+      assign recommendation_minimum = 1
+    when 'diagnostic'
+      assign recommendation_intents = 'curated'
+      assign recommendation_minimum = 1
+      assign recommendation_requires_filter = true
+    when 'recent'
+      assign recommendation_intents = 'recent'
+      assign recommendation_minimum = 1
+    when 'editorial'
+      assign recommendation_intents = 'curated'
+      assign recommendation_minimum = 1
+  endcase
+-%}
+
+{%- capture recommendation_cards -%}
+  {%- if recommendation_context == 'editorial' -%}
+    {%- assign rendered_count = 0 -%}
+    {%- if section.settings.curated_products != blank -%}
+      {%- for curated_product in section.settings.curated_products -%}
+        {%- unless curated_product.available -%}{%- continue -%}{%- endunless -%}
+        {%- if product != blank and curated_product.id == product.id -%}{%- continue -%}{%- endif -%}
+        {%- if rendered_count >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
+        {%- assign rendered_count = rendered_count | plus: 1 -%}
+        {%- assign recommendation_role = 'secondary' -%}
+        {%- if rendered_count == 1 -%}{%- assign recommendation_role = 'focal' -%}{%- endif -%}
+        {% render 'milaura-recommendation-card',
+          recommendation_product: curated_product,
+          recommendation_intent: 'curated',
+          recommendation_reason: section.settings.card_reason,
+          recommendation_role: recommendation_role,
+          img_loading: 'lazy',
+          show_purchase: section.settings.show_purchase
+        %}
+      {%- endfor -%}
+    {%- elsif recommendation_context == 'editorial' and section.settings.source_collection != blank -%}
+      {%- for curated_product in section.settings.source_collection.products limit: 24 -%}
+        {%- unless curated_product.available -%}{%- continue -%}{%- endunless -%}
+        {%- if rendered_count >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
+        {%- assign rendered_count = rendered_count | plus: 1 -%}
+        {%- assign recommendation_role = 'secondary' -%}
+        {%- if rendered_count == 1 -%}{%- assign recommendation_role = 'focal' -%}{%- endif -%}
+        {% render 'milaura-recommendation-card',
+          recommendation_product: curated_product,
+          recommendation_intent: 'curated',
+          recommendation_reason: section.settings.card_reason,
+          recommendation_role: recommendation_role,
+          img_loading: 'lazy',
+          show_purchase: section.settings.show_purchase
+        %}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{% render 'milaura-recommendation-shell',
+  recommendation_context: recommendation_context,
+  source_product_ids: source_product_ids,
+  excluded_product_ids: excluded_product_ids,
+  recommendation_intents: recommendation_intents,
+  recommendation_limit: recommendation_limit,
+  recommendation_minimum: recommendation_minimum,
+  recommendation_cards: recommendation_cards,
+  eyebrow: section.settings.eyebrow,
+  title: section.settings.title,
+  subtitle: section.settings.subtitle,
+  complementary_title: section.settings.complementary_title,
+  complementary_subtitle: section.settings.complementary_subtitle,
+  related_title: section.settings.related_title,
+  related_subtitle: section.settings.related_subtitle,
+  current_product_id: current_product_id,
+  current_product_handle: current_product_handle,
+  recommendation_requires_filter: recommendation_requires_filter
+%}
+
+{% schema %}
+{
+  "name": "Atelier recommandations",
+  "tag": "section",
+  "class": "milaura-recommendations-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "context",
+      "label": "Contexte",
+      "options": [
+        { "value": "pdp", "label": "Fiche produit" },
+        { "value": "cart-page", "label": "Page panier" },
+        { "value": "diagnostic", "label": "Diagnostic" },
+        { "value": "recent", "label": "Consultes recemment" },
+        { "value": "editorial", "label": "Selection editoriale" }
+      ],
+      "default": "pdp"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Repere",
+      "default": "COMPOSITION MILAURA"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre initial",
+      "default": "Composer votre ensemble"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre initial",
+      "default": "Des pièces sélectionnées pour compléter votre choix."
+    },
+    {
+      "type": "header",
+      "content": "Titres selon la recommandation"
+    },
+    {
+      "type": "text",
+      "id": "complementary_title",
+      "label": "Titre des compléments",
+      "default": "Composer votre ensemble"
+    },
+    {
+      "type": "textarea",
+      "id": "complementary_subtitle",
+      "label": "Sous-titre des compléments",
+      "default": "Des pièces sélectionnées pour compléter votre choix."
+    },
+    {
+      "type": "text",
+      "id": "related_title",
+      "label": "Titre des alternatives",
+      "default": "Comparer avant de choisir"
+    },
+    {
+      "type": "textarea",
+      "id": "related_subtitle",
+      "label": "Sous-titre des alternatives",
+      "default": "Comparez la pierre, la matière et le format."
+    },
+    {
+      "type": "header",
+      "content": "Produits"
+    },
+    {
+      "type": "product_list",
+      "id": "curated_products",
+      "label": "Produits sélectionnés",
+      "limit": 8
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Collection source"
+    },
+    {
+      "type": "text",
+      "id": "card_reason",
+      "label": "Raison affichée sur les cartes",
+      "default": "Sélection MilAura."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Nombre maximum de produits",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "minimum_products",
+      "label": "Minimum pour afficher",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "show_purchase",
+      "label": "Afficher l'ajout au panier",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier recommandations"
+    }
+  ]
+}
+{% endschema %}
