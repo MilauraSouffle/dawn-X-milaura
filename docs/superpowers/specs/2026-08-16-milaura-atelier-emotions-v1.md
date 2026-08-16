@@ -311,3 +311,43 @@ Mobile :
 La premiere version ressemblait a une landing editoriale : un titre, un etat vide et trois colonnes de texte. Elle protegeait la verite commerciale mais ne permettait pas de juger la feature. Cette structure est trop generique et trop passive pour un chantier prioritaire.
 
 La revision depense toute la singularite dans un seul objet, la table de montage circulaire. Les trois niveaux de service restent secondaires et compacts. Les faux nuanciers, faux charms, faux stocks et faux prix restent interdits.
+
+## 12. Passe visuelle 3 - le gabarit avant la composition
+
+Date : 2026-08-16
+
+### 12.1 Workflow valide par Patrice
+
+La composition commence par deux decisions physiques visibles au-dessus du bracelet :
+
+1. taille du bracelet : `Enfant, 14 a 16 cm`, `Femme, 16 a 18 cm`, `Homme, 18 a 20 cm` ;
+2. diametre des pierres : `04 mm`, `06 mm`, `08 mm`.
+
+Le message, les pierres puis les charms viennent apres ce gabarit. La maquette peut utiliser ces six valeurs comme choix d'interface. Elles ne deviennent pas une promesse de faisabilite, de nombre exact de pierres ou de vente avant le test physique de Karine.
+
+### 12.2 Direction visuelle
+
+- couleurs : tokens MilAura existants, sans nouvelle surface pleine ;
+- typographie : Instrument Sans pour les mesures et Gloock uniquement pour le mot central ;
+- disposition desktop : deux jauges horizontales compactes au-dessus de la table circulaire ;
+- disposition mobile : deux jauges empilees, chacune conserve trois choix sur une ligne ;
+- signature : la table de montage reste le seul geste fort ; les jauges ressemblent a un outil de bijoutier marque par des filets, pas a des cartes ou a des pastilles generiques ;
+- mouvement : le rayon du bracelet et le diametre des emplacements changent doucement avec les deux choix ; aucun nombre de composants reel n'est deduit.
+
+```text
+┌─────────────────────────────────────────────┐
+│ TAILLE      Enfant       Femme       Homme  │
+│             14-16 cm     16-18 cm     18-20 │
+│ PIERRES     04 mm        06 mm        08 mm │
+├─────────────────────────────────────────────┤
+│               ○ ○ ○ ○ ○                     │
+│            ○             ○                  │
+│           ○   FEMME · 06 MM  ○              │
+│            ○   M I L A U R A ○              │
+│               ○ ○ ○ ○ ○                     │
+└─────────────────────────────────────────────┘
+```
+
+### 12.3 Auto-critique
+
+Un selecteur segmente rempli aurait concurrence le bracelet et ressemble a un composant SaaS generique. La version retenue utilise des libelles de mesure, des filets et un seul accent sur le choix actif. Le gabarit explique le montage au lieu d'ajouter une couche decorative.

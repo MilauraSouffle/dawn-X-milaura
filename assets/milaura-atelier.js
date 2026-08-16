@@ -32,10 +32,13 @@
     var slots = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-slot]'));
     var orbit = prototype.querySelector('[data-prototype-orbit]');
     var centerWord = prototype.querySelector('[data-prototype-center-word]');
+    var specification = prototype.querySelector('[data-prototype-spec]');
     var count = prototype.querySelector('[data-prototype-count]');
     var live = prototype.querySelector('[data-prototype-live]');
     var tabs = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-tab]'));
     var panels = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-panel]'));
+    var wristInputs = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-wrist-input]'));
+    var stoneInputs = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-stone-input]'));
     var animationTimer;
 
     if (!input || slots.length === 0) {
@@ -43,6 +46,34 @@
     }
 
     root.dataset.prototypeInitialized = 'true';
+
+    function selectedInput(inputs) {
+      return inputs.find(function (item) {
+        return item.checked;
+      });
+    }
+
+    function updateSizing(shouldAnnounce) {
+      var wrist = selectedInput(wristInputs);
+      var stone = selectedInput(stoneInputs);
+
+      if (!wrist || !stone) {
+        return;
+      }
+
+      var wristLabel = wrist.dataset.prototypeLabel || wrist.value;
+      var wristMeasure = wrist.dataset.prototypeMeasure || '';
+      prototype.dataset.prototypeWrist = wrist.value;
+      prototype.dataset.prototypeStone = stone.value;
+
+      if (specification) {
+        specification.textContent = wristLabel + ' · ' + wristMeasure + ' · pierres ' + stone.value + ' mm';
+      }
+
+      if (shouldAnnounce && live) {
+        live.textContent = 'Gabarit sélectionné : ' + wristLabel + ', ' + wristMeasure + ', pierres ' + stone.value + ' millimètres.';
+      }
+    }
 
     function activateTab(tab, shouldFocus) {
       var panelName = tab.dataset.prototypeTab;
@@ -136,9 +167,16 @@
       });
     });
 
+    wristInputs.concat(stoneInputs).forEach(function (sizingInput) {
+      sizingInput.addEventListener('change', function () {
+        updateSizing(true);
+      });
+    });
+
     input.addEventListener('input', updatePrototype);
     input.addEventListener('blur', updatePrototype);
     activateTab(tabs[0], false);
+    updateSizing(false);
     updatePrototype();
   }
 
