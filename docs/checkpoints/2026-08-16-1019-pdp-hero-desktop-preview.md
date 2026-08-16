@@ -42,4 +42,4 @@ Date : 2026-08-16 10:19 CEST
 - Lot techniquement pret a integrer mais non approuve visuellement.
 - Attendre le GO visuel explicite de Patrice sur la preview.
 - Apres GO visuel, integrer via le checkout maitre puis attendre un GO live distinct avant tout push vers `190430282075`.
-- La preview incomplete `200007188827`, creee pendant une duplication Shopify encore asynchrone, doit etre supprimee apres confirmation que `200007352667` est conservee.
+- La preview incomplete `200007188827`, creee pendant une duplication Shopify encore asynchrone, a ete supprimee le 2026-08-16 apres validation de `200007352667`.
