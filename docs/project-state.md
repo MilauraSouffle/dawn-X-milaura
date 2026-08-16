@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-16 10:08 CEST
+Derniere mise a jour : 2026-08-16 10:46 CEST
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions, recommandations et polish Sticky PDP sont live ; le Ruban de parure V2 a termine sa preview technique sans integration ni live, tandis que cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
+La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions, recommandations, polish Sticky PDP, Hero produit desktop et Ruban de parure V2 sont live ; cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ La refonte visible est en phase de finition : catalogue V1, nouvelle experience 
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au 2026-08-16 a 10:08 CEST, deux worktrees sont actifs : Ruban de parure V2 possede le moteur et l'interface `milaura-recommendation*` avec ses adaptateurs PDP declares ; PDP Hero desktop possede uniquement `sections/milaura-product-hero.liquid`, `sections/milaura-sticky-bar.liquid` et son checkpoint. Les themes de preview sont distincts.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au 2026-08-16 a 10:46 CEST, Ruban de parure V2 et PDP Hero desktop sont integres, live et leurs worktrees ont ete retires. Seul le worktree Atelier des emotions reste actif en lecture seule sur sa Gate 0.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -221,7 +221,7 @@ Point P0 declare par Patrice apres la livraison : le Ruban Vivant fonctionne mal
 
 Le polish Sticky PDP est live depuis le 2026-08-16 a 09:32 CEST. La sticky utilise maintenant la position reelle du CTA Hero comme seuil bidirectionnel, recouvre le dock mobile de 1 px et le rail de reassurance affiche un indicateur de progression sans autoplay. Commit integre `396502cf`, push live limite a cinq fichiers, pullback 5/5 identique et QA publique 360/390/430/1440 validee sans erreur console. Checkpoint : `docs/checkpoints/2026-08-16-0932-sticky-proof-live.md`.
 
-Le Ruban de parure V2 a termine sa preview technique le 2026-08-16 a 10:04 CEST sur le theme de developpement `199421952347`, sans integration ni live. La branche propre et poussee est a `259cadf5`, avec pullback 9/9 identique et QA 360/390/430/820/1440. Le produit preuve renvoie actuellement zero complement Search & Discovery : le composant se masque correctement. Les captures avec quatre cartes catalogue viennent d'une injection Playwright non persistante ; elles valident la structure et les interactions pour revue, pas le rendu API reel ni la coherence finale des medias. Avant integration, il faut un GO visuel, une matrice commerciale Search & Discovery validee et saisie sur un perimetre preuve, la verification ou creation de `milaura.recommendation_cutout` dans Shopify, une nouvelle QA avec cartes API reelles et un test d'ajout panier dans un contexte navigateur neuf. Checkpoint master : `docs/checkpoints/2026-08-16-1008-master-ruban-v2-audit.md`.
+Le Ruban de parure V2 est live depuis le 2026-08-16 a 10:46 CEST apres GO visuel, GO live et autorisation explicite de nettoyer l'ancienne configuration remplacee. Le lot final `222ef44f` est integre par `469212c0`. La matrice Search & Discovery preuve relie le collier obsidienne noire boho dore `10557516644699` aux boucles obsidienne noire `10357431206235` et au bracelet obsidienne flocon `10357456601435`. La definition Shopify `milaura.recommendation_cutout` existe avec acces Storefront. L'API reelle renvoie les deux complements, l'ajout du variant `52484191879515` dans un navigateur neuf a ete retire par sa seule cle de ligne et le panier final est revenu vide. Le push live est limite a neuf fichiers theme avec `--nodelete`; pullback 9/9 identique. La QA publique couvre 360/390/430/820/1440, rail horizontal reel, clavier, compteur, progression, sticky et jonction dock. Le widget tiers `merchantwidgetiframe` conserve une largeur hors viewport dans `documentElement`, mais `body` reste exactement au viewport et le Ruban n'est pas la source du debordement. Checkpoint : `docs/checkpoints/2026-08-16-1046-ruban-v2-live.md`.
 
 ## Contrat produit
 
@@ -265,14 +265,13 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Maintenir le Ruban de parure V2 gele sur sa preview jusqu'au GO visuel, puis valider une matrice Search & Discovery preuve, la definition metafield reelle, la QA API et l'ajout panier isole avant toute integration master.
-2. Ouvrir le lot urgent bandeau cookies, puis l'audit critique emails, notifications, relances et inscription.
-3. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
-4. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
-5. Ouvrir une session PDP specialisee de recherche et de polish, sans presumer que la longueur actuelle est un defaut.
-6. Continuer en parallele l'inventaire physique et la session Atelier des emotions.
-7. Preparer la campagne de rentree ou septembre, puis Karine, Sur mesure, les pages enfants Naissance et Mariage et le Journal selon leurs dependances.
-8. Commencer les fondations Pinterest maintenant. Garder l'audit DataForSEO global, le netlinking, la mesure finale et les Ads pour la fermeture, avec recherche ciblee en amont seulement si elle guide une nouvelle page.
+1. Ouvrir le lot urgent bandeau cookies, puis l'audit critique emails, notifications, relances et inscription.
+2. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
+3. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
+4. Ouvrir une session PDP specialisee de recherche et de polish, sans presumer que la longueur actuelle est un defaut.
+5. Continuer en parallele l'inventaire physique et la session Atelier des emotions.
+6. Preparer la campagne de rentree ou septembre, puis Karine, Sur mesure, les pages enfants Naissance et Mariage et le Journal selon leurs dependances.
+7. Commencer les fondations Pinterest maintenant. Garder l'audit DataForSEO global, le netlinking, la mesure finale et les Ads pour la fermeture, avec recherche ciblee en amont seulement si elle guide une nouvelle page.
 
 ## Dependances encore ouvertes
 
@@ -284,7 +283,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
-- Ruban de parure V2 : preview technique terminee et branche poussee ; aucun complement reel sur le produit preuve, matrice commerciale, definition metafield, QA API, ajout panier et GO encore ouverts ; aucune integration ni live sans retour au master et GO distinct
+- Ruban de parure V2 : le moteur est live et prouve sur une seule matrice commerciale obsidienne ; les autres PDP restent dependantes de complements Search & Discovery valides, et les medias sans `milaura.recommendation_cutout` utilisent encore le fallback catalogue
+- largeur globale hors viewport exposee par le widget tiers `merchantwidgetiframe` et certains panneaux hors-canvas, bien que `body` et le Ruban restent contenus aux viewports testes
 - diagnostic non persiste dans une source cliente durable ni entre appareils
 - compte Cercle, consentements, emails, notifications, relances et comportement apres inscription a auditer ou construire
 - bandeau cookies a refondre en urgence
