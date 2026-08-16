@@ -292,50 +292,46 @@
       const bubbleTrigger = document.querySelector('.milaura-bubble-trigger');
       const bubbleLabel = document.querySelector('.milaura-bubble-label');
 
-      // 1. Logique d'affichage (Scroll)
-      if (stickyBar && mainButton) {
-        let hasPassedMainButton = false;
+      // 1. Logique d'affichage : la position du CTA principal reste l'unique seuil.
+      // La sticky apparait sous ce seuil et disparait des que le CTA revient dans la page.
+      if (stickyBar) {
+        let scrollFrame = null;
 
-        const handleScroll = () => {
-          if (!hasPassedMainButton && mainButton.getBoundingClientRect().bottom <= 0) {
-            hasPassedMainButton = true;
-          }
-
-          stickyBar.classList.toggle('is-visible', hasPassedMainButton);
-          stickyBar.setAttribute('aria-hidden', hasPassedMainButton ? 'false' : 'true');
+        const setStickyVisibility = (shouldShow) => {
+          stickyBar.classList.toggle('is-visible', shouldShow);
+          stickyBar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
 
           // Push floating bubble above sticky bar on ALL viewports (desktop + mobile)
-          if (bubbleTrigger) {
-            const isUp = stickyBar.classList.contains('is-visible');
-            if (isUp) {
-              const stickyRect = stickyBar.getBoundingClientRect();
-              const stickyBottomOffset = window.innerHeight - stickyRect.top;
-              const gap = 16;
-              bubbleTrigger.style.bottom = (stickyBottomOffset + gap) + 'px';
-              if (bubbleLabel) bubbleLabel.style.bottom = (stickyBottomOffset + gap + 8) + 'px';
-            } else {
-              // Reset to CSS defaults (24px desktop, 85px mobile above dock)
-              bubbleTrigger.style.bottom = '';
-              if (bubbleLabel) bubbleLabel.style.bottom = '';
-            }
+          if (!bubbleTrigger) return;
+          if (shouldShow) {
+            const stickyRect = stickyBar.getBoundingClientRect();
+            const stickyBottomOffset = window.innerHeight - stickyRect.top;
+            const gap = 16;
+            bubbleTrigger.style.bottom = (stickyBottomOffset + gap) + 'px';
+            if (bubbleLabel) bubbleLabel.style.bottom = (stickyBottomOffset + gap + 8) + 'px';
+          } else {
+            // Reset to CSS defaults (24px desktop, 85px mobile above dock)
+            bubbleTrigger.style.bottom = '';
+            if (bubbleLabel) bubbleLabel.style.bottom = '';
           }
         };
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        // Check initial
-        handleScroll();
-      } else {
-        // Fallback si pas de bouton trouvé (ex: page bizarre), on affiche après un certain scroll
-        let hasPassedFallbackThreshold = window.scrollY > 800;
+        const syncStickyVisibility = () => {
+          scrollFrame = null;
+          const shouldShow = mainButton
+            ? mainButton.getBoundingClientRect().bottom <= 0
+            : window.scrollY > 800;
+          setStickyVisibility(shouldShow);
+        };
 
-        window.addEventListener('scroll', () => {
-          if (!hasPassedFallbackThreshold && window.scrollY > 800) {
-            hasPassedFallbackThreshold = true;
-          }
+        const requestStickySync = () => {
+          if (scrollFrame !== null) return;
+          scrollFrame = window.requestAnimationFrame(syncStickyVisibility);
+        };
 
-          stickyBar.classList.toggle('is-visible', hasPassedFallbackThreshold);
-          stickyBar.setAttribute('aria-hidden', hasPassedFallbackThreshold ? 'false' : 'true');
-        }, { passive: true });
+        window.addEventListener('scroll', requestStickySync, { passive: true });
+        window.addEventListener('resize', requestStickySync, { passive: true });
+        syncStickyVisibility();
       }
 
       // 2. Logique de clic
