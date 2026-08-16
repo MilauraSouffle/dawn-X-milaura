@@ -31,7 +31,7 @@ Le theme live est `190430282075`. Sont notamment live :
 - moteur de recommandations actuel et Ruban Vivant ; un Ruban de parure V2 est en reconstruction dans un lot separe ;
 - polish Sticky PDP live : seuil bidirectionnel au CTA, jonction dock sans fente et indicateur mobile du rail de reassurance.
 
-La session master du 2026-08-16 n'a modifie ni theme, ni live, ni produit, ni stock, ni prix, ni reglage Shopify.
+La session master du 2026-08-16 a integre et deploye uniquement les cinq fichiers du lot Sticky PDP sur le live. Aucun produit, stock, prix, reglage Shopify, template produit ou fichier Ruban n'a ete modifie.
 
 ## Git et sessions paralleles
 
