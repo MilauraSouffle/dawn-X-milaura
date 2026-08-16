@@ -1,6 +1,6 @@
 # MilAura - Handoff master actif
 
-Date de mise a jour : 2026-08-16 09:32 CEST
+Date de mise a jour : 2026-08-16 10:08 CEST
 
 ## Objet de la reprise
 
@@ -28,7 +28,7 @@ Le theme live est `190430282075`. Sont notamment live :
 - collections pierre documentees ;
 - nouvelle experience PDP ;
 - selecteur homepage Naissance / Mariage ;
-- moteur de recommandations actuel et Ruban Vivant ; un Ruban de parure V2 est en reconstruction dans un lot separe ;
+- moteur de recommandations actuel et Ruban Vivant ; le Ruban de parure V2 a termine sa preview technique dans un lot separe, sans integration ni live ;
 - polish Sticky PDP live : seuil bidirectionnel au CTA, jonction dock sans fente et indicateur mobile du rail de reassurance.
 
 La session master du 2026-08-16 a integre et deploye uniquement les cinq fichiers du lot Sticky PDP sur le live. Aucun produit, stock, prix, reglage Shopify, template produit ou fichier Ruban n'a ete modifie.
@@ -38,13 +38,34 @@ La session master du 2026-08-16 a integre et deploye uniquement les cinq fichier
 - Depot d'integration : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche : `codex/milaura-integration`.
 - Commit theme Sticky integre et pousse : `396502cf`.
-- Le checkout d'integration est propre et aligne avec `origin/codex/milaura-integration` apres le deploiement des cinq fichiers Sticky.
-- Worktree actif : `/Users/paesano/Documents/MilAura website/_worktrees/ruban-parure-v2-20260816`.
-- Branche du lot : `codex/milaura-ruban-parure-v2-20260816`.
-- Proprietaire : tache `Ruban de parure V2 2026-08-16`.
-- Perimetre reserve : moteur et interface `milaura-recommendation*`, adaptateurs PDP declares et checkpoint. Ne pas toucher a ces fichiers.
-- Le theme de developpement `199421952347` est libere pour la preview Ruban apres synchronisation du canonique `396502cf`. Le live reste au master.
+- Le checkout d'integration est propre et aligne avec `origin/codex/milaura-integration`. Les commits documentaires recents conservent la cloture Sticky et l'ouverture du lot PDP Hero.
+- Worktree Ruban actif : `/Users/paesano/Documents/MilAura website/_worktrees/ruban-parure-v2-20260816`, branche propre et poussee `codex/milaura-ruban-parure-v2-20260816`, HEAD `259cadf5`.
+- Le Ruban possede le moteur et l'interface `milaura-recommendation*`, les adaptateurs PDP declares, son contrat metafield et ses checkpoints. Ne pas toucher a ces fichiers avant decision de Patrice.
+- Sa preview `199421952347` est terminee, pullback 9/9 identique. Le live reste au master.
+- Worktree PDP Hero desktop actif : `/Users/paesano/Documents/MilAura website/_worktrees/pdp-hero-desktop-20260816`, branche `codex/milaura-pdp-hero-desktop-20260816`.
+- Le PDP Hero possede uniquement `sections/milaura-product-hero.liquid`, `sections/milaura-sticky-bar.liquid` et son checkpoint, sur la preview dediee `200007188827`.
 - La session Atelier des emotions poursuit sa Gate 0 en lecture seule. Elle doit se declarer avant toute edition theme ou Shopify.
+
+## Retour Ruban V2 audite par le master
+
+Le retour du 2026-08-16 a 10:04 CEST est techniquement recevable mais pas pret a integrer.
+
+- Branche et distante alignees a `259cadf5`, base Sticky `396502cf` bien presente.
+- Theme de developpement `199421952347` seulement, neuf fichiers cibles, pullback 9/9 identique.
+- QA annoncee a 360, 390, 430, 820 et 1440 px, clavier, compteur, progression, scroll natif et retrait de la sticky.
+- Le produit preuve renvoie zero complement Search & Discovery et le composant reste masque, ce qui est le comportement attendu.
+- Les quatre cartes visibles dans les captures ont ete injectees en memoire. Elles permettent une revue de structure, mais ne prouvent ni une reponse API reelle ni une composition photo finale homogene.
+- La version `docs/workstreams.md` portee par la branche Ruban est obsolete. Elle ne doit pas remplacer le registre master, qui contient la cloture Sticky et le lot PDP Hero.
+
+Gates avant integration :
+
+1. GO visuel explicite de Patrice sur la direction, avec reserve sur l'heterogeneite actuelle des medias de fallback.
+2. Validation commerciale produit par produit d'une matrice Search & Discovery preuve.
+3. Verification ou creation dans Shopify de la definition `milaura.recommendation_cutout`.
+4. Nouvelle preview utilisant de vraies cartes retournees par l'API, sans injection Playwright.
+5. Test ajout panier dans un contexte navigateur neuf et isole, puis retrait de la ligne creee.
+6. Integration par le master uniquement, avec conservation du registre courant.
+7. Second GO live explicite, distinct du GO visuel.
 
 ## Arbitrages fermes par Patrice le 2026-08-16
 
@@ -167,7 +188,7 @@ Ces travaux arrivent majoritairement en fin de chantier ou apres leurs gates :
 
 ## Ordre de reprise recommande
 
-1. Ne pas perturber la session Ruban de parure V2 active et auditer son retour lorsqu'elle termine.
+1. Garder le Ruban V2 gele sur sa preview jusqu'aux gates documentes dans `docs/checkpoints/2026-08-16-1008-master-ruban-v2-audit.md`.
 2. Ouvrir le lot cookies.
 3. Ouvrir la session emails et inscription.
 4. Ouvrir ou cadrer C1 Cercle avec persistance du diagnostic.
@@ -192,7 +213,7 @@ Ces travaux arrivent majoritairement en fin de chantier ou apres leurs gates :
 ## Interdits de reprise
 
 - ne pas rouvrir LFG, les formulations validees du quiz, la longueur PDP ou la preuve sociale comme anomalies sans nouvelle preuve et nouvel arbitrage de Patrice ;
-- ne pas toucher aux fichiers reserves par la session Ruban ;
+- ne pas toucher aux fichiers reserves par les sessions Ruban et PDP Hero ;
 - ne pas confondre audit, implementation, GO visuel et GO live ;
 - ne pas lancer les Ads avant stock, flux et tracking ;
 - ne pas deployer un theme complet ;

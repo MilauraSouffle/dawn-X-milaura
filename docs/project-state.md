@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-16 09:32 CEST
+Derniere mise a jour : 2026-08-16 10:08 CEST
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions, recommandations et polish Sticky PDP sont live ; le Ruban de parure V2 est en reconstruction, tandis que cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
+La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions, recommandations et polish Sticky PDP sont live ; le Ruban de parure V2 a termine sa preview technique sans integration ni live, tandis que cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ La refonte visible est en phase de finition : catalogue V1, nouvelle experience 
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au 2026-08-16 a 09:32 CEST, seul le worktree `/Users/paesano/Documents/MilAura website/_worktrees/ruban-parure-v2-20260816` reste actif ; il possede exclusivement le moteur et l'interface `milaura-recommendation*`, ses adaptateurs PDP declares et son checkpoint.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au 2026-08-16 a 10:08 CEST, deux worktrees sont actifs : Ruban de parure V2 possede le moteur et l'interface `milaura-recommendation*` avec ses adaptateurs PDP declares ; PDP Hero desktop possede uniquement `sections/milaura-product-hero.liquid`, `sections/milaura-sticky-bar.liquid` et son checkpoint. Les themes de preview sont distincts.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -221,6 +221,8 @@ Point P0 declare par Patrice apres la livraison : le Ruban Vivant fonctionne mal
 
 Le polish Sticky PDP est live depuis le 2026-08-16 a 09:32 CEST. La sticky utilise maintenant la position reelle du CTA Hero comme seuil bidirectionnel, recouvre le dock mobile de 1 px et le rail de reassurance affiche un indicateur de progression sans autoplay. Commit integre `396502cf`, push live limite a cinq fichiers, pullback 5/5 identique et QA publique 360/390/430/1440 validee sans erreur console. Checkpoint : `docs/checkpoints/2026-08-16-0932-sticky-proof-live.md`.
 
+Le Ruban de parure V2 a termine sa preview technique le 2026-08-16 a 10:04 CEST sur le theme de developpement `199421952347`, sans integration ni live. La branche propre et poussee est a `259cadf5`, avec pullback 9/9 identique et QA 360/390/430/820/1440. Le produit preuve renvoie actuellement zero complement Search & Discovery : le composant se masque correctement. Les captures avec quatre cartes catalogue viennent d'une injection Playwright non persistante ; elles valident la structure et les interactions pour revue, pas le rendu API reel ni la coherence finale des medias. Avant integration, il faut un GO visuel, une matrice commerciale Search & Discovery validee et saisie sur un perimetre preuve, la verification ou creation de `milaura.recommendation_cutout` dans Shopify, une nouvelle QA avec cartes API reelles et un test d'ajout panier dans un contexte navigateur neuf. Checkpoint master : `docs/checkpoints/2026-08-16-1008-master-ruban-v2-audit.md`.
+
 ## Contrat produit
 
 Le commit `6c4e6de4` fixe le contrat canonique complet : pierres, matieres, couleurs, intentions, occasions, disponibilite, fulfillment, provenance et six images minimum. Le pipeline reste draft-only et ne modifie ni hub ni collection publique.
@@ -263,7 +265,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Laisser la session Ruban de parure V2 terminer son moteur, sa preview et son GO visuel dans son perimetre reserve, sur le theme de developpement maintenant libere.
+1. Maintenir le Ruban de parure V2 gele sur sa preview jusqu'au GO visuel, puis valider une matrice Search & Discovery preuve, la definition metafield reelle, la QA API et l'ajout panier isole avant toute integration master.
 2. Ouvrir le lot urgent bandeau cookies, puis l'audit critique emails, notifications, relances et inscription.
 3. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
 4. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
@@ -282,7 +284,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
-- Ruban de parure V2 : moteur de complements contextuels et nouvelle interface en construction dans une session dediee ; aucun live sans retour au master et GO distinct
+- Ruban de parure V2 : preview technique terminee et branche poussee ; aucun complement reel sur le produit preuve, matrice commerciale, definition metafield, QA API, ajout panier et GO encore ouverts ; aucune integration ni live sans retour au master et GO distinct
 - diagnostic non persiste dans une source cliente durable ni entre appareils
 - compte Cercle, consentements, emails, notifications, relances et comportement apres inscription a auditer ou construire
 - bandeau cookies a refondre en urgence
