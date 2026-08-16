@@ -10,10 +10,10 @@
   assign excluded_product_ids = ''
   assign recommendation_intents = 'complementary'
   assign recommendation_minimum = section.settings.minimum_products | default: 1
+  assign recommendation_limit = section.settings.products_to_show | default: 3
   assign current_product_id = blank
   assign current_product_handle = blank
   assign recommendation_requires_filter = false
-  assign use_curated_pdp = false
 
   if product != blank
     assign source_product_ids = product.id
@@ -33,13 +33,11 @@
 
   case recommendation_context
     when 'pdp'
-      if section.settings.curated_products != blank
-        assign recommendation_intents = 'curated'
-        assign use_curated_pdp = true
-      else
-        assign recommendation_intents = 'complementary,related'
+      assign recommendation_intents = 'complementary'
+      assign recommendation_minimum = 1
+      if recommendation_limit > 5
+        assign recommendation_limit = 5
       endif
-      assign recommendation_minimum = 2
     when 'cart-page'
       assign recommendation_intents = 'complementary'
       assign recommendation_minimum = 1
@@ -57,7 +55,7 @@
 -%}
 
 {%- capture recommendation_cards -%}
-  {%- if recommendation_context == 'editorial' or use_curated_pdp -%}
+  {%- if recommendation_context == 'editorial' -%}
     {%- assign rendered_count = 0 -%}
     {%- if section.settings.curated_products != blank -%}
       {%- for curated_product in section.settings.curated_products -%}
@@ -101,7 +99,7 @@
   source_product_ids: source_product_ids,
   excluded_product_ids: excluded_product_ids,
   recommendation_intents: recommendation_intents,
-  recommendation_limit: section.settings.products_to_show,
+  recommendation_limit: recommendation_limit,
   recommendation_minimum: recommendation_minimum,
   recommendation_cards: recommendation_cards,
   eyebrow: section.settings.eyebrow,

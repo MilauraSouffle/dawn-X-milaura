@@ -15,6 +15,7 @@
   - recommendation_media: boolean, active des sources plus larges pour une mise
     en avant editoriale sans modifier les cartes standard
   - recommendation_focal: boolean, ajuste le hint responsive du media focal
+  - recommendation_object_image: image Shopify issue du metafield detourage
   - recommendation_object_asset: asset PNG transparent valide pour la scene
   - recommendation_object_width / height: dimensions intrinseques de cet asset
 {%- endcomment -%}
@@ -56,7 +57,18 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- if recommendation_object_asset != blank -%}
+    {%- if recommendation_object_image != blank -%}
+      {{ recommendation_object_image
+        | image_url: width: 960
+        | image_tag:
+          class: 'grid__card-image grid__card-image--primary milaura-recommendation-card__object-image',
+          loading: img_loading,
+          widths: '240, 360, 480, 640, 800, 960',
+          sizes: recommendation_sizes,
+          alt: primary_alt,
+          decoding: 'async'
+      }}
+    {%- elsif recommendation_object_asset != blank -%}
       <img
         class="grid__card-image grid__card-image--primary milaura-recommendation-card__object-image"
         src="{{ recommendation_object_asset | asset_url }}"
@@ -66,9 +78,7 @@
         width="{{ recommendation_object_width | default: 1254 }}"
         height="{{ recommendation_object_height | default: 1254 }}"
       >
-    {%- endif -%}
-
-    {%- if recommendation_video != blank -%}
+    {%- elsif recommendation_video != blank -%}
       {{ recommendation_video
         | video_tag:
           image_size: '960x',
