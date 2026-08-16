@@ -9,7 +9,10 @@
   const RECOMMENDATION_FRAGMENT = 'milaura-recommendation-fragment';
   const PRODUCT_FRAGMENT = 'milaura-product-fragment';
   const RECENT_FRAGMENT = 'milaura-recent-fragment';
-  const RIBBON_SELECTION_RESUME_DELAY = 6000;
+  const PDP_SCORE_CURRENT_PRODUCT = 100;
+  const PDP_SCORE_CART_PRODUCT = 40;
+  const PDP_SCORE_RECENT_TIEBREAKER = 8;
+  const PDP_SCORE_API_ORDER_MAX = 10;
 
   function storefrontRoot() {
     const root = window.Shopify?.routes?.root || '/';
@@ -37,6 +40,35 @@
     });
 
     return unique.slice(0, limit);
+  }
+
+  async function fetchCartProductIds() {
+    const response = await fetch(`${storefrontRoot()}cart.js`, {
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+    });
+    if (!response.ok) return [];
+    const cart = await response.json();
+    const seen = new Set();
+    return (Array.isArray(cart.items) ? cart.items : [])
+      .map((item) => String(item.product_id || ''))
+      .filter((productId) => {
+        if (!productId || seen.has(productId)) return false;
+        seen.add(productId);
+        return true;
+      });
+  }
+
+  function setRecommendationReason(card, signal) {
+    const reason = card.querySelector('.milaura-recommendation-card__reason');
+    if (!reason) return;
+    if (signal === 'current-and-cart') {
+      reason.textContent = 'Sélectionnée pour compléter cette pièce et votre panier.';
+    } else if (signal === 'cart') {
+      reason.textContent = 'Sélectionnée pour compléter un article de votre panier.';
+    } else {
+      reason.textContent = 'Sélectionnée pour compléter cette pièce.';
+    }
   }
 
   function publishAnalytics(name, payload) {
@@ -129,7 +161,7 @@
   async function fetchRecommendationCards(productId, intent, limit) {
     const query = new URLSearchParams({
       product_id: productId,
-      limit: String(Math.min(Math.max(limit, 1), 4)),
+      limit: String(Math.min(Math.max(limit, 1), 10)),
       section_id: RECOMMENDATION_FRAGMENT,
       intent,
     });
@@ -182,9 +214,13 @@
       this.status = this.querySelector('[data-milaura-recommendation-status]');
       this.headingElement = this.querySelector('[data-milaura-recommendation-title]');
       this.subtitleElement = this.querySelector('[data-milaura-recommendation-subtitle]');
-      this.motionToggle = this.querySelector('[data-milaura-ribbon-toggle]');
+      this.railControls = this.querySelector('[data-milaura-recommendation-controls]');
+      this.railCount = this.querySelector('[data-milaura-rail-count]');
+      this.railMeter = this.querySelector('[data-milaura-rail-meter]');
+      this.railMeterValue = this.querySelector('[data-milaura-rail-meter-value]');
       this.context = this.dataset.context || 'editorial';
       this.limit = Number.parseInt(this.dataset.limit, 10) || 3;
+      if (this.context === 'pdp') this.limit = Math.min(this.limit, 5);
       this.minimum = Number.parseInt(this.dataset.minimum, 10) || 1;
       this.sourceProductIds = parseList(this.dataset.sourceProductIds);
       this.excludedProductIds = parseList(this.dataset.excludedProductIds);
@@ -261,23 +297,81 @@
     }
 
     async loadPdpRecommendations() {
-      const sourceProductId = this.sourceProductIds[0];
-      if (!sourceProductId) {
+      const currentProductId = String(this.sourceProductIds[0] || '');
+      if (!currentProductId) {
         this.setState('empty');
         return;
       }
 
-      for (const intent of this.intents) {
-        const cards = uniqueByProductId(
-          await fetchRecommendationCards(sourceProductId, intent, this.limit),
-          this.excludedProductIds,
-          this.limit
-        );
-        const required = intent === 'complementary' ? this.minimum : 1;
-        if (cards.length >= required) {
-          this.renderCards(cards, intent);
-          return;
-        }
+      const [cartProductIds, history] = await Promise.all([
+        fetchCartProductIds().catch(function () { return []; }),
+        this.historyPromise.catch(function () { return []; }),
+      ]);
+      const cartIds = cartProductIds.filter((productId) => productId !== currentProductId);
+      const excluded = new Set([...this.excludedProductIds, currentProductId, ...cartProductIds].map(String));
+      const sources = [
+        { id: currentProductId, kind: 'current', weight: PDP_SCORE_CURRENT_PRODUCT },
+        ...cartIds.map((productId) => ({ id: productId, kind: 'cart', weight: PDP_SCORE_CART_PRODUCT })),
+      ];
+      const batches = await Promise.all(
+        sources.map(async (source) => ({
+          source,
+          cards: await fetchRecommendationCards(source.id, 'complementary', 10).catch(function () { return []; }),
+        }))
+      );
+      const candidates = new Map();
+
+      batches.forEach(({ source, cards }) => {
+        cards.forEach((card, index) => {
+          const productId = String(card.dataset.productId || '');
+          if (!productId || excluded.has(productId) || card.dataset.productAvailable === 'false') return;
+          let candidate = candidates.get(productId);
+          if (!candidate) {
+            candidate = {
+              card,
+              productId,
+              score: 0,
+              bestApiRank: index,
+              sourceIds: new Set(),
+              sourceKinds: new Set(),
+            };
+            candidates.set(productId, candidate);
+          }
+          if (candidate.sourceIds.has(source.id)) return;
+          candidate.sourceIds.add(source.id);
+          candidate.sourceKinds.add(source.kind);
+          candidate.score += source.weight + Math.max(0, PDP_SCORE_API_ORDER_MAX - index);
+          candidate.bestApiRank = Math.min(candidate.bestApiRank, index);
+        });
+      });
+
+      const recentIds = new Set(history.map((item) => String(item.id || '')));
+      const ranked = Array.from(candidates.values())
+        .map((candidate) => {
+          if (recentIds.has(candidate.productId)) candidate.score += PDP_SCORE_RECENT_TIEBREAKER;
+          return candidate;
+        })
+        .sort((left, right) => {
+          if (right.score !== left.score) return right.score - left.score;
+          if (left.bestApiRank !== right.bestApiRank) return left.bestApiRank - right.bestApiRank;
+          return left.productId.localeCompare(right.productId);
+        })
+        .slice(0, this.limit);
+
+      const cards = ranked.map((candidate) => {
+        const fromCurrent = candidate.sourceKinds.has('current');
+        const fromCart = candidate.sourceKinds.has('cart');
+        const signal = fromCurrent && fromCart ? 'current-and-cart' : fromCart ? 'cart' : 'current';
+        candidate.card.dataset.recommendationSignal = signal;
+        candidate.card.dataset.recommendationScore = String(candidate.score);
+        candidate.card.dataset.recommendationSourceIds = Array.from(candidate.sourceIds).join(',');
+        setRecommendationReason(candidate.card, signal);
+        return candidate.card;
+      });
+
+      if (cards.length >= this.minimum) {
+        this.renderCards(cards, 'complementary');
+        return;
       }
 
       this.setState('empty');
@@ -435,232 +529,91 @@
     configureRibbonComposition() {
       this.teardownRibbon();
       const cards = Array.from(this.list?.querySelectorAll('[data-milaura-recommendation-card]') || []);
-      const objectCards = cards.filter((card) => card.dataset.objectMedia === 'true');
-      const ribbon = this.context === 'pdp' && cards.length >= 4 && objectCards.length === cards.length;
+      const ribbon = this.context === 'pdp' && cards.length > 0;
+      const hasMultipleCards = cards.length > 1;
 
       this.dataset.layout = ribbon ? 'ribbon' : 'gallery';
-      if (this.motionToggle) this.motionToggle.hidden = true;
+      this.dataset.ribbonRevealed = 'false';
+      if (this.railControls) this.railControls.hidden = !ribbon || !hasMultipleCards;
+      if (this.railMeter) this.railMeter.hidden = !ribbon || !hasMultipleCards;
       cards.forEach((card, index) => {
         card.style.setProperty('--milaura-reco-order', String(index));
         card.dataset.active = 'false';
         card.dataset.ribbonPosition = String(index + 1);
-        card.dataset.ribbonSlot = String(index % 8);
       });
 
-      if (!ribbon) return;
-
-      const track = document.createElement('div');
-      track.className = 'milaura-recommendations__ribbon-track';
-      track.setAttribute('role', 'presentation');
-      cards.forEach((card) => track.appendChild(card));
-
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!reducedMotion) {
-        cards.forEach((card) => {
-          const clone = card.cloneNode(true);
-          clone.dataset.ribbonClone = 'true';
-          clone.dataset.active = 'false';
-          clone.setAttribute('aria-hidden', 'true');
-          clone.querySelectorAll('[id], [for]').forEach((element) => {
-            element.removeAttribute('id');
-            element.removeAttribute('for');
-          });
-          clone.querySelectorAll('a, button, input, select, textarea').forEach((element) => {
-            element.tabIndex = -1;
-          });
-          track.appendChild(clone);
-        });
+      this.ribbonCards = cards;
+      if (!cards.length) return;
+      this.activateRibbonCard(cards[0]);
+      if (!ribbon) {
+        this.dataset.ribbonRevealed = 'true';
+        return;
       }
 
-      this.list.replaceChildren(track);
-      this.ribbonTrack = track;
-      this.ribbonCards = cards;
-      this.ribbonManualPaused = false;
-      this.ribbonInteractionPaused = false;
-      this.ribbonReducedMotion = reducedMotion;
-      this.ribbonCompactInteraction = window.matchMedia('(max-width: 989px), (hover: none), (pointer: coarse)').matches;
-      this.ribbonSelectedCard = null;
-      cards[0].dataset.active = String(!this.ribbonCompactInteraction);
-      this.setupRibbonMotion();
+      this.ribbonScrollHandler = () => {
+        if (this.ribbonFrame) return;
+        this.ribbonFrame = window.requestAnimationFrame(() => {
+          this.ribbonFrame = null;
+          this.syncActiveRibbonCard();
+        });
+      };
+      this.list.addEventListener('scroll', this.ribbonScrollHandler, { passive: true });
+      window.requestAnimationFrame(() => {
+        if (this.isConnected) this.dataset.ribbonRevealed = 'true';
+      });
     }
 
     activateRibbonCard(card) {
-      if (this.dataset.layout !== 'ribbon' || !card || !this.list?.contains(card)) return;
-      this.list.querySelectorAll('[data-milaura-recommendation-card]').forEach((candidate) => {
+      if (!card || !this.list?.contains(card)) return;
+      this.ribbonCards.forEach((candidate) => {
         candidate.dataset.active = String(candidate === card);
       });
-    }
-
-    setupRibbonMotion() {
-      if (!this.ribbonTrack || !this.list) return;
-      this.ribbonReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      this.ribbonCycleWidth = this.ribbonReducedMotion ? this.ribbonTrack.scrollWidth : this.ribbonTrack.scrollWidth / 2;
-      this.list.scrollLeft = 0;
-      if (this.motionToggle) this.motionToggle.hidden = this.ribbonReducedMotion;
-      this.updateRibbonMotionState();
-
-      if (this.ribbonReducedMotion) return;
-
-      this.ribbonInView = true;
-      if ('IntersectionObserver' in window) {
-        this.ribbonObserver = new IntersectionObserver(
-          (entries) => {
-            this.ribbonInView = Boolean(entries[0]?.isIntersecting);
-            this.updateRibbonMotionState();
-          },
-          { threshold: 0.05 }
-        );
-        this.ribbonObserver.observe(this.list);
-      }
-
-      this.ribbonVisibilityHandler = () => this.updateRibbonMotionState();
-      document.addEventListener('visibilitychange', this.ribbonVisibilityHandler);
-      window.requestAnimationFrame(() => {
-        if (!this.ribbonTrack) return;
-        this.ribbonCycleWidth = this.ribbonTrack.scrollWidth / 2;
-        this.updateRibbonMotionState();
-      });
+      this.updateRibbonPosition(this.ribbonCards.indexOf(card));
     }
 
     teardownRibbon() {
       if (this.ribbonFrame) window.cancelAnimationFrame(this.ribbonFrame);
       this.ribbonFrame = null;
-      this.ribbonLastTimestamp = null;
-      this.ribbonObserver?.disconnect();
-      this.ribbonObserver = null;
-      window.clearTimeout(this.ribbonResumeTimer);
-      if (this.ribbonVisibilityHandler) {
-        document.removeEventListener('visibilitychange', this.ribbonVisibilityHandler);
-      }
-      this.ribbonVisibilityHandler = null;
-      this.ribbonTrack = null;
+      if (this.ribbonScrollHandler && this.list) this.list.removeEventListener('scroll', this.ribbonScrollHandler);
+      this.ribbonScrollHandler = null;
       this.ribbonCards = [];
-      this.ribbonCycleWidth = 0;
-      this.ribbonSelectedCard = null;
-      this.ribbonCompactInteraction = false;
     }
 
-    shouldRunRibbon() {
-      return Boolean(
-        this.dataset.layout === 'ribbon' &&
-        this.ribbonTrack &&
-        this.ribbonCycleWidth > 0 &&
-        !this.ribbonReducedMotion &&
-        !this.ribbonManualPaused &&
-        !this.ribbonInteractionPaused &&
-        this.ribbonInView !== false &&
-        !document.hidden
-      );
+    syncActiveRibbonCard() {
+      if (this.dataset.layout !== 'ribbon' || !this.list || !this.ribbonCards.length) return;
+      const listRect = this.list.getBoundingClientRect();
+      const center = listRect.left + listRect.width / 2;
+      const closest = this.ribbonCards.reduce((current, card) => {
+        const rect = card.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - center);
+        return !current || distance < current.distance ? { card, distance } : current;
+      }, null);
+      if (closest?.card) this.activateRibbonCard(closest.card);
     }
 
-    updateRibbonMotionState() {
-      const paused = Boolean(this.ribbonManualPaused || this.ribbonInteractionPaused || this.ribbonReducedMotion);
-      this.dataset.ribbonPaused = String(paused);
-      if (this.motionToggle) {
-        this.motionToggle.setAttribute('aria-pressed', String(Boolean(this.ribbonManualPaused)));
-        const label = this.motionToggle.querySelector('[data-milaura-ribbon-toggle-label]');
-        if (label) label.textContent = this.ribbonManualPaused ? 'Reprendre le défilement' : 'Mettre en pause';
+    updateRibbonPosition(index) {
+      if (index < 0 || !this.ribbonCards.length) return;
+      const total = this.ribbonCards.length;
+      if (this.railCount) {
+        this.railCount.textContent = `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
       }
-
-      if (!this.shouldRunRibbon()) {
-        if (this.ribbonFrame) window.cancelAnimationFrame(this.ribbonFrame);
-        this.ribbonFrame = null;
-        this.ribbonLastTimestamp = null;
-        return;
-      }
-      if (this.ribbonFrame) return;
-
-      const step = (timestamp) => {
-        if (!this.shouldRunRibbon()) {
-          this.ribbonFrame = null;
-          this.ribbonLastTimestamp = null;
-          return;
-        }
-
-        if (this.ribbonLastTimestamp !== null) {
-          const elapsed = Math.min(timestamp - this.ribbonLastTimestamp, 40);
-          const duration = Number.parseFloat(
-            window.getComputedStyle(this).getPropertyValue('--milaura-ribbon-duration')
-          ) || 72;
-          this.list.scrollLeft += (this.ribbonCycleWidth / (duration * 1000)) * elapsed;
-          if (this.list.scrollLeft >= this.ribbonCycleWidth) this.list.scrollLeft -= this.ribbonCycleWidth;
-        }
-
-        this.ribbonLastTimestamp = timestamp;
-        this.ribbonFrame = window.requestAnimationFrame(step);
-      };
-
-      this.ribbonFrame = window.requestAnimationFrame(step);
+      if (this.railMeterValue) this.railMeterValue.style.width = `${((index + 1) / total) * 100}%`;
+      const previous = this.querySelector('[data-milaura-rail-control="previous"]');
+      const next = this.querySelector('[data-milaura-rail-control="next"]');
+      if (previous) previous.disabled = index === 0;
+      if (next) next.disabled = index === total - 1;
     }
 
-    setRibbonInteractionPaused(paused) {
-      if (this.dataset.layout !== 'ribbon') return;
-      this.ribbonInteractionPaused = paused;
-      this.updateRibbonMotionState();
-    }
-
-    clearRibbonSelection() {
-      if (this.dataset.layout !== 'ribbon') return;
-      this.ribbonSelectedCard = null;
-      this.list?.querySelectorAll('[data-milaura-recommendation-card]').forEach((card) => {
-        card.dataset.ribbonUserSelected = 'false';
-        if (this.ribbonCompactInteraction) card.dataset.active = 'false';
-      });
-      this.setRibbonInteractionPaused(false);
-    }
-
-    scheduleRibbonResume() {
-      window.clearTimeout(this.ribbonResumeTimer);
-      this.ribbonResumeTimer = window.setTimeout(() => {
-        this.clearRibbonSelection();
-      }, RIBBON_SELECTION_RESUME_DELAY);
-    }
-
-    selectRibbonCard(card) {
-      if (this.dataset.layout !== 'ribbon' || !card) return;
-      this.activateRibbonCard(card);
-      this.list?.querySelectorAll('[data-milaura-recommendation-card]').forEach((candidate) => {
-        candidate.dataset.ribbonUserSelected = String(candidate === card);
-      });
-      this.ribbonSelectedCard = card;
-      this.setRibbonInteractionPaused(true);
-      this.centerRibbonCard(card);
-      this.ensureRibbonCardVisible(card);
-      this.scheduleRibbonResume();
-    }
-
-    ensureRibbonCardVisible(card) {
-      if (!this.ribbonCompactInteraction || !card) return;
-      window.requestAnimationFrame(() => {
-        if (!this.isConnected || !this.list?.contains(card)) return;
-        const cardRect = card.getBoundingClientRect();
-        const nav = document.querySelector('[data-milaura-navigation] .nav-snake-wrapper');
-        const blockers = [
-          document.querySelector('.milaura-sticky-bar.is-visible'),
-          document.querySelector('.milaura-dock'),
-        ].filter((element) => {
-          if (!element) return false;
-          const styles = window.getComputedStyle(element);
-          return styles.display !== 'none' && styles.visibility !== 'hidden';
-        });
-        const blockerTops = blockers.map((element) => element.getBoundingClientRect().top).filter(Number.isFinite);
-        const safeTop = nav ? nav.getBoundingClientRect().bottom + 12 : 12;
-        const safeBottom = Math.min(window.innerHeight, ...blockerTops) - 12;
-        const availableHeight = Math.max(0, safeBottom - safeTop);
-        let delta = 0;
-
-        if (cardRect.height > availableHeight || cardRect.top < safeTop) {
-          delta = cardRect.top - safeTop;
-        } else if (cardRect.bottom > safeBottom) {
-          delta = cardRect.bottom - safeBottom;
-        }
-
-        if (Math.abs(delta) < 2) return;
-        window.scrollBy({
-          top: delta,
-          behavior: this.ribbonReducedMotion ? 'auto' : 'smooth',
-        });
-      });
+    moveRibbon(direction) {
+      if (!this.ribbonCards.length) return;
+      const active = this.ribbonCards.findIndex((card) => card.dataset.active === 'true');
+      const nextIndex = Math.min(this.ribbonCards.length - 1, Math.max(0, active + direction));
+      const nextCard = this.ribbonCards[nextIndex];
+      if (!nextCard) return;
+      this.activateRibbonCard(nextCard);
+      this.centerRibbonCard(nextCard);
+      const title = nextCard.querySelector('.grid__card-title')?.textContent?.trim();
+      if (title) this.announce(`${nextIndex + 1} sur ${this.ribbonCards.length} : ${title}.`);
     }
 
     centerRibbonCard(card) {
@@ -668,7 +621,7 @@
       const left = card.offsetLeft - (this.list.clientWidth - card.offsetWidth) / 2;
       this.list.scrollTo({
         left: Math.max(0, left),
-        behavior: this.ribbonReducedMotion ? 'auto' : 'smooth',
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
       });
     }
 
@@ -700,57 +653,36 @@
 
     bindInteractions() {
       this.addEventListener('pointerover', (event) => {
-        if (this.ribbonCompactInteraction || (event.pointerType && event.pointerType !== 'mouse')) return;
+        if (event.pointerType && event.pointerType !== 'mouse') return;
         const card = event.target.closest('[data-milaura-recommendation-card]');
         if (!card) return;
         this.activateRibbonCard(card);
-        this.setRibbonInteractionPaused(true);
       });
 
       this.addEventListener('focusin', (event) => {
         const card = event.target.closest('[data-milaura-recommendation-card]');
         if (!card) return;
         this.activateRibbonCard(card);
-        this.setRibbonInteractionPaused(true);
-        this.centerRibbonCard(card);
-      });
-
-      this.addEventListener('focusout', (event) => {
-        if (event.relatedTarget?.closest?.('[data-milaura-recommendation-card]')) return;
-        if (this.ribbonSelectedCard) return;
-        this.setRibbonInteractionPaused(false);
-      });
-
-      this.list?.addEventListener('pointerleave', (event) => {
-        if (this.ribbonCompactInteraction || (event.pointerType && event.pointerType !== 'mouse')) return;
-        this.setRibbonInteractionPaused(false);
       });
 
       this.addEventListener('click', (event) => {
-        const motionToggle = event.target.closest('[data-milaura-ribbon-toggle]');
-        if (motionToggle) {
+        const railControl = event.target.closest('[data-milaura-rail-control]');
+        if (railControl) {
           event.preventDefault();
-          this.ribbonManualPaused = !this.ribbonManualPaused;
-          this.updateRibbonMotionState();
+          this.moveRibbon(railControl.dataset.milauraRailControl === 'next' ? 1 : -1);
           return;
         }
 
         const card = event.target.closest('[data-milaura-recommendation-card]');
         if (!card) return;
         const link = event.target.closest('.grid__card');
-
-        if (this.dataset.layout === 'ribbon' && this.ribbonCompactInteraction) {
-          const alreadySelected = this.ribbonSelectedCard === card && card.dataset.ribbonUserSelected === 'true';
-          if (link && !alreadySelected) event.preventDefault();
-          this.selectRibbonCard(card);
-          if (!link || !alreadySelected) return;
-        }
-
         if (!link) return;
         publishAnalytics('milaura:recommendation_click', {
           context: this.context,
           intent: this.currentIntent,
           productId: card.dataset.productId,
+          signal: card.dataset.recommendationSignal || '',
+          score: Number(card.dataset.recommendationScore) || 0,
           position: Number(card.dataset.ribbonPosition) || Array.from(this.list?.children || []).indexOf(card) + 1,
         });
       });
@@ -762,17 +694,8 @@
         const direction = event.key === 'ArrowRight' ? 1 : -1;
 
         if (this.dataset.layout === 'ribbon') {
-          const cards = this.ribbonCards || [];
-          const activeCard = this.list.querySelector('[data-milaura-recommendation-card][data-active="true"]');
-          const activeProductId = activeCard?.dataset.productId;
-          const activeIndex = Math.max(0, cards.findIndex((card) => card.dataset.productId === activeProductId));
-          const nextIndex = (activeIndex + direction + cards.length) % cards.length;
-          const nextCard = cards[nextIndex];
-          if (!nextCard) return;
           event.preventDefault();
-          this.activateRibbonCard(nextCard);
-          this.centerRibbonCard(nextCard);
-          nextCard.querySelector('.grid__card')?.focus({ preventScroll: true });
+          this.moveRibbon(direction);
           return;
         }
 
@@ -923,9 +846,14 @@
       publishAnalytics('milaura:recommendation_impression', {
         context: this.context,
         intent: this.currentIntent,
-        productIds: Array.from(
-          this.list?.querySelectorAll('[data-milaura-recommendation-card]:not([data-ribbon-clone])') || []
-        ).map((card) => card.dataset.productId),
+        productIds: Array.from(this.list?.querySelectorAll('[data-milaura-recommendation-card]') || []).map(
+          (card) => card.dataset.productId
+        ),
+        products: Array.from(this.list?.querySelectorAll('[data-milaura-recommendation-card]') || []).map((card) => ({
+          productId: card.dataset.productId,
+          signal: card.dataset.recommendationSignal || '',
+          score: Number(card.dataset.recommendationScore) || 0,
+        })),
       });
     }
   }
