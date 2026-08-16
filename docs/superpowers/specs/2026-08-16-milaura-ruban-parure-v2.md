@@ -2,7 +2,7 @@
 
 Date : 2026-08-16
 
-Statut : implementation et QA locale terminees, aucune preview Shopify, aucune integration, aucun live
+Statut : implementation et preview technique terminees sur le theme de developpement, aucune integration, aucun live
 
 Proprietaire du GO visuel et du GO live : Patrice Allié
 
@@ -71,6 +71,8 @@ Ces formulations de travail restent soumises au GO visuel et commercial de Patri
 5. Mobile : largeur de carte `84vw`, bornee a 360 px, avec apercu suivant.
 6. Les fleches mesurent 44 px, le focus est visible et les fleches clavier deplacent la piece active.
 7. `prefers-reduced-motion` supprime l animation d entree et les transitions.
+8. Sur mobile, le media reste compact et entier ; le titre et le prix partagent la premiere ligne d information.
+9. Pendant la traversee du Ruban, la sticky produit se retire derriere le dock mobile afin de ne jamais masquer une action du Ruban.
 
 ## 7. Matrice de preuve a saisir apres levee du gate
 
@@ -104,14 +106,14 @@ Garde-fous : conversion PDP principale, AOV, LCP, CLS, INP, taux d erreur ajout 
 
 Le theme publie les evenements mais aucun consommateur Pixel n est confirme dans le depot. Le plan de mesure n est donc complet qu apres verification ou creation du pixel Shopify correspondant.
 
-## 10. Gate du 2026-08-16 a 08:38 CEST
+## 10. Gate preview
 
-- le theme de developpement `199421952347` appartient au lot Sticky proof ;
-- Ruban V2 reste strictement local ;
-- aucun push vers ce theme ou un autre theme ;
-- aucune integration dans le checkout principal ;
-- aucun live ;
-- la prochaine preview exige la liberation du theme ou l attribution d un theme prive distinct dans `docs/workstreams.md`.
+- a 08:38 CEST, le theme de developpement `199421952347` appartenait au lot Sticky proof et Ruban V2 restait strictement local ;
+- a 09:32 CEST, le master a confirme l integration Sticky par `396502cf`, son pullback live 5/5 et la liberation du theme de developpement pour Ruban V2 ;
+- Ruban V2 a synchronise `396502cf` avant son push cible ;
+- la preview reste limitee au theme `199421952347` et aux fichiers declares dans le registre ;
+- aucune integration dans le checkout principal et aucun live ;
+- le GO visuel de Patrice reste distinct de toute autorisation d integration ou de live.
 
 ## 11. Criteres avant demande de GO visuel
 
