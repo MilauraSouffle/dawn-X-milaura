@@ -247,3 +247,67 @@ La V1 technique est terminee quand :
 10. le GO live est donne separement.
 
 La fin du code n'est pas la fin du produit. Sans donnees physiques et montage pilote, le resultat reste une preview privee verrouillee.
+
+## 11. Passe visuelle 2 - la composition doit etre visible
+
+Date : 2026-08-16
+
+Decision : le verrou commercial ne doit plus masquer l'experience de composition sur le theme prive. Une maquette interactive non contractuelle est visible avant l'inventaire. Elle ne cree ni produit, ni prix, ni panier.
+
+### 11.1 Sujet et travail unique
+
+Le sujet concret reste un bracelet adulte a message. La page a un seul travail dans cette phase : permettre a Patrice de juger la sensation de composer avant de connecter les composants physiques.
+
+### 11.2 Signature revisee
+
+Le `fil de composition` lineaire devient une `table de montage circulaire` : vingt-quatre emplacements neutres dessinent un bracelet vu du dessus. Le mot saisi se place sur l'arc inferieur. Les emplacements ne simulent aucune pierre ou matiere. Ils sont le gabarit d'interface du futur montage.
+
+Une photo reelle de Karine relie la scene a la personne qui montera la version validee. Aucun visuel de produit ou de composant n'est invente.
+
+### 11.3 Plan compact
+
+Palette : Nacre, Prune, Aigue-marine, Or mat et Amethyste, exclusivement via les tokens canoniques.
+
+Typographie : Gloock pour la these et le mot compose, Instrument Sans pour les controles, Dancing Script pour la seule signature humaine.
+
+Desktop :
+
+```text
+┌─────────────────────────────────────────────────────────────────────┐
+│ L'ATELIER        Composez un bracelet        phrase utile / signature│
+├──────────────────────────────────┬──────────────────────────────────┤
+│                                  │ MAQUETTE INTERACTIVE             │
+│       ○ ○ ○ ○ ○ ○ ○            │ Message  Palette  Detail        │
+│     ○                 ○          │                                  │
+│    ○    table de       ○         │ Votre mot                       │
+│    ○     montage       ○         │ [ M I L A U R A ]               │
+│     ○  M I L A U R A ○          │                                  │
+│       ○ ○ ○ ○ ○ ○ ○            │ Etat : achat verrouille          │
+│  Karine / montage a Metz          │                                  │
+└──────────────────────────────────┴──────────────────────────────────┘
+```
+
+Mobile :
+
+```text
+┌────────────────────────────┐
+│ L'ATELIER                   │
+│ Composez un bracelet       │
+├────────────────────────────┤
+│       ○ ○ ○ ○ ○            │
+│    ○             ○         │
+│   ○    montage    ○        │
+│    ○ M I L A U R A ○       │
+│       ○ ○ ○ ○ ○            │
+├────────────────────────────┤
+│ Message | Palette | Detail │
+│ Votre mot [MILAURA]        │
+│ Achat verrouille           │
+└────────────────────────────┘
+```
+
+### 11.4 Auto-critique
+
+La premiere version ressemblait a une landing editoriale : un titre, un etat vide et trois colonnes de texte. Elle protegeait la verite commerciale mais ne permettait pas de juger la feature. Cette structure est trop generique et trop passive pour un chantier prioritaire.
+
+La revision depense toute la singularite dans un seul objet, la table de montage circulaire. Les trois niveaux de service restent secondaires et compacts. Les faux nuanciers, faux charms, faux stocks et faux prix restent interdits.

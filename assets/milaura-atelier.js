@@ -18,8 +18,138 @@
       .toLocaleUpperCase('fr-FR');
   }
 
+  function initPrototype(root) {
+    if (!root || root.dataset.prototypeInitialized === 'true') {
+      return;
+    }
+
+    var prototype = root.querySelector('[data-atelier-prototype]');
+    if (!prototype) {
+      return;
+    }
+
+    var input = prototype.querySelector('[data-prototype-word-input]');
+    var slots = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-slot]'));
+    var orbit = prototype.querySelector('[data-prototype-orbit]');
+    var centerWord = prototype.querySelector('[data-prototype-center-word]');
+    var count = prototype.querySelector('[data-prototype-count]');
+    var live = prototype.querySelector('[data-prototype-live]');
+    var tabs = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-tab]'));
+    var panels = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-panel]'));
+    var animationTimer;
+
+    if (!input || slots.length === 0) {
+      return;
+    }
+
+    root.dataset.prototypeInitialized = 'true';
+
+    function activateTab(tab, shouldFocus) {
+      var panelName = tab.dataset.prototypeTab;
+
+      tabs.forEach(function (item) {
+        var active = item === tab;
+        item.setAttribute('aria-selected', active ? 'true' : 'false');
+        item.tabIndex = active ? 0 : -1;
+      });
+
+      panels.forEach(function (panel) {
+        panel.hidden = panel.dataset.prototypePanel !== panelName;
+      });
+
+      if (shouldFocus) {
+        tab.focus();
+      }
+    }
+
+    function updatePrototype() {
+      var maximumLength = Number(input.maxLength) || 10;
+      var normalized = normalizeWord(input.value);
+      var characters = Array.from(normalized).slice(0, maximumLength);
+      var firstSlot = 12 + Math.floor((characters.length - 1) / 2);
+
+      input.value = characters.join('');
+      slots.forEach(function (slot) {
+        slot.textContent = '';
+        slot.classList.remove('has-letter');
+      });
+
+      characters.forEach(function (character, characterIndex) {
+        var slotIndex = firstSlot - characterIndex;
+        var slot = slots[slotIndex];
+        if (slot) {
+          slot.textContent = character === ' ' ? '·' : character;
+          slot.classList.add('has-letter');
+        }
+      });
+
+      if (centerWord) {
+        centerWord.textContent = normalized.trim() || 'VOTRE MOT';
+      }
+
+      if (count) {
+        count.textContent = characters.length + '/' + maximumLength;
+      }
+
+      if (live) {
+        live.textContent = characters.length
+          ? 'Aperçu mis à jour avec ' + characters.length + ' caractères.'
+          : 'Aperçu vide.';
+      }
+
+      if (orbit) {
+        window.clearTimeout(animationTimer);
+        orbit.classList.remove('is-updating');
+        window.requestAnimationFrame(function () {
+          orbit.classList.add('is-updating');
+          animationTimer = window.setTimeout(function () {
+            orbit.classList.remove('is-updating');
+          }, 420);
+        });
+      }
+    }
+
+    tabs.forEach(function (tab, tabIndex) {
+      tab.addEventListener('click', function () {
+        activateTab(tab, false);
+      });
+
+      tab.addEventListener('keydown', function (event) {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight' && event.key !== 'Home' && event.key !== 'End') {
+          return;
+        }
+
+        event.preventDefault();
+        var nextIndex = tabIndex;
+
+        if (event.key === 'ArrowLeft') {
+          nextIndex = (tabIndex - 1 + tabs.length) % tabs.length;
+        } else if (event.key === 'ArrowRight') {
+          nextIndex = (tabIndex + 1) % tabs.length;
+        } else if (event.key === 'Home') {
+          nextIndex = 0;
+        } else if (event.key === 'End') {
+          nextIndex = tabs.length - 1;
+        }
+
+        activateTab(tabs[nextIndex], true);
+      });
+    });
+
+    input.addEventListener('input', updatePrototype);
+    input.addEventListener('blur', updatePrototype);
+    activateTab(tabs[0], false);
+    updatePrototype();
+  }
+
   function initAtelier(root) {
-    if (!root || root.dataset.atelierInitialized === 'true' || root.dataset.ready !== 'true') {
+    if (!root) {
+      return;
+    }
+
+    initPrototype(root);
+
+    if (root.dataset.atelierInitialized === 'true' || root.dataset.ready !== 'true') {
       return;
     }
 

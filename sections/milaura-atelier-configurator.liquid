@@ -361,21 +361,156 @@
         </form>
       </div>
     {%- else -%}
-      <div class="milaura-atelier__locked" role="status">
-        <p class="milaura-atelier__locked-label">Composition en ligne en préparation</p>
-        <h2>Chaque option doit d'abord être vérifiée dans l'atelier.</h2>
-        <p>Le configurateur ouvrira lorsque les composants, les tailles et les règles de montage du bracelet pilote seront confirmés. Aucun choix provisoire ne vous est présenté comme disponible.</p>
-        {%- if request.design_mode -%}
-          <div class="milaura-atelier__setup">
-            <h3>Configuration requise dans l'éditeur</h3>
-            <ul>
-              {%- if pilot_product == blank -%}<li>Sélectionner le produit Shopify pilote.</li>{%- endif -%}
-              {%- if available_variant_count == 0 -%}<li>Vérifier qu'une variante du produit est disponible.</li>{%- endif -%}
-              {%- if section.settings.max_characters < 1 -%}<li>Définir une limite de caractères validée par Karine.</li>{%- endif -%}
-              {%- if palette_count == 0 -%}<li>Ajouter une palette disponible, identifiée et compatible.</li>{%- endif -%}
-              {%- if letter_finish_count == 0 -%}<li>Ajouter une finition de lettres disponible, identifiée et compatible.</li>{%- endif -%}
-            </ul>
+      {%- if section.settings.show_private_prototype -%}
+        <div class="milaura-atelier__prototype" data-atelier-prototype aria-labelledby="MilauraAtelierPrototypeTitle-{{ section.id }}">
+          <div class="milaura-atelier__prototype-stage">
+            <div class="milaura-atelier__prototype-topline">
+              <p>Maquette interactive</p>
+              <span>Commande verrouillée</span>
+            </div>
+
+            <div class="milaura-atelier__bracelet-board">
+              <div class="milaura-atelier__bracelet-orbit" aria-hidden="true" data-prototype-orbit>
+                {%- for slot_index in (1..24) -%}
+                  <span class="milaura-atelier__prototype-slot" style="--slot-index: {{ forloop.index0 }};" data-prototype-slot></span>
+                {%- endfor -%}
+              </div>
+              <div class="milaura-atelier__prototype-center">
+                <span>Aperçu du montage</span>
+                <strong data-prototype-center-word>MILAURA</strong>
+                <small>placement visuel non contractuel</small>
+              </div>
+            </div>
+
+            <figure class="milaura-atelier__maker">
+              <img
+                src="{{ 'milaura-hero-proof-karine-v2.webp' | asset_url }}"
+                width="160"
+                height="200"
+                loading="lazy"
+                alt="Karine, créatrice de MilAura"
+              >
+              <figcaption>
+                <strong>Karine</strong>
+                <span>Montera la version validée à Metz.</span>
+              </figcaption>
+            </figure>
           </div>
+
+          <div class="milaura-atelier__prototype-controls">
+            <p class="milaura-atelier__eyebrow">Essayez la composition</p>
+            <h2 id="MilauraAtelierPrototypeTitle-{{ section.id }}">Écrivez ce que vous voulez porter.</h2>
+
+            <div class="milaura-atelier__prototype-tabs" role="tablist" aria-label="Choix de composition à explorer">
+              <button
+                id="MilauraAtelierTabMessage-{{ section.id }}"
+                type="button"
+                role="tab"
+                aria-selected="true"
+                aria-controls="MilauraAtelierPanelMessage-{{ section.id }}"
+                data-prototype-tab="message"
+              >Message</button>
+              <button
+                id="MilauraAtelierTabPalette-{{ section.id }}"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="MilauraAtelierPanelPalette-{{ section.id }}"
+                tabindex="-1"
+                data-prototype-tab="palette"
+              >Palette</button>
+              <button
+                id="MilauraAtelierTabDetail-{{ section.id }}"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="MilauraAtelierPanelDetail-{{ section.id }}"
+                tabindex="-1"
+                data-prototype-tab="detail"
+              >Détail</button>
+            </div>
+
+            <div
+              id="MilauraAtelierPanelMessage-{{ section.id }}"
+              class="milaura-atelier__prototype-panel"
+              role="tabpanel"
+              aria-labelledby="MilauraAtelierTabMessage-{{ section.id }}"
+              data-prototype-panel="message"
+            >
+              <label for="MilauraAtelierPrototypeWord-{{ section.id }}">Votre mot</label>
+              <input
+                id="MilauraAtelierPrototypeWord-{{ section.id }}"
+                type="text"
+                value="MILAURA"
+                maxlength="10"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                data-prototype-word-input
+              >
+              <div class="milaura-atelier__prototype-meta">
+                <p>10 caractères servent ici à tester l'écran, pas à fixer la règle du produit.</p>
+                <span data-prototype-count>7/10</span>
+              </div>
+            </div>
+
+            <div
+              id="MilauraAtelierPanelPalette-{{ section.id }}"
+              class="milaura-atelier__prototype-panel"
+              role="tabpanel"
+              aria-labelledby="MilauraAtelierTabPalette-{{ section.id }}"
+              data-prototype-panel="palette"
+              hidden
+            >
+              <p class="milaura-atelier__prototype-panel-title">La palette sera visuelle, exacte et comptée.</p>
+              <ol class="milaura-atelier__prototype-requirements">
+                <li><span>01</span><strong>Photographier</strong><small>le composant réel</small></li>
+                <li><span>02</span><strong>Compter</strong><small>les pièces disponibles</small></li>
+                <li><span>03</span><strong>Valider</strong><small>le montage pilote</small></li>
+              </ol>
+            </div>
+
+            <div
+              id="MilauraAtelierPanelDetail-{{ section.id }}"
+              class="milaura-atelier__prototype-panel"
+              role="tabpanel"
+              aria-labelledby="MilauraAtelierTabDetail-{{ section.id }}"
+              data-prototype-panel="detail"
+              hidden
+            >
+              <p class="milaura-atelier__prototype-panel-title">Chaque détail affiché devra exister sur l'établi.</p>
+              <dl class="milaura-atelier__prototype-facts">
+                <div><dt>Lettres</dt><dd>finition à confirmer</dd></div>
+                <div><dt>Charm</dt><dd>compatibilité à tester</dd></div>
+                <div><dt>Taille</dt><dd>mesure pilote requise</dd></div>
+              </dl>
+            </div>
+
+            <p class="milaura-atelier__prototype-lock" role="status">
+              <span aria-hidden="true"></span>
+              La maquette est interactive. L'ajout au panier reste bloqué jusqu'à la validation du bracelet pilote.
+            </p>
+            <p class="visually-hidden" aria-live="polite" data-prototype-live></p>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="milaura-atelier__locked" role="status">
+          <p class="milaura-atelier__locked-label">Composition en ligne en préparation</p>
+          <h2>Chaque option doit d'abord être vérifiée dans l'atelier.</h2>
+          <p>Le configurateur ouvrira lorsque les composants, les tailles et les règles de montage du bracelet pilote seront confirmés. Aucun choix provisoire ne vous est présenté comme disponible.</p>
+        </div>
+      {%- endif -%}
+
+      <div class="milaura-atelier__setup{% unless request.design_mode %} visually-hidden{% endunless %}">
+        {%- if request.design_mode -%}
+          <h3>Configuration requise dans l'éditeur</h3>
+          <ul>
+            {%- if pilot_product == blank -%}<li>Sélectionner le produit Shopify pilote.</li>{%- endif -%}
+            {%- if available_variant_count == 0 -%}<li>Vérifier qu'une variante du produit est disponible.</li>{%- endif -%}
+            {%- if section.settings.max_characters < 1 -%}<li>Définir une limite de caractères validée par Karine.</li>{%- endif -%}
+            {%- if palette_count == 0 -%}<li>Ajouter une palette disponible, identifiée et compatible.</li>{%- endif -%}
+            {%- if letter_finish_count == 0 -%}<li>Ajouter une finition de lettres disponible, identifiée et compatible.</li>{%- endif -%}
+          </ul>
         {%- endif -%}
       </div>
     {%- endif -%}
@@ -498,6 +633,12 @@
       "id": "show_unavailable_options",
       "label": "Afficher les options indisponibles",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_private_prototype",
+      "label": "Afficher la maquette interactive non contractuelle",
+      "default": true
     },
     {
       "type": "header",
