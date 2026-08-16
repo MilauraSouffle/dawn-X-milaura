@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-16 07:51 CEST
+Derniere mise a jour : 2026-08-16 09:32 CEST
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions et recommandations sont live ; le Ruban Vivant mobile est en reconstruction, tandis que cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
+La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions, recommandations et polish Sticky PDP sont live ; le Ruban de parure V2 est en reconstruction, tandis que cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ La refonte visible est en phase de finition : catalogue V1, nouvelle experience 
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au 2026-08-16 a 07:51 CEST, le worktree `/Users/paesano/Documents/MilAura website/_worktrees/ruban-repair-20260816` est actif sur `codex/milaura-ruban-repair-20260816` et possede exclusivement le Ruban Vivant et ses detourages autorises.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au 2026-08-16 a 09:32 CEST, seul le worktree `/Users/paesano/Documents/MilAura website/_worktrees/ruban-parure-v2-20260816` reste actif ; il possede exclusivement le moteur et l'interface `milaura-recommendation*`, ses adaptateurs PDP declares et son checkpoint.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -219,6 +219,8 @@ Douze anciens fichiers de sections PDP restent physiquement dans le depot mais n
 
 Point P0 declare par Patrice apres la livraison : le Ruban Vivant fonctionne mal sur mobile et ses images paraissent pales, floues ou fortement degradees. Ce probleme appartient au moteur de recommandations partage, pas au nouveau composant PDP. Il doit etre audite sur 360, 390 et 430 px avant toute autre evolution visuelle. Checkpoint : `docs/checkpoints/2026-08-15-1334-pdp-experience-live-handoff.md`.
 
+Le polish Sticky PDP est live depuis le 2026-08-16 a 09:32 CEST. La sticky utilise maintenant la position reelle du CTA Hero comme seuil bidirectionnel, recouvre le dock mobile de 1 px et le rail de reassurance affiche un indicateur de progression sans autoplay. Commit integre `396502cf`, push live limite a cinq fichiers, pullback 5/5 identique et QA publique 360/390/430/1440 validee sans erreur console. Checkpoint : `docs/checkpoints/2026-08-16-0932-sticky-proof-live.md`.
+
 ## Contrat produit
 
 Le commit `6c4e6de4` fixe le contrat canonique complet : pierres, matieres, couleurs, intentions, occasions, disponibilite, fulfillment, provenance et six images minimum. Le pipeline reste draft-only et ne modifie ni hub ni collection publique.
@@ -261,7 +263,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Laisser la session Ruban Vivant terminer son audit, sa preview et son GO visuel dans son perimetre reserve.
+1. Laisser la session Ruban de parure V2 terminer son moteur, sa preview et son GO visuel dans son perimetre reserve, sur le theme de developpement maintenant libere.
 2. Ouvrir le lot urgent bandeau cookies, puis l'audit critique emails, notifications, relances et inscription.
 3. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
 4. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
@@ -280,7 +282,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
-- Ruban Vivant : UX mobile signalee comme defaillante par Patrice et sept detourages a controler pour paleur, flou, dimensions sources, compression, transparence et mise a l'echelle
+- Ruban de parure V2 : moteur de complements contextuels et nouvelle interface en construction dans une session dediee ; aucun live sans retour au master et GO distinct
 - diagnostic non persiste dans une source cliente durable ni entre appareils
 - compte Cercle, consentements, emails, notifications, relances et comportement apres inscription a auditer ou construire
 - bandeau cookies a refondre en urgence

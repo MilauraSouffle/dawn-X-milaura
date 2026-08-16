@@ -1,6 +1,6 @@
 # MilAura - Handoff master actif
 
-Date de mise a jour : 2026-08-16 07:51 CEST
+Date de mise a jour : 2026-08-16 09:32 CEST
 
 ## Objet de la reprise
 
@@ -28,7 +28,8 @@ Le theme live est `190430282075`. Sont notamment live :
 - collections pierre documentees ;
 - nouvelle experience PDP ;
 - selecteur homepage Naissance / Mariage ;
-- moteur de recommandations et Ruban Vivant, actuellement repris dans un lot correctif mobile.
+- moteur de recommandations actuel et Ruban Vivant ; un Ruban de parure V2 est en reconstruction dans un lot separe ;
+- polish Sticky PDP live : seuil bidirectionnel au CTA, jonction dock sans fente et indicateur mobile du rail de reassurance.
 
 La session master du 2026-08-16 n'a modifie ni theme, ni live, ni produit, ni stock, ni prix, ni reglage Shopify.
 
@@ -36,13 +37,14 @@ La session master du 2026-08-16 n'a modifie ni theme, ni live, ni produit, ni st
 
 - Depot d'integration : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche : `codex/milaura-integration`.
-- HEAD releve avant le handoff : `26f343ab142ca47ef2ebf80f63c688b50e41adad`.
-- Le depot etait propre et aligne avec `origin/codex/milaura-integration` avant les ecritures documentaires du handoff.
-- Worktree actif : `/Users/paesano/Documents/MilAura website/_worktrees/ruban-repair-20260816`.
-- Branche du lot : `codex/milaura-ruban-repair-20260816`.
-- Proprietaire : tache `Ruban repair 2026-08-16`.
-- Perimetre reserve : moteur `milaura-recommendation-*`, rendu du Ruban et detourages autorises. Ne pas toucher a ces fichiers.
-- Une session Atelier des emotions a ete lancee par Patrice. Son retour est attendu. Elle doit se declarer dans `docs/workstreams.md` avant toute edition theme ou Shopify.
+- Commit theme Sticky integre et pousse : `396502cf`.
+- Le checkout d'integration est propre et aligne avec `origin/codex/milaura-integration` apres le deploiement des cinq fichiers Sticky.
+- Worktree actif : `/Users/paesano/Documents/MilAura website/_worktrees/ruban-parure-v2-20260816`.
+- Branche du lot : `codex/milaura-ruban-parure-v2-20260816`.
+- Proprietaire : tache `Ruban de parure V2 2026-08-16`.
+- Perimetre reserve : moteur et interface `milaura-recommendation*`, adaptateurs PDP declares et checkpoint. Ne pas toucher a ces fichiers.
+- Le theme de developpement `199421952347` est libere pour la preview Ruban apres synchronisation du canonique `396502cf`. Le live reste au master.
+- La session Atelier des emotions poursuit sa Gate 0 en lecture seule. Elle doit se declarer avant toute edition theme ou Shopify.
 
 ## Arbitrages fermes par Patrice le 2026-08-16
 
@@ -165,7 +167,7 @@ Ces travaux arrivent majoritairement en fin de chantier ou apres leurs gates :
 
 ## Ordre de reprise recommande
 
-1. Ne pas perturber la session Ruban active et auditer son retour lorsqu'elle termine.
+1. Ne pas perturber la session Ruban de parure V2 active et auditer son retour lorsqu'elle termine.
 2. Ouvrir le lot cookies.
 3. Ouvrir la session emails et inscription.
 4. Ouvrir ou cadrer C1 Cercle avec persistance du diagnostic.
