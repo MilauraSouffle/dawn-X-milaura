@@ -1,0 +1,630 @@
+{{ 'milaura-atelier.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-atelier.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign title_id = 'MilauraAtelierTitle-' | append: section.id
+  assign status_id = 'MilauraAtelierStatus-' | append: section.id
+  assign pilot_product = section.settings.pilot_product
+  assign selected_variant = nil
+  assign available_variant_count = 0
+  assign palette_count = 0
+  assign letter_finish_count = 0
+  assign charm_count = 0
+
+  if pilot_product != blank
+    assign selected_variant = pilot_product.selected_or_first_available_variant
+    for variant in pilot_product.variants
+      if variant.available
+        assign available_variant_count = available_variant_count | plus: 1
+      endif
+    endfor
+  endif
+
+  for block in section.blocks
+    if block.settings.available and block.settings.pilot_compatible and block.settings.component_id != blank and block.settings.label != blank
+      case block.type
+        when 'palette'
+          assign palette_count = palette_count | plus: 1
+        when 'letter_finish'
+          assign letter_finish_count = letter_finish_count | plus: 1
+        when 'charm'
+          assign charm_count = charm_count | plus: 1
+      endcase
+    endif
+  endfor
+
+  assign configuration_ready = true
+  if pilot_product == blank or selected_variant == nil or available_variant_count == 0
+    assign configuration_ready = false
+  endif
+  if section.settings.max_characters < 1 or palette_count == 0 or letter_finish_count == 0
+    assign configuration_ready = false
+  endif
+-%}
+
+<section
+  id="MilauraAtelier-{{ section.id }}"
+  class="milaura-atelier"
+  aria-labelledby="{{ title_id }}"
+  data-milaura-atelier
+  data-enhanced="false"
+  data-ready="{{ configuration_ready }}"
+  data-allowed-characters="{{ section.settings.allowed_characters | escape }}"
+  data-current-step="1"
+>
+  <div class="milaura-atelier__page page-width">
+    <header class="milaura-atelier__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="milaura-atelier__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 id="{{ title_id }}" class="milaura-atelier__title">{{ section.settings.heading | escape }}</h1>
+      {%- if section.settings.introduction != blank -%}
+        <div class="milaura-atelier__introduction rte">{{ section.settings.introduction }}</div>
+      {%- endif -%}
+      {%- if section.settings.signature != blank -%}
+        <p class="milaura-atelier__signature">{{ section.settings.signature | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    {%- if configuration_ready -%}
+      <ol class="milaura-atelier__progress" aria-label="Étapes de composition">
+        <li class="milaura-atelier__progress-item" data-step-indicator="1" aria-current="step">
+          <span>1</span>
+          <span>Choix</span>
+        </li>
+        <li class="milaura-atelier__progress-item" data-step-indicator="2">
+          <span>2</span>
+          <span>Message</span>
+        </li>
+        <li class="milaura-atelier__progress-item" data-step-indicator="3">
+          <span>3</span>
+          <span>Revue</span>
+        </li>
+      </ol>
+
+      <div class="milaura-atelier__workspace">
+        <aside class="milaura-atelier__scene" aria-label="Aperçu de la composition">
+          <div class="milaura-atelier__scene-inner">
+            <p class="milaura-atelier__scene-label">Votre fil de composition</p>
+            <div class="milaura-atelier__strand" aria-hidden="true">
+              <span class="milaura-atelier__strand-line"></span>
+              <figure class="milaura-atelier__component-preview" data-preview-group="palette">
+                <img alt="" width="96" height="96" hidden data-preview-image>
+                <figcaption data-preview-label>Palette a choisir</figcaption>
+              </figure>
+              <div class="milaura-atelier__word-preview" data-word-preview>VOTRE MOT</div>
+              <figure class="milaura-atelier__component-preview" data-preview-group="letter_finish">
+                <img alt="" width="96" height="96" hidden data-preview-image>
+                <figcaption data-preview-label>Lettres a choisir</figcaption>
+              </figure>
+              <figure class="milaura-atelier__component-preview milaura-atelier__component-preview--charm" data-preview-group="charm">
+                <img alt="" width="96" height="96" hidden data-preview-image>
+                <figcaption data-preview-label>Sans charm</figcaption>
+              </figure>
+            </div>
+            <p class="milaura-atelier__preview-note">Aperçu indicatif. Les photos montrent les composants réels, pas le bracelet monté.</p>
+          </div>
+        </aside>
+
+        <form
+          class="milaura-atelier__form"
+          action="{{ routes.cart_add_url }}"
+          method="post"
+          enctype="multipart/form-data"
+          data-atelier-form
+        >
+          <input type="hidden" name="quantity" value="1">
+          <input type="hidden" name="properties[Atelier - Modèle]" value="{{ pilot_product.title | escape }}">
+          <input type="hidden" name="properties[Atelier - Taille]" value="{{ selected_variant.title | escape }}" data-size-property>
+          <input type="hidden" name="properties[_atelier_config_id]" value="" data-config-id>
+          <input type="hidden" name="properties[_atelier_config_version]" value="2026-08-16.v1">
+          <input type="hidden" name="properties[_atelier_palette_id]" value="" data-component-property="palette">
+          <input type="hidden" name="properties[_atelier_letter_finish_id]" value="" data-component-property="letter_finish">
+          <input type="hidden" name="properties[_atelier_charm_id]" value="" data-component-property="charm">
+          <input type="hidden" name="properties[_atelier_config_json]" value="" data-config-json>
+
+          <div id="{{ status_id }}" class="milaura-atelier__live" role="status" aria-live="polite" aria-atomic="true" data-atelier-status></div>
+
+          <fieldset class="milaura-atelier__step" data-step="1" data-active="true">
+            <legend class="milaura-atelier__step-title" tabindex="-1">
+              <span>Étape 1 sur 3</span>
+              Choisissez la base
+            </legend>
+            <p class="milaura-atelier__step-intro">Sélectionnez uniquement parmi les composants disponibles pour ce modèle pilote.</p>
+
+            <div class="milaura-atelier__field">
+              <label for="AtelierVariant-{{ section.id }}">Taille</label>
+              <div class="milaura-atelier__select-wrap">
+                <select id="AtelierVariant-{{ section.id }}" name="id" required data-variant-select>
+                  {%- for variant in pilot_product.variants -%}
+                    {%- if variant.available -%}
+                      <option
+                        value="{{ variant.id }}"
+                        data-variant-title="{{ variant.title | escape }}"
+                        data-variant-price="{{ variant.price | money_with_currency | escape }}"
+                        {% if variant.id == selected_variant.id %}selected{% endif %}
+                      >
+                        {{ variant.title | escape }} - {{ variant.price | money_with_currency }}
+                      </option>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </select>
+              </div>
+            </div>
+
+            <div class="milaura-atelier__field">
+              <p class="milaura-atelier__field-label" id="AtelierPaletteLabel-{{ section.id }}">Palette de perles</p>
+              <div class="milaura-atelier__options" role="radiogroup" aria-labelledby="AtelierPaletteLabel-{{ section.id }}">
+                {%- assign first_palette = true -%}
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'palette' -%}
+                    {%- assign option_valid = false -%}
+                    {%- if block.settings.available and block.settings.pilot_compatible and block.settings.component_id != blank and block.settings.label != blank -%}
+                      {%- assign option_valid = true -%}
+                    {%- endif -%}
+                    {%- if option_valid or section.settings.show_unavailable_options -%}
+                      <label class="milaura-atelier__option{% unless option_valid %} is-unavailable{% endunless %}" {{ block.shopify_attributes }}>
+                        <input
+                          type="radio"
+                          name="properties[Atelier - Palette]"
+                          value="{{ block.settings.label | escape }}"
+                          data-option-group="palette"
+                          data-component-id="{{ block.settings.component_id | escape }}"
+                          data-preview-label="{{ block.settings.label | escape }}"
+                          {% if block.settings.image != blank %}data-preview-image="{{ block.settings.image | image_url: width: 240 }}"{% endif %}
+                          {% if first_palette and option_valid %}checked required{% endif %}
+                          {% unless option_valid %}disabled{% endunless %}
+                        >
+                        {%- if block.settings.image != blank -%}
+                          {{ block.settings.image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 120, 160', sizes: '72px', alt: block.settings.label }}
+                        {%- endif -%}
+                        <span>{{ block.settings.label | escape }}</span>
+                        {%- unless option_valid -%}<small>Indisponible</small>{%- endunless -%}
+                      </label>
+                      {%- if option_valid -%}{%- assign first_palette = false -%}{%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+
+            <div class="milaura-atelier__field">
+              <p class="milaura-atelier__field-label" id="AtelierLettersLabel-{{ section.id }}">Finition des lettres</p>
+              <div class="milaura-atelier__options" role="radiogroup" aria-labelledby="AtelierLettersLabel-{{ section.id }}">
+                {%- assign first_letter_finish = true -%}
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'letter_finish' -%}
+                    {%- assign option_valid = false -%}
+                    {%- if block.settings.available and block.settings.pilot_compatible and block.settings.component_id != blank and block.settings.label != blank -%}
+                      {%- assign option_valid = true -%}
+                    {%- endif -%}
+                    {%- if option_valid or section.settings.show_unavailable_options -%}
+                      <label class="milaura-atelier__option{% unless option_valid %} is-unavailable{% endunless %}" {{ block.shopify_attributes }}>
+                        <input
+                          type="radio"
+                          name="properties[Atelier - Lettres]"
+                          value="{{ block.settings.label | escape }}"
+                          data-option-group="letter_finish"
+                          data-component-id="{{ block.settings.component_id | escape }}"
+                          data-preview-label="{{ block.settings.label | escape }}"
+                          {% if block.settings.image != blank %}data-preview-image="{{ block.settings.image | image_url: width: 240 }}"{% endif %}
+                          {% if first_letter_finish and option_valid %}checked required{% endif %}
+                          {% unless option_valid %}disabled{% endunless %}
+                        >
+                        {%- if block.settings.image != blank -%}
+                          {{ block.settings.image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 120, 160', sizes: '72px', alt: block.settings.label }}
+                        {%- endif -%}
+                        <span>{{ block.settings.label | escape }}</span>
+                        {%- unless option_valid -%}<small>Indisponible</small>{%- endunless -%}
+                      </label>
+                      {%- if option_valid -%}{%- assign first_letter_finish = false -%}{%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+
+            <div class="milaura-atelier__step-actions" data-step-actions>
+              <button class="milaura-atelier__next" type="button" data-step-next>Continuer</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="milaura-atelier__step" data-step="2" data-active="false">
+            <legend class="milaura-atelier__step-title" tabindex="-1">
+              <span>Étape 2 sur 3</span>
+              Écrivez votre message
+            </legend>
+            <p class="milaura-atelier__step-intro">Relisez chaque lettre. Karine montera exactement le mot confirmé à l'étape suivante.</p>
+
+            <div class="milaura-atelier__field">
+              <label for="AtelierWord-{{ section.id }}">Mot ou message</label>
+              <input
+                id="AtelierWord-{{ section.id }}"
+                class="milaura-atelier__text-input"
+                type="text"
+                name="properties[Atelier - Mot]"
+                maxlength="{{ section.settings.max_characters }}"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                aria-describedby="AtelierWordHelp-{{ section.id }} AtelierWordError-{{ section.id }}"
+                required
+                data-word-input
+              >
+              <div class="milaura-atelier__field-meta">
+                <p id="AtelierWordHelp-{{ section.id }}">
+                  {{ section.settings.allowed_characters_help | escape }}
+                </p>
+                <p><span data-character-count>0</span>/{{ section.settings.max_characters }}</p>
+              </div>
+              <p id="AtelierWordError-{{ section.id }}" class="milaura-atelier__field-error" data-word-error></p>
+            </div>
+
+            <div class="milaura-atelier__field">
+              <p class="milaura-atelier__field-label" id="AtelierCharmLabel-{{ section.id }}">Charm</p>
+              <div class="milaura-atelier__options" role="radiogroup" aria-labelledby="AtelierCharmLabel-{{ section.id }}">
+                <label class="milaura-atelier__option">
+                  <input
+                    type="radio"
+                    name="properties[Atelier - Charm]"
+                    value="Aucun"
+                    data-option-group="charm"
+                    data-component-id=""
+                    data-preview-label="Sans charm"
+                    checked
+                  >
+                  <span>Aucun</span>
+                </label>
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'charm' -%}
+                    {%- assign option_valid = false -%}
+                    {%- if block.settings.available and block.settings.pilot_compatible and block.settings.component_id != blank and block.settings.label != blank -%}
+                      {%- assign option_valid = true -%}
+                    {%- endif -%}
+                    {%- if option_valid or section.settings.show_unavailable_options -%}
+                      <label class="milaura-atelier__option{% unless option_valid %} is-unavailable{% endunless %}" {{ block.shopify_attributes }}>
+                        <input
+                          type="radio"
+                          name="properties[Atelier - Charm]"
+                          value="{{ block.settings.label | escape }}"
+                          data-option-group="charm"
+                          data-component-id="{{ block.settings.component_id | escape }}"
+                          data-preview-label="{{ block.settings.label | escape }}"
+                          {% if block.settings.image != blank %}data-preview-image="{{ block.settings.image | image_url: width: 240 }}"{% endif %}
+                          {% unless option_valid %}disabled{% endunless %}
+                        >
+                        {%- if block.settings.image != blank -%}
+                          {{ block.settings.image | image_url: width: 160 | image_tag: loading: 'lazy', widths: '80, 120, 160', sizes: '72px', alt: block.settings.label }}
+                        {%- endif -%}
+                        <span>{{ block.settings.label | escape }}</span>
+                        {%- unless option_valid -%}<small>Indisponible</small>{%- endunless -%}
+                      </label>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+
+            <div class="milaura-atelier__field">
+              <label for="AtelierNote-{{ section.id }}">Note pour Karine <span>(facultatif)</span></label>
+              <textarea
+                id="AtelierNote-{{ section.id }}"
+                class="milaura-atelier__text-input"
+                name="properties[Atelier - Note]"
+                maxlength="{{ section.settings.note_max_characters }}"
+                rows="3"
+                aria-describedby="AtelierNoteHelp-{{ section.id }}"
+                data-note-input
+              ></textarea>
+              <p id="AtelierNoteHelp-{{ section.id }}" class="milaura-atelier__help">Pas de nom, téléphone ou autre information personnelle dans ce champ.</p>
+            </div>
+
+            <div class="milaura-atelier__step-actions" data-step-actions>
+              <button class="milaura-atelier__back" type="button" data-step-back>Retour</button>
+              <button class="milaura-atelier__next" type="button" data-step-next>Verifier ma composition</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="milaura-atelier__step" data-step="3" data-active="false">
+            <legend class="milaura-atelier__step-title" tabindex="-1">
+              <span>Étape 3 sur 3</span>
+              Vérifiez chaque choix
+            </legend>
+            <p class="milaura-atelier__step-intro">Cette synthèse sera transmise à Karine avec votre commande.</p>
+
+            <dl class="milaura-atelier__review">
+              <div><dt>Taille</dt><dd data-review="size">{{ selected_variant.title | escape }}</dd></div>
+              <div><dt>Palette</dt><dd data-review="palette"></dd></div>
+              <div><dt>Lettres</dt><dd data-review="letter_finish"></dd></div>
+              <div><dt>Mot</dt><dd data-review="word"></dd></div>
+              <div><dt>Charm</dt><dd data-review="charm">Aucun</dd></div>
+              <div><dt>Note</dt><dd data-review="note">Aucune</dd></div>
+            </dl>
+
+            <label class="milaura-atelier__confirmation">
+              <input type="checkbox" name="properties[Atelier - Orthographe confirmée]" value="Oui" required data-spelling-confirmation>
+              <span>Je confirme l'orthographe exacte du mot ci-dessus.</span>
+            </label>
+
+            <div class="milaura-atelier__submit-bar">
+              <div>
+                <span>Bracelet personnalisé</span>
+                <strong data-summary-price>{{ selected_variant.price | money_with_currency }}</strong>
+              </div>
+              <button type="submit" class="milaura-atelier__submit">Ajouter au panier</button>
+            </div>
+
+            <div class="milaura-atelier__step-actions" data-step-actions>
+              <button class="milaura-atelier__back" type="button" data-step-back>Modifier mes choix</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    {%- else -%}
+      <div class="milaura-atelier__locked" role="status">
+        <p class="milaura-atelier__locked-label">Composition en ligne en préparation</p>
+        <h2>Chaque option doit d'abord être vérifiée dans l'atelier.</h2>
+        <p>Le configurateur ouvrira lorsque les composants, les tailles et les règles de montage du bracelet pilote seront confirmés. Aucun choix provisoire ne vous est présenté comme disponible.</p>
+        {%- if request.design_mode -%}
+          <div class="milaura-atelier__setup">
+            <h3>Configuration requise dans l'éditeur</h3>
+            <ul>
+              {%- if pilot_product == blank -%}<li>Sélectionner le produit Shopify pilote.</li>{%- endif -%}
+              {%- if available_variant_count == 0 -%}<li>Vérifier qu'une variante du produit est disponible.</li>{%- endif -%}
+              {%- if section.settings.max_characters < 1 -%}<li>Définir une limite de caractères validée par Karine.</li>{%- endif -%}
+              {%- if palette_count == 0 -%}<li>Ajouter une palette disponible, identifiée et compatible.</li>{%- endif -%}
+              {%- if letter_finish_count == 0 -%}<li>Ajouter une finition de lettres disponible, identifiée et compatible.</li>{%- endif -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="milaura-atelier__services" aria-labelledby="MilauraAtelierServices-{{ section.id }}">
+      <div class="milaura-atelier__services-heading">
+        <p class="milaura-atelier__eyebrow">Trois façons d'avancer</p>
+        <h2 id="MilauraAtelierServices-{{ section.id }}">Le bon niveau d'accompagnement</h2>
+      </div>
+      <div class="milaura-atelier__service-list">
+        <article class="milaura-atelier__service is-primary">
+          <p>01</p>
+          <h3>Composer mon bracelet</h3>
+          <p>Un modèle pilote, des choix bornés et une configuration transmise avec la commande.</p>
+          <span>{% if configuration_ready %}Disponible en ligne{% else %}Ouverture après validation atelier{% endif %}</span>
+        </article>
+        <article class="milaura-atelier__service">
+          <p>02</p>
+          <h3>Être guidée par Karine</h3>
+          <p>Vous décrivez votre intention. Karine vérifie ensuite ce qui est réalisable avec les composants présents.</p>
+          {%- if section.settings.guided_request_link != blank -%}
+            <a href="{{ section.settings.guided_request_link }}">Décrire mon projet</a>
+          {%- else -%}
+            <span>Demande guidée bientôt disponible</span>
+          {%- endif -%}
+        </article>
+        <article class="milaura-atelier__service">
+          <p>03</p>
+          <h3>Imaginer une pièce singulière</h3>
+          <p>Une demande particulière est étudiée avant tout accord de prix, de matière ou de délai.</p>
+          {%- if section.settings.bespoke_request_link != blank -%}
+            <a href="{{ section.settings.bespoke_request_link }}">Presenter ma demande</a>
+          {%- else -%}
+            <span>Étude sur demande</span>
+          {%- endif -%}
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Atelier des émotions",
+  "tag": "section",
+  "class": "section-milaura-atelier",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Introduction"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "L'Atelier des émotions"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Composez un bracelet à message"
+    },
+    {
+      "type": "richtext",
+      "id": "introduction",
+      "label": "Introduction",
+      "default": "<p>Choisissez chaque élément parmi les composants vérifiés par Karine, puis relisez la composition transmise avec votre commande.</p>"
+    },
+    {
+      "type": "text",
+      "id": "signature",
+      "label": "Signature courte",
+      "default": "composé par vous"
+    },
+    {
+      "type": "header",
+      "content": "Produit pilote"
+    },
+    {
+      "type": "product",
+      "id": "pilot_product",
+      "label": "Produit Shopify pilote",
+      "info": "Le prix, les tailles et la disponibilité viennent de ce produit."
+    },
+    {
+      "type": "range",
+      "id": "max_characters",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "label": "Caractères maximum",
+      "default": 0,
+      "info": "Laisser à 0 tant que Karine n'a pas validé la limite physique."
+    },
+    {
+      "type": "text",
+      "id": "allowed_characters",
+      "label": "Caractères autorisés",
+      "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸ0123456789 '-&",
+      "info": "Liste exacte des caractères disponibles dans l'atelier."
+    },
+    {
+      "type": "text",
+      "id": "allowed_characters_help",
+      "label": "Aide sur les caractères",
+      "default": "Utilisez uniquement les lettres, chiffres et signes disponibles affichés par l'atelier."
+    },
+    {
+      "type": "range",
+      "id": "note_max_characters",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "label": "Caractères maximum de la note",
+      "default": 160
+    },
+    {
+      "type": "checkbox",
+      "id": "show_unavailable_options",
+      "label": "Afficher les options indisponibles",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Demandes accompagnées"
+    },
+    {
+      "type": "url",
+      "id": "guided_request_link",
+      "label": "Lien demande guidée"
+    },
+    {
+      "type": "url",
+      "id": "bespoke_request_link",
+      "label": "Lien pièce singulière"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "palette",
+      "name": "Palette de perles",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "component_id",
+          "label": "Identifiant atelier",
+          "info": "Identifiant stable issu de l'inventaire physique."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Nom affiché"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo du composant exact"
+        },
+        {
+          "type": "checkbox",
+          "id": "available",
+          "label": "Disponible à la vente",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pilot_compatible",
+          "label": "Compatibilité pilote validée par Karine",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "letter_finish",
+      "name": "Finition de lettres",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "component_id",
+          "label": "Identifiant atelier",
+          "info": "Identifiant stable issu de l'inventaire physique."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Nom affiché"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo du composant exact"
+        },
+        {
+          "type": "checkbox",
+          "id": "available",
+          "label": "Disponible à la vente",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pilot_compatible",
+          "label": "Compatibilité pilote validée par Karine",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "charm",
+      "name": "Charm",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "component_id",
+          "label": "Identifiant atelier",
+          "info": "Identifiant stable issu de l'inventaire physique."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Nom affiché"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo du composant exact"
+        },
+        {
+          "type": "checkbox",
+          "id": "available",
+          "label": "Disponible à la vente",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "pilot_compatible",
+          "label": "Compatibilité pilote validée par Karine",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier des émotions"
+    }
+  ]
+}
+{% endschema %}
