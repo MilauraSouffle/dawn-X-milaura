@@ -2,11 +2,41 @@
 
 Date : 2026-08-05
 
-Derniere mise a jour : 2026-08-12 15:06 CEST
+Derniere mise a jour : 2026-08-16 07:51 CEST
 
-Statut : hero, dock mobile, selection saisonniere, bandeau d'engagement, panier 30/50/80 et catalogue V1 sont live. Le catalogue V1 public comprend les hubs Bijoux par pierre, Naissance et Mariage, ainsi que six collections type ou pierre. Le chemin critique passe maintenant par l'integration UI de ces destinations, la verite des fiches produit et le retrait S1A de l'ancien Scratch. Le Cercle reste hors du chemin critique et reprend apres PDP, Karine, Sur mesure, cadeaux et Journal.
+Statut : la refonte visible est en phase de finition. Hero, navigation, dock, selection saisonniere, catalogue V1, hubs editoriaux, nouvelle experience PDP, section 3, occasions et moteur de recommandations sont live. Le Ruban Vivant est en reconstruction mobile dans un worktree dedie. Le chemin critique passe maintenant par les cookies, la persistance du diagnostic dans le Cercle, les emails et inscriptions, le polish UI/UX, l'inventaire reel mene en parallele, l'Atelier des emotions, puis la fermeture SEO, Journal et Pinterest.
 
 Perimetres : theme Shopify, navigation, systeme CTA, reconciliation Git, verite commerciale, Cercle, ScratchToReveal, acquisition et automatisation
+
+## Mise a jour master validee le 2026-08-16 a 07:51 CEST
+
+### Cap commercial et direction creative
+
+1. Le cap directeur est de construire un site capable d'atteindre 100 000 EUR de chiffre d'affaires. L'horizon et les paliers economiques restent a chiffrer, mais chaque lot doit contribuer a la conversion, au panier moyen, a la retention ou a l'acquisition mesurable.
+2. La charte MilAura et `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md` restent les seules sources de verite executoires.
+3. Tiffany & Co. et Van Cleef & Arpels sont les references externes de niveau d'execution : sobriete, photographie joailliere, macro produit, respiration, precision typographique et perception de valeur. Aucun code, motif, couleur proprietaire, mise en page ou signe distinctif ne doit etre copie.
+
+### Arbitrages fermes
+
+1. Le sujet d'un claim LFG global est clos par Patrice apres verification. Il sort du backlog actif et ne doit plus etre presente comme anomalie, risque ou tache, sauf nouvelle preuve contradictoire explicite.
+2. Les formulations actuelles du diagnostic autour de l'apaisement, de la protection et de l'energie sont validees par Patrice. Aucun chantier de reecriture corrective n'est ouvert. Le quiz et sa page resultat restent a polir visuellement et fonctionnellement.
+3. La longueur des PDP n'est pas un probleme confirme. La nouvelle experience PDP est validee. Une session specialisee devra effectuer des recherches approfondies avant toute recommandation de raccourcissement, suppression ou reorganisation.
+4. La preuve sociale multi-canal validee reste officielle : Judge.me quand un avis du site est disponible, puis fallback approuve lorsqu'il ne l'est pas.
+
+### Decisions fonctionnelles
+
+1. Le diagnostic n'est pas encore sauvegarde durablement dans le compte. Le chantier C1 `Le Cercle MilAura` doit devenir proprietaire de cette correction : source de verite cliente, persistance entre appareils, consentement, etat connecte et restitution dans `Mon Ecrin`.
+2. Le bandeau cookies est une urgence UI, UX et consentement. Il doit faire l'objet d'un lot dedie sans attendre la fin du chantier global.
+3. Les emails transactionnels, marketing, de suivi, de relance et le comportement apres inscription sont classes criticite 10/10. Un audit Shopify Admin et un parcours test complet sont requis dans une session dediee.
+4. La piste homepage recommandee pour conserver Nouveautes, Meilleures ventes et Promotions est une section commerciale unique avec trois choix accessibles, un seul rail visible et un CTA de destination adapte. La proposition doit etre testee visuellement apres `Pierre du moment`. L'onglet Promotions se masque automatiquement si aucune offre reelle n'est disponible.
+5. L'inventaire physique est un chantier parallele mene par Patrice. Il ne bloque pas le polish du site, les cookies, le Cercle, les emails, les recherches ou le travail creatif, mais reste un gate avant paid acquisition et avant publication de selections dependantes du stock.
+6. L'Atelier des emotions est lance dans une session dediee. Il doit produire un systeme de personnalisation reel avant sa section homepage, avec Little Words Project comme reference fonctionnelle et Van Cleef & Arpels comme reference de niveau visuel.
+
+### Acquisition et taches finales
+
+1. Pinterest est urgent : revendication du domaine, connexion Shopify, catalogue, tag, Conversions API, architecture de tableaux et branding peuvent commencer avant la fin de la refonte. Les campagnes payantes attendent stock, flux produit et tracking verifies.
+2. DataForSEO sera traite en deux temps : cartographie ciblee avant les nouvelles pages lorsque la recherche doit guider leur architecture, puis audit global final quand les routes et enrichissements seront stabilises. Le credit ne doit pas etre consomme sans plan de requetes et estimation de cout.
+3. La passe SEO globale, le netlinking, la mesure finale GA4/GSC/Merchant, la performance, l'accessibilite, les pages enfants Naissance et Mariage et les Ads appartiennent a la fermeture du chantier, avec leurs dependances respectives.
 
 ## Mise a jour validee le 2026-08-12
 
@@ -673,21 +703,23 @@ Chaque etape commence seulement lorsque la definition de termine de l'etape prec
 5. `P0B` clos pour l'execution editoriale le 2026-08-08 : vingt produits reels fournis, dont quatre mis en avant. Les couts et delais exacts restent a documenter avant paid acquisition.
 6. Termine et live le 2026-08-08 : remplacer `L'atelier MilAura` par la selection saisonniere d'aout, quatre produits sur la homepage et vingt sur la landing `/collections/selection-aout-2026`.
 7. `CAT-P1 V1` termine le 2026-08-12 : hubs Bijoux par pierre, Naissance et Mariage publics ; collections Bagues, Aigue-marine, Agate, Quartz rose, Lapis-lazuli et Amazonite publiques ; navigation Shopify native en place.
-8. Etape active : integrer les destinations V1 dans la homepage et le guide, remplacer la reference historique `shopify://collections/bagues`, verifier la navigation native et corriger le double H1 homepage si confirme.
-9. Terminer le guide visuel : `Choisir mon bijou par type`, `Choisir par emotion`, puis `Me laisser guider`, selon les routes publiques et sans duplication du diagnostic. Les extensions intention, naissance mensuelle et mariage enfant restent sous gate inventaire.
-10. Executer `PDP-P0` et `S1A` a partir de l'audit du 2026-08-11 : logistique unique, retrait des preuves fabriquees, claims conditionnels, JSON-LD coherent, informations produit prioritaires et retrait de l'ancien Scratch. Le fichier `sections/milaura-product-hero.liquid` reste sequentiel et doit etre isole avant commit.
-11. Reprendre Pierre du moment a partir de la collection publique Aigue-marine et de ses six produits, apres verification de la diversite des types, du stock reel et des preuves produit necessaires a la campagne.
-12. Auditer l'harmonisation livraison locale avant tout commit ou deploiement global ; les textes statiques ne remplacent pas la future source dynamique liee a la disponibilite.
-13. Inventorier les composants de l'Atelier des emotions, fabriquer trois a cinq prototypes et calculer leur contribution. Ce travail produit peut avancer sans mutation de la homepage.
-14. Construire Karine et les preuves d'atelier avec images, gestes et affirmations documentes.
-15. Construire Sur mesure V1 et la landing pilote de l'Atelier des emotions apres validation de l'offre, des delais et de la capacite reelle.
-16. Construire Cadeaux et mariage a partir du hub et de selections catalogue valides, avant toute activation des pages enfant.
-17. Recomposer le Journal et relier chaque contenu a une destination commerciale publique utile.
-18. Executer `C1` dans une session dediee : nouveaux comptes, fondations de donnees, espace Cercle et pilote fondatrices.
-19. Executer `S1B` et `S1C` : moteur Scratch autonome puis nouvelle entree dans le Cercle, seulement apres C1 et les consentements.
-20. Ajouter la section Cercle a la homepage et ouvrir le pilote public limite.
-21. Reprendre l'acquisition SEO, AEO, GEO, Pinterest et campagnes uniquement avec stock, marge et tracking valides.
-22. Automatiser progressivement Camilla, la conseillere MilAura, les attentions, le parrainage et le suivi, sans automatisation avant preuve manuelle.
+8. Termine le 2026-08-15 : Navigation V2, destinations catalogue, guide homepage et section 3 sont live.
+9. Termine et valide le 2026-08-15 : nouvelle experience PDP, occasions homepage et polish mobile bord a bord. La longueur des PDP ne doit pas etre modifiee sans recherche dediee et GO de Patrice.
+10. Etape active au 2026-08-16 : reconstruire le Ruban Vivant mobile et ses detourages dans le worktree declare, sans toucher aux autres composants PDP.
+11. Ouvrir le lot urgent du bandeau cookies : interface sobre, consentement accessible, comportement mobile et absence de conflit avec les autres dialogues.
+12. Concevoir en preview la section commerciale unique `Nouveautes / Meilleures ventes / Promotions`, placee apres `Pierre du moment`, avec un seul rail visible et des destinations publiques distinctes conservees.
+13. Executer `C1` dans une session dediee : architecture du compte, persistance durable du diagnostic entre appareils, `Mon Ecrin`, consentements et pilote fondatrices.
+14. Auditer immediatement les emails, notifications, relances et le comportement apres inscription. Classer les flux, tester une adresse controlee et documenter les manques avant automatisation.
+15. Continuer l'inventaire physique en parallele et appliquer ensuite `physical-stock`, `supplier-backed` ou `made-to-order` selon le contrat canonique. Ce lot ne bloque pas les chantiers UI hors stock.
+16. Continuer l'Atelier des emotions dans sa session dediee : inventaire composants, prototype reel, architecture Shopify, landing, workflow Karine, puis section homepage.
+17. Construire Karine, les preuves d'atelier et Sur mesure V1 avec images et capacite reelle documentees.
+18. Preparer puis remplacer la selection d'aout par la campagne de rentree ou septembre avant son obsolescence editoriale.
+19. Construire les pages enfants Naissance et Mariage lorsque les produits et le stock permettent des selections utiles.
+20. Recomposer le Journal, definir ses clusters et mettre en place une production assistee par Hermes avec validation humaine.
+21. Lancer les fondations Pinterest des maintenant : domaine, Shopify, catalogue, tracking, tableaux et systeme visuel. Conserver le paid sous gate stock, flux et mesure.
+22. Utiliser DataForSEO de facon ciblee lorsque les prochaines pages doivent etre guidees par la demande, puis executer l'audit SEO, AEO et GEO global une fois les routes stabilisees.
+23. Executer `S1B` et `S1C` seulement apres C1 : moteur Scratch autonome, consentement par canal et entree publique dans le Cercle.
+24. Fermer le plan par la passe performance et accessibilite, le netlinking avec approbation humaine, GA4, GSC, Merchant Center, les tests lifecycle et les campagnes payantes sous gates valides.
 
 ### Regle de suivi
 

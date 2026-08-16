@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-15 18:23 CEST
+Derniere mise a jour : 2026-08-16 07:51 CEST
 
 ## Etat en une phrase
 
-Le catalogue V1, la nouvelle experience PDP, l'UI sitewide, les Heroes, Navigation V2, les guides Pierres, la section 3 de la homepage et le moteur de recommandations avec Ruban Vivant sont live ; le Ruban Vivant mobile et la qualite de ses images sont le prochain P0.
+La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions et recommandations sont live ; le Ruban Vivant mobile est en reconstruction, tandis que cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ Le catalogue V1, la nouvelle experience PDP, l'UI sitewide, les Heroes, Navigati
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Les worktrees Navigation V2, Recommandations et PDP ont ete retires proprement apres leurs integrations. Aucun worktree secondaire MilAura ne reste actif a 18:23 CEST.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au 2026-08-16 a 07:51 CEST, le worktree `/Users/paesano/Documents/MilAura website/_worktrees/ruban-repair-20260816` est actif sur `codex/milaura-ruban-repair-20260816` et possede exclusivement le Ruban Vivant et ses detourages autorises.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -37,6 +37,21 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Seul le proprietaire d'integration deploie le live, avec fichiers cibles, `--nodelete`, pullback et comparaison.
 - Une validation technique ne vaut jamais validation creative de Patrice.
 - Aucun produit, stock, prix ou statut de publication n'est modifie par un chantier theme sans autorisation explicite.
+
+## Cap commercial, direction et arbitrages du 2026-08-16
+
+- Objectif directeur : construire un site capable d'atteindre 100 000 EUR de chiffre d'affaires. L'horizon reste a preciser ; les lots sont juges par leur effet sur conversion, panier moyen, retention ou acquisition mesuree.
+- La charte MilAura reste executable. Tiffany & Co. et Van Cleef & Arpels sont des references de niveau visuel et de branding : sobriete, photographie joailliere, macro produit, respiration et precision. Aucun signe distinctif, motif, couleur proprietaire ou mise en page ne doit etre copie.
+- Le sujet d'un claim LFG global est clos par Patrice apres verification. Il est retire du backlog actif et ne doit plus etre presente comme anomalie ou risque sans nouvelle preuve contradictoire explicite.
+- La longueur des PDP n'est pas un probleme confirme. La nouvelle experience est validee ; une session PDP specialisee doit effectuer des recherches approfondies avant toute recommandation de reduction ou reorganisation.
+- Les formulations actuelles du diagnostic sur l'apaisement, la protection et l'energie sont approuvees. Aucun lot de reecriture corrective n'est ouvert. Le polish visuel, la page resultat et la persistance client restent ouverts.
+- Le diagnostic est actuellement persiste dans le navigateur et le panier, pas dans une source cliente durable. Le chantier `C1 - Le Cercle MilAura` possede la correction entre appareils et sa restitution dans `Mon Ecrin`.
+- Le bandeau cookies est urgent. Les emails, notifications, relances et le comportement apres inscription sont classes criticite 10/10.
+- La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
+- L'inventaire physique mene par Patrice avance en parallele et ne bloque pas le polish du site. Il reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
+- L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
+- Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
+- DataForSEO suit deux temps : recherche ciblee si elle doit guider une nouvelle page, puis audit global final lorsque les routes et enrichissements sont stabilises.
 
 ## Catalogue V1 public
 
@@ -246,10 +261,14 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Auditer et corriger le Ruban Vivant sur mobile, puis remplacer ou regenerer ses images si les sources detourees sont reellement degradees.
-2. Corriger dans un lot SEO distinct la description Shopify `shop.description` qui alimente le JSON-LD public avec un claim global LFG non prouve.
-3. Recontroler les membres et le stock reel des collections publiques apres la session Inventaire, en priorite Œil de tigre qui ne compte que quatre bijoux actifs au dernier controle.
-4. Evaluer Navigation V2 et le Ruban Vivant avec des donnees d'usage lorsque GA4 et Search Console seront accessibles, sans multiplier les routes avant cette mesure.
+1. Laisser la session Ruban Vivant terminer son audit, sa preview et son GO visuel dans son perimetre reserve.
+2. Ouvrir le lot urgent bandeau cookies, puis l'audit critique emails, notifications, relances et inscription.
+3. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
+4. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
+5. Ouvrir une session PDP specialisee de recherche et de polish, sans presumer que la longueur actuelle est un defaut.
+6. Continuer en parallele l'inventaire physique et la session Atelier des emotions.
+7. Preparer la campagne de rentree ou septembre, puis Karine, Sur mesure, les pages enfants Naissance et Mariage et le Journal selon leurs dependances.
+8. Commencer les fondations Pinterest maintenant. Garder l'audit DataForSEO global, le netlinking, la mesure finale et les Ads pour la fermeture, avec recherche ciblee en amont seulement si elle guide une nouvelle page.
 
 ## Dependances encore ouvertes
 
@@ -258,11 +277,14 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - pages mensuelles de naissance et pages enfants mariage
 - GSC, GA4, Merchant Center et Pinterest non verifies
 - collection Œil de tigre publique avec quatre bijoux, sous le seuil editorial prefere de cinq
-- `layout/theme.liquid` injecte `shop.description` dans le JSON-LD public ; la valeur Shopify Admin affirme globalement que les pierres sont toutes certifiees LFG, sans preuve au bon perimetre
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
 - Ruban Vivant : UX mobile signalee comme defaillante par Patrice et sept detourages a controler pour paleur, flou, dimensions sources, compression, transparence et mise a l'echelle
+- diagnostic non persiste dans une source cliente durable ni entre appareils
+- compte Cercle, consentements, emails, notifications, relances et comportement apres inscription a auditer ou construire
+- bandeau cookies a refondre en urgence
+- campagne de rentree ou septembre a preparer avant obsolescence de la selection d'aout
 
 ## References de reprise
 
@@ -289,6 +311,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-15-1145-navigation-handoff-addendum.md`
 - `docs/checkpoints/2026-08-15-1155-ruban-vivant-live.md`
 - `docs/checkpoints/2026-08-15-1334-pdp-experience-live-handoff.md`
+- `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
 - `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
