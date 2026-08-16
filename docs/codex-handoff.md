@@ -1,6 +1,6 @@
 # MilAura - Handoff master actif
 
-Date de mise a jour : 2026-08-16 10:46 CEST
+Date de mise a jour : 2026-08-16 11:10 CEST
 
 ## Objet de la reprise
 
@@ -30,18 +30,34 @@ Le theme live est `190430282075`. Sont notamment live :
 - selecteur homepage Naissance / Mariage ;
 - moteur de recommandations partage et Ruban de parure V2 live sur les PDP ;
 - polish Sticky PDP live : seuil bidirectionnel au CTA, jonction dock sans fente et indicateur mobile du rail de reassurance.
+- Hero produit desktop contenu dans le premier viewport, avec miniatures replacees sous le bloc Karine et sticky desactivee tant que le CTA Hero n'est pas depasse ;
+- titre du Hero homepage allege uniquement sur desktop, conserve en trois lignes sur desktop et mobile.
 
-Depuis le precedent handoff, le master a integre et deploye le Ruban de parure V2 par `469212c0`. Le lot PDP Hero desktop a ete integre en parallele par son proprietaire avec `84d72279`, puis cloture. Aucun produit, stock ou prix n'a ete modifie. Le seul reglage catalogue ajoute est la matrice Search & Discovery preuve explicitement autorisee ; la seule definition Shopify creee est `milaura.recommendation_cutout`.
+Depuis le precedent handoff, le master a integre et deploye le Ruban de parure V2 par `469212c0`. Le lot PDP Hero desktop a ete integre en parallele par son proprietaire avec `84d72279`, puis cloture. Le dernier polish du titre Hero homepage a ete integre par `9c5897b7`, pousse sur le live et valide publiquement. Aucun produit, stock ou prix n'a ete modifie par ces lots theme. Le seul reglage catalogue ajoute est la matrice Search & Discovery preuve explicitement autorisee ; la seule definition Shopify creee est `milaura.recommendation_cutout`.
 
 ## Git et sessions paralleles
 
 - Depot d'integration : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche : `codex/milaura-integration`.
-- Commits theme integres et pousses : Sticky `396502cf`, Ruban V2 `469212c0`, PDP Hero desktop `84d72279`.
+- Commits theme integres et pousses : Sticky `396502cf`, Ruban V2 `469212c0`, PDP Hero desktop `84d72279`, titre Hero homepage `9c5897b7`.
 - Le checkout d'integration reste le seul proprietaire du live. Les ajouts documentaires du PDP Hero ont ete conserves pendant l'integration Ruban.
 - Le worktree Ruban a ete retire proprement apres integration et validation live. Sa branche distante `codex/milaura-ruban-parure-v2-20260816` reste conservee a `222ef44f`.
 - Le worktree PDP Hero desktop a ete retire par son proprietaire apres sa validation live. Sa preview `200007352667` reste conservee.
-- La session Atelier des emotions poursuit sa Gate 0 en lecture seule dans `/Users/paesano/Documents/MilAura website/_worktrees/atelier-emotions-20260816`. Elle doit se declarer avant toute edition theme ou Shopify.
+- La session Atelier des emotions poursuit sa Gate 0 dans `/Users/paesano/Documents/MilAura website/_worktrees/atelier-emotions-20260816`. Son checkout est propre et aligne sur `origin/codex/milaura-atelier-emotions-20260816`.
+- Le worktree `/Users/paesano/Documents/MilAura website/_worktrees/ruban-matrices-commerciales-20260816` existe sur `codex/milaura-ruban-matrices-commerciales-20260816` a `e860a0f0`, propre mais sans upstream. Le registre central a ete recale sur cet etat. Ne pas l'integrer ni modifier son perimetre avant recadrage avec sa session proprietaire.
+
+## Cloture du polish du 2026-08-16
+
+Patrice a confirme la fin du polish et reprend maintenant le plan initial avec la session master. Les lots suivants sont fermes et live :
+
+- correctifs sitewide mobile et desktop, dock, panneau menu, fonds bord a bord et navbar ;
+- selecteur homepage Naissance / Mariage ;
+- Sticky PDP et indicateur du rail de services ;
+- Hero produit desktop ;
+- Ruban de parure V2 ;
+- alleger le titre du Hero homepage uniquement sur desktop.
+
+Le dernier lot Hero homepage ne modifie qu'un fichier. Pullback live 1/1 identique au blob Git `0369593dd109cf2b2ccb3808a4a3e7e1681b0b3f`. Theme Check : 0 erreur et 17 avertissements historiques hors perimetre. QA publique : trois lignes et aucun overflow a 1280/1440/2048, composition mobile intacte a 360/390/430. Ne rouvrir le polish que sur regression reproductible ou nouvel arbitrage explicite de Patrice.
 
 ## Ruban de parure V2 integre et live
 
@@ -213,4 +229,4 @@ Ces travaux arrivent majoritairement en fin de chantier ou apres leurs gates :
 
 ## Prompt de reprise copiable
 
-> Reprends le pilotage master MilAura au 2026-08-16 depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/checkpoints/2026-08-16-1046-ruban-v2-live.md`, `docs/checkpoints/2026-08-16-1042-pdp-hero-desktop-live.md` et le plan canonique `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`. Commence en lecture seule et verifie Git, worktrees et proprietaires. Le Ruban de parure V2 et le PDP Hero desktop sont live ; ne les rouvre pas sans nouvelle preuve. Le cap est un site capable d'atteindre 100 000 EUR de chiffre d'affaires, avec Tiffany & Co. et Van Cleef & Arpels comme references de niveau visuel, sans copie, et la DA MilAura comme source executable. Ne rouvre pas LFG, la longueur PDP, les formulations validees du quiz ou la preuve sociale comme problemes. Le vrai P0 compte est la persistance durable du diagnostic dans Le Cercle. Cookies et emails/inscription sont critiques. Une session Atelier des emotions travaille en parallele. Pinterest doit commencer par ses fondations, DataForSEO suit une passe ciblee puis un audit global final. Garde un seul proprietaire d'integration et du live.
+> Reprends le pilotage master MilAura au 2026-08-16 depuis `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, `docs/checkpoints/2026-08-16-1110-polish-session-handoff.md` et le plan canonique `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`. Commence en lecture seule et verifie Git, les deux worktrees actifs et leurs proprietaires. Le polish est ferme : Sticky PDP, Hero produit desktop, Ruban de parure V2 et titre du Hero homepage sont live et valides ; ne les rouvre pas sans regression reproductible ou nouvel arbitrage de Patrice. Le worktree Atelier est propre et aligne. Le worktree matrices Ruban existe, est propre, sans upstream et correctement declare : recadre son proprietaire avant integration. Reprends le plan initial avec cookies, emails et inscription, persistance durable du diagnostic dans Le Cercle, puis rail commercial homepage. Continue inventaire, Atelier et fondations Pinterest en parallele. Ne rouvre pas LFG, la longueur PDP, les formulations validees du quiz ou la preuve sociale comme problemes. Garde un seul proprietaire d'integration et du live.
