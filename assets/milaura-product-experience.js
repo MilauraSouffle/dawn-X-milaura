@@ -1,5 +1,42 @@
 (() => {
-  const initialize = (scope = document) => {
+  const initializeProofRails = (scope = document) => {
+    scope.querySelectorAll('[data-milaura-product-proof]').forEach((root) => {
+      if (root.dataset.productProofReady === 'true') return;
+
+      const track = root.querySelector('[data-product-proof-track]');
+      const cue = root.querySelector('[data-product-proof-cue]');
+      if (!track || !cue) return;
+
+      let updateFrame = null;
+
+      const updateProofRail = () => {
+        updateFrame = null;
+        const maximumScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+        const isScrollable = maximumScroll > 1;
+        cue.hidden = !isScrollable;
+        const progress = isScrollable ? track.scrollLeft / maximumScroll : 0;
+        const visibleRatio = track.scrollWidth > 0 ? track.clientWidth / track.scrollWidth : 1;
+        root.style.setProperty('--milaura-proof-progress', String(Math.min(1, Math.max(0, progress))));
+        root.style.setProperty('--milaura-proof-thumb-width', `${Math.max(18, visibleRatio * 100)}%`);
+      };
+
+      const requestProofRailUpdate = () => {
+        if (updateFrame !== null) return;
+        updateFrame = window.requestAnimationFrame(updateProofRail);
+      };
+
+      track.addEventListener('scroll', requestProofRailUpdate, { passive: true });
+      if ('ResizeObserver' in window) {
+        root.milauraProofResizeObserver = new ResizeObserver(requestProofRailUpdate);
+        root.milauraProofResizeObserver.observe(track);
+      }
+
+      root.dataset.productProofReady = 'true';
+      updateProofRail();
+    });
+  };
+
+  const initializeGuides = (scope = document) => {
     scope.querySelectorAll('[data-milaura-product-guide]').forEach((root) => {
       if (root.dataset.productGuideReady === 'true') return;
 
@@ -45,6 +82,16 @@
     });
   };
 
+  const initialize = (scope = document) => {
+    initializeProofRails(scope);
+    initializeGuides(scope);
+  };
+
   initialize();
   document.addEventListener('shopify:section:load', (event) => initialize(event.target));
+  document.addEventListener('shopify:section:unload', (event) => {
+    event.target.querySelectorAll('[data-milaura-product-proof]').forEach((root) => {
+      root.milauraProofResizeObserver?.disconnect();
+    });
+  });
 })();
