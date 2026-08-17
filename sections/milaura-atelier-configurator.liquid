@@ -58,7 +58,13 @@
         <p class="milaura-atelier__eyebrow">{{ section.settings.eyebrow | escape }}</p>
       {%- endif -%}
       <h1 id="{{ title_id }}" class="milaura-atelier__title">{{ section.settings.heading | escape }}</h1>
-      {%- if section.settings.introduction != blank -%}
+      {%- if configuration_ready and section.settings.introduction != blank -%}
+        <div class="milaura-atelier__introduction rte">{{ section.settings.introduction }}</div>
+      {%- elsif section.settings.show_private_prototype -%}
+        <div class="milaura-atelier__introduction rte">
+          <p>Testez le gabarit avec les composants retenus dans les paniers fournisseurs. Après commande et réception, Karine vérifiera chaque élément avant d'ouvrir les ventes.</p>
+        </div>
+      {%- elsif section.settings.introduction != blank -%}
         <div class="milaura-atelier__introduction rte">{{ section.settings.introduction }}</div>
       {%- endif -%}
       {%- if section.settings.signature != blank -%}
@@ -117,7 +123,7 @@
           <input type="hidden" name="properties[Atelier - Modèle]" value="{{ pilot_product.title | escape }}">
           <input type="hidden" name="properties[Atelier - Taille]" value="{{ selected_variant.title | escape }}" data-size-property>
           <input type="hidden" name="properties[_atelier_config_id]" value="" data-config-id>
-          <input type="hidden" name="properties[_atelier_config_version]" value="2026-08-16.v1">
+          <input type="hidden" name="properties[_atelier_config_version]" value="2026-08-17.v1">
           <input type="hidden" name="properties[_atelier_palette_id]" value="" data-component-property="palette">
           <input type="hidden" name="properties[_atelier_letter_finish_id]" value="" data-component-property="letter_finish">
           <input type="hidden" name="properties[_atelier_charm_id]" value="" data-component-property="charm">
@@ -367,12 +373,14 @@
           data-atelier-prototype
           data-prototype-wrist="woman"
           data-prototype-stone="06"
+          data-prototype-catalog-url="{{ 'milaura-atelier-catalog.json' | asset_url }}"
+          data-prototype-config-version="2026-08-17.v1"
           aria-labelledby="MilauraAtelierPrototypeTitle-{{ section.id }}"
         >
           <div class="milaura-atelier__prototype-stage">
             <div class="milaura-atelier__prototype-topline">
-              <p>Maquette interactive</p>
-              <span>Commande verrouillée</span>
+              <p>Sélection panier réelle</p>
+              <span data-prototype-catalog-status>Chargement du catalogue</span>
             </div>
 
             <div class="milaura-atelier__prototype-sizing" aria-label="Gabarit du bracelet">
@@ -387,6 +395,7 @@
                       data-prototype-wrist-input
                       data-prototype-label="Enfant"
                       data-prototype-measure="14 à 16 cm"
+                      data-prototype-midpoint="150"
                     >
                     <span><strong>Enfant</strong><small>14 à 16 cm</small></span>
                   </label>
@@ -398,6 +407,7 @@
                       data-prototype-wrist-input
                       data-prototype-label="Femme"
                       data-prototype-measure="16 à 18 cm"
+                      data-prototype-midpoint="170"
                       checked
                     >
                     <span><strong>Femme</strong><small>16 à 18 cm</small></span>
@@ -410,6 +420,7 @@
                       data-prototype-wrist-input
                       data-prototype-label="Homme"
                       data-prototype-measure="18 à 20 cm"
+                      data-prototype-midpoint="190"
                     >
                     <span><strong>Homme</strong><small>18 à 20 cm</small></span>
                   </label>
@@ -437,14 +448,15 @@
 
             <div class="milaura-atelier__bracelet-board">
               <div class="milaura-atelier__bracelet-orbit" aria-hidden="true" data-prototype-orbit>
-                {%- for slot_index in (1..24) -%}
-                  <span class="milaura-atelier__prototype-slot" style="--slot-index: {{ forloop.index0 }};" data-prototype-slot></span>
+                {%- for slot_index in (1..48) -%}
+                  <span class="milaura-atelier__prototype-slot" data-prototype-slot></span>
                 {%- endfor -%}
               </div>
               <div class="milaura-atelier__prototype-center">
-                <span>Aperçu du montage</span>
+                <span>Repère de montage</span>
                 <strong data-prototype-center-word>MILAURA</strong>
                 <small data-prototype-spec>Femme · 16 à 18 cm · pierres 06 mm</small>
+                <small data-prototype-capacity>Calcul théorique en préparation</small>
               </div>
             </div>
 
@@ -458,14 +470,14 @@
               >
               <figcaption>
                 <strong>Karine</strong>
-                <span>Montera la version validée à Metz.</span>
+                <span>Validera le montage réel après réception.</span>
               </figcaption>
             </figure>
           </div>
 
           <div class="milaura-atelier__prototype-controls">
-            <p class="milaura-atelier__eyebrow">Essayez la composition</p>
-            <h2 id="MilauraAtelierPrototypeTitle-{{ section.id }}">Écrivez ce que vous voulez porter.</h2>
+            <p class="milaura-atelier__eyebrow">Lot 4 · moteur privé</p>
+            <h2 id="MilauraAtelierPrototypeTitle-{{ section.id }}">Composez avec la sélection réellement retenue.</h2>
 
             <div class="milaura-atelier__prototype-tabs" role="tablist" aria-label="Choix de composition à explorer">
               <button
@@ -476,6 +488,15 @@
                 aria-controls="MilauraAtelierPanelMessage-{{ section.id }}"
                 data-prototype-tab="message"
               >Message</button>
+              <button
+                id="MilauraAtelierTabLetters-{{ section.id }}"
+                type="button"
+                role="tab"
+                aria-selected="false"
+                aria-controls="MilauraAtelierPanelLetters-{{ section.id }}"
+                tabindex="-1"
+                data-prototype-tab="letters"
+              >Lettres</button>
               <button
                 id="MilauraAtelierTabPalette-{{ section.id }}"
                 type="button"
@@ -515,8 +536,26 @@
                 data-prototype-word-input
               >
               <div class="milaura-atelier__prototype-meta">
-                <p>10 caractères servent ici à tester l'écran, pas à fixer la règle du produit.</p>
+                <p>La présence de chaque lettre sera comptée après commande et réception. Aucun caractère n'est encore garanti.</p>
                 <span data-prototype-count>7/10</span>
+              </div>
+              <p class="milaura-atelier__prototype-field-note" data-prototype-word-status>Mot enregistré dans cette session uniquement.</p>
+            </div>
+
+            <div
+              id="MilauraAtelierPanelLetters-{{ section.id }}"
+              class="milaura-atelier__prototype-panel"
+              role="tabpanel"
+              aria-labelledby="MilauraAtelierTabLetters-{{ section.id }}"
+              data-prototype-panel="letters"
+              hidden
+            >
+              <div class="milaura-atelier__prototype-panel-heading">
+                <p class="milaura-atelier__prototype-panel-title">Choisissez une famille retenue pour tester le rythme du mot.</p>
+                <span data-prototype-option-count="letter_finish">0 option</span>
+              </div>
+              <div class="milaura-atelier__component-tray" data-prototype-component-options="letter_finish">
+                <p class="milaura-atelier__catalog-loading">Lecture de la sélection réelle…</p>
               </div>
             </div>
 
@@ -528,12 +567,15 @@
               data-prototype-panel="palette"
               hidden
             >
-              <p class="milaura-atelier__prototype-panel-title">Choisissez ensuite parmi les pierres réellement présentes dans l'atelier.</p>
-              <ol class="milaura-atelier__prototype-requirements">
-                <li><span>01</span><strong>Photographier</strong><small>le composant réel</small></li>
-                <li><span>02</span><strong>Compter</strong><small>les pièces disponibles</small></li>
-                <li><span>03</span><strong>Valider</strong><small>le montage pilote</small></li>
-              </ol>
+              <div class="milaura-atelier__prototype-panel-heading">
+                <p class="milaura-atelier__prototype-panel-title">Le diamètre règle déjà la géométrie. Les pierres exactes restent à inventorier.</p>
+                <span data-prototype-option-count="stone">0 option</span>
+              </div>
+              <div class="milaura-atelier__component-tray" data-prototype-component-options="stone"></div>
+              <div class="milaura-atelier__mounting-ledger">
+                <p>Montages retenus, à commander et tester</p>
+                <ul data-prototype-technical-options="cord"></ul>
+              </div>
             </div>
 
             <div
@@ -544,17 +586,35 @@
               data-prototype-panel="detail"
               hidden
             >
-              <p class="milaura-atelier__prototype-panel-title">Ajoutez enfin un charm compatible avec le montage choisi.</p>
-              <dl class="milaura-atelier__prototype-facts">
-                <div><dt>Lettres</dt><dd>finition à confirmer</dd></div>
-                <div><dt>Charm</dt><dd>compatibilité à tester</dd></div>
-                <div><dt>Taille</dt><dd>mesure pilote requise</dd></div>
-              </dl>
+              <div class="milaura-atelier__prototype-panel-heading">
+                <p class="milaura-atelier__prototype-panel-title">Explorez les détails retenus. Leur poids, leur trou et leur tenue restent à valider.</p>
+                <span data-prototype-option-count="charm">0 option</span>
+              </div>
+              <div class="milaura-atelier__component-tray" data-prototype-component-options="charm"></div>
             </div>
+
+            <section class="milaura-atelier__composition-summary" aria-labelledby="MilauraAtelierSummary-{{ section.id }}">
+              <div class="milaura-atelier__composition-summary-heading">
+                <div>
+                  <p>Fiche préparée pour Karine</p>
+                  <h3 id="MilauraAtelierSummary-{{ section.id }}">Composition en cours</h3>
+                </div>
+                <button type="button" data-prototype-reset>Recommencer</button>
+              </div>
+              <dl>
+                <div><dt>Taille</dt><dd data-prototype-review="wrist">Femme · 16 à 18 cm</dd></div>
+                <div><dt>Diamètre</dt><dd data-prototype-review="stone">06 mm</dd></div>
+                <div><dt>Repère théorique</dt><dd data-prototype-review="capacity">À calculer</dd></div>
+                <div><dt>Message</dt><dd data-prototype-review="word">MILAURA</dd></div>
+                <div><dt>Lettres</dt><dd data-prototype-review="letter_finish">À choisir</dd></div>
+                <div><dt>Charm</dt><dd data-prototype-review="charm">Aucun</dd></div>
+              </dl>
+              <p data-prototype-fit-note>Ce calcul sert à préparer les essais. Karine confirmera le nombre réel de composants.</p>
+            </section>
 
             <p class="milaura-atelier__prototype-lock" role="status">
               <span aria-hidden="true"></span>
-              La maquette est interactive. L'ajout au panier reste bloqué jusqu'à la validation du bracelet pilote.
+              Sélection fournisseur réelle, commande et réception à confirmer. Stock MilAura, compatibilité, prix public et ajout au panier restent verrouillés.
             </p>
             <p class="visually-hidden" aria-live="polite" data-prototype-live></p>
           </div>

@@ -801,14 +801,18 @@
   line-height: 1;
   transform:
     translate(-50%, -50%)
-    rotate(calc(var(--slot-index) * 15deg))
+    rotate(var(--slot-angle))
     translateY(calc(var(--prototype-radius) * -1))
-    rotate(calc(var(--slot-index) * -15deg));
+    rotate(var(--slot-angle-negative));
   transition:
     border-color var(--milaura-transition-rapide),
     background var(--milaura-transition-rapide),
     width var(--milaura-transition-rapide),
     transform var(--milaura-transition-rapide);
+}
+
+.milaura-atelier__prototype-slot[hidden] {
+  display: none;
 }
 
 .milaura-atelier__prototype[data-prototype-stone='04'] .milaura-atelier__prototype-slot {
@@ -928,7 +932,7 @@
 .milaura-atelier__prototype-controls {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: var(--milaura-esp-xl) 0 var(--milaura-esp-xl) clamp(var(--milaura-esp-lg), 5vw, var(--milaura-esp-2xl));
   border-left: var(--milaura-filet-mineral);
 }
@@ -972,13 +976,14 @@
 }
 
 .milaura-atelier__prototype-tabs button:focus-visible,
-.milaura-atelier__prototype-panel input:focus-visible {
+.milaura-atelier__prototype-panel input:focus-visible,
+.milaura-atelier__composition-summary button:focus-visible {
   outline: var(--milaura-focus);
   outline-offset: var(--milaura-focus-offset);
 }
 
 .milaura-atelier__prototype-panel {
-  min-height: 220px;
+  min-height: 250px;
   padding-top: var(--milaura-esp-lg);
 }
 
@@ -995,7 +1000,7 @@
   line-height: var(--milaura-lh-petit);
 }
 
-.milaura-atelier__prototype-panel input {
+.milaura-atelier__prototype-panel input[type='text'] {
   width: 100%;
   min-height: 64px;
   padding: 0;
@@ -1010,6 +1015,13 @@
   letter-spacing: var(--milaura-ls-label);
   line-height: var(--milaura-lh-h2);
   text-transform: uppercase;
+}
+
+.milaura-atelier__prototype-field-note {
+  margin: var(--milaura-esp-md) 0 0;
+  color: var(--milaura-encre-tertiaire);
+  font-size: var(--milaura-t-label);
+  line-height: var(--milaura-lh-petit);
 }
 
 .milaura-atelier__prototype-meta {
@@ -1029,10 +1041,219 @@
 
 .milaura-atelier__prototype-panel-title {
   max-width: 390px;
-  margin: 0 0 var(--milaura-esp-md);
+  margin: 0;
   color: var(--milaura-encre-secondaire);
   font-size: var(--milaura-t-corps);
   line-height: var(--milaura-lh-corps);
+}
+
+.milaura-atelier__prototype-panel-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--milaura-esp-sm);
+  margin-bottom: var(--milaura-esp-md);
+}
+
+.milaura-atelier__prototype-panel-heading > span {
+  flex: 0 0 auto;
+  color: var(--milaura-amethyste);
+  font-size: var(--milaura-t-label);
+  font-weight: 650;
+  letter-spacing: var(--milaura-ls-label);
+  line-height: var(--milaura-lh-label);
+  text-transform: uppercase;
+}
+
+.milaura-atelier__component-tray {
+  max-height: 312px;
+  overflow-y: auto;
+  border-top: var(--milaura-filet);
+  border-bottom: var(--milaura-filet);
+  scrollbar-color: var(--milaura-or) transparent;
+  scrollbar-width: thin;
+}
+
+.milaura-atelier__component-choice {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--milaura-esp-xs);
+  padding: var(--milaura-esp-xs) 0;
+  cursor: pointer;
+}
+
+.milaura-atelier__component-choice + .milaura-atelier__component-choice {
+  border-top: var(--milaura-filet);
+}
+
+.milaura-atelier__component-choice > input {
+  width: 16px;
+  height: 16px;
+  margin: 3px 0 0;
+  accent-color: var(--milaura-amethyste);
+}
+
+.milaura-atelier__component-choice > span {
+  min-width: 0;
+  display: grid;
+  gap: var(--milaura-esp-3xs);
+}
+
+.milaura-atelier__component-choice strong,
+.milaura-atelier__component-choice small,
+.milaura-atelier__component-choice em {
+  color: var(--milaura-prune);
+  font-size: var(--milaura-t-petit);
+  line-height: var(--milaura-lh-petit);
+}
+
+.milaura-atelier__component-choice strong {
+  font-weight: 650;
+}
+
+.milaura-atelier__component-choice small,
+.milaura-atelier__component-choice em {
+  color: var(--milaura-encre-tertiaire);
+}
+
+.milaura-atelier__component-choice em {
+  font-size: var(--milaura-t-label);
+  font-style: normal;
+}
+
+.milaura-atelier__component-choice input:checked + span strong {
+  color: var(--milaura-amethyste);
+}
+
+.milaura-atelier__catalog-loading,
+.milaura-atelier__catalog-empty {
+  margin: 0;
+  padding: var(--milaura-esp-md) 0;
+  color: var(--milaura-encre-tertiaire);
+  font-size: var(--milaura-t-petit);
+  line-height: var(--milaura-lh-corps);
+}
+
+.milaura-atelier__mounting-ledger {
+  margin-top: var(--milaura-esp-md);
+}
+
+.milaura-atelier__mounting-ledger > p {
+  margin: 0 0 var(--milaura-esp-2xs);
+  color: var(--milaura-encre-tertiaire);
+  font-size: var(--milaura-t-label);
+  font-weight: 650;
+  letter-spacing: var(--milaura-ls-label);
+  line-height: var(--milaura-lh-label);
+  text-transform: uppercase;
+}
+
+.milaura-atelier__mounting-ledger ul {
+  margin: 0;
+  padding: 0;
+  border-top: var(--milaura-filet);
+  list-style: none;
+}
+
+.milaura-atelier__mounting-ledger li {
+  display: grid;
+  gap: var(--milaura-esp-3xs);
+  padding: var(--milaura-esp-2xs) 0;
+  border-bottom: var(--milaura-filet);
+}
+
+.milaura-atelier__mounting-ledger strong,
+.milaura-atelier__mounting-ledger span {
+  color: var(--milaura-prune);
+  font-size: var(--milaura-t-petit);
+  line-height: var(--milaura-lh-petit);
+}
+
+.milaura-atelier__mounting-ledger span {
+  color: var(--milaura-encre-tertiaire);
+  font-size: var(--milaura-t-label);
+}
+
+.milaura-atelier__composition-summary {
+  margin-top: var(--milaura-esp-lg);
+  padding-top: var(--milaura-esp-md);
+  border-top: var(--milaura-filet-or);
+}
+
+.milaura-atelier__composition-summary-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--milaura-esp-sm);
+}
+
+.milaura-atelier__composition-summary-heading p,
+.milaura-atelier__composition-summary-heading h3 {
+  margin: 0;
+}
+
+.milaura-atelier__composition-summary-heading p {
+  color: var(--milaura-amethyste);
+  font-size: var(--milaura-t-label);
+  font-weight: 650;
+  letter-spacing: var(--milaura-ls-label);
+  line-height: var(--milaura-lh-label);
+  text-transform: uppercase;
+}
+
+.milaura-atelier__composition-summary-heading h3 {
+  color: var(--milaura-prune);
+  font-family: var(--milaura-font-display);
+  font-size: var(--milaura-t-h3);
+  font-weight: 400;
+  line-height: var(--milaura-lh-h3);
+}
+
+.milaura-atelier__composition-summary-heading button {
+  min-height: var(--milaura-cible-tactile);
+  padding: 0;
+  border: 0;
+  border-bottom: var(--milaura-filet-or);
+  color: var(--milaura-prune);
+  background: transparent;
+  font: inherit;
+  font-size: var(--milaura-t-petit);
+  cursor: pointer;
+}
+
+.milaura-atelier__composition-summary dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--milaura-esp-md);
+  margin: var(--milaura-esp-sm) 0 0;
+}
+
+.milaura-atelier__composition-summary dl > div {
+  display: grid;
+  gap: var(--milaura-esp-3xs);
+  padding: var(--milaura-esp-xs) 0;
+  border-top: var(--milaura-filet);
+}
+
+.milaura-atelier__composition-summary dt,
+.milaura-atelier__composition-summary dd {
+  margin: 0;
+  color: var(--milaura-encre-tertiaire);
+  font-size: var(--milaura-t-label);
+  line-height: var(--milaura-lh-petit);
+}
+
+.milaura-atelier__composition-summary dd {
+  color: var(--milaura-prune);
+  font-size: var(--milaura-t-petit);
+}
+
+.milaura-atelier__composition-summary > p {
+  margin: var(--milaura-esp-sm) 0 0;
+  color: var(--milaura-encre-tertiaire);
+  font-size: var(--milaura-t-label);
+  line-height: var(--milaura-lh-petit);
 }
 
 .milaura-atelier__prototype-requirements {
@@ -1354,9 +1575,19 @@
   }
 
   .milaura-atelier__prototype-tabs {
-    justify-content: space-between;
-    gap: var(--milaura-esp-sm);
+    justify-content: flex-start;
+    gap: var(--milaura-esp-md);
     margin-top: var(--milaura-esp-md);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .milaura-atelier__prototype-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .milaura-atelier__prototype-tabs button {
+    flex: 0 0 auto;
   }
 
   .milaura-atelier__prototype-panel {
@@ -1364,9 +1595,21 @@
     padding-top: var(--milaura-esp-md);
   }
 
-  .milaura-atelier__prototype-panel input {
+  .milaura-atelier__prototype-panel input[type='text'] {
     min-height: 56px;
     font-size: var(--milaura-t-h3);
+  }
+
+  .milaura-atelier__component-tray {
+    max-height: 280px;
+  }
+
+  .milaura-atelier__prototype-panel-heading {
+    align-items: flex-start;
+  }
+
+  .milaura-atelier__composition-summary dl {
+    grid-template-columns: 1fr;
   }
 
   .milaura-atelier__progress {

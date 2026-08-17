@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var CONFIG_VERSION = '2026-08-16.v1';
+  var CONFIG_VERSION = '2026-08-17.v1';
 
   function createConfigurationId() {
     if (window.crypto && typeof window.crypto.randomUUID === 'function') {
@@ -33,13 +33,23 @@
     var orbit = prototype.querySelector('[data-prototype-orbit]');
     var centerWord = prototype.querySelector('[data-prototype-center-word]');
     var specification = prototype.querySelector('[data-prototype-spec]');
+    var capacity = prototype.querySelector('[data-prototype-capacity]');
     var count = prototype.querySelector('[data-prototype-count]');
+    var wordStatus = prototype.querySelector('[data-prototype-word-status]');
+    var fitNote = prototype.querySelector('[data-prototype-fit-note]');
+    var catalogStatus = prototype.querySelector('[data-prototype-catalog-status]');
     var live = prototype.querySelector('[data-prototype-live]');
+    var resetButton = prototype.querySelector('[data-prototype-reset]');
     var tabs = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-tab]'));
     var panels = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-panel]'));
     var wristInputs = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-wrist-input]'));
     var stoneInputs = Array.prototype.slice.call(prototype.querySelectorAll('[data-prototype-stone-input]'));
+    var catalog = { components: [] };
+    var selections = { letter_finish: null, charm: null };
+    var activeSlotCount = 24;
+    var theoreticalSlotCount = 24;
     var animationTimer;
+    var storageKey = 'milauraAtelierPrototype:' + (prototype.dataset.prototypeConfigVersion || CONFIG_VERSION);
 
     if (!input || slots.length === 0) {
       return;
@@ -53,26 +63,56 @@
       });
     }
 
-    function updateSizing(shouldAnnounce) {
+    function reviewValue(key, value) {
+      var target = prototype.querySelector('[data-prototype-review="' + key + '"]');
+      if (target) {
+        target.textContent = value;
+      }
+    }
+
+    function readSession() {
+      try {
+        return JSON.parse(window.sessionStorage.getItem(storageKey) || '{}');
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function writeSession() {
       var wrist = selectedInput(wristInputs);
       var stone = selectedInput(stoneInputs);
+      var state = {
+        version: prototype.dataset.prototypeConfigVersion || CONFIG_VERSION,
+        wrist: wrist ? wrist.value : 'woman',
+        stone: stone ? stone.value : '06',
+        word: normalizeWord(input.value).trim(),
+        letter_finish_id: selections.letter_finish ? selections.letter_finish.id : '',
+        charm_id: selections.charm ? selections.charm.id : ''
+      };
 
-      if (!wrist || !stone) {
+      try {
+        window.sessionStorage.setItem(storageKey, JSON.stringify(state));
+      } catch (error) {
         return;
       }
+    }
 
-      var wristLabel = wrist.dataset.prototypeLabel || wrist.value;
-      var wristMeasure = wrist.dataset.prototypeMeasure || '';
-      prototype.dataset.prototypeWrist = wrist.value;
-      prototype.dataset.prototypeStone = stone.value;
+    function restoreSession() {
+      var state = readSession();
 
-      if (specification) {
-        specification.textContent = wristLabel + ' · ' + wristMeasure + ' · pierres ' + stone.value + ' mm';
+      if (state.word) {
+        input.value = state.word;
       }
 
-      if (shouldAnnounce && live) {
-        live.textContent = 'Gabarit sélectionné : ' + wristLabel + ', ' + wristMeasure + ', pierres ' + stone.value + ' millimètres.';
-      }
+      wristInputs.forEach(function (item) {
+        item.checked = item.value === (state.wrist || 'woman');
+      });
+
+      stoneInputs.forEach(function (item) {
+        item.checked = item.value === (state.stone || '06');
+      });
+
+      return state;
     }
 
     function activateTab(tab, shouldFocus) {
@@ -93,11 +133,219 @@
       }
     }
 
-    function updatePrototype() {
+    function componentStatus(component) {
+      if (component.status === 'selection_pending_order_oversized_test') {
+        return 'Format 40 mm, commande et test à confirmer';
+      }
+      if (component.status === 'selection_pending_order_seasonal') {
+        return 'Saisonnier, commande et contrôle à confirmer';
+      }
+      return 'Sélectionné, commande et contrôle à confirmer';
+    }
+
+    function componentReference(component) {
+      return component.supplier_reference
+        ? component.supplier + ' · ' + component.supplier_reference
+        : component.supplier + ' · référence à compléter';
+    }
+
+    function createComponentChoice(component, group, checked) {
+      var label = document.createElement('label');
+      var radio = document.createElement('input');
+      var body = document.createElement('span');
+      var name = document.createElement('strong');
+      var reference = document.createElement('small');
+      var status = document.createElement('em');
+
+      label.className = 'milaura-atelier__component-choice';
+      radio.type = 'radio';
+      radio.name = 'prototype-' + group + '-' + root.id;
+      radio.value = component.id;
+      radio.checked = checked;
+      radio.dataset.prototypeComponentInput = group;
+      name.textContent = component.name;
+      reference.textContent = componentReference(component) + ' · ' + component.selected_quantity + ' ' + (component.unit === 'piece' ? 'pièce(s)' : component.unit);
+      status.textContent = componentStatus(component);
+      body.appendChild(name);
+      body.appendChild(reference);
+      body.appendChild(status);
+      label.appendChild(radio);
+      label.appendChild(body);
+
+      radio.addEventListener('change', function () {
+        if (!radio.checked) {
+          return;
+        }
+        selections[group] = component;
+        updatePrototype(true);
+      });
+
+      return label;
+    }
+
+    function createEmptyChoice(group) {
+      var label = document.createElement('label');
+      var radio = document.createElement('input');
+      var body = document.createElement('span');
+      var name = document.createElement('strong');
+      var status = document.createElement('em');
+
+      label.className = 'milaura-atelier__component-choice';
+      radio.type = 'radio';
+      radio.name = 'prototype-' + group + '-' + root.id;
+      radio.value = '';
+      radio.checked = !selections[group];
+      radio.dataset.prototypeComponentInput = group;
+      name.textContent = 'Aucun charm';
+      status.textContent = 'Composition sans détail ajouté';
+      body.appendChild(name);
+      body.appendChild(status);
+      label.appendChild(radio);
+      label.appendChild(body);
+
+      radio.addEventListener('change', function () {
+        if (radio.checked) {
+          selections[group] = null;
+          updatePrototype(true);
+        }
+      });
+
+      return label;
+    }
+
+    function renderComponentGroup(group, restoredId) {
+      var tray = prototype.querySelector('[data-prototype-component-options="' + group + '"]');
+      var counter = prototype.querySelector('[data-prototype-option-count="' + group + '"]');
+      var components = catalog.components.filter(function (component) {
+        return component.type === group && component.customer_selectable;
+      });
+
+      if (counter) {
+        counter.textContent = components.length + (components.length > 1 ? ' options' : ' option');
+      }
+
+      if (!tray) {
+        return;
+      }
+
+      tray.replaceChildren();
+
+      var restoredComponent = components.find(function (component) {
+        return component.id === restoredId;
+      });
+
+      if (group === 'letter_finish') {
+        selections[group] = restoredComponent || components[0] || null;
+      } else if (group === 'charm') {
+        selections[group] = restoredComponent || null;
+      }
+
+      if (group === 'charm') {
+        tray.appendChild(createEmptyChoice(group));
+      }
+
+      if (components.length === 0) {
+        var empty = document.createElement('p');
+        empty.className = 'milaura-atelier__catalog-empty';
+        empty.textContent = group === 'stone'
+          ? 'Aucune pierre n’apparaît dans la sélection transmise. Le diamètre reste un gabarit de travail, pas une matière disponible.'
+          : 'Aucun composant de ce type dans la sélection transmise.';
+        tray.appendChild(empty);
+        return;
+      }
+
+      components.forEach(function (component, index) {
+        var shouldCheck = selections[group] && selections[group].id === component.id;
+        tray.appendChild(createComponentChoice(component, group, shouldCheck));
+      });
+    }
+
+    function renderTechnicalGroup(group) {
+      var list = prototype.querySelector('[data-prototype-technical-options="' + group + '"]');
+      if (!list) {
+        return;
+      }
+
+      list.replaceChildren();
+      catalog.components.filter(function (component) {
+        return component.type === group;
+      }).forEach(function (component) {
+        var item = document.createElement('li');
+        var label = document.createElement('strong');
+        var detail = document.createElement('span');
+        label.textContent = component.name;
+        detail.textContent = componentReference(component) + ' · compatibilité à mesurer';
+        item.appendChild(label);
+        item.appendChild(detail);
+        list.appendChild(item);
+      });
+    }
+
+    function updateSlotGeometry() {
+      var wrist = selectedInput(wristInputs);
+      var stone = selectedInput(stoneInputs);
+      if (!wrist || !stone) {
+        return;
+      }
+
+      var midpoint = Number(wrist.dataset.prototypeMidpoint) || 170;
+      var stoneDiameter = Number(stone.value) || 6;
+      theoreticalSlotCount = Math.floor(midpoint / stoneDiameter);
+      activeSlotCount = Math.min(slots.length, theoreticalSlotCount, 32);
+
+      slots.forEach(function (slot, index) {
+        var active = index < activeSlotCount;
+        var angle = (index * 360) / activeSlotCount;
+        slot.hidden = !active;
+        slot.style.setProperty('--slot-index', String(index));
+        slot.style.setProperty('--slot-angle', angle + 'deg');
+        slot.style.setProperty('--slot-angle-negative', (angle * -1) + 'deg');
+      });
+
+      capacity.textContent = '≈ ' + theoreticalSlotCount + ' emplacements théoriques';
+      reviewValue('capacity', '≈ ' + theoreticalSlotCount + ' avant lettres et charm');
+    }
+
+    function updateSizing(shouldAnnounce) {
+      var wrist = selectedInput(wristInputs);
+      var stone = selectedInput(stoneInputs);
+
+      if (!wrist || !stone) {
+        return;
+      }
+
+      var wristLabel = wrist.dataset.prototypeLabel || wrist.value;
+      var wristMeasure = wrist.dataset.prototypeMeasure || '';
+      prototype.dataset.prototypeWrist = wrist.value;
+      prototype.dataset.prototypeStone = stone.value;
+      specification.textContent = wristLabel + ' · ' + wristMeasure + ' · pierres ' + stone.value + ' mm';
+      reviewValue('wrist', wristLabel + ' · ' + wristMeasure);
+      reviewValue('stone', stone.value + ' mm');
+      updateSlotGeometry();
+
+      if (shouldAnnounce && live) {
+        live.textContent = 'Gabarit sélectionné : ' + wristLabel + ', ' + wristMeasure + ', pierres ' + stone.value + ' millimètres.';
+      }
+    }
+
+    function updatePrototype(shouldAnnounce) {
       var maximumLength = Number(input.maxLength) || 10;
       var normalized = normalizeWord(input.value);
       var characters = Array.from(normalized).slice(0, maximumLength);
-      var firstSlot = 12 + Math.floor((characters.length - 1) / 2);
+      var activeSlots = slots.slice(0, activeSlotCount);
+      var firstSlot = Math.floor(activeSlots.length / 2) + Math.floor((characters.length - 1) / 2);
+      var wrist = selectedInput(wristInputs);
+      var stone = selectedInput(stoneInputs);
+      var midpoint = wrist ? Number(wrist.dataset.prototypeMidpoint) || 170 : 170;
+      var stoneDiameter = stone ? Number(stone.value) || 6 : 6;
+      var letterWidth = selections.letter_finish ? Number(selections.letter_finish.width_mm) || 6 : 6;
+      var charmWidth = selections.charm ? Number(selections.charm.width_mm) || 0 : 0;
+      var messageWidth = characters.length * letterWidth;
+      var remainingLength = Math.max(0, midpoint - messageWidth - charmWidth);
+      var remainingStones = Math.floor(remainingLength / stoneDiameter);
+      var invalidCharacters = characters.filter(function (character, index, all) {
+        return character !== ' ' && !/[A-Z]/.test(character) && all.indexOf(character) === index;
+      });
 
       input.value = characters.join('');
       slots.forEach(function (slot) {
@@ -106,26 +354,42 @@
       });
 
       characters.forEach(function (character, characterIndex) {
-        var slotIndex = firstSlot - characterIndex;
-        var slot = slots[slotIndex];
+        var slotIndex = (firstSlot - characterIndex + activeSlots.length) % activeSlots.length;
+        var slot = activeSlots[slotIndex];
         if (slot) {
           slot.textContent = character === ' ' ? '·' : character;
           slot.classList.add('has-letter');
         }
       });
 
-      if (centerWord) {
-        centerWord.textContent = normalized.trim() || 'VOTRE MOT';
+      centerWord.textContent = normalized.trim() || 'VOTRE MOT';
+      count.textContent = characters.length + '/' + maximumLength;
+      reviewValue('word', normalized.trim() || 'À saisir');
+      reviewValue('letter_finish', selections.letter_finish ? selections.letter_finish.name : 'À choisir');
+      reviewValue('charm', selections.charm ? selections.charm.name : 'Aucun');
+
+      if (invalidCharacters.length > 0) {
+        input.setAttribute('aria-invalid', 'true');
+        wordStatus.textContent = 'Caractère non présent dans les assortiments retenus : ' + invalidCharacters.join(' ');
+      } else {
+        input.removeAttribute('aria-invalid');
+        wordStatus.textContent = 'Mot enregistré dans cette session uniquement. Répartition des lettres à contrôler à réception.';
       }
 
-      if (count) {
-        count.textContent = characters.length + '/' + maximumLength;
+      if (!selections.letter_finish) {
+        fitNote.textContent = 'Choisissez une famille de lettres pour calculer son encombrement théorique.';
+      } else if (messageWidth + charmWidth >= midpoint) {
+        fitNote.textContent = 'Cette composition dépasse le gabarit théorique. Elle devra être raccourcie ou montée autrement.';
+      } else {
+        fitNote.textContent = 'Repère non contractuel : environ ' + remainingStones + ' pierres de ' + stoneDiameter + ' mm autour du mot et du charm.';
       }
 
-      if (live) {
+      writeSession();
+
+      if (shouldAnnounce && live) {
         live.textContent = characters.length
-          ? 'Aperçu mis à jour avec ' + characters.length + ' caractères.'
-          : 'Aperçu vide.';
+          ? 'Composition mise à jour avec ' + characters.length + ' caractères.'
+          : 'Message vide.';
       }
 
       if (orbit) {
@@ -138,6 +402,59 @@
           }, 420);
         });
       }
+    }
+
+    function loadCatalog(restoredState) {
+      var url = prototype.dataset.prototypeCatalogUrl;
+      if (!url) {
+        return Promise.reject(new Error('Catalogue Atelier absent.'));
+      }
+
+      return window.fetch(url, { credentials: 'same-origin' }).then(function (response) {
+        if (!response.ok) {
+          throw new Error('Catalogue Atelier indisponible.');
+        }
+        return response.json();
+      }).then(function (data) {
+        catalog = data;
+        renderComponentGroup('letter_finish', restoredState.letter_finish_id || '');
+        renderComponentGroup('stone', '');
+        renderComponentGroup('charm', restoredState.charm_id || '');
+        renderTechnicalGroup('cord');
+        catalogStatus.textContent = catalog.components.length + ' références · commande à confirmer';
+        updatePrototype(false);
+      }).catch(function () {
+        catalogStatus.textContent = 'Catalogue indisponible';
+        prototype.querySelectorAll('[data-prototype-component-options]').forEach(function (tray) {
+          tray.textContent = 'Le manifeste des composants n’a pas pu être chargé. Rechargez la preview avant de poursuivre.';
+        });
+      });
+    }
+
+    function resetPrototype() {
+      try {
+        window.sessionStorage.removeItem(storageKey);
+      } catch (error) {
+        // Le prototype reste utilisable même si le stockage privé est bloqué.
+      }
+
+      input.value = 'MILAURA';
+      wristInputs.forEach(function (item) {
+        item.checked = item.value === 'woman';
+      });
+      stoneInputs.forEach(function (item) {
+        item.checked = item.value === '06';
+      });
+      selections.charm = null;
+      selections.letter_finish = catalog.components.find(function (component) {
+        return component.type === 'letter_finish' && component.customer_selectable;
+      }) || null;
+
+      renderComponentGroup('letter_finish', selections.letter_finish ? selections.letter_finish.id : '');
+      renderComponentGroup('charm', '');
+      updateSizing(false);
+      updatePrototype(true);
+      activateTab(tabs[0], true);
     }
 
     tabs.forEach(function (tab, tabIndex) {
@@ -170,14 +487,25 @@
     wristInputs.concat(stoneInputs).forEach(function (sizingInput) {
       sizingInput.addEventListener('change', function () {
         updateSizing(true);
+        updatePrototype(false);
       });
     });
 
-    input.addEventListener('input', updatePrototype);
-    input.addEventListener('blur', updatePrototype);
+    input.addEventListener('input', function () {
+      updatePrototype(true);
+    });
+    input.addEventListener('blur', function () {
+      updatePrototype(false);
+    });
+    if (resetButton) {
+      resetButton.addEventListener('click', resetPrototype);
+    }
+
+    var restoredState = restoreSession();
     activateTab(tabs[0], false);
     updateSizing(false);
-    updatePrototype();
+    updatePrototype(false);
+    loadCatalog(restoredState);
   }
 
   function initAtelier(root) {
