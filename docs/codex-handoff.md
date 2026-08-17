@@ -1,12 +1,18 @@
 # MilAura - Handoff Ruban V3
 
-Date de mise à jour : 2026-08-17 09:10 CEST
+Date de mise à jour : 2026-08-17 12:38 CEST
 
 ## Objet de la reprise
 
 Reprendre Ruban V3 sans confondre le système V2 réellement en production, les données Shopify V1 réellement actives et la nouvelle direction commerciale qui reste à construire.
 
-Ce handoff ne constitue pas une implémentation. Le 2026-08-17, aucun fichier thème et aucune donnée Shopify n'ont été modifiés. Seuls le checkpoint, ce handoff, le snapshot `docs/project-state.md` et la note Obsidian ont été autorisés.
+Ce handoff Ruban ne constitue pas une implémentation. Dans son perimetre, aucun fichier theme et aucune donnee Shopify n ont ete modifies le 2026-08-17. Seuls le checkpoint, ce handoff, le snapshot `docs/project-state.md` et la note Obsidian ont ete autorises.
+
+## Addendum transversal : bandeau cookies live
+
+Le lot cookies distinct a ete ferme apres ce handoff Ruban. Le nouveau bandeau gemme est integre par `1980512a` et live sur le theme `190430282075` depuis le 2026-08-17. Son pullback est identique 7/7 a Git et sa QA publique valide le choix personnalise, le refus, l acceptation et la reouverture depuis le footer.
+
+Le chantier cookies n est donc plus une urgence ouverte. La prochaine priorite transversale est l audit critique des emails, notifications transactionnelles, relances lifecycle et du comportement apres inscription. Le perimetre Ruban V3 ci-dessous reste inchange. Reference : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
 
 ## Décision Patrice du 2026-08-17
 

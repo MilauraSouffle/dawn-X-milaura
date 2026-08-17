@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-17 09:10 CEST
+Derniere mise a jour : 2026-08-17 12:38 CEST
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : Ruban de parure V2 et sa matrice V1 limitée sont live ; Ruban V3 est une nouvelle direction commerciale décidée le 2026-08-17 mais reste entièrement à cadrer, produire, implémenter et autoriser.
+La refonte visible est en phase de finition : le nouveau consentement cookies MilAura et Ruban de parure V2 sont live ; Ruban V3 reste entièrement à cadrer, produire, implémenter et autoriser.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ La refonte visible est en phase de finition : Ruban de parure V2 et sa matrice V
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au contrôle du 2026-08-17, le checkout canonique était propre et synchronisé sur `97a90f79`. Le worktree matrices Ruban était fermé et retiré. Atelier des émotions restait le seul worktree fonctionnel actif, propre et aligné ; un worktree documentaire Ruban V3 a ensuite été réservé par `9bdc52b4` uniquement pour ce handoff.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au controle du 2026-08-17 a 12:38 CEST, le worktree cookies etait retire apres integration et QA live. Les worktrees actifs restants etaient Atelier des emotions et l audit de matrice Ruban V3, chacun sur sa branche et son perimetre declares.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -46,12 +46,22 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - La longueur des PDP n'est pas un probleme confirme. La nouvelle experience est validee ; une session PDP specialisee doit effectuer des recherches approfondies avant toute recommandation de reduction ou reorganisation.
 - Les formulations actuelles du diagnostic sur l'apaisement, la protection et l'energie sont approuvees. Aucun lot de reecriture corrective n'est ouvert. Le polish visuel, la page resultat et la persistance client restent ouverts.
 - Le diagnostic est actuellement persiste dans le navigateur et le panier, pas dans une source cliente durable. Le chantier `C1 - Le Cercle MilAura` possede la correction entre appareils et sa restitution dans `Mon Ecrin`.
-- Le bandeau cookies est urgent. Les emails, notifications, relances et le comportement apres inscription sont classes criticite 10/10.
+- Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. Les emails, notifications, relances et le comportement apres inscription restent classes criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
 - L'inventaire physique mene par Patrice avance en parallele et ne bloque pas le polish du site. Il reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
 - Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
 - DataForSEO suit deux temps : recherche ciblee si elle doit guider une nouvelle page, puis audit global final lorsque les routes et enrichissements sont stabilises.
+
+## Consentement cookies live
+
+Le nouveau bandeau cookies MilAura est live depuis le 2026-08-17 sur le theme `190430282075`. Il remplace entierement l ancien skin Shopify et son `MutationObserver`. Les 293 lignes de l ancien CSS cookies ont ete retirees.
+
+Le composant utilise la gemme quartz rose detouree validee par Patrice, monte depuis le bas et reste limite a `20svh`. Le premier niveau propose `Je refuse`, `Je choisis mes cookies` et `J’accepte`. Le dialogue detaille gere Preferences, Mesure d audience et Marketing, avec les cookies essentiels toujours actifs. Le lien `Gerer mes cookies` du footer permet de rouvrir les choix.
+
+Shopify Customer Privacy reste le moteur de consentement et de persistance. Le bandeau natif Shopify reste le secours si l API ne charge pas. Le push live a ete strictement limite a sept fichiers avec `--nodelete`, `--strict` et `--allow-live`. Le pullback est identique 7/7 a Git. La QA publique a valide le rendu 390 et 1440 px, le choix personnalise, le refus, l acceptation et la reouverture avec restitution exacte des categories.
+
+Commit source `6bbc36bb`, integration canonique `1980512a`. Checkpoint : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
 
 ## Catalogue V1 public
 
@@ -274,7 +284,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Ouvrir le lot urgent bandeau cookies, puis l'audit critique emails, notifications, relances et inscription.
+1. Auditer de bout en bout les emails, notifications transactionnelles, relances lifecycle et le comportement apres inscription.
 2. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
 3. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
 4. Ouvrir une session PDP specialisee de recherche et de polish, sans presumer que la longueur actuelle est un defaut.
@@ -296,12 +306,13 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic non persiste dans une source cliente durable ni entre appareils
-- compte Cercle, consentements, emails, notifications, relances et comportement apres inscription a auditer ou construire
-- bandeau cookies a refondre en urgence
+- compte Cercle, persistance du diagnostic, emails, notifications, relances et comportement apres inscription a auditer ou construire
+- bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - campagne de rentree ou septembre a preparer avant obsolescence de la selection d'aout
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`
 - `docs/codex-handoff.md`
 - `docs/workstreams.md`
 - `docs/reference/2026-08-12-repository-workflow.md`
