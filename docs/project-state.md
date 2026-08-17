@@ -63,6 +63,8 @@ Shopify Customer Privacy reste le moteur de consentement et de persistance. Le b
 
 Commit source `6bbc36bb`, integration canonique `1980512a`. Checkpoint : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
 
+Anomalie de miroir a conserver : le commit automatique Shopify `004ce94f` ne contient que quatre des sept fichiers deployes et omet les trois nouveaux assets. Le live reste prouve par le pullback 7/7 et la QA publique. Ne pas fusionner `origin/main` aveuglement ni utiliser son arbre seul pour reconstruire ce lot.
+
 ## Catalogue V1 public
 
 Activation validee le 2026-08-12 dans `cb0da71b` et documentee dans `docs/checkpoints/2026-08-12-1019-catalogue-v1-activation.md`.
@@ -308,6 +310,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - diagnostic non persiste dans une source cliente durable ni entre appareils
 - compte Cercle, persistance du diagnostic, emails, notifications, relances et comportement apres inscription a auditer ou construire
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
+- miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
 - campagne de rentree ou septembre a preparer avant obsolescence de la selection d'aout
 
 ## References de reprise

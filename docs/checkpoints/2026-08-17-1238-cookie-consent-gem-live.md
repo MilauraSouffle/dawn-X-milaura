@@ -50,6 +50,8 @@ Un pullback frais et cible des sept fichiers a ete effectue dans :
 
 Comparaison `cmp` : 7/7 fichiers identiques bit a bit au canonique.
 
+Apres le deploiement, le miroir automatique Shopify a cree le commit `004ce94f`. Ce commit ne contient que les modifications de `assets/milaura.css`, `layout/theme.liquid`, `sections/milaura-footer.liquid` et le nouveau snippet. Il n historise pas les trois nouveaux assets `milaura-cookie-consent.css`, `milaura-cookie-consent.js` et `milaura-cookie-gem.webp`. Ce decalage concerne le miroir Git `origin/main`, pas le theme live : le pullback cible contient les sept fichiers et le storefront public charge le CSS, le JavaScript et la gemme. Ne pas fusionner `origin/main` aveuglement et ne pas utiliser son arbre seul comme preuve de ce lot.
+
 SHA-256 canoniques :
 
 - `assets/milaura-cookie-consent.css` : `52ab689f77355e5a34c5fe2f479d29ce47acf7ca8a411af7c830e234c3a76525`

@@ -14,6 +14,8 @@ Le lot cookies distinct a ete ferme apres ce handoff Ruban. Le nouveau bandeau g
 
 Le chantier cookies n est donc plus une urgence ouverte. La prochaine priorite transversale est l audit critique des emails, notifications transactionnelles, relances lifecycle et du comportement apres inscription. Le perimetre Ruban V3 ci-dessous reste inchange. Reference : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
 
+Attention au miroir : le commit Shopify automatique `004ce94f` omet les trois nouveaux assets cookies alors que le pullback live les confirme 7/7 et que le storefront les charge. Ne pas fusionner `origin/main` aveuglement.
+
 ## Décision Patrice du 2026-08-17
 
 Le nouveau cap commercial est ferme :
