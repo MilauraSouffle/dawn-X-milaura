@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-16 11:10 CEST
+Derniere mise a jour : 2026-08-17 09:10 CEST
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions, recommandations, polish Sticky PDP, Hero produit desktop et Ruban de parure V2 sont live ; cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
+La refonte visible est en phase de finition : Ruban de parure V2 et sa matrice V1 limitée sont live ; Ruban V3 est une nouvelle direction commerciale décidée le 2026-08-17 mais reste entièrement à cadrer, produire, implémenter et autoriser.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ La refonte visible est en phase de finition : catalogue V1, nouvelle experience 
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au 2026-08-16 a 11:10 CEST, Ruban de parure V2, PDP Hero desktop et le polish du titre Hero homepage sont integres, live et leurs worktrees ont ete retires. Deux worktrees propres restent actifs : Atelier des emotions sur `codex/milaura-atelier-emotions-20260816`, aligne sur son origine, et matrices commerciales Ruban sur `codex/milaura-ruban-matrices-commerciales-20260816` a `e860a0f0`, sans upstream. Le registre central a ete recale sur cet etat sans modifier le perimetre de sa session proprietaire.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au contrôle du 2026-08-17, le checkout canonique était propre et synchronisé sur `97a90f79`. Le worktree matrices Ruban était fermé et retiré. Atelier des émotions restait le seul worktree fonctionnel actif, propre et aligné ; un worktree documentaire Ruban V3 a ensuite été réservé par `9bdc52b4` uniquement pour ce handoff.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -224,6 +224,14 @@ Le polish Sticky PDP est live depuis le 2026-08-16 a 09:32 CEST. La sticky utili
 
 Le Ruban de parure V2 est live depuis le 2026-08-16 a 10:46 CEST apres GO visuel, GO live et autorisation explicite de nettoyer l'ancienne configuration remplacee. Le lot final `222ef44f` est integre par `469212c0`. La matrice Search & Discovery preuve relie le collier obsidienne noire boho dore `10557516644699` aux boucles obsidienne noire `10357431206235` et au bracelet obsidienne flocon `10357456601435`. La definition Shopify `milaura.recommendation_cutout` existe avec acces Storefront. L'API reelle renvoie les deux complements, l'ajout du variant `52484191879515` dans un navigateur neuf a ete retire par sa seule cle de ligne et le panier final est revenu vide. Le push live est limite a neuf fichiers theme avec `--nodelete`; pullback 9/9 identique. La QA publique couvre 360/390/430/820/1440, rail horizontal reel, clavier, compteur, progression, sticky et jonction dock. Le widget tiers `merchantwidgetiframe` conserve une largeur hors viewport dans `documentElement`, mais `body` reste exactement au viewport et le Ruban n'est pas la source du debordement. Checkpoint : `docs/checkpoints/2026-08-16-1046-ruban-v2-live.md`.
 
+### Décision commerciale Ruban V3 du 2026-08-17
+
+Patrice demande désormais une seule proposition cross-sell visible par PDP, présentée en vidéo et justifiée par une parure ou un matching concret. Higgsfield est retenu comme unique outil vidéo. Grok est exclu du workflow. Toute transformation visuelle du produit est un rejet bloquant.
+
+Le 2026-08-17, le storefront public retournait 268 produits disponibles au sens Shopify. Les 9 sources Search & Discovery V1 représentent environ 3,4 % de couverture source directe. Les 9 endpoints restent exacts et les 5 médias `milaura.recommendation_cutout` restent servis depuis `/cdn/shop/files/`.
+
+Ruban V3 n'est pas implémenté. Les 268 associations n'existent pas, le volume de 25 à 40 vidéos est une estimation, aucune vidéo Higgsfield n'a été produite et aucun metafield vidéo V3 n'a été créé. Aucun thème n'est attribué à V3 et aucun GO de mutation Shopify, de développement, de preview ou de live n'a été reçu. Handoff complet : `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`.
+
 ## Contrat produit
 
 Le commit `6c4e6de4` fixe le contrat canonique complet : pierres, matieres, couleurs, intentions, occasions, disponibilite, fulfillment, provenance et six images minimum. Le pipeline reste draft-only et ne modifie ni hub ni collection publique.
@@ -284,8 +292,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
-- Ruban de parure V2 : le moteur est live et prouve sur une seule matrice commerciale obsidienne ; les autres PDP restent dependantes de complements Search & Discovery valides, et les medias sans `milaura.recommendation_cutout` utilisent encore le fallback catalogue
-- largeur globale hors viewport exposee par le widget tiers `merchantwidgetiframe` et certains panneaux hors-canvas, bien que `body` et le Ruban restent contenus aux viewports testes
+- Ruban V3 : direction commerciale décidée, mais matrice complète, ensemble éligible, vidéos Higgsfield, contrat de metafields, implémentation, preview et GO live encore ouverts
+- Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
+- mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic non persiste dans une source cliente durable ni entre appareils
 - compte Cercle, consentements, emails, notifications, relances et comportement apres inscription a auditer ou construire
 - bandeau cookies a refondre en urgence
@@ -322,6 +331,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-16-1046-ruban-v2-live.md`
 - `docs/checkpoints/2026-08-16-1106-home-hero-title-live.md`
 - `docs/checkpoints/2026-08-16-1110-polish-session-handoff.md`
+- `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
 - `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
