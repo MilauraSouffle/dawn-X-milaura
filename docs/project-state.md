@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-17 12:38 CEST
+Derniere mise a jour : 2026-08-17 13:12 CEST
 
 ## Etat en une phrase
 
@@ -14,7 +14,7 @@ La refonte visible est en phase de finition : le nouveau consentement cookies Mi
 - L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
 - Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au controle du 2026-08-17 a 12:38 CEST, le worktree cookies etait retire apres integration et QA live. Les worktrees actifs restants etaient Atelier des emotions et l audit de matrice Ruban V3, chacun sur sa branche et son perimetre declares.
+- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au controle du 2026-08-17 a 13:12 CEST, les deux worktrees cookies etaient retires apres integration et QA live. Les worktrees actifs restants etaient Atelier des emotions et l audit de matrice Ruban V3, chacun sur sa branche et son perimetre declares.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -57,13 +57,13 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 
 Le nouveau bandeau cookies MilAura est live depuis le 2026-08-17 sur le theme `190430282075`. Il remplace entierement l ancien skin Shopify et son `MutationObserver`. Les 293 lignes de l ancien CSS cookies ont ete retirees.
 
-Le composant utilise la gemme quartz rose detouree validee par Patrice, monte depuis le bas et reste limite a `20svh`. Le premier niveau propose `Je refuse`, `Je choisis mes cookies` et `J’accepte`. Le dialogue detaille gere Preferences, Mesure d audience et Marketing, avec les cookies essentiels toujours actifs. Le lien `Gerer mes cookies` du footer permet de rouvrir les choix.
+Le composant utilise la gemme quartz rose detouree validee par Patrice, monte depuis le bas et reste limite a `20svh`. Le premier niveau propose maintenant le lien texte `Continuer sans accepter`, `Je choisis mes cookies` et `J’accepte`. Le refus reste visible, direct, en un clic et conserve une cible tactile de 44 px sur mobile. Le dialogue detaille gere Preferences, Mesure d audience et Marketing, avec les cookies essentiels toujours actifs. Le lien `Gerer mes cookies` du footer permet de rouvrir les choix.
 
 Shopify Customer Privacy reste le moteur de consentement et de persistance. Le bandeau natif Shopify reste le secours si l API ne charge pas. Le push live a ete strictement limite a sept fichiers avec `--nodelete`, `--strict` et `--allow-live`. Le pullback est identique 7/7 a Git. La QA publique a valide le rendu 390 et 1440 px, le choix personnalise, le refus, l acceptation et la reouverture avec restitution exacte des categories.
 
-Commit source `6bbc36bb`, integration canonique `1980512a`. Checkpoint : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
+Commit source `6bbc36bb`, integration canonique `1980512a`. Le polish du refus est integre par `32b37e4e`, deploye sur le live avec un pullback 2/2 identique et documente dans `docs/checkpoints/2026-08-17-1312-cookie-refusal-link-live.md`. Checkpoint initial : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
 
-Anomalie de miroir a conserver : le commit automatique Shopify `004ce94f` ne contient que quatre des sept fichiers deployes et omet les trois nouveaux assets. Le live reste prouve par le pullback 7/7 et la QA publique. Ne pas fusionner `origin/main` aveuglement ni utiliser son arbre seul pour reconstruire ce lot.
+Anomalie de miroir a conserver : le commit automatique Shopify `004ce94f` ne contenait que quatre des sept fichiers deployes. Le commit Shopify suivant `7193ed80` ajoute le CSS cookies au miroir et met a jour le snippet, mais `assets/milaura-cookie-consent.js` et `assets/milaura-cookie-gem.webp` restent absents de `origin/main`. Le live reste prouve par les pullbacks et la QA publique. Ne pas fusionner `origin/main` aveuglement ni utiliser son arbre seul pour reconstruire ce lot.
 
 ## Catalogue V1 public
 

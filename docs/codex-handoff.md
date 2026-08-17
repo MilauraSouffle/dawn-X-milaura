@@ -1,6 +1,6 @@
 # MilAura - Handoff Ruban V3
 
-Date de mise à jour : 2026-08-17 12:38 CEST
+Date de mise à jour : 2026-08-17 13:12 CEST
 
 ## Objet de la reprise
 
@@ -14,7 +14,9 @@ Le lot cookies distinct a ete ferme apres ce handoff Ruban. Le nouveau bandeau g
 
 Le chantier cookies n est donc plus une urgence ouverte. La prochaine priorite transversale est l audit critique des emails, notifications transactionnelles, relances lifecycle et du comportement apres inscription. Le perimetre Ruban V3 ci-dessous reste inchange. Reference : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
 
-Attention au miroir : le commit Shopify automatique `004ce94f` omet les trois nouveaux assets cookies alors que le pullback live les confirme 7/7 et que le storefront les charge. Ne pas fusionner `origin/main` aveuglement.
+Le polish valide ensuite par Patrice est live : `Je refuse` est remplace par le lien texte sobre `Continuer sans accepter`, toujours visible, direct, en un clic et avec une cible tactile mobile de 44 px. Deux fichiers seulement ont change, commit `32b37e4e`, pullback live 2/2 identique. Reference : `docs/checkpoints/2026-08-17-1312-cookie-refusal-link-live.md`.
+
+Attention au miroir : `004ce94f` omettait les trois nouveaux assets cookies. Le commit Shopify `7193ed80` ajoute maintenant le CSS au miroir et met a jour le snippet, mais le JavaScript et la gemme restent absents de `origin/main`. Ne pas fusionner `origin/main` aveuglement.
 
 ## Décision Patrice du 2026-08-17
 
