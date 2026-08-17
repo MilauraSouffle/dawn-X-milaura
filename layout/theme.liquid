@@ -634,59 +634,6 @@
         })();
       </script>
     {%- endif -%}
-    <script>
-      /* MilAura - Cookie Banner Text Personalization v4 */
-      (function() {
-        function customizeCookieBanner() {
-          var banner = document.getElementById('shopify-pc__banner');
-          if (!banner) return false;
-
-          /* Title — try h2, h3, strong, or first bold-ish element */
-          var title = banner.querySelector('h2') || banner.querySelector('h3') || banner.querySelector('strong');
-          if (!title) return false;
-
-          banner.classList.add('milaura-cookie-trust');
-          title.textContent = 'Votre rituel MilAura commence ici';
-
-          /* Body text — first <p> that isn't tiny */
-          var paragraphs = banner.querySelectorAll('p');
-          for (var i = 0; i < paragraphs.length; i++) {
-            if (paragraphs[i].textContent.length > 30) {
-              paragraphs[i].innerHTML = 'Avec votre accord, MilAura utilise quelques cookies pour mieux comprendre ce qui vous inspire, fluidifier votre visite et vous proposer des offres plus justes. Vous gardez la main \u00e0 tout moment. <a href="/policies/privacy-policy">En savoir plus</a><span class="milaura-cookie-benefits"><span>Conseils plus adapt\u00e9s</span><span>Offres plus pertinentes</span><span>Navigation plus fluide</span></span>';
-              break;
-            }
-          }
-
-          /* Buttons — try multiple selector patterns */
-          var btnAccept = banner.querySelector('[class*="btn-accept"]') || banner.querySelector('button:first-of-type');
-          var btnDecline = banner.querySelector('[class*="btn-decline"]') || banner.querySelector('button:nth-of-type(2)');
-          var btnManage = banner.querySelector('[class*="btn-manage"]') || banner.querySelector('[class*="manage-prefs"]');
-
-          if (btnAccept) btnAccept.textContent = 'Tout accepter';
-          if (btnDecline) btnDecline.textContent = 'Accepter seulement l\u2019essentiel';
-          if (btnManage) btnManage.textContent = 'Choisir mes pr\u00e9f\u00e9rences';
-
-          var buttonGroup = btnAccept && btnAccept.parentElement;
-          if (buttonGroup && btnAccept && btnDecline && btnManage) {
-            buttonGroup.appendChild(btnAccept);
-            buttonGroup.appendChild(btnDecline);
-            buttonGroup.appendChild(btnManage);
-          }
-
-          return true;
-        }
-
-        var count = 0;
-        var obs = new MutationObserver(function(m, o) {
-          count++;
-          if (customizeCookieBanner() || count > 200) o.disconnect();
-        });
-        obs.observe(document.body, { childList: true, subtree: true });
-        /* Also try after a delay in case banner loads late */
-        setTimeout(customizeCookieBanner, 1500);
-        setTimeout(customizeCookieBanner, 3000);
-        setTimeout(function() { obs.disconnect(); }, 15000);
-      })();
-    </script>
+    {% render 'milaura-cookie-consent' %}
   </body>
 </html>
