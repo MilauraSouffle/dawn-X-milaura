@@ -4,7 +4,7 @@ Date : 2026-08-20 12:48 CEST
 
 Statut : preview, mutations Admin et integration validees, live en attente de GO explicite
 
-Derniere mise a jour : 2026-08-20 13:00 CEST
+Derniere mise a jour : 2026-08-20 13:02 CEST
 
 ## Perimetre ferme
 
@@ -228,6 +228,8 @@ Validations relancees depuis le checkout d integration :
 
 La publication live reste volontairement bloquee. Aucun fichier du theme live `190430282075` n a ete modifie par cette integration Git.
 
+Le worktree E2 a ete retire proprement apres confirmation que `e5dae460` etait pousse et ancetre de l integration. La branche locale et distante `codex/milaura-e2-neutralisation-20260820` est conservee comme preuve et point de rollback.
+
 ## Gates E2
 
 | Gate | Etat | Preuve |
@@ -263,8 +265,7 @@ Notification :
 
 ## Prochaines actions ordonnees
 
-1. Committer et pousser cette preuve d integration.
-2. Retirer proprement le worktree E2 apres confirmation du push distant.
-3. Obtenir un GO live distinct avant toute publication sur `190430282075`.
-4. Publier uniquement les neuf fichiers theme E2, verifier le pullback et le storefront public.
-5. Fermer E2, puis seulement ouvrir E3.
+1. Committer et pousser cette preuve finale avant live.
+2. Obtenir un GO live distinct avant toute publication sur `190430282075`.
+3. Publier uniquement les neuf fichiers theme E2, verifier le pullback et le storefront public.
+4. Fermer E2, puis seulement ouvrir E3.
