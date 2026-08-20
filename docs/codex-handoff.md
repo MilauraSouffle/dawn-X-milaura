@@ -1,12 +1,12 @@
 # MilAura - Handoff master
 
-Date de mise à jour : 2026-08-20 10:31 CEST
+Date de mise à jour : 2026-08-20 20:13 CEST
 
-## Handoff actif - comptes, emails et lifecycle
+## Handoff actif - C1-0 preview nouveaux comptes
 
-L audit complet est ferme en lecture seule. Aucun fichier theme, parametre Shopify, email, Flow, Messaging ou live n a ete modifie. La suite doit etre reprise dans une session fraiche activee en mode Plan.
+E1, E2 et E3 sont fermes sur validation de Patrice. Le lot actif est C1-0 : creer une application privee, une extension Customer Accounts pleine page `Mon Ecrin` et un environnement de preview, sans basculer les comptes live.
 
-Base minimale obligatoire : `origin/codex/milaura-integration` a `145e25d4` ou plus recent. `origin/main` est un miroir Shopify incomplet. `assets/milaura-preference-storage.js` est deja dans le canonique et sur le live ; aucune pull request ou integration separee n est requise.
+Base minimale obligatoire : `origin/codex/milaura-integration` a `7b3f7d44` ou plus recent. `origin/main` est un miroir Shopify incomplet. `assets/milaura-preference-storage.js` est deja dans le canonique et sur le live ; aucune pull request ou integration separee n est requise.
 
 Faits structurants :
 
@@ -14,21 +14,21 @@ Faits structurants :
 - creation de compte distincte du consentement marketing ;
 - diagnostic persiste localement avec consentement Preferences, mais pas entre appareils ;
 - Mon Ecrin lit le navigateur, pas une source cliente serveur ;
-- bienvenue `BIENVENUE10` inactive et interdite de reactivation ;
+- `BIENVENUE10`, le popup et la bulle sont supprimes ; le footer reste ;
 - consultation, panier et checkout abandonnes actifs dans Shopify Messaging ;
 - notifications transactionnelles live encore sur l ancienne direction artistique ;
-- footer newsletter actif ; popup et bulle desactives mais code mort encore present ;
-- aucune source executable Flow ou Messaging versionnee ;
-- Klaviyo non verifie, Judge.me non configure de facon prouvee ;
+- sources Notifications, Messaging et Flow versionnees dans le depot prive ;
+- 45 notifications transactionnelles testees ; trois rappels Shop actifs restent non testables sans evenement reel ;
+- Klaviyo audite sans flow d abandon actif ; Judge.me non configure de facon prouvee ;
 - Worker retour produit a durcir separement.
 
 Architecture C1 recommandee : ne pas construire le definitif sur les comptes legacy. Prototyper les nouveaux comptes Shopify et une extension pleine page `Mon Ecrin`, puis ajouter metafields client, consentement explicite de personnalisation, handoff signe et suppression locale, panier et serveur. Aucune bascule live avant tests de parite et GO distinct.
 
 Ordre de reprise :
 
-1. `E1 - Verite canonique` : exports et inventaire prive versionne, aucun changement live.
-2. `E2 - Neutralisation` : code mort popup/bulle, `BIENVENUE10`, promesses fausses et archives dangereuses.
-3. `E3 - Lifecycle actif` : consultation, panier et checkout, avec consentement, arret et deduplication.
+1. `E1 - Verite canonique` : ferme.
+2. `E2 - Neutralisation` : ferme et live.
+3. `E3 - Lifecycle actif` : ferme et actif.
 4. `C1-0` : preview nouveaux comptes et extension Mon Ecrin.
 5. `C1-1` : persistance durable, consentement de personnalisation et suppression serveur.
 6. `E4` : notifications transactionnelles compte et commerce.

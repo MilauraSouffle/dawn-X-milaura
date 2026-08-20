@@ -81,17 +81,19 @@ Le controle authentifie a detecte puis fait corriger une selection personnalisee
 
 Anomalie de miroir : `1dccd18c` contient les six fichiers existants du push initial mais omet `assets/milaura-preference-storage.js`. `763d7ad9` reprend exactement les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement ; le canonique et les pullbacks live restent les preuves. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
 
-## Audit comptes, emails et lifecycle ferme
+## E1-E3 fermes, C1-0 actif
 
 L audit read-only du 2026-08-20 confirme que les comptes clients classiques a mot de passe sont actifs et marques deprécies par Shopify. La creation de compte ne collecte pas de consentement marketing. Les consentements compte, personnalisation, email, SMS et cookies doivent rester distincts.
 
 Mon Ecrin restaure seulement le diagnostic local du navigateur. Le Flow `Order created` qui copie `quiz_profile` vers un tag et `milaura.last_profile_handle` ne fournit ni diagnostic complet, ni lecture par Mon Ecrin, ni purge serveur. La persistance durable inter-appareils reste a construire dans C1.
 
-La bienvenue `BIENVENUE10` est inactive et ne doit jamais etre reactivee. Les automatisations de consultation, panier et checkout abandonnes sont actives. Les notifications compte et commerce utilisent encore l ancienne direction artistique. Les sources executables Flow et Messaging ne sont pas versionnees. Le footer newsletter reste actif ; le popup et la bulle sont desactives mais leur code mort reste a supprimer dans un lot separe.
+E1 a versionne les sources reelles dans le depot prive. E2 a supprime le popup, la bulle et `BIENVENUE10`, tout en conservant le footer. E3 a certifie consultation, panier et checkout actifs, avec sujets francais et avantages commerciaux valides. Patrice a ferme E1, E2 et E3 le 2026-08-20.
 
-Architecture recommandee : preview des nouveaux comptes Shopify, extension pleine page `Mon Ecrin`, Customer Account API, metafields client, consentement explicite de personnalisation, handoff signe et suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
+Les trois relances finales et les 45 notifications transactionnelles clients ont recu un envoi test a l adresse controlee de la boutique. Trois rappels Shop actifs ne proposent aucun test manuel : retour en stock, baisse de prix et abandon de navigation. Le rappel panier Shop reste inactif. Les notifications compte et commerce utilisent encore l ancienne direction artistique et restent a reprendre dans E4 ; leur envoi test ne vaut pas validation creative.
 
-Reference complete, matrice, tests et lots : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`.
+Le lot actif est C1-0 : nouvelle application privee, preview des nouveaux comptes Shopify et extension pleine page `Mon Ecrin`. C1-1 ajoutera seulement apres validation les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
+
+References : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md` et `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`.
 
 ## Catalogue V1 public
 
@@ -314,13 +316,12 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Ouvrir une session fraiche en mode Plan et detailler `E1 - Verite canonique`, sans changement Shopify ou live.
-2. Executer ensuite la neutralisation `E2`, puis certifier les trois flux actifs dans `E3`.
-3. Construire C1 en deux gates : preview nouveaux comptes, puis persistance durable et suppression serveur.
-4. Reprendre les notifications commerce une par une, puis l inscription, le post-achat et les avis.
-5. Fermer le lifecycle long terme, la deliverabilite et le Worker de retour produit.
-6. Continuer en parallele l inventaire physique. Atelier des emotions et cross-sell live restent hors de ce chantier.
-7. Prototyper plus tard la section commerciale, puis poursuivre Pinterest, Journal, SEO global, tracking et Ads sous leurs gates propres.
+1. E1, E2 et E3 sont fermes sur validation Patrice.
+2. Construire C1 en deux gates : C1-0 preview nouveaux comptes et extension Mon Ecrin, puis C1-1 persistance durable et suppression serveur.
+3. Reprendre les notifications commerce une par une dans E4, puis l inscription, le post-achat et les avis dans E5.
+4. Fermer le lifecycle long terme, la deliverabilite et le Worker de retour produit dans E6 et E7.
+5. Continuer en parallele l inventaire physique. Atelier des emotions et cross-sell live restent hors de ce chantier.
+6. Prototyper plus tard la section commerciale, puis poursuivre Pinterest, Journal, SEO global, tracking et Ads sous leurs gates propres.
 
 ## Dependances encore ouvertes
 
@@ -337,7 +338,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
 - compte Cercle et persistance durable du diagnostic a construire selon l architecture C1 auditee
-- emails, notifications et lifecycle audites le 2026-08-20 ; sources canoniques, neutralisation, tests et implementation restent ouverts
+- E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
 - miroir automatique `origin/main` incomplet pour le nouvel asset `assets/milaura-preference-storage.js` au commit `1dccd18c` ; le correctif `763d7ad9` est complet, mais le canonique et les pullbacks restent les preuves du lot 1
