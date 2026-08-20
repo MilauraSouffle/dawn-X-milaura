@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-20 10:31 CEST
+Derniere mise a jour : 2026-08-20 13:47 CEST
 
 ## Etat en une phrase
 
@@ -40,6 +40,7 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 
 ## Cap commercial, direction et arbitrages du 2026-08-16
 
+- Decision explicite de Patrice du 2026-08-20 : MilAura assume pleinement la lithotherapie, les vertus et bienfaits des pierres et le bien-etre emotionnel. `Protection`, `apaisement`, `ancrage`, `energie`, `confiance`, `vertus` et `bienfaits` ne constituent pas, par eux-memes, des anomalies a corriger. La limite est de ne jamais presenter la lithotherapie comme une science ou une medecine, ni comme un diagnostic, un soin, un traitement, une prevention de maladie ou une guerison. Aucun agent ne doit rouvrir ce sujet par exces de prudence sans nouvelle decision explicite de Patrice.
 - Objectif directeur : construire un site capable d'atteindre 100 000 EUR de chiffre d'affaires. L'horizon reste a preciser ; les lots sont juges par leur effet sur conversion, panier moyen, retention ou acquisition mesuree.
 - La charte MilAura reste executable. Tiffany & Co. et Van Cleef & Arpels sont des references de niveau visuel et de branding : sobriete, photographie joailliere, macro produit, respiration et precision. Aucun signe distinctif, motif, couleur proprietaire ou mise en page ne doit etre copie.
 - Le sujet d'un claim LFG global est clos par Patrice apres verification. Il est retire du backlog actif et ne doit plus etre presente comme anomalie ou risque sans nouvelle preuve contradictoire explicite.
@@ -51,6 +52,9 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - L'inventaire physique mene par Patrice avance en parallele et ne bloque pas le polish du site. Il reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
 - Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
+- Decisions Pinterest de Patrice du 2026-08-20 : la bio actuelle est validee et reste la base ; elle ne doit pas etre remplacee par une version generique. La phrase finale `Découvrez les créations et conseils sur milaura.fr.` est approuvee. Toute compression imposee par la limite Pinterest doit conserver le fond et la voix de la bio actuelle. Le nom de profil doit couvrir les pierres, les bijoux et la lithotherapie sans enfermer MilAura dans les seuls bijoux ; la formulation exacte reste a valider avant modification live.
+- Direction de banniere Pinterest approuvee pour prototypage, sans GO visuel ni live a ce stade : Chloe debout dans un bar naturel, un verre a la main, devant une scene vegetale, portant des boucles d oreilles, un collier et plusieurs bracelets MilAura exacts ; les produits portes restent clairement visibles et des macros editoriales en partie basse reprennent ces memes references. Le cadrage doit rester robuste aux recadrages Pinterest. Les produits exacts et leurs sources doivent etre choisis avant generation.
+- Le tableau `Rituels, bougies & purification` est confirme dans l architecture Pinterest. Il est alimente par les bougies, palo santo, sauge, bols tibetains, pendules et produits associes ; il ne doit plus etre considere comme un tableau sans profondeur commerciale.
 - DataForSEO suit deux temps : recherche ciblee si elle doit guider une nouvelle page, puis audit global final lorsque les routes et enrichissements sont stabilises.
 
 ## Consentement cookies live

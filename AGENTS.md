@@ -59,7 +59,7 @@ This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follo
 - Le texte public est commercial, clair, concret et centre sur le produit. Il explique ce qui est vendu, pourquoi le produit a ete selectionne et quelles informations aident a choisir.
 - Interdiction du remplissage poetique, des phrases interchangeables, du faux luxe et du `AI slop`. Un texte qui pourrait convenir sans modification a une marque de cosmetique, de bougies ou de mode doit etre reecrit.
 - Les mots `qualite`, `provenance`, `certifie`, `artisanat`, `fait main`, `ethique` et toute garantie exigent une preuve reliee au produit ou au perimetre concerne. Ne jamais transformer une preuve partielle en promesse globale.
-- La lithotherapie reste une symbolique traditionnelle, jamais une promesse medicale, therapeutique ou de resultat.
+- MilAura assume pleinement la lithotherapie, les vertus des pierres, leurs bienfaits et le bien-etre emotionnel. Les termes `protection`, `apaisement`, `ancrage`, `energie`, `confiance`, `vertus` et `bienfaits` ne sont pas interdits par principe et ne doivent pas etre effaces par exces de prudence. La limite est de ne jamais presenter la lithotherapie comme une science ou une medecine, ni comme un diagnostic, un soin, un traitement, une prevention de maladie ou une guerison.
 - Les titres de navigation et H1 utilisent les mots simples compris par les clients. Les precisions SEO vivent dans le title, la meta description ou le contenu secondaire sans alourdir l'ouverture de page.
 - Le guide canonique, les exemples acceptes et la grille de relecture sont dans `docs/reference/2026-08-12-copywriting-milaura.md`.
 

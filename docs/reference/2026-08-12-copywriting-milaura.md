@@ -1,6 +1,7 @@
 # Copywriting MilAura
 
 Date : 2026-08-12
+Dernière décision métier : 2026-08-20
 Statut : canonique et obligatoire
 Propriétaire de la validation finale : Patrice Allié
 
@@ -100,24 +101,34 @@ Formulation interdite sans registre de preuve complet :
 
 > Toutes nos pierres sont certifiées et leur provenance est garantie.
 
-## Vertus et symbolique des pierres
+## Lithothérapie, vertus et bien-être émotionnel
 
-MilAura peut parler des traditions associées aux pierres, avec une formulation commerciale mais prudente.
+MilAura assume pleinement son territoire de marque autour de la lithothérapie, des vertus des pierres, de leurs bienfaits et du bien-être émotionnel. Ce vocabulaire est légitime pour présenter les usages, les traditions et l'expérience recherchée autour des pierres et des minéraux.
 
-Préférer :
+Les formulations suivantes sont autorisées :
 
-- `symbolique traditionnelle` ;
-- `traditionnellement associée à` ;
-- `choisie pour accompagner une intention` ;
-- `sa couleur et sa symbolique complètent le style du bijou`.
+- `pierre de protection` ;
+- `favorise l'apaisement` ;
+- `invite à l'ancrage` ;
+- `soutient la confiance` ;
+- `accompagne l'équilibre émotionnel` ;
+- `énergie`, `bienfaits`, `vertus` et `bien-être émotionnel` ;
+- les explications sur la lithothérapie et les symboliques associées aux pierres.
 
-Éviter :
+Ces termes ne doivent pas être supprimés, affaiblis ou remplacés automatiquement au seul motif qu'ils concernent la lithothérapie. Il n'est pas nécessaire de répéter `selon les traditions` ou un avertissement dans chaque phrase lorsque le contexte éditorial de la lithothérapie est déjà clair.
 
-- `soigne` ;
-- `guérit` ;
-- `protège` comme résultat garanti ;
-- `réduit le stress` ;
-- toute promesse de résultat physique, psychologique ou médical.
+La limite réelle est la suivante : MilAura ne présente jamais la lithothérapie comme une science ou une médecine et ne l'utilise jamais pour établir un diagnostic, proposer un soin ou un traitement, promettre une guérison, prévenir une maladie ou remplacer un professionnel de santé.
+
+Éviter notamment :
+
+- `soigne`, `guérit`, `traite` ou `prévient` une maladie ou un trouble ;
+- une efficacité médicale ou scientifique prétendument démontrée ;
+- une recommandation d'arrêter ou de remplacer un suivi ou un traitement médical ;
+- une promesse explicite de guérison ou de résultat médical garanti.
+
+### Règle de non-régression
+
+Un agent ne doit pas ouvrir un lot de correction, retirer un contenu ou qualifier une formulation de risquée uniquement parce qu'elle emploie `vertus`, `bienfaits`, `protection`, `apaisement`, `ancrage`, `énergie`, `confiance` ou `bien-être émotionnel`. Une correction n'est justifiée que si le texte franchit la limite science, médecine, diagnostic, soin, traitement, prévention de maladie ou guérison définie ci-dessus, ou si Patrice demande explicitement une autre orientation.
 
 ## Pages collection
 
