@@ -1,12 +1,12 @@
 # MilAura - Handoff master
 
-Date de mise à jour : 2026-08-20 20:13 CEST
+Date de mise à jour : 2026-08-20 22:15 CEST
 
-## Handoff actif - C1-0 preview nouveaux comptes
+## Handoff actif - C1-0 en validation Patrice
 
-E1, E2 et E3 sont fermes sur validation de Patrice. Le lot actif est C1-0 : creer une application privee, une extension Customer Accounts pleine page `Mon Ecrin` et un environnement de preview, sans basculer les comptes live.
+E1, E2 et E3 sont fermes sur validation de Patrice. C1-0 est construit, valide techniquement et pousse dans le depot prive au commit `f4f8a91`. La page Customer Accounts pleine `Mon Ecrin` est ouverte dans une boutique de developpement pour la validation Patrice. C1-1 et les comptes live restent interdits sans GO distinct.
 
-Base minimale obligatoire : `origin/codex/milaura-integration` a `7b3f7d44` ou plus recent. `origin/main` est un miroir Shopify incomplet. `assets/milaura-preference-storage.js` est deja dans le canonique et sur le live ; aucune pull request ou integration separee n est requise.
+Base minimale obligatoire : `origin/codex/milaura-integration` a `d8abccc4` ou plus recent. `origin/main` est un miroir Shopify incomplet. `assets/milaura-preference-storage.js` est deja dans le canonique et sur le live ; aucune pull request ou integration separee n est requise.
 
 Faits structurants :
 
@@ -21,6 +21,10 @@ Faits structurants :
 - 45 notifications transactionnelles testees ; trois rappels Shop actifs restent non testables sans evenement reel ;
 - Klaviyo audite sans flow d abandon actif ; Judge.me non configure de facon prouvee ;
 - Worker retour produit a durcir separement.
+- application C1-0 privee : `docs/milaura/shopify-apps/customer-accounts-preview/` sur la branche `codex/milaura-c1-0-customer-accounts-preview-20260820` ;
+- boutique de developpement C1-0 : `milaura-c1-preview`, store ID `107347837273` ;
+- C1-0 : build et controles statiques verts, desktop et mobile 360/390/430 valides, un H1, navigation native Orders/Profile validee ;
+- extension C1-0 sans scope Admin API, acces API ou reseau ; theme live et comptes live intacts.
 
 Architecture C1 recommandee : ne pas construire le definitif sur les comptes legacy. Prototyper les nouveaux comptes Shopify et une extension pleine page `Mon Ecrin`, puis ajouter metafields client, consentement explicite de personnalisation, handoff signe et suppression locale, panier et serveur. Aucune bascule live avant tests de parite et GO distinct.
 
@@ -29,8 +33,8 @@ Ordre de reprise :
 1. `E1 - Verite canonique` : ferme.
 2. `E2 - Neutralisation` : ferme et live.
 3. `E3 - Lifecycle actif` : ferme et actif.
-4. `C1-0` : preview nouveaux comptes et extension Mon Ecrin.
-5. `C1-1` : persistance durable, consentement de personnalisation et suppression serveur.
+4. `C1-0` : validation visuelle et fonctionnelle Patrice en attente.
+5. `C1-1` : non autorise ; persistance durable, consentement de personnalisation et suppression serveur seulement sur GO distinct.
 6. `E4` : notifications transactionnelles compte et commerce.
 7. `E5` : inscription, post-achat et avis.
 8. `E6` : lifecycle long terme et certification.
@@ -43,7 +47,7 @@ Audit, matrice, tests, architecture et prompt complet : `docs/checkpoints/2026-0
 Prompt court :
 
 ```text
-Reprends MilAura au 2026-08-20 en mode Plan depuis origin/codex/milaura-integration a 145e25d4 ou plus recent. Lis AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md, docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md et le plan canonique. Ne refais pas l audit et ne modifie rien dans Shopify pendant la phase Plan. Produis d abord le plan executable de E1 - Verite canonique, avec destination privee versionnee, fichiers, ecrans Admin, IDs, preuves, tests, gates et rollback. Bienvenue10 est mort, le footer reste, le popup et la bulle seront supprimes dans E2, ScratchToReveal reste futur. Ne merge jamais origin/main aveuglement. Cross-sell live et Atelier des emotions sont hors perimetre.
+Reprends MilAura au 2026-08-20 depuis origin/codex/milaura-integration a d8abccc4 ou plus recent. E1, E2 et E3 sont fermes. C1-0 est pousse au commit prive f4f8a91 et sa preview Mon Ecrin est validee techniquement ; obtenir la validation Patrice avant toute suite. Ne pas ouvrir C1-1 et ne pas basculer les comptes live sans GO distinct, contrat de donnees, consentement de personnalisation, purge serveur et tests de parite. Ensuite seulement reprendre E4, E5, E6 et E7. Ne jamais merger origin/main aveuglement. Cross-sell live, Atelier des emotions et ScratchToReveal restent hors perimetre.
 ```
 
 ## Lot 1 diagnostic et consentement ferme live

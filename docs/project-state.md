@@ -81,7 +81,7 @@ Le controle authentifie a detecte puis fait corriger une selection personnalisee
 
 Anomalie de miroir : `1dccd18c` contient les six fichiers existants du push initial mais omet `assets/milaura-preference-storage.js`. `763d7ad9` reprend exactement les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement ; le canonique et les pullbacks live restent les preuves. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
 
-## E1-E3 fermes, C1-0 actif
+## E1-E3 fermes, C1-0 en validation Patrice
 
 L audit read-only du 2026-08-20 confirme que les comptes clients classiques a mot de passe sont actifs et marques deprécies par Shopify. La creation de compte ne collecte pas de consentement marketing. Les consentements compte, personnalisation, email, SMS et cookies doivent rester distincts.
 
@@ -91,9 +91,11 @@ E1 a versionne les sources reelles dans le depot prive. E2 a supprime le popup, 
 
 Les trois relances finales et les 45 notifications transactionnelles clients ont recu un envoi test a l adresse controlee de la boutique. Trois rappels Shop actifs ne proposent aucun test manuel : retour en stock, baisse de prix et abandon de navigation. Le rappel panier Shop reste inactif. Les notifications compte et commerce utilisent encore l ancienne direction artistique et restent a reprendre dans E4 ; leur envoi test ne vaut pas validation creative.
 
-Le lot actif est C1-0 : nouvelle application privee, preview des nouveaux comptes Shopify et extension pleine page `Mon Ecrin`. C1-1 ajoutera seulement apres validation les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
+Le lot C1-0 est implemente dans le depot prive au commit pousse `f4f8a91`. L application extension-only `MilAura Customer Accounts` affiche la page pleine `Mon Ecrin` dans la boutique de developpement `milaura-c1-preview`. Build, controles statiques, structure accessible, desktop, mobile 360/390/430 et navigation native Orders/Profile sont valides. L extension n a aucun scope Admin API, aucun acces API ou reseau et ne lit, ne cree ni ne modifie de donnee cliente. Le theme et les comptes live sont intacts. La validation visuelle de Patrice reste G4.
 
-References : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md` et `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`.
+C1-1 ajoutera seulement apres validation et GO distinct les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
+
+References : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`, `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md` et `docs/checkpoints/2026-08-20-2215-c1-0-preview-technique.md`.
 
 ## Catalogue V1 public
 
@@ -317,7 +319,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. E1, E2 et E3 sont fermes sur validation Patrice.
-2. Construire C1 en deux gates : C1-0 preview nouveaux comptes et extension Mon Ecrin, puis C1-1 persistance durable et suppression serveur.
+2. Obtenir la validation Patrice de C1-0, puis ouvrir C1-1 seulement sur GO distinct pour la persistance durable et la suppression serveur.
 3. Reprendre les notifications commerce une par une dans E4, puis l inscription, le post-achat et les avis dans E5.
 4. Fermer le lifecycle long terme, la deliverabilite et le Worker de retour produit dans E6 et E7.
 5. Continuer en parallele l inventaire physique. Atelier des emotions et cross-sell live restent hors de ce chantier.
@@ -337,7 +339,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- compte Cercle et persistance durable du diagnostic a construire selon l architecture C1 auditee
+- preview C1-0 construite et validee techniquement au commit prive `f4f8a91` ; validation Patrice en attente, C1-1 non autorise
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
