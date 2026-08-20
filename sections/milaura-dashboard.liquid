@@ -1320,35 +1320,7 @@
     async function init() {
       showState('loading');
 
-      await customElements.whenDefined('milaura-recommendations');
-      var privacy = await window.MilauraRecommendations.getPreferenceState();
-      if (!privacy.available || !privacy.allowed) {
-        showState('empty');
-        return;
-      }
-
-      var raw = null;
-      try { raw = localStorage.getItem('milauraLastResult'); } catch (e) {}
-
-      /* Fallback : cookie si localStorage vide */
-      if (!raw) {
-        try {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-            var c = cookies[i].trim();
-            if (c.indexOf('milauraLastResult=') === 0) {
-              raw = decodeURIComponent(c.substring('milauraLastResult='.length));
-              /* Re-sync localStorage pour les prochaines visites */
-              try { localStorage.setItem('milauraLastResult', raw); } catch(e2) {}
-              break;
-            }
-          }
-        } catch(e) {}
-      }
-
-      if (!raw) { showState('empty'); return; }
-      var data = null;
-      try { data = JSON.parse(raw); } catch (e) { showState('empty'); return; }
+      var data = await window.MilauraPreferenceStorage.readDiagnostic();
       if (!data || !data.profileId || !PROFILES[data.profileId]) { showState('empty'); return; }
 
       showDashboard(data);
@@ -1357,19 +1329,21 @@
     /* LISTEN FOR QUIZ UPDATE */
     window.addEventListener('milaura:quiz-result', function(e) {
       if (!e.detail || !e.detail.profileId) return;
-      customElements.whenDefined('milaura-recommendations').then(function() {
-        return window.MilauraRecommendations.getPreferenceState();
-      }).then(function(privacy) {
+      window.MilauraPreferenceStorage.getPreferenceState().then(function(privacy) {
         if (privacy.available && privacy.allowed) showDashboard(e.detail);
       });
     });
 
-    document.addEventListener('visitorConsentCollected', function(event) {
-      if (event.detail && event.detail.preferencesAllowed === false) {
+    document.addEventListener('milaura:preferences-changed', function(event) {
+      if (!event.detail || !event.detail.allowed) {
         showState('empty');
         return;
       }
-      window.setTimeout(init, 0);
+      init();
+    });
+
+    document.addEventListener('milaura:diagnostic-storage-cleared', function() {
+      showState('empty');
     });
 
     /* STYLE SHOPIFY ACCOUNT ZONE — empty state override */

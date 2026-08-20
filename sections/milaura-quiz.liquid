@@ -2109,6 +2109,13 @@
     // ============================================
     let hasUserInteracted = false; // Flag pour éviter le scroll au chargement initial
     let stateTransitionTimeout = null; // Track pending state transitions
+    let storedDiagnostic = null;
+
+    function updateStoredResultLink() {
+      const lastResultLinkEl = container.querySelector('#quiz-last-result-link-' + sectionId);
+      if (!lastResultLinkEl) return;
+      lastResultLinkEl.style.display = currentState === QuizState.INTRO && storedDiagnostic ? 'block' : 'none';
+    }
 
     function syncResultOverlays(state) {
       var hideFloatingGift = state === QuizState.RESULT && window.matchMedia('(max-width: 989px)').matches;
@@ -2161,14 +2168,7 @@
         currentState = state;
         syncResultOverlays(state);
 
-        const lastResultLinkEl = container.querySelector('#quiz-last-result-link-' + sectionId);
-        if (lastResultLinkEl) {
-          var hasStoredResult = false;
-          try {
-            hasStoredResult = !!localStorage.getItem('milauraLastResult');
-          } catch (e) {}
-          lastResultLinkEl.style.display = state === QuizState.INTRO && hasStoredResult ? 'block' : 'none';
-        }
+        updateStoredResultLink();
 
         // Scroll vers le haut de la section quiz SEULEMENT après interaction utilisateur
         // et pas pour l'état initial (intro)
@@ -2575,13 +2575,13 @@
         var accountLinkEl = accountInviteEl.querySelector('.quiz-reveal-account-link');
         accountInviteEl.style.display = '';
         if (isCustomerLoggedIn) {
-          if (accountTextEl) accountTextEl.textContent = 'Votre diagnostic est sauvegardé dans votre espace MilAura';
+          if (accountTextEl) accountTextEl.textContent = 'Vous êtes connecté à votre espace MilAura.';
           if (accountLinkEl) {
             accountLinkEl.href = {{ routes.account_url | json }};
             accountLinkEl.textContent = 'Voir mon espace compte';
           }
         } else {
-          if (accountTextEl) accountTextEl.textContent = 'Créez votre compte pour retrouver ce diagnostic dans votre espace MilAura';
+          if (accountTextEl) accountTextEl.textContent = 'Créez un compte MilAura pour suivre vos commandes.';
           if (accountLinkEl) {
             accountLinkEl.href = {{ routes.account_register_url | json }};
             accountLinkEl.textContent = 'Créer mon compte';
@@ -2624,106 +2624,40 @@
         braceletTitle: profile.braceletProduct ? profile.braceletProduct.title : null,
         timestamp: Date.now()
       };
-      localStorage.setItem('milauraLastResult', JSON.stringify(storageData));
       syncResultUrl();
 
-      // Aussi sauvegarder en cookie (30 jours) pour persistance cross-session
-      try {
-        var compactStorageData = {
-          schemaVersion: storageData.schemaVersion,
-          profileId: storageData.profileId,
-          profileName: storageData.profileName,
-          stone: storageData.stone,
-          stoneHandle: storageData.stoneHandle,
-          intention: storageData.intention,
-          mantra: storageData.mantra,
-          ritual: storageData.ritual,
-          profileAccent: storageData.profileAccent,
-          profileAccentRgb: storageData.profileAccentRgb,
-          scores: storageData.scores,
-          percentages: storageData.percentages,
-          resultUrl: storageData.resultUrl,
-          timestamp: storageData.timestamp
-        };
-        var cookieData = encodeURIComponent(JSON.stringify(compactStorageData));
-        var expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString();
-        document.cookie = 'milauraLastResult=' + cookieData + '; expires=' + expires + '; path=/; SameSite=Lax';
-      } catch(e) {}
+      window.MilauraPreferenceStorage.writeDiagnostic(storageData).then(function(result) {
+        storedDiagnostic = result.stored ? storageData : null;
+        updateStoredResultLink();
+      });
 
       // Dispatch event so downstream sections can react
       window.dispatchEvent(new CustomEvent('milaura:quiz-result', { detail: storageData }));
-
-      // === SAUVEGARDE METAFIELD CLIENT (si connecte) ===
-      // Ecrit le profil dans milaura.last_profile_handle pour la personnalisation newsletter
-      if (isCustomerLoggedIn) {
-        try {
-          var profileHandle = winnerProfile; // ex: "serenite", "protection", "amour", "apaisement", "chance"
-          // Ajouter le tag profil au client via l'API cart (seule API accessible cote storefront)
-          // Le metafield sera ecrit via Shopify Flow (trigger: tag ajoute)
-          fetch('/cart/update.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              attributes: {
-                'quiz_profile': profileHandle,
-                'quiz_stone': stoneHandleMap[profileHandle] || '',
-                'quiz_date': new Date().toISOString().split('T')[0]
-              }
-            })
-          }).catch(function() {});
-        } catch(e) {}
-      }
-
-      // Toujours stocker dans un attribut cart (meme si non connecte)
-      // Sera recupere lors du checkout et lie au client
-      try {
-        fetch('/cart/update.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            attributes: {
-              'quiz_profile': winnerProfile,
-              'quiz_stone': stoneHandleMap[winnerProfile] || '',
-              'quiz_date': new Date().toISOString().split('T')[0]
-            }
-          })
-        }).catch(function() {});
-      } catch(e) {}
     }
 
     // ============================================
-    // GESTION DU LOCALSTORAGE
+    // DERNIER RESULTAT CONSENTI
     // ============================================
-    function checkLastResult() {
-      const lastResult = localStorage.getItem('milauraLastResult');
-      if (lastResult) {
-        try {
-          const data = JSON.parse(lastResult);
-          const linkEl = container.querySelector('#quiz-last-result-link-' + sectionId);
-          const showLinkEl = container.querySelector('#quiz-show-last-' + sectionId);
-          
-          if (linkEl) linkEl.style.display = 'block';
-          if (showLinkEl) {
-            showLinkEl.addEventListener('click', (e) => {
-              e.preventDefault();
-              hasUserInteracted = true; // Activer le scroll
-              // Recharger les résultats depuis localStorage
-              const storedData = JSON.parse(localStorage.getItem('milauraLastResult'));
-              restoreScoresFromStoredResult(storedData);
-              displayResults();
-              goToState(QuizState.RESULT);
-            });
-          }
-        } catch (e) {
-          console.error('Error parsing last result:', e);
-        }
-      }
+    async function checkLastResult() {
+      storedDiagnostic = await window.MilauraPreferenceStorage.readDiagnostic();
+      updateStoredResultLink();
+      return storedDiagnostic;
+    }
+
+    async function showLastResult(event) {
+      event.preventDefault();
+      const data = storedDiagnostic || await checkLastResult();
+      if (!data) return;
+      hasUserInteracted = true;
+      restoreScoresFromStoredResult(data);
+      displayResults();
+      goToState(QuizState.RESULT);
     }
 
     // ============================================
     // INITIALISATION
     // ============================================
-    function init() {
+    async function init() {
       // Bouton start
       const startBtn = container.querySelector('#quiz-start-btn-' + sectionId);
       if (startBtn) {
@@ -2750,27 +2684,33 @@
         });
       }
 
+      const showLastResultEl = container.querySelector('#quiz-show-last-' + sectionId);
+      if (showLastResultEl) showLastResultEl.addEventListener('click', showLastResult);
+
       // Vérifier dernière révélation
-      checkLastResult();
+      const lastResult = await checkLastResult();
 
       // Si ?show=result dans l'URL → afficher direct le dernier résultat
-      if (new URLSearchParams(window.location.search).get('show') === 'result') {
-        const stored = localStorage.getItem('milauraLastResult');
-        if (stored) {
-          try {
-            const storedData = JSON.parse(stored);
-            restoreScoresFromStoredResult(storedData);
-            hasUserInteracted = true;
-            displayResults();
-            goToState(QuizState.RESULT);
-            return; // ne pas afficher l'intro
-          } catch (e) {}
-        }
+      if (new URLSearchParams(window.location.search).get('show') === 'result' && lastResult) {
+        restoreScoresFromStoredResult(lastResult);
+        hasUserInteracted = true;
+        displayResults();
+        goToState(QuizState.RESULT);
+        return; // ne pas afficher l'intro
       }
 
       // Afficher l'état initial
       goToState(QuizState.INTRO);
     }
+
+    document.addEventListener('milaura:diagnostic-storage-cleared', function() {
+      storedDiagnostic = null;
+      updateStoredResultLink();
+    });
+
+    document.addEventListener('milaura:preferences-changed', function() {
+      checkLastResult();
+    });
 
     // Démarrer quand le DOM est prêt
     if (document.readyState === 'loading') {
