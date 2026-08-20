@@ -1,6 +1,47 @@
-# MilAura - Handoff master actif
+# MilAura - Handoff local Atelier des emotions
 
-Date de mise a jour : 2026-08-16 10:08 CEST
+Date de mise a jour : 2026-08-20 07:29 CEST
+
+> Portee : branche `codex/milaura-atelier-emotions-20260816` uniquement. Le handoff canonique du checkout d'integration appartient a la session master et peut etre plus recent. Ne pas remplacer son fichier avec cette copie.
+
+## Decision de pause
+
+Patrice met `L'Atelier des emotions` en pause le 2026-08-20. La commande fournisseur doit arriver dans environ trois semaines, sans date de reception certaine. Entre-temps, le travail se reporte notamment vers la communication, le SEO, Pinterest et les autres chantiers prioritaires du site.
+
+Le lot reste parque dans son worktree et sur son theme prive. Il ne doit etre ni integre, ni publie, ni prolonge commercialement sans nouvelle instruction explicite.
+
+## Point exact de reprise
+
+- checkpoint final : `docs/checkpoints/2026-08-20-0729-atelier-emotions-pause-handoff.md` ;
+- worktree : `/Users/paesano/Documents/MilAura website/_worktrees/atelier-emotions-20260816` ;
+- branche : `codex/milaura-atelier-emotions-20260816` ;
+- HEAD fonctionnel avant cloture : `d2c04563a3f2fafee082751b601633d06d36cc27` ;
+- theme prive : `200007713115`, non publie ;
+- live : `190430282075`, jamais modifie par ce lot ;
+- integration master : non faite au 2026-08-20.
+
+Le theme prive a ete reverifie le 2026-08-20 par pullback cible. Les cinq fichiers fonctionnels sont identiques octet par octet a la branche.
+
+## Gate avant toute reprise commerciale
+
+1. confirmer les commandes et factures ;
+2. identifier `TW-1707` ;
+3. compter les quantites recues et rejetees ;
+4. compter chaque lettre A a Z pour les 8 alphabets ;
+5. mesurer dimensions et diametres de trou ;
+6. tester les compatibilites et la traction ;
+7. fabriquer et valider les prototypes avec Karine ;
+8. fixer cout complet, pertes, temps, marge et prix ;
+9. choisir puis tester l'architecture Shopify et la restitution commande ;
+10. finaliser la revue juridique avant activation du panier.
+
+## Reprise copiable
+
+```text
+Reprendre L'Atelier des emotions depuis docs/checkpoints/2026-08-20-0729-atelier-emotions-pause-handoff.md sur la branche codex/milaura-atelier-emotions-20260816. Patrice a suspendu le chantier le 2026-08-20 jusqu'a reception des fournisseurs attendue dans environ trois semaines. Ne toucher ni au live, ni au catalogue, ni aux stocks, ni au panier. Reprendre par le Gate physique avec Karine, puis demander un nouveau GO explicite avant tout developpement commercial ou integration master.
+```
+
+## Contexte master historique au moment du fork
 
 ## Objet de la reprise
 

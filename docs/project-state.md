@@ -1,10 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-16 10:08 CEST
+Derniere mise a jour de cette branche Atelier : 2026-08-20 07:29 CEST
+
+> Ce fichier est un snapshot local a la branche Atelier. Le fichier canonique du checkout d'integration peut etre plus recent et ne doit pas etre remplace aveuglement par cette copie.
+
+## Pause Atelier du 2026-08-20
+
+Patrice met `L'Atelier des emotions` en pause jusqu'a la reception des commandes fournisseurs, attendue dans environ trois semaines sans date certaine. Les priorites immediates redeviennent notamment la communication, le SEO, Pinterest et les autres chantiers du site.
+
+Le prototype reste reserve au theme prive `200007713115`. Il n'est pas integre a `codex/milaura-integration`, aucun live n'a ete modifie, et aucun produit, stock, prix ou panier Atelier n'existe dans Shopify.
+
+Point de reprise complet : `docs/checkpoints/2026-08-20-0729-atelier-emotions-pause-handoff.md`.
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : catalogue V1, nouvelle experience PDP, UI sitewide, Heroes, Navigation V2, guides, section 3, occasions, recommandations et polish Sticky PDP sont live ; le Ruban de parure V2 a termine sa preview technique sans integration ni live, tandis que cookies, Cercle, emails, inventaire, Atelier des emotions, SEO et Pinterest forment le chemin de fermeture.
+Au moment du fork Atelier, la refonte visible etait en phase de finition. L'Atelier est maintenant parque hors integration et hors live jusqu'au Gate physique et a un nouveau GO explicite de Patrice.
 
 ## Source de verite et etat du depot
 
