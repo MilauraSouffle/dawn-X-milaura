@@ -31,7 +31,7 @@ Le backend C1, la persistance entre appareils, les emails, le lifecycle, les pop
 6. `sections/milaura-quiz-weather.liquid`
 7. `sections/milaura-quiz-ritual.liquid`
 
-Commit fonctionnel : `43e93d10` sur `codex/milaura-diagnostic-consent-20260820`, pousse sur `origin`.
+Commit fonctionnel : `43e93d10`. Documentation : `7a68ca5d`. Integration canonique : `e96ed097`. Les branches source et d integration sont poussees sur `origin`. Le worktree du lot a ete retire proprement apres integration.
 
 ## Revue contradictoire
 

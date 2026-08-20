@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-20 07:49 CEST
+Derniere mise a jour : 2026-08-20 07:53 CEST
 
 ## Etat en une phrase
 
@@ -71,7 +71,7 @@ Le 2026-08-20, le lot 1 a centralise la persistance navigateur du diagnostic dan
 
 Le resultat courant reste visible pendant la visite sans consentement. La restauration apres rechargement, Mon Ecrin et les recommandations ne consomment que le contrat central. Un etat Shopify temporairement indisponible bloque toute lecture ou nouvelle ecriture sans supprimer les donnees existantes. Une revue contradictoire finale ne remonte aucun P0 ou P1.
 
-Commit fonctionnel `43e93d10`. Les sept fichiers sont sur le theme de developpement `199421952347`, avec pullback 7/7 identique. La QA reelle valide refus, acceptation, restauration, retrait sur la meme page, `?show=result` et invalidation des recommandations. Le live `190430282075` reste intact en attente du GO explicite de Patrice. Reference : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md`.
+Commit fonctionnel `43e93d10`, documentation `7a68ca5d`, integration canonique `e96ed097`. Les sept fichiers sont sur le theme de developpement `199421952347`, avec pullback 7/7 identique. La QA reelle valide refus, acceptation, restauration, retrait sur la meme page, `?show=result` et invalidation des recommandations. Le live `190430282075` reste intact en attente du GO explicite de Patrice. Reference : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md`.
 
 ## Catalogue V1 public
 

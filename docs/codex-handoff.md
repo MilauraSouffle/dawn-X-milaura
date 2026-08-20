@@ -1,10 +1,10 @@
 # MilAura - Handoff master
 
-Date de mise à jour : 2026-08-20 07:49 CEST
+Date de mise à jour : 2026-08-20 07:53 CEST
 
 ## Reprise prioritaire : lot 1 diagnostic et consentement
 
-Le lot 1 est implemente, revu et valide sur le theme de developpement `199421952347`. Commit fonctionnel `43e93d10` sur `codex/milaura-diagnostic-consent-20260820`, pousse sur `origin`. Pullback Shopify 7/7 identique. Aucun deploiement live.
+Le lot 1 est implemente, revu, integre par `e96ed097` et valide sur le theme de developpement `199421952347`. Commit fonctionnel `43e93d10` et documentation `7a68ca5d` sur `codex/milaura-diagnostic-consent-20260820`, pousses sur `origin`. Le worktree du lot est retire proprement. Pullback Shopify 7/7 identique. Aucun deploiement live.
 
 Le nouveau contrat `window.MilauraPreferenceStorage` centralise le consentement, la lecture, l ecriture, la migration et la purge du diagnostic. Aucun nouveau cookie diagnostic n est ecrit. Un refus ou retrait explicite purge le navigateur et les attributs panier ; une API Shopify indisponible bloque l usage sans effacer les donnees. Le resultat courant reste utilisable en memoire pendant la visite.
 
