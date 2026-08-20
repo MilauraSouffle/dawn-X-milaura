@@ -2,7 +2,9 @@
 
 Date : 2026-08-20 12:48 CEST
 
-Statut : preview validee, mutations Admin et live en attente de confirmations explicites
+Statut : preview et mutations Admin validees, integration et live en attente
+
+Derniere mise a jour : 2026-08-20 12:59 CEST
 
 ## Perimetre ferme
 
@@ -131,11 +133,11 @@ La reduction `BIENVENUE10` n existe plus. Aucune mutation Discounts n est requis
 
 ### Shopify Messaging et Flow
 
-| Objet | ID parent | IDs enfants | Etat | Action E2 proposee |
+| Objet | ID parent | IDs enfants | Etat avant E2 | Action E2 |
 | --- | ---: | --- | --- | --- |
 | Bienvenue newsletter - BIENVENUE10 | `69885198683` | `205570769243`, `205571490139`, `205572374875` | parent inactif, trois enfants actifs | supprimer le parent et ses references mortes |
 | ARCHIVE - NE PAS ACTIVER - ancien checkout urgence | `66217443675` | `200862335323` | inactif et deja archive explicitement | laisser intact |
-| Anciversaire client, ancien essai | `68817027419` | `204165546331` | inactif, enfant brouillon | supprimer |
+| Anniversaire client, ancien essai | `68817027419` | `204165546331` | inactif, enfant brouillon | supprimer |
 | Anniversaire client, essai recent | `72198488411` | `208689168731` | inactif, enfant brouillon | supprimer |
 
 Les automations browse, panier et checkout actives sont hors perimetre et doivent rester intactes.
@@ -145,9 +147,9 @@ Les automations browse, panier et checkout actives sont hors perimetre et doiven
 - objet : `customer_account_welcome` ;
 - sujet conserve : `Confirmation du compte client` ;
 - source E1 : `docs/milaura/shopify-admin-canonical/snapshots/2026-08-20/notifications/customer_account_welcome/body.liquid` dans le depot prive `Onora-studio/onora-ops` ;
-- correction proposee : supprimer toute promesse de profil cristallin durable et de recommandations sur mesure.
+- correction appliquee : supprimer toute promesse de profil cristallin durable et de recommandations sur mesure.
 
-Copie proposee, en attente du GO Patrice :
+Copie appliquee apres le GO Patrice :
 
 ```text
 Preheader : Votre compte MilAura est actif.
@@ -173,6 +175,45 @@ CTA secondaire conserve : Visiter la boutique
 
 Cette copie ne transforme ni la creation de compte ni le diagnostic en consentement marketing. Elle ne promet aucune persistance de personnalisation.
 
+## Execution Admin du 2026-08-20
+
+Patrice a confirme exactement le lot par le message `CONFIRMÉ E2 ADMIN.` le 2026-08-20.
+
+### Suppressions Messaging
+
+Les trois parents confirmes ont ete supprimes depuis leurs lignes identifiees par l attribut DOM `gid://shopify/MarketingAutomation/<ID>`, puis la liste a ete rechargee avant verification :
+
+- `69885198683` : absent ;
+- `72198488411` : absent ;
+- `68817027419` : absent.
+
+Les objets proteges ont ete relus apres les suppressions :
+
+- `66217443675` : `ARCHIVE - NE PAS ACTIVER - ancien checkout urgence`, present et `Inactif` ;
+- `72198390107` : `Convertir la consultation de produit abandonnee`, present et `Actif` ;
+- `68816961883` : `Recuperer le panier abandonne`, present et `Actif` ;
+- `68816896347` : `Recuperer le paiement abandonne`, present et `Actif`.
+
+Le parent `Remercier les clients apres leur achat` est reste inactif et hors perimetre. Aucune reduction, aucun autre Flow et aucune autre automation n ont ete modifies.
+
+### Notification compte
+
+La notification `customer_account_welcome` a ete modifiee dans `Parametres > Notifications > Notifications client > Bienvenue au compte client`.
+
+Preuves apres sauvegarde :
+
+- toast Shopify `Modele de notification enregistre` ;
+- sujet relu : `Confirmation du compte client` ;
+- H1 relu : `Votre univers MilAura vous attend` ;
+- phrase d activation terminee par un point ;
+- paragraphe distinct entre compte et diagnostic present ;
+- trois points relus : `Votre compte`, `Suivi de commandes`, `Diagnostic MilAura` ;
+- CTA principal relu : `Faire le diagnostic` ;
+- CTA secondaire `Visiter la boutique` conserve ;
+- aucune occurrence rendue de `profil cristallin unique`, `Votre profil cristallin` ou `Recommandations sur mesure`.
+
+Aucun e-mail de test n a ete envoye et aucune configuration de compte client n a ete basculee.
+
 ## Gates E2
 
 | Gate | Etat | Preuve |
@@ -183,8 +224,9 @@ Cette copie ne transforme ni la creation de compte ni le diagnostic en consentem
 | E2-G4 code et lint | passe | `node --check`, `git diff --check`, Theme Check sans erreur |
 | E2-G5 preview responsive | passe | homepage, diagnostic et PDP verifies de 360 a 1440 px |
 | E2-G6 preuve Admin avant mutation | passe | IDs, etats, reduction absente et exports E1 confirmes |
-| E2-G7 confirmation mutations Admin | bloque volontairement | confirmation Patrice requise juste avant suppression et sauvegarde |
-| E2-G8 publication live | non commence | integration, parite puis GO live distinct requis |
+| E2-G7 confirmation et mutations Admin | passe | `CONFIRMÉ E2 ADMIN.`, trois IDs absents, objets proteges relus, notification sauvegardee et previsualisee |
+| E2-G8 integration canonique | non commence | commit de preuve, merge depuis la branche E2 et validations sur l integration requis |
+| E2-G9 publication live | non commence | parite puis GO live distinct requis |
 
 ## Rollback
 
@@ -207,9 +249,8 @@ Notification :
 
 ## Prochaines actions ordonnees
 
-1. Obtenir la confirmation explicite de Patrice sur les trois suppressions Admin et la copie exacte de la notification.
-2. Executer uniquement ces mutations, puis relire la liste Messaging et la notification sauvegardee.
-3. Versionner la preuve apres mutation sans reecrire le snapshot E1.
-4. Integrer le lot theme seulement quand E2 est complet et le worktree propre.
-5. Demander un GO live distinct avant toute publication sur `190430282075`.
-6. Fermer E2, retirer son worktree, puis seulement ouvrir E3.
+1. Committer et pousser cette preuve apres mutation sans reecrire le snapshot E1.
+2. Integrer le lot theme depuis la branche E2 dans `codex/milaura-integration`.
+3. Relancer les validations techniques sur l integration et confirmer la parite Git distante.
+4. Demander un GO live distinct avant toute publication sur `190430282075`.
+5. Fermer E2, retirer son worktree, puis seulement ouvrir E3.
