@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-20 13:47 CEST
+Derniere mise a jour : 2026-08-20 14:28 CEST
 
 ## Etat en une phrase
 
@@ -52,8 +52,8 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - L'inventaire physique mene par Patrice avance en parallele et ne bloque pas le polish du site. Il reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
 - Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
-- Decisions Pinterest de Patrice du 2026-08-20 : la bio actuelle est validee et reste la base ; elle ne doit pas etre remplacee par une version generique. La phrase finale `Découvrez les créations et conseils sur milaura.fr.` est approuvee. Toute compression imposee par la limite Pinterest doit conserver le fond et la voix de la bio actuelle. Le nom de profil doit couvrir les pierres, les bijoux et la lithotherapie sans enfermer MilAura dans les seuls bijoux ; la formulation exacte reste a valider avant modification live.
-- Direction de banniere Pinterest approuvee pour prototypage, sans GO visuel ni live a ce stade : Chloe debout dans un bar naturel, un verre a la main, devant une scene vegetale, portant des boucles d oreilles, un collier et plusieurs bracelets MilAura exacts ; les produits portes restent clairement visibles et des macros editoriales en partie basse reprennent ces memes references. Le cadrage doit rester robuste aux recadrages Pinterest. Les produits exacts et leurs sources doivent etre choisis avant generation.
+- Decisions Pinterest de Patrice du 2026-08-20 : le titre et la bio actuels sont valides et restent inchanges. Aucun agent ne doit proposer de les remplacer sans nouvelle demande explicite. La phrase finale `Découvrez les créations et conseils sur milaura.fr.` est approuvee comme ajout optionnel ; si la limite de caracteres Pinterest empeche son ajout, la bio existante ne doit pas etre raccourcie sans validation de Patrice.
+- Direction de banniere Pinterest approuvee pour prototypage, sans GO visuel ni live a ce stade : Chloe debout dans un bar naturel, un verre a la main, devant une scene vegetale, portant les quatre references exactes choisies par Patrice : bracelet dore en aigue-marine naturelle, bague lotus reglable en argent 925 et aigue-marine naturelle, boucles d oreilles dorees en aigue-marine naturelle et collier aventurine verte boho dore. Les produits portes restent clairement visibles et des macros editoriales en partie basse reprennent ces memes references. Le cadrage doit rester robuste aux recadrages Pinterest.
 - Le tableau `Rituels, bougies & purification` est confirme dans l architecture Pinterest. Il est alimente par les bougies, palo santo, sauge, bols tibetains, pendules et produits associes ; il ne doit plus etre considere comme un tableau sans profondeur commerciale.
 - DataForSEO suit deux temps : recherche ciblee si elle doit guider une nouvelle page, puis audit global final lorsque les routes et enrichissements sont stabilises.
 
