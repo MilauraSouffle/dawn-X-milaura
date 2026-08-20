@@ -1361,18 +1361,6 @@
     display: none;
   }
 
-  body:has(#MilauraHeroHome-{{ section.id }}) #milaura-bubble-label {
-    display: none !important;
-  }
-
-  body.milaura-hero-home-visible #milaura-bubble-trigger,
-  body.milaura-hero-home-visible #milaura-bubble-label {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: scale(0.92) !important;
-  }
-
   @media (max-width: 379px) {
     #MilauraHeroHome-{{ section.id }} .hero-home-shell {
       padding: var(--hero-shell-small-padding);
@@ -1850,27 +1838,6 @@
   (() => {
     const hero = document.getElementById('MilauraHeroHome-{{ section.id }}');
     if (!hero) return;
-
-    let ticking = false;
-    const updateGiftBubble = () => {
-      const rect = hero.getBoundingClientRect();
-      const hideBubble = rect.top < window.innerHeight && rect.bottom > window.innerHeight * 0.18;
-      document.body.classList.toggle('milaura-hero-home-visible', hideBubble);
-      ticking = false;
-    };
-
-    const requestUpdate = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(updateGiftBubble);
-    };
-
-    updateGiftBubble();
-    window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate);
-    document.addEventListener('shopify:section:unload', () => {
-      document.body.classList.remove('milaura-hero-home-visible');
-    }, { once: true });
 
     const slider = hero.matches('[data-hero-slider]') ? hero : null;
     if (!slider) return;

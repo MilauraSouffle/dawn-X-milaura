@@ -151,7 +151,6 @@
       'MILAURA-LIV19',
       'MILAURA30',
       'MILAURA-CARTE10',
-      'BIENVENUE10',
       'ANNIV20',
       'PORTOFFERT',
       'COEURDELORRAINE2026',
