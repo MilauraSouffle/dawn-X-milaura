@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-20 08:09 CEST
+Derniere mise a jour : 2026-08-20 10:31 CEST
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : le bandeau cookies, Ruban de parure V2 et le lot 1 de persistance navigateur consentie du diagnostic sont live et valides.
+La refonte visible est en phase de finition : le bandeau cookies et le lot 1 du diagnostic sont live ; l audit comptes, emails et lifecycle est ferme et passe maintenant en planification d implementation.
 
 ## Source de verite et etat du depot
 
@@ -46,7 +46,7 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - La longueur des PDP n'est pas un probleme confirme. La nouvelle experience est validee ; une session PDP specialisee doit effectuer des recherches approfondies avant toute recommandation de reduction ou reorganisation.
 - Les formulations actuelles du diagnostic sur l'apaisement, la protection et l'energie sont approuvees. Aucun lot de reecriture corrective n'est ouvert. Le polish visuel, la page resultat et la persistance client restent ouverts.
 - Le diagnostic est actuellement persiste dans le navigateur et le panier, pas dans une source cliente durable. Le chantier `C1 - Le Cercle MilAura` possede la correction entre appareils et sa restitution dans `Mon Ecrin`.
-- Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. Les emails, notifications, relances et le comportement apres inscription restent classes criticite 10/10.
+- Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. L audit des emails, notifications, relances et du comportement apres inscription est ferme le 2026-08-20 ; leur implementation reste classee criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
 - L'inventaire physique mene par Patrice avance en parallele et ne bloque pas le polish du site. Il reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
@@ -76,6 +76,18 @@ Commit fonctionnel `43e93d10`, documentation `7a68ca5d`, integration canonique `
 Le controle authentifie a detecte puis fait corriger une selection personnalisee qui restait visible dans Mon Ecrin apres retrait. Le correctif live a ete limite a deux fichiers, pullback 2/2 identique. Le profil, le diagnostic et la selection disparaissent maintenant immediatement au retrait et ne reviennent pas au rechargement. La session de test a ete laissee en refus et son diagnostic purge.
 
 Anomalie de miroir : `1dccd18c` contient les six fichiers existants du push initial mais omet `assets/milaura-preference-storage.js`. `763d7ad9` reprend exactement les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement ; le canonique et les pullbacks live restent les preuves. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
+
+## Audit comptes, emails et lifecycle ferme
+
+L audit read-only du 2026-08-20 confirme que les comptes clients classiques a mot de passe sont actifs et marques deprécies par Shopify. La creation de compte ne collecte pas de consentement marketing. Les consentements compte, personnalisation, email, SMS et cookies doivent rester distincts.
+
+Mon Ecrin restaure seulement le diagnostic local du navigateur. Le Flow `Order created` qui copie `quiz_profile` vers un tag et `milaura.last_profile_handle` ne fournit ni diagnostic complet, ni lecture par Mon Ecrin, ni purge serveur. La persistance durable inter-appareils reste a construire dans C1.
+
+La bienvenue `BIENVENUE10` est inactive et ne doit jamais etre reactivee. Les automatisations de consultation, panier et checkout abandonnes sont actives. Les notifications compte et commerce utilisent encore l ancienne direction artistique. Les sources executables Flow et Messaging ne sont pas versionnees. Le footer newsletter reste actif ; le popup et la bulle sont desactives mais leur code mort reste a supprimer dans un lot separe.
+
+Architecture recommandee : preview des nouveaux comptes Shopify, extension pleine page `Mon Ecrin`, Customer Account API, metafields client, consentement explicite de personnalisation, handoff signe et suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
+
+Reference complete, matrice, tests et lots : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`.
 
 ## Catalogue V1 public
 
@@ -298,13 +310,13 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Auditer de bout en bout les emails, notifications transactionnelles, relances lifecycle et le comportement apres inscription.
-2. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
-3. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
-4. Ouvrir une session PDP specialisee de recherche et de polish, sans presumer que la longueur actuelle est un defaut.
-5. Continuer en parallele l'inventaire physique et la session Atelier des emotions.
-6. Preparer la campagne de rentree ou septembre, puis Karine, Sur mesure, les pages enfants Naissance et Mariage et le Journal selon leurs dependances.
-7. Commencer les fondations Pinterest maintenant. Garder l'audit DataForSEO global, le netlinking, la mesure finale et les Ads pour la fermeture, avec recherche ciblee en amont seulement si elle guide une nouvelle page.
+1. Ouvrir une session fraiche en mode Plan et detailler `E1 - Verite canonique`, sans changement Shopify ou live.
+2. Executer ensuite la neutralisation `E2`, puis certifier les trois flux actifs dans `E3`.
+3. Construire C1 en deux gates : preview nouveaux comptes, puis persistance durable et suppression serveur.
+4. Reprendre les notifications commerce une par une, puis l inscription, le post-achat et les avis.
+5. Fermer le lifecycle long terme, la deliverabilite et le Worker de retour produit.
+6. Continuer en parallele l inventaire physique. Atelier des emotions et cross-sell live restent hors de ce chantier.
+7. Prototyper plus tard la section commerciale, puis poursuivre Pinterest, Journal, SEO global, tracking et Ads sous leurs gates propres.
 
 ## Dependances encore ouvertes
 
@@ -320,7 +332,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- compte Cercle, persistance du diagnostic, emails, notifications, relances et comportement apres inscription a auditer ou construire
+- compte Cercle et persistance durable du diagnostic a construire selon l architecture C1 auditee
+- emails, notifications et lifecycle audites le 2026-08-20 ; sources canoniques, neutralisation, tests et implementation restent ouverts
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
 - miroir automatique `origin/main` incomplet pour le nouvel asset `assets/milaura-preference-storage.js` au commit `1dccd18c` ; le correctif `763d7ad9` est complet, mais le canonique et les pullbacks restent les preuves du lot 1
@@ -331,6 +344,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`
 - `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md`
 - `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
+- `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`
 - `docs/codex-handoff.md`
 - `docs/workstreams.md`
 - `docs/reference/2026-08-12-repository-workflow.md`

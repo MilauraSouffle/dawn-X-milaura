@@ -1,6 +1,50 @@
 # MilAura - Handoff master
 
-Date de mise à jour : 2026-08-20 08:09 CEST
+Date de mise à jour : 2026-08-20 10:31 CEST
+
+## Handoff actif - comptes, emails et lifecycle
+
+L audit complet est ferme en lecture seule. Aucun fichier theme, parametre Shopify, email, Flow, Messaging ou live n a ete modifie. La suite doit etre reprise dans une session fraiche activee en mode Plan.
+
+Base minimale obligatoire : `origin/codex/milaura-integration` a `145e25d4` ou plus recent. `origin/main` est un miroir Shopify incomplet. `assets/milaura-preference-storage.js` est deja dans le canonique et sur le live ; aucune pull request ou integration separee n est requise.
+
+Faits structurants :
+
+- comptes classiques a mot de passe actifs, mais deprécies par Shopify ;
+- creation de compte distincte du consentement marketing ;
+- diagnostic persiste localement avec consentement Preferences, mais pas entre appareils ;
+- Mon Ecrin lit le navigateur, pas une source cliente serveur ;
+- bienvenue `BIENVENUE10` inactive et interdite de reactivation ;
+- consultation, panier et checkout abandonnes actifs dans Shopify Messaging ;
+- notifications transactionnelles live encore sur l ancienne direction artistique ;
+- footer newsletter actif ; popup et bulle desactives mais code mort encore present ;
+- aucune source executable Flow ou Messaging versionnee ;
+- Klaviyo non verifie, Judge.me non configure de facon prouvee ;
+- Worker retour produit a durcir separement.
+
+Architecture C1 recommandee : ne pas construire le definitif sur les comptes legacy. Prototyper les nouveaux comptes Shopify et une extension pleine page `Mon Ecrin`, puis ajouter metafields client, consentement explicite de personnalisation, handoff signe et suppression locale, panier et serveur. Aucune bascule live avant tests de parite et GO distinct.
+
+Ordre de reprise :
+
+1. `E1 - Verite canonique` : exports et inventaire prive versionne, aucun changement live.
+2. `E2 - Neutralisation` : code mort popup/bulle, `BIENVENUE10`, promesses fausses et archives dangereuses.
+3. `E3 - Lifecycle actif` : consultation, panier et checkout, avec consentement, arret et deduplication.
+4. `C1-0` : preview nouveaux comptes et extension Mon Ecrin.
+5. `C1-1` : persistance durable, consentement de personnalisation et suppression serveur.
+6. `E4` : notifications transactionnelles compte et commerce.
+7. `E5` : inscription, post-achat et avis.
+8. `E6` : lifecycle long terme et certification.
+9. `E7` : retour produit, idempotence, KV, domaine et secrets.
+
+Cross-sell live, Atelier des emotions et ScratchToReveal sont strictement hors perimetre de cette reprise.
+
+Audit, matrice, tests, architecture et prompt complet : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`.
+
+Prompt court :
+
+```text
+Reprends MilAura au 2026-08-20 en mode Plan depuis origin/codex/milaura-integration a 145e25d4 ou plus recent. Lis AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md, docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md et le plan canonique. Ne refais pas l audit et ne modifie rien dans Shopify pendant la phase Plan. Produis d abord le plan executable de E1 - Verite canonique, avec destination privee versionnee, fichiers, ecrans Admin, IDs, preuves, tests, gates et rollback. Bienvenue10 est mort, le footer reste, le popup et la bulle seront supprimes dans E2, ScratchToReveal reste futur. Ne merge jamais origin/main aveuglement. Cross-sell live et Atelier des emotions sont hors perimetre.
+```
 
 ## Lot 1 diagnostic et consentement ferme live
 
@@ -14,7 +58,7 @@ Mon Ecrin a ete valide dans une vraie session client. Une selection personnalise
 
 Attention au miroir : `1dccd18c` omet le nouvel asset `assets/milaura-preference-storage.js`, meme si ses six autres fichiers sont exacts. `763d7ad9` contient les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
 
-Prochaine priorite : audit critique des emails, notifications transactionnelles, inscription et lifecycle. Ensuite, C1 porte la persistance durable entre appareils. Les popups newsletter et `Bienvenue10` restent desactives et ne doivent pas etre reactives.
+L audit critique des emails, notifications transactionnelles, inscription et lifecycle est ferme dans le handoff actif ci-dessus. Les popups newsletter et `Bienvenue10` restent desactives et ne doivent pas etre reactives.
 
 ## Historique Ruban V3 du 2026-08-17
 
