@@ -291,10 +291,6 @@
       const productHero = document.querySelector('.milaura-hero-wrapper');
       const desktopMedia = window.matchMedia('(min-width: 990px)');
 
-      // Bubble elements (for desktop repositioning when sticky is visible)
-      const bubbleTrigger = document.querySelector('.milaura-bubble-trigger');
-      const bubbleLabel = document.querySelector('.milaura-bubble-label');
-
       // 1. Logique d'affichage : mobile conserve le seuil du CTA valide.
       // Sur desktop, la sticky attend aussi que le Hero complet soit passe sous la navbar.
       if (stickyBar) {
@@ -304,19 +300,6 @@
           stickyBar.classList.toggle('is-visible', shouldShow);
           stickyBar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
 
-          // Push floating bubble above sticky bar on ALL viewports (desktop + mobile)
-          if (!bubbleTrigger) return;
-          if (shouldShow) {
-            const stickyRect = stickyBar.getBoundingClientRect();
-            const stickyBottomOffset = window.innerHeight - stickyRect.top;
-            const gap = 16;
-            bubbleTrigger.style.bottom = (stickyBottomOffset + gap) + 'px';
-            if (bubbleLabel) bubbleLabel.style.bottom = (stickyBottomOffset + gap + 8) + 'px';
-          } else {
-            // Reset to CSS defaults (24px desktop, 85px mobile above dock)
-            bubbleTrigger.style.bottom = '';
-            if (bubbleLabel) bubbleLabel.style.bottom = '';
-          }
         };
 
         const syncStickyVisibility = () => {

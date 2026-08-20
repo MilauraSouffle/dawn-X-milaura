@@ -33,7 +33,6 @@
 - [ ] Configurer Stripe (ou autre prestataire paiement)
 - [ ] Activer les methodes de paiement (CB, Apple Pay, Google Pay)
 - [ ] Tester commande complete : ajout panier → checkout → paiement → confirmation
-- [ ] Tester commande avec code promo (BIENVENUE10)
 - [ ] Tester email de confirmation de commande
 - [ ] Tester remboursement
 - [ ] Verifier les frais de port (regles, seuils, affichage)
