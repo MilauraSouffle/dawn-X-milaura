@@ -1,6 +1,6 @@
 {% comment %}
   MILAURA QUIZ RITUAL
-  Rituel de connexion autonome — lit localStorage.milauraLastResult
+  Rituel de connexion autonome — consomme le résultat courant en mémoire
   Clone du style milaura-product-ritual adapté au quiz
   Mantra + 3 étapes numérotées avec couleur accent profil
 {% endcomment %}
@@ -150,7 +150,7 @@
     <h2 class="quiz-ritual-title">{{ section.settings.title }}</h2>
     <div class="quiz-ritual-mantra" id="quiz-ritual-mantra-{{ section.id }}"></div>
     <div class="quiz-ritual-steps" id="quiz-ritual-steps-{{ section.id }}">
-      <!-- Populated by JS from localStorage -->
+      <!-- Populated by JS from the current quiz result -->
     </div>
   </div>
 </section>
@@ -161,7 +161,7 @@
   const root = document.getElementById('MilauraQuizRitual-' + sectionId);
   if (!root) return;
 
-  // Profile ritual data (matches quiz profileData) — fallback si localStorage absent
+  // Profile ritual data (matches quiz profileData) — fallback si le résultat ne fournit pas le texte
   const ritualData = {
     apaisement: {
       mantra: 'Je peux déposer les armes',
@@ -215,12 +215,12 @@
     if (data.profileAccent) root.style.setProperty('--ritual-accent', data.profileAccent);
     if (data.profileAccentRgb) root.style.setProperty('--ritual-accent-rgb', data.profileAccentRgb);
 
-    // Use mantra from localStorage (may be customizer-edited) or fallback
+    // Use mantra from the current result or fallback
     const mantra = data.mantra || ritual.mantra;
     const mantraEl = root.querySelector('#quiz-ritual-mantra-' + sectionId);
     if (mantraEl) mantraEl.textContent = mantra;
 
-    // Parse ritual steps from localStorage or use hardcoded
+    // Parse ritual steps from the current result or use hardcoded
     let steps = ritual.steps;
     if (data.ritual) {
       const parsed = data.ritual.split('\n').filter(function(s) { return s.trim(); });
