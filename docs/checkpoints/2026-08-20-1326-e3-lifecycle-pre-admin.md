@@ -2,15 +2,15 @@
 
 Date : 2026-08-20 13:26 CEST
 
-Statut : paquet prive versionne et controles Admin en lecture seule termines. Aucune mutation Shopify E3. Confirmation Admin et decision Klaviyo requises.
+Statut : paquet prive versionne et controles Admin en lecture seule termines. Aucune mutation Shopify E3. Gate Klaviyo resolue ; confirmation Admin requise.
 
 ## Base et proprietaire
 
-- theme canonique : `codex/milaura-integration` au commit `c111aea7fec67c2fddfce3d472b0e13a3ca2bb1d` ;
+- theme canonique a l ouverture E3 : `codex/milaura-integration` au commit `c111aea7fec67c2fddfce3d472b0e13a3ca2bb1d` ; HEAD courant `44723088554bacecbc87e515dbfb733d85ffd8c7` apres un commit documentaire distinct ;
 - depot prive : `Onora-studio/onora-ops` ;
 - branche E3 : `codex/milaura-e3-lifecycle-actif-20260820` ;
 - base E1 : `0478c2820e7a11aebb51e8535245566a4cfe20a7` ;
-- HEAD E3 pousse : `f26007f9a77093e2ecc370162ba01327e93dd8ba` ;
+- HEAD E3 pousse : `9c5735965e36d907e7ba85476363d21476a669e1` ;
 - worktree : `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-e3-20260820` ;
 - proprietaire : Codex, tache `E3 - Lifecycle actif`.
 
@@ -51,19 +51,21 @@ Decision : ne pas reconstruire consultation et panier sans benefice. Construire 
 - une execution panier recente s est terminee sans erreur ;
 - checkout a atteint l action marketing sur des runs recents mais reste sans exclusion 14 jours ;
 - `Shop > Parametres` affiche `Remarketing Shop` actif ;
-- Klaviyo est installe et connecte, mais son ouverture demande une extension d acces aux cartes-cadeaux et au credit boutique ; rien n a ete accepte ;
+- Klaviyo a ete audite directement dans une session authentifiee sans accepter l extension d acces aux cartes-cadeaux et au credit boutique ;
+- l organisation affichee est `ONORA`, avec une integration Shopify active vers MilAura, ancienne URL `milaura-2.myshopify.com`, nouvelle URL `dvsi0r-1q.myshopify.com` ;
+- la liste reelle Klaviyo contient exactement un flow manuel `MilAura Retraction Submitted` (`Sq5fbd`) et aucun flow d abandon consultation, panier ou checkout cree ou actif ;
+- les parcours d abandon visibles dans l onboarding Klaviyo sont des recommandations non creees ;
+- l integration Klaviyo dans le theme et les formulaires sur site sont desactives, aucun formulaire Klaviyo n est cree, la synchronisation des abonnes email Shopify vers `Liste d adresses e-mail` est active et la synchronisation SMS n est pas configuree ;
 - `Parametres > Paiement` ne montre aucun ancien reglage d email checkout abandonne ;
 - aucun evenement de test Flow, aucune sauvegarde, aucune activation, aucune desactivation et aucun email E3.
 
-## Blocages et decision requise
+## Gate Klaviyo resolue
 
-La deduplication ne peut pas etre certifiee tant que les flows Klaviyo restent invisibles. Ordre recommande, du plus sobre au plus intrusif :
+La preuve d absence de doublon Klaviyo est acquise sans extension de scopes : un seul flow manuel existe et aucun flow d abandon n est cree ou actif. La demande d acces supplementaire reste en attente et ne doit pas etre acceptee dans E3.
 
-1. ouvrir directement le tableau de bord Klaviyo authentifie et verifier les flows sans etendre ses scopes Shopify ;
-2. seulement si indispensable, accepter l extension d acces Klaviyo apres revue des nouvelles permissions ;
-3. si Klaviyo est confirme inutile, envisager sa desinstallation dans un lot destructif distinct avec export et rollback.
+Le nom d organisation `ONORA` et la synchronisation des abonnes MilAura vers cette organisation sont un sujet de gouvernance distinct. Aucun profil client n a ete ouvert ou versionne. Ce sujet ne bloque pas la certification E3 de non-recouvrement, mais interdit de construire des campagnes MilAura dans cet espace sans decision explicite.
 
-Aucune de ces trois decisions n est implicite dans E3.
+Le seul chevauchement restant avant activation finale est `Remarketing Shop`, qui reste actif jusqu au `GO LIVE E3` distinct.
 
 ## Autorisations suivantes
 
