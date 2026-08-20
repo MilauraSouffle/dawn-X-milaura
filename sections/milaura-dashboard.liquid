@@ -994,6 +994,7 @@
       benefitTitle: root.querySelector('[data-dash-benefit-title]'),
       benefitText: root.querySelector('[data-dash-benefit-text]'),
       pain: root.querySelector('[data-dash-pain]'),
+      recommendationsWrap: root.querySelector('[data-dash-recommendations-wrap]'),
       accountRecommendations: root.querySelector('milaura-recommendations[data-context="account"]'),
       kpiProfile: root.querySelector('[data-dash-kpi-profile]'),
       kpiProfileIcon: root.querySelector('[data-dash-kpi-profile-icon]'),
@@ -1079,6 +1080,9 @@
       els.loading.style.display = state === 'loading' ? 'flex' : 'none';
       els.empty.style.display = state === 'empty' ? 'block' : 'none';
       els.main.classList.toggle('is-visible', state === 'dashboard');
+      if (els.recommendationsWrap) {
+        els.recommendationsWrap.style.display = state === 'dashboard' ? '' : 'none';
+      }
     }
 
     function setAccentColor(hex, rgb) {
@@ -1184,7 +1188,9 @@
 
       customElements.whenDefined('milaura-recommendations').then(function() {
         if (typeof els.accountRecommendations.renderHandles === 'function') {
-          els.accountRecommendations.renderHandles(products, 'curated');
+          var generation = Number(els.accountRecommendations.loadGeneration || 0) + 1;
+          els.accountRecommendations.loadGeneration = generation;
+          els.accountRecommendations.renderHandles(products, 'curated', generation);
         }
       });
     }
