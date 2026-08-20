@@ -2,9 +2,9 @@
 
 Date : 2026-08-20 12:48 CEST
 
-Statut : preview et mutations Admin validees, integration et live en attente
+Statut : preview, mutations Admin et integration validees, live en attente de GO explicite
 
-Derniere mise a jour : 2026-08-20 12:59 CEST
+Derniere mise a jour : 2026-08-20 13:00 CEST
 
 ## Perimetre ferme
 
@@ -214,6 +214,20 @@ Preuves apres sauvegarde :
 
 Aucun e-mail de test n a ete envoye et aucune configuration de compte client n a ete basculee.
 
+## Integration canonique
+
+La branche E2 a ete integree dans `codex/milaura-integration` par le merge `cdcebb3b6909df382789c91f8dba5b4dc2f2476c`.
+
+Validations relancees depuis le checkout d integration :
+
+- `git diff HEAD^1 --check` : passe ;
+- `node --check assets/milaura-cart-rewards-auto.js` : passe ;
+- recherche active des marqueurs popup, bulle et `BIENVENUE10` : aucun resultat ;
+- `sections/footer-group.json` : `show_newsletter` reste a `true` avec le titre, le texte, le champ et `S inscrire` ;
+- `shopify theme check --fail-level error` : passe, 291 fichiers inspectes, 16 avertissements preexistants, aucune erreur.
+
+La publication live reste volontairement bloquee. Aucun fichier du theme live `190430282075` n a ete modifie par cette integration Git.
+
 ## Gates E2
 
 | Gate | Etat | Preuve |
@@ -225,7 +239,7 @@ Aucun e-mail de test n a ete envoye et aucune configuration de compte client n a
 | E2-G5 preview responsive | passe | homepage, diagnostic et PDP verifies de 360 a 1440 px |
 | E2-G6 preuve Admin avant mutation | passe | IDs, etats, reduction absente et exports E1 confirmes |
 | E2-G7 confirmation et mutations Admin | passe | `CONFIRMÉ E2 ADMIN.`, trois IDs absents, objets proteges relus, notification sauvegardee et previsualisee |
-| E2-G8 integration canonique | non commence | commit de preuve, merge depuis la branche E2 et validations sur l integration requis |
+| E2-G8 integration canonique | passe | merge `cdcebb3b`, diff check, JavaScript, recherche active et Theme Check valides |
 | E2-G9 publication live | non commence | parite puis GO live distinct requis |
 
 ## Rollback
@@ -249,8 +263,8 @@ Notification :
 
 ## Prochaines actions ordonnees
 
-1. Committer et pousser cette preuve apres mutation sans reecrire le snapshot E1.
-2. Integrer le lot theme depuis la branche E2 dans `codex/milaura-integration`.
-3. Relancer les validations techniques sur l integration et confirmer la parite Git distante.
-4. Demander un GO live distinct avant toute publication sur `190430282075`.
-5. Fermer E2, retirer son worktree, puis seulement ouvrir E3.
+1. Committer et pousser cette preuve d integration.
+2. Retirer proprement le worktree E2 apres confirmation du push distant.
+3. Obtenir un GO live distinct avant toute publication sur `190430282075`.
+4. Publier uniquement les neuf fichiers theme E2, verifier le pullback et le storefront public.
+5. Fermer E2, puis seulement ouvrir E3.
