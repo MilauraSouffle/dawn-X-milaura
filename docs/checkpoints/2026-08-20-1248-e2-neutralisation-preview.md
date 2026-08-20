@@ -2,9 +2,9 @@
 
 Date : 2026-08-20 12:48 CEST
 
-Statut : preview, mutations Admin et integration validees, live en attente de GO explicite
+Statut : ferme, integre, pousse Git et live
 
-Derniere mise a jour : 2026-08-20 13:02 CEST
+Derniere mise a jour : 2026-08-20 13:15 CEST
 
 ## Perimetre ferme
 
@@ -83,7 +83,7 @@ Ce theme presentait une derive homepage anterieure au lot et un debordement raci
 - URL : `https://milaura-2.myshopify.com?preview_theme_id=200196194651` ;
 - editeur : `https://milaura-2.myshopify.com/admin/themes/200196194651/editor` ;
 - statut : non publie ;
-- live `190430282075` : non modifie.
+- live `190430282075` : reste intact pendant toute la preview, puis publie uniquement apres le message explicite `GO LIVE E2`.
 
 ## Validations techniques et visuelles
 
@@ -226,9 +226,57 @@ Validations relancees depuis le checkout d integration :
 - `sections/footer-group.json` : `show_newsletter` reste a `true` avec le titre, le texte, le champ et `S inscrire` ;
 - `shopify theme check --fail-level error` : passe, 291 fichiers inspectes, 16 avertissements preexistants, aucune erreur.
 
-La publication live reste volontairement bloquee. Aucun fichier du theme live `190430282075` n a ete modifie par cette integration Git.
+La publication live est restee bloquee jusqu au message explicite `GO LIVE E2` de Patrice le 2026-08-20. Aucun changement live n a precede ce GO.
 
 Le worktree E2 a ete retire proprement apres confirmation que `e5dae460` etait pousse et ancetre de l integration. La branche locale et distante `codex/milaura-e2-neutralisation-20260820` est conservee comme preuve et point de rollback.
+
+## Publication live et certification publique
+
+Patrice a autorise la publication par le message exact `GO LIVE E2` le 2026-08-20.
+
+### Push cible
+
+- theme live : `190430282075`, `dawn-X-milaura/main` ;
+- base Git publiee : `75b5ca5c536b2aab9ac1dd891067d72aae741ae2` ;
+- sept fichiers remplaces :
+  - `assets/milaura-cart-rewards-auto.js` ;
+  - `sections/footer-group.json` ;
+  - `sections/milaura-dock.liquid` ;
+  - `sections/milaura-hero-homepage.liquid` ;
+  - `sections/milaura-product-hero.liquid` ;
+  - `sections/milaura-quiz.liquid` ;
+  - `sections/milaura-sticky-bar.liquid` ;
+- deux fichiers supprimes :
+  - `sections/milaura-newsletter-popup.liquid` ;
+  - `sections/milaura-floating-bubble.liquid` ;
+- commande cible avec `--allow-live`, `--strict` et neuf `--only`, sans suppression globale ;
+- resultat Shopify CLI : theme live pousse avec succes ; Theme Check embarque sans erreur, 16 avertissements preexistants.
+
+### Pullback live
+
+Le pullback cible a ete effectue dans `/private/tmp/milaura-e2-live-pullback.kR3bIl` :
+
+- les sept fichiers restants sont identiques octet par octet au canonique ;
+- les deux sections supprimees sont absentes du live ;
+- aucun autre fichier du theme n a ete inclus dans le push E2.
+
+### QA storefront public
+
+| Page | Largeur | Resultat public |
+| --- | ---: | --- |
+| Homepage | 360, 390, 430, 1440 px | aucun debordement racine, popup absent, bulle absente, footer newsletter present, dock present, aucune mention `BIENVENUE10` |
+| Diagnostic `/pages/diagnostic-emotionnel` | 390 px et controle desktop | H1 `La pierre qui vous ressemble`, action `Commencer mon diagnostic`, aucun debordement, popup et bulle absents, dock present |
+| PDP `/products/bracelet-aventurine-verte-halo-dore` | 390 px | H1 correct, aucun debordement, popup et bulle absents, dock et sticky presents |
+| PDP apres scroll | 390 px | sticky `is-visible`, `aria-hidden=false`, action `Ajouter` visible apres refus local des cookies |
+
+Captures live locales, ignorees par Git :
+
+- `output/playwright/e2-live/.playwright-cli/page-2026-08-20T11-08-58-778Z.png` : homepage mobile ;
+- `output/playwright/e2-live/.playwright-cli/page-2026-08-20T11-10-16-112Z.png` : footer newsletter ;
+- `output/playwright/e2-live/.playwright-cli/page-2026-08-20T11-14-43-834Z.png` : diagnostic ;
+- `output/playwright/e2-live/.playwright-cli/page-2026-08-20T11-14-03-744Z.png` : sticky PDP visible sans bandeau cookies.
+
+Les deux erreurs console publiques observees sur le diagnostic et la PDP sont le refus CSP du cadrage `https://shop.app/` puis son `403` dans `chrome-error://chromewebdata/`. Elles ne ciblent aucun fichier E2 et correspondent au bruit Shopify deja observe en preview. Les autres messages sont des avertissements de preload Shopify. Aucune erreur JavaScript E2 n a ete observee.
 
 ## Gates E2
 
@@ -242,13 +290,13 @@ Le worktree E2 a ete retire proprement apres confirmation que `e5dae460` etait p
 | E2-G6 preuve Admin avant mutation | passe | IDs, etats, reduction absente et exports E1 confirmes |
 | E2-G7 confirmation et mutations Admin | passe | `CONFIRMÉ E2 ADMIN.`, trois IDs absents, objets proteges relus, notification sauvegardee et previsualisee |
 | E2-G8 integration canonique | passe | merge `cdcebb3b`, diff check, JavaScript, recherche active et Theme Check valides |
-| E2-G9 publication live | non commence | parite puis GO live distinct requis |
+| E2-G9 publication live | passe | `GO LIVE E2`, push cible sur `190430282075`, pullback sept fichiers identiques et deux absents, QA publique responsive validee |
 
 ## Rollback
 
 Theme :
 
-- revenir au commit parent de `d04f5e8e` sur la branche du lot puis pousser uniquement les fichiers cibles vers le theme concerne ;
+- restaurer les neuf chemins depuis le parent de `d04f5e8e` dans une branche de rollback dediee, puis pousser uniquement ces chemins sur `190430282075` apres un nouveau GO explicite ;
 - ne jamais fusionner `origin/main` pour restaurer ;
 - verifier le pullback octet par octet.
 
@@ -265,7 +313,6 @@ Notification :
 
 ## Prochaines actions ordonnees
 
-1. Committer et pousser cette preuve finale avant live.
-2. Obtenir un GO live distinct avant toute publication sur `190430282075`.
-3. Publier uniquement les neuf fichiers theme E2, verifier le pullback et le storefront public.
-4. Fermer E2, puis seulement ouvrir E3.
+1. Committer et pousser cette preuve de fermeture E2.
+2. Ouvrir seulement `E3 - Lifecycle actif` depuis les exports versionnes E1.
+3. Preserver les trois automations actives tant que la reconstruction, la deduplication et les tests de certification ne sont pas prets.
