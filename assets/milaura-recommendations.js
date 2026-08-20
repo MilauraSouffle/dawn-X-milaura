@@ -82,48 +82,10 @@
     }
   }
 
-  function getPreferenceState() {
-    if (window.milauraPreferenceStatePromise) return window.milauraPreferenceStatePromise;
-
-    window.milauraPreferenceStatePromise = new Promise((resolve) => {
-      const readState = function () {
-        const privacy = window.Shopify?.customerPrivacy;
-        if (!privacy || typeof privacy.preferencesProcessingAllowed !== 'function') {
-          resolve({ available: false, allowed: false });
-          return;
-        }
-        resolve({ available: true, allowed: Boolean(privacy.preferencesProcessingAllowed()) });
-      };
-
-      if (window.Shopify?.customerPrivacy?.preferencesProcessingAllowed) {
-        readState();
-        return;
-      }
-
-      if (typeof window.Shopify?.loadFeatures !== 'function') {
-        resolve({ available: false, allowed: false });
-        return;
-      }
-
-      window.Shopify.loadFeatures(
-        [{ name: 'consent-tracking-api', version: '0.1' }],
-        function (error) {
-          if (error) {
-            resolve({ available: false, allowed: false });
-            return;
-          }
-          readState();
-        }
-      );
-    });
-
-    return window.milauraPreferenceStatePromise;
-  }
-
   function prepareHistory(currentProduct) {
     if (window.milauraRecommendationHistoryPromise) return window.milauraRecommendationHistoryPromise;
 
-    window.milauraRecommendationHistoryPromise = getPreferenceState().then((privacy) => {
+    window.milauraRecommendationHistoryPromise = window.MilauraPreferenceStorage.getPreferenceState().then((privacy) => {
       if (!privacy.available) return [];
       if (!privacy.allowed) {
         try {
@@ -226,6 +188,7 @@
       this.excludedProductIds = parseList(this.dataset.excludedProductIds);
       this.intents = parseList(this.dataset.intents);
       this.currentIntent = this.intents[0] || 'curated';
+      this.loadGeneration = 0;
       this.initialCards = Array.from(this.querySelectorAll('[data-milaura-recommendation-card]'));
       this.historyPromise = prepareHistory({
         id: this.dataset.currentProductId,
@@ -272,6 +235,7 @@
     async initialize() {
       if (this.loading) return;
       this.loading = true;
+      const loadGeneration = ++this.loadGeneration;
       this.setState('loading');
 
       try {
@@ -280,19 +244,20 @@
         } else if (this.context === 'cart-page' || this.context === 'cart-drawer') {
           await this.loadCartRecommendations();
         } else if (this.context === 'recent') {
-          await this.loadRecentlyViewed();
+          await this.loadRecentlyViewed(loadGeneration);
         } else if (this.context === 'diagnostic') {
-          await this.loadDiagnosticRecommendations();
+          await this.loadDiagnosticRecommendations(null, loadGeneration);
         } else if (this.initialCards.length) {
           this.renderCards(this.initialCards, this.currentIntent);
         } else {
           this.setState('empty');
         }
       } catch (error) {
+        if (loadGeneration !== this.loadGeneration) return;
         this.setState('error');
         this.announce('Les recommandations sont momentanément indisponibles.');
       } finally {
-        this.loading = false;
+        if (loadGeneration === this.loadGeneration) this.loading = false;
       }
     }
 
@@ -405,8 +370,9 @@
       this.renderCards(cards, 'complementary');
     }
 
-    async loadRecentlyViewed() {
+    async loadRecentlyViewed(loadGeneration) {
       const history = await this.historyPromise;
+      if (loadGeneration !== this.loadGeneration) return;
       const excluded = new Set(this.excludedProductIds.map(String));
       const candidates = history.filter((item) => !excluded.has(String(item.id))).slice(0, this.limit);
       if (!candidates.length) {
@@ -415,6 +381,7 @@
       }
 
       const resolved = await Promise.all(candidates.map((item) => fetchRecentCard(item.handle)));
+      if (loadGeneration !== this.loadGeneration) return;
       const cards = uniqueByProductId(resolved.filter(Boolean), this.excludedProductIds, this.limit);
       if (!cards.length) {
         this.setState('empty');
@@ -423,7 +390,8 @@
       this.renderCards(cards, 'recent');
     }
 
-    async renderHandles(items, intent) {
+    async renderHandles(items, intent, loadGeneration) {
+      if (loadGeneration && loadGeneration !== this.loadGeneration) return;
       const validItems = Array.isArray(items) ? items.filter((item) => item?.handle) : [];
       if (!validItems.length) {
         this.setState('empty');
@@ -437,6 +405,15 @@
           card: await fetchProductCard(item.handle).catch(function () { return null; }),
         }))
       );
+      if (loadGeneration && loadGeneration !== this.loadGeneration) return;
+      if (this.context === 'diagnostic') {
+        const privacy = await window.MilauraPreferenceStorage.getPreferenceState({ fresh: true });
+        if (loadGeneration && loadGeneration !== this.loadGeneration) return;
+        if (!privacy.available || !privacy.allowed) {
+          this.setState('empty');
+          return;
+        }
+      }
       resolved.forEach(({ item, card }) => {
         const reasonElement = card?.querySelector('.milaura-recommendation-card__reason');
         if (item.reason && reasonElement) reasonElement.textContent = item.reason;
@@ -453,8 +430,10 @@
       this.renderCards(cards, intent || 'curated');
     }
 
-    async loadDiagnosticRecommendations(detail) {
-      const privacy = await getPreferenceState();
+    async loadDiagnosticRecommendations(detail, loadGeneration) {
+      const activeGeneration = loadGeneration || ++this.loadGeneration;
+      const privacy = await window.MilauraPreferenceStorage.getPreferenceState();
+      if (activeGeneration !== this.loadGeneration) return;
       if (!privacy.available || !privacy.allowed) {
         this.setState('empty');
         return;
@@ -462,11 +441,8 @@
 
       let diagnostic = detail || null;
       if (!diagnostic) {
-        try {
-          diagnostic = JSON.parse(window.localStorage.getItem('milauraLastResult') || 'null');
-        } catch (error) {
-          diagnostic = null;
-        }
+        diagnostic = await window.MilauraPreferenceStorage.readDiagnostic();
+        if (activeGeneration !== this.loadGeneration) return;
       }
 
       const products = diagnostic?.products || {};
@@ -491,7 +467,7 @@
         this.setState('empty');
         return;
       }
-      await this.renderHandles(selected, 'curated');
+      await this.renderHandles(selected, 'curated', activeGeneration);
     }
 
     renderCards(cards, intent) {
@@ -796,7 +772,7 @@
     bindDiagnosticResult() {
       if (this.context !== 'diagnostic') return;
       this.diagnosticHandler = (event) => {
-        this.loadDiagnosticRecommendations(event.detail || null);
+        this.loadDiagnosticRecommendations(event.detail || null, ++this.loadGeneration);
       };
       window.addEventListener('milaura:quiz-result', this.diagnosticHandler);
     }
@@ -863,7 +839,7 @@
   }
 
   window.MilauraRecommendations = Object.freeze({
-    getPreferenceState,
+    getPreferenceState: window.MilauraPreferenceStorage.getPreferenceState,
   });
   document.dispatchEvent(new CustomEvent('milaura:recommendations:ready'));
 
@@ -871,13 +847,24 @@
     publishAnalytics('milaura:recommendation_add', event.detail || {});
   });
 
-  document.addEventListener('visitorConsentCollected', function () {
-    window.milauraPreferenceStatePromise = null;
+  document.addEventListener('milaura:preferences-changed', function (event) {
     window.milauraRecommendationHistoryPromise = null;
+
+    const preferencesExplicitlyDenied = Boolean(event.detail?.available && !event.detail.allowed);
+    if (preferencesExplicitlyDenied) {
+      try {
+        window.localStorage.removeItem(HISTORY_KEY);
+      } catch (error) {}
+    }
 
     document
       .querySelectorAll('milaura-recommendations[data-context="recent"], milaura-recommendations[data-context="diagnostic"]')
       .forEach((recommendations) => {
+        recommendations.loadGeneration += 1;
+        if (!event.detail || !event.detail.allowed) {
+          recommendations.list?.replaceChildren();
+          recommendations.setState('empty');
+        }
         recommendations.historyPromise = prepareHistory({
           id: recommendations.dataset.currentProductId,
           handle: recommendations.dataset.currentProductHandle,

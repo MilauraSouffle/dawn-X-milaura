@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-17 13:12 CEST
+Derniere mise a jour : 2026-08-20 07:49 CEST
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : le nouveau consentement cookies MilAura et Ruban de parure V2 sont live ; Ruban V3 reste entièrement à cadrer, produire, implémenter et autoriser.
+La refonte visible est en phase de finition : le bandeau cookies et Ruban de parure V2 sont live ; le lot 1 de persistance navigateur consentie du diagnostic est valide sur le theme de developpement mais pas encore live.
 
 ## Source de verite et etat du depot
 
@@ -64,6 +64,14 @@ Shopify Customer Privacy reste le moteur de consentement et de persistance. Le b
 Commit source `6bbc36bb`, integration canonique `1980512a`. Le polish du refus est integre par `32b37e4e`, deploye sur le live avec un pullback 2/2 identique et documente dans `docs/checkpoints/2026-08-17-1312-cookie-refusal-link-live.md`. Checkpoint initial : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
 
 Anomalie de miroir a conserver : le commit automatique Shopify `004ce94f` ne contenait que quatre des sept fichiers deployes. Le commit Shopify suivant `7193ed80` ajoute le CSS cookies au miroir et met a jour le snippet, mais `assets/milaura-cookie-consent.js` et `assets/milaura-cookie-gem.webp` restent absents de `origin/main`. Le live reste prouve par les pullbacks et la QA publique. Ne pas fusionner `origin/main` aveuglement ni utiliser son arbre seul pour reconstruire ce lot.
+
+## Diagnostic et consentement, lot 1 en developpement
+
+Le 2026-08-20, le lot 1 a centralise la persistance navigateur du diagnostic dans `assets/milaura-preference-storage.js`. Le diagnostic n est plus ecrit ni lu sans consentement Shopify `Preferences`. L ancien cookie est seulement migre avec consentement puis expire ; aucune nouvelle copie cookie n est creee. Un refus ou un retrait purge le navigateur et les trois attributs panier. Les mutations panier sont serialisees, bornees et la purge est retentee.
+
+Le resultat courant reste visible pendant la visite sans consentement. La restauration apres rechargement, Mon Ecrin et les recommandations ne consomment que le contrat central. Un etat Shopify temporairement indisponible bloque toute lecture ou nouvelle ecriture sans supprimer les donnees existantes. Une revue contradictoire finale ne remonte aucun P0 ou P1.
+
+Commit fonctionnel `43e93d10`. Les sept fichiers sont sur le theme de developpement `199421952347`, avec pullback 7/7 identique. La QA reelle valide refus, acceptation, restauration, retrait sur la meme page, `?show=result` et invalidation des recommandations. Le live `190430282075` reste intact en attente du GO explicite de Patrice. Reference : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md`.
 
 ## Catalogue V1 public
 
@@ -286,13 +294,14 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. Auditer de bout en bout les emails, notifications transactionnelles, relances lifecycle et le comportement apres inscription.
-2. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
-3. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
-4. Ouvrir une session PDP specialisee de recherche et de polish, sans presumer que la longueur actuelle est un defaut.
-5. Continuer en parallele l'inventaire physique et la session Atelier des emotions.
-6. Preparer la campagne de rentree ou septembre, puis Karine, Sur mesure, les pages enfants Naissance et Mariage et le Journal selon leurs dependances.
-7. Commencer les fondations Pinterest maintenant. Garder l'audit DataForSEO global, le netlinking, la mesure finale et les Ads pour la fermeture, avec recherche ciblee en amont seulement si elle guide une nouvelle page.
+1. Obtenir le GO live du lot 1, refaire le controle connecte de Mon Ecrin si une session client est disponible, puis pousser uniquement les sept fichiers avec pullback et QA publique.
+2. Auditer de bout en bout les emails, notifications transactionnelles, relances lifecycle et le comportement apres inscription.
+3. Confier au chantier `C1 - Le Cercle MilAura` la refonte du compte et la sauvegarde durable du diagnostic entre appareils.
+4. Prototyper apres `Pierre du moment` une section unique `Nouveautes / Meilleures ventes / Promotions`, sans supprimer les trois destinations publiques.
+5. Ouvrir une session PDP specialisee de recherche et de polish, sans presumer que la longueur actuelle est un defaut.
+6. Continuer en parallele l'inventaire physique et la session Atelier des emotions.
+7. Preparer la campagne de rentree ou septembre, puis Karine, Sur mesure, les pages enfants Naissance et Mariage et le Journal selon leurs dependances.
+8. Commencer les fondations Pinterest maintenant. Garder l'audit DataForSEO global, le netlinking, la mesure finale et les Ads pour la fermeture, avec recherche ciblee en amont seulement si elle guide une nouvelle page.
 
 ## Dependances encore ouvertes
 
@@ -307,7 +316,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V3 : direction commerciale décidée, mais matrice complète, ensemble éligible, vidéos Higgsfield, contrat de metafields, implémentation, preview et GO live encore ouverts
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
-- diagnostic non persiste dans une source cliente durable ni entre appareils
+- diagnostic navigateur maintenant soumis au consentement sur le theme de developpement, pas encore live ; aucune source cliente durable ni persistance entre appareils
 - compte Cercle, persistance du diagnostic, emails, notifications, relances et comportement apres inscription a auditer ou construire
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
@@ -316,6 +325,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## References de reprise
 
 - `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`
+- `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md`
 - `docs/codex-handoff.md`
 - `docs/workstreams.md`
 - `docs/reference/2026-08-12-repository-workflow.md`

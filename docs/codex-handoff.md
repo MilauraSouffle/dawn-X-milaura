@@ -1,6 +1,20 @@
-# MilAura - Handoff Ruban V3
+# MilAura - Handoff master
 
-Date de mise à jour : 2026-08-17 13:12 CEST
+Date de mise à jour : 2026-08-20 07:49 CEST
+
+## Reprise prioritaire : lot 1 diagnostic et consentement
+
+Le lot 1 est implemente, revu et valide sur le theme de developpement `199421952347`. Commit fonctionnel `43e93d10` sur `codex/milaura-diagnostic-consent-20260820`, pousse sur `origin`. Pullback Shopify 7/7 identique. Aucun deploiement live.
+
+Le nouveau contrat `window.MilauraPreferenceStorage` centralise le consentement, la lecture, l ecriture, la migration et la purge du diagnostic. Aucun nouveau cookie diagnostic n est ecrit. Un refus ou retrait explicite purge le navigateur et les attributs panier ; une API Shopify indisponible bloque l usage sans effacer les donnees. Le resultat courant reste utilisable en memoire pendant la visite.
+
+La QA navigateur valide refus, acceptation, restauration, retrait sur la meme page, `?show=result` et disparition immediate des recommandations personnalisees. Le compte authentifie n etait pas disponible dans le navigateur de test ; Mon Ecrin devra etre recontrole connecte avant ou pendant le GO live.
+
+Prochaine action : obtenir le GO live explicite de Patrice, pousser uniquement les sept fichiers sur `190430282075`, effectuer un pullback 7/7, puis la QA publique. Ensuite reprendre le plan master avec l audit critique des emails, notifications transactionnelles, inscription et lifecycle, puis C1 pour la persistance multi-appareils.
+
+Reference : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md`.
+
+## Historique Ruban V3 du 2026-08-17
 
 ## Objet de la reprise
 
