@@ -1,18 +1,20 @@
 # MilAura - Handoff master
 
-Date de mise à jour : 2026-08-20 07:53 CEST
+Date de mise à jour : 2026-08-20 08:09 CEST
 
-## Reprise prioritaire : lot 1 diagnostic et consentement
+## Lot 1 diagnostic et consentement ferme live
 
-Le lot 1 est implemente, revu, integre par `e96ed097` et valide sur le theme de developpement `199421952347`. Commit fonctionnel `43e93d10` et documentation `7a68ca5d` sur `codex/milaura-diagnostic-consent-20260820`, pousses sur `origin`. Le worktree du lot est retire proprement. Pullback Shopify 7/7 identique. Aucun deploiement live.
+Le lot 1 est implemente, revu, integre par `e96ed097` et live sur `190430282075` apres GO explicite de Patrice. Commit fonctionnel `43e93d10`, documentation `7a68ca5d`, fermeture de developpement `05b8d34b` et correctif authentifie Mon Ecrin `0697785d`, tous pousses sur `origin/codex/milaura-integration`.
 
 Le nouveau contrat `window.MilauraPreferenceStorage` centralise le consentement, la lecture, l ecriture, la migration et la purge du diagnostic. Aucun nouveau cookie diagnostic n est ecrit. Un refus ou retrait explicite purge le navigateur et les attributs panier ; une API Shopify indisponible bloque l usage sans effacer les donnees. Le resultat courant reste utilisable en memoire pendant la visite.
 
-La QA navigateur valide refus, acceptation, restauration, retrait sur la meme page, `?show=result` et disparition immediate des recommandations personnalisees. Le compte authentifie n etait pas disponible dans le navigateur de test ; Mon Ecrin devra etre recontrole connecte avant ou pendant le GO live.
+Le push initial a ete limite aux sept fichiers du lot avec `--nodelete`, `--strict` et `--allow-live`. Pullback live 7/7 identique. La QA publique valide refus, acceptation, restauration, retrait sur la meme page, `?show=result` et disparition immediate des recommandations personnalisees.
 
-Prochaine action : obtenir le GO live explicite de Patrice, pousser uniquement les sept fichiers sur `190430282075`, effectuer un pullback 7/7, puis la QA publique. Ensuite reprendre le plan master avec l audit critique des emails, notifications transactionnelles, inscription et lifecycle, puis C1 pour la persistance multi-appareils.
+Mon Ecrin a ete valide dans une vraie session client. Une selection personnalisee residuelle apres retrait a ete detectee, corrigee par `0697785d`, poussee live sur deux fichiers et controlee par pullback 2/2. Profil, diagnostic et selection disparaissent maintenant immediatement au retrait et restent absents apres rechargement. La session de test a ete laissee en refus et son diagnostic purge.
 
-Reference : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md`.
+Attention au miroir : `1dccd18c` omet le nouvel asset `assets/milaura-preference-storage.js`, meme si ses six autres fichiers sont exacts. `763d7ad9` contient les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
+
+Prochaine priorite : audit critique des emails, notifications transactionnelles, inscription et lifecycle. Ensuite, C1 porte la persistance durable entre appareils. Les popups newsletter et `Bienvenue10` restent desactives et ne doivent pas etre reactives.
 
 ## Historique Ruban V3 du 2026-08-17
 
