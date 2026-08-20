@@ -391,7 +391,8 @@
     }
 
     async renderHandles(items, intent, loadGeneration) {
-      if (loadGeneration && loadGeneration !== this.loadGeneration) return;
+      const activeGeneration = loadGeneration || ++this.loadGeneration;
+      if (activeGeneration !== this.loadGeneration) return;
       const validItems = Array.isArray(items) ? items.filter((item) => item?.handle) : [];
       if (!validItems.length) {
         this.setState('empty');
@@ -405,10 +406,10 @@
           card: await fetchProductCard(item.handle).catch(function () { return null; }),
         }))
       );
-      if (loadGeneration && loadGeneration !== this.loadGeneration) return;
-      if (this.context === 'diagnostic') {
+      if (activeGeneration !== this.loadGeneration) return;
+      if (this.context === 'diagnostic' || this.context === 'account') {
         const privacy = await window.MilauraPreferenceStorage.getPreferenceState({ fresh: true });
-        if (loadGeneration && loadGeneration !== this.loadGeneration) return;
+        if (activeGeneration !== this.loadGeneration) return;
         if (!privacy.available || !privacy.allowed) {
           this.setState('empty');
           return;
@@ -858,7 +859,9 @@
     }
 
     document
-      .querySelectorAll('milaura-recommendations[data-context="recent"], milaura-recommendations[data-context="diagnostic"]')
+      .querySelectorAll(
+        'milaura-recommendations[data-context="recent"], milaura-recommendations[data-context="diagnostic"], milaura-recommendations[data-context="account"]'
+      )
       .forEach((recommendations) => {
         recommendations.loadGeneration += 1;
         if (!event.detail || !event.detail.allowed) {
