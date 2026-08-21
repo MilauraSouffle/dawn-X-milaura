@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-20 14:28 CEST
+Derniere mise a jour : 2026-08-21 08:46 CEST
 
 ## Etat en une phrase
 
-La refonte visible est en phase de finition : le bandeau cookies et le lot 1 du diagnostic sont live ; l audit comptes, emails et lifecycle est ferme et passe maintenant en planification d implementation.
+E1, E2 et E3 sont fermes ; la fondation technique C1-0 existe mais sa preview visuelle est refusee, et la suite est transmise a deux sessions fraiches distinctes pour le compte et les emails.
 
 ## Source de verite et etat du depot
 
@@ -81,7 +81,7 @@ Le controle authentifie a detecte puis fait corriger une selection personnalisee
 
 Anomalie de miroir : `1dccd18c` contient les six fichiers existants du push initial mais omet `assets/milaura-preference-storage.js`. `763d7ad9` reprend exactement les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement ; le canonique et les pullbacks live restent les preuves. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
 
-## E1-E3 fermes, C1-0 en validation Patrice
+## E1-E3 fermes, C1-0 refuse visuellement et transmis
 
 L audit read-only du 2026-08-20 confirme que les comptes clients classiques a mot de passe sont actifs et marques deprécies par Shopify. La creation de compte ne collecte pas de consentement marketing. Les consentements compte, personnalisation, email, SMS et cookies doivent rester distincts.
 
@@ -91,11 +91,15 @@ E1 a versionne les sources reelles dans le depot prive. E2 a supprime le popup, 
 
 Les trois relances finales et les 45 notifications transactionnelles clients ont recu un envoi test a l adresse controlee de la boutique. Trois rappels Shop actifs ne proposent aucun test manuel : retour en stock, baisse de prix et abandon de navigation. Le rappel panier Shop reste inactif. Les notifications compte et commerce utilisent encore l ancienne direction artistique et restent a reprendre dans E4 ; leur envoi test ne vaut pas validation creative.
 
-Le lot C1-0 est implemente dans le depot prive au commit pousse `f4f8a91`. L application extension-only `MilAura Customer Accounts` affiche la page pleine `Mon Ecrin` dans la boutique de developpement `milaura-c1-preview`. Build, controles statiques, structure accessible, desktop, mobile 360/390/430 et navigation native Orders/Profile sont valides. L extension n a aucun scope Admin API, aucun acces API ou reseau et ne lit, ne cree ni ne modifie de donnee cliente. Le theme et les comptes live sont intacts. La validation visuelle de Patrice reste G4.
+Le lot C1-0 a produit une fondation extension-only au commit prive `f4f8a91`, puis un handoff au commit `185c07b`. Build, controles statiques, structure accessible et preview 360/390/430 sont valides techniquement. Patrice refuse toutefois G4 le 2026-08-21 : le rendu est un shell Shopify generique, ne reprend pas assez la page compte actuelle et ne constitue pas une destination MilAura. Le prototype ne doit pas servir de reference visuelle ou fonctionnelle.
+
+La page compte classique actuelle contient deja `milaura-dashboard`, l historique reel des commandes et les produits recemment consultes. Le dashboard lit le diagnostic retenu par `MilauraPreferenceStorage` sous consentement Preferences et restitue profil, pierre, mantra, rituel et recommandations. Cette retention reste locale au navigateur et au panier, sans persistance cliente durable entre appareils.
+
+La reprise fraiche doit conserver cette valeur et ajouter une experience de marque en francais : diagnostic retenu, historique des commandes, espace fidelite pret sans fausse valeur, `Votre pierre preferee` expliquee a partir des commandes eligibles et un bloc `emotion du moment` fonde sur le quiz ou un choix explicite. Le plan des quatre espaces Cercle doit etre challenge avant JSX.
 
 C1-1 ajoutera seulement apres validation et GO distinct les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
 
-References : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`, `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md` et `docs/checkpoints/2026-08-20-2215-c1-0-preview-technique.md`.
+References : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`, `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`, `docs/checkpoints/2026-08-20-2215-c1-0-preview-technique.md` et `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`.
 
 ## Catalogue V1 public
 
@@ -319,8 +323,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. E1, E2 et E3 sont fermes sur validation Patrice.
-2. Obtenir la validation Patrice de C1-0, puis ouvrir C1-1 seulement sur GO distinct pour la persistance durable et la suppression serveur.
-3. Reprendre les notifications commerce une par une dans E4, puis l inscription, le post-achat et les avis dans E5.
+2. Reprendre C1 en session fraiche par un audit compare de la page actuelle et un nouveau concept approuve avant toute reprise du JSX ; C1-1 reste soumis a un GO distinct.
+3. Confier E4, E5 et E6 a une session mail specialist distincte, d abord en lecture seule et preview, sans chevauchement de proprietaire avec la session C1.
 4. Fermer le lifecycle long terme, la deliverabilite et le Worker de retour produit dans E6 et E7.
 5. Continuer en parallele l inventaire physique. Atelier des emotions et cross-sell live restent hors de ce chantier.
 6. Prototyper plus tard la section commerciale, puis poursuivre Pinterest, Journal, SEO global, tracking et Ads sous leurs gates propres.
@@ -339,7 +343,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- preview C1-0 construite et validee techniquement au commit prive `f4f8a91` ; validation Patrice en attente, C1-1 non autorise
+- fondation C1-0 validee techniquement mais G4 refusee le 2026-08-21 ; handoff prive `185c07b`, C1-1 non autorise
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot

@@ -1,12 +1,12 @@
 # MilAura - Handoff master
 
-Date de mise à jour : 2026-08-20 22:15 CEST
+Date de mise à jour : 2026-08-21 08:46 CEST
 
-## Handoff actif - C1-0 en validation Patrice
+## Handoff actif - C1-0 refuse visuellement, deux reprises separees
 
-E1, E2 et E3 sont fermes sur validation de Patrice. C1-0 est construit, valide techniquement et pousse dans le depot prive au commit `f4f8a91`. La page Customer Accounts pleine `Mon Ecrin` est ouverte dans une boutique de developpement pour la validation Patrice. C1-1 et les comptes live restent interdits sans GO distinct.
+E1, E2 et E3 sont fermes sur validation de Patrice. La fondation technique C1-0 est conservee, mais Patrice refuse sa preview visuelle le 2026-08-21. Elle est trop generique et ne reprend pas correctement la page compte actuelle, son diagnostic retenu, ses commandes et la singularite attendue. La suite est divisee entre une session principale C1 et une session mail specialist.
 
-Base minimale obligatoire : `origin/codex/milaura-integration` a `d8abccc4` ou plus recent. `origin/main` est un miroir Shopify incomplet. `assets/milaura-preference-storage.js` est deja dans le canonique et sur le live ; aucune pull request ou integration separee n est requise.
+Base minimale obligatoire : `origin/codex/milaura-integration` a `906c9a0f` ou plus recent. `origin/main` est un miroir Shopify incomplet. `assets/milaura-preference-storage.js` est deja dans le canonique et sur le live ; aucune pull request ou integration separee n est requise.
 
 Faits structurants :
 
@@ -21,10 +21,12 @@ Faits structurants :
 - 45 notifications transactionnelles testees ; trois rappels Shop actifs restent non testables sans evenement reel ;
 - Klaviyo audite sans flow d abandon actif ; Judge.me non configure de facon prouvee ;
 - Worker retour produit a durcir separement.
-- application C1-0 privee : `docs/milaura/shopify-apps/customer-accounts-preview/` sur la branche `codex/milaura-c1-0-customer-accounts-preview-20260820` ;
+- application C1-0 privee : `docs/milaura/shopify-apps/customer-accounts-preview/` sur la branche `codex/milaura-c1-0-customer-accounts-preview-20260820`, handoff `185c07b` ;
 - boutique de developpement C1-0 : `milaura-c1-preview`, store ID `107347837273` ;
-- C1-0 : build et controles statiques verts, desktop et mobile 360/390/430 valides, un H1, navigation native Orders/Profile validee ;
+- C1-0 : build et controles statiques verts, mais G4 refusee ; rendu, hierarchie et contrat fonctionnel non approuves ;
 - extension C1-0 sans scope Admin API, acces API ou reseau ; theme live et comptes live intacts.
+- page compte actuelle : diagnostic local retenu, profil, pierre, rituel, recommandations, commandes, adresses et produits recents deja presents ;
+- nouvelle exigence : diagnostic, commandes, fidelite future, pierre preferee issue des commandes eligibles et emotion du moment issue du quiz ou d un choix explicite.
 
 Architecture C1 recommandee : ne pas construire le definitif sur les comptes legacy. Prototyper les nouveaux comptes Shopify et une extension pleine page `Mon Ecrin`, puis ajouter metafields client, consentement explicite de personnalisation, handoff signe et suppression locale, panier et serveur. Aucune bascule live avant tests de parite et GO distinct.
 
@@ -33,22 +35,24 @@ Ordre de reprise :
 1. `E1 - Verite canonique` : ferme.
 2. `E2 - Neutralisation` : ferme et live.
 3. `E3 - Lifecycle actif` : ferme et actif.
-4. `C1-0` : validation visuelle et fonctionnelle Patrice en attente.
+4. `C1-0` : G4 refusee ; nouveau cadrage et nouveau concept requis dans une session fraiche.
 5. `C1-1` : non autorise ; persistance durable, consentement de personnalisation et suppression serveur seulement sur GO distinct.
-6. `E4` : notifications transactionnelles compte et commerce.
-7. `E5` : inscription, post-achat et avis.
-8. `E6` : lifecycle long terme et certification.
+6. `E4` : session mail specialist distincte, notifications transactionnelles compte et commerce.
+7. `E5` : meme session mail specialist, inscription, post-achat et avis.
+8. `E6` : meme session mail specialist, lifecycle long terme, strategie et deliverabilite.
 9. `E7` : retour produit, idempotence, KV, domaine et secrets.
 
 Cross-sell live, Atelier des emotions et ScratchToReveal sont strictement hors perimetre de cette reprise.
 
-Audit, matrice, tests, architecture et prompt complet : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`.
+Handoff actif, verite de la page compte et deux prompts complets : `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`.
 
 Prompt court :
 
 ```text
-Reprends MilAura au 2026-08-20 depuis origin/codex/milaura-integration a d8abccc4 ou plus recent. E1, E2 et E3 sont fermes. C1-0 est pousse au commit prive f4f8a91 et sa preview Mon Ecrin est validee techniquement ; obtenir la validation Patrice avant toute suite. Ne pas ouvrir C1-1 et ne pas basculer les comptes live sans GO distinct, contrat de donnees, consentement de personnalisation, purge serveur et tests de parite. Ensuite seulement reprendre E4, E5, E6 et E7. Ne jamais merger origin/main aveuglement. Cross-sell live, Atelier des emotions et ScratchToReveal restent hors perimetre.
+SESSION PRINCIPALE C1. Reprends MilAura au 2026-08-21 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura, en mode Plan et lecture seule. Lis AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md et docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md. Verifie Git, worktrees et proprietaires avant toute ecriture. E1-E3 sont fermes. La fondation C1-0 privee existe au commit 185c07b mais G4 est refusee : ne pas la prendre comme reference visuelle. Commence par auditer la page compte actuelle et ses fichiers, puis propose le nouveau concept Mon Ecrin avec diagnostic retenu, commandes, fidelite future sans fausse valeur, pierre preferee issue de commandes eligibles et emotion du moment issue du quiz ou d un choix explicite. Produis ecrans, etats, donnees, consentements, tests, gates et rollback avant JSX. C1-1 et comptes live interdits sans GO distinct. La session mail specialist possede E4-E6. Origin/main ne doit jamais etre merge aveuglement. Cross-sell live, Atelier et ScratchToReveal restent hors perimetre.
 ```
+
+Le second prompt complet pour la session mail specialist est conserve dans `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`.
 
 ## Lot 1 diagnostic et consentement ferme live
 
