@@ -2,7 +2,7 @@
 
 Date : 2026-08-21 08:59 CEST
 
-Derniere synchronisation master : 2026-08-21 17:35 CEST
+Derniere synchronisation master : 2026-08-21 17:51 CEST
 
 ## Mission de la prochaine session
 
@@ -74,9 +74,9 @@ Patrice a ensuite donne mot pour mot le 2026-08-21 : `GO C1 - TRADUCTION TECHNIQ
 
 Ce second GO autorise seulement la traduction fidele du concept dans l extension Customer Accounts privee, six fixtures, build, `shopify app dev` sur la boutique de developpement `milaura-c1-preview` store ID `107347837273`, QA desktop/mobile et preuves. L extension est independante du theme : aucun theme Shopify n est attribue ou autorise. Sont interdits : `shopify app deploy`, `shopify app dev clean`, release, publication, theme CLI, sauvegarde Admin, scopes Admin, `api_access`, `network_access`, donnees clientes, API, persistance serveur, C1-1, switch comptes, emails et live.
 
-La traduction et sa QA runtime sont terminees et poussees a `07aea416`. Shopify a reconnecte la target `customer-account.page.render` sur le store prive `107347837273`. Les six fixtures ont ete controlees a 360, 390, 430 et 1440 px, soit 24 combinaisons, sans page erreur ni overflow racine. Les grilles utilisent `s-query-container` et l ordre recommandations puis recents est stabilise par deux slots persistants. Quatorze PNG canoniques existent. Le master a repasse `npm run check`, le build et `git diff --check`. `shopify app dev` est arrete, aucun process ne reste et la preview n est ni publiee ni live. La seule prochaine gate est le GO visuel Patrice sur les captures.
+La traduction et sa QA runtime sont terminees et poussees a `07aea416`. Shopify a reconnecte la target `customer-account.page.render` sur le store prive `107347837273`. Les six fixtures ont ete controlees a 360, 390, 430 et 1440 px, soit 24 combinaisons, sans page erreur ni overflow racine. Quatorze PNG canoniques existent et le master a repasse le build. Patrice a toutefois explicitement refuse la gate visuelle : rendu froid et generique, loin de la DA live et sans adaptation chromatique a la pierre. La vraie page compte utilise deja `profileAccent` vers `--dash-accent`, absent de la preview. Shopify interdit CSS override et HTML arbitraire dans les Customer Account UI extensions. `07aea416` reste une preuve technique gelee, aucune suite d implementation n est autorisee.
 
-Le micro-lot cookies est integre a `aa3a9930` et pousse uniquement sur le theme de developpement `199421952347`. Le consentement Shopify etait bien persiste ; la regression venait de l affichage fonde seulement sur `shouldShowBanner()`. Le correctif recoupe maintenant les trois decisions de `currentVisitorConsent()`. Acceptation et refus restent caches apres navigation home, PDP et retour home sur desktop et 390 px. Pullback du fichier unique identique par SHA-256. Live `190430282075` intact jusqu au `GO LIVE COOKIES` distinct.
+Le micro-lot cookies est integre a `aa3a9930`, pousse sur le developpement puis sur le live `190430282075` apres `GO LIVE COOKIES.`. Le fichier unique a ete deploye avec `--nodelete`, relu identique par SHA-256, puis teste publiquement en acceptation et refus sur home, PDP, retour home, desktop et 390 px. Le choix accepte a ete restaure. Lot ferme ; checkpoint `docs/checkpoints/2026-08-21-1751-cookie-consent-persistence-live.md`.
 
 Restent obligatoires apres cette preview Shopify privee :
 
@@ -140,7 +140,7 @@ Atelier : prototype prive non integre. Reprendre seulement apres factures, recep
 
 ## Vague parallele a coordonner
 
-1. Master et C1 : traduction et QA runtime privee terminees ; 14 captures attendent le GO visuel Patrice, API, publication et C1-1 restent fermes.
+1. Master et C1 : preuve technique runtime terminee mais gate visuelle refusee ; V2 statique seulement apres nouveau GO, API, publication et C1-1 restent fermes.
 2. Mail specialist : E4 a E6, aucun compte, cookie ou theme hors scope.
 3. Rentree Sodalite : section saisonniere et landing, aucun rail commercial general.
 4. Pinterest Foundations : aucun fichier theme et aucune Ads.
@@ -150,7 +150,7 @@ Chaque session s inscrit dans `docs/workstreams.md` avant sa premiere edition av
 
 ## Reste du plan apres cette vague
 
-1. Obtenir le GO visuel Patrice sur les captures C1, puis exiger nouveau plan et GO distinct avant toute API, persistance ou C1-1 ; S1B/S1C seulement apres fermeture reelle de C1.
+1. Obtenir un nouveau GO Patrice avant toute V2 statique C1 ; cadrer media-first et palette dynamique par pierre, puis exiger encore un plan et des GO distincts avant toute API, persistance ou C1-1 ; S1B/S1C restent bloques.
 2. E7 et fermeture lifecycle/delivrabilite.
 3. Reprise Ruban V3 apres inventaire.
 4. Rail commercial homepage distinct.
@@ -195,7 +195,7 @@ Verifie ensuite Git, origin, tous les worktrees theme et prives, les proprietair
 
 Cap : site capable d atteindre 100 000 EUR de chiffre d affaires. DA MilAura executable. Tiffany & Co. et Van Cleef & Arpels comme references de niveau visuel, sans copie. Ne rouvre pas LFG, longueur PDP, formulations validees du quiz, preuve sociale, cookies ou Ruban V2 sans regression ou nouvelle decision explicite.
 
-P0 : la persistance durable du diagnostic dans Le Cercle reste non resolue. C1-0 reste gele a `185c07b` et le concept statique `Le fil de vos pierres` est valide a `ac57ecf6`. Sa traduction Customer Accounts et sa QA runtime privee sont vertes a `07aea416` : target chargee sur `milaura-c1-preview` store ID `107347837273`, 24 combinaisons reelles, 14 PNG canoniques et build repasse par le master. `shopify app dev` est arrete, aucun process ne reste et aucune publication n existe. Prochaine gate : GO visuel Patrice sur les captures uniquement. API, donnees clientes, persistance serveur, C1-1, publication, Admin, switch comptes, theme, emails et live restent interdits.
+P0 : la persistance durable du diagnostic dans Le Cercle reste non resolue. C1-0 reste gele a `185c07b`. La traduction Customer Accounts et sa QA runtime privee sont vertes a `07aea416`, mais Patrice refuse la gate visuelle : rendu trop froid et generique, palette dynamique par pierre absente. La preuve technique est gelee. Une V2 statique media-first, inspiree des hubs live et adaptee a la pierre, est seulement pre-reservee ; aucun worktree ni fichier ne peut etre cree avant un nouveau GO Patrice. Shopify interdit CSS override et HTML arbitraire dans les extensions, donc ne pas promettre une transposition visuelle identique sans nouvelle decision d architecture. API, donnees clientes, persistance serveur, C1-1, publication, Admin, switch comptes, theme, emails et live restent interdits.
 
 E1-E3 sont fermes. Une session mail specialist distincte reprend E4-E6 ; E7 reste coordonne avec le master. Ne laisse aucun chevauchement sur comptes, consentements ou Admin.
 
