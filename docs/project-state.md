@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-21 14:14 CEST
+Derniere mise a jour : 2026-08-21 16:56 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; le concept statique C1 `Le fil de vos pierres` est valide et sa traduction technique dans une preview Shopify Customer Accounts privee est autorisee, mais le P0 durable reste ouvert et toute API, persistance, C1-1, Admin ou live exige de nouveaux gates distincts.
+La refonte visible est largement avancee ; le concept statique C1 `Le fil de vos pierres` est valide et sa traduction Customer Accounts passe localement, mais la preview Shopify privee est bloquee par la Dev Console avant chargement du bundle. Le P0 durable, l API, la persistance, C1-1, Admin et live restent fermes.
 
 ## Source de verite et etat du depot
 
@@ -104,6 +104,8 @@ La reprise fraiche a produit sur la branche privee `codex/milaura-c1-static-prev
 Patrice a donne mot pour mot le 2026-08-21 : `GO VISUEL ET FONCTIONNEL C1 - PREVIEW STATIQUE VALIDÉE`. Ce GO ferme seulement les gates du concept et de la preview statique. Il n autorise aucune implementation, API, persistance serveur, C1-1, Shopify Admin, lancement d extension, switch comptes, theme, email ou live.
 
 Patrice a ensuite donne mot pour mot le 2026-08-21 : `GO C1 - TRADUCTION TECHNIQUE EN PREVIEW SHOPIFY PRIVÉE, SANS C1-1 NI LIVE`. Ce second GO autorise seulement la traduction fidele dans l extension Customer Accounts privee, six fixtures, le build, `shopify app dev` sur la boutique de developpement `milaura-c1-preview` store ID `107347837273`, la QA et les preuves. Aucun theme Shopify n intervient. API, acces reseau de l extension, lecture ou ecriture de donnees clientes, persistance serveur, C1-1, publication d application, Admin, switch comptes, emails et live restent interdits.
+
+La traduction technique est poussee sur la branche privee `codex/milaura-c1-shopify-private-preview-20260821` au commit `7701d15b86f520cd8cfb99d2e854b5baf878bd7f`. Le validateur, le build Shopify et `git diff --check` sont verts ; scopes Admin, acces API, reseau, stockage et backend restent absents. La Dev Console Shopify voit l application, mais laisse Web, Mobile et `customer-account.page.render` indisponibles ; la route authentifiee echoue avant le chargement du bundle. Deux sessions `shopify app dev` propres reproduisent le blocage. La CLI est arretee ; aucune preuve visuelle runtime ne doit etre declaree et la branche ne doit pas etre integree comme validee visuellement.
 
 C1-1 ajoutera seulement apres nouveau plan technique, tests et GO explicite distinct les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
 
@@ -331,7 +333,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La nouvelle session master reprend l integration a partir de `bd62f13c` ou plus recent, audite les reservations et reste seule proprietaire du live.
-2. Traduire la preview statique C1 validee a `ac57ecf6` dans la seule preview Shopify privee reservee, avec six fixtures, build et QA. Ne lancer aucune API, persistance, C1-1, publication, Admin, switch comptes ou live sans nouveaux GO distincts.
+2. Conserver la traduction C1 locale verte a `7701d15b` sans integration visuelle. Retester uniquement la meme cible sur `milaura-c1-preview` lorsque Shopify la rend accessible, puis fermer la QA desktop/mobile ; ne lancer aucune API, persistance, C1-1, publication, Admin, switch comptes ou live sans nouveaux GO distincts.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Ouvrir un lot homepage dedie `Rentree Sodalite`, separer ses fichiers de tout rail commercial, verifier inventaire, produits, couts, marges et dates, puis obtenir GO visuel et GO live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
@@ -355,7 +357,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- fondation C1-0 validee techniquement mais G4 refusee le 2026-08-21 ; nouveau concept statique `Le fil de vos pierres` valide a `ac57ecf6` ; traduction technique en preview Shopify privee autorisee, mais API, persistance, publication et C1-1 non autorisees
+- fondation C1-0 validee techniquement mais G4 refusee ; concept statique `Le fil de vos pierres` valide a `ac57ecf6` ; traduction Customer Accounts verte localement a `7701d15b`, mais runtime Shopify bloque avant le bundle et QA visuelle non validee ; API, persistance, publication et C1-1 non autorisees
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot

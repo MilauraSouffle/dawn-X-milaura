@@ -2,7 +2,7 @@
 
 Date : 2026-08-21 08:59 CEST
 
-Derniere synchronisation master : 2026-08-21 14:14 CEST
+Derniere synchronisation master : 2026-08-21 16:56 CEST
 
 ## Mission de la prochaine session
 
@@ -45,7 +45,7 @@ Pour Ruban V3, lire sur sa branche :
 - E3 prive : `62132a86`, propre et aligne ;
 - C1-0 prive : `185c07b`, propre et aligne ;
 - C1 statique prive : `ac57ecf68318a2b8998ecaead9370c51b152f782`, propre et aligne ;
-- C1 preview Shopify privee : branche `codex/milaura-c1-shopify-private-preview-20260821`, base `ac57ecf6`, worktree propre et tracking distant actif avant toute edition ;
+- C1 preview Shopify privee : branche `codex/milaura-c1-shopify-private-preview-20260821`, commit `7701d15b86f520cd8cfb99d2e854b5baf878bd7f`, worktree propre et aligne ;
 - aucune mutation Shopify ou live pendant cette cloture.
 
 La nouvelle session doit refaire `git status --short --branch`, `git worktree list --porcelain` et les controles d alignement avant toute reservation ou integration. Ne jamais pousser un theme complet depuis un worktree ancien.
@@ -73,6 +73,8 @@ Ce GO ferme uniquement le concept et la preview statique.
 Patrice a ensuite donne mot pour mot le 2026-08-21 : `GO C1 - TRADUCTION TECHNIQUE EN PREVIEW SHOPIFY PRIVÉE, SANS C1-1 NI LIVE`.
 
 Ce second GO autorise seulement la traduction fidele du concept dans l extension Customer Accounts privee, six fixtures, build, `shopify app dev` sur la boutique de developpement `milaura-c1-preview` store ID `107347837273`, QA desktop/mobile et preuves. L extension est independante du theme : aucun theme Shopify n est attribue ou autorise. Sont interdits : `shopify app deploy`, `shopify app dev clean`, release, publication, theme CLI, sauvegarde Admin, scopes Admin, `api_access`, `network_access`, donnees clientes, API, persistance serveur, C1-1, switch comptes, emails et live.
+
+Le code de traduction est termine et pousse a `7701d15b`. Le validateur, le build Shopify et `git diff --check` passent. La QA runtime reste toutefois bloquee : la Dev Console voit l application mais maintient Web, Mobile et `customer-account.page.render` indisponibles, et la route authentifiee echoue avant le chargement du bundle. Deux sessions propres reproduisent le blocage. `shopify app dev` est arrete ; la preview reste enregistree sur le store sans publication ni clean. Aucun rendu Customer Accounts desktop/mobile n est valide.
 
 Restent obligatoires apres cette preview Shopify privee :
 
@@ -136,7 +138,7 @@ Atelier : prototype prive non integre. Reprendre seulement apres factures, recep
 
 ## Vague parallele a coordonner
 
-1. Master et C1 : traduction technique en preview Shopify privee autorisee, API, publication et C1-1 encore fermes.
+1. Master et C1 : traduction locale terminee, runtime Shopify bloque avant le bundle ; QA visuelle, API, publication et C1-1 encore fermes.
 2. Mail specialist : E4 a E6, aucun compte, cookie ou theme hors scope.
 3. Rentree Sodalite : section saisonniere et landing, aucun rail commercial general.
 4. Pinterest Foundations : aucun fichier theme et aucune Ads.
@@ -146,7 +148,7 @@ Chaque session s inscrit dans `docs/workstreams.md` avant sa premiere edition av
 
 ## Reste du plan apres cette vague
 
-1. Fermer la preview Shopify privee C1, puis nouveau plan et GO distinct avant toute API, persistance ou C1-1 ; S1B/S1C seulement apres fermeture reelle de C1.
+1. Retester la cible privee C1 lorsque Shopify la rend accessible, fermer la QA runtime, puis exiger nouveau plan et GO distinct avant toute API, persistance ou C1-1 ; S1B/S1C seulement apres fermeture reelle de C1.
 2. E7 et fermeture lifecycle/delivrabilite.
 3. Reprise Ruban V3 apres inventaire.
 4. Rail commercial homepage distinct.
@@ -191,7 +193,7 @@ Verifie ensuite Git, origin, tous les worktrees theme et prives, les proprietair
 
 Cap : site capable d atteindre 100 000 EUR de chiffre d affaires. DA MilAura executable. Tiffany & Co. et Van Cleef & Arpels comme references de niveau visuel, sans copie. Ne rouvre pas LFG, longueur PDP, formulations validees du quiz, preuve sociale, cookies ou Ruban V2 sans regression ou nouvelle decision explicite.
 
-P0 : la persistance durable du diagnostic dans Le Cercle reste non resolue. Le lot navigateur sous consentement est live, mais il ne fournit pas la parite entre appareils. C1-0 reste gele a `185c07b`. Le concept statique `Le fil de vos pierres` est valide a `ac57ecf6`. Patrice autorise maintenant sa traduction technique dans une preview Shopify Customer Accounts privee, uniquement sur la boutique de developpement `milaura-c1-preview` store ID `107347837273`, sans theme. API, acces reseau de l extension, donnees clientes, persistance serveur, C1-1, publication, Shopify Admin, switch comptes, theme, emails et live restent interdits. Toute suite apres la preview exige de nouveaux tests et des GO distincts.
+P0 : la persistance durable du diagnostic dans Le Cercle reste non resolue. C1-0 reste gele a `185c07b` et le concept statique `Le fil de vos pierres` est valide a `ac57ecf6`. Sa traduction Customer Accounts est terminee localement a `7701d15b`, sans API, reseau, stockage ou backend. Le build est vert, mais la Dev Console Shopify bloque Web, Mobile et `customer-account.page.render` avant le chargement du bundle ; aucune QA visuelle runtime n est acquise. `shopify app dev` est arrete et la preview reste enregistree sans publication ni clean. Retester seulement la meme cible sur `milaura-c1-preview` store ID `107347837273`. API, donnees clientes, persistance serveur, C1-1, publication, Admin, switch comptes, theme, emails et live restent interdits.
 
 E1-E3 sont fermes. Une session mail specialist distincte reprend E4-E6 ; E7 reste coordonne avec le master. Ne laisse aucun chevauchement sur comptes, consentements ou Admin.
 
