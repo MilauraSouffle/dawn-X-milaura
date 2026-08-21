@@ -2,11 +2,26 @@
 
 Date : 2026-08-05
 
-Derniere mise a jour : 2026-08-16 07:51 CEST
+Derniere mise a jour : 2026-08-21 08:59 CEST
 
-Statut : la refonte visible est en phase de finition. Hero, navigation, dock, selection saisonniere, catalogue V1, hubs editoriaux, nouvelle experience PDP, section 3, occasions et moteur de recommandations sont live. Le Ruban Vivant est en reconstruction mobile dans un worktree dedie. Le chemin critique passe maintenant par les cookies, la persistance du diagnostic dans le Cercle, les emails et inscriptions, le polish UI/UX, l'inventaire reel mene en parallele, l'Atelier des emotions, puis la fermeture SEO, Journal et Pinterest.
+Statut : la refonte visible et ses fondations de conversion sont largement avancees. Hero, navigation, dock, selection saisonniere, catalogue V1, hubs, PDP, Ruban V2, cookies et consentement navigateur du diagnostic sont live. Le chemin critique passe par la reprise de C1 depuis la page compte actuelle, E4 a E7, la verite inventaire et catalogue, la campagne de rentree Sodalite, les fondations Pinterest, puis les gates SEO, mesure et acquisition. Ruban V3 et Atelier sont parques jusqu a leurs validations physiques et commerciales.
 
 Perimetres : theme Shopify, navigation, systeme CTA, reconciliation Git, verite commerciale, Cercle, ScratchToReveal, acquisition et automatisation
+
+## Mise a jour master validee le 2026-08-21 a 08:59 CEST
+
+1. Les etapes 1 a 9 de la sequence canonique sont terminees et live. Le Ruban V2 et les cookies sont egalement termines et live.
+2. Le diagnostic navigateur est maintenant soumis au consentement Preferences et se purge au retrait. Le P0 de persistance cliente durable entre appareils reste entier dans C1.
+3. La fondation C1-0 est techniquement validee mais sa preview est refusee par Patrice le 2026-08-21. La reprise doit partir de la page compte actuelle et obtenir un nouveau GO visuel et fonctionnel avant tout JSX. C1-1 reste non autorise sans gate et GO distincts.
+4. E1, E2 et E3 sont fermes. E4 a E7 restent ouverts dans un lot mail specialist puis lifecycle, avec validation creative, GO Admin et GO live separes.
+5. Patrice a recu les produits destines au prochain travail saisonnier et choisit la Sodalite comme pierre de rentree. Cette decision ouvre un lot de campagne, mais ne prouve pas encore la fermeture de l inventaire complet, des couts, des marges, du stock publiable ou du feed.
+6. La tache Pinterest a termine l analyse de 83 videos et une feuille de route de 29 pages. Les fondations peuvent avancer maintenant. La production finale et les Ads restent sous gates inventaire, fidelite produit, flux, consentement et mesure.
+7. Ruban V3 est parque jusqu a la fin de l inventaire physique et de la mise en ligne fiable du catalogue. Atelier des emotions reste parque jusqu a reception et validation de ses composants propres ; la reception des produits Sodalite ne vaut pas reprise Atelier.
+8. La section de rentree et le rail commercial `Nouveautes / Meilleures ventes / Promotions` sont deux lots homepage distincts. Ils ne doivent jamais modifier les memes fichiers en parallele.
+9. La fermeture du plan conserve Karine et Sur mesure V1, les pages enfants Naissance/Mariage, le Journal, S1B/S1C apres C1, DataForSEO cible puis global, performance, accessibilite, netlinking, GA4, GSC, Merchant Center, lifecycle reel et paid sous gates.
+10. Avant toute campagne payante, la gate minimale est `inventaire + cout complet + marge de contribution + disponibilite + feed + tracking + consentement + parcours de conversion`. Le SEO final seul ne suffit pas.
+
+Checkpoint de reconciliation : `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`.
 
 ## Mise a jour master validee le 2026-08-16 a 07:51 CEST
 

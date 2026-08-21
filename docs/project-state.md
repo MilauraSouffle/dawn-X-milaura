@@ -1,20 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-21 08:46 CEST
+Derniere mise a jour : 2026-08-21 08:59 CEST
 
 ## Etat en une phrase
 
-E1, E2 et E3 sont fermes ; la fondation technique C1-0 existe mais sa preview visuelle est refusee, et la suite est transmise a deux sessions fraiches distinctes pour le compte et les emails.
+La refonte visible est largement avancee ; le P0 durable C1 reste ouvert apres le refus de la preview C1-0, tandis que les lots Mail, Rentree Sodalite et Pinterest peuvent avancer en parallele sous un master unique et des proprietes strictement separees.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
-- `main` reste le miroir automatique du theme Shopify live.
-- L'historique `main` a ete rattache a l'integration par les commits de reconciliation documentes, dont `869d522a` apres la livraison du polish des cartes saisonnieres, sans modifier l'arbre source audite.
-- Les seules branches durables sont `main` et `codex/milaura-integration`. Les branches temporaires sont normalement retirees apres integration ; la branche Navigation V2 reste provisoirement conservee comme repere d'audit apres retrait de son worktree.
+- `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
+- Le canonique verifie avant le handoff est `codex/milaura-integration` a `bd62f13c4b14f7d55c25410c33f9e95d96139a25`, propre et aligne avec origin.
+- Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees paralleles sont declares dans `docs/workstreams.md`. Au controle du 2026-08-17 a 13:12 CEST, les deux worktrees cookies etaient retires apres integration et QA live. Les worktrees actifs restants etaient Atelier des emotions et l audit de matrice Ruban V3, chacun sur sa branche et son perimetre declares.
+- Les worktrees theme conserves au 2026-08-21 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux propres, alignes et parques. Les worktrees prives E1, E3 et C1-0 sont egalement propres et alignes. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -56,6 +56,10 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Direction de banniere Pinterest approuvee pour prototypage, sans GO visuel ni live a ce stade : Chloe debout dans un bar naturel, un verre a la main, devant une scene vegetale, portant les quatre references exactes choisies par Patrice : bracelet dore en aigue-marine naturelle, bague lotus reglable en argent 925 et aigue-marine naturelle, boucles d oreilles dorees en aigue-marine naturelle et collier aventurine verte boho dore. Les produits portes restent clairement visibles et des macros editoriales en partie basse reprennent ces memes references. Le cadrage doit rester robuste aux recadrages Pinterest.
 - Le tableau `Rituels, bougies & purification` est confirme dans l architecture Pinterest. Il est alimente par les bougies, palo santo, sauge, bols tibetains, pendules et produits associes ; il ne doit plus etre considere comme un tableau sans profondeur commerciale.
 - DataForSEO suit deux temps : recherche ciblee si elle doit guider une nouvelle page, puis audit global final lorsque les routes et enrichissements sont stabilises.
+- Decision Patrice du 2026-08-21 : la prochaine campagne saisonniere met la Sodalite en avant et remplace la selection d aout. Les produits destines a ce chantier ont ete recus, mais le lot doit encore verifier la liste exacte, le stock, les couts, les marges, les statuts publics, la landing et les dates avant toute preview ou mise en ligne.
+- Cette reception ne vaut pas gate Atelier. L Atelier reste parque jusqu a reception et validation de ses propres composants, mesures, comptages, prototypes Karine, cout, prix, architecture Shopify et nouveau GO.
+- Organisation annoncee par Patrice : sessions distinctes pour la reprise C1, le polish email, la campagne Rentree Sodalite et les fondations Pinterest. Ruban V3 reprend apres l inventaire et la mise en ligne fiable du catalogue. Une seule session master integre et deploie.
+- La tache Pinterest `01a01eb8-192c-76c1-9fb7-7599654e5e64` a analyse 83 videos, soit 20 h 10, note la formation `14,5/20` et produit une feuille de route de 29 pages. Les fondations peuvent avancer ; aucune Ads avant inventaire, feed, consentement, tracking et economie verifies.
 
 ## Consentement cookies live
 
@@ -322,12 +326,16 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. E1, E2 et E3 sont fermes sur validation Patrice.
-2. Reprendre C1 en session fraiche par un audit compare de la page actuelle et un nouveau concept approuve avant toute reprise du JSX ; C1-1 reste soumis a un GO distinct.
-3. Confier E4, E5 et E6 a une session mail specialist distincte, d abord en lecture seule et preview, sans chevauchement de proprietaire avec la session C1.
-4. Fermer le lifecycle long terme, la deliverabilite et le Worker de retour produit dans E6 et E7.
-5. Continuer en parallele l inventaire physique. Atelier des emotions et cross-sell live restent hors de ce chantier.
-6. Prototyper plus tard la section commerciale, puis poursuivre Pinterest, Journal, SEO global, tracking et Ads sous leurs gates propres.
+1. La nouvelle session master reprend l integration a partir de `bd62f13c` ou plus recent, audite les reservations et reste seule proprietaire du live.
+2. Reprendre C1 en session fraiche par un audit compare de la page actuelle et un nouveau concept approuve avant tout JSX. C1-1 reste soumis a un gate visuel et a un GO distinct.
+3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
+4. Ouvrir un lot homepage dedie `Rentree Sodalite`, separer ses fichiers de tout rail commercial, verifier inventaire, produits, couts, marges et dates, puis obtenir GO visuel et GO live separes.
+5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
+6. Finir en parallele l inventaire physique et la mise en ligne fiable du catalogue. Reprendre ensuite Ruban V3. Atelier reste parque sous son gate physique propre.
+7. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance/Mariage, le Journal, puis S1B/S1C seulement apres C1.
+8. Utiliser DataForSEO de facon ciblee avant les nouvelles pages guidees par la demande, puis executer l audit SEO/AEO/GEO global lorsque les routes sont stables.
+9. Fermer performance, accessibilite, netlinking, GA4, GSC, Merchant Center, lifecycle reel, delivrabilite et parcours de conversion.
+10. Lancer seulement ensuite un pilote Ads borne, apres validation de l inventaire, du cout complet, de la marge de contribution, du feed, du tracking, du consentement et des regles d arret.
 
 ## Dependances encore ouvertes
 
@@ -339,7 +347,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
-- Ruban V3 : direction commerciale décidée, mais matrice complète, ensemble éligible, vidéos Higgsfield, contrat de metafields, implémentation, preview et GO live encore ouverts
+- Ruban V3 : matrice auditee sur 268 produits, 53 candidats forts, 77 a revoir et `0 PRET` sous le contrat strict ; reprise parquee jusqu a l inventaire, aux couts, aux marges, a la disponibilite et au catalogue fiables
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
@@ -348,10 +356,19 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
 - miroir automatique `origin/main` incomplet pour le nouvel asset `assets/milaura-preference-storage.js` au commit `1dccd18c` ; le correctif `763d7ad9` est complet, mais le canonique et les pullbacks restent les preuves du lot 1
-- campagne de rentree ou septembre a preparer avant obsolescence de la selection d'aout
+- Sodalite choisie par Patrice pour la rentree ; produits recus pour ce chantier, mais liste, stock, couts, marges, landing, dates, copy, preview et GO live encore a fermer
+- rail commercial `Nouveautes / Meilleures ventes / Promotions` non construit et a maintenir hors du lot Rentree si les fichiers se chevauchent
+- Karine, preuves d atelier et Sur mesure V1 non termines
+- pages enfants Naissance et Mariage, Journal et clusters encore ouverts
+- S1B et S1C bloques par C1 ; ne jamais restaurer le Scratch sur panier ou PDP
+- E4 a E7 encore ouverts malgre la fermeture E1 a E3
+- paid bloque par la gate inventaire, economie, feed, consentement, tracking, conversion et mesure
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
+- `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`
+- `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
 - `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`
 - `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md`
 - `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`

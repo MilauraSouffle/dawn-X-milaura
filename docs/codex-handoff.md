@@ -1,357 +1,203 @@
-# MilAura - Handoff master
+# Handoff Codex MilAura, reprise master
 
-Date de mise à jour : 2026-08-21 08:46 CEST
+Date : 2026-08-21 08:59 CEST
 
-## Handoff actif - C1-0 refuse visuellement, deux reprises separees
+## Mission de la prochaine session
 
-E1, E2 et E3 sont fermes sur validation de Patrice. La fondation technique C1-0 est conservee, mais Patrice refuse sa preview visuelle le 2026-08-21. Elle est trop generique et ne reprend pas correctement la page compte actuelle, son diagnostic retenu, ses commandes et la singularite attendue. La suite est divisee entre une session principale C1 et une session mail specialist.
+Reprendre le pilotage global MilAura sans implementer aveuglement. La session master audite, reserve, coordonne, integre et reste seule proprietaire du live. Les sessions C1, Mail, Rentree Sodalite et Pinterest travaillent dans des perimetres disjoints.
 
-Base minimale obligatoire : `origin/codex/milaura-integration` a `906c9a0f` ou plus recent. `origin/main` est un miroir Shopify incomplet. `assets/milaura-preference-storage.js` est deja dans le canonique et sur le live ; aucune pull request ou integration separee n est requise.
+Le cap commercial est un site capable d atteindre 100 000 EUR de chiffre d affaires. La charte et la DA MilAura sont les sources executables. Tiffany & Co. et Van Cleef & Arpels donnent le niveau d exigence visuelle, sans copie.
 
-Faits structurants :
+## Lecture obligatoire, dans cet ordre
 
-- comptes classiques a mot de passe actifs, mais deprécies par Shopify ;
-- creation de compte distincte du consentement marketing ;
-- diagnostic persiste localement avec consentement Preferences, mais pas entre appareils ;
-- Mon Ecrin lit le navigateur, pas une source cliente serveur ;
-- `BIENVENUE10`, le popup et la bulle sont supprimes ; le footer reste ;
-- consultation, panier et checkout abandonnes actifs dans Shopify Messaging ;
-- notifications transactionnelles live encore sur l ancienne direction artistique ;
-- sources Notifications, Messaging et Flow versionnees dans le depot prive ;
-- 45 notifications transactionnelles testees ; trois rappels Shop actifs restent non testables sans evenement reel ;
-- Klaviyo audite sans flow d abandon actif ; Judge.me non configure de facon prouvee ;
-- Worker retour produit a durcir separement.
-- application C1-0 privee : `docs/milaura/shopify-apps/customer-accounts-preview/` sur la branche `codex/milaura-c1-0-customer-accounts-preview-20260820`, handoff `185c07b` ;
-- boutique de developpement C1-0 : `milaura-c1-preview`, store ID `107347837273` ;
-- C1-0 : build et controles statiques verts, mais G4 refusee ; rendu, hierarchie et contrat fonctionnel non approuves ;
-- extension C1-0 sans scope Admin API, acces API ou reseau ; theme live et comptes live intacts.
-- page compte actuelle : diagnostic local retenu, profil, pierre, rituel, recommandations, commandes, adresses et produits recents deja presents ;
-- nouvelle exigence : diagnostic, commandes, fidelite future, pierre preferee issue des commandes eligibles et emotion du moment issue du quiz ou d un choix explicite.
-
-Architecture C1 recommandee : ne pas construire le definitif sur les comptes legacy. Prototyper les nouveaux comptes Shopify et une extension pleine page `Mon Ecrin`, puis ajouter metafields client, consentement explicite de personnalisation, handoff signe et suppression locale, panier et serveur. Aucune bascule live avant tests de parite et GO distinct.
-
-Ordre de reprise :
-
-1. `E1 - Verite canonique` : ferme.
-2. `E2 - Neutralisation` : ferme et live.
-3. `E3 - Lifecycle actif` : ferme et actif.
-4. `C1-0` : G4 refusee ; nouveau cadrage et nouveau concept requis dans une session fraiche.
-5. `C1-1` : non autorise ; persistance durable, consentement de personnalisation et suppression serveur seulement sur GO distinct.
-6. `E4` : session mail specialist distincte, notifications transactionnelles compte et commerce.
-7. `E5` : meme session mail specialist, inscription, post-achat et avis.
-8. `E6` : meme session mail specialist, lifecycle long terme, strategie et deliverabilite.
-9. `E7` : retour produit, idempotence, KV, domaine et secrets.
-
-Cross-sell live, Atelier des emotions et ScratchToReveal sont strictement hors perimetre de cette reprise.
-
-Handoff actif, verite de la page compte et deux prompts complets : `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`.
-
-Prompt court :
-
-```text
-SESSION PRINCIPALE C1. Reprends MilAura au 2026-08-21 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura, en mode Plan et lecture seule. Lis AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md et docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md. Verifie Git, worktrees et proprietaires avant toute ecriture. E1-E3 sont fermes. La fondation C1-0 privee existe au commit 185c07b mais G4 est refusee : ne pas la prendre comme reference visuelle. Commence par auditer la page compte actuelle et ses fichiers, puis propose le nouveau concept Mon Ecrin avec diagnostic retenu, commandes, fidelite future sans fausse valeur, pierre preferee issue de commandes eligibles et emotion du moment issue du quiz ou d un choix explicite. Produis ecrans, etats, donnees, consentements, tests, gates et rollback avant JSX. C1-1 et comptes live interdits sans GO distinct. La session mail specialist possede E4-E6. Origin/main ne doit jamais etre merge aveuglement. Cross-sell live, Atelier et ScratchToReveal restent hors perimetre.
-```
-
-Le second prompt complet pour la session mail specialist est conserve dans `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`.
-
-## Lot 1 diagnostic et consentement ferme live
-
-Le lot 1 est implemente, revu, integre par `e96ed097` et live sur `190430282075` apres GO explicite de Patrice. Commit fonctionnel `43e93d10`, documentation `7a68ca5d`, fermeture de developpement `05b8d34b` et correctif authentifie Mon Ecrin `0697785d`, tous pousses sur `origin/codex/milaura-integration`.
-
-Le nouveau contrat `window.MilauraPreferenceStorage` centralise le consentement, la lecture, l ecriture, la migration et la purge du diagnostic. Aucun nouveau cookie diagnostic n est ecrit. Un refus ou retrait explicite purge le navigateur et les attributs panier ; une API Shopify indisponible bloque l usage sans effacer les donnees. Le resultat courant reste utilisable en memoire pendant la visite.
-
-Le push initial a ete limite aux sept fichiers du lot avec `--nodelete`, `--strict` et `--allow-live`. Pullback live 7/7 identique. La QA publique valide refus, acceptation, restauration, retrait sur la meme page, `?show=result` et disparition immediate des recommandations personnalisees.
-
-Mon Ecrin a ete valide dans une vraie session client. Une selection personnalisee residuelle apres retrait a ete detectee, corrigee par `0697785d`, poussee live sur deux fichiers et controlee par pullback 2/2. Profil, diagnostic et selection disparaissent maintenant immediatement au retrait et restent absents apres rechargement. La session de test a ete laissee en refus et son diagnostic purge.
-
-Attention au miroir : `1dccd18c` omet le nouvel asset `assets/milaura-preference-storage.js`, meme si ses six autres fichiers sont exacts. `763d7ad9` contient les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
-
-L audit critique des emails, notifications transactionnelles, inscription et lifecycle est ferme dans le handoff actif ci-dessus. Les popups newsletter et `Bienvenue10` restent desactives et ne doivent pas etre reactives.
-
-## Historique Ruban V3 du 2026-08-17
-
-## Objet de la reprise
-
-Reprendre Ruban V3 sans confondre le système V2 réellement en production, les données Shopify V1 réellement actives et la nouvelle direction commerciale qui reste à construire.
-
-Ce handoff Ruban ne constitue pas une implémentation. Dans son perimetre, aucun fichier theme et aucune donnee Shopify n ont ete modifies le 2026-08-17. Seuls le checkpoint, ce handoff, le snapshot `docs/project-state.md` et la note Obsidian ont ete autorises.
-
-## Addendum transversal : bandeau cookies live
-
-Le lot cookies distinct a ete ferme apres ce handoff Ruban. Le nouveau bandeau gemme est integre par `1980512a` et live sur le theme `190430282075` depuis le 2026-08-17. Son pullback est identique 7/7 a Git et sa QA publique valide le choix personnalise, le refus, l acceptation et la reouverture depuis le footer.
-
-Le chantier cookies n est donc plus une urgence ouverte. La prochaine priorite transversale est l audit critique des emails, notifications transactionnelles, relances lifecycle et du comportement apres inscription. Le perimetre Ruban V3 ci-dessous reste inchange. Reference : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
-
-Le polish valide ensuite par Patrice est live : `Je refuse` est remplace par le lien texte sobre `Continuer sans accepter`, toujours visible, direct, en un clic et avec une cible tactile mobile de 44 px. Deux fichiers seulement ont change, commit `32b37e4e`, pullback live 2/2 identique. Reference : `docs/checkpoints/2026-08-17-1312-cookie-refusal-link-live.md`.
-
-Attention au miroir : `004ce94f` omettait les trois nouveaux assets cookies. Le commit Shopify `7193ed80` ajoute maintenant le CSS au miroir et met a jour le snippet, mais le JavaScript et la gemme restent absents de `origin/main`. Ne pas fusionner `origin/main` aveuglement.
-
-## Décision Patrice du 2026-08-17
-
-Le nouveau cap commercial est ferme :
-
-1. Une PDP montre une seule proposition cross-sell visible.
-2. Cette proposition doit former une parure, un ensemble ou un matching concret et explicable avec le produit consulté.
-3. Le produit recommandé doit être présenté en vidéo.
-4. Higgsfield est retenu pour produire les vidéos du Ruban.
-5. Grok est exclu de ce workflow, car sa fidélité produit n'est pas assez garantie.
-6. Aucun produit visuellement transformé ne peut être accepté.
-
-La fidélité produit impose au minimum le respect de la pierre, de la couleur, du nombre de perles, de la monture, du fermoir, du métal, des proportions et des détails identifiants.
-
-Cette décision est un GO commercial de cadrage. Elle ne vaut pas GO de production Higgsfield, de création de metafields, de mutation Search & Discovery, de code, de preview, de validation visuelle ou de live.
-
-## État Git vérifié
-
-- Dépôt canonique : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
-- Branche canonique : `codex/milaura-integration`.
-- Vérification réseau : `git fetch origin codex/milaura-integration` exécuté le 2026-08-17.
-- HEAD local avant réservation : `97a90f79f5b264922b52f157a120cb291502e2dc`.
-- HEAD distant après fetch : `97a90f79f5b264922b52f157a120cb291502e2dc`.
-- Checkout canonique propre avant réservation.
-- Réservation du lot documentaire : `9bdc52b4abcbd788df83ecaac0bc9fda5873b235`.
-- Branche de ce lot : `codex/milaura-ruban-v3-handoff-20260817`.
-- Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/ruban-v3-handoff-20260817`.
-- Base : `97a90f79f5b264922b52f157a120cb291502e2dc`.
-- `docs/workstreams.md` appartient au master et ne doit pas être repris depuis cette branche.
-
-Worktree fonctionnel parallèle au contrôle :
-
-- Atelier des émotions : `/Users/paesano/Documents/MilAura website/_worktrees/atelier-emotions-20260816` ;
-- branche `codex/milaura-atelier-emotions-20260816` ;
-- propre et alignée sur `origin/codex/milaura-atelier-emotions-20260816` ;
-- entièrement hors périmètre Ruban V3.
-
-## Commits et branches Ruban concernés
-
-| Objet | Branche ou commit source | Intégration ou clôture |
-| --- | --- | --- |
-| Moteur de recommandations partagé | `codex/milaura-recommendation-system-20260814`, `413596f7` | `f89f57b5` |
-| Polish interactions et médias | `codex/milaura-ruban-polish-20260815`, `09fb3fce` | présent dans le canonique |
-| Ruban de parure V2 | `codex/milaura-ruban-parure-v2-20260816`, `222ef44f` | `469212c0`, docs `22ef7ef6` |
-| Matrices commerciales V1 | `codex/milaura-ruban-matrices-commerciales-20260816`, `9b006b25` | `e17e25be`, clôture `cf5ca421` |
-| Mobile root overflow | `codex/milaura-mobile-root-overflow-20260816`, `be96a5d1`, `ffd46c58` | clôture `97a90f79` |
-| Réservation du handoff V3 | `codex/milaura-integration` | `9bdc52b4` |
-
-Les branches Ruban V2, matrices, polish, système de recommandation et mobile overflow sont conservées localement et sur `origin` avec les mêmes tips vérifiés.
-
-## Ce qui est actuellement intégré et live
-
-Ruban de parure V2 est live sur le thème `190430282075`. Ruban V3 ne l'est pas.
-
-Fonctions V2 en production :
-
-- requêtes Shopify Product Recommendations avec `intent=complementary` ;
-- source produit courant ;
-- compléments des articles panier pondérés ;
-- historique récent comme départage après consentement ;
-- exclusion du produit courant, des articles panier, des indisponibles et des doublons ;
-- classement des candidats validés ;
-- ajout panier ;
-- événements `milaura:recommendation_impression`, `milaura:recommendation_click` et `milaura:recommendation_add` ;
-- rail PDP horizontal, clavier, compteur et progression quand plusieurs cartes existent ;
-- masquage de la sticky pendant la traversée du Ruban ;
-- média `milaura.recommendation_cutout` quand il existe, fallback catalogue sinon.
-
-Fichiers V2 live :
-
-1. `assets/milaura-recommendations.css`
-2. `assets/milaura-recommendations.js`
-3. `sections/milaura-recommendation-fragment.liquid`
-4. `sections/milaura-recommendations.liquid`
-5. `snippets/milaura-card-product.liquid`
-6. `snippets/milaura-recommendation-card.liquid`
-7. `snippets/milaura-recommendation-shell.liquid`
-8. `templates/product.json`
-9. `templates/product.milaura-produit.json`
-
-Shopify CLI a confirmé le 2026-08-17 :
-
-- `dawn-X-milaura/main` ;
-- rôle live ;
-- ID `190430282075`.
-
-Un pullback frais des neuf fichiers a été effectué dans `/private/tmp/milaura-ruban-v3-handoff-pullback-20260817.YmegJy`. Résultat : 9/9 identiques au canonique avec `cmp`.
-
-Le thème de développement `199421952347` existe encore et avait servi à Ruban V2. Il n'est pas attribué à V3. Le thème privé `200007713115` appartient à Atelier des émotions et reste interdit à Ruban V3.
-
-## Correction mobile liée mais distincte
-
-Le bug de pan horizontal mobile a été corrigé séparément dans `assets/milaura-product-experience.css` :
-
-- commit fonctionnel `be96a5d1` ;
-- checkpoint `ffd46c58` ;
-- clôture master `97a90f79` ;
-- push live ciblé sur `190430282075` ;
-- pullback SHA-256 `359fc5986dcc8ddfb0fef6779b51704c32eb88ac9850662e985ee2df7b7729f1` ;
-- QA publique 360, 390 et 430 px : racine égale au viewport et `scrollX = 0` ;
-- rail Services interne conservé à 1 470 px et scrollable.
-
-Ce correctif fonctionne et ne doit pas être rouvert sans régression reproductible.
-
-## Matrices Shopify actives
-
-Search & Discovery contient actuellement 9 sources prouvées, réparties en quatre familles et 12 placements dirigés.
-
-| Source | Compléments actifs dans l'ordre public |
-| --- | --- |
-| `10557516644699` Collier obsidienne noire boho doré | `10357431206235`, `10357456601435` |
-| `10357431206235` Boucles obsidienne noire 8 mm | `10557516644699`, `10357456601435` |
-| `10357456601435` Bracelet obsidienne flocon 6 mm | `10557516644699`, `10357431206235` |
-| `10637459095899` Bracelet doré aigue-marine | `10637436584283` |
-| `10637436584283` Boucles dorées aigue-marine | `10637459095899` |
-| `10637436977499` Bague argent 925 améthyste | `10637436715355` |
-| `10637436715355` Collier argenté améthyste | `10637436977499` |
-| `10557523099995` Collier aventurine verte boho doré | `10557518381403` |
-| `10557518381403` Bracelet aventurine verte Halo doré | `10557523099995` |
-
-Vérification publique du 2026-08-17 : 9/9 endpoints `recommendations/products.json?intent=complementary` exacts, sans produit supplémentaire.
-
-## Metafields Shopify actifs
-
-Définition active et documentée :
-
-- `milaura.recommendation_cutout` ;
-- type fichier image ;
-- accès Storefront actif ;
-- identifiant admin `448166265179`.
-
-Valeurs actives :
-
-| Produit | Fichier exact |
-| --- | --- |
-| `10357431206235` | `milaura-reco-cutout-obsidienne-earrings-v1.png` |
-| `10637459095899` | `milaura-ribbon-cutout-aigue-marine-bracelet-v1.png` |
-| `10637436584283` | `milaura-ribbon-cutout-aigue-marine-earrings-v1.png` |
-| `10637436977499` | `milaura-ribbon-cutout-amethyste-ring-v1.png` |
-| `10637436715355` | `milaura-ribbon-cutout-amethyste-necklace-v1.png` |
-
-Vérification publique du 2026-08-17 : 5/5 fragments servent le fichier attendu depuis `/cdn/shop/files/`.
-
-Aucun metafield V3 n'a été créé par ce chantier. Les noms suivants sont seulement des propositions de contrat :
-
-- `milaura.recommendation_video` ;
-- `milaura.cross_sell_reason` ;
-- `milaura.cross_sell_video_override`.
-
-## Mesures du catalogue et limites de la preuve
-
-Le endpoint public `products.json` a retourné le 2026-08-17 :
-
-- 250 produits disponibles sur la première page ;
-- 18 produits disponibles sur la deuxième ;
-- aucun produit sur la troisième ;
-- total observé : 268 produits publics et disponibles au sens storefront.
-
-La couverture source directe V1 est donc `9 / 268`, environ 3,4 %.
-
-Cette mesure ne prouve pas :
-
-- que les 268 produits doivent tous recevoir une association ;
-- le stock physique ;
-- la marge ou la contribution ;
-- les droits média ;
-- l'existence d'une correspondance honnête ;
-- la présence d'une vidéo fidèle.
-
-## Ce qui est seulement recommandé ou estimé
-
-- Construire une matrice V3 pour l'ensemble réellement éligible. Aucune des 268 associations n'existe aujourd'hui.
-- Afficher une seule proposition principale. L'éventuel secours invisible pour rupture ou article déjà au panier reste une recommandation à valider.
-- Regrouper les sources autour de produits ambassadeurs pour éviter une vidéo par PDP.
-- Produire environ 25 à 40 vidéos est un ordre de grandeur, pas un objectif validé.
-- Créer d'abord un petit lot de direction représentatif avec Higgsfield est recommandé, mais aucun GO de production n'est enregistré.
-- Utiliser une vidéo produit dédiée, une raison source-spécifique et un override éventuel pour les parures premium reste un contrat proposé.
-- Transformer le rail PDP multi-cartes en scène unique verticale reste à concevoir, coder et valider.
-- Déclencher la vidéo muette quand la scène entre dans le viewport, la mettre en pause hors écran et conserver un poster pour reduced motion ou économie de données reste à implémenter.
-
-## GO reçus
-
-- 2026-08-16 : GO visuel Ruban V2.
-- 2026-08-16 : GO live Ruban V2.
-- 2026-08-16 : autorisation de nettoyer proprement l'ancienne section remplacée.
-- 2026-08-16 : GO Shopify exact pour 9 sources Search & Discovery, 12 placements et 5 valeurs `milaura.recommendation_cutout`.
-- 2026-08-16 : GO live ciblé pour le correctif mobile root overflow.
-- 2026-08-17 : direction commerciale Ruban V3, une seule proposition visible, vidéo obligatoire, Higgsfield retenu, Grok exclu, aucune transformation produit acceptable.
-- 2026-08-17 : GO documentaire limité au checkpoint, à `docs/project-state.md`, à ce handoff et à la note Obsidian.
-
-## Autorisations manquantes
-
-1. Validation de l'ensemble exact des produits éligibles.
-2. Validation de la matrice exacte source, proposition principale, raison et secours éventuel.
-3. GO de production Higgsfield avec sources, volume, budget ou crédits et direction visuelle.
-4. GO de création des définitions de metafields V3.
-5. GO de saisie ou mutation en masse des données Shopify.
-6. GO de développement et réservation des fichiers Ruban V3.
-7. Attribution d'un thème privé V3.
-8. GO visuel après preview réelle.
-9. GO d'intégration Git.
-10. GO live distinct.
-
-## Risques et inconnues
-
-1. La disponibilité storefront n'est pas une preuve de stock physique.
-2. La taxonomie actuelle comporte des types hétérogènes et des valeurs historiques. Elle ne suffit pas pour créer automatiquement un matching.
-3. Le matching unique doit être meilleur qu'un simple produit similaire. Une proposition faible sera très visible.
-4. Higgsfield peut générer une vidéo esthétiquement réussie mais factuellement fausse. Le contrôle produit exact est bloquant.
-5. Les droits de réutilisation et de transformation des photos fournisseur doivent être prouvés.
-6. Le volume vidéo réel dépend du nombre final de produits ambassadeurs. L'estimation 25 à 40 peut varier.
-7. Les fichiers vidéo doivent être archivés hors du fournisseur avec sources, prompts, génération, modèle, date et sortie finale.
-8. La lecture vidéo peut dégrader LCP, INP ou consommation mobile si le poster, le chargement et les pauses sont mal gérés.
-9. Le code V2 sert plusieurs contextes. La simplification PDP ne doit pas casser panier, drawer, diagnostic, récent ou sélections éditoriales.
-10. Les événements analytiques existent, mais aucun consommateur Pixel confirmé n'est prouvé dans le dépôt.
-11. Les ventes sont trop faibles pour décider seules. Les choix initiaux doivent être éditoriaux et commerciaux, puis mesurés par impressions, clics, ajouts et taux d'attache.
-
-## Prochaines actions, dans l'ordre
-
-1. Réserver un lot Ruban V3 en lecture seule dans `docs/workstreams.md`.
-2. Extraire le catalogue et séparer produit public, disponible storefront, stock réellement vérifié et produit commercialement éligible.
-3. Normaliser les critères nécessaires au matching : famille, type, pierre, métal, couleur, rituel, usage, prix, marge et média.
-4. Produire la matrice complète sans mutation Shopify.
-5. Faire valider les associations par familles par Patrice.
-6. Déduire le nombre réel de produits ambassadeurs et de vidéos nécessaires.
-7. Obtenir le GO de production Higgsfield.
-8. Produire un lot de direction court, puis appliquer le gate de fidélité produit.
-9. Valider le contrat de metafields et obtenir le GO Shopify.
-10. Implémenter V3 dans un worktree isolé et un thème privé attribué.
-11. Tester à 360, 390, 430, 820, 1440, reduced motion et économie de données.
-12. Obtenir le GO visuel, intégrer, obtenir le GO live, pousser des fichiers nommés, pullback et QA publique.
-
-## Lecture obligatoire
-
-1. `AGENTS.md`
+1. `/Users/paesano/Documents/MilAura website/dawn-X-milaura/AGENTS.md`
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
-4. `docs/codex-handoff.md`
-5. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
-6. `docs/checkpoints/2026-08-16-1046-ruban-v2-live.md`
-7. `docs/audits/2026-08-16-ruban-matrices-commerciales-v1.md`
-8. `docs/superpowers/specs/2026-08-16-milaura-ruban-parure-v2.md`
-9. `docs/reference/2026-08-12-repository-workflow.md`
-10. `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
-11. `docs/reference/2026-08-12-copywriting-milaura.md`
+4. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
+5. `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`
+6. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
+7. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
+8. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
+9. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
+10. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
+11. `docs/reference/2026-08-12-repository-workflow.md`
+12. `docs/reference/2026-08-12-copywriting-milaura.md` avant tout texte public
 
-## Interdits de reprise
+Pour Atelier, lire sur sa branche :
 
-- ne pas présenter les 268 associations comme réalisées ;
-- ne pas présenter 25 à 40 vidéos comme un volume validé ;
-- ne pas utiliser Grok dans le workflow vidéo Ruban ;
-- ne pas accepter une vidéo qui transforme le produit ;
-- ne pas muter Shopify avant validation de la matrice exacte et GO explicite ;
-- ne pas créer de metafield V3 sans GO ;
-- ne pas toucher au thème Atelier `200007713115` ;
-- ne pas développer dans le checkout d'intégration ;
-- ne pas déployer un thème complet ;
-- ne pas confondre décision commerciale, GO production, GO Shopify, GO visuel, GO intégration et GO live.
+`/Users/paesano/Documents/MilAura website/_worktrees/atelier-emotions-20260816/docs/checkpoints/2026-08-20-0729-atelier-emotions-pause-handoff.md`
 
-## Prompt de reprise copiable
+Pour Ruban V3, lire sur sa branche :
+
+`/Users/paesano/Documents/MilAura website/_worktrees/ruban-v3-matrix-20260817/docs/audits/2026-08-17-ruban-v3-eligibility-matrix.md`
+
+## Verite Git au handoff
+
+- canonique theme : `codex/milaura-integration` a `bd62f13c4b14f7d55c25410c33f9e95d96139a25`, propre et aligne avec origin avant les ecritures de ce handoff ;
+- miroir Shopify : `origin/main` a `763d7ad94089b9a4c990532863159be9a47fd1a8`, incomplet, ne jamais fusionner aveuglement ;
+- live : `190430282075` ;
+- developpement general : `199421952347` ;
+- Atelier : branche `codex/milaura-atelier-emotions-20260816`, HEAD `2befe429`, theme prive `200007713115`, propre, aligne, parque ;
+- Ruban V3 : branche `codex/milaura-ruban-v3-matrix-20260817`, HEAD `3aa0b66d`, propre, aligne, parque ;
+- E1 prive : `0478c282`, propre et aligne ;
+- E3 prive : `62132a86`, propre et aligne ;
+- C1-0 prive : `185c07b`, propre et aligne ;
+- aucune mutation Shopify ou live pendant cette cloture.
+
+La nouvelle session doit refaire `git status --short --branch`, `git worktree list --porcelain` et les controles d alignement avant toute reservation ou integration. Ne jamais pousser un theme complet depuis un worktree ancien.
+
+## Etat du plan
+
+### Termine et live
+
+- Hero, dock, navigation, catalogue V1, hubs, occasions, selection d aout, PDP et mobile ;
+- Ruban V2 et matrice commerciale V1 ;
+- cookies gemme et lien `Continuer sans accepter` ;
+- consentement navigateur du diagnostic, purge au retrait et restitution locale dans Mon Ecrin ;
+- E1 verite canonique, E2 neutralisation et E3 relances actives.
+
+### P0 ouvert
+
+La persistance durable du diagnostic entre appareils n existe pas encore. Le resultat reste dans le navigateur et le panier sous consentement Preferences. C1 doit fournir une source cliente durable, un consentement explicite de personnalisation, une synchronisation signee et une purge locale, panier et serveur.
+
+C1-0 a prouve la faisabilite technique d une extension Customer Accounts pleine page, mais Patrice a refuse sa preview le 2026-08-21. Elle est trop generique et ignore trop la page compte actuelle. Ne pas reprendre le JSX ni lancer C1-1 avant :
+
+1. audit ecran par ecran de la page actuelle ;
+2. concept Mon Ecrin complet en francais ;
+3. etats avec et sans diagnostic, commandes et fidelite ;
+4. validation visuelle et fonctionnelle Patrice ;
+5. nouveau plan de donnees et de consentement ;
+6. GO distinct pour C1-1 ;
+7. parite, tests et GO distinct avant toute bascule des comptes live.
+
+La page actuelle contient deja le diagnostic local, le profil, la pierre, le rituel, les recommandations, les commandes reelles, les adresses et les produits recemment consultes. Elle est la base minimale, pas la preview C1-0.
+
+### Emails
+
+E1, E2 et E3 sont fermes. Ne pas refaire l audit integral.
+
+- trois relances Messaging actives et testees : consultation `72198390107`, panier `68816961883`, checkout `73633464667` ;
+- 45 notifications transactionnelles clients ont recu un test, sans validation creative ;
+- trois rappels Shop actifs restent non testables sans evenement reel : retour en stock, baisse de prix, abandon de navigation ;
+- rappel panier Shop inactif ;
+- `BIENVENUE10` mort ; popup et bulle retires ; footer newsletter conserve ;
+- Klaviyo sans flow abandon actif prouve ; Judge.me non prouve configure.
+
+E4 a E6 appartiennent a la session mail specialist : systeme visuel email compatible, matrice exhaustive, objets et preheaders francais, inscription consentie, post-achat, avis, retention, pression commerciale, segmentation, delivrabilite et mesure. E7, Worker retour produit, se coordonne avec le master si du code est necessaire.
+
+Validation technique, validation creative Patrice, GO Admin et GO live restent quatre gates differents.
+
+### Rentree Sodalite
+
+Patrice a choisi la Sodalite et indique avoir recu les produits destines a ce travail saisonnier. Cela autorise l ouverture du lot, pas son live automatique.
+
+La session doit commencer read-only, puis faire valider :
+
+- produits exacts, variantes, stock physique et statut public ;
+- cout complet, marge et disponibilite ;
+- dates de debut et fin ;
+- landing ou collection cible ;
+- remplacement propre de la selection d aout ;
+- visuels fideles au produit ;
+- copy selon le guide MilAura ;
+- mobile, desktop, accessibilite, performance et rollback.
+
+`Sodalite, le bleu de la rentree` est un titre de travail issu de la feuille de route Pinterest, pas une formulation publique validee.
+
+Cette session et le futur rail `Nouveautes / Meilleures ventes / Promotions` ne possedent jamais les memes fichiers en parallele. Le rail commercial reste un lot distinct, encore non construit.
+
+### Pinterest
+
+Tache active : `01a01eb8-192c-76c1-9fb7-7599654e5e64`.
+
+L analyse de la formation est terminee : 83 videos, 20 h 10, note `14,5/20`, feuille de route 29 pages. Le livrable est :
+
+`/Users/paesano/.codex/visualizations/2026/08/20/01a01eb8-192c-76c1-9fb7-7599654e5e64/outputs/pinterest-roadmap/PLAN-STRATEGIQUE-PINTEREST-MILAURA-2026.pdf`
+
+Pinterest peut avancer sur securite du compte, coherence, tableaux, SEO, UTM, catalogue, consentement, Tag/CAPI et deduplication. Les briefs creatifs Sodalite peuvent etre prepares. La production finale de masse et les Ads attendent inventaire, fidelite produit, feed, tracking et economie verifies.
+
+### Lots parques
+
+Ruban V3 : matrice 268 produits terminee, 53 candidats forts, 77 a revoir, 110 sans match honnete, 19 exclus et `0 PRET` sous le contrat strict. Reprendre apres inventaire complet, couts, marges, disponibilite et catalogue en ligne fiables. Higgsfield seul, Grok exclu, aucune transformation visuelle du produit.
+
+Atelier : prototype prive non integre. Reprendre seulement apres factures, reception de ses propres composants, comptage A-Z, mesures, prototypes Karine, temps, pertes, cout, prix, architecture Shopify, restitution Admin, revue juridique et nouveau GO. Les produits Sodalite recus ne ferment pas ce gate.
+
+## Vague parallele a coordonner
+
+1. Master et nouvelle session C1 : P0 compte, architecture et integration.
+2. Mail specialist : E4 a E6, aucun compte, cookie ou theme hors scope.
+3. Rentree Sodalite : section saisonniere et landing, aucun rail commercial general.
+4. Pinterest Foundations : aucun fichier theme et aucune Ads.
+5. Inventaire et catalogue : verite produit hors theme.
+
+Chaque session s inscrit dans `docs/workstreams.md` avant sa premiere edition avec proprietaire, branche, worktree, fichiers, theme et mutations interdites. Aucun live hors du master.
+
+## Reste du plan apres cette vague
+
+1. C1-1 apres validation du nouveau concept, puis S1B/S1C seulement apres C1.
+2. E7 et fermeture lifecycle/delivrabilite.
+3. Reprise Ruban V3 apres inventaire.
+4. Rail commercial homepage distinct.
+5. Karine, preuves d atelier et Sur mesure V1.
+6. Pages enfants Naissance et Mariage.
+7. Journal et clusters avec validation humaine.
+8. DataForSEO cible avant les nouvelles pages guidees par la demande.
+9. Audit SEO/AEO/GEO global lorsque les routes sont stables.
+10. Performance, accessibilite, netlinking, GA4, GSC, Merchant Center et tests lifecycle reels.
+11. Pilote Ads seulement apres gate inventaire, cout, marge, offre, feed, tracking, consentement et conversion.
+
+La sequence proposee par Patrice est donc bonne, mais `finir les sessions, faire le SEO, puis Ads` oublie la gate business et mesure. Le SEO final ne remplace ni la marge de contribution, ni le feed, ni le tracking, ni les regles d arret publicitaires.
+
+## Interdits et sujets clos
+
+Ne pas rouvrir sans nouvelle preuve et decision Patrice :
+
+- claim LFG global ;
+- longueur des PDP ;
+- formulations du quiz sur apaisement, protection et energie ;
+- preuve sociale Judge.me avec fallback approuve ;
+- doctrine lithotherapie MilAura, hors promesse medicale ;
+- Ruban V2 et cookies, sauf regression reproductible.
+
+Ne jamais :
+
+- fusionner `origin/main` aveuglement ;
+- pousser un theme complet depuis un worktree ancien ;
+- avoir deux proprietaires des memes fichiers ou du meme theme ;
+- confondre consentement cookies, personnalisation, email, SMS et compte ;
+- annoncer une persistance inter-appareils avant preuve ;
+- lancer Ads sans inventaire, economie, feed, consentement, tracking et stop rules.
+
+## Message de reprise master copiable
 
 ```text
-Reprends le chantier MilAura Ruban V3 au 2026-08-17 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Lis AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md, docs/checkpoints/2026-08-16-1046-ruban-v2-live.md, docs/audits/2026-08-16-ruban-matrices-commerciales-v1.md et docs/superpowers/specs/2026-08-16-milaura-ruban-parure-v2.md. Commence en lecture seule et vérifie Git, les worktrees, les thèmes Shopify et les propriétaires avant toute écriture.
+Reprends le pilotage master MilAura au 2026-08-21 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence en lecture seule.
 
-État prouvé : Ruban V2 est intégré et live sur 190430282075 ; les 9 fichiers live ont été revérifiés 9/9 identiques au canonique le 2026-08-17 ; 9 sources et 12 placements Search & Discovery sont actifs avec 9/9 endpoints exacts ; milaura.recommendation_cutout existe et 5/5 médias sont servis depuis les metafields. Le storefront public comptait 268 produits disponibles au sens Shopify, ce qui ne prouve pas le stock physique.
+Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md, docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md, docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md, docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md, docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md, docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md et le plan canonique docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
 
-Décision Patrice du 2026-08-17 : chaque PDP doit montrer une seule proposition cross-sell visible, en vidéo, avec une parure ou un matching explicable. Higgsfield est le seul outil vidéo retenu. Grok est exclu. Toute transformation visuelle du produit est interdite.
+Verifie ensuite Git, origin, tous les worktrees theme et prives, les proprietaires et les taches actives. Base connue avant le commit de ce handoff : codex/milaura-integration propre et aligne a bd62f13c. origin/main a 763d7ad9 est un miroir Shopify incomplet et ne doit jamais etre fusionne aveuglement. Live 190430282075 ; developpement 199421952347. Une seule session master possede l integration et tout live.
 
-Ne présente pas les 268 associations ou les 25 à 40 vidéos comme réalisées. Aucune matrice V3 complète, aucune vidéo, aucun metafield vidéo, aucun code V3, aucune preview et aucun live V3 n'existent. Avant toute écriture, réserve un lot distinct dans docs/workstreams.md. Première mission : déterminer l'ensemble commercialement éligible, puis produire une matrice exacte source -> proposition principale -> raison -> secours éventuel -> vidéo requise. Distingue les faits, les recommandations et les estimations. Demande le GO de Patrice sur la matrice avant toute mutation Shopify. Obtiens ensuite séparément le GO Higgsfield, le GO metafields/données, le GO développement, le GO visuel, le GO intégration et le GO live.
+Cap : site capable d atteindre 100 000 EUR de chiffre d affaires. DA MilAura executable. Tiffany & Co. et Van Cleef & Arpels comme references de niveau visuel, sans copie. Ne rouvre pas LFG, longueur PDP, formulations validees du quiz, preuve sociale, cookies ou Ruban V2 sans regression ou nouvelle decision explicite.
+
+P0 : la persistance durable du diagnostic dans Le Cercle reste non resolue. Le lot navigateur sous consentement est live, mais il ne fournit pas la parite entre appareils. C1-0 est techniquement valide mais visuellement refuse par Patrice. Repars de la vraie page compte actuelle, qui contient deja diagnostic local, profil, pierre, rituel, recommandations, commandes, adresses et produits recents. Aucun JSX, C1-1 ou switch de comptes live avant nouveau concept, GO visuel/fonctionnel, plan de donnees, tests et GO distincts.
+
+E1-E3 sont fermes. Une session mail specialist distincte reprend E4-E6 ; E7 reste coordonne avec le master. Ne laisse aucun chevauchement sur comptes, consentements ou Admin.
+
+Patrice ouvre en parallele un lot Rentree Sodalite pour remplacer la selection d aout. Les produits de ce lot sont recus, mais la session doit verifier liste exacte, stock, cout, marge, statut public, landing, dates et fidelite visuelle avant preview. Le titre Sodalite, le bleu de la rentree est seulement un titre de travail. Reserve ce lot dans docs/workstreams.md avec branche, worktree et fichiers exacts. Ne construis pas en parallele le rail Nouveautes / Meilleures ventes / Promotions s il touche les memes fichiers.
+
+La tache Pinterest active est 01a01eb8-192c-76c1-9fb7-7599654e5e64. Son analyse de 83 videos et son PDF 29 pages sont termines. Laisse-la avancer sur fondations, tableaux, SEO, UTM, catalogue, consentement, Tag/CAPI et briefs, sans Ads avant inventaire, feed, tracking et economie verifies.
+
+Ruban V3 reste PAUSE/PARQUE a 3aa0b66d jusqu a l inventaire et au catalogue fiables. Atelier reste PAUSE/PARQUE a 2befe429 sur theme prive 200007713115 jusqu a son gate physique propre. La reception des produits Sodalite ne vaut pas reception Atelier.
+
+Avant toute ecriture, audite les nouvelles sessions C1, Mail et Rentree, puis cree ou valide leurs reservations sans chevauchement. Conserve un seul proprietaire de l integration et du live. Audite les retours, recadre les scopes, integre selectivement, push Shopify cible avec --nodelete seulement apres les GO requis, puis pullback et QA publique.
+
+Apres cette vague, n oublie pas : rail commercial homepage, Karine/Sur mesure, pages enfants Naissance/Mariage, Journal, S1B/S1C apres C1, DataForSEO cible puis audit global, performance, accessibilite, netlinking, GA4, GSC, Merchant Center, lifecycle reel et pilote Ads sous gate inventaire + cout + marge + feed + consentement + tracking + conversion.
+
+Commence par me rendre un point factuel : Git/worktrees/proprietaires, sessions actives, conflits de fichiers ou themes, plan des integrations et gates. Aucune mutation avant ce point.
 ```
+
+## Cloture de la session precedente
+
+Checkpoint : `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`.
+
+Cette cloture ne deploie rien. La nouvelle session master doit mettre a jour ce document et le checkpoint suivant lorsqu elle prend effectivement possession du canonique.
