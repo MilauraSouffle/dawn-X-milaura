@@ -54,6 +54,13 @@
     return Boolean(callPrivacy('saleOfDataRegion', false));
   }
 
+  function hasRecordedConsent() {
+    var current = callPrivacy('currentVisitorConsent', {}) || {};
+    return ['analytics', 'marketing', 'preferences'].every(function (category) {
+      return current[category] === 'yes' || current[category] === 'no';
+    });
+  }
+
   function showBanner() {
     window.clearTimeout(leaveTimer);
     root.hidden = false;
@@ -242,7 +249,7 @@
     .then(function (customerPrivacy) {
       privacy = customerPrivacy;
       document.documentElement.classList.add('milaura-cookie-consent-ready');
-      if (callPrivacy('shouldShowBanner', false)) showBanner();
+      if (callPrivacy('shouldShowBanner', false) && !hasRecordedConsent()) showBanner();
     })
     .catch(function () {
       /* Shopify's native banner remains available if its API cannot load. */
