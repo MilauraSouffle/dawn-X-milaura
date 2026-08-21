@@ -2,6 +2,8 @@
 
 Date : 2026-08-21 08:59 CEST
 
+Derniere synchronisation master : 2026-08-21 14:03 CEST
+
 ## Mission de la prochaine session
 
 Reprendre le pilotage global MilAura sans implementer aveuglement. La session master audite, reserve, coordonne, integre et reste seule proprietaire du live. Les sessions C1, Mail, Rentree Sodalite et Pinterest travaillent dans des perimetres disjoints.
@@ -33,8 +35,8 @@ Pour Ruban V3, lire sur sa branche :
 
 ## Verite Git au handoff
 
-- canonique theme : `codex/milaura-integration` a `bd62f13c4b14f7d55c25410c33f9e95d96139a25`, propre et aligne avec origin avant les ecritures de ce handoff ;
-- miroir Shopify : `origin/main` a `763d7ad94089b9a4c990532863159be9a47fd1a8`, incomplet, ne jamais fusionner aveuglement ;
+- canonique theme : `codex/milaura-integration` a `d8fa4e4a0c6b72245552f4cc518dd0c3e2b98e30` ou plus recent, propre et aligne avec origin avant cette synchronisation ;
+- miroir Shopify distant verifie : `origin/main` a `7b8cdb5f61b92915f467cc527d9dd6e265480676`, incomplet, ne jamais fusionner aveuglement ;
 - live : `190430282075` ;
 - developpement general : `199421952347` ;
 - Atelier : branche `codex/milaura-atelier-emotions-20260816`, HEAD `2befe429`, theme prive `200007713115`, propre, aligne, parque ;
@@ -42,6 +44,7 @@ Pour Ruban V3, lire sur sa branche :
 - E1 prive : `0478c282`, propre et aligne ;
 - E3 prive : `62132a86`, propre et aligne ;
 - C1-0 prive : `185c07b`, propre et aligne ;
+- C1 statique prive : `ac57ecf68318a2b8998ecaead9370c51b152f782`, propre et aligne ;
 - aucune mutation Shopify ou live pendant cette cloture.
 
 La nouvelle session doit refaire `git status --short --branch`, `git worktree list --porcelain` et les controles d alignement avant toute reservation ou integration. Ne jamais pousser un theme complet depuis un worktree ancien.
@@ -60,15 +63,17 @@ La nouvelle session doit refaire `git status --short --branch`, `git worktree li
 
 La persistance durable du diagnostic entre appareils n existe pas encore. Le resultat reste dans le navigateur et le panier sous consentement Preferences. C1 doit fournir une source cliente durable, un consentement explicite de personnalisation, une synchronisation signee et une purge locale, panier et serveur.
 
-C1-0 a prouve la faisabilite technique d une extension Customer Accounts pleine page, mais Patrice a refuse sa preview le 2026-08-21. Elle est trop generique et ignore trop la page compte actuelle. Ne pas reprendre le JSX ni lancer C1-1 avant :
+C1-0 a prouve la faisabilite technique d une extension Customer Accounts pleine page, mais Patrice a refuse sa preview le 2026-08-21. Elle reste gelee a `185c07b` et ne sert pas de reference visuelle ou fonctionnelle.
 
-1. audit ecran par ecran de la page actuelle ;
-2. concept Mon Ecrin complet en francais ;
-3. etats avec et sans diagnostic, commandes et fidelite ;
-4. validation visuelle et fonctionnelle Patrice ;
-5. nouveau plan de donnees et de consentement ;
-6. GO distinct pour C1-1 ;
-7. parite, tests et GO distinct avant toute bascule des comptes live.
+La reprise statique a produit `Le fil de vos pierres` sur la branche privee `codex/milaura-c1-static-preview-20260821`, commit `ac57ecf68318a2b8998ecaead9370c51b152f782`. Les six etats, le contrat fonctionnel et les preuves desktop/mobile sont techniquement valides. Patrice a donne mot pour mot le 2026-08-21 : `GO VISUEL ET FONCTIONNEL C1 - PREVIEW STATIQUE VALIDÉE`.
+
+Ce GO ferme uniquement le concept et la preview statique. Restent obligatoires avant toute suite :
+
+1. nouveau plan de traduction technique et de donnees ;
+2. tests des contraintes reelles Shopify Customer Accounts ;
+3. GO explicite distinct pour une extension ou une API ;
+4. GO explicite distinct pour C1-1 et la persistance serveur ;
+5. parite, tests et GO distinct avant toute bascule des comptes live.
 
 La page actuelle contient deja le diagnostic local, le profil, la pierre, le rituel, les recommandations, les commandes reelles, les adresses et les produits recemment consultes. Elle est la base minimale, pas la preview C1-0.
 
@@ -124,7 +129,7 @@ Atelier : prototype prive non integre. Reprendre seulement apres factures, recep
 
 ## Vague parallele a coordonner
 
-1. Master et nouvelle session C1 : P0 compte, architecture et integration.
+1. Master et C1 : concept statique valide, implementation et C1-1 encore fermes.
 2. Mail specialist : E4 a E6, aucun compte, cookie ou theme hors scope.
 3. Rentree Sodalite : section saisonniere et landing, aucun rail commercial general.
 4. Pinterest Foundations : aucun fichier theme et aucune Ads.
@@ -134,7 +139,7 @@ Chaque session s inscrit dans `docs/workstreams.md` avant sa premiere edition av
 
 ## Reste du plan apres cette vague
 
-1. C1-1 apres validation du nouveau concept, puis S1B/S1C seulement apres C1.
+1. Nouveau plan et GO technique distinct avant toute extension ou C1-1, puis S1B/S1C seulement apres fermeture reelle de C1.
 2. E7 et fermeture lifecycle/delivrabilite.
 3. Reprise Ruban V3 apres inventaire.
 4. Rail commercial homepage distinct.
@@ -179,7 +184,7 @@ Verifie ensuite Git, origin, tous les worktrees theme et prives, les proprietair
 
 Cap : site capable d atteindre 100 000 EUR de chiffre d affaires. DA MilAura executable. Tiffany & Co. et Van Cleef & Arpels comme references de niveau visuel, sans copie. Ne rouvre pas LFG, longueur PDP, formulations validees du quiz, preuve sociale, cookies ou Ruban V2 sans regression ou nouvelle decision explicite.
 
-P0 : la persistance durable du diagnostic dans Le Cercle reste non resolue. Le lot navigateur sous consentement est live, mais il ne fournit pas la parite entre appareils. C1-0 est techniquement valide mais visuellement refuse par Patrice. Repars de la vraie page compte actuelle, qui contient deja diagnostic local, profil, pierre, rituel, recommandations, commandes, adresses et produits recents. Aucun JSX, C1-1 ou switch de comptes live avant nouveau concept, GO visuel/fonctionnel, plan de donnees, tests et GO distincts.
+P0 : la persistance durable du diagnostic dans Le Cercle reste non resolue. Le lot navigateur sous consentement est live, mais il ne fournit pas la parite entre appareils. C1-0 reste gele a `185c07b`. Le nouveau concept statique `Le fil de vos pierres` est valide visuellement et fonctionnellement par Patrice au commit prive `ac57ecf6`. Cette validation ne donne aucun GO pour implementation, API, persistance serveur, C1-1, Shopify Admin, lancement d extension, switch comptes, theme, emails ou live. Toute suite exige un nouveau plan, des tests et des GO distincts.
 
 E1-E3 sont fermes. Une session mail specialist distincte reprend E4-E6 ; E7 reste coordonne avec le master. Ne laisse aucun chevauchement sur comptes, consentements ou Admin.
 

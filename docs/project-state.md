@@ -1,20 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-21 08:59 CEST
+Derniere mise a jour : 2026-08-21 14:03 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; le P0 durable C1 reste ouvert apres le refus de la preview C1-0, tandis que les lots Mail, Rentree Sodalite et Pinterest peuvent avancer en parallele sous un master unique et des proprietes strictement separees.
+La refonte visible est largement avancee ; le concept statique C1 `Le fil de vos pierres` est valide visuellement et fonctionnellement par Patrice, mais le P0 durable reste ouvert et toute implementation C1-1, API, Admin ou live exige de nouveaux gates distincts.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant le handoff est `codex/milaura-integration` a `bd62f13c4b14f7d55c25410c33f9e95d96139a25`, propre et aligne avec origin.
+- Le canonique verifie avant cette synchronisation est `codex/milaura-integration` a `d8fa4e4a0c6b72245552f4cc518dd0c3e2b98e30` ou plus recent, propre et aligne avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees theme conserves au 2026-08-21 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux propres, alignes et parques. Les worktrees prives E1, E3 et C1-0 sont egalement propres et alignes. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
+- Les worktrees theme conserves au 2026-08-21 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux propres, alignes et parques. Les worktrees prives E1, E3, Mail E4-E6, C1-0 et C1 statique sont propres et alignes. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -85,7 +85,7 @@ Le controle authentifie a detecte puis fait corriger une selection personnalisee
 
 Anomalie de miroir : `1dccd18c` contient les six fichiers existants du push initial mais omet `assets/milaura-preference-storage.js`. `763d7ad9` reprend exactement les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement ; le canonique et les pullbacks live restent les preuves. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
 
-## E1-E3 fermes, C1-0 refuse visuellement et transmis
+## E1-E3 fermes, C1-0 refuse et nouveau concept statique C1 valide
 
 L audit read-only du 2026-08-20 confirme que les comptes clients classiques a mot de passe sont actifs et marques deprécies par Shopify. La creation de compte ne collecte pas de consentement marketing. Les consentements compte, personnalisation, email, SMS et cookies doivent rester distincts.
 
@@ -95,13 +95,15 @@ E1 a versionne les sources reelles dans le depot prive. E2 a supprime le popup, 
 
 Les trois relances finales et les 45 notifications transactionnelles clients ont recu un envoi test a l adresse controlee de la boutique. Trois rappels Shop actifs ne proposent aucun test manuel : retour en stock, baisse de prix et abandon de navigation. Le rappel panier Shop reste inactif. Les notifications compte et commerce utilisent encore l ancienne direction artistique et restent a reprendre dans E4 ; leur envoi test ne vaut pas validation creative.
 
-Le lot C1-0 a produit une fondation extension-only au commit prive `f4f8a91`, puis un handoff au commit `185c07b`. Build, controles statiques, structure accessible et preview 360/390/430 sont valides techniquement. Patrice refuse toutefois G4 le 2026-08-21 : le rendu est un shell Shopify generique, ne reprend pas assez la page compte actuelle et ne constitue pas une destination MilAura. Le prototype ne doit pas servir de reference visuelle ou fonctionnelle.
+Le lot C1-0 a produit une fondation extension-only au commit prive `f4f8a91`, puis un handoff au commit `185c07b`. Build, controles statiques, structure accessible et preview 360/390/430 sont valides techniquement. Patrice refuse toutefois G4 le 2026-08-21 : le rendu est un shell Shopify generique, ne reprend pas assez la page compte actuelle et ne constitue pas une destination MilAura. Ce prototype reste gele et ne sert pas de reference visuelle ou fonctionnelle.
 
 La page compte classique actuelle contient deja `milaura-dashboard`, l historique reel des commandes et les produits recemment consultes. Le dashboard lit le diagnostic retenu par `MilauraPreferenceStorage` sous consentement Preferences et restitue profil, pierre, mantra, rituel et recommandations. Cette retention reste locale au navigateur et au panier, sans persistance cliente durable entre appareils.
 
-La reprise fraiche doit conserver cette valeur et ajouter une experience de marque en francais : diagnostic retenu, historique des commandes, espace fidelite pret sans fausse valeur, `Votre pierre preferee` expliquee a partir des commandes eligibles et un bloc `emotion du moment` fonde sur le quiz ou un choix explicite. Le plan des quatre espaces Cercle doit etre challenge avant JSX.
+La reprise fraiche a produit sur la branche privee `codex/milaura-c1-static-preview-20260821` le concept statique `Le fil de vos pierres`, commit `ac57ecf68318a2b8998ecaead9370c51b152f782`. Il conserve le diagnostic, les commandes, la pierre preferee expliquee, l emotion explicitement sourcee et la fidelite a venir sans valeur inventee. Les six etats, le contrat fonctionnel, les preuves desktop/mobile et l audit master technique sont valides.
 
-C1-1 ajoutera seulement apres validation et GO distinct les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
+Patrice a donne mot pour mot le 2026-08-21 : `GO VISUEL ET FONCTIONNEL C1 - PREVIEW STATIQUE VALIDÉE`. Ce GO ferme seulement les gates du concept et de la preview statique. Il n autorise aucune implementation, API, persistance serveur, C1-1, Shopify Admin, lancement d extension, switch comptes, theme, email ou live.
+
+C1-1 ajoutera seulement apres nouveau plan technique, tests et GO explicite distinct les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
 
 References : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`, `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`, `docs/checkpoints/2026-08-20-2215-c1-0-preview-technique.md` et `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`.
 
@@ -327,7 +329,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La nouvelle session master reprend l integration a partir de `bd62f13c` ou plus recent, audite les reservations et reste seule proprietaire du live.
-2. Reprendre C1 en session fraiche par un audit compare de la page actuelle et un nouveau concept approuve avant tout JSX. C1-1 reste soumis a un gate visuel et a un GO distinct.
+2. Conserver la preview statique C1 validee a `ac57ecf6` comme reference de conception. Ne lancer aucune traduction technique, extension, API ou C1-1 avant un nouveau plan, des tests et un GO explicite distinct.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Ouvrir un lot homepage dedie `Rentree Sodalite`, separer ses fichiers de tout rail commercial, verifier inventaire, produits, couts, marges et dates, puis obtenir GO visuel et GO live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
@@ -351,7 +353,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- fondation C1-0 validee techniquement mais G4 refusee le 2026-08-21 ; handoff prive `185c07b`, C1-1 non autorise
+- fondation C1-0 validee techniquement mais G4 refusee le 2026-08-21 ; nouveau concept statique `Le fil de vos pierres` valide par Patrice a `ac57ecf6` ; implementation, API et C1-1 non autorises
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
