@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-21 16:56 CEST
+Derniere mise a jour : 2026-08-21 17:35 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; le concept statique C1 `Le fil de vos pierres` est valide et sa traduction Customer Accounts passe localement, mais la preview Shopify privee est bloquee par la Dev Console avant chargement du bundle. Le P0 durable, l API, la persistance, C1-1, Admin et live restent fermes.
+La refonte visible est largement avancee ; le concept C1 `Le fil de vos pierres`, sa traduction Customer Accounts et sa QA runtime privee sont verts, avec validation visuelle Patrice encore requise. Le correctif du bandeau cookies est valide sur le theme de developpement mais pas live. Le P0 durable, l API, la persistance, C1-1, Admin et live restent fermes.
 
 ## Source de verite et etat du depot
 
@@ -63,13 +63,15 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 
 ## Consentement cookies live
 
-Le nouveau bandeau cookies MilAura est live depuis le 2026-08-17 sur le theme `190430282075`. Il remplace entierement l ancien skin Shopify et son `MutationObserver`. Les 293 lignes de l ancien CSS cookies ont ete retirees.
+Le nouveau bandeau cookies MilAura est live depuis le 2026-08-17 sur le theme `190430282075`. Il remplace entierement l ancien skin Shopify et son `MutationObserver`. Les 293 lignes de l ancien CSS cookies ont ete retirees. Une regression de reaffichage apres consentement a ete reproduite le 2026-08-21 ; le live reste intact pendant sa correction.
 
 Le composant utilise la gemme quartz rose detouree validee par Patrice, monte depuis le bas et reste limite a `20svh`. Le premier niveau propose maintenant le lien texte `Continuer sans accepter`, `Je choisis mes cookies` et `J’accepte`. Le refus reste visible, direct, en un clic et conserve une cible tactile de 44 px sur mobile. Le dialogue detaille gere Preferences, Mesure d audience et Marketing, avec les cookies essentiels toujours actifs. Le lien `Gerer mes cookies` du footer permet de rouvrir les choix.
 
 Shopify Customer Privacy reste le moteur de consentement et de persistance. Le bandeau natif Shopify reste le secours si l API ne charge pas. Le push live a ete strictement limite a sept fichiers avec `--nodelete`, `--strict` et `--allow-live`. Le pullback est identique 7/7 a Git. La QA publique a valide le rendu 390 et 1440 px, le choix personnalise, le refus, l acceptation et la reouverture avec restitution exacte des categories.
 
 Commit source `6bbc36bb`, integration canonique `1980512a`. Le polish du refus est integre par `32b37e4e`, deploye sur le live avec un pullback 2/2 identique et documente dans `docs/checkpoints/2026-08-17-1312-cookie-refusal-link-live.md`. Checkpoint initial : `docs/checkpoints/2026-08-17-1238-cookie-consent-gem-live.md`.
+
+Le 2026-08-21, Chrome a confirme le defaut exact : apres `J accepte`, le bandeau disparait, mais reapparait sur une PDP alors que le panneau `Gerer mes cookies` restitue Preferences, Analytics et Marketing comme acceptes. Le consentement Shopify est donc persiste ; la regression vient de `assets/milaura-cookie-consent.js`, qui faisait confiance a `shouldShowBanner()` sans verifier les decisions deja enregistrees. Le correctif integre par `aa3a9930` exige maintenant a la fois la demande d affichage Shopify et l absence d une decision explicite `yes` ou `no` dans l une des trois categories. Il a ete pousse uniquement sur le theme de developpement `199421952347`, puis relu identique par SHA-256. QA Chrome : acceptation et refus, home vers PDP puis retour home, desktop et 390 px sans reaffichage. Le live `190430282075` attend un `GO LIVE COOKIES` distinct. Les erreurs `Failed to fetch` du privacy banner Shopify et des Web Pixels restent visibles et relevent du suivi tracking separe ; elles n ont pas empeche la persistance ni la validation du correctif.
 
 Anomalie de miroir a conserver : le commit automatique Shopify `004ce94f` ne contenait que quatre des sept fichiers deployes. Le commit Shopify suivant `7193ed80` ajoute le CSS cookies au miroir et met a jour le snippet, mais `assets/milaura-cookie-consent.js` et `assets/milaura-cookie-gem.webp` restent absents de `origin/main`. Le live reste prouve par les pullbacks et la QA publique. Ne pas fusionner `origin/main` aveuglement ni utiliser son arbre seul pour reconstruire ce lot.
 
@@ -105,7 +107,7 @@ Patrice a donne mot pour mot le 2026-08-21 : `GO VISUEL ET FONCTIONNEL C1 - PREV
 
 Patrice a ensuite donne mot pour mot le 2026-08-21 : `GO C1 - TRADUCTION TECHNIQUE EN PREVIEW SHOPIFY PRIVÉE, SANS C1-1 NI LIVE`. Ce second GO autorise seulement la traduction fidele dans l extension Customer Accounts privee, six fixtures, le build, `shopify app dev` sur la boutique de developpement `milaura-c1-preview` store ID `107347837273`, la QA et les preuves. Aucun theme Shopify n intervient. API, acces reseau de l extension, lecture ou ecriture de donnees clientes, persistance serveur, C1-1, publication d application, Admin, switch comptes, emails et live restent interdits.
 
-La traduction technique est poussee sur la branche privee `codex/milaura-c1-shopify-private-preview-20260821` au commit `7701d15b86f520cd8cfb99d2e854b5baf878bd7f`. Le validateur, le build Shopify et `git diff --check` sont verts ; scopes Admin, acces API, reseau, stockage et backend restent absents. La Dev Console Shopify voit l application, mais laisse Web, Mobile et `customer-account.page.render` indisponibles ; la route authentifiee echoue avant le chargement du bundle. Deux sessions `shopify app dev` propres reproduisent le blocage. La CLI est arretee ; aucune preuve visuelle runtime ne doit etre declaree et la branche ne doit pas etre integree comme validee visuellement.
+La traduction technique et sa QA runtime sont poussees sur la branche privee `codex/milaura-c1-shopify-private-preview-20260821` au commit `07aea4169eed9d2813c72e89b2618a8650f676ce`. Apres la relance demandee par Patrice, Shopify s est reconnecte et la target `customer-account.page.render` a charge sur le store prive `107347837273`. La matrice reelle couvre les six fixtures a 360, 390, 430 et 1440 px, soit 24 combinaisons, sans page erreur ni overflow racine. Les grilles Customer Accounts utilisent maintenant `s-query-container` et une condition `inline-size >` ; les deux emplacements persistants stabilisent recommandations puis produits recents. Quatorze PNG canoniques documentent desktop et mobile. Le master a repasse `npm run check`, le build Shopify et `git diff --check` ; le worktree est propre et aligne. `shopify app dev` est arrete et aucun process ne reste. La gate suivante est exclusivement la validation visuelle de Patrice sur ces captures. API, donnees clientes, persistance serveur, C1-1, publication, Admin, switch comptes, theme, emails et live restent interdits.
 
 C1-1 ajoutera seulement apres nouveau plan technique, tests et GO explicite distinct les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
 
@@ -333,7 +335,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La nouvelle session master reprend l integration a partir de `bd62f13c` ou plus recent, audite les reservations et reste seule proprietaire du live.
-2. Conserver la traduction C1 locale verte a `7701d15b` sans integration visuelle. Retester uniquement la meme cible sur `milaura-c1-preview` lorsque Shopify la rend accessible, puis fermer la QA desktop/mobile ; ne lancer aucune API, persistance, C1-1, publication, Admin, switch comptes ou live sans nouveaux GO distincts.
+2. Soumettre les 14 captures C1 a Patrice pour la seule gate visuelle ; conserver `07aea416` prive et ne lancer aucune API, persistance, C1-1, publication, Admin, switch comptes ou live sans nouveaux GO distincts.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Ouvrir un lot homepage dedie `Rentree Sodalite`, separer ses fichiers de tout rail commercial, verifier inventaire, produits, couts, marges et dates, puis obtenir GO visuel et GO live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
@@ -357,9 +359,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- fondation C1-0 validee techniquement mais G4 refusee ; concept statique `Le fil de vos pierres` valide a `ac57ecf6` ; traduction Customer Accounts verte localement a `7701d15b`, mais runtime Shopify bloque avant le bundle et QA visuelle non validee ; API, persistance, publication et C1-1 non autorisees
+- fondation C1-0 validee techniquement mais G4 refusee ; concept statique `Le fil de vos pierres` valide a `ac57ecf6` ; traduction Customer Accounts et runtime prive verts a `07aea416` sur 24 combinaisons, 14 captures en attente du GO visuel Patrice ; API, persistance, publication et C1-1 non autorisees
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
-- bandeau cookies gemme live depuis le 2026-08-17 ; ne rouvrir que sur regression reproductible ou nouvelle decision de consentement
+- regression du bandeau cookies reproduite le 2026-08-21 ; correctif `aa3a9930` integre et valide sur developpement `199421952347`, live encore intact en attente d un GO live distinct
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
 - miroir automatique `origin/main` incomplet pour le nouvel asset `assets/milaura-preference-storage.js` au commit `1dccd18c` ; le correctif `763d7ad9` est complet, mais le canonique et les pullbacks restent les preuves du lot 1
 - Sodalite choisie par Patrice pour la rentree ; produits recus pour ce chantier, mais liste, stock, couts, marges, landing, dates, copy, preview et GO live encore a fermer
