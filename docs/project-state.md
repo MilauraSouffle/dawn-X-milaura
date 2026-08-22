@@ -1,20 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-21 17:51 CEST
+Derniere mise a jour : 2026-08-22 12:35 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; le correctif du bandeau cookies est ferme et live. C1 est valide techniquement et fonctionnellement mais refuse visuellement ; une V2 statique media-first et dynamique par pierre reste bloquee avant toute ecriture par un nouveau GO Patrice. Le P0 durable, l API, la persistance, C1-1 et le switch live restent fermes.
+La refonte visible est largement avancee ; C1 V3 est techniquement et visuellement validee en preview Shopify privee puis gelee a `d8d036ff`, mais C1-1, les vraies donnees, la persistance durable, l Admin, la bascule des comptes et le live restent fermes jusqu a un nouveau plan et des GO distincts.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant cette synchronisation est `codex/milaura-integration` a `d8fa4e4a0c6b72245552f4cc518dd0c3e2b98e30` ou plus recent, propre et aligne avec origin.
+- Le canonique verifie avant ce handoff est `codex/milaura-integration` a `7cd851eb328b6db35046fdba63238a0c8953cb39` ou plus recent, propre et aligne avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees theme conserves au 2026-08-21 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux propres, alignes et parques. Les worktrees prives E1, E3, Mail E4-E6, C1-0, C1 statique et C1 preview Shopify privee sont propres et alignes a leur reservation. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
+- Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite a `05fb43be` sur son theme prive. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -87,33 +87,37 @@ Le controle authentifie a detecte puis fait corriger une selection personnalisee
 
 Anomalie de miroir : `1dccd18c` contient les six fichiers existants du push initial mais omet `assets/milaura-preference-storage.js`. `763d7ad9` reprend exactement les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement ; le canonique et les pullbacks live restent les preuves. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
 
-## E1-E3 fermes, C1-0 refuse et nouveau concept statique C1 valide
+## E1-E3 fermes et C1 V3 privee fermee
 
-L audit read-only du 2026-08-20 confirme que les comptes clients classiques a mot de passe sont actifs et marques deprécies par Shopify. La creation de compte ne collecte pas de consentement marketing. Les consentements compte, personnalisation, email, SMS et cookies doivent rester distincts.
+L audit read-only du 2026-08-20 confirme que les comptes clients classiques a mot de passe sont actifs et marques deprecies par Shopify. La creation de compte ne collecte pas de consentement marketing. Les consentements compte, personnalisation, email, SMS et cookies restent des contrats distincts. E1, E2 et E3 sont fermes depuis le 2026-08-20. E4 a E6 restent coordonnes par la session Mail, sans chevauchement C1.
 
-Mon Ecrin restaure seulement le diagnostic local du navigateur. Le Flow `Order created` qui copie `quiz_profile` vers un tag et `milaura.last_profile_handle` ne fournit ni diagnostic complet, ni lecture par Mon Ecrin, ni purge serveur. La persistance durable inter-appareils reste a construire dans C1.
+La vraie page compte actuelle contient deja le diagnostic local, le profil, la pierre, le rituel, les recommandations, les commandes, les adresses et les produits recemment consultes. `MilauraPreferenceStorage` reste une retention navigateur et panier sous consentement Preferences. Le Flow `Order created` et `milaura.last_profile_handle` ne fournissent ni diagnostic complet, ni lecture canonique par Mon Ecrin, ni purge serveur, ni parite inter-appareils.
 
-E1 a versionne les sources reelles dans le depot prive. E2 a supprime le popup, la bulle et `BIENVENUE10`, tout en conservant le footer. E3 a certifie consultation, panier et checkout actifs, avec sujets francais et avantages commerciaux valides. Patrice a ferme E1, E2 et E3 le 2026-08-20.
+C1-0 reste une preuve technique rejetee visuellement a `185c07b`. Le concept statique `Le fil de vos pierres` a ete valide a `ac57ecf6`, puis sa premiere traduction Shopify privee a `07aea416` a ete refusee visuellement. La V2 statique media-first a ete poussee a `02ac01ab`, son delta produit phare V2.1 a `cecb7769`, et Patrice a valide ce delta le 2026-08-22.
 
-Les trois relances finales et les 45 notifications transactionnelles clients ont recu un envoi test a l adresse controlee de la boutique. Trois rappels Shop actifs ne proposent aucun test manuel : retour en stock, baisse de prix et abandon de navigation. Le rappel panier Shop reste inactif. Les notifications compte et commerce utilisent encore l ancienne direction artistique et restent a reprendre dans E4 ; leur envoi test ne vaut pas validation creative.
+La traduction finale C1 V3 vit sur la branche privee `codex/milaura-c1-v3-shopify-private-preview-20260822`, commit `d8d036ff7725c93168d24b9270da54de657ad6af`, base `cecb7769644695dbab2329e3ae55d1e5f5ec805f`. Elle utilise uniquement des fixtures fictives sur la boutique de developpement `milaura-c1-preview`, store ID `107347837273`. Les cinq profils disposent de photographies produit exactes, les six etats ont ete controles a 360, 390, 430 et 1440 px, et les gates G1 a G4 sont passees. Aucun scope, acces API, reseau, stockage, persistance ou donnee cliente reelle n est present.
 
-Le lot C1-0 a produit une fondation extension-only au commit prive `f4f8a91`, puis un handoff au commit `185c07b`. Build, controles statiques, structure accessible et preview 360/390/430 sont valides techniquement. Patrice refuse toutefois G4 le 2026-08-21 : le rendu est un shell Shopify generique, ne reprend pas assez la page compte actuelle et ne constitue pas une destination MilAura. Ce prototype reste gele et ne sert pas de reference visuelle ou fonctionnelle.
+Patrice a donne le 2026-08-22 le GO exact `GO VISUEL C1 V3 - PREVIEW SHOPIFY PRIVÉE VALIDÉE`. G5 est donc ferme pour cette preview seulement. La session C1 ferme proprement : worktree V3 et distant alignes a `d8d036ff`, aucun listener app dev sur `64112` ou `3457`, aucun deploy, release, Admin, theme ou live. V3 reste une preuve UX et runtime sur fixtures, pas un artefact de production. Le lot est gele en lecture seule.
 
-La page compte classique actuelle contient deja `milaura-dashboard`, l historique reel des commandes et les produits recemment consultes. Le dashboard lit le diagnostic retenu par `MilauraPreferenceStorage` sous consentement Preferences et restitue profil, pierre, mantra, rituel et recommandations. Cette retention reste locale au navigateur et au panier, sans persistance cliente durable entre appareils.
+### Gates obligatoires avant une future release C1-1
 
-La reprise fraiche a produit sur la branche privee `codex/milaura-c1-static-preview-20260821` le concept statique `Le fil de vos pierres`, commit `ac57ecf68318a2b8998ecaead9370c51b152f782`. Il conserve le diagnostic, les commandes, la pierre preferee expliquee, l emotion explicitement sourcee et la fidelite a venir sans valeur inventee. Les six etats, le contrat fonctionnel, les preuves desktop/mobile et l audit master technique sont valides.
+C1-1 n est pas ouvert. Aucun branchement, worktree, app dev, Admin, API, persistance ou live ne peut commencer sans nouveau GO explicite de Patrice et reservation master. Une future release doit fermer les gates suivants :
 
-Patrice a donne mot pour mot le 2026-08-21 : `GO VISUEL ET FONCTIONNEL C1 - PREVIEW STATIQUE VALIDÉE`. Ce GO ferme seulement les gates du concept et de la preview statique. Il n autorise aucune implementation, API, persistance serveur, C1-1, Shopify Admin, lancement d extension, switch comptes, theme, email ou live.
+1. remplacer les six fixtures et les selecteurs QA par les vraies donnees du compte ;
+2. lire de facon reelle et bornee commandes, adresses et profil via la surface Customer Accounts retenue ;
+3. choisir une source canonique durable du diagnostic, un schema versionne et un consentement explicite de personnalisation ;
+4. definir un handoff signe et idempotent depuis `MilauraPreferenceStorage` vers le compte, sans secret navigateur ;
+5. assurer la synchronisation inter-appareils, la resolution explicite des conflits et un mode hors ligne date ;
+6. garantir la purge locale, panier et serveur avec recu, reprise partielle et prevention de resurrection ;
+7. fermer le registre produit ou variant vers pierre pour historique, retours, annulations, remboursements, egalites, cadeaux et produits sans pierre ;
+8. brancher les vrais liens produit et collection, retirer toutes les actions simulees et traiter les etats d erreur production ;
+9. fermer securite, retention, audit, migration, observabilite, tests de parite et rollback ;
+10. valider sur comptes de test, coordonner les emails de compte avec Mail, traiter le francais du shell natif et obtenir un GO Admin distinct avant toute bascule ;
+11. obtenir un GO live explicite seulement apres toutes les gates precedentes.
 
-Patrice a ensuite donne mot pour mot le 2026-08-21 : `GO C1 - TRADUCTION TECHNIQUE EN PREVIEW SHOPIFY PRIVÉE, SANS C1-1 NI LIVE`. Ce second GO autorise seulement la traduction fidele dans l extension Customer Accounts privee, six fixtures, le build, `shopify app dev` sur la boutique de developpement `milaura-c1-preview` store ID `107347837273`, la QA et les preuves. Aucun theme Shopify n intervient. API, acces reseau de l extension, lecture ou ecriture de donnees clientes, persistance serveur, C1-1, publication d application, Admin, switch comptes, emails et live restent interdits.
+La fin du SEO, Pinterest, Rentree Sodalite, Ruban V3 et Atelier ne bloque pas le demarrage d un futur plan C1-1. Pour une release, Mail doit coordonner les emails de compte avant un switch ; l inventaire et le catalogue fiables doivent fermer le mapping commande-vers-pierre et les destinations produit. La fidelite reelle n est pas un prerequis : le bloc `A venir` reste honnete. S1B et S1C sont downstream et ne bloquent pas C1-1.
 
-La traduction technique et sa QA runtime sont poussees sur la branche privee `codex/milaura-c1-shopify-private-preview-20260821` au commit `07aea4169eed9d2813c72e89b2618a8650f676ce`. La target `customer-account.page.render` a charge sur le store prive `107347837273` et la matrice reelle couvre les six fixtures a 360, 390, 430 et 1440 px, soit 24 combinaisons, sans page erreur ni overflow racine. Quatorze PNG canoniques documentent desktop et mobile. Le master a repasse `npm run check`, le build Shopify et `git diff --check` ; le worktree est propre et aligne.
-
-Patrice a explicitement refuse la gate visuelle C1 le 2026-08-21. Le contrat fonctionnel et les features sont acceptes, mais le rendu est juge froid, generique et eloigne de Van Cleef ainsi que de la DA live des pages `Bijoux par pierre` et `Cadeaux d anniversaire de mariage`. Exigence minimale : l univers visuel de Mon Ecrin doit s adapter a la couleur de la pierre revelee. La vraie page compte possede deja ce principe via `profileAccent` et `--dash-accent`, perdu dans la preview Polaris. La contrainte Shopify est structurelle : une Customer Account UI extension ne peut ni surcharger le CSS des composants ni rendre du HTML arbitraire ; elle utilise les composants Shopify et le branding marchand statique. La preview `07aea416` est gelee en lecture seule. Une pre-reservation V2 statique existe, mais aucune branche, aucun worktree et aucune ecriture ne sont autorises avant un nouveau GO explicite de Patrice. API, donnees clientes, persistance serveur, C1-1, publication, Admin, switch comptes, theme, emails et live restent interdits.
-
-C1-1 ajoutera seulement apres nouveau plan technique, tests et GO explicite distinct les metafields client, le consentement explicite de personnalisation, le handoff signe, la synchronisation et la suppression locale, panier et serveur. Aucun changement du type de comptes live avant tests de parite et GO distinct.
-
-References : `docs/checkpoints/2026-08-20-1031-comptes-emails-lifecycle-audit-handoff.md`, `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`, `docs/checkpoints/2026-08-20-2215-c1-0-preview-technique.md` et `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`.
+References : `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`, `docs/milaura/shopify-admin-canonical/c1-v3-shopify-private-preview/2026-08-22-c1-v3-evidence.md` sur la branche privee, `docs/workstreams.md` et `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`.
 
 ## Catalogue V1 public
 
@@ -336,8 +340,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. La nouvelle session master reprend l integration a partir de `bd62f13c` ou plus recent, audite les reservations et reste seule proprietaire du live.
-2. Conserver `07aea416` comme preuve technique gelee et ne demarrer la V2 statique media-first, palette dynamique par pierre, qu apres un nouveau GO Patrice ; ne lancer aucune extension, API, persistance, C1-1, publication, Admin, switch comptes ou live.
+1. La session master conserve seule l integration et le live a partir de `7cd851eb` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
+2. Conserver C1 V3 `d8d036ff` comme preuve UX et runtime privee fermee ; ne reserver aucun lot C1-1, app dev, API, persistance, Admin, bascule de comptes ou live sans nouveau GO explicite et sans plan fermant les onze gates canoniques.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Ouvrir un lot homepage dedie `Rentree Sodalite`, separer ses fichiers de tout rail commercial, verifier inventaire, produits, couts, marges et dates, puis obtenir GO visuel et GO live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
@@ -361,7 +365,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- fondation C1-0 validee techniquement mais G4 refusee ; traduction Customer Accounts et runtime prive verts a `07aea416`, mais gate visuelle refusee par Patrice ; V2 statique media-first et dynamique par pierre seulement apres nouveau GO ; API, persistance, publication et C1-1 non autorisees
+- C1 V3 privee fermee a `d8d036ff` avec G1 a G5 passes ; elle reste une preuve sur fixtures, pas un artefact live ; C1-1, vraies donnees, API, persistance, Admin, bascule de comptes et live non autorises avant nouveau GO et fermeture des onze gates canoniques
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
@@ -370,12 +374,13 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - rail commercial `Nouveautes / Meilleures ventes / Promotions` non construit et a maintenir hors du lot Rentree si les fichiers se chevauchent
 - Karine, preuves d atelier et Sur mesure V1 non termines
 - pages enfants Naissance et Mariage, Journal et clusters encore ouverts
-- S1B et S1C bloques par C1 ; ne jamais restaurer le Scratch sur panier ou PDP
+- S1B et S1C sont downstream de C1 mais ne bloquent pas le demarrage d un futur plan C1-1 ; ne jamais restaurer le Scratch sur panier ou PDP
 - E4 a E7 encore ouverts malgre la fermeture E1 a E3
 - paid bloque par la gate inventaire, economie, feed, consentement, tracking, conversion et mesure
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
 - `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
 - `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`
 - `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
