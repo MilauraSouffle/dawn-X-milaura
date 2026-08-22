@@ -2,13 +2,39 @@
 <script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
-  assign campaign_asset = section.settings.campaign_asset | default: 'milaura-selection-aout-lagon.webp'
+  assign campaign_asset = section.settings.campaign_asset
+  assign campaign_worn_asset = section.settings.campaign_worn_asset
   assign featured_1 = section.settings.featured_product_1
   assign featured_2 = section.settings.featured_product_2
   assign featured_3 = section.settings.featured_product_3
   assign featured_4 = section.settings.featured_product_4
   assign seasonal_title_id = 'MilauraSeasonalTitle-' | append: section.id
+  assign rendered_count = 0
+  assign editorial_inserted = false
 -%}
+
+{%- capture editorial_tile -%}
+  {%- if campaign_worn_asset != blank -%}
+    <div class="milaura-seasonal-products__editorial" role="listitem">
+      <img
+        class="milaura-seasonal-products__editorial-image"
+        src="{{ campaign_worn_asset | asset_url }}"
+        alt="{{ section.settings.campaign_worn_alt | escape }}"
+        width="1024"
+        height="1024"
+        loading="lazy"
+      >
+      <div class="milaura-seasonal-products__editorial-copy">
+        {%- if section.settings.campaign_worn_label != blank -%}
+          <span>{{ section.settings.campaign_worn_label | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.campaign_worn_text != blank -%}
+          <p>{{ section.settings.campaign_worn_text | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
 
 {%- style -%}
   #shopify-section-{{ section.id }} {
@@ -17,8 +43,6 @@
   }
 
   #MilauraSeasonalCollection-{{ section.id }} {
-    position: relative;
-    isolation: isolate;
     margin-top: calc(-1 * var(--header-height-desktop));
     overflow: hidden;
     color: var(--milaura-encre);
@@ -26,66 +50,88 @@
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
-    position: relative;
-    min-height: clamp(520px, 42vw, 590px);
-    display: flex;
-    align-items: flex-start;
-    padding: calc(var(--header-height-desktop) + clamp(44px, 4vw, 64px)) 0 clamp(44px, 5vw, 64px);
-    overflow: hidden;
-    background: var(--milaura-nacre) url('{{ campaign_asset | asset_url }}') center 44% / cover no-repeat;
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro::before {
-    content: '';
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    pointer-events: none;
+    padding-top: var(--header-height-desktop);
+    border-bottom: var(--milaura-filet-mineral);
     background: var(--milaura-nacre);
-    opacity: 0.58;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro-shell {
-    position: relative;
-    z-index: 1;
     width: min(1400px, calc(100% - clamp(32px, 7vw, 108px)));
+    min-height: 268px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.7fr);
+    gap: clamp(34px, 5vw, 78px);
+    align-items: stretch;
     margin: 0 auto;
   }
 
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-section-heading {
-    width: min(100%, 720px);
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__copy {
+    align-self: center;
+    padding: clamp(34px, 4vw, 52px) 0;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__eyebrow {
+    margin: 0 0 var(--milaura-esp-xs);
+    color: var(--milaura-aigue-profonde);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 700;
+    letter-spacing: var(--milaura-ls-label);
+    line-height: var(--milaura-lh-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title {
+    margin: 0;
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h1);
+    font-weight: 400;
+    letter-spacing: var(--milaura-ls-heading);
+    line-height: var(--milaura-lh-heading);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__text {
+    max-width: 66ch;
+    margin: var(--milaura-esp-sm) 0 0;
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-corps);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__text p {
+    margin: 0;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta {
-    width: fit-content;
-    max-width: 100%;
     display: flex;
+    flex-wrap: wrap;
+    gap: var(--milaura-esp-sm);
     align-items: center;
-    margin: clamp(22px, 2.8vw, 34px) 0 0;
+    margin-top: var(--milaura-esp-md);
     color: var(--milaura-aigue-profonde);
-    font-family: var(--milaura-font-signature);
-    font-size: clamp(21px, 1.8vw, 27px);
-    font-weight: 600;
-    letter-spacing: 0;
-    line-height: var(--milaura-lh-signature);
-  }
-
-  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span {
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-    padding-right: var(--milaura-esp-md);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 650;
+    letter-spacing: var(--milaura-ls-label);
+    line-height: var(--milaura-lh-label);
+    text-transform: uppercase;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span + span {
-    padding-left: var(--milaura-esp-md);
+    padding-left: var(--milaura-esp-sm);
     border-left: var(--milaura-filet-or);
   }
 
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__mineral {
+    min-height: 268px;
+    background: var(--milaura-nacre-ombre) url('{{ campaign_asset | asset_url }}') center / cover no-repeat;
+    border-inline: var(--milaura-filet-mineral);
+  }
+
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products {
-    position: relative;
-    padding: clamp(58px, 7vw, 96px) 0 clamp(76px, 9vw, 128px);
-    border-top: var(--milaura-filet-mineral);
+    padding: clamp(34px, 4vw, 58px) 0 clamp(76px, 9vw, 128px);
     background: var(--milaura-nacre);
   }
 
@@ -97,7 +143,7 @@
   #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(20px, 2.3vw, 36px) clamp(16px, 1.8vw, 28px);
+    gap: clamp(22px, 2.5vw, 38px) clamp(16px, 1.8vw, 28px);
     align-items: stretch;
   }
 
@@ -112,8 +158,53 @@
     height: auto;
   }
 
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial {
+    grid-column: span 2;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(180px, 0.85fr);
+    overflow: hidden;
+    border: var(--milaura-filet-mineral);
+    background: var(--milaura-nacre-pure);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial-image {
+    width: 100%;
+    height: 100%;
+    min-height: 320px;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial-copy {
+    align-self: center;
+    padding: clamp(24px, 3vw, 42px);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial-copy span {
+    display: block;
+    margin-bottom: var(--milaura-esp-xs);
+    color: var(--milaura-aigue-profonde);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 700;
+    letter-spacing: var(--milaura-ls-label);
+    line-height: var(--milaura-lh-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial-copy p {
+    margin: 0;
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h3);
+    font-weight: 400;
+    line-height: var(--milaura-lh-heading);
+  }
+
   #MilauraSeasonalCollection-{{ section.id }} .grid__card:focus-visible {
-    outline: 3px solid var(--milaura-aigue-profonde);
+    outline: var(--milaura-focus);
     outline-offset: 5px;
   }
 
@@ -130,13 +221,21 @@
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
-      padding-top: calc(var(--header-height-tablet) + 42px);
+      padding-top: var(--header-height-tablet);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro-shell {
+      grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.65fr);
     }
   }
 
   @media screen and (max-width: 989px) {
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial {
+      grid-column: span 2;
     }
   }
 
@@ -146,37 +245,42 @@
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro {
-      min-height: 470px;
-      padding: calc(var(--header-height-mobile) + 20px) 0 40px;
-      background-position: 58% center;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro::before {
-      opacity: 0.64;
+      padding-top: var(--header-height-mobile);
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__intro-shell {
-      width: calc(100% - 36px);
+      width: 100%;
+      min-height: 0;
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__copy {
+      padding: 30px 18px 26px;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__title {
+      font-size: var(--milaura-t-h2);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__text {
+      margin-top: var(--milaura-esp-xs);
+      font-size: var(--milaura-t-petit);
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta {
-      margin-top: 20px;
-      font-size: 19px;
+      margin-top: var(--milaura-esp-sm);
     }
 
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span {
-      min-height: 34px;
-      justify-content: center;
-      padding: 2px 12px 2px 0;
-      text-align: center;
-    }
-
-    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__meta span + span {
-      padding-left: 12px;
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-landing__mineral {
+      min-height: 116px;
+      border-inline: 0;
+      border-top: var(--milaura-filet-mineral);
+      background-position: center 46%;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products {
-      padding: 38px 0 82px;
+      padding: 28px 0 82px;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__shell {
@@ -185,8 +289,26 @@
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px 12px;
+      gap: 20px 12px;
       padding: 0 14px;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial {
+      grid-column: span 2;
+      grid-template-columns: 1fr;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial-image {
+      min-height: 0;
+      aspect-ratio: 1 / 1;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial-copy {
+      padding: var(--milaura-esp-md);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-seasonal-products__editorial-copy p {
+      font-size: var(--milaura-t-corps-large);
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-editorial-purchase__add span {
@@ -198,56 +320,89 @@
 <div id="MilauraSeasonalCollection-{{ section.id }}" class="milaura-seasonal-landing">
   <section class="milaura-seasonal-landing__intro" aria-labelledby="{{ seasonal_title_id }}">
     <div class="milaura-seasonal-landing__intro-shell">
-      {% render 'milaura-section-heading',
-        eyebrow: section.settings.campaign_date,
-        title: section.settings.campaign_title,
-        text: section.settings.campaign_text,
-        heading_tag: 'h1',
-        heading_id: seasonal_title_id,
-        align: 'left',
-        size: 'hero',
-        eyebrow_style: 'signature'
-      %}
+      <div class="milaura-seasonal-landing__copy">
+        {%- if section.settings.campaign_eyebrow != blank -%}
+          <p class="milaura-seasonal-landing__eyebrow">{{ section.settings.campaign_eyebrow | escape }}</p>
+        {%- endif -%}
 
-      <div class="milaura-seasonal-landing__meta" aria-label="Informations sur la sélection">
-        <span>{{ collection.products_count }} créations</span>
-        {%- if section.settings.edition_label != blank -%}<span>{{ section.settings.edition_label | escape }}</span>{%- endif -%}
+        <h1 id="{{ seasonal_title_id }}" class="milaura-seasonal-landing__title">
+          {{ section.settings.campaign_title | escape }}
+        </h1>
+
+        {%- if section.settings.campaign_text != blank -%}
+          <div class="milaura-seasonal-landing__text">{{ section.settings.campaign_text }}</div>
+        {%- endif -%}
+
+        <div class="milaura-seasonal-landing__meta" aria-label="Informations sur la sélection">
+          {%- if section.settings.edition_label != blank -%}
+            <span>{{ section.settings.edition_label | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.show_product_count -%}
+            <span>{{ collection.products_count }} créations</span>
+          {%- endif -%}
+        </div>
       </div>
+
+      <div class="milaura-seasonal-landing__mineral" aria-hidden="true"></div>
     </div>
   </section>
 
   <section class="milaura-seasonal-products" aria-label="Les créations de la sélection">
     <div class="milaura-seasonal-products__shell">
       {%- paginate collection.products by 48 -%}
-        {%- if collection.products_count > 0 -%}
+        {%- if collection.products_count > 0 or featured_1 != blank or featured_2 != blank or featured_3 != blank or featured_4 != blank -%}
           <div class="milaura-seasonal-products__grid milaura-cards milaura-cards--editorial" role="list">
             {%- if featured_1 != blank -%}
+              {%- assign rendered_count = rendered_count | plus: 1 -%}
               <div class="milaura-seasonal-products__card" role="listitem">
-                {% render 'milaura-card-product', card_product: featured_1, img_loading: 'lazy', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
+                {% render 'milaura-card-product', card_product: featured_1, img_loading: 'eager', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
                 {% render 'milaura-editorial-purchase', product: featured_1 %}
               </div>
+              {%- if rendered_count == 4 and editorial_tile != blank -%}
+                {{ editorial_tile }}
+                {%- assign editorial_inserted = true -%}
+              {%- endif -%}
             {%- endif -%}
+
             {%- if featured_2 != blank -%}
+              {%- assign rendered_count = rendered_count | plus: 1 -%}
               <div class="milaura-seasonal-products__card" role="listitem">
                 {% render 'milaura-card-product', card_product: featured_2, img_loading: 'lazy', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
                 {% render 'milaura-editorial-purchase', product: featured_2 %}
               </div>
+              {%- if rendered_count == 4 and editorial_tile != blank -%}
+                {{ editorial_tile }}
+                {%- assign editorial_inserted = true -%}
+              {%- endif -%}
             {%- endif -%}
+
             {%- if featured_3 != blank -%}
+              {%- assign rendered_count = rendered_count | plus: 1 -%}
               <div class="milaura-seasonal-products__card" role="listitem">
                 {% render 'milaura-card-product', card_product: featured_3, img_loading: 'lazy', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
                 {% render 'milaura-editorial-purchase', product: featured_3 %}
               </div>
+              {%- if rendered_count == 4 and editorial_tile != blank -%}
+                {{ editorial_tile }}
+                {%- assign editorial_inserted = true -%}
+              {%- endif -%}
             {%- endif -%}
+
             {%- if featured_4 != blank -%}
+              {%- assign rendered_count = rendered_count | plus: 1 -%}
               <div class="milaura-seasonal-products__card" role="listitem">
                 {% render 'milaura-card-product', card_product: featured_4, img_loading: 'lazy', show_vendor: false, show_badges: section.settings.show_badges, show_secondary_image: true, force_bestseller_badge: false %}
                 {% render 'milaura-editorial-purchase', product: featured_4 %}
               </div>
+              {%- if rendered_count == 4 and editorial_tile != blank -%}
+                {{ editorial_tile }}
+                {%- assign editorial_inserted = true -%}
+              {%- endif -%}
             {%- endif -%}
 
             {%- for product in collection.products -%}
               {%- unless product.handle == featured_1.handle or product.handle == featured_2.handle or product.handle == featured_3.handle or product.handle == featured_4.handle -%}
+                {%- assign rendered_count = rendered_count | plus: 1 -%}
                 <div class="milaura-seasonal-products__card" role="listitem">
                   {% render 'milaura-card-product',
                     card_product: product,
@@ -259,8 +414,16 @@
                   %}
                   {% render 'milaura-editorial-purchase', product: product %}
                 </div>
+                {%- if rendered_count == 4 and editorial_tile != blank -%}
+                  {{ editorial_tile }}
+                  {%- assign editorial_inserted = true -%}
+                {%- endif -%}
               {%- endunless -%}
             {%- endfor -%}
+
+            {%- if editorial_inserted == false and rendered_count > 0 and editorial_tile != blank -%}
+              {{ editorial_tile }}
+            {%- endif -%}
           </div>
         {%- else -%}
           <p class="milaura-seasonal-products__empty">La sélection arrive très bientôt.</p>
@@ -279,32 +442,57 @@
     {
       "type": "text",
       "id": "campaign_asset",
-      "label": "Nom du visuel dans les assets",
-      "default": "milaura-selection-aout-lagon.webp"
+      "label": "Nom du fond minéral dans les assets"
     },
     {
       "type": "text",
-      "id": "campaign_title",
-      "label": "Titre de la campagne",
+      "id": "campaign_eyebrow",
+      "label": "Sur-titre",
       "default": "La sélection de Karine"
     },
     {
       "type": "text",
-      "id": "campaign_date",
-      "label": "Date de la campagne",
-      "default": "Août 2026"
+      "id": "campaign_title",
+      "label": "Titre H1",
+      "default": "La sélection"
     },
     {
-      "type": "textarea",
+      "type": "richtext",
       "id": "campaign_text",
       "label": "Introduction",
-      "default": "Des créations choisies par Karine pour leurs reflets dorés, leurs pierres naturelles et leur lumière estivale."
+      "default": "<p>Découvrez les produits choisis ce mois-ci par Karine.</p>"
     },
     {
       "type": "text",
       "id": "edition_label",
-      "label": "Édition",
-      "default": "Édition août 2026"
+      "label": "Édition"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Afficher le nombre de produits",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "campaign_worn_asset",
+      "label": "Nom du visuel porté dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_worn_alt",
+      "label": "Texte alternatif du visuel porté"
+    },
+    {
+      "type": "text",
+      "id": "campaign_worn_label",
+      "label": "Libellé du visuel porté",
+      "default": "Porté au quotidien"
+    },
+    {
+      "type": "textarea",
+      "id": "campaign_worn_text",
+      "label": "Texte du visuel porté"
     },
     {
       "type": "product",
