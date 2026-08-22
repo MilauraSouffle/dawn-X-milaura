@@ -1,7 +1,7 @@
 # Rentree Sodalite : pause a 70 %
 
-Date : 2026-08-22 16:45 CEST  
-Reprise demandee : 2026-08-31  
+Date : 2026-08-22 16:45 CEST
+Reprise demandee : 2026-08-31
 Decisionnaire visuel : Patrice Allié
 
 ## Decision
