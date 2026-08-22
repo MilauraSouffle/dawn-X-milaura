@@ -27,7 +27,7 @@ La preuve C1 V3 au commit `d8d036ff7725c93168d24b9270da54de657ad6af` reste gelee
 - les zones V3 `docs/milaura/shopify-apps/customer-accounts-v3-preview/**` et `docs/milaura/shopify-admin-canonical/c1-v3-shopify-private-preview/**` sont des sources en lecture seule ;
 - `docs/workstreams.md`, le theme MilAura, les emails, les autres lots C1 et tout autre fichier sont exclus de la session C1-1.
 
-L audit initial confirme que la branche et le worktree reserves n existent pas localement. La verification distante a ete bloquee par la resolution DNS GitHub ; la session C1 doit refaire ce controle avant creation, puis partir strictement de la base ci-dessus.
+L audit final confirme que la branche reservee n existe ni localement ni sur `origin`, et que le worktree reserve est absent. La session C1 peut les creer puis partir strictement de la base ci-dessus.
 
 ## Boutique et comptes de test autorises
 
