@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-22 12:35 CEST
+Derniere mise a jour : 2026-08-22 13:02 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; C1 V3 est techniquement et visuellement validee en preview Shopify privee puis gelee a `d8d036ff`, mais C1-1, les vraies donnees, la persistance durable, l Admin, la bascule des comptes et le live restent fermes jusqu a un nouveau plan et des GO distincts.
+La refonte visible est largement avancee ; C1 V3 reste gelee a `d8d036ff` et Patrice a ouvert C1-1 pour une architecture puis une implementation privee sur donnees synthetiques du dev store, tandis que la bascule des comptes, l Admin production, le theme, les emails et le live restent fermes.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ La refonte visible est largement avancee ; C1 V3 est techniquement et visuelleme
 - Le canonique verifie avant ce handoff est `codex/milaura-integration` a `7cd851eb328b6db35046fdba63238a0c8953cb39` ou plus recent, propre et aligne avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite a `05fb43be` sur son theme prive. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
+- Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite a `05fb43be` sur son theme prive. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le worktree C1-1 est reserve mais non cree au moment du cadrage. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -87,7 +87,7 @@ Le controle authentifie a detecte puis fait corriger une selection personnalisee
 
 Anomalie de miroir : `1dccd18c` contient les six fichiers existants du push initial mais omet `assets/milaura-preference-storage.js`. `763d7ad9` reprend exactement les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement ; le canonique et les pullbacks live restent les preuves. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
 
-## E1-E3 fermes et C1 V3 privee fermee
+## E1-E3 fermes, C1 V3 gelee et C1-1 prive ouvert
 
 L audit read-only du 2026-08-20 confirme que les comptes clients classiques a mot de passe sont actifs et marques deprecies par Shopify. La creation de compte ne collecte pas de consentement marketing. Les consentements compte, personnalisation, email, SMS et cookies restent des contrats distincts. E1, E2 et E3 sont fermes depuis le 2026-08-20. E4 a E6 restent coordonnes par la session Mail, sans chevauchement C1.
 
@@ -99,9 +99,13 @@ La traduction finale C1 V3 vit sur la branche privee `codex/milaura-c1-v3-shopif
 
 Patrice a donne le 2026-08-22 le GO exact `GO VISUEL C1 V3 - PREVIEW SHOPIFY PRIVÉE VALIDÉE`. G5 est donc ferme pour cette preview seulement. La session C1 ferme proprement : worktree V3 et distant alignes a `d8d036ff`, aucun listener app dev sur `64112` ou `3457`, aucun deploy, release, Admin, theme ou live. V3 reste une preuve UX et runtime sur fixtures, pas un artefact de production. Le lot est gele en lecture seule.
 
-### Gates obligatoires avant une future release C1-1
+Patrice a ensuite donne le 2026-08-22 le GO exact `GO C1-1 - ARCHITECTURE ET IMPLÉMENTATION PRIVÉE DES VRAIES DONNÉES, SANS BASCULE LIVE`. Le master a reserve un lot distinct depuis `d8d036ff` sur la future branche `codex/milaura-c1-1-private-implementation-20260822`, avec deux nouvelles zones exclusives et le seul dev store `milaura-c1-preview` ID `107347837273`. Les API reelles sont autorisees uniquement sur six comptes et donnees synthetiques allowlistes. Le cadre complet, les scopes, les metafields, le backend, les secrets, Mail et les gates G0 a G11 sont dans `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`.
 
-C1-1 n est pas ouvert. Aucun branchement, worktree, app dev, Admin, API, persistance ou live ne peut commencer sans nouveau GO explicite de Patrice et reservation master. Une future release doit fermer les gates suivants :
+La source canonique visee est un groupe de metafields client appartenant a l app, avec consentement de personnalisation explicite, comparaison de revision, handoff signe, sync, purge et rollback. Aucune donnee cliente production n est autorisee. Sans fichier theme dans ce lot, le protocole et son simulateur peuvent etre implementes mais le vrai bridge et la purge de `MilauraPreferenceStorage` ou du panier restent un gate de release distinct.
+
+### Gates obligatoires avant une release C1-1
+
+C1-1 est ouvert uniquement pour l implementation privee definie dans le checkpoint de reservation. Une future release doit encore fermer les gates suivants :
 
 1. remplacer les six fixtures et les selecteurs QA par les vraies donnees du compte ;
 2. lire de facon reelle et bornee commandes, adresses et profil via la surface Customer Accounts retenue ;
@@ -115,9 +119,9 @@ C1-1 n est pas ouvert. Aucun branchement, worktree, app dev, Admin, API, persist
 10. valider sur comptes de test, coordonner les emails de compte avec Mail, traiter le francais du shell natif et obtenir un GO Admin distinct avant toute bascule ;
 11. obtenir un GO live explicite seulement apres toutes les gates precedentes.
 
-La fin du SEO, Pinterest, Rentree Sodalite, Ruban V3 et Atelier ne bloque pas le demarrage d un futur plan C1-1. Pour une release, Mail doit coordonner les emails de compte avant un switch ; l inventaire et le catalogue fiables doivent fermer le mapping commande-vers-pierre et les destinations produit. La fidelite reelle n est pas un prerequis : le bloc `A venir` reste honnete. S1B et S1C sont downstream et ne bloquent pas C1-1.
+La fin du SEO, Pinterest, Rentree Sodalite, Ruban V3 et Atelier ne bloque pas l implementation privee C1-1. Pour une release, Mail doit coordonner les emails de compte avant un switch ; l inventaire et le catalogue fiables doivent fermer le mapping commande-vers-pierre et les destinations produit ; un micro-lot theme distinct doit prouver le bridge et la purge locale reels. La fidelite reelle n est pas un prerequis : le bloc `A venir` reste honnete. S1B et S1C sont downstream et ne bloquent pas C1-1.
 
-References : `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`, `docs/milaura/shopify-admin-canonical/c1-v3-shopify-private-preview/2026-08-22-c1-v3-evidence.md` sur la branche privee, `docs/workstreams.md` et `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`.
+References : `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`, `docs/milaura/shopify-admin-canonical/c1-v3-shopify-private-preview/2026-08-22-c1-v3-evidence.md` sur la branche privee, `docs/workstreams.md`, `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md` et `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`.
 
 ## Catalogue V1 public
 
@@ -341,7 +345,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La session master conserve seule l integration et le live a partir de `7cd851eb` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Conserver C1 V3 `d8d036ff` comme preuve UX et runtime privee fermee ; ne reserver aucun lot C1-1, app dev, API, persistance, Admin, bascule de comptes ou live sans nouveau GO explicite et sans plan fermant les onze gates canoniques.
+2. Conserver C1 V3 `d8d036ff` gelee ; executer C1-1 uniquement dans la reservation privee du checkpoint `2026-08-22-1302`, sur donnees synthetiques allowlistees du dev store, sans theme, email, Admin production, bascule de comptes ou live.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Ouvrir un lot homepage dedie `Rentree Sodalite`, separer ses fichiers de tout rail commercial, verifier inventaire, produits, couts, marges et dates, puis obtenir GO visuel et GO live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
@@ -365,7 +369,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- C1 V3 privee fermee a `d8d036ff` avec G1 a G5 passes ; elle reste une preuve sur fixtures, pas un artefact live ; C1-1, vraies donnees, API, persistance, Admin, bascule de comptes et live non autorises avant nouveau GO et fermeture des onze gates canoniques
+- C1 V3 privee fermee a `d8d036ff` avec G1 a G5 passes ; C1-1 prive est maintenant reserve pour des API reelles sur six comptes synthetiques du dev store ; donnees clientes production, vrai bridge theme, Admin production, bascule de comptes et live restent interdits
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
@@ -374,7 +378,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - rail commercial `Nouveautes / Meilleures ventes / Promotions` non construit et a maintenir hors du lot Rentree si les fichiers se chevauchent
 - Karine, preuves d atelier et Sur mesure V1 non termines
 - pages enfants Naissance et Mariage, Journal et clusters encore ouverts
-- S1B et S1C sont downstream de C1 mais ne bloquent pas le demarrage d un futur plan C1-1 ; ne jamais restaurer le Scratch sur panier ou PDP
+- S1B et S1C sont downstream de C1 mais ne bloquent pas l implementation privee C1-1 ; ne jamais restaurer le Scratch sur panier ou PDP
 - E4 a E7 encore ouverts malgre la fermeture E1 a E3
 - paid bloque par la gate inventaire, economie, feed, consentement, tracking, conversion et mesure
 
