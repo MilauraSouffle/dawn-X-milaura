@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-22 13:02 CEST
+Derniere mise a jour : 2026-08-22 16:45 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; C1 V3 reste gelee a `d8d036ff` et Patrice a ouvert C1-1 pour une architecture puis une implementation privee sur donnees synthetiques du dev store, tandis que la bascule des comptes, l Admin production, le theme, les emails et le live restent fermes.
+La refonte visible est largement avancee ; C1 V3 reste gelee a `d8d036ff`, C1-1 est ouvert en prive sur donnees synthetiques et Rentree Sodalite est mise en pause a `70 %` jusqu au 2026-08-31, sans GO visuel final, integration ou live.
 
 ## Source de verite et etat du depot
 
@@ -14,7 +14,7 @@ La refonte visible est largement avancee ; C1 V3 reste gelee a `d8d036ff` et Pat
 - Le canonique verifie avant ce handoff est `codex/milaura-integration` a `7cd851eb328b6db35046fdba63238a0c8953cb39` ou plus recent, propre et aligne avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite a `05fb43be` sur son theme prive. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le worktree C1-1 est reserve mais non cree au moment du cadrage. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
+- Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -56,10 +56,18 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Direction de banniere Pinterest approuvee pour prototypage, sans GO visuel ni live a ce stade : Chloe debout dans un bar naturel, un verre a la main, devant une scene vegetale, portant les quatre references exactes choisies par Patrice : bracelet dore en aigue-marine naturelle, bague lotus reglable en argent 925 et aigue-marine naturelle, boucles d oreilles dorees en aigue-marine naturelle et collier aventurine verte boho dore. Les produits portes restent clairement visibles et des macros editoriales en partie basse reprennent ces memes references. Le cadrage doit rester robuste aux recadrages Pinterest.
 - Le tableau `Rituels, bougies & purification` est confirme dans l architecture Pinterest. Il est alimente par les bougies, palo santo, sauge, bols tibetains, pendules et produits associes ; il ne doit plus etre considere comme un tableau sans profondeur commerciale.
 - DataForSEO suit deux temps : recherche ciblee si elle doit guider une nouvelle page, puis audit global final lorsque les routes et enrichissements sont stabilises.
-- Decision Patrice du 2026-08-21 : la prochaine campagne saisonniere met la Sodalite en avant et remplace la selection d aout. Les produits destines a ce chantier ont ete recus, mais le lot doit encore verifier la liste exacte, le stock, les couts, les marges, les statuts publics, la landing et les dates avant toute preview ou mise en ligne.
+- Decision Patrice du 2026-08-22 : la campagne saisonniere Sodalite destinee a remplacer la selection d aout est mise en pause a `70 %` jusqu au 2026-08-31. La photographie fixe est retenue, mais la section complete ne convient pas encore et ne possede aucun GO visuel final. La liste exacte, le stock, les couts, les marges, les statuts publics, la landing et les dates restent a fermer avant toute integration ou mise en ligne.
 - Cette reception ne vaut pas gate Atelier. L Atelier reste parque jusqu a reception et validation de ses propres composants, mesures, comptages, prototypes Karine, cout, prix, architecture Shopify et nouveau GO.
 - Organisation annoncee par Patrice : sessions distinctes pour la reprise C1, le polish email, la campagne Rentree Sodalite et les fondations Pinterest. Ruban V3 reprend apres l inventaire et la mise en ligne fiable du catalogue. Une seule session master integre et deploie.
 - La tache Pinterest `01a01eb8-192c-76c1-9fb7-7599654e5e64` a analyse 83 videos, soit 20 h 10, note la formation `14,5/20` et produit une feuille de route de 29 pages. Les fondations peuvent avancer ; aucune Ads avant inventaire, feed, consentement, tracking et economie verifies.
+
+## Rentree Sodalite en pause a 70 %
+
+La branche `codex/milaura-rentree-sodalite-20260821` et son distant sont alignes au commit `47cc3e627277f22b115ded88baa7762e7b989967`. Le worktree `/Users/paesano/Documents/MilAura website/_worktrees/rentree-sodalite-20260821` est propre. Le theme prive non publie `200259043675` contient la preview ; le live `190430282075`, le developpement `199421952347`, l Admin, les collections, les redirects, le feed et les Ads sont intacts.
+
+La home privee utilise maintenant la photographie fixe Sodalite validee comme media, pleine largeur, sans voile, texte superpose, animation ou bouton pause. Le contenu commercial reste sous l image. La QA reelle a passe `360`, `390`, `430` et `1440` px sans overflow ni erreur console. Le push prive des quatre fichiers de cette version a reussi. Le pullback final reste non ferme a cause du bug local Shopify CLI `Maximum call stack size exceeded` ; ne pas supprimer les preferences Shopify CLI.
+
+Ce statut ne constitue pas une validation creative. Patrice juge la section a `70 %` et demande de la rouvrir le 2026-08-31. La prochaine session conserve la photo fixe, recueille trois corrections visuelles prioritaires, ferme ensuite le catalogue Sodalite et la landing, puis separe les GO visuel, integration, Admin et live. Reference canonique : `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`.
 
 ## Consentement cookies live
 
@@ -347,7 +355,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 1. La session master conserve seule l integration et le live a partir de `7cd851eb` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
 2. Conserver C1 V3 `d8d036ff` gelee ; executer C1-1 uniquement dans la reservation privee du checkpoint `2026-08-22-1302`, sur donnees synthetiques allowlistees du dev store, sans theme, email, Admin production, bascule de comptes ou live.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
-4. Ouvrir un lot homepage dedie `Rentree Sodalite`, separer ses fichiers de tout rail commercial, verifier inventaire, produits, couts, marges et dates, puis obtenir GO visuel et GO live separes.
+4. Laisser `Rentree Sodalite` en pause a `70 %` jusqu au 2026-08-31. A la reprise, conserver la photo fixe, polir la section, fermer inventaire, produits, couts, marges, landing et dates, puis obtenir des GO visuel, integration, Admin et live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
 6. Finir en parallele l inventaire physique et la mise en ligne fiable du catalogue. Reprendre ensuite Ruban V3. Atelier reste parque sous son gate physique propre.
 7. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance/Mariage, le Journal, puis S1B/S1C seulement apres C1.
@@ -374,7 +382,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
 - miroir automatique `origin/main` incomplet pour le nouvel asset `assets/milaura-preference-storage.js` au commit `1dccd18c` ; le correctif `763d7ad9` est complet, mais le canonique et les pullbacks restent les preuves du lot 1
-- Sodalite choisie par Patrice pour la rentree ; produits recus pour ce chantier, mais liste, stock, couts, marges, landing, dates, copy, preview et GO live encore a fermer
+- Rentree Sodalite en pause a `70 %` au commit prive `47cc3e62` jusqu au 2026-08-31 ; photographie fixe retenue, section complete non validee, pullback Shopify CLI non ferme, liste, stock, couts, marges, landing, dates, copy, integration et GO live encore a fermer
 - rail commercial `Nouveautes / Meilleures ventes / Promotions` non construit et a maintenir hors du lot Rentree si les fichiers se chevauchent
 - Karine, preuves d atelier et Sur mesure V1 non termines
 - pages enfants Naissance et Mariage, Journal et clusters encore ouverts
