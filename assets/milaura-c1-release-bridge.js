@@ -44,18 +44,38 @@
   }
 
   function consentedDiagnostic(diagnostic) {
+    var previousConsent = diagnostic.accountPersonalization || {};
+    var acceptedAt = previousConsent.status === 'granted' && previousConsent.acceptedAt
+      ? previousConsent.acceptedAt
+      : new Date().toISOString();
+    var resultId = diagnostic.resultId || createResultId();
     return Object.assign({}, diagnostic, {
+      resultId: resultId,
+      revision: Number(diagnostic.revision) || 1,
       accountPersonalization: {
         schemaVersion: 1,
         status: 'granted',
         source: 'quiz_account_save_button',
-        acceptedAt: new Date().toISOString(),
+        acceptedAt: acceptedAt,
       },
     });
   }
 
+  function createResultId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+      return window.crypto.randomUUID();
+    }
+    return 'result-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14);
+  }
+
+  function issueIdempotencyKey(diagnostic) {
+    var resultId = String(diagnostic.resultId || '').replace(/[^A-Za-z0-9_-]/g, '').slice(0, 120);
+    if (resultId.length < 16) throw new Error('Le résultat local ne peut pas être identifié de manière fiable.');
+    return 'issue_' + resultId + '_v' + String(Number(diagnostic.revision) || 1);
+  }
+
   function saveDiagnostic(button) {
-    if (button.disabled) return;
+    if (button.disabled || button.dataset.saved === 'true') return;
     if (!loggedIn) {
       setStatus(button, 'Connectez-vous à votre compte, puis revenez conserver ce résultat.', 'login-required');
       return;
@@ -84,7 +104,10 @@
           if (!stored.stored) throw new Error('Votre choix n’a pas pu être conservé localement.');
           return request('/v1/handoffs', {
             method: 'POST',
-            body: JSON.stringify({ diagnostic: retained }),
+            body: JSON.stringify({
+              diagnostic: retained,
+              idempotencyKey: issueIdempotencyKey(retained),
+            }),
           });
         });
       })
@@ -97,7 +120,7 @@
         setStatus(button, error.message || 'La synchronisation est momentanément indisponible.', 'error');
       })
       .finally(function () {
-        button.disabled = false;
+        button.disabled = button.dataset.saved === 'true';
       });
   }
 
