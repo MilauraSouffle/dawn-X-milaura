@@ -33,8 +33,8 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 - developpement general : `199421952347` ;
 - C1 V3 privee : branche `codex/milaura-c1-v3-shopify-private-preview-20260822`, commit `d8d036ff7725c93168d24b9270da54de657ad6af`, propre et aligne ;
 - C1-1 prive : branche `codex/milaura-c1-1-private-implementation-20260822`, commit `cf2877ba4ee5faac143a4273c486fe39c96106a8`, worktree propre et aligne ;
-- C1 RC theme : branche reservee `codex/milaura-c1-release-candidate-theme-20260823`, base `6560d59c`, branche et worktree absents au cadrage ;
-- C1 RC prive : branche reservee `codex/milaura-c1-release-candidate-private-20260823`, base `cf2877ba`, branche et worktree absents au cadrage ;
+- C1 RC theme : branche `codex/milaura-c1-release-candidate-theme-20260823`, base `6560d59c`, worktree cree, propre et aligne avec origin au controle de 11:08 CEST ;
+- C1 RC prive : branche `codex/milaura-c1-release-candidate-private-20260823`, base `cf2877ba`, worktree cree et aligne avec origin ; travail actif non commite uniquement dans la zone privee reservee au controle de 11:08 CEST ;
 - boutique C1 privee : `milaura-c1-preview`, store ID `107347837273` ;
 - aucun listener app dev sur `64112` ou `3457` ;
 - Rentree Sodalite : branche et distant alignes a `47cc3e62`, worktree propre, theme prive non publie `200259043675`, pause a `70 %` jusqu au 2026-08-31 ;
@@ -76,11 +76,11 @@ Patrice a donne le GO exact :
 
 `GO C1 RELEASE CANDIDATE - PRODUCTIONISATION PRIVÉE, SANS BASCULE ADMIN NI LIVE`
 
-Le lot utilise deux depots sans rouvrir C1-1 : branche theme `codex/milaura-c1-release-candidate-theme-20260823` depuis `6560d59c`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/c1-release-candidate-theme-20260823` ; branche privee `codex/milaura-c1-release-candidate-private-20260823` depuis `cf2877ba`, worktree `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-release-candidate-20260823`. Les deux branches et worktrees etaient absents au cadrage.
+Le lot utilise deux depots sans rouvrir C1-1 : branche theme `codex/milaura-c1-release-candidate-theme-20260823` depuis `6560d59c`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/c1-release-candidate-theme-20260823` ; branche privee `codex/milaura-c1-release-candidate-private-20260823` depuis `cf2877ba`, worktree `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-release-candidate-20260823`. Les deux branches et worktrees sont crees et suivent leur origin. Le worktree theme est propre ; le travail prive actif reste dans sa nouvelle zone reservee.
 
 La piste theme reserve exactement sept fichiers : `assets/milaura-preference-storage.js`, le nouvel asset `assets/milaura-c1-release-bridge.js`, le nouveau snippet `snippets/milaura-c1-release-bridge.liquid`, `layout/theme.liquid`, `sections/milaura-quiz.liquid`, `config/settings_schema.json` et `config/settings_data.json`. La piste privee ecrit uniquement dans `docs/milaura/shopify-apps/customer-accounts-release-candidate/**` et `docs/milaura/shopify-admin-canonical/c1-release-candidate/**`.
 
-Le theme et l app doivent tourner sur le meme store `milaura-c1-preview`, ID `107347837273`. Un seul nouveau theme non publie peut etre cree : `MilAura C1 Release Candidate 2026-08-23`, ID a rendre au master. Les themes existants du dev store, le developpement general `199421952347` et le live `190430282075` sont interdits. Le backend production est prepare et teste localement, sans deploiement externe ni secret de production. Mail reste proprietaire de ses dix surfaces compte gelees ; C1 coordonne sans modifier aucun email.
+Le theme et l app tournent sur le meme store `milaura-c1-preview`, ID `107347837273`. Le nouveau theme prive est `MilAura C1 Release Candidate 2026-08-23`, ID `205027279193`, role `unpublished`, recontrole isole par le master le 2026-08-23 a 11:08 CEST. Le bootstrap a remonte une ressource video heritee invalide dans `templates/list-collections.json` ; ce fichier est hors scope et reste intact. Tous les prochains pushes sont limites aux sept fichiers reserves vers ce seul theme, puis pullback borne. Les themes existants du dev store, le developpement general `199421952347` et le live `190430282075` sont interdits. Le backend production est prepare et teste localement, sans deploiement externe ni secret de production. Mail reste proprietaire de ses dix surfaces compte gelees ; C1 coordonne sans modifier aucun email.
 
 RC0 a RC10, commandes, comptes synthetiques, theme prive, backend, mapping, francais, rollback et interdictions sont canoniques dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`. Aucun app deploy ou release, theme publish, C1-2, Admin, bascule de comptes, email, integration ou live.
 
@@ -139,7 +139,7 @@ C1 V3 est fermee au commit prive d8d036ff7725c93168d24b9270da54de657ad6af. G1 a 
 
 C1-1 prive est ferme et gele a cf2877ba4ee5faac143a4273c486fe39c96106a8 sur codex/milaura-c1-1-private-implementation-20260822. G0 a G11 sont passes ; Patrice a valide la preview privee, sans release ni live. Ne rouvre pas C1-1 et ne lance pas C1-2 sans nouveau GO et nouvelle reservation. Le vrai bridge theme, la purge MilauraPreferenceStorage ou panier, Mail, catalogue, backend production, release, deploy, GO Admin, bascule de comptes et live restent fermes. Fidelite reelle non bloquante, bloc A venir conserve. S1B et S1C sont downstream.
 
-C1 Release Candidate est reserve dans docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md. Deux branches nouvelles seulement : theme depuis 6560d59c et prive depuis cf2877ba. Le seul store est milaura-c1-preview 107347837273 et le seul nouveau theme autorise se nomme MilAura C1 Release Candidate 2026-08-23. Aucun theme existant, app deploy ou release, C1-2, Admin, bascule de comptes, email, integration ou live. Mail reste proprietaire de ses surfaces.
+C1 Release Candidate est reserve dans docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md. Deux branches nouvelles seulement : theme depuis 6560d59c et prive depuis cf2877ba. Le seul store est milaura-c1-preview 107347837273 et le theme prive isole est MilAura C1 Release Candidate 2026-08-23, ID 205027279193. L erreur heritee de templates/list-collections.json reste hors scope ; prochains pushes strictement bornes aux sept fichiers reserves et pullback borne. Aucun theme existant, app deploy ou release, C1-2, Admin, bascule de comptes, email, integration ou live. Mail reste proprietaire de ses surfaces.
 
 Agentic-Ops main est tres dirty sur Stella et d autres travaux concurrents. Ne pas y ecrire ni nettoyer.
 

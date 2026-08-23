@@ -93,7 +93,7 @@ Un seul nouveau theme non publie est autorise :
 
 `MilAura C1 Release Candidate 2026-08-23`
 
-Il doit etre cree sur le store `107347837273`. Son ID n existe pas encore ; la session le retourne immediatement au master apres le premier push et l inscrit dans ses preuves avant toute autre mutation Shopify.
+Le theme a ete cree le 2026-08-23 sur `milaura-c1-preview`, store ID `107347837273` : ID `205027279193`, role `unpublished`, preview `https://milaura-c1-preview.myshopify.com?preview_theme_id=205027279193`. Le master a recontrole la liste Shopify a 11:08 CEST : ce theme est distinct du live du dev store et des deux themes non publies preexistants.
 
 Themes interdits en ecriture :
 
@@ -105,6 +105,8 @@ Themes interdits en ecriture :
 - tous les themes Rentree, Atelier et autres previews.
 
 Le premier bootstrap peut pousser le theme complet vers ce nouveau theme vide, avec `--unpublished --nodelete`, depuis le worktree RC propre. Tous les pushes suivants sont limites aux sept fichiers reserves, avec `--nodelete`, puis pullback exact des memes fichiers. Aucun autre theme ne peut etre cible.
+
+Le bootstrap complet `--unpublished --nodelete --strict` a remonte une seule erreur heritee : ressource video Shopify invalide dans `templates/list-collections.json`. Ce fichier est hors reservation C1 RC et reste interdit en ecriture. Cette erreur ne justifie ni extension de scope ni correction opportuniste ; elle doit rester consignee comme dette amont. Tous les prochains pushes restent bornes aux sept fichiers reserves vers `205027279193`, puis pullback borne des memes fichiers.
 
 ### Backend
 
