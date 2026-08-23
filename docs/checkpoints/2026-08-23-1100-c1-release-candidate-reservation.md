@@ -185,13 +185,21 @@ Registre produit et variant versionne, IDs, handles, destinations et medias veri
 
 Handoff Mail signe sans modification : surfaces compte applicables, risques de doublon ancien ou nouveau systeme, variables, liens securises, consentement service ou marketing, delivrabilite et rollback. Extension entierement francaise. Le shell Shopify natif doit etre constate en francais ou reste un blocker Admin explicite ; C1 ne modifie pas le store pour le forcer.
 
+Decision master du 2026-08-23 : le preflight Mail est execute et signe, avec verdict `NO-GO CONDITIONNEL`. Shopify indique que la confirmation initiale de commande ne peut pas etre desactivee globalement hors Plus. La voie technique sans notification est la mutation Admin GraphQL `orderCreate` avec `test: true`, `sendReceipt: false` et `sendFulfillmentReceipt: false`, mais Shopify exige le scope `write_orders` et une authentification par jeton hors ligne. Ce scope, l Admin API et toute extension de scopes sont interdits au lot RC courant. Le shell natif affiche encore `Orders` et `Profile` ; ce point reste un blocker Admin distinct. References officielles controlees le 2026-08-23 : `https://shopify.dev/docs/api/admin-graphql/latest/mutations/ordercreate`, `https://shopify.dev/docs/api/admin-graphql/latest/input-objects/OrderCreateOptionsInput` et `https://help.shopify.com/en/manual/fulfillment/setup/notifications/customer-notifications`.
+
+La decision canonique est de ne pas elargir ce lot. Aucun compte ni commande n est cree, aucun scope n est ajoute et aucune mutation Admin n est autorisee. RC6 est ferme comme audit avec resultat NO-GO, pas comme gate PASS. RC7 et la partie de RC8 qui exige des commandes restent ouvertes. Les controles sans donnees et sans commandes peuvent continuer et doivent etre distingues dans les preuves. Un eventuel micro-lot `write_orders` ne sera ni reserve ni execute avant le retour des deux commits RC, l audit master et un nouveau GO explicite de Patrice ; il devra utiliser une app ou configuration privee distincte, des comptes synthetiques allowlistes, les options de notification a `false`, un rollback de scopes et une suppression sous confirmation destructive.
+
 ### RC7 - Environnement prive controle
 
 Nouveau theme non publie avec ID enregistre, app dev sur le meme store, backend local ou tunnel, six comptes et trois commandes synthetiques maximum apres preflight Mail, aucune notification inattendue, aucune donnee reelle et aucun autre theme touche.
 
+Statut au 2026-08-23 : `OUVERT - BLOQUE PAR RC6`. Le theme prive peut etre controle, mais les comptes et commandes necessaires a la parite avec donnees ne sont pas autorises dans le scope courant.
+
 ### RC8 - QA Release Candidate
 
 Six etats, cinq profils, 360, 390, 430 et 1440 px, Chrome et navigateur isole, clavier, focus, cibles, overflow, console, performance de base, consentement refuse ou retire, handoff valide ou expire ou rejoue, conflit multi-appareils, coupures reseau a chaque etape, purge locale, panier, compte et backend, rechargement et nouvelle session. Preuves redigees et pullback theme bit a bit.
+
+Statut au 2026-08-23 : `PARTIEL AUTORISE`. Les etats, dimensions, interactions, bridge, consentement, handoff, coupures, purge et rollback testables sans compte ou commande peuvent etre prouves. Les etats avec commandes et toute preuve de parite sur commandes reelles synthetiques restent ouverts avec RC7. Aucun PASS global RC8 ne peut etre revendique.
 
 ### RC9 - Rollback et nettoyage
 
