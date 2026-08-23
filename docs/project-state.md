@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-23 11:00 CEST
+Derniere mise a jour : 2026-08-23 19:36 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; C1 V3 et C1-1 restent geles, un Release Candidate prive est reserve sur deux branches depuis `6560d59c` et `cf2877ba` sans bascule Admin ni live, tandis que Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31 sans GO visuel final, integration ou live.
+La refonte visible est largement avancee ; C1 V3 et C1-1 restent geles, les correctifs RC1 et RC3 du Release Candidate prive ont passe le second reaudit mais le RC global reste ouvert sans bascule Admin ni live, tandis que Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31 sans GO visuel final, integration ou live.
 
 ## Source de verite et etat du depot
 
@@ -121,7 +121,7 @@ Le Release Candidate doit prouver le bridge et la purge sur un meme store. Il ut
 
 Le preflight RC6 Mail est signe avec resultat `NO-GO CONDITIONNEL`. Hors Plus, la confirmation initiale d une commande creee dans Admin ne peut pas etre desactivee globalement. La mutation Admin GraphQL `orderCreate` permet `test: true`, `sendReceipt: false` et `sendFulfillmentReceipt: false`, mais exige `write_orders` et un jeton hors ligne ; ces acces sont interdits au lot courant. Le master refuse donc tout elargissement implicite : aucun compte ou commande, aucun scope ajoute. RC7 et les cas avec commandes de RC8 restent ouverts ; les preuves sans donnees continuent. Le shell natif encore en anglais reste un blocker Admin distinct. Un micro-lot `write_orders` ne peut etre envisage qu apres retour et audit des deux commits RC, puis nouveau GO explicite et reservation separee.
 
-Le premier retour RC a ete pousse a `fde2f875` pour le theme et `522a411` pour le prive. RC10 confirme le perimetre Git, 29 tests sur 29, le build, le bundle `65019`, l audit zero vulnerabilite, Theme Check et le pullback six sur six du theme prive. RC10 est neanmoins `NO-GO` : l emission de handoff cree deux lignes au retry au lieu de rester idempotente ; le prune de retention ne tourne qu au demarrage ; et le Dockerfile passe a `USER node` sans cible SQLite inscriptible prouvee, image non construite faute de daemon. RC1 et RC3 sont rouverts, RC4 reste partiel et aucun GO Patrice RC ne doit etre demande. Correction bornee sur les memes branches et zones, sans app dev, comptes, Admin ni live. Preuve : `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`.
+Le premier RC10 avait rouvert RC1 et RC3 sur trois P1 documentes dans `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`. Les correctifs ont ensuite ete pousses a `2f95b3d1` pour le theme et `c877d630` pour le prive, avec commit fonctionnel `77cd15f3`. Le second reaudit master ferme les trois P1 : emission idempotente avec unicite SQLite et retry strict, maintenance de retention continue avec drain, et image non root avec SQLite persistante prouvee en prive. Contre-verifications master : 33 tests sur 33, build Shopify, bundle `65019`, audit zero vulnerabilite, Theme Check zero erreur, pullback bridge distant strictement identique et theme `205027279193` toujours non publie. RC1 est PASS et RC3 PASS prive. Le Release Candidate global reste ouvert : RC4 et RC5 partiels, RC6 ferme avec NO-GO conditionnel, RC7 ouvert, RC8 partiel. Aucun GO Patrice n est demande et aucun compte, commande, `write_orders`, Admin, email, deploy, release, C1-2, integration, publication ou live n est autorise. Preuve : `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
