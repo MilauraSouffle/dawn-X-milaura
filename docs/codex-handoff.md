@@ -1,10 +1,10 @@
-# Handoff Codex MilAura, C1-1 prive et Rentree Sodalite en pause
+# Handoff Codex MilAura, C1-1 prive ferme et Rentree Sodalite en pause
 
-Date : 2026-08-22 16:45 CEST
+Date : 2026-08-23 10:46 CEST
 
 ## Mission de reprise
 
-Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. C1 V3 est fermee et gelee. C1-1 est reserve pour une implementation privee sur donnees synthetiques du dev store. Rentree Sodalite est en pause a `70 %` jusqu au 2026-08-31, sans GO visuel final, integration ou live.
+Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. C1 V3 est fermee et gelee. C1-1 est ferme et gele au commit prive `cf2877ba` avec G0 a G11 PASS, sans aucun droit de release ou live. Rentree Sodalite est en pause a `70 %` jusqu au 2026-08-31, sans GO visuel final, integration ou live.
 
 Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d affaires. La charte et la DA MilAura sont executables. Tiffany & Co. et Van Cleef & Arpels donnent le niveau d exigence visuelle, sans copie.
 
@@ -13,26 +13,27 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 1. `/Users/paesano/Documents/MilAura website/dawn-X-milaura/AGENTS.md`
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
-4. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
-5. `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`
-6. `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
-7. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
-8. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
-9. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
-10. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
-11. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
-12. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
+4. `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`
+5. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
+6. `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`
+7. `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
+8. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
+9. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
+10. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
+11. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
+12. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
+13. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
 
 ## Verite Git au handoff
 
-- integration theme avant le commit de ce handoff : `codex/milaura-integration` a `40b8efb87c0736454891e627c9710c2dbb64106a`, propre et alignee avec origin ;
+- integration theme avant le commit de ce handoff : `codex/milaura-integration` a `8721b7cc78cf3eb2a377255cf4e934daea98fb82`, propre et alignee avec origin ;
 - `origin/main` reste un miroir Shopify incomplet, interdit de merge aveugle ;
 - live : `190430282075` ;
 - developpement general : `199421952347` ;
 - C1 V3 privee : branche `codex/milaura-c1-v3-shopify-private-preview-20260822`, commit `d8d036ff7725c93168d24b9270da54de657ad6af`, propre et aligne ;
+- C1-1 prive : branche `codex/milaura-c1-1-private-implementation-20260822`, commit `cf2877ba4ee5faac143a4273c486fe39c96106a8`, worktree propre et aligne ;
 - boutique C1 privee : `milaura-c1-preview`, store ID `107347837273` ;
 - aucun listener app dev sur `64112` ou `3457` ;
-- C1-1 : branche reservee `codex/milaura-c1-1-private-implementation-20260822`, base `d8d036ff`, worktree absent au cadrage initial et a creer par la session C1 apres reception de la reservation ;
 - Rentree Sodalite : branche et distant alignes a `47cc3e62`, worktree propre, theme prive non publie `200259043675`, pause a `70 %` jusqu au 2026-08-31 ;
 - Ruban V3 : `3aa0b66d`, parque ;
 - Atelier : `2befe429`, theme prive `200007713115`, parque ;
@@ -52,21 +53,23 @@ Cette validation porte uniquement sur la preview privee. V3 utilise des fixtures
 
 Aucun droit C1-1, persistance, Customer Account API reelle, Admin, bascule de comptes, theme, email ou live n est deduit.
 
-## C1-1 prive reserve
+## C1-1 prive ferme et gele
 
 Patrice a donne le 2026-08-22 le GO exact :
 
 `GO C1-1 - ARCHITECTURE ET IMPLÉMENTATION PRIVÉE DES VRAIES DONNÉES, SANS BASCULE LIVE`
 
-Le lot distinct part de `d8d036ff` dans le depot prive `Onora-studio/onora-ops`. Sa branche reservee est `codex/milaura-c1-1-private-implementation-20260822`, son worktree reserve `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-1-private-implementation-20260822`, et ses deux seules zones d ecriture sont `docs/milaura/shopify-apps/customer-accounts-c1-1-private/**` et `docs/milaura/shopify-admin-canonical/c1-1-private/**`.
+Le lot distinct part de `d8d036ff` dans le depot prive `Onora-studio/onora-ops`. Sa branche est `codex/milaura-c1-1-private-implementation-20260822`, son worktree `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-1-private-implementation-20260822`, et ses deux seules zones d ecriture sont `docs/milaura/shopify-apps/customer-accounts-c1-1-private/**` et `docs/milaura/shopify-admin-canonical/c1-1-private/**`. Son HEAD pousse, propre et aligne est `cf2877ba4ee5faac143a4273c486fe39c96106a8`.
 
 Le seul environnement est `milaura-c1-preview`, store ID `107347837273`, avec six comptes synthetiques tags et allowlistes. Les scopes permis sont `write_customers,customer_read_customers,customer_write_customers,customer_read_orders` ; `write_customers` sert uniquement aux definitions declaratives et aucun appel GraphQL Admin depuis le code n est permis. `api_access` et `network_access` sont permis pour les destinations publiques et le backend prive. Les donnees clients de production, autres scopes Admin, theme, emails, inventaire reel, bascule de comptes et live sont interdits.
 
-La source canonique visee est un groupe de cinq metafields client app-owned. Le protocole signe, la sync, les conflits, la purge serveur, le mapping et les vrais liens doivent etre implementes et testes. Sans fichier theme, le vrai bridge et la purge de `MilauraPreferenceStorage` ou du panier ne peuvent pas etre declares fermes ; ils restent un gate de release distinct. Cadre complet : `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`.
+G0 a G10 sont passes sur donnees synthetiques. Le master a ensuite audite le lot, exige puis verifie deux vagues de corrections sur la durabilite des conflits, la reprise de purge et la fenetre entre preparation et finalisation. Contre-verification finale : 28 tests sur 28, build Shopify PASS, bundle `65416/65536`, zero vulnerabilite, aucun secret reel, listener ou tunnel. La source canonique privee est un groupe de cinq metafields client app-owned ; le protocole signe, la sync, les conflits, la purge serveur, le mapping et les liens publics sont implementes et testes dans le cadre prive.
+
+Patrice a donne le 2026-08-23 le GO exact `GO VISUEL ET FONCTIONNEL C1-1 - PREVIEW PRIVÉE VALIDÉE, SANS RELEASE NI LIVE`. G11 est ferme sur `cf2877ba`. Le lot reste gele en lecture seule. Sans fichier theme, le vrai bridge et la purge de `MilauraPreferenceStorage` ou du panier ne sont pas fermes ; catalogue, Mail, backend production, C1-2, release, deploy, Admin, bascule de comptes, theme, email et live restent interdits sans nouveaux GO. Cadre et audit : `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md` et `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`.
 
 ## Gates canoniques avant une release C1-1
 
-C1-1 est ouvert uniquement pour l implementation privee reservee. Une future release doit encore :
+C1-1 prive est ferme avec G0 a G11 PASS. Une future release doit encore :
 
 1. remplacer fixtures et selecteurs QA par les vraies donnees du compte ;
 2. lire reellement et de facon bornee commandes, adresses et profil ;
@@ -109,17 +112,15 @@ Ne jamais fusionner `origin/main` aveuglement, pousser un theme complet depuis u
 ## Message de reprise copiable
 
 ```text
-Reprends le pilotage master MilAura au 2026-08-22 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence en lecture seule.
+Reprends le pilotage master MilAura au 2026-08-23 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence en lecture seule.
 
-Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md, docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md, docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md, docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md, docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md, docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md, docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
+Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md, docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md, docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md, docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md, docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md, docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md, docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md, docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
 
-Verifie Git, origin, tous les worktrees, les proprietaires et les taches actives. Base connue avant le commit du handoff : codex/milaura-integration propre et aligne a db6d7095bd176d1ef3f99395a337b491a1755c69. origin/main reste un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
+Verifie Git, origin, tous les worktrees, les proprietaires et les taches actives. Base connue avant le commit du handoff : codex/milaura-integration propre et aligne a 8721b7cc78cf3eb2a377255cf4e934daea98fb82. origin/main reste un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
 
 C1 V3 est fermee au commit prive d8d036ff7725c93168d24b9270da54de657ad6af. G1 a G4 techniques et G5 visuelle sont passes. V3 reste une preuve UX/runtime sur six fixtures et cinq profils, pas un artefact live. Aucun listener app dev ne reste. Ne rouvre pas V3.
 
-C1-1 prive est reserve depuis d8d036ff sur la future branche codex/milaura-c1-1-private-implementation-20260822 et le worktree /Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-1-private-implementation-20260822. Applique integralement le checkpoint 2026-08-22-1302 : deux zones exclusives, dev store milaura-c1-preview 107347837273, six comptes synthetiques allowlistes, Customer Account API et backend prives. Seul write_customers est admis comme scope Admin pour les definitions declaratives, sans appel Admin depuis le code. Aucun client production, theme, email, autre scope Admin, app deploy, release, bascule de comptes ou live.
-
-Le protocole et le simulateur de handoff ou purge peuvent etre implementes sans theme, mais le vrai bridge et la purge MilauraPreferenceStorage ou panier restent un gate de release distinct. Mail et inventaire/catalogue fiables sont aussi des dependances de release. Fidelite reelle non bloquante, bloc A venir conserve. S1B et S1C sont downstream.
+C1-1 prive est ferme et gele a cf2877ba4ee5faac143a4273c486fe39c96106a8 sur codex/milaura-c1-1-private-implementation-20260822. G0 a G11 sont passes ; Patrice a valide la preview privee, sans release ni live. Ne rouvre pas C1-1 et ne lance pas C1-2 sans nouveau GO et nouvelle reservation. Le vrai bridge theme, la purge MilauraPreferenceStorage ou panier, Mail, catalogue, backend production, release, deploy, GO Admin, bascule de comptes et live restent fermes. Fidelite reelle non bloquante, bloc A venir conserve. S1B et S1C sont downstream.
 
 Agentic-Ops main est tres dirty sur Stella et d autres travaux concurrents. Ne pas y ecrire ni nettoyer.
 
@@ -130,6 +131,7 @@ Commence par rendre un point factuel Git, worktrees, proprietaires, conflits, in
 
 ## Fichiers canoniques
 
+- `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md` ;
 - `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md` ;
 - `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md` ;
 - `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md` ;
