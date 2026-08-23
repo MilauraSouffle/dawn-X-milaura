@@ -147,6 +147,21 @@
     return hadData;
   }
 
+  function browserDiagnosticCleared() {
+    try {
+      return !window.localStorage.getItem(STORAGE_KEY) && !readLegacyCookie();
+    } catch (error) {
+      return !readLegacyCookie();
+    }
+  }
+
+  function cartAttributesCleared(cart) {
+    if (!cart || !cart.attributes) return false;
+    return CART_ATTRIBUTE_KEYS.every(function (key) {
+      return !cart.attributes[key];
+    });
+  }
+
   function clearDiagnostic(options) {
     var hadData = clearBrowserDiagnostic();
     var shouldClearCart = Boolean(options && options.cart);
@@ -162,6 +177,28 @@
 
     return cartPromise.then(function () {
       return hadData;
+    });
+  }
+
+  function purgeDiagnostic(options) {
+    var reason = (options && options.reason) || 'account-purge';
+    clearBrowserDiagnostic();
+
+    return clearCartAttributes().then(function (cart) {
+      var result = {
+        schemaVersion: 1,
+        attemptedAt: new Date().toISOString(),
+        reason: reason,
+        localCleared: browserDiagnosticCleared(),
+        cartCleared: cartAttributesCleared(cart),
+      };
+
+      document.dispatchEvent(
+        new CustomEvent('milaura:diagnostic-storage-cleared', {
+          detail: result,
+        })
+      );
+      return result;
     });
   }
 
@@ -272,6 +309,7 @@
   window.MilauraPreferenceStorage = Object.freeze({
     clearDiagnostic: clearDiagnostic,
     getPreferenceState: getPreferenceState,
+    purgeDiagnostic: purgeDiagnostic,
     readDiagnostic: readDiagnostic,
     writeDiagnostic: writeDiagnostic,
   });
