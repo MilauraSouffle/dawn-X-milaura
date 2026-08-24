@@ -1,6 +1,6 @@
 # Handoff Codex MilAura, C1 RC durci mais non live et Rentree Sodalite en pause
 
-Date : 2026-08-24 09:20 CEST
+Date : 2026-08-24 09:26 CEST
 
 ## Mission de reprise
 
@@ -13,26 +13,27 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 1. `/Users/paesano/Documents/MilAura website/dawn-X-milaura/AGENTS.md`
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
-4. `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md`
-5. `docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md`
-6. `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md`
-7. `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`
-8. `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`
-9. `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`
-10. `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`
-11. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
-12. `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`
-13. `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
-14. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
-15. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
-16. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
-17. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
-18. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
-19. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
+4. `docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md`
+5. `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md`
+6. `docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md`
+7. `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md`
+8. `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`
+9. `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`
+10. `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`
+11. `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`
+12. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
+13. `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`
+14. `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
+15. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
+16. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
+17. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
+18. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
+19. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
+20. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
 
 ## Verite Git au handoff
 
-- integration theme avant le commit de cette reservation : `codex/milaura-integration` a `3bc241437ec666dfb487efb5dbaa5e117e5b87c4`, propre et alignee `0/0` avec origin ;
+- integration theme avant le commit de cette reservation : `codex/milaura-integration` a `ddbc922e1ecb14b9dfe1e388f1cb25da511a56e7`, propre et alignee `0/0` avec origin ;
 - `origin/main` reste un miroir Shopify incomplet, interdit de merge aveugle ;
 - live : `190430282075` ;
 - developpement general : `199421952347` ;
@@ -95,6 +96,8 @@ Lot 1A reserve le 2026-08-24 a la nouvelle tache C1 `01a03261-3f60-7e43-bf6e-bce
 
 Retour du lot 1A : tip pousse `ff6cc0616b9bedee2323a9c5d3a197659170f260`, worktree propre et aligne. RNO0, RNO1, RNO2, RNO5 et RNO6 sont PASS ; RNO3 et RNO4 sont bloques par `OTP_DELIVERY_BLOCKED` avant authentification. Aucun scenario C1 bout en bout n a commence. Le flag du theme prive est de nouveau `false`, SQLite contient zero handoff et zero purge, et aucun runtime, tunnel ou listener ne reste. RC4 ne ferme pas et RC8 ne progresse pas. La seule suite reservee est un diagnostic Mail M0 strictement read-only, sans nouvelle demande OTP, envoi test, changement de regle, adresse de compte, Admin ou Shopify. Cadre : `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md`.
 
+M0 retourne `NO_MAIL_TRACE` : aucun message Shopify ou Customer Accounts n est present dans la boite controlee, le spam, la corbeille ou les categories. Gmail supporte officiellement le suffixe `+`, mais les filtres serveur et une quarantaine Workspace Admin restent hors visibilite. Le master reserve M1 : C1 et Mail calculent separement une empreinte HMAC de leur identite normalisee avec une cle ephemere, sans afficher ni transmettre l adresse. Le master compare seulement les empreintes. Aucun nouvel OTP, envoi test, changement d adresse, Admin, Shopify ou reprise C1. Cadre : `docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md`.
+
 RC0 a RC10, commandes, comptes synthetiques, theme prive, backend, mapping, francais, rollback et interdictions sont canoniques dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`. Aucun app deploy ou release, theme publish, C1-2, Admin, bascule de comptes, email, integration ou live.
 
 ## Gates canoniques avant une release C1-1
@@ -144,9 +147,9 @@ Ne jamais fusionner `origin/main` aveuglement, pousser un theme complet depuis u
 ```text
 Reprends C1 Mon Ecrin MilAura au 2026-08-24 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence strictement en lecture seule.
 
-Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md, docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md, docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md, docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md, docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md, docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
+Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md, docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md, docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md, docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md, docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md, docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md, docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
 
-Verifie Git, origins, worktrees et proprietaires avant toute ecriture. Canonique connu avant le commit de la reservation OTP : codex/milaura-integration propre et aligne a 3bc241437ec666dfb487efb5dbaa5e117e5b87c4. origin/main reste un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
+Verifie Git, origins, worktrees et proprietaires avant toute ecriture. Canonique connu avant le commit de la correlation OTP : codex/milaura-integration propre et aligne a ddbc922e1ecb14b9dfe1e388f1cb25da511a56e7. origin/main reste un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
 
 C1 V3 est fermee au commit prive d8d036ff7725c93168d24b9270da54de657ad6af. G1 a G4 techniques et G5 visuelle sont passes. V3 reste une preuve UX/runtime sur six fixtures et cinq profils, pas un artefact live. Aucun listener app dev ne reste. Ne rouvre pas V3.
 
@@ -154,7 +157,7 @@ C1-1 prive est ferme et gele a cf2877ba4ee5faac143a4273c486fe39c96106a8 sur code
 
 C1 Release Candidate est documente dans docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md. Le second reaudit des correctifs est ferme dans docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md : theme 2f95b3d1, prive c877d630, RC1 PASS et RC3 PASS prive. Le seul store est milaura-c1-preview 107347837273 et le theme prive isole est MilAura C1 Release Candidate 2026-08-23, ID 205027279193, toujours non publie. RC4 et RC5 restent partiels, RC6 est ferme avec NO-GO conditionnel, RC7 et RC8 restent ouverts ou partiels, sans ajout de write_orders. Mon Ecrin n est pas live. Aucun backend production, app deploy ou release, bascule Customer Accounts, publication theme ou QA live n a eu lieu.
 
-Le lot 1A est termine et gele a ff6cc061 avec OTP_DELIVERY_BLOCKED. Ne le relance pas et ne demande pas un nouveau code. La premiere mission active appartient au proprietaire Mail : executer seulement le diagnostic M0 read-only selon docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md. Rechercher de facon ciblee le message Shopify, la quarantaine, les filtres et le support du suffixe +, sans lire les messages sans rapport et sans modifier la boite. Le C1 reste en lecture seule. Tout changement de regle, adresse du compte, test, support Shopify, commande, write_orders, Admin, app dev, deploy, release, C1-2, integration, publication ou live reste interdit sans lot et GO distincts.
+Le lot 1A est termine et gele a ff6cc061 avec OTP_DELIVERY_BLOCKED. M0 est ferme avec NO_MAIL_TRACE. La mission active est uniquement M1, correlation read-only des deux identites par empreintes HMAC selon docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md. Aucun proprietaire ne doit afficher l adresse. Le C1 reste gele et aucun nouveau code ne doit etre demande. Tout envoi, changement de regle ou d adresse, test, support Shopify, commande, write_orders, Admin, app dev, deploy, release, C1-2, integration, publication ou live reste interdit sans lot et GO distincts.
 
 Agentic-Ops main est tres dirty sur Stella et d autres travaux concurrents. Ne pas y ecrire ni nettoyer.
 
@@ -165,6 +168,7 @@ Commence par rendre un point factuel Git, worktrees, proprietaires, conflits, in
 
 ## Fichiers canoniques
 
+- `docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md` ;
 - `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md` ;
 - `docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md` ;
 - `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md` ;
