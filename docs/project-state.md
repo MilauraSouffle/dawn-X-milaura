@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-24 12:15 CEST
+Derniere mise a jour : 2026-08-24 13:44 CEST
 
 ## Etat en une phrase
 
@@ -11,7 +11,7 @@ La refonte visible est largement avancee ; C1 V3 et C1-1 restent geles, les corr
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant la pre-reservation Admin OTP du 2026-08-24 est `codex/milaura-integration` a `741dae1145b6244c88b05c5d774d6267d9fac46d`, propre et aligne `0/0` avec origin.
+- Le canonique verifie avant l activation Admin OTP du 2026-08-24 est `codex/milaura-integration` a `b2b03ac107fa78adff76dad12dcbcb589ea98694`, propre et aligne `0/0` avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
@@ -136,6 +136,8 @@ M2 ferme avec `CORRELATION_BLOCKED` : le bon onglet Admin RNO1 est ouvert, mais 
 Patrice confirme la destination affichee par Shopify. Elle est un alias `+` du domaine MilAura, distinct de la boite Gmail inspectee par M0 : verdict `ROUTE MISMATCH`. L absence de message dans Gmail est expliquee et ne prouve aucune panne C1. L adresse complete reste hors preuve canonique. Le master reserve uniquement M3, preflight Mail read-only sur le comportement Shopify lors d un changement d email client, les destinataires d une notification eventuelle, l unicite, la variante Gmail controlee et le rollback. Aucun Admin, changement d adresse ou nouvel OTP n est autorise avant retour M3, reservation Admin et GO exact. Cadre : `docs/checkpoints/2026-08-24-1210-c1-otp-route-mismatch-mail-preflight.md`.
 
 M3 ferme avec `CHANGE_BEHAVIOR_UNVERIFIED`. Shopify ne documente pas le declenchement ni le destinataire d une notification lors d une modification Admin ; une verification vers la nouvelle adresse est plausible, une alerte vers l ancienne ou les deux reste possible, et une notification declenchee n est pas connue comme desactivable hors Plus. L email client doit etre unique. Le master pre-reserve M4 depuis `ff6cc061` : une seule fiche synthetique RNO1, une cible privee avec suffixe `+` de la boite Gmail controlee, recherche exacte d unicite, un seul champ email et une seule sauvegarde. Aucun OTP dans M4 et aucun rollback automatique. Execution uniquement apres GO exact Patrice acceptant la notification eventuelle. Cadre : `docs/checkpoints/2026-08-24-1215-c1-otp-address-correction-prereservation.md`.
+
+Patrice a donne le GO exact M4 le 2026-08-24 : `GO ADMIN C1 OTP - MODIFICATION UNIQUE DE L EMAIL DU COMPTE TEST, J ACCEPTE UNE NOTIFICATION SHOPIFY EVENTUELLE, SANS DEMANDE OTP`. M4 est actif dans le cadre pre-reserve : branche privee depuis `ff6cc061`, cible Gmail `+c1-rc-20260824` transmise hors Git, verification d unicite, un seul champ et une seule sauvegarde sur RNO1. Aucun OTP, rollback automatique, autre cliente, commande, Mail, app dev, theme ou live. Activation : `docs/checkpoints/2026-08-24-1344-c1-otp-address-correction-go.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -420,6 +422,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-24-1344-c1-otp-address-correction-go.md`
 - `docs/checkpoints/2026-08-24-1215-c1-otp-address-correction-prereservation.md`
 - `docs/checkpoints/2026-08-24-1210-c1-otp-route-mismatch-mail-preflight.md`
 - `docs/checkpoints/2026-08-24-0936-c1-otp-manual-identity-confirmation.md`
