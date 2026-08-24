@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-24 09:29 CEST
+Derniere mise a jour : 2026-08-24 09:36 CEST
 
 ## Etat en une phrase
 
@@ -11,7 +11,7 @@ La refonte visible est largement avancee ; C1 V3 et C1-1 restent geles, les corr
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant la reservation de la correlation OTP Admin du 2026-08-24 est `codex/milaura-integration` a `5a995afa30b8e36adf4bbe71a5a864911843a82e`, propre et aligne `0/0` avec origin.
+- Le canonique verifie avant le gate humain OTP du 2026-08-24 est `codex/milaura-integration` a `8f790aa48779fcdef9472ec4f8a36033fa8bd61c`, propre et aligne `0/0` avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
@@ -130,6 +130,8 @@ Le lot 1A s est arrete proprement au tip prive `ff6cc0616b9bedee2323a9c5d3a19765
 M0 ferme avec `NO_MAIL_TRACE` : aucune trace Shopify ou Customer Accounts dans Tous les messages, spam, corbeille ou categories, aucun message prive ouvert, et le suffixe `+` est officiellement supporte par Gmail. Les filtres serveur et une quarantaine Google Workspace Admin ne sont pas visibles avec le connecteur, donc aucun rejet ou quarantaine n est prouve. Le master reserve M1, une correlation privee sans exposition d adresse : C1 et Mail normalisent chacun leur identite source, calculent une empreinte HMAC avec une cle ephemere et ne retournent que l empreinte. Aucun nouvel OTP, envoi, changement d adresse, Admin ou Shopify. Le verdict est limite a `ROUTE_IDENTITY_MATCH`, `ROUTE_IDENTITY_MISMATCH` ou `CORRELATION_BLOCKED`. Cadre : `docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md`.
 
 M1 ferme avec `CORRELATION_BLOCKED` : le fichier local C1 contient seulement six alias techniques et identifiants prives, sans adresse email. Aucune valeur brute ou empreinte exploitable n a ete restituee, et Mail a recu l ordre d arreter avec l ancienne cle. Le master reserve M2, lecture Admin strictement bornee de la seule fiche cliente synthetique RNO1 sur le dev store, puis comparaison HMAC avec la boite Gmail controlee. Aucune liste clientes, autre fiche, commande, sauvegarde, mutation, nouvel OTP, GraphQL, app dev ou live. Si aucune session Admin autorisee n est deja ouverte, stop `ADMIN_SESSION_REQUIRED`. Cadre : `docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md`.
+
+M2 ferme avec `CORRELATION_BLOCKED` : le bon onglet Admin RNO1 est ouvert, mais Chrome refuse sa lecture automatisee avant extraction. Aucune empreinte Admin ou valeur brute n a ete produite ; la cle et l empreinte Mail M2 sont expirees. Le master interdit tout autre contournement. Gate actif : Patrice regarde l adresse dans cet onglet, ne la transmet pas, ne sauvegarde rien et repond seulement `ROUTE MATCH`, `ROUTE MISMATCH` ou `ROUTE CANNOT VERIFY`. Aucun nouvel OTP ou changement d adresse n est encore autorise. Cadre : `docs/checkpoints/2026-08-24-0936-c1-otp-manual-identity-confirmation.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -414,6 +416,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-24-0936-c1-otp-manual-identity-confirmation.md`
 - `docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md`
 - `docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md`
 - `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md`

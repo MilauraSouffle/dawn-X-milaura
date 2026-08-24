@@ -1,6 +1,6 @@
 # Handoff Codex MilAura, C1 RC durci mais non live et Rentree Sodalite en pause
 
-Date : 2026-08-24 09:29 CEST
+Date : 2026-08-24 09:36 CEST
 
 ## Mission de reprise
 
@@ -13,28 +13,29 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 1. `/Users/paesano/Documents/MilAura website/dawn-X-milaura/AGENTS.md`
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
-4. `docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md`
-5. `docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md`
-6. `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md`
-7. `docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md`
-8. `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md`
-9. `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`
-10. `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`
-11. `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`
-12. `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`
-13. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
-14. `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`
-15. `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
-16. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
-17. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
-18. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
-19. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
-20. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
-21. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
+4. `docs/checkpoints/2026-08-24-0936-c1-otp-manual-identity-confirmation.md`
+5. `docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md`
+6. `docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md`
+7. `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md`
+8. `docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md`
+9. `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md`
+10. `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`
+11. `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`
+12. `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`
+13. `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`
+14. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
+15. `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`
+16. `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
+17. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
+18. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
+19. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
+20. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
+21. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
+22. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
 
 ## Verite Git au handoff
 
-- integration theme avant le commit de cette reservation : `codex/milaura-integration` a `5a995afa30b8e36adf4bbe71a5a864911843a82e`, propre et alignee `0/0` avec origin ;
+- integration theme avant le commit de ce gate : `codex/milaura-integration` a `8f790aa48779fcdef9472ec4f8a36033fa8bd61c`, propre et alignee `0/0` avec origin ;
 - `origin/main` reste un miroir Shopify incomplet, interdit de merge aveugle ;
 - live : `190430282075` ;
 - developpement general : `199421952347` ;
@@ -101,6 +102,8 @@ M0 retourne `NO_MAIL_TRACE` : aucun message Shopify ou Customer Accounts n est p
 
 M1 est `CORRELATION_BLOCKED` car la source locale C1 ne contient aucune adresse. Aucun secret ni identite n a ete expose. Le master reserve M2 : la tache C1 lit uniquement l email de la fiche cliente synthetique RNO1 dans une session Admin deja ouverte, calcule l empreinte sans afficher l adresse, puis Mail calcule celle de Gmail. Aucun autre client, commande, mutation, sauvegarde, nouvel OTP, GraphQL, app dev ou live. Si Admin n est pas deja accessible, stop `ADMIN_SESSION_REQUIRED`. Cadre : `docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md`.
 
+M2 est `CORRELATION_BLOCKED` car Chrome refuse de lire l onglet Admin exact avant extraction. Aucune donnee cliente ou empreinte Admin n a ete retournee. Le master arrete les contournements automatises. Patrice doit seulement comparer visuellement l adresse de cette fiche avec la boite Gmail controlee et repondre `ROUTE MATCH`, `ROUTE MISMATCH` ou `ROUTE CANNOT VERIFY`, sans transmettre l adresse et sans sauvegarder. Aucun nouvel OTP ou changement d adresse n est autorise avant ce verdict. Cadre : `docs/checkpoints/2026-08-24-0936-c1-otp-manual-identity-confirmation.md`.
+
 RC0 a RC10, commandes, comptes synthetiques, theme prive, backend, mapping, francais, rollback et interdictions sont canoniques dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`. Aucun app deploy ou release, theme publish, C1-2, Admin, bascule de comptes, email, integration ou live.
 
 ## Gates canoniques avant une release C1-1
@@ -150,9 +153,9 @@ Ne jamais fusionner `origin/main` aveuglement, pousser un theme complet depuis u
 ```text
 Reprends C1 Mon Ecrin MilAura au 2026-08-24 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence strictement en lecture seule.
 
-Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md, docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md, docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md, docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md, docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md, docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md, docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md, docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
+Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-24-0936-c1-otp-manual-identity-confirmation.md, docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md, docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md, docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md, docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md, docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md, docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md, docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md, docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
 
-Verifie Git, origins, worktrees et proprietaires avant toute ecriture. Canonique connu avant le commit de la correlation OTP Admin : codex/milaura-integration propre et aligne a 5a995afa30b8e36adf4bbe71a5a864911843a82e. origin/main reste un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
+Verifie Git, origins, worktrees et proprietaires avant toute ecriture. Canonique connu avant le commit du gate humain OTP : codex/milaura-integration propre et aligne a 8f790aa48779fcdef9472ec4f8a36033fa8bd61c. origin/main reste un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
 
 C1 V3 est fermee au commit prive d8d036ff7725c93168d24b9270da54de657ad6af. G1 a G4 techniques et G5 visuelle sont passes. V3 reste une preuve UX/runtime sur six fixtures et cinq profils, pas un artefact live. Aucun listener app dev ne reste. Ne rouvre pas V3.
 
@@ -160,7 +163,7 @@ C1-1 prive est ferme et gele a cf2877ba4ee5faac143a4273c486fe39c96106a8 sur code
 
 C1 Release Candidate est documente dans docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md. Le second reaudit des correctifs est ferme dans docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md : theme 2f95b3d1, prive c877d630, RC1 PASS et RC3 PASS prive. Le seul store est milaura-c1-preview 107347837273 et le theme prive isole est MilAura C1 Release Candidate 2026-08-23, ID 205027279193, toujours non publie. RC4 et RC5 restent partiels, RC6 est ferme avec NO-GO conditionnel, RC7 et RC8 restent ouverts ou partiels, sans ajout de write_orders. Mon Ecrin n est pas live. Aucun backend production, app deploy ou release, bascule Customer Accounts, publication theme ou QA live n a eu lieu.
 
-Le lot 1A est termine et gele a ff6cc061 avec OTP_DELIVERY_BLOCKED. M0 est ferme avec NO_MAIL_TRACE et M1 avec CORRELATION_BLOCKED_SOURCE_EMPTY. La mission active est seulement M2, lecture Admin bornee de la fiche synthetique RNO1 et comparaison HMAC avec Gmail selon docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md. Aucun proprietaire ne doit afficher l adresse. Aucun nouveau code ne doit etre demande. Toute sauvegarde Admin, autre cliente, envoi, changement d adresse, test, support Shopify, commande, write_orders, app dev, deploy, release, C1-2, integration, publication ou live reste interdit sans lot et GO distincts.
+Le lot 1A est termine et gele a ff6cc061 avec OTP_DELIVERY_BLOCKED. M0 est ferme avec NO_MAIL_TRACE ; M1 et M2 sont CORRELATION_BLOCKED sans exposition de donnee. Aucune mission technique ne reste active. Patrice doit uniquement regarder l adresse dans l onglet Admin exact deja ouvert, ne rien modifier et repondre ROUTE MATCH, ROUTE MISMATCH ou ROUTE CANNOT VERIFY. Aucun nouveau code, sauvegarde Admin, autre cliente, envoi, changement d adresse, test, support Shopify, commande, write_orders, app dev, deploy, release, C1-2, integration, publication ou live sans lot et GO distincts.
 
 Agentic-Ops main est tres dirty sur Stella et d autres travaux concurrents. Ne pas y ecrire ni nettoyer.
 
@@ -171,6 +174,7 @@ Commence par rendre un point factuel Git, worktrees, proprietaires, conflits, in
 
 ## Fichiers canoniques
 
+- `docs/checkpoints/2026-08-24-0936-c1-otp-manual-identity-confirmation.md` ;
 - `docs/checkpoints/2026-08-24-0929-c1-otp-admin-identity-correlation-reservation.md` ;
 - `docs/checkpoints/2026-08-24-0926-c1-otp-route-correlation-reservation.md` ;
 - `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md` ;
