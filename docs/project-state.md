@@ -1,17 +1,17 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-24 13:50 CEST
+Derniere mise a jour : 2026-08-24 20:21 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; C1 V3 et C1-1 restent geles, les correctifs RC1 et RC3 du Release Candidate prive ont passe le second reaudit mais le RC global reste ouvert sans bascule Admin ni live, tandis que Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31 sans GO visuel final, integration ou live.
+La refonte visible est largement avancee ; l endpoint prive stable C1 fonctionne mais RNO3 a revele une reecriture non idempotente du diagnostic restaure dans le quiz, le rollback est passe et un micro-lot correctif est seulement pre-reserve, sans bascule Admin ni live ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant la pre-reservation endpoint stable du 2026-08-24 est `codex/milaura-integration` a `5e7243e6454250574942c83db15f14829c0f2ded`, propre et aligne `0/0` avec origin.
+- Le canonique verifie avant la cloture endpoint stable du 2026-08-24 est `codex/milaura-integration` a `35e5907b97d4a1c101750f86a7368dbe76f255e8`, propre et aligne `0/0` avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
@@ -156,6 +156,10 @@ M6 s arrete apres sa premiere sauvegarde avec `BLOCKED_QUICK_TUNNEL_DNS_NOT_RESO
 Le recovery M6 ferme ensuite avec `RECOVERY_TUNNEL_PREVALIDATION_FAILED - ROLLBACK PASS - RNO3/RNO4 NON EXECUTES`. L unique lancement du nouveau quick tunnel a quitte avant hostname sur echec de resolution DNS de l API Cloudflare. Aucune nouvelle URL n a ete generee ou sauvegardee et aucune donnee n a transite. Patrice a vide l ancienne URL morte ; apres rechargement, `backend_url` est vide, le flag prive est `false`, la base locale est saine avec zero handoff et zero purge, et aucun listener ou processus ne reste. La preuve privee est poussee a `fac94126be4ed23d4e92a4a5edf690fd6af19ffe`, branche et worktree propres `0/0`. RC4 et RC8 restent partiels. Aucun troisieme quick tunnel ni nouvelle reservation runtime. Toute reprise exige un nouveau choix master entre correction DNS locale et endpoint de preview stable, puis nouveau GO Patrice. Cloture : `docs/checkpoints/2026-08-24-1825-c1-m6-recovery-closed.md`.
 
 Le master retient ensuite la voie endpoint prive stable, sans l executer. Le backend RC deja Dockerise doit etre heberge de facon isolee sur le VPS ONORA existant, derriere nginx et un sous-domaine HTTPS dedie, sans Cloudflare Tunnel. Apres GO, une branche privee distincte partira de `fac94126`, avec seulement un paquet de deploiement nouveau et des preuves nouvelles. Le lot doit d abord revalider le VPS, DNS, port, TLS, capacite et conflits en lecture seule, puis proteger les secrets hors Git, deployer un conteneur non root sur localhost, connecter uniquement la development preview C1, fermer RNO3/RNO4 sans commande et effectuer un rollback complet. Un OTP natif unique saisi uniquement par Patrice est inclus si la session expire. Aucun app deploy, release, Admin cliente, Mail, integration ou live. Pre-reservation et GO exact : `docs/checkpoints/2026-08-24-1834-c1-stable-private-endpoint-prereservation.md`.
+
+Le lot endpoint stable est ensuite execute et pousse au commit prive `146ac02633a14c43436a09611996c71d8c861f7d`. L infrastructure HTTPS, le backend non root, la validation de session, le premier handoff et le premier import passent. RNO3 echoue apres reload : `sections/milaura-quiz.liquid` reconstruit puis reecrit le resultat restaure, perd l identite et le consentement ajoutes par le bridge et regenere aussi `timestamp`. Un second handoff et un faux conflit apparaissent. RNO4 reste partiel apres un premier PASS responsive sans commande. Le rollback est complet : purge sans resurrection, `backend_url` vide, flag `false`, theme `205027279193` non publie, App Dev et endpoint arretes. Le DNS, nginx, le certificat, le volume, les secrets VPS et le conteneur arrete restent en place. Verdict : `RNO3_FAIL_IDEMPOTENCE_AFTER_RELOAD - RNO4_PARTIAL_PASS - ROLLBACK_PASS`.
+
+Le master pre-reserve un micro-lot distinct sans l executer. La correction doit afficher le dernier diagnostic deja stocke sans le reecrire ; un nouveau passage reel du quiz doit au contraire produire une nouvelle identite. Copier seulement `resultId`, `revision` et `accountPersonalization` serait insuffisant car le backend hache aussi le timestamp normalise. Branche theme proposee depuis `2f95b3d1`, seul fichier `sections/milaura-quiz.liquid` ; branche de preuves privee depuis `146ac026`, nouvelle zone documentaire seulement. La QA doit prouver doublon strict apres reload, vrai conflit apres nouveau quiz, purge, RNO4 complet et rollback. Aucun backend, texte, commande, Admin cliente, Mail, deploy, release, integration ou live. Cadre et GO exact : `docs/checkpoints/2026-08-24-2021-c1-stable-endpoint-rno-fail-idempotence-prereservation.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -425,7 +429,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; Release Candidate durci a `2f95b3d1` et `c877d630`, RC1 PASS, RC3 PASS prive, mais RC4 a RC8 encore incomplets ou bloques ; aucun droit C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live
+- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; endpoint stable prouve au lot `146ac026`, mais RNO3 echoue sur la reecriture du diagnostic restaure et RNO4 reste partiel ; correctif theme seulement pre-reserve depuis `2f95b3d1`, aucun droit C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
