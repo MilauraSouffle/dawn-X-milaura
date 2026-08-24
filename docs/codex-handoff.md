@@ -1,10 +1,10 @@
-# Handoff Codex MilAura, correctifs C1 RC reaudites et Rentree Sodalite en pause
+# Handoff Codex MilAura, C1 RC durci mais non live et Rentree Sodalite en pause
 
-Date : 2026-08-23 19:36 CEST
+Date : 2026-08-24 07:18 CEST
 
 ## Mission de reprise
 
-Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. C1 V3 et C1-1 sont fermes et geles. Le second reaudit du Release Candidate ferme les correctifs RC1 et RC3 sur `2f95b3d1` et `c877d630`, mais le RC global reste ouvert, sans droit Admin, release, deploy ou live. Rentree Sodalite est en pause a `70 %` jusqu au 2026-08-31, sans GO visuel final, integration ou live.
+Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. C1 V3 et C1-1 sont fermes et geles. Le second reaudit du Release Candidate ferme les correctifs RC1 et RC3 sur `2f95b3d1` et `c877d630`, mais le RC global reste ouvert, sans droit Admin, release, deploy ou live. L objectif final confirme par Patrice reste une mise en ligne definitive de Mon Ecrin, testee et parfaitement fonctionnelle. Rentree Sodalite est en pause a `70 %` jusqu au 2026-08-31, sans GO visuel final, integration ou live.
 
 Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d affaires. La charte et la DA MilAura sont executables. Tiffany & Co. et Van Cleef & Arpels donnent le niveau d exigence visuelle, sans copie.
 
@@ -13,23 +13,24 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 1. `/Users/paesano/Documents/MilAura website/dawn-X-milaura/AGENTS.md`
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
-4. `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`
-5. `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`
-6. `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`
-7. `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`
-8. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
-9. `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`
-10. `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
-11. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
-12. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
-13. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
-14. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
-15. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
-16. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
+4. `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md`
+5. `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`
+6. `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`
+7. `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`
+8. `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`
+9. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
+10. `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`
+11. `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
+12. `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
+13. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
+14. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
+15. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
+16. `docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md`
+17. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
 
 ## Verite Git au handoff
 
-- integration theme avant le commit de ce handoff : `codex/milaura-integration` a `2c9c577a83895f543b3c146596773e4f70273260`, propre et alignee avec origin ;
+- integration theme avant le commit de ce handoff : `codex/milaura-integration` a `1cba6357e08e87e0d50e130b8a11a745ee0de0af`, propre et alignee `0/0` avec origin ;
 - `origin/main` reste un miroir Shopify incomplet, interdit de merge aveugle ;
 - live : `190430282075` ;
 - developpement general : `199421952347` ;
@@ -38,7 +39,7 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 - C1 RC theme : branche `codex/milaura-c1-release-candidate-theme-20260823`, base `6560d59c`, tip `2f95b3d1ebb2af9863e98f914a1daa835e6b90be`, worktree propre et aligne `0/0` ;
 - C1 RC prive : branche `codex/milaura-c1-release-candidate-private-20260823`, base `cf2877ba`, tip `c877d630a8953a0cf1304c7392143288db110b99`, worktree propre et aligne `0/0` ;
 - boutique C1 privee : `milaura-c1-preview`, store ID `107347837273` ;
-- aucun listener C1 sur `3017` ou `3457`, aucun app dev, tunnel ou Colima actif ;
+- aucun listener C1 sur `3017`, `3457` ou `64112`, aucun app dev, tunnel ou Colima actif ;
 - Rentree Sodalite : branche et distant alignes a `47cc3e62`, worktree propre, theme prive non publie `200259043675`, pause a `70 %` jusqu au 2026-08-31 ;
 - Ruban V3 : `3aa0b66d`, parque ;
 - Atelier : `2befe429`, theme prive `200007713115`, parque ;
@@ -72,17 +73,17 @@ G0 a G10 sont passes sur donnees synthetiques. Le master a ensuite audite le lot
 
 Patrice a donne le 2026-08-23 le GO exact `GO VISUEL ET FONCTIONNEL C1-1 - PREVIEW PRIVÉE VALIDÉE, SANS RELEASE NI LIVE`. G11 est ferme sur `cf2877ba`. Le lot reste gele en lecture seule. Sans fichier theme, le vrai bridge et la purge de `MilauraPreferenceStorage` ou du panier ne sont pas fermes ; catalogue, Mail, backend production, C1-2, release, deploy, Admin, bascule de comptes, theme, email et live restent interdits sans nouveaux GO. Cadre et audit : `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md` et `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md`.
 
-## C1 Release Candidate reserve
+## C1 Release Candidate durci, globalement ouvert
 
 Patrice a donne le GO exact :
 
 `GO C1 RELEASE CANDIDATE - PRODUCTIONISATION PRIVÉE, SANS BASCULE ADMIN NI LIVE`
 
-Le lot utilise deux depots sans rouvrir C1-1 : branche theme `codex/milaura-c1-release-candidate-theme-20260823` depuis `6560d59c`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/c1-release-candidate-theme-20260823` ; branche privee `codex/milaura-c1-release-candidate-private-20260823` depuis `cf2877ba`, worktree `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-release-candidate-20260823`. Les deux branches et worktrees sont crees et suivent leur origin. Le worktree theme est propre ; le travail prive actif reste dans sa nouvelle zone reservee.
+Le lot utilise deux depots sans rouvrir C1-1 : branche theme `codex/milaura-c1-release-candidate-theme-20260823` depuis `6560d59c`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/c1-release-candidate-theme-20260823` ; branche privee `codex/milaura-c1-release-candidate-private-20260823` depuis `cf2877ba`, worktree `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-release-candidate-20260823`. Les deux branches et worktrees suivent leur origin, sont propres et alignes `0/0`. Le lot est gele en attente d une nouvelle decision master.
 
 La piste theme reserve exactement sept fichiers : `assets/milaura-preference-storage.js`, le nouvel asset `assets/milaura-c1-release-bridge.js`, le nouveau snippet `snippets/milaura-c1-release-bridge.liquid`, `layout/theme.liquid`, `sections/milaura-quiz.liquid`, `config/settings_schema.json` et `config/settings_data.json`. La piste privee ecrit uniquement dans `docs/milaura/shopify-apps/customer-accounts-release-candidate/**` et `docs/milaura/shopify-admin-canonical/c1-release-candidate/**`.
 
-Le theme et l app tournent sur le meme store `milaura-c1-preview`, ID `107347837273`. Le nouveau theme prive est `MilAura C1 Release Candidate 2026-08-23`, ID `205027279193`, role `unpublished`, recontrole isole par le master le 2026-08-23 a 11:08 CEST. Le bootstrap a remonte une ressource video heritee invalide dans `templates/list-collections.json` ; ce fichier est hors scope et reste intact. Tous les prochains pushes sont limites aux sept fichiers reserves vers ce seul theme, puis pullback borne. Les themes existants du dev store, le developpement general `199421952347` et le live `190430282075` sont interdits. Le backend production est prepare et teste localement, sans deploiement externe ni secret de production. Mail reste proprietaire de ses dix surfaces compte gelees ; C1 coordonne sans modifier aucun email.
+Le theme et l app ont ete prepares pour le meme store `milaura-c1-preview`, ID `107347837273`, mais aucun runtime C1 n est actif au handoff. Le nouveau theme prive est `MilAura C1 Release Candidate 2026-08-23`, ID `205027279193`, role `unpublished`, recontrole isole par le master le 2026-08-23 a 11:08 CEST. Le bootstrap a remonte une ressource video heritee invalide dans `templates/list-collections.json` ; ce fichier est hors scope et reste intact. Tout futur push reste soumis a une nouvelle reservation, limite aux fichiers autorises vers ce seul theme, puis pullback borne. Les themes existants du dev store, le developpement general `199421952347` et le live `190430282075` sont interdits. Le backend production est prepare et teste localement, sans deploiement externe ni secret de production. Mail reste proprietaire de ses dix surfaces compte gelees ; C1 coordonne sans modifier aucun email.
 
 RC6 Mail a rendu un `NO-GO CONDITIONNEL` le 2026-08-23. La confirmation initiale des commandes creees dans Admin ne peut pas etre neutralisee globalement hors Plus. `orderCreate` avec notifications a `false` exige `write_orders` et un jeton hors ligne, interdits ici. Decision master : aucun scope, compte ou commande ajoute ; RC7 et la partie avec commandes de RC8 restent ouverts, tandis que la QA sans donnees continue. Le shell Shopify natif encore en anglais reste un blocker Admin. Aucun micro-lot `write_orders` n est autorise ou reserve avant audit des deux commits RC et nouveau GO explicite Patrice.
 
@@ -135,17 +136,19 @@ Ne jamais fusionner `origin/main` aveuglement, pousser un theme complet depuis u
 ## Message de reprise copiable
 
 ```text
-Reprends le pilotage master MilAura au 2026-08-23 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence en lecture seule.
+Reprends C1 Mon Ecrin MilAura au 2026-08-24 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence strictement en lecture seule.
 
-Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md, docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md, docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md, docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md, docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md, docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md, docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md, docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md, docs/checkpoints/2026-08-16-0751-master-midpoint-handoff.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
+Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md, docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md, docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md, docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
 
-Verifie Git, origin, tous les worktrees, les proprietaires et les taches actives. Base connue avant le commit du handoff : codex/milaura-integration propre et aligne a 2c9c577a83895f543b3c146596773e4f70273260. origin/main reste un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
+Verifie Git, origins, worktrees et proprietaires avant toute ecriture. Canonique connu avant le commit du handoff : codex/milaura-integration propre et aligne a 1cba6357e08e87e0d50e130b8a11a745ee0de0af. origin/main reste un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
 
 C1 V3 est fermee au commit prive d8d036ff7725c93168d24b9270da54de657ad6af. G1 a G4 techniques et G5 visuelle sont passes. V3 reste une preuve UX/runtime sur six fixtures et cinq profils, pas un artefact live. Aucun listener app dev ne reste. Ne rouvre pas V3.
 
 C1-1 prive est ferme et gele a cf2877ba4ee5faac143a4273c486fe39c96106a8 sur codex/milaura-c1-1-private-implementation-20260822. G0 a G11 sont passes ; Patrice a valide la preview privee, sans release ni live. Ne rouvre pas C1-1 et ne lance pas C1-2 sans nouveau GO et nouvelle reservation. Le vrai bridge theme, la purge MilauraPreferenceStorage ou panier, Mail, catalogue, backend production, release, deploy, GO Admin, bascule de comptes et live restent fermes. Fidelite reelle non bloquante, bloc A venir conserve. S1B et S1C sont downstream.
 
-C1 Release Candidate est reserve dans docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md. Le second reaudit des correctifs est ferme dans docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md : theme 2f95b3d1, prive c877d630, RC1 PASS et RC3 PASS prive. Le seul store est milaura-c1-preview 107347837273 et le theme prive isole est MilAura C1 Release Candidate 2026-08-23, ID 205027279193, toujours non publie. RC4 et RC5 restent partiels, RC6 est ferme avec NO-GO conditionnel, RC7 et les cas commandes RC8 restent ouverts, sans ajout de write_orders. Aucun GO Patrice n est demande. Aucun theme existant, app deploy ou release, C1-2, Admin, bascule de comptes, email, integration ou live. Mail reste proprietaire de ses surfaces.
+C1 Release Candidate est documente dans docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md. Le second reaudit des correctifs est ferme dans docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md : theme 2f95b3d1, prive c877d630, RC1 PASS et RC3 PASS prive. Le seul store est milaura-c1-preview 107347837273 et le theme prive isole est MilAura C1 Release Candidate 2026-08-23, ID 205027279193, toujours non publie. RC4 et RC5 restent partiels, RC6 est ferme avec NO-GO conditionnel, RC7 et RC8 restent ouverts ou partiels, sans ajout de write_orders. Mon Ecrin n est pas live. Aucun backend production, app deploy ou release, bascule Customer Accounts, publication theme ou QA live n a eu lieu.
+
+Premiere mission : rendre au master un point factuel sur RC4 a RC8 et proposer le plus petit lot de fermeture, sans l executer. RC6 doit rester coordonne avec Mail ; aucun email n est modifiable. Aucun compte, commande, write_orders, Admin, app dev, tunnel, C1-2, integration, publication ou live sans nouvelle reservation et GO exacts. L objectif final de Patrice reste la mise en ligne definitive de la feature, mais chaque gate production conserve son GO distinct.
 
 Agentic-Ops main est tres dirty sur Stella et d autres travaux concurrents. Ne pas y ecrire ni nettoyer.
 
@@ -156,6 +159,8 @@ Commence par rendre un point factuel Git, worktrees, proprietaires, conflits, in
 
 ## Fichiers canoniques
 
+- `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md` ;
+- `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md` ;
 - `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md` ;
 - `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md` ;
 - `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md` ;

@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-23 19:36 CEST
+Derniere mise a jour : 2026-08-24 07:18 CEST
 
 ## Etat en une phrase
 
@@ -11,7 +11,7 @@ La refonte visible est largement avancee ; C1 V3 et C1-1 restent geles, les corr
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant le handoff C1-1 du 2026-08-23 est `codex/milaura-integration` a `8721b7cc78cf3eb2a377255cf4e934daea98fb82` ou plus recent, propre et aligne avec origin.
+- Le canonique verifie avant le commit du handoff C1 RC du 2026-08-24 est `codex/milaura-integration` a `1cba6357e08e87e0d50e130b8a11a745ee0de0af`, propre et aligne `0/0` avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
@@ -366,8 +366,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. La session master conserve seule l integration et le live a partir de `7cd851eb` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Conserver C1 V3 `d8d036ff` et C1-1 `cf2877ba` gelees ; executer le Release Candidate uniquement dans la reservation `2026-08-23-1100`, sur les deux nouvelles branches et le seul dev store C1. Aucun C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live.
+1. La session master conserve seule l integration et le live a partir de `1cba6357` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
+2. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba` et les deux tips RC `2f95b3d1` et `c877d630` geles. Le prochain lot doit etre reserve par le master pour fermer RC4, RC7 et RC8, avec une decision distincte sur RC6 et `write_orders`. Aucun compte, commande, C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live avant ce nouveau cadre.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Laisser `Rentree Sodalite` en pause a `70 %` jusqu au 2026-08-31. A la reprise, conserver la photo fixe, polir la section, fermer inventaire, produits, couts, marges, landing et dates, puis obtenir des GO visuel, integration, Admin et live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
@@ -391,7 +391,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; Release Candidate reserve depuis `6560d59c` et `cf2877ba` sur deux nouvelles branches, sans droit C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live
+- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; Release Candidate durci a `2f95b3d1` et `c877d630`, RC1 PASS, RC3 PASS prive, mais RC4 a RC8 encore incomplets ou bloques ; aucun droit C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
@@ -406,6 +406,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md`
+- `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`
 - `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`
 - `docs/checkpoints/2026-08-21-0859-master-strategic-handoff.md`
 - `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`
