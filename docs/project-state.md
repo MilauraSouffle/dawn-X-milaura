@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-24 08:21 CEST
+Derniere mise a jour : 2026-08-24 09:20 CEST
 
 ## Etat en une phrase
 
@@ -11,7 +11,7 @@ La refonte visible est largement avancee ; C1 V3 et C1-1 restent geles, les corr
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant la reservation C1 RC lot 1A du 2026-08-24 est `codex/milaura-integration` a `0c9ed54f7be0d1eba0a37a5021e44bb86b8092d6`, propre et aligne `0/0` avec origin.
+- Le canonique verifie avant la reservation du diagnostic OTP Mail du 2026-08-24 est `codex/milaura-integration` a `3bc241437ec666dfb487efb5dbaa5e117e5b87c4`, propre et aligne `0/0` avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
@@ -124,6 +124,8 @@ Le preflight RC6 Mail est signe avec resultat `NO-GO CONDITIONNEL`. Hors Plus, l
 Le premier RC10 avait rouvert RC1 et RC3 sur trois P1 documentes dans `docs/checkpoints/2026-08-23-1548-c1-rc-rc10-audit-no-go.md`. Les correctifs ont ensuite ete pousses a `2f95b3d1` pour le theme et `c877d630` pour le prive, avec commit fonctionnel `77cd15f3`. Le second reaudit master ferme les trois P1 : emission idempotente avec unicite SQLite et retry strict, maintenance de retention continue avec drain, et image non root avec SQLite persistante prouvee en prive. Contre-verifications master : 33 tests sur 33, build Shopify, bundle `65019`, audit zero vulnerabilite, Theme Check zero erreur, pullback bridge distant strictement identique et theme `205027279193` toujours non publie. RC1 est PASS et RC3 PASS prive. Le Release Candidate global reste ouvert : RC4 et RC5 partiels, RC6 ferme avec NO-GO conditionnel, RC7 ouvert, RC8 partiel. Aucun GO Patrice n est demande et aucun compte, commande, `write_orders`, Admin, email, deploy, release, C1-2, integration, publication ou live n est autorise. Preuve : `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`.
 
 Le master ouvre le 2026-08-24 uniquement le lot C1 RC 1A, runtime prive authentifie sans commande. Il part du tip prive `c877d630a8953a0cf1304c7392143288db110b99` sur la branche a creer `codex/milaura-c1-rc-runtime-no-orders-20260824`, avec une seule zone de preuve nouvelle. Il peut utiliser au maximum un compte synthetique existant, controle et sans commande, le theme prive non publie `205027279193`, le backend local, `shopify app dev` et l activation temporaire du flag RC, obligatoirement restaure a `false`. Si aucun compte eligible n existe, le lot s arrete avec `ACCOUNT_REQUIRED`. Aucune creation de compte, commande, `write_orders`, mutation Admin, modification Mail, push theme, deploy, release, C1-2, integration ou live n est autorise. Ce lot peut fermer RC4 et augmenter la couverture sans commande de RC8 ; RC5, RC6, RC7 et les etats commandes restent ouverts. Reservation : `docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md`.
+
+Le lot 1A s est arrete proprement au tip prive `ff6cc0616b9bedee2323a9c5d3a197659170f260` avec `OTP_DELIVERY_BLOCKED`. RNO0, RNO1, RNO2, RNO5 et RNO6 sont PASS ; RNO3 et RNO4 sont bloques avant authentification car le code natif Shopify, annonce comme envoye, n est pas arrive dans la boite controlee. Aucun scenario C1 bout en bout n a commence. Le flag du theme prive est revenu a `false`, SQLite reste a zero handoff et zero purge, et app dev, backend, tunnel et listeners sont arretes. RC4 ne ferme pas et RC8 ne progresse pas. Le master reserve seulement un diagnostic Mail M0 strictement read-only sur la boite, le spam, la quarantaine, les filtres, le routage et le support du suffixe `+`. Aucune nouvelle demande OTP, mutation de boite, changement d adresse du compte, Admin, email, Shopify ou reprise C1 n est autorise. Cadre : `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -408,6 +410,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-24-0920-c1-otp-delivery-readonly-reservation.md`
 - `docs/checkpoints/2026-08-24-0821-c1-rc-runtime-no-orders-reservation.md`
 - `docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md`
 - `docs/checkpoints/2026-08-23-1936-c1-rc-rc10-corrections-reaudit.md`
