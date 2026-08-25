@@ -2,7 +2,7 @@
 
 Date : 2026-08-25 09:56 CEST
 
-Statut : `ACTIF APRES GO - PREFLIGHT AMENDE - ZERO MUTATION AU 2026-08-25 10:10 CEST`
+Statut : `ACTIF APRES GO - PREFLIGHT AMENDE - ZERO MUTATION AU 2026-08-25 10:12 CEST`
 
 ## Cloture O1-S et O1-SR
 
@@ -26,7 +26,7 @@ Patrice a donne exactement :
 
 `GO C1 O2 - RECREATION BORNEE DU PRODUIT TEST OBSIDIENNE, PUBLICATION PRIVEE CORRIGEE, UNE COMMANDE TEST SANS NOTIFICATION, QA DES ETATS COMMANDES ET ROLLBACK, SANS RELEASE NI LIVE`
 
-GO exact recu avant creation de la branche et du worktree. Le preflight publication est amende sans elargissement par `docs/checkpoints/2026-08-25-1010-c1-o2-publication-preflight-amendment.md`.
+GO exact recu avant creation de la branche et du worktree. Le preflight publication et produits est amende sans elargissement par `docs/checkpoints/2026-08-25-1010-c1-o2-publication-preflight-amendment.md` et `docs/checkpoints/2026-08-25-1012-c1-o2-products-preflight-amendment.md`.
 
 Ce GO ne permet aucune execution avant le preflight de schema. Il ne donne aucun droit sur le store MilAura, le theme, Mail, les stocks, les feeds, une app release, la production ou le live.
 
@@ -134,17 +134,18 @@ Branche, worktree, tracking et zone exacts. Integration et anciens lots inchange
 - validation de schema complete ;
 - cinq documents de mutation et variables figes, haches et sans champ `code` ;
 - scopes temporaires absents ;
-- produit QA O2 absent ;
+- preuve heritee `99fdaea` du produit QA O2 absent, sans requete `products` inaccessible avant scope ;
 - RNO1 exact et zero commande ;
 - Mail pret en observation read-only.
 
-La requete `publications` est exclue de cette premiere fenetre car elle exige un scope publication absent de la configuration canonique.
+Les requetes `products` et `publications` sont exclues de cette premiere fenetre car elles exigent des droits de lecture absents de la configuration canonique.
 
-### O2-1B - Scopes et identification publication
+### O2-1B - Scopes, produit absent et identification publication
 
 - ajouter exactement `write_products`, `write_publications` et `write_orders` ;
 - confirmer ces trois scopes actifs et aucun scope supplementaire ;
-- lire `publications` avec le droit de lecture inclus dans `write_publications` ;
+- lire `products` et `publications` avec les droits de lecture inclus dans les scopes d ecriture ;
+- reconfirmer le handle QA absent ;
 - identifier sans ambiguite l unique publication Online Store du dev store ;
 - en cas d ambiguite, arreter avant toute mutation et revenir au master.
 

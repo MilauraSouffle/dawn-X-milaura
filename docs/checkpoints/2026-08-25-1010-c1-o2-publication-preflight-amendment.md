@@ -34,13 +34,15 @@ References officielles :
 Le master canonise l ordre suivant sans elargir O2 :
 
 1. terminer le preflight read-only sans la requete `publications` ;
-2. confirmer les trois scopes temporaires absents, le handle QA absent et RNO1 a zero commande ;
+2. confirmer les trois scopes temporaires absents et RNO1 a zero commande ; accepter la preuve `99fdaea` du handle absent, sans nouvelle lecture `products` avant scope ;
 3. activer exactement `write_products`, `write_publications` et `write_orders` via la configuration O2 deja reservee ;
 4. confirmer ces trois scopes actifs et aucun autre scope ajoute ;
-5. lire immediatement `publications` grace au droit de lecture inclus dans `write_publications` ;
-6. identifier sans ambiguite l unique publication Online Store du seul dev store ;
-7. si zero ou plusieurs cibles plausibles, arreter avant `productSet` et revenir au master ;
-8. seulement apres cette identification, poursuivre O2-2 selon le checkpoint initial.
+5. lire immediatement `products` et `publications` grace aux droits de lecture inclus dans `write_products` et `write_publications` ;
+6. reconfirmer le handle QA absent et identifier sans ambiguite l unique publication Online Store du seul dev store ;
+7. si le handle existe, ou si zero ou plusieurs publications sont plausibles, arreter avant `productSet` et revenir au master ;
+8. seulement apres ces deux controles, poursuivre O2-2 selon le checkpoint initial.
+
+Le detail de la preuve heritee et du controle `products` est canonise dans `docs/checkpoints/2026-08-25-1012-c1-o2-products-preflight-amendment.md`.
 
 Autorisation exacte :
 
