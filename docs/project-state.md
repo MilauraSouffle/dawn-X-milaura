@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-25 09:56 CEST
+Derniere mise a jour : 2026-08-25 10:10 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; O1-S est ferme avec produit test supprime, zero commande, scopes absents et rollback complet ; O2 est pre-reserve pour valider d abord le schema GraphQL puis reprendre une seule fois le produit, la publication, la commande silencieuse et la QA ; RC5, RC7, les etats commandes de RC8, le francais natif, la productionisation, l integration, la bascule Admin et le live restent ouverts ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+La refonte visible est largement avancee ; O1-S est ferme avec rollback complet ; O2 est actif apres GO, son schema est valide et son preflight est amende sans mutation pour identifier la publication seulement apres activation des trois scopes deja reserves ; RC5, RC7, les etats commandes de RC8, le francais natif, la productionisation, l integration, la bascule Admin et le live restent ouverts ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 ## Source de verite et etat du depot
 
@@ -176,6 +176,8 @@ O1-S passe ensuite son preflight et cree l unique produit QA, mais la publicatio
 O1-SR passe ensuite au commit prive `99fdaea03889d9dcd9fc6e240f338cb0698b0863`. La suppression minimale reussit une seule fois, produit, variant, media et handle sont absents, RNO1 reste a zero commande, les trois scopes sont retires et le rollback est complet. Worktree propre `0/0`, aucun listener. O1-S et O1-SR sont fermes et geles sans progres RC7 ou RC8 commandes.
 
 Le master pre-reserve O2 depuis `99fdaea`. Sa premiere gate valide en read-only le schema effectif de cinq mutations et fige des selections minimales sans champ `code` avant tout scope. Apres GO, O2 peut recreer un produit QA Obsidienne, le publier uniquement sur Online Store du dev store protege, creer une commande `test`, `PAID`, `FULFILLED`, inventaire bypass et notifications false, terminer la QA des etats commandes, puis supprimer exactement les deux objets apres confirmation destructive et restaurer tout le runtime. Aucun code, theme, Mail, stock, catalogue, deploy/release, integration ou live. Cadre et GO exact : `docs/checkpoints/2026-08-25-0956-c1-o2-orders-private-qa-reservation.md`.
+
+O2 recoit son GO exact, cree sa branche et son worktree propres a `99fdaea`, puis valide le schema 2026-10 des cinq mutations. Son premier preflight combine echoue sans scope et sans mutation uniquement parce que `publications` exige `read_publications`. Shopify confirme qu un scope d ecriture inclut la lecture correspondante. Le master amende donc seulement l ordre : preflight general avec scopes absents, activation des trois scopes deja reserves, lecture de l unique publication via `write_publications`, arret avant `productSet` si ambiguite. Aucun `read_publications` explicite, aucun quatrieme scope et aucun nouveau GO. Cadre : `docs/checkpoints/2026-08-25-1010-c1-o2-publication-preflight-amendment.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 

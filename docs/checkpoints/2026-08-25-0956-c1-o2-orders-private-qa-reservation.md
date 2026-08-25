@@ -2,7 +2,7 @@
 
 Date : 2026-08-25 09:56 CEST
 
-Statut : `PRE-RESERVE - NON EXECUTE - ATTEND GO PATRICE`
+Statut : `ACTIF APRES GO - PREFLIGHT AMENDE - ZERO MUTATION AU 2026-08-25 10:10 CEST`
 
 ## Cloture O1-S et O1-SR
 
@@ -20,11 +20,13 @@ Reprendre le meme objectif fonctionnel dans un nouveau lot prive, apres validati
 
 O2 ne prouve pas RC5, l inventaire reel, le catalogue MilAura ou une release.
 
-## GO exact requis
+## GO exact recu
 
-Patrice doit donner exactement :
+Patrice a donne exactement :
 
 `GO C1 O2 - RECREATION BORNEE DU PRODUIT TEST OBSIDIENNE, PUBLICATION PRIVEE CORRIGEE, UNE COMMANDE TEST SANS NOTIFICATION, QA DES ETATS COMMANDES ET ROLLBACK, SANS RELEASE NI LIVE`
+
+GO exact recu avant creation de la branche et du worktree. Le preflight publication est amende sans elargissement par `docs/checkpoints/2026-08-25-1010-c1-o2-publication-preflight-amendment.md`.
 
 Ce GO ne permet aucune execution avant le preflight de schema. Il ne donne aucun droit sur le store MilAura, le theme, Mail, les stocks, les feeds, une app release, la production ou le live.
 
@@ -36,10 +38,10 @@ Avant les suppressions, Patrice devra confirmer exactement :
 
 Depot prive : `Onora-studio/onora-ops`.
 
-- branche a creer apres GO : `codex/milaura-c1-o2-orders-private-qa-20260825` ;
+- branche creee : `codex/milaura-c1-o2-orders-private-qa-20260825` ;
 - base exacte : `99fdaea03889d9dcd9fc6e240f338cb0698b0863` ;
-- worktree a creer : `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-o2-orders-private-qa-20260825` ;
-- tracking : `origin/codex/milaura-c1-o2-orders-private-qa-20260825` ;
+- worktree cree : `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-c1-o2-orders-private-qa-20260825` ;
+- tracking : `origin/codex/milaura-c1-o2-orders-private-qa-20260825`, aligne `0/0` avant execution ;
 - seule zone suivie : `docs/milaura/shopify-admin-canonical/c1-o2-orders-private-qa/**` ;
 - configuration locale temporaire ignoree : `docs/milaura/shopify-apps/customer-accounts-release-candidate/shopify.app.c1-o2.toml` ;
 - etat prive local ignore : `docs/milaura/shopify-apps/customer-accounts-release-candidate/.c1-o2.local.json`.
@@ -134,12 +136,20 @@ Branche, worktree, tracking et zone exacts. Integration et anciens lots inchange
 - scopes temporaires absents ;
 - produit QA O2 absent ;
 - RNO1 exact et zero commande ;
-- publication Online Store identifiee ;
 - Mail pret en observation read-only.
+
+La requete `publications` est exclue de cette premiere fenetre car elle exige un scope publication absent de la configuration canonique.
+
+### O2-1B - Scopes et identification publication
+
+- ajouter exactement `write_products`, `write_publications` et `write_orders` ;
+- confirmer ces trois scopes actifs et aucun scope supplementaire ;
+- lire `publications` avec le droit de lecture inclus dans `write_publications` ;
+- identifier sans ambiguite l unique publication Online Store du dev store ;
+- en cas d ambiguite, arreter avant toute mutation et revenir au master.
 
 ### O2-2 - Produit et publication
 
-- ajouter seulement `write_products`, `write_publications`, `write_orders` via la configuration locale ;
 - creer exactement un produit et un variant O2 ;
 - verifier la specification par lecture Admin ;
 - executer exactement une publication ;
