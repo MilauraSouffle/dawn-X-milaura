@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-25 08:24 CEST
+Derniere mise a jour : 2026-08-25 08:47 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; le correctif d idempotence C1 passe RNO3, la QA sans commande passe RNO4 et le rollback est ferme, mais RC5, RC6, RC7 et les etats commandes de RC8 gardent le Release Candidate global ouvert sans integration, bascule Admin ni live ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+La refonte visible est largement avancee ; le correctif d idempotence C1 est ferme et un micro-lot prive d une seule commande test silencieuse est pre-reserve pour RC7 et les etats commandes de RC8, sans execution avant GO Patrice ; RC5, le francais natif, la productionisation, l integration, la bascule Admin et le live restent ouverts ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 ## Source de verite et etat du depot
 
@@ -164,6 +164,8 @@ Le master pre-reserve un micro-lot distinct sans l executer. La correction doit 
 Le micro-lot est execute puis audite par le master le 2026-08-25. Le theme est pousse a `7bb67efca588913dc80ba877eb2c5e01f0d64f86` avec le seul `sections/milaura-quiz.liquid`; les preuves privees sont poussees a `1ee9c07f27a4f9953ade332a827393271413a2f4`. La restauration republie l objet stocke sans le reecrire, tandis qu un nouveau quiz cree toujours un nouvel objet. RNO3 passe : un rejeu reste a une remise, une cle et un digest sans faux conflit ; un nouveau quiz passe a deux remises, deux cles et deux digests avec vrai conflit et resolution explicite. RNO4 passe sur les etats sans commande a 360, 390, 430 et 1440 px, clavier et focus compris. Purge et rollback passent sans resurrection. Le pullback master du quiz est bit a bit identique au commit, Theme Check reste a zero erreur et le theme `205027279193` reste non publie.
 
 RC4 passe donc en `PASS PRIVE`. RC8 passe sur la couverture sans commande mais reste `PARTIEL GLOBAL` tant que les etats avec commandes ne sont pas prouves. RC5 reste partiel, RC6 ferme avec NO-GO conditionnel et RC7 reste ouvert. Le commit `7bb67efc` reste une preuve du RC prive : aucune integration master, release, publication ou mise en ligne n est autorisee. Cloture : `docs/checkpoints/2026-08-25-0824-c1-idempotence-rno-pass.md`.
+
+Le master pre-reserve ensuite C1 O1 sans l executer. Ce lot prive part de `1ee9c07f`, ecrit seulement une nouvelle zone de preuves et utilise une configuration Shopify locale nommee, jamais versionnee, avec `write_orders` temporaire. Une seule commande associee au compte synthetique RNO1 est autorisee : `test: true`, inventaire `BYPASS`, aucune donnee de contact dans le payload et notifications commande ou fulfillment explicitement a `false`. Elle doit prouver `orders-no-diagnostic` puis `complete`, la pierre favorite, les destinations et la QA responsive, avant suppression sous confirmation destructive, retrait du scope et rollback complet. Aucun fichier theme, code RC, Mail, app deploy/release, Admin production, integration ou live. Le lot attend le GO exact de Patrice dans `docs/checkpoints/2026-08-25-0847-c1-orders-private-qa-reservation.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
