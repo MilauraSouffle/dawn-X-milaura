@@ -1,10 +1,10 @@
-# Handoff Codex MilAura, C1 O2 actif avec preflight produits et publication amende
+# Handoff Codex MilAura, C1 O2 ferme avec commandes privees validees
 
-Date : 2026-08-25 10:12 CEST
+Date : 2026-08-25 12:28 CEST
 
 ## Mission de reprise
 
-Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. O1-S et O1-SR sont fermes a `99fdaea`. O2 est actif apres GO : branche et worktree propres, schema 2026-10 valide, zero scope et zero mutation. Les lectures `products` et `publications` sont reportees apres activation des trois write scopes deja reserves ; elles doivent reconfirmer handle absent et publication unique avant toute mutation. Aucun read scope explicite ou quatrieme scope. Ensuite seulement peuvent suivre produit, publication, commande test silencieuse, QA, confirmation destructive, suppressions et rollback. RC5, RC7, les etats commandes de RC8, le francais natif et toutes les gates production restent ouverts. Aucun droit Admin production, release, deploy ou live. Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. O2 est ferme a `e863fc10` : RC7 et RC8 passent au niveau prive avec et sans commande. Produit, publication et commande QA sont supprimes, RNO1 est revenu a zero commande, scopes temporaires absents, backend URL vide, flag false, theme prive non publie et runtime arrete. RC5 attend la verite inventaire et catalogue. RC6, le francais natif et toutes les gates production, integration, Admin et live restent ouverts. Aucun nouveau lot C1 n est reserve. Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d affaires. La charte et la DA MilAura sont executables. Tiffany & Co. et Van Cleef & Arpels donnent le niveau d exigence visuelle, sans copie.
 
@@ -13,8 +13,8 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 1. `/Users/paesano/Documents/MilAura website/dawn-X-milaura/AGENTS.md`
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
-4. `docs/checkpoints/2026-08-25-1012-c1-o2-products-preflight-amendment.md`
-5. `docs/checkpoints/2026-08-25-1010-c1-o2-publication-preflight-amendment.md`
+4. `docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md`
+5. `docs/checkpoints/2026-08-25-1012-c1-o2-products-preflight-amendment.md`
 6. `docs/checkpoints/2026-08-24-1834-c1-stable-private-endpoint-prereservation.md`
 7. `docs/checkpoints/2026-08-24-1825-c1-m6-recovery-closed.md`
 8. `docs/checkpoints/2026-08-24-1657-c1-m6-quick-tunnel-recovery-prereservation.md`
@@ -158,6 +158,8 @@ O2 est maintenant actif apres GO. Isolation et schema PASS. Le preflight combine
 
 La lecture `products` est elle aussi inaccessible avant `write_products`. La preuve `99fdaea` du handle absent est acceptee avant scope car O2 en derive sans mutation. Apres activation des trois scopes, C1 doit relire `products` et `publications`, reconfirmer handle absent et publication unique, puis seulement poursuivre. Aucun read scope explicite, nouveau GO ou elargissement. Cadre : `docs/checkpoints/2026-08-25-1012-c1-o2-products-preflight-amendment.md`.
 
+O2 est ferme a `e863fc100ccae47ff1c8a43cdfeccef763f4bcd4` avec `O2_PASS_PRIVATE_ORDERS_QA - ROLLBACK_PASS`. Une commande test et un produit QA publie seulement sur le dev store ont valide les etats avec commandes, puis diagnostic, commande et produit ont ete supprimes sous confirmations Patrice. Mail zero message, responsive et clavier PASS. RNO1 zero commande, scopes absents, backend URL vide, flag false, theme non publie et runtime arrete. RC7 et RC8 deviennent PASS prive. RC5, RC6 et le RC global restent ouverts. Cloture : `docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md`.
+
 RC0 a RC10, commandes, comptes synthetiques, theme prive, backend, mapping, francais, rollback et interdictions sont canoniques dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`. Aucun app deploy ou release, theme publish, C1-2, Admin, bascule de comptes, email, integration ou live.
 
 ## Gates canoniques avant une release C1-1
@@ -215,11 +217,11 @@ C1 V3 est fermee au commit prive d8d036ff7725c93168d24b9270da54de657ad6af. G1 a 
 
 C1-1 prive est ferme et gele a cf2877ba4ee5faac143a4273c486fe39c96106a8 sur codex/milaura-c1-1-private-implementation-20260822. G0 a G11 sont passes ; Patrice a valide la preview privee, sans release ni live. Ne rouvre pas C1-1 et ne lance pas C1-2 sans nouveau GO et nouvelle reservation. Le vrai bridge theme, la purge MilauraPreferenceStorage ou panier, Mail, catalogue, backend production, release, deploy, GO Admin, bascule de comptes et live restent fermes. Fidelite reelle non bloquante, bloc A venir conserve. S1B et S1C sont downstream.
 
-C1 Release Candidate est documente dans docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md et ferme pour l idempotence dans docs/checkpoints/2026-08-25-0824-c1-idempotence-rno-pass.md. Tips effectifs : theme 7bb67efc, prive RC c877d630, endpoint stable 146ac026 et preuves finales 1ee9c07f. Le seul store est milaura-c1-preview 107347837273 et le theme prive isole est MilAura C1 Release Candidate 2026-08-23, ID 205027279193, toujours non publie. RC4 est PASS prive et RC8 PASS sans commande mais partiel global. RC5 reste partiel, RC6 est ferme avec NO-GO conditionnel et RC7 ouvert, sans ajout de write_orders. Mon Ecrin n est pas live. Aucun backend production actif, app deploy ou release, bascule Customer Accounts, integration theme, publication ou QA live n a eu lieu.
+C1 Release Candidate est documente dans docs/checkpoints/2026-08-24-0718-c1-release-candidate-session-handoff.md et ferme pour les commandes privees dans docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md. Tips effectifs : theme `7bb67efc`, prive RC `c877d630`, endpoint stable `146ac026`, preuves sans commande `1ee9c07f` et commandes `e863fc10`. Le seul store est `107347837273` et le theme prive `205027279193` reste non publie. RC4, RC7 et RC8 sont PASS prive. RC5 reste partiel, RC6 ferme avec NO-GO conditionnel. Mon Ecrin n est pas live. Aucun backend production actif, app deploy/release, bascule Customer Accounts, integration theme, publication ou QA live.
 
 Le blocker OTP est leve : M5 PASS a 90c1d8d. L endpoint stable est prouve a 146ac026. Le correctif theme est ferme a 7bb67efc avec preuve privee 1ee9c07f. RNO3 PASS, RNO4 PASS sans commande et rollback PASS. RC4 est PASS prive ; RC8 est PASS sans commande mais reste partiel global. Backend URL vide, flag false, theme prive non publie, App Dev et conteneur arretes. DNS, nginx, certificat, volume, secrets VPS et conteneur arrete sont conserves. Aucun correctif n est integre au master.
 
-Le lot C1 courant est O2 actif. Autorisation master courante : `AUTORISATION MASTER C1 O2-B - PREUVE HERITEE DU HANDLE ABSENT A 99FDAEA AVANT SCOPE, PUIS RECONTROLE PRODUCTS ET PUBLICATIONS APRES LES TROIS SCOPES DEJA RESERVES, AVANT TOUTE MUTATION`. RC5 reste ouvert. RC6 reste ferme comme audit avec NO-GO conditionnel et shell natif anglais. Aucun compte, produit ou commande avant ces deux controles ; aucun Admin production, Mail, deploy, release, integration, C1-2 ou live.
+Aucun lot C1 courant n est reserve. La prochaine dependance est RC5 apres livraison de la verite inventaire et catalogue par Patrice. Le shell natif francais et la coordination Mail suivent dans un lot distinct. Aucun nouveau produit ou commande QA, Admin production, Mail, deploy/release, integration, C1-2 ou live.
 
 Agentic-Ops main est tres dirty sur Stella et d autres travaux concurrents. Ne pas y ecrire ni nettoyer.
 
@@ -230,6 +232,7 @@ Commence par rendre un point factuel Git, worktrees, proprietaires, conflits, in
 
 ## Fichiers canoniques
 
+- `docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md` ;
 - `docs/checkpoints/2026-08-25-1012-c1-o2-products-preflight-amendment.md` ;
 - `docs/checkpoints/2026-08-25-1010-c1-o2-publication-preflight-amendment.md` ;
 - `docs/checkpoints/2026-08-25-0956-c1-o2-orders-private-qa-reservation.md` ;

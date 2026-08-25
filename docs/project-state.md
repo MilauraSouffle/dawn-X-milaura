@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-25 10:12 CEST
+Derniere mise a jour : 2026-08-25 12:28 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; O1-S est ferme avec rollback complet ; O2 est actif apres GO, son schema est valide et son preflight est amende sans mutation pour reconfirmer produit absent et publication unique seulement apres activation des trois scopes deja reserves ; RC5, RC7, les etats commandes de RC8, le francais natif, la productionisation, l integration, la bascule Admin et le live restent ouverts ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+La refonte visible est largement avancee ; O2 ferme RC7 et RC8 au niveau prive avec et sans commande, puis supprime tous les objets QA et restaure scopes et runtime ; RC5 attend la verite inventaire et catalogue, tandis que le francais natif, la productionisation, l integration, la bascule Admin et le live restent ouverts ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 ## Source de verite et etat du depot
 
@@ -180,6 +180,8 @@ Le master pre-reserve O2 depuis `99fdaea`. Sa premiere gate valide en read-only 
 O2 recoit son GO exact, cree sa branche et son worktree propres a `99fdaea`, puis valide le schema 2026-10 des cinq mutations. Son premier preflight combine echoue sans scope et sans mutation uniquement parce que `publications` exige `read_publications`. Shopify confirme qu un scope d ecriture inclut la lecture correspondante. Le master amende donc seulement l ordre : preflight general avec scopes absents, activation des trois scopes deja reserves, lecture de l unique publication via `write_publications`, arret avant `productSet` si ambiguite. Aucun `read_publications` explicite, aucun quatrieme scope et aucun nouveau GO. Cadre : `docs/checkpoints/2026-08-25-1010-c1-o2-publication-preflight-amendment.md`.
 
 Le preflight restant rencontre ensuite la meme limite read-only sur `products`, qui exige `read_products`. La cloture O1-S/O1-SR a `99fdaea`, base exacte de la branche O2 sans mutation depuis, prouve deja le handle absent. Le master accepte cette preuve heritee avant scope, puis exige apres activation des memes trois scopes une lecture immediate de `products` et `publications`, avec handle toujours absent et publication unique avant `productSet`. Aucun read scope explicite, aucune mutation et aucun nouveau GO. Cadre : `docs/checkpoints/2026-08-25-1012-c1-o2-products-preflight-amendment.md`.
+
+O2 ferme ensuite toutes ses gates au commit prive `e863fc100ccae47ff1c8a43cdfeccef763f4bcd4`. Une commande test unique `PAID` et `FULFILLED` et un produit QA publie seulement sur l Online Store du dev store valident `orders-no-diagnostic`, `complete`, mapping, media, pierre favorite, destinations, responsive, clavier et focus. Mail observe zero message. Apres confirmations Patrice, diagnostic, commande et produit sont supprimes sans retry. Produit, variant, media, handle, publication et commande sont absents, RNO1 a zero commande, scopes temporaires absents, backend URL vide, flag false, theme non publie et runtime arrete. RC7 devient `PASS PRIVE O2` et RC8 `PASS PRIVE` avec et sans commande. RC5, RC6 et le RC global restent ouverts. Cloture : `docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -425,7 +427,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La session master conserve seule l integration et le live a partir de `1cba6357` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba`, le tip theme RC corrige `7bb67efc`, les preuves privees `1ee9c07f` et O1-S `99fdaea` geles. RC4 et RC8 sans commande sont passes. O2 est pre-reserve mais non execute, en attente du GO exact Patrice, pour fermer RC7 et les etats commandes de RC8 apres validation de schema. RC5 reste ouvert. Aucun produit, commande, scope, C1-2, app deploy ou release, Admin production, bascule, email, integration theme ou live avant ce GO.
+2. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba`, le tip theme RC `7bb67efc`, les preuves sans commande `1ee9c07f` et O2 `e863fc10` geles. RC4, RC7 et RC8 sont passes au niveau prive. Attendre la verite inventaire et catalogue avant de reserver RC5 ; traiter ensuite le francais natif et Mail sous lot distinct. Aucun nouveau produit ou commande QA, C1-2, app deploy/release, Admin production, bascule, email, integration theme ou live.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Laisser `Rentree Sodalite` en pause a `70 %` jusqu au 2026-08-31. A la reprise, conserver la photo fixe, polir la section, fermer inventaire, produits, couts, marges, landing et dates, puis obtenir des GO visuel, integration, Admin et live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
@@ -449,7 +451,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; correctif d idempotence ferme a `7bb67efc`, preuves `1ee9c07f`, RC4 PASS prive et RC8 PASS sans commande mais globalement partiel ; aucun droit C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live
+- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; correctif d idempotence ferme a `7bb67efc`, preuves sans commande `1ee9c07f`, preuves commandes `e863fc10`, RC4, RC7 et RC8 PASS prive ; RC5 et RC6 restent ouverts ; aucun droit C1-2, app deploy/release, Admin, bascule, email, integration theme ou live
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
