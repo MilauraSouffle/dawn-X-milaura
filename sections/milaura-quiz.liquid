@@ -2521,9 +2521,10 @@
       };
     }
 
-    function displayResults() {
+    function displayResults(restoredDiagnostic) {
       const results = calculateResults();
       const winnerProfile = results.winnerProfile;
+      const isRestoring = restoredDiagnostic && typeof restoredDiagnostic === 'object';
 
       const profile = profileData[winnerProfile];
       if (!profile) return;
@@ -2643,7 +2644,7 @@
         productReasonsForStorage[tabKey] = getProductReason(tabKey, profile);
       });
 
-      const storageData = {
+      const resultData = isRestoring ? restoredDiagnostic : {
         schemaVersion: 2,
         profileId: winnerProfile,
         profileName: profile.displayName || profile.label,
@@ -2672,13 +2673,18 @@
       };
       syncResultUrl();
 
-      window.MilauraPreferenceStorage.writeDiagnostic(storageData).then(function(result) {
-        storedDiagnostic = result.stored ? storageData : null;
+      if (isRestoring) {
+        storedDiagnostic = resultData;
         updateStoredResultLink();
-      });
+      } else {
+        window.MilauraPreferenceStorage.writeDiagnostic(resultData).then(function(result) {
+          storedDiagnostic = result.stored ? resultData : null;
+          updateStoredResultLink();
+        });
+      }
 
       // Dispatch event so downstream sections can react
-      window.dispatchEvent(new CustomEvent('milaura:quiz-result', { detail: storageData }));
+      window.dispatchEvent(new CustomEvent('milaura:quiz-result', { detail: resultData }));
     }
 
     // ============================================
@@ -2696,7 +2702,7 @@
       if (!data) return;
       hasUserInteracted = true;
       restoreScoresFromStoredResult(data);
-      displayResults();
+      displayResults(data);
       goToState(QuizState.RESULT);
     }
 
@@ -2740,7 +2746,7 @@
       if (new URLSearchParams(window.location.search).get('show') === 'result' && lastResult) {
         restoreScoresFromStoredResult(lastResult);
         hasUserInteracted = true;
-        displayResults();
+        displayResults(lastResult);
         goToState(QuizState.RESULT);
         return; // ne pas afficher l'intro
       }
