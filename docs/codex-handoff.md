@@ -1,10 +1,10 @@
-# Handoff Codex MilAura, C1 O1-SR suppression produit test reservee
+# Handoff Codex MilAura, C1 O2 commandes privees pre-reserve
 
-Date : 2026-08-25 09:43 CEST
+Date : 2026-08-25 09:56 CEST
 
 ## Mission de reprise
 
-Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. O1-S a cree un unique produit QA Obsidienne non publie et zero commande. Publication et premiere suppression ont echoue avant mutation sur `UserError.code`. Patrice a confirme la suppression ; O1-SR autorise une seule requete `productDelete` corrigee puis rollback integral. Les scopes temporaires restent actifs seulement jusqu a ce rollback. RC5, RC7, les etats commandes de RC8, le francais natif et toutes les gates production restent ouverts. Le tip theme `7bb67efc` reste prive et non integre. Aucun droit Admin production, release, deploy ou live. Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. O1-S et O1-SR sont fermes a `99fdaea` : produit QA supprime, zero commande, scopes absents et rollback complet. O2 est seulement pre-reserve ; il valide d abord le schema GraphQL, puis peut recreer le produit, le publier, creer une commande test silencieuse, terminer la QA et tout supprimer apres un nouveau GO Patrice. RC5, RC7, les etats commandes de RC8, le francais natif et toutes les gates production restent ouverts. Le tip theme `7bb67efc` reste prive et non integre. Aucun droit Admin production, release, deploy ou live. Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d affaires. La charte et la DA MilAura sont executables. Tiffany & Co. et Van Cleef & Arpels donnent le niveau d exigence visuelle, sans copie.
 
@@ -13,8 +13,8 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 1. `/Users/paesano/Documents/MilAura website/dawn-X-milaura/AGENTS.md`
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
-4. `docs/checkpoints/2026-08-25-0943-c1-o1s-product-delete-recovery-reservation.md`
-5. `docs/checkpoints/2026-08-25-0914-c1-o1-seed-orders-qa-reservation.md`
+4. `docs/checkpoints/2026-08-25-0956-c1-o2-orders-private-qa-reservation.md`
+5. `docs/checkpoints/2026-08-25-0943-c1-o1s-product-delete-recovery-reservation.md`
 6. `docs/checkpoints/2026-08-24-1834-c1-stable-private-endpoint-prereservation.md`
 7. `docs/checkpoints/2026-08-24-1825-c1-m6-recovery-closed.md`
 8. `docs/checkpoints/2026-08-24-1657-c1-m6-quick-tunnel-recovery-prereservation.md`
@@ -148,7 +148,11 @@ C1 O1 est ferme a `ab21c0df` avec `O1_PREFLIGHT_BLOCKED_VARIANT_ABSENT - ZERO_OR
 
 C1 O1-S est pre-reserve, non execute. Nouvelle branche privee depuis `ab21c0d`, nouvelle zone de preuves seulement. Une configuration locale nommee peut ajouter temporairement `write_products`, `write_publications` et `write_orders` sur le seul dev store `107347837273`. Un unique produit et variant QA porte l exact handle Obsidienne du mapping, est publie seulement sur Online Store du dev store protege, puis une commande `test`, `PAID`, `FULFILLED`, inventaire bypass et notifications false couvre `orders-no-diagnostic` et `complete`. Suppression des deux objets sous confirmation destructive, retrait des trois scopes et rollback complet obligatoires. Aucun theme, catalogue MilAura, Mail, deploy/release, integration ou live. Cadre et GO exact : `docs/checkpoints/2026-08-25-0914-c1-o1-seed-orders-qa-reservation.md`.
 
-O1-S est maintenant arrete en recovery. Le produit QA unique existe mais n a jamais ete publie ; aucune commande n existe. Les mutations de publication puis suppression ont echoue avant mutation parce que `UserError.code` n existe pas en API 2026-10. Patrice a confirme la suppression. O1-SR autorise sur la meme branche une seule mutation `productDelete` avec `deletedProductId` et `userErrors { field message }`, puis preuve d absence et rollback integral. Aucun retry publication, commande ou autre objet. Cadre : `docs/checkpoints/2026-08-25-0943-c1-o1s-product-delete-recovery-reservation.md`.
+O1-S s est alors arrete en recovery. Le produit QA unique existait mais n avait jamais ete publie ; aucune commande n existait. Les mutations de publication puis suppression avaient echoue avant mutation parce que `UserError.code` n existe pas en API 2026-10. Patrice avait confirme la suppression. O1-SR a autorise sur la meme branche une seule mutation `productDelete` avec `deletedProductId` et `userErrors { field message }`, puis preuve d absence et rollback integral. Aucun retry publication, commande ou autre objet. Cadre : `docs/checkpoints/2026-08-25-0943-c1-o1s-product-delete-recovery-reservation.md`.
+
+O1-SR est ferme a `99fdaea03889d9dcd9fc6e240f338cb0698b0863`. La suppression unique a reussi, le produit et ses objets associes sont absents, RNO1 reste a zero commande, scopes et runtime sont restaures et le worktree est propre `0/0`. Aucun progres RC7 ou RC8 commandes.
+
+O2 est pre-reserve, non execute. Nouvelle branche privee depuis `99fdaea`, nouvelle zone de preuve. Avant tout scope, C1 doit valider le schema effectif des cinq mutations et figer des selections minimales sans `code`. Apres GO seulement : produit QA Obsidienne, publication Online Store du dev store, une commande `test`, `PAID`, `FULFILLED`, notifications false, QA commandes, confirmation destructive, suppressions et rollback. Aucun theme, Mail, catalogue, stock, deploy/release, integration ou live. Cadre : `docs/checkpoints/2026-08-25-0956-c1-o2-orders-private-qa-reservation.md`.
 
 RC0 a RC10, commandes, comptes synthetiques, theme prive, backend, mapping, francais, rollback et interdictions sont canoniques dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`. Aucun app deploy ou release, theme publish, C1-2, Admin, bascule de comptes, email, integration ou live.
 
@@ -211,7 +215,7 @@ C1 Release Candidate est documente dans docs/checkpoints/2026-08-24-0718-c1-rele
 
 Le blocker OTP est leve : M5 PASS a 90c1d8d. L endpoint stable est prouve a 146ac026. Le correctif theme est ferme a 7bb67efc avec preuve privee 1ee9c07f. RNO3 PASS, RNO4 PASS sans commande et rollback PASS. RC4 est PASS prive ; RC8 est PASS sans commande mais reste partiel global. Backend URL vide, flag false, theme prive non publie, App Dev et conteneur arretes. DNS, nginx, certificat, volume, secrets VPS et conteneur arrete sont conserves. Aucun correctif n est integre au master.
 
-Le lot C1 courant est O1-SR, recovery uniquement. Autorisation master : `AUTORISATION MASTER C1 O1-SR - REQUETE PRODUCTDELETE MINIMALE CORRIGEE SUR L UNIQUE PRODUIT TEST DEJA CONFIRME, PUIS ROLLBACK INTEGRAL, AUCUNE AUTRE MUTATION`. RC5, RC7 et les etats commandes de RC8 restent ouverts. RC6 reste ferme comme audit avec NO-GO conditionnel et shell natif anglais. Aucun autre compte, produit, commande, scope, Admin production, Mail, deploy, release, integration, C1-2, publication ou live.
+Le prochain lot C1 est O2, pre-reserve mais non execute. GO exact : `GO C1 O2 - RECREATION BORNEE DU PRODUIT TEST OBSIDIENNE, PUBLICATION PRIVEE CORRIGEE, UNE COMMANDE TEST SANS NOTIFICATION, QA DES ETATS COMMANDES ET ROLLBACK, SANS RELEASE NI LIVE`. RC5 reste ouvert. RC6 reste ferme comme audit avec NO-GO conditionnel et shell natif anglais. Aucun compte, produit, commande, scope, Admin production, Mail, deploy, release, integration, C1-2, publication ou live avant ce GO.
 
 Agentic-Ops main est tres dirty sur Stella et d autres travaux concurrents. Ne pas y ecrire ni nettoyer.
 
@@ -222,6 +226,7 @@ Commence par rendre un point factuel Git, worktrees, proprietaires, conflits, in
 
 ## Fichiers canoniques
 
+- `docs/checkpoints/2026-08-25-0956-c1-o2-orders-private-qa-reservation.md` ;
 - `docs/checkpoints/2026-08-25-0943-c1-o1s-product-delete-recovery-reservation.md` ;
 - `docs/checkpoints/2026-08-25-0914-c1-o1-seed-orders-qa-reservation.md` ;
 - `docs/checkpoints/2026-08-25-0847-c1-orders-private-qa-reservation.md` ;
