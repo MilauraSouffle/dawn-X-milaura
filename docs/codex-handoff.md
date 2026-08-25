@@ -1,10 +1,10 @@
-# Handoff Codex MilAura, C1 O1 commandes privees pre-reserve
+# Handoff Codex MilAura, C1 O1-S produit test et commandes pre-reserve
 
-Date : 2026-08-25 08:47 CEST
+Date : 2026-08-25 09:14 CEST
 
 ## Mission de reprise
 
-Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. Le correctif C1 passe RNO3, RNO4 sans commande et le rollback. C1 O1 est seulement pre-reserve : une commande test silencieuse sur le dev store pour fermer RC7 et les etats commandes de RC8, sans execution avant GO Patrice. RC5, le francais natif et toutes les gates production restent ouverts. Le tip theme `7bb67efc` reste prive et non integre. Aucun droit Admin production, release, deploy ou live. Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+Reprendre le pilotage master MilAura en lecture seule. La session master reste seule proprietaire de l integration et de tout live. O1 est ferme sans mutation : aucun variant RC5 n existe dans le dev store. O1-S est seulement pre-reserve pour creer un produit test Obsidienne, une commande silencieuse, terminer les etats commandes puis supprimer les deux objets et retirer les scopes. Aucun scope ou runtime n est actif avant GO Patrice. RC5, le francais natif et toutes les gates production restent ouverts. Le tip theme `7bb67efc` reste prive et non integre. Aucun droit Admin production, release, deploy ou live. Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d affaires. La charte et la DA MilAura sont executables. Tiffany & Co. et Van Cleef & Arpels donnent le niveau d exigence visuelle, sans copie.
 
@@ -13,7 +13,7 @@ Le cap commercial reste un site capable d atteindre 100 000 EUR de chiffre d aff
 1. `/Users/paesano/Documents/MilAura website/dawn-X-milaura/AGENTS.md`
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
-4. `docs/checkpoints/2026-08-25-0847-c1-orders-private-qa-reservation.md`
+4. `docs/checkpoints/2026-08-25-0914-c1-o1-seed-orders-qa-reservation.md`
 5. `docs/checkpoints/2026-08-24-1834-c1-stable-private-endpoint-prereservation.md`
 6. `docs/checkpoints/2026-08-24-1825-c1-m6-recovery-closed.md`
 7. `docs/checkpoints/2026-08-24-1657-c1-m6-quick-tunnel-recovery-prereservation.md`
@@ -143,7 +143,9 @@ Le master retient la voie endpoint prive stable, sans execution avant Patrice. A
 
 Le correctif d idempotence est maintenant ferme. Theme `7bb67efc`, preuve privee `1ee9c07f`, deux worktrees propres et alignes. Le pullback master du quiz est bit a bit identique, Theme Check reste a zero erreur et `205027279193` est encore non publie. RNO3 passe avec un seul handoff lors du rejeu restaure puis un vrai conflit lors d un nouveau quiz. RNO4 passe a 360, 390, 430 et 1440 px sur les etats sans commande, clavier compris. Purge et rollback passent. RC4 est PASS prive ; RC8 est PASS sans commande mais reste partiel global. RC5, RC6 et RC7 restent ouverts ou conditionnels. Aucun commit n est integre au master. Cloture : `docs/checkpoints/2026-08-25-0824-c1-idempotence-rno-pass.md`.
 
-C1 O1 est pre-reserve, non execute. Branche privee a creer depuis `1ee9c07f`, nouvelle zone de preuves uniquement, aucun fichier theme ou code RC. Une configuration locale nommee peut ajouter temporairement `write_orders` sur la development preview du seul store `107347837273`. Une seule commande `test`, inventaire bypass et notifications false peut etre associee a RNO1 pour prouver `orders-no-diagnostic` et `complete`. Suppression sous confirmation destructive, scope retire et rollback complet obligatoires. Aucun deploy/release, modification Mail, Admin production, integration ou live. Cadre et GO exact : `docs/checkpoints/2026-08-25-0847-c1-orders-private-qa-reservation.md`.
+C1 O1 est ferme a `ab21c0df` avec `O1_PREFLIGHT_BLOCKED_VARIANT_ABSENT - ZERO_ORDER_MUTATION - SCOPES_UNCHANGED - ROLLBACK PASS`. RNO1 est exact et sans commande, mais le dev store ne contient pas le variant Obsidienne du registre RC5. La config locale n a jamais ete appliquee. Aucun app dev, backend, setting, flag, commande, produit, stock, Mail ou notification n a ete touche.
+
+C1 O1-S est pre-reserve, non execute. Nouvelle branche privee depuis `ab21c0d`, nouvelle zone de preuves seulement. Une configuration locale nommee peut ajouter temporairement `write_products`, `write_publications` et `write_orders` sur le seul dev store `107347837273`. Un unique produit et variant QA porte l exact handle Obsidienne du mapping, est publie seulement sur Online Store du dev store protege, puis une commande `test`, `PAID`, `FULFILLED`, inventaire bypass et notifications false couvre `orders-no-diagnostic` et `complete`. Suppression des deux objets sous confirmation destructive, retrait des trois scopes et rollback complet obligatoires. Aucun theme, catalogue MilAura, Mail, deploy/release, integration ou live. Cadre et GO exact : `docs/checkpoints/2026-08-25-0914-c1-o1-seed-orders-qa-reservation.md`.
 
 RC0 a RC10, commandes, comptes synthetiques, theme prive, backend, mapping, francais, rollback et interdictions sont canoniques dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`. Aucun app deploy ou release, theme publish, C1-2, Admin, bascule de comptes, email, integration ou live.
 
@@ -206,7 +208,7 @@ C1 Release Candidate est documente dans docs/checkpoints/2026-08-24-0718-c1-rele
 
 Le blocker OTP est leve : M5 PASS a 90c1d8d. L endpoint stable est prouve a 146ac026. Le correctif theme est ferme a 7bb67efc avec preuve privee 1ee9c07f. RNO3 PASS, RNO4 PASS sans commande et rollback PASS. RC4 est PASS prive ; RC8 est PASS sans commande mais reste partiel global. Backend URL vide, flag false, theme prive non publie, App Dev et conteneur arretes. DNS, nginx, certificat, volume, secrets VPS et conteneur arrete sont conserves. Aucun correctif n est integre au master.
 
-Le prochain lot C1 est pre-reserve mais non execute. GO exact : `GO C1 O1 - AJOUT TEMPORAIRE WRITE_ORDERS SUR L APP DE DEVELOPPEMENT PRIVEE, UNE COMMANDE TEST SANS NOTIFICATION, QA DES ETATS COMMANDES, PUIS ROLLBACK, SANS RELEASE NI LIVE`. RC5 attend la verite inventaire, cout, marge et catalogue. RC6 reste ferme comme audit avec NO-GO conditionnel et shell natif anglais. Aucun autre compte, commande, scope, Admin production, Mail, deploy, release, integration, C1-2, publication ou live.
+Le prochain lot C1 est pre-reserve mais non execute. GO exact : `GO C1 O1-S - AJOUT TEMPORAIRE WRITE_PRODUCTS WRITE_PUBLICATIONS WRITE_ORDERS SUR L APP DE DEVELOPPEMENT PRIVEE, UN PRODUIT TEST OBSIDIENNE, UNE COMMANDE TEST SANS NOTIFICATION, QA ET ROLLBACK, SANS RELEASE NI LIVE`. RC5 attend la verite inventaire, cout, marge et catalogue. RC6 reste ferme comme audit avec NO-GO conditionnel et shell natif anglais. Aucun autre compte, produit, commande, scope, Admin production, Mail, deploy, release, integration, C1-2, publication ou live.
 
 Agentic-Ops main est tres dirty sur Stella et d autres travaux concurrents. Ne pas y ecrire ni nettoyer.
 
@@ -217,6 +219,7 @@ Commence par rendre un point factuel Git, worktrees, proprietaires, conflits, in
 
 ## Fichiers canoniques
 
+- `docs/checkpoints/2026-08-25-0914-c1-o1-seed-orders-qa-reservation.md` ;
 - `docs/checkpoints/2026-08-25-0847-c1-orders-private-qa-reservation.md` ;
 - `docs/checkpoints/2026-08-25-0824-c1-idempotence-rno-pass.md` ;
 - `docs/checkpoints/2026-08-24-1834-c1-stable-private-endpoint-prereservation.md` ;

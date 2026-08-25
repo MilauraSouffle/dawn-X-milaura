@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-25 08:47 CEST
+Derniere mise a jour : 2026-08-25 09:14 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; le correctif d idempotence C1 est ferme et un micro-lot prive d une seule commande test silencieuse est pre-reserve pour RC7 et les etats commandes de RC8, sans execution avant GO Patrice ; RC5, le francais natif, la productionisation, l integration, la bascule Admin et le live restent ouverts ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+La refonte visible est largement avancee ; le preflight de commande C1 s est arrete sans mutation car le dev store ne contient aucun variant RC5, et O1-S est pre-reserve pour creer un unique produit test Obsidienne, terminer la QA des etats commandes puis tout supprimer ; aucun scope ou runtime n est actif et le lot attend un nouveau GO Patrice ; RC5, le francais natif, la productionisation, l integration, la bascule Admin et le live restent ouverts ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 ## Source de verite et etat du depot
 
@@ -166,6 +166,10 @@ Le micro-lot est execute puis audite par le master le 2026-08-25. Le theme est p
 RC4 passe donc en `PASS PRIVE`. RC8 passe sur la couverture sans commande mais reste `PARTIEL GLOBAL` tant que les etats avec commandes ne sont pas prouves. RC5 reste partiel, RC6 ferme avec NO-GO conditionnel et RC7 reste ouvert. Le commit `7bb67efc` reste une preuve du RC prive : aucune integration master, release, publication ou mise en ligne n est autorisee. Cloture : `docs/checkpoints/2026-08-25-0824-c1-idempotence-rno-pass.md`.
 
 Le master pre-reserve ensuite C1 O1 sans l executer. Ce lot prive part de `1ee9c07f`, ecrit seulement une nouvelle zone de preuves et utilise une configuration Shopify locale nommee, jamais versionnee, avec `write_orders` temporaire. Une seule commande associee au compte synthetique RNO1 est autorisee : `test: true`, inventaire `BYPASS`, aucune donnee de contact dans le payload et notifications commande ou fulfillment explicitement a `false`. Elle doit prouver `orders-no-diagnostic` puis `complete`, la pierre favorite, les destinations et la QA responsive, avant suppression sous confirmation destructive, retrait du scope et rollback complet. Aucun fichier theme, code RC, Mail, app deploy/release, Admin production, integration ou live. Le lot attend le GO exact de Patrice dans `docs/checkpoints/2026-08-25-0847-c1-orders-private-qa-reservation.md`.
+
+O1 ferme ensuite son preflight a `ab21c0df5946cd8b79b782d075dd8d00e5044404` avec `O1_PREFLIGHT_BLOCKED_VARIANT_ABSENT - ZERO_ORDER_MUTATION - SCOPES_UNCHANGED - ROLLBACK_PASS`. RNO1 est exact et sans commande, mais aucun produit du dev store ne correspond au handle Obsidienne du registre RC5. La configuration `write_orders` n a jamais ete appliquee. Aucun app dev, backend, flag, setting, commande, produit, stock, Mail ou notification n a ete touche.
+
+Le master pre-reserve O1-S separement depuis `ab21c0d`. Une configuration locale nommee peut ajouter temporairement `write_products`, `write_publications` et `write_orders` sur la development preview. Elle cree avec `productSet` un seul produit et variant synthetiques portant l exact handle RC5 `bracelet-obsidienne-flocon-de-neige`, le publie seulement sur Online Store du dev store protege, puis cree une commande `test`, `PAID`, `FULFILLED`, inventaire bypass et notifications false. Le statut execute est necessaire car le calcul de pierre favorite ignore les commandes non executees. Apres QA, l unique commande et l unique produit sont supprimes sous confirmation destructive, les trois scopes sont retires et le rollback complet est prouve. Aucun catalogue MilAura, theme, code RC, Mail, stock, deploy/release, integration ou live. Cadre et GO exact : `docs/checkpoints/2026-08-25-0914-c1-o1-seed-orders-qa-reservation.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -411,7 +415,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La session master conserve seule l integration et le live a partir de `1cba6357` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba`, le tip theme RC corrige `7bb67efc` et les preuves privees `1ee9c07f` geles. RC4 et RC8 sans commande sont passes ; attendre la verite inventaire pour RC5 et une decision master separee avant tout micro-lot `write_orders` pour RC7 et les etats commandes de RC8. Aucun compte, commande, C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live avant ce nouveau cadre.
+2. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba`, le tip theme RC corrige `7bb67efc` et les preuves privees `1ee9c07f` geles. RC4 et RC8 sans commande sont passes ; O1 est ferme sans mutation a `ab21c0df` faute de variant RC5 dans le dev store. O1-S est pre-reserve mais non execute pour un unique produit test, une commande test silencieuse, la QA puis le rollback ; il attend le GO exact de Patrice. RC5 attend toujours la verite inventaire. Aucun produit, commande, scope, C1-2, app deploy ou release, Admin production, bascule, email, integration theme ou live avant ce nouveau cadre.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Laisser `Rentree Sodalite` en pause a `70 %` jusqu au 2026-08-31. A la reprise, conserver la photo fixe, polir la section, fermer inventaire, produits, couts, marges, landing et dates, puis obtenir des GO visuel, integration, Admin et live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
