@@ -1,17 +1,17 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-24 20:21 CEST
+Derniere mise a jour : 2026-08-25 08:24 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; l endpoint prive stable C1 fonctionne mais RNO3 a revele une reecriture non idempotente du diagnostic restaure dans le quiz, le rollback est passe et un micro-lot correctif est seulement pre-reserve, sans bascule Admin ni live ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+La refonte visible est largement avancee ; le correctif d idempotence C1 passe RNO3, la QA sans commande passe RNO4 et le rollback est ferme, mais RC5, RC6, RC7 et les etats commandes de RC8 gardent le Release Candidate global ouvert sans integration, bascule Admin ni live ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant la cloture endpoint stable du 2026-08-24 est `codex/milaura-integration` a `35e5907b97d4a1c101750f86a7368dbe76f255e8`, propre et aligne `0/0` avec origin.
+- Le canonique verifie avant la cloture idempotence du 2026-08-25 est `codex/milaura-integration` a `41b733e196910b3b24008cbacfa42df24cc5c56e`, propre et aligne `0/0` avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
@@ -160,6 +160,10 @@ Le master retient ensuite la voie endpoint prive stable, sans l executer. Le bac
 Le lot endpoint stable est ensuite execute et pousse au commit prive `146ac02633a14c43436a09611996c71d8c861f7d`. L infrastructure HTTPS, le backend non root, la validation de session, le premier handoff et le premier import passent. RNO3 echoue apres reload : `sections/milaura-quiz.liquid` reconstruit puis reecrit le resultat restaure, perd l identite et le consentement ajoutes par le bridge et regenere aussi `timestamp`. Un second handoff et un faux conflit apparaissent. RNO4 reste partiel apres un premier PASS responsive sans commande. Le rollback est complet : purge sans resurrection, `backend_url` vide, flag `false`, theme `205027279193` non publie, App Dev et endpoint arretes. Le DNS, nginx, le certificat, le volume, les secrets VPS et le conteneur arrete restent en place. Verdict : `RNO3_FAIL_IDEMPOTENCE_AFTER_RELOAD - RNO4_PARTIAL_PASS - ROLLBACK_PASS`.
 
 Le master pre-reserve un micro-lot distinct sans l executer. La correction doit afficher le dernier diagnostic deja stocke sans le reecrire ; un nouveau passage reel du quiz doit au contraire produire une nouvelle identite. Copier seulement `resultId`, `revision` et `accountPersonalization` serait insuffisant car le backend hache aussi le timestamp normalise. Branche theme proposee depuis `2f95b3d1`, seul fichier `sections/milaura-quiz.liquid` ; branche de preuves privee depuis `146ac026`, nouvelle zone documentaire seulement. La QA doit prouver doublon strict apres reload, vrai conflit apres nouveau quiz, purge, RNO4 complet et rollback. Aucun backend, texte, commande, Admin cliente, Mail, deploy, release, integration ou live. Cadre et GO exact : `docs/checkpoints/2026-08-24-2021-c1-stable-endpoint-rno-fail-idempotence-prereservation.md`.
+
+Le micro-lot est execute puis audite par le master le 2026-08-25. Le theme est pousse a `7bb67efca588913dc80ba877eb2c5e01f0d64f86` avec le seul `sections/milaura-quiz.liquid`; les preuves privees sont poussees a `1ee9c07f27a4f9953ade332a827393271413a2f4`. La restauration republie l objet stocke sans le reecrire, tandis qu un nouveau quiz cree toujours un nouvel objet. RNO3 passe : un rejeu reste a une remise, une cle et un digest sans faux conflit ; un nouveau quiz passe a deux remises, deux cles et deux digests avec vrai conflit et resolution explicite. RNO4 passe sur les etats sans commande a 360, 390, 430 et 1440 px, clavier et focus compris. Purge et rollback passent sans resurrection. Le pullback master du quiz est bit a bit identique au commit, Theme Check reste a zero erreur et le theme `205027279193` reste non publie.
+
+RC4 passe donc en `PASS PRIVE`. RC8 passe sur la couverture sans commande mais reste `PARTIEL GLOBAL` tant que les etats avec commandes ne sont pas prouves. RC5 reste partiel, RC6 ferme avec NO-GO conditionnel et RC7 reste ouvert. Le commit `7bb67efc` reste une preuve du RC prive : aucune integration master, release, publication ou mise en ligne n est autorisee. Cloture : `docs/checkpoints/2026-08-25-0824-c1-idempotence-rno-pass.md`.
 
 Mail reste proprietaire de ses dix surfaces compte gelees. Son HEAD `add705ff` est propre et aligne ; six Notifications et trois Messaging sont canoniquement live, sans nouvelle verification Admin le 2026-08-23. C1 RC coordonne et documente seulement. Aucun email, template, automation ou reglage ne peut etre modifie. Le cadre complet et les gates RC0 a RC10 vivent dans `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -405,7 +409,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La session master conserve seule l integration et le live a partir de `1cba6357` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba` et les deux tips RC `2f95b3d1` et `c877d630` geles. Le prochain lot doit etre reserve par le master pour fermer RC4, RC7 et RC8, avec une decision distincte sur RC6 et `write_orders`. Aucun compte, commande, C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live avant ce nouveau cadre.
+2. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba`, le tip theme RC corrige `7bb67efc` et les preuves privees `1ee9c07f` geles. RC4 et RC8 sans commande sont passes ; attendre la verite inventaire pour RC5 et une decision master separee avant tout micro-lot `write_orders` pour RC7 et les etats commandes de RC8. Aucun compte, commande, C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live avant ce nouveau cadre.
 3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
 4. Laisser `Rentree Sodalite` en pause a `70 %` jusqu au 2026-08-31. A la reprise, conserver la photo fixe, polir la section, fermer inventaire, produits, couts, marges, landing et dates, puis obtenir des GO visuel, integration, Admin et live separes.
 5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
@@ -429,7 +433,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; endpoint stable prouve au lot `146ac026`, mais RNO3 echoue sur la reecriture du diagnostic restaure et RNO4 reste partiel ; correctif theme seulement pre-reserve depuis `2f95b3d1`, aucun droit C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live
+- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; correctif d idempotence ferme a `7bb67efc`, preuves `1ee9c07f`, RC4 PASS prive et RC8 PASS sans commande mais globalement partiel ; aucun droit C1-2, app deploy ou release, Admin, bascule, email, integration theme ou live
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
