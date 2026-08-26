@@ -1,17 +1,17 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-25 12:28 CEST
+Derniere mise a jour : 2026-08-26 16:20 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; O2 ferme RC7 et RC8 au niveau prive avec et sans commande, puis supprime tous les objets QA et restaure scopes et runtime ; RC5 attend la verite inventaire et catalogue, tandis que le francais natif, la productionisation, l integration, la bascule Admin et le live restent ouverts ; Rentree Sodalite reste en pause a `70 %` jusqu au 2026-08-31.
+La refonte visible est largement avancee ; O2 ferme RC7 et RC8 au niveau prive, tandis que RC5 attend le catalogue reel ; la creation produits est arretee proprement a 60 pour une passe complete de fidelite, doublons, stock, prix et marge avant publication, avec 125 references restantes ; Rentree Sodalite, Ruban, Pinterest final et Ads attendent cette verite catalogue.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant la cloture idempotence du 2026-08-25 est `codex/milaura-integration` a `41b733e196910b3b24008cbacfa42df24cc5c56e`, propre et aligne `0/0` avec origin.
+- Le canonique verifie avant ce handoff du 2026-08-26 est `codex/milaura-integration` a `7a979c876475250670899fae4f53b85bf1bd932a`, propre et aligne `0/0` avec origin.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
@@ -49,7 +49,7 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Le diagnostic est actuellement persiste dans le navigateur et le panier, pas dans une source cliente durable. Le chantier `C1 - Le Cercle MilAura` possede la correction entre appareils et sa restitution dans `Mon Ecrin`.
 - Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. L audit des emails, notifications, relances et du comportement apres inscription est ferme le 2026-08-20 ; leur implementation reste classee criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
-- L'inventaire physique mene par Patrice avance en parallele et ne bloque pas le polish du site. Il reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
+- L inventaire physique est etabli pour la file courante. La creation catalogue est arretee a 60 produits traites afin d auditer fidelite, doublons, images, prix, stock et marge avant publication. Il reste 125 references, dont 110 en file et 15 bloquees par prix. Cette verite reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
 - Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
 - Decisions Pinterest de Patrice du 2026-08-20 : le titre et la bio actuels sont valides et restent inchanges. Aucun agent ne doit proposer de les remplacer sans nouvelle demande explicite. La phrase finale `Découvrez les créations et conseils sur milaura.fr.` est approuvee comme ajout optionnel ; si la limite de caracteres Pinterest empeche son ajout, la bio existante ne doit pas etre raccourcie sans validation de Patrice.
@@ -392,6 +392,22 @@ Pipeline actif :
 
 `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`
 
+## Catalogue physique arrete a 60 au 2026-08-26
+
+La grosse tache catalogue `01a038d2-cc6d-7c81-9ceb-bb08200ef937` est retiree du flux actif apres des erreurs d interface Codex liees a son volume. Ses ledgers persistent hors Git dans le pipeline prive et deviennent la preuve de reprise. Ne pas relire son historique detaille ni lui envoyer de nouveau message.
+
+- Pilote : 10 produits `completed`, dont 8 creations et 2 mises a jour de brouillons.
+- File principale : 44 `batch-complete-draft`, 6 `prepared-active-cutover` strictement non modifies, 15 `blocked-price` et 110 `queued`.
+- Total traite : 60.
+- Total restant : 125.
+- Lot 06 : aucune ecriture Shopify.
+
+La prochaine tache est un audit des 60, pas une nouvelle vague. Chaque reference est classee `PASS CANDIDAT`, `CORRECTION REQUISE`, `DOUBLON A METTRE A JOUR` ou `BLOQUE`. Les erreurs de fidelite produit, les images inventees, les mauvais contrastes et les doublons sont bloquants. Aucun passage en actif sans validation Patrice et GO Admin distinct.
+
+Apres cette passe : fournir les 15 prix manquants, traiter Sodalite en priorite, puis les nouvelles references physiques. Les produits deja actifs a moderniser restent en fin de file. Rythme cible apres stabilisation : 10 produits par jour.
+
+La disponibilite client repose d abord sur Shopify natif par variante : quantite reelle pour le physique ; quantite 0 et poursuite de vente seulement pour une reference fournisseur explicitement acceptee ; quantite 0 sans poursuite si indisponible. Aucun stock `Entrant` fictif et aucun faux lieu fournisseur. Un metafield interne reste optionnel et exige un lot Admin separe. Checkpoint : `docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md`.
+
 ## Commits de consolidation des 2026-08-12 et 2026-08-13
 
 - `9220031e` : verite storefront et logistique
@@ -426,19 +442,20 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. La session master conserve seule l integration et le live a partir de `1cba6357` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba`, le tip theme RC `7bb67efc`, les preuves sans commande `1ee9c07f` et O2 `e863fc10` geles. RC4, RC7 et RC8 sont passes au niveau prive. Attendre la verite inventaire et catalogue avant de reserver RC5 ; traiter ensuite le francais natif et Mail sous lot distinct. Aucun nouveau produit ou commande QA, C1-2, app deploy/release, Admin production, bascule, email, integration theme ou live.
-3. Confier E4 a E6 a une session mail specialist distincte, d abord en lecture seule, matrice et preview. Coordonner E7 avec le master si le Worker retour produit exige du code.
-4. Laisser `Rentree Sodalite` en pause a `70 %` jusqu au 2026-08-31. A la reprise, conserver la photo fixe, polir la section, fermer inventaire, produits, couts, marges, landing et dates, puis obtenir des GO visuel, integration, Admin et live separes.
-5. Continuer les fondations Pinterest dans la tache dediee : compte, tableaux, SEO, UTM, catalogue, consentement et tracking. Arret au gate inventaire avant production finale et Ads.
-6. Finir en parallele l inventaire physique et la mise en ligne fiable du catalogue. Reprendre ensuite Ruban V3. Atelier reste parque sous son gate physique propre.
-7. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance/Mariage, le Journal, puis S1B/S1C seulement apres C1.
-8. Utiliser DataForSEO de facon ciblee avant les nouvelles pages guidees par la demande, puis executer l audit SEO/AEO/GEO global lorsque les routes sont stables.
-9. Fermer performance, accessibilite, netlinking, GA4, GSC, Merchant Center, lifecycle reel, delivrabilite et parcours de conversion.
-10. Lancer seulement ensuite un pilote Ads borne, apres validation de l inventaire, du cout complet, de la marge de contribution, du feed, du tracking, du consentement et des regles d arret.
+1. La nouvelle session master conserve seule l integration et le live a partir de `7a979c876475250670899fae4f53b85bf1bd932a` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
+2. Ouvrir une tache neuve d audit des 60 produits, d abord en lecture seule. Corriger le workflow et obtenir les validations avant toute publication.
+3. Recevoir les 15 prix manquants, traiter Sodalite en priorite, puis reprendre les vraies nouvelles references a environ 10 produits par jour. Reporter les modernisations de produits deja actifs en fin de file.
+4. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba`, le tip theme RC `7bb67efc`, les preuves sans commande `1ee9c07f` et O2 `e863fc10` geles. Apres la verite catalogue, fermer RC5 ; traiter le francais natif et Mail sous lots distincts. Aucun C1-2, app deploy/release, Admin production, bascule, email, integration theme ou live.
+5. Reprendre `Rentree Sodalite` depuis sa pause a `70 %` avec son vrai lot produit, puis obtenir des GO visuel, integration, Admin et live separes.
+6. Continuer les fondations Pinterest hors theme. Reprendre Ruban V3 seulement sur catalogue fiable. Atelier reste parque sous son gate physique propre.
+7. Fermer E4 a E6 avec la session Mail et coordonner E7 avec le master.
+8. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
+9. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance/Mariage, le Journal, puis S1B/S1C seulement apres C1.
+10. Executer DataForSEO cible, audit SEO/AEO/GEO global, performance, accessibilite, netlinking, GA4, GSC, Merchant Center, lifecycle reel et strategie organique lorsque les routes et le catalogue sont stables.
 
 ## Dependances encore ouvertes
 
+- catalogue arrete a 60 : audit complet avant publication ; 125 references restantes, dont 110 en file et 15 bloquees par prix ; Sodalite prioritaire apres la passe
 - inventaire et retrait controle des 18 baguettes minerales
 - treize anciennes collections sans metas definitives
 - pages mensuelles de naissance et pages enfants mariage
@@ -466,6 +483,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md`
 - `docs/checkpoints/2026-08-24-1350-c1-m4-admin-session-recovery.md`
 - `docs/checkpoints/2026-08-24-1344-c1-otp-address-correction-go.md`
 - `docs/checkpoints/2026-08-24-1215-c1-otp-address-correction-prereservation.md`
