@@ -6,7 +6,7 @@ Date : 2026-08-26 16:20 CEST
 
 La creation catalogue est arretee proprement a 60 produits traites. Le lot 06 n a effectue aucune creation ni modification Shopify. La grosse tache catalogue `01a038d2-cc6d-7c81-9ceb-bb08200ef937` est retiree du flux actif et archivee dans Codex. Toute reprise se fait dans une tache neuve a partir des ledgers persistants, jamais par relecture detaillee de cette ancienne conversation.
 
-Le prochain lot n est pas une nouvelle vague de creation. Il s agit d abord d un audit complet des 60 produits, sans publication automatique.
+Le prochain lot n est pas une nouvelle vague de creation automatique. Le futur master ouvre une session inventaire distincte qui commence par discuter avec Patrice, rendre un etat des lieux et brainstormer la methode de controle, correction, enrichissement et mise en ligne. Le present checkpoint fournit des faits et des pistes, pas un protocole impose a cette session.
 
 ## Verite Git au handoff
 
@@ -51,9 +51,9 @@ Le total traite est donc bien de 60 : 10 pilotes plus 44 brouillons de la file p
 
 Le lot 05 s est ferme avec 8 nouveaux brouillons et 2 produits actifs non modifies. La preparation locale du lot 06 avait commence, mais aucune ecriture Shopify n a eu lieu. Les traces source locales peuvent etre conservees comme cache ; elles ne valent ni engagement de lot, ni produit cree, ni validation.
 
-## Audit obligatoire des 60 avant publication
+## Points a discuter avec Patrice avant publication
 
-La prochaine tache catalogue travaille en lecture seule au depart et classe chaque produit dans une seule categorie :
+La nouvelle session inventaire part des problemes signales par Patrice et construit avec lui la methode. Les categories suivantes sont une proposition de travail disponible, pas une instruction rigide du master :
 
 1. `PASS CANDIDAT` : identite, prix, stock, texte, medias et destinations coherents ;
 2. `CORRECTION REQUISE` : erreur de gout, contraste, cadrage, copie ou fidelite produit ;
@@ -85,7 +85,7 @@ Un metafield interne pourra completer ce modele uniquement si un marqueur operat
 ## Impact sur le plan MilAura
 
 - Mon Ecrin : O2 reste `PASS` prive avec rollback au commit `e863fc100ccae47ff1c8a43cdfeccef763f4bcd4`. RC4, RC7 et RC8 sont passes en prive. RC5 attend la verite catalogue, stock, prix, marge et destinations. Aucun release, integration, Admin production ou live.
-- Rentree Sodalite : pause a `70 %`, commit `47cc3e62`, theme prive `200259043675`. La photo fixe est retenue. La reprise priorise le vrai catalogue Sodalite apres l audit des 60.
+- Rentree Sodalite : pause a `70 %`, commit `47cc3e62`, theme prive `200259043675`. La photo fixe est retenue. La reprise attend les decisions prises avec la nouvelle session inventaire et la verite des references Sodalite.
 - Ruban V3 : parque a `3aa0b66d` jusqu a un catalogue fiable.
 - Pinterest : fondations possibles hors theme, mais productions finales, catalogue massif et Ads attendent inventaire, feed, consentement, tracking et economie.
 - Mail E4 a E6 : lot distinct. Coordination obligatoire avant une bascule de comptes ou les parcours C1.
@@ -108,6 +108,6 @@ Version observee : ChatGPT/Codex Desktop `26.818.61809`, build `7019`, moteur `1
 - Aucun merge de `origin/main`.
 - Aucun live sans GO explicite de Patrice et controle master.
 
-## Reprise courte
+## Reprise courte corrigee
 
-La prochaine session master lit `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, ce checkpoint et le plan canonique. Elle verifie Git et les ledgers en lecture seule, confirme que l ancienne tache catalogue est archivee, puis reserve une tache neuve d audit des 60. Elle ne relance pas la creation des 125 restants avant le verdict de cette passe.
+La prochaine session master lit `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md`, `docs/codex-handoff.md`, le checkpoint correctif `docs/checkpoints/2026-08-26-1642-master-role-inventory-correction.md` et le plan canonique. Elle verifie Git, les proprietaires et toutes les sessions ouvertes, puis reprend le pilotage global. Elle ouvre une session inventaire neuve et distincte avec les sources et limites utiles, mais laisse cette session discuter avec Patrice, faire son etat des lieux et brainstormer sa methode avant tout plan ou mutation.

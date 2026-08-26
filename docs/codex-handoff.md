@@ -1,12 +1,24 @@
-# Handoff Codex MilAura, catalogue arrete a 60 et nouveau master requis
+# Handoff Codex MilAura, reprise du pilotage global
 
-Date : 2026-08-26 16:20 CEST
+Date : 2026-08-26 16:42 CEST
 
-## Mission de reprise
+## Mission du futur master
 
-Reprendre le pilotage master MilAura strictement en lecture seule. Une seule session master possede l integration et tout live. La creation catalogue est arretee proprement a 60 produits traites ; 125 references restent, mais aucune nouvelle creation ne doit commencer avant l audit complet des 60.
+Le futur master pilote le plan MilAura dans son ensemble. Il ne devient ni la session inventaire, ni la session Mail, ni la session Mon Ecrin. Il centralise leurs retours, verifie la qualite du travail, recadre les scopes, evite les chevauchements, ferme les gates, integre selectivement et reste l unique proprietaire de l integration et de tout live.
 
-L ancienne tache catalogue `01a038d2-cc6d-7c81-9ceb-bb08200ef937` est retiree parce que son volume provoque des erreurs d interface Codex. Ne pas lui envoyer de nouveau message et ne pas tenter de relire son historique detaille. Les ledgers persistants et le checkpoint du 2026-08-26 sont la source de reprise.
+Il commence strictement en lecture seule par Git, origin, les worktrees, `docs/workstreams.md`, les themes, les proprietaires et les sessions ouvertes. Il rend ensuite a Patrice un point global factuel et une organisation de fin de plan.
+
+## Sessions et chantiers a piloter
+
+1. Mail : session ouverte et quasi terminee. Auditer son retour, fermer ce qui est reellement valide et coordonner les surfaces compte avec Mon Ecrin.
+2. Septembre ou Rentree Sodalite : session provisoire ouverte, travail prive a `70 %`, photo fixe retenue, vraie selection et gates business encore ouverts.
+3. Mon Ecrin : preuves privees tres avancees ; O2 a passe les etats avec et sans commande et le rollback. RC5, francais natif, productionisation, release, Admin, integration et live restent distincts.
+4. Pinterest : session ouverte hors theme. Fondations possibles ; creatives finales, catalogue massif et Ads attendent catalogue, feed, consentement, tracking et economie.
+5. Ruban cross-sell : session ouverte mais parquee jusqu a un catalogue fiable et des medias produits fideles.
+6. Inventaire, enrichissement et mise en ligne : ancienne grosse tache archivee ; une nouvelle session dediee doit etre ouverte, mais elle commence par discuter avec Patrice et construire sa methode avec lui.
+7. Polish SEO et strategie organique : chantier final important apres stabilisation du catalogue et des routes, avec DataForSEO cible, audit global, comparateurs, netlinking, influence et contenus.
+
+Atelier des emotions et Pierres de naissance restent en pause plus longue jusqu a une nouvelle decision de Patrice.
 
 ## Lecture obligatoire
 
@@ -14,50 +26,60 @@ L ancienne tache catalogue `01a038d2-cc6d-7c81-9ceb-bb08200ef937` est retiree pa
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
 4. `docs/codex-handoff.md`
-5. `docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md`
-6. `docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md`
-7. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
-8. `docs/checkpoints/2026-08-21-1751-cookie-consent-persistence-live.md`
-9. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
-10. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
-11. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
-12. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
+5. `docs/checkpoints/2026-08-26-1642-master-role-inventory-correction.md`
+6. `docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md`
+7. `docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md`
+8. `docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md`
+9. `docs/checkpoints/2026-08-21-1751-cookie-consent-persistence-live.md`
+10. `docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md`
+11. `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`
+12. `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`
+13. `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
 
-## Verite canonique au handoff
+Le checkpoint du 2026-08-26 a 16:42 corrige explicitement le cadrage trop restrictif du checkpoint de 16:20. Les faits catalogue de 16:20 restent valides ; le role master et la methode de reprise inventaire suivent la correction de 16:42.
+
+## Verite Git au handoff
 
 - Depot : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche : `codex/milaura-integration`.
-- HEAD avant le commit de ce handoff : `7a979c876475250670899fae4f53b85bf1bd932a`.
-- Tracking avant ecriture : `0/0` avec origin.
+- Canonique avant cette correction : `364f3005e8d65aa443bba1c144fac398df6c1f93`, propre et aligne `0/0` avec origin.
 - `origin/main` est un miroir Shopify incomplet. Ne jamais le fusionner aveuglement.
 - Live : `190430282075`.
 - Developpement general : `199421952347`.
 - Le checkout principal reste le seul point d integration, de documentation canonique et de live.
-- `/Users/paesano/Documents/Agentic-Ops` est tres dirty avec des travaux concurrents. Ne rien nettoyer, restaurer, indexer ni committer dans ce depot lors de la reprise master.
+- `/Users/paesano/Documents/Agentic-Ops` est tres dirty avec de nombreux travaux concurrents. Ne rien nettoyer, restaurer, indexer ni committer depuis le master.
 
-## Catalogue et inventaire
+## Frontiere de la nouvelle session inventaire
 
-Ledgers :
+L ancienne tache `01a038d2-cc6d-7c81-9ceb-bb08200ef937` est archivee pour stabilite Codex. Ne plus lui envoyer de message et ne pas relire son historique detaille.
 
-- pilote 10 : `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/pilot-batches/2026-08-25-physical-stock-pilot-10/ledger.json` ;
-- file 175 : `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/catalogue-batches/2026-08-25-physical-stock-175/ledger.json`.
+Faits de reprise :
 
-Etat exact :
-
-- 10 pilotes `completed`, dont 8 creations et 2 mises a jour de brouillons ;
+- 10 pilotes termines ;
 - 44 brouillons termines dans la file principale ;
 - 6 produits actifs prepares mais non modifies ;
-- 15 references bloquees par prix ;
-- 110 references encore en file ;
 - total traite : 60 ;
+- 110 references encore en file ;
+- 15 references bloquees par prix ;
 - total restant : 125 ;
 - lot 06 : aucune ecriture Shopify.
 
-Prochaine action : reserver une nouvelle tache d audit des 60, d abord en lecture seule. Verifier fidelite produit, images, contraste, gout, copie, prix, stock, medias, liens et doublons. Classer `PASS CANDIDAT`, `CORRECTION REQUISE`, `DOUBLON A METTRE A JOUR` ou `BLOQUE`. Aucun correctif ou passage en actif sans GO distinct.
+Le master transmet ces faits, les chemins des ledgers, les limites de securite et les dependances. Il ne remet pas a la nouvelle session un protocole rigide d audit ou un ordre produit impose.
 
-Apres l audit : recevoir les 15 prix manquants, traiter Sodalite en priorite, puis les nouvelles references physiques. Les produits deja actifs a moderniser passent en fin de file. Rythme cible une fois le workflow stabilise : 10 produits par jour.
+La nouvelle session inventaire doit commencer par :
 
-Pour distinguer stock reel et vente sur commande fournisseur, utiliser d abord les fonctions natives par variante : quantite physique reelle, suivi de stock et politique `continuer a vendre` uniquement pour les references fournisseur explicitement acceptees. Ne jamais inventer de stock entrant ni de lieu fournisseur. Un metafield interne reste optionnel et exige un micro-lot Admin separe.
+1. parler avec Patrice ;
+2. confronter les ledgers, le Sheet et Shopify dans un etat des lieux clair ;
+3. recueillir ses observations sur les photos, hallucinations produit, gout, doublons, produits deja actifs, prix et priorite Sodalite ;
+4. brainstormer avec lui le workflow de correction, enrichissement et mise en ligne ;
+5. proposer ensuite un plan borne, des priorites et les GO necessaires.
+
+Elle reste proprietaire du dialogue produit et de l execution catalogue. Le master garde la gouvernance, les conflits, l integration et les gates live.
+
+Ledgers :
+
+- `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/pilot-batches/2026-08-25-physical-stock-pilot-10/ledger.json` ;
+- `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/catalogue-batches/2026-08-25-physical-stock-175/ledger.json`.
 
 ## Mon Ecrin
 
@@ -67,56 +89,57 @@ Pour distinguer stock reel et vente sur commande fournisseur, utiliser d abord l
 - Preuves sans commande : `1ee9c07f`.
 - O2 commandes privees : `e863fc10`.
 - RC4, RC7 et RC8 : PASS prive.
-- RC5 : ouvert, depend du catalogue reel, des stocks, prix, marges et destinations.
-- RC6 : audit ferme avec NO-GO conditionnel ; shell Orders/Profile anglais et coordination Mail distincte.
+- RC5 : ouvert, depend des produits, stocks, prix, marges et destinations fiables.
+- RC6 : audit ferme avec NO-GO conditionnel ; francais natif et coordination Mail restent distincts.
 - Theme prive C1 : `205027279193`, non publie.
 - Store C1 : `107347837273`.
-- Aucun produit ou commande QA restant, backend URL vide, flag false, runtime arrete selon O2.
 
 Mon Ecrin n est pas live. Aucun droit app deploy/release, Admin production, bascule Customer Accounts, integration theme, email ou live.
 
-## Autres lots
+## Autres limites durables
 
 - Cookies : regression fermee et live a `aa3a9930`. Ne pas rouvrir sans regression reproductible.
-- Rentree Sodalite : pause a `70 %`, branche `47cc3e62`, theme prive `200259043675`. Photo fixe retenue. Reprise apres audit catalogue avec produits Sodalite prioritaires, puis GO visuel, integration, Admin et live separes.
-- Pinterest : tache `01a01eb8-192c-76c1-9fb7-7599654e5e64`, fondations hors theme. Tracking inconclusif, huit avertissements GPC. Aucune Ads avant inventaire, feed, consentement, tracking et economie.
-- Mail : E1 a E3 fermes. E4 a E6 appartiennent a la session Mail. E7 se coordonne avec le master.
-- Ruban V3 : parque a `3aa0b66d` jusqu au catalogue fiable.
-- Atelier : parque a `2befe429` sur le theme prive `200007713115` sous son gate physique propre.
-- Rail commercial, Karine et Sur mesure, pages enfants Naissance et Mariage, Journal, S1B/S1C, DataForSEO, audit SEO global, performance, accessibilite, netlinking, GA4, GSC, Merchant Center et lifecycle restent apres le polish catalogue et les gates business prioritaires.
+- Rentree Sodalite : branche `47cc3e62`, theme prive `200259043675`, aucun GO live.
+- Pinterest : tache `01a01eb8-192c-76c1-9fb7-7599654e5e64`, aucun Ads avant les gates business et mesure.
+- Ruban V3 : parque a `3aa0b66d`.
+- Atelier : parque a `2befe429` sur `200007713115`.
+- Mail : E1 a E3 fermes ; E4 a E6 appartiennent a la session Mail ; E7 se coordonne avec le master.
+- Ne pas rouvrir LFG, longueur PDP, formulations validees du quiz, preuve sociale, cookies ou Ruban V2 sans regression ou nouvelle decision explicite.
 
-## Ordre recommande
+## Sequence de pilotage recommandee
 
-1. Audit complet des 60 produits et correction du workflow.
-2. Prix manquants et lot Sodalite prioritaire.
-3. RC5 Mon Ecrin, finition Rentree, feed catalogue et coordination Mail.
-4. Ruban V3 et Pinterest final, puis pilote Ads seulement si stock, cout, marge, feed, consentement, tracking et conversion sont verifies.
-5. Reprendre ensuite le developpement de fond et le grand chantier organique SEO, comparateurs, backlinks, influence et contenus.
+1. Auditer les sessions ouvertes et leurs worktrees, puis demander des retours compacts a Mail, Rentree, Mon Ecrin, Pinterest et Ruban.
+2. Recadrer les scopes, proprietaires, themes et gates ; fermer ce qui est termine et identifier les vrais bloqueurs.
+3. Ouvrir la nouvelle session inventaire avec un brief conversationnel, puis la laisser faire son etat des lieux et brainstormer avec Patrice.
+4. Faire avancer en parallele les lots independants sans chevauchement.
+5. Lorsque le catalogue pertinent est fiable, fermer RC5, la vraie selection Rentree, le feed, Ruban et Pinterest final.
+6. Lancer un pilote Ads borne apres stock, cout, marge, feed, consentement, tracking et conversion verifies.
+7. Reprendre ensuite le developpement de fond et le grand chantier organique SEO.
 
 ## Message de reprise master copiable
 
 ```text
 Reprends le pilotage master MilAura au 2026-08-26 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence strictement en lecture seule.
 
-Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md, docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md, docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md, docs/checkpoints/2026-08-21-1751-cookie-consent-persistence-live.md, docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md, docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md, docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
+Ton role est de piloter le plan global, pas d executer l inventaire. Tu centralises et audites les sessions Mail, Septembre ou Rentree, Mon Ecrin, Pinterest, Ruban cross-sell et la future session inventaire. Tu proteges les proprietaires, evites les chevauchements, fermes les gates, integres selectivement et restes seul proprietaire de l integration et de tout live.
 
-Verifie Git, origin, tous les worktrees et docs/workstreams.md avant toute ecriture. Le canonique attendu est origin/codex/milaura-integration a 7a979c876475250670899fae4f53b85bf1bd932a ou plus recent. origin/main est un miroir Shopify incomplet et ne doit jamais etre fusionne aveuglement. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et tout live.
+Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-26-1642-master-role-inventory-correction.md, docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md, docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md, docs/checkpoints/2026-08-22-1645-rentree-sodalite-pause-70.md, docs/checkpoints/2026-08-21-1751-cookie-consent-persistence-live.md, docs/checkpoints/2026-08-20-2013-all-active-customer-email-tests.md, docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md, docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
 
-La grosse tache catalogue 01a038d2-cc6d-7c81-9ceb-bb08200ef937 est retiree et ne doit plus recevoir de message ni etre relue en detail. Ses ledgers persistants sont la source : 60 produits traites, lot 06 sans ecriture Shopify, 125 restants dont 110 en file et 15 bloques par prix. Commence par auditer les 60 dans une nouvelle tache, sans publication ni correction automatique. Verifie fidelite des medias, hallucinations produit, gout, contraste, copie, prix, stock, liens et doublons. Les produits Sodalite viennent ensuite en priorite. Les produits deja actifs a moderniser passent en fin de file. Aucun Admin sans nouveau GO exact.
+Verifie Git, origin, tous les worktrees, themes, proprietaires et sessions avant toute ecriture. Le canonique attendu est origin/codex/milaura-integration a 364f3005e8d65aa443bba1c144fac398df6c1f93 ou plus recent. origin/main est un miroir Shopify incomplet. Live 190430282075, developpement 199421952347. Une seule session master possede l integration et le live.
 
-Mon Ecrin O2 est PASS prive a e863fc10 avec rollback complet. RC4, RC7 et RC8 sont PASS prive ; RC5 attend la verite catalogue ; RC6 et le francais natif restent distincts. Aucun app deploy/release, bascule Admin, integration theme, email ou live.
+La grosse tache inventaire 01a038d2-cc6d-7c81-9ceb-bb08200ef937 est archivee. Tu ouvriras une nouvelle session inventaire dediee, mais tu ne lui imposeras pas un protocole produit par produit. Transmets-lui les ledgers, les faits, les limites et les dependances ; elle doit d abord discuter avec Patrice, rendre un etat des lieux clair et brainstormer avec lui la meilleure facon de controler, corriger, enrichir et mettre en ligne les produits.
 
-Rentree Sodalite reste a 70 % sur 47cc3e62 et le theme prive 200259043675. Ruban V3 reste parque a 3aa0b66d. Pinterest avance hors theme mais sans Ads. Atelier reste parque a 2befe429 sur 200007713115. Mail E4-E6 conserve sa zone. Aucun chevauchement sur comptes, consentements, Admin, fichiers ou themes.
+Mail est quasi termine et doit rendre son retour. Rentree reste en travail prive a 70 %. Mon Ecrin O2 est PASS prive mais RC5 et toutes les gates release ou live restent ouvertes. Pinterest avance hors theme sans Ads. Ruban attend le catalogue fiable. Atelier et Pierres de naissance restent en pause plus longue. Le polish SEO et la strategie organique large viennent apres stabilisation du catalogue et des routes.
 
-Commence par rendre a Patrice un point factuel Git, worktrees, proprietaires, taches actives, conflits, plan d audit catalogue, integrations et gates. Aucune mutation avant ce point.
+Commence par rendre a Patrice un point factuel global : Git, worktrees, proprietaires, sessions actives, conflits, etat de chaque lot, dependances, plan de coordination et gates. Aucune mutation avant ce point.
 ```
 
-## Message de reprise catalogue copiable
+## Brief conversationnel pour la future session inventaire
 
 ```text
-Reprends l audit des 60 produits MilAura au 2026-08-26 dans une nouvelle tache. Ne reprends pas l ancienne conversation 01a038d2-cc6d-7c81-9ceb-bb08200ef937 et ne relance aucun lot de creation.
+Tu reprends le chantier inventaire, enrichissement et mise en ligne des produits MilAura dans une nouvelle session. Ne reprends pas l ancienne conversation archivee et ne relance rien automatiquement.
 
-Commence en lecture seule. Lis AGENTS.md, docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md et les deux ledgers persistants indiques dans ce checkpoint. Confirme 10 pilotes completes, 44 brouillons de la file principale, 6 actifs prepares mais non modifies, 15 bloques prix et 110 encore en file. Verifie que le lot 06 n a effectue aucune ecriture Shopify.
+Commence par discuter avec Patrice. Lis les sources et les ledgers, puis rends-lui un etat des lieux simple de ce qui est reellement termine, en brouillon, actif, bloque ou restant. Demande-lui ses observations et ses priorites, notamment sur la fidelite des photos, les produits inventes, les doublons, les produits deja en ligne, les 15 prix manquants, la Sodalite et le rythme futur.
 
-Audite les 60 un par un : identite et EAN, doublons, fidelite exacte des photos et du produit, hallucinations, cadrage, contraste, gout, titres, descriptions, prix, cout, marge, stock reel, statut, medias, SEO et liens. Classe chaque reference PASS CANDIDAT, CORRECTION REQUISE, DOUBLON A METTRE A JOUR ou BLOQUE. Aucun correctif, aucune publication, aucun passage ACTIVE et aucun metafield sans GO distinct de Patrice et reservation master.
+Brainstormez ensemble la meilleure methode de controle, correction, enrichissement et mise en ligne. Ne considere aucune classification, aucun ordre de traitement et aucun workflow comme definitif avant cet echange. Propose ensuite un plan borne et demande les GO necessaires avant toute mutation Shopify, publication ou changement de stock.
 ```

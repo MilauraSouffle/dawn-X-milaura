@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-26 16:20 CEST
+Derniere mise a jour : 2026-08-26 16:42 CEST
 
 ## Etat en une phrase
 
-La refonte visible est largement avancee ; O2 ferme RC7 et RC8 au niveau prive, tandis que RC5 attend le catalogue reel ; la creation produits est arretee proprement a 60 pour une passe complete de fidelite, doublons, stock, prix et marge avant publication, avec 125 references restantes ; Rentree Sodalite, Ruban, Pinterest final et Ads attendent cette verite catalogue.
+La session master pilote l ensemble du plan et coordonne les sessions Mail, Rentree, Mon Ecrin, Pinterest, Ruban et catalogue ; la creation produits est arretee proprement a 60 avec 125 references restantes, mais sa reprise appartient a une nouvelle session dediee qui commence par un etat des lieux et un brainstorming avec Patrice ; les lots independants peuvent avancer en parallele, tandis que RC5, Rentree finale, Ruban, Pinterest final et Ads gardent leurs gates catalogue et mesure.
 
 ## Source de verite et etat du depot
 
@@ -37,6 +37,14 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Seul le proprietaire d'integration deploie le live, avec fichiers cibles, `--nodelete`, pullback et comparaison.
 - Une validation technique ne vaut jamais validation creative de Patrice.
 - Aucun produit, stock, prix ou statut de publication n'est modifie par un chantier theme sans autorisation explicite.
+
+## Role de la session master au 2026-08-26
+
+Le master ne remplace aucune session specialiste. Il centralise les retours, controle la qualite, recadre les scopes, protege les proprietaires, detecte les conflits de fichiers, themes, consentements et Admin, ferme les gates, integre selectivement et reste seul proprietaire du live.
+
+Il coordonne actuellement Mail, Rentree, Mon Ecrin, Pinterest, Ruban et le catalogue. Il ouvre une nouvelle session inventaire distincte, mais celle-ci commence par discuter avec Patrice, rendre un etat des lieux et brainstormer la methode de controle, correction, enrichissement et mise en ligne. Le master lui transmet les sources, faits et limites ; il ne lui impose pas un plan produit par produit avant cet echange.
+
+Atelier des emotions et Pierres de naissance restent en pause plus longue. Le polish SEO et la strategie organique large viennent apres stabilisation du catalogue, des routes et des priorites commerciales. Reference corrective : `docs/checkpoints/2026-08-26-1642-master-role-inventory-correction.md`.
 
 ## Cap commercial, direction et arbitrages du 2026-08-16
 
@@ -402,9 +410,9 @@ La grosse tache catalogue `01a038d2-cc6d-7c81-9ceb-bb08200ef937` est retiree du 
 - Total restant : 125.
 - Lot 06 : aucune ecriture Shopify.
 
-La prochaine tache est un audit des 60, pas une nouvelle vague. Chaque reference est classee `PASS CANDIDAT`, `CORRECTION REQUISE`, `DOUBLON A METTRE A JOUR` ou `BLOQUE`. Les erreurs de fidelite produit, les images inventees, les mauvais contrastes et les doublons sont bloquants. Aucun passage en actif sans validation Patrice et GO Admin distinct.
+La prochaine session inventaire est distincte du master. Elle commence par discuter avec Patrice, rendre un etat des lieux clair et brainstormer la methode de controle, correction, enrichissement et mise en ligne. Les categories `PASS CANDIDAT`, `CORRECTION REQUISE`, `DOUBLON A METTRE A JOUR` et `BLOQUE` sont une proposition disponible, pas un protocole impose avant cet echange. Aucun passage en actif sans validation Patrice et GO Admin distinct.
 
-Apres cette passe : fournir les 15 prix manquants, traiter Sodalite en priorite, puis les nouvelles references physiques. Les produits deja actifs a moderniser restent en fin de file. Rythme cible apres stabilisation : 10 produits par jour.
+Apres accord entre Patrice et la session inventaire sur la methode : fournir les 15 prix manquants, traiter Sodalite en priorite, puis les nouvelles references physiques. Les produits deja actifs a moderniser peuvent rester en fin de file. Le rythme cible de 10 produits par jour reste une intention de Patrice a confirmer dans ce dialogue.
 
 La disponibilite client repose d abord sur Shopify natif par variante : quantite reelle pour le physique ; quantite 0 et poursuite de vente seulement pour une reference fournisseur explicitement acceptee ; quantite 0 sans poursuite si indisponible. Aucun stock `Entrant` fictif et aucun faux lieu fournisseur. Un metafield interne reste optionnel et exige un lot Admin separe. Checkpoint : `docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md`.
 
@@ -442,16 +450,16 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. La nouvelle session master conserve seule l integration et le live a partir de `7a979c876475250670899fae4f53b85bf1bd932a` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Ouvrir une tache neuve d audit des 60 produits, d abord en lecture seule. Corriger le workflow et obtenir les validations avant toute publication.
-3. Recevoir les 15 prix manquants, traiter Sodalite en priorite, puis reprendre les vraies nouvelles references a environ 10 produits par jour. Reporter les modernisations de produits deja actifs en fin de file.
-4. Conserver C1 V3 `d8d036ff`, C1-1 `cf2877ba`, le tip theme RC `7bb67efc`, les preuves sans commande `1ee9c07f` et O2 `e863fc10` geles. Apres la verite catalogue, fermer RC5 ; traiter le francais natif et Mail sous lots distincts. Aucun C1-2, app deploy/release, Admin production, bascule, email, integration theme ou live.
-5. Reprendre `Rentree Sodalite` depuis sa pause a `70 %` avec son vrai lot produit, puis obtenir des GO visuel, integration, Admin et live separes.
-6. Continuer les fondations Pinterest hors theme. Reprendre Ruban V3 seulement sur catalogue fiable. Atelier reste parque sous son gate physique propre.
-7. Fermer E4 a E6 avec la session Mail et coordonner E7 avec le master.
-8. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
-9. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance/Mariage, le Journal, puis S1B/S1C seulement apres C1.
-10. Executer DataForSEO cible, audit SEO/AEO/GEO global, performance, accessibilite, netlinking, GA4, GSC, Merchant Center, lifecycle reel et strategie organique lorsque les routes et le catalogue sont stables.
+1. La nouvelle session master conserve seule l integration et le live a partir de `364f3005e8d65aa443bba1c144fac398df6c1f93` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
+2. Auditer en lecture seule les sessions ouvertes Mail, Rentree, Mon Ecrin, Pinterest et Ruban ; demander leurs retours compacts, recadrer leurs scopes et fermer ce qui est reellement termine.
+3. Ouvrir une session inventaire fraiche et distincte. Lui transmettre les ledgers, les faits et les limites, puis la laisser commencer par un etat des lieux et un brainstorming direct avec Patrice avant tout plan d execution.
+4. Autoriser en parallele les travaux independants sans chevauchement : finition Mail, prochaines gates privees Mon Ecrin et fondations Pinterest hors theme.
+5. A partir des decisions prises avec la session inventaire, corriger les 60, recevoir les 15 prix manquants, prioriser Sodalite et definir le rythme futur. Aucun passage en actif sans GO Admin distinct.
+6. Lorsque la verite catalogue pertinente est fiable, fermer RC5, la vraie selection Rentree, le feed, Ruban V3 et Pinterest final sous leurs gates propres.
+7. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
+8. Laisser Atelier des emotions et Pierres de naissance en pause plus longue jusqu a une nouvelle decision de Patrice.
+9. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance et Mariage, le Journal, puis S1B et S1C seulement apres C1.
+10. Executer enfin le polish SEO et la strategie organique large : DataForSEO cible, audit SEO/AEO/GEO global, performance, accessibilite, comparateurs, netlinking, influence, GA4, GSC, Merchant Center, lifecycle et contenus.
 
 ## Dependances encore ouvertes
 
@@ -483,6 +491,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## References de reprise
 
+- `docs/checkpoints/2026-08-26-1642-master-role-inventory-correction.md`
 - `docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md`
 - `docs/checkpoints/2026-08-24-1350-c1-m4-admin-session-recovery.md`
 - `docs/checkpoints/2026-08-24-1344-c1-otp-address-correction-go.md`
