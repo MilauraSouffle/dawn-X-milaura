@@ -77,6 +77,38 @@ Le pull cible avant push confirme :
 - `assets/milaura-product-experience.css` est egalement avant le modal et ne presente qu un ecart canonique historique supplementaire, `position: relative` sur le texte du rail de preuves ;
 - aucun changement concurrent plus recent n a ete detecte dans les six fichiers cibles.
 
-## Etat a 18:36 CEST
+## Commit et branche distante
 
-Le code est pret pour un push cible sur le theme de developpement. Le theme live `190430282075` reste intact. Aucun controle visuel automatise n a ete lance ; Patrice validera la preview manuellement avant tout GO live distinct.
+- commit source : `64892c7f` ;
+- branche : `codex/milaura-fix-pdp-cookies-20260827` ;
+- push GitHub : reussi, branche distante alignee.
+
+## Preview de developpement
+
+Le push a ete limite aux six fichiers theme reserves avec `--only`, `--nodelete` et `--strict`.
+
+Theme : `Development (c105a8-mac-1)`, ID `199421952347`.
+
+URL : `https://milaura-2.myshopify.com?preview_theme_id=199421952347`
+
+Le pullback cible apres push est identique aux fichiers du commit, 6 sur 6 :
+
+- `assets/milaura-cookie-consent.css` : `c92cf69dbf4ad8b3b869711b1fab7859f0398243` ;
+- `assets/milaura-cookie-consent.js` : `ccc9efda48f52fa78b3a3de1c7e24f00e04dee25` ;
+- `assets/milaura-product-experience.css` : `a445a57e65712789d231500af03b5121bf53d480` ;
+- `snippets/milaura-cookie-consent.liquid` : `5924a2ac5cf64e23c8b89f8ad2877a0647bd3d33` ;
+- `sections/milaura-product-experience.liquid` : `dc08a2bdefdf3e64d5a699b4cabab36c92447560` ;
+- `sections/milaura-product-hero.liquid` : `71c6f5d7669ec01a69f9f00e30f571648bf7eab2`.
+
+Le HTML de la preview a ete controle par requete sur une PDP :
+
+- classe `milaura-product-variation-note--gallery` presente ;
+- lien `Photos et variations naturelles` present sous la galerie ;
+- modal stable `id="MilauraVariationModal"` present ;
+- groupe `milaura-cookie-consent__controls` present ;
+- lien `Refuser les cookies` present ;
+- nouvel asset JavaScript cookies charge.
+
+## Etat a 18:38 CEST
+
+La preview technique est PASS. Le theme live `190430282075` reste intact. Aucun controle visuel automatise n a ete lance ; Patrice valide manuellement la position du lien, le modal et la hierarchie du bandeau avant tout GO live distinct.
