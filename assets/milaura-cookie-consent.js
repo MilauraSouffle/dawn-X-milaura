@@ -15,6 +15,9 @@
   var privacy = null;
   var previousFocus = null;
   var leaveTimer = null;
+  var decisionCookieName = 'milaura_cookie_choice';
+  var decisionCookieVersion = 'v1';
+  var decisionCookieMaxAge = 15552000;
 
   function loadCustomerPrivacy() {
     return new Promise(function (resolve, reject) {
@@ -59,6 +62,25 @@
     return ['analytics', 'marketing', 'preferences'].every(function (category) {
       return current[category] === 'yes' || current[category] === 'no';
     });
+  }
+
+  function hasDecisionMarker() {
+    var expected = decisionCookieName + '=' + decisionCookieVersion;
+    return document.cookie.split(';').some(function (cookie) {
+      return cookie.trim() === expected;
+    });
+  }
+
+  function rememberDecision() {
+    var secure = window.location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie =
+      decisionCookieName +
+      '=' +
+      decisionCookieVersion +
+      '; Max-Age=' +
+      decisionCookieMaxAge +
+      '; Path=/; SameSite=Lax' +
+      secure;
   }
 
   function showBanner() {
@@ -129,6 +151,7 @@
 
     return writeConsent(values)
       .then(function () {
+        rememberDecision();
         if (source === 'preferences') closePreferences(false);
         hideBanner();
       })
@@ -249,7 +272,9 @@
     .then(function (customerPrivacy) {
       privacy = customerPrivacy;
       document.documentElement.classList.add('milaura-cookie-consent-ready');
-      if (callPrivacy('shouldShowBanner', false) && !hasRecordedConsent()) showBanner();
+      var recordedConsent = hasRecordedConsent();
+      if (recordedConsent) rememberDecision();
+      if (callPrivacy('shouldShowBanner', false) && !recordedConsent && !hasDecisionMarker()) showBanner();
     })
     .catch(function () {
       /* Shopify's native banner remains available if its API cannot load. */
