@@ -1,17 +1,17 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-26 16:42 CEST
+Derniere mise a jour : 2026-08-27 19:01 CEST
 
 ## Etat en une phrase
 
-La session master pilote l ensemble du plan et coordonne les sessions Mail, Rentree, Mon Ecrin, Pinterest, Ruban et catalogue ; la creation produits est arretee proprement a 60 avec 125 references restantes, mais sa reprise appartient a une nouvelle session dediee qui commence par un etat des lieux et un brainstorming avec Patrice ; les lots independants peuvent avancer en parallele, tandis que RC5, Rentree finale, Ruban, Pinterest final et Ads gardent leurs gates catalogue et mesure.
+Le chantier inventaire ferme sa session avec une cohorte exacte de 60 produits, dont 40 ACTIVE et 20 DRAFT, 125 references non traitees et une reprise au lot 06 sans ecriture Shopify ; le workflow visuel V3 a cinq images est definitif, le Bracelet Iris est le benchmark valide et Camilla dispose de la doctrine, du pipeline et des preuves sur le VPS ; toute reprise catalogue reste une nouvelle session dediee et toute mutation Shopify, stock ou publication exige ses GO propres.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant ce handoff du 2026-08-26 est `codex/milaura-integration` a `7a979c876475250670899fae4f53b85bf1bd932a`, propre et aligne `0/0` avec origin.
+- Le canonique verifie avant les ecritures de ce handoff du 2026-08-27 est `codex/milaura-integration` a `196c5c395ab60ff346fd9ffa1718200b169aeab5`, propre et aligne `0/0` avec origin. Le commit final de documentation est consigne dans `docs/checkpoints/2026-08-27-1901-inventory-v3-final-handoff.md`.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
@@ -37,6 +37,23 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Seul le proprietaire d'integration deploie le live, avec fichiers cibles, `--nodelete`, pullback et comparaison.
 - Une validation technique ne vaut jamais validation creative de Patrice.
 - Aucun produit, stock, prix ou statut de publication n'est modifie par un chantier theme sans autorisation explicite.
+
+## Inventaire et workflow produit V3 au 2026-08-27
+
+- Cohorte historique traitee : 60 identites EAN exactes, dont 40 produits `ACTIVE` et 20 produits `DRAFT` au controle Shopify du 2026-08-27 vers 18:45 CEST.
+- Restant non traite : 125 references, dont 110 en file et 15 `BLOCKED_PRICE` sans prix TTC authentique. Aucun prix ne doit etre invente.
+- Reprise exacte : lot 06, positions 51 a 60 de la file principale. Les dix fiches sont preparees localement mais aucune ecriture Shopify n'a eu lieu pour ce lot.
+- Deux brouillons restent explicitement en attente de validation physique par Patrice : boucles Ornel `10670433993051` et bague aigue-marine `10669860192603`.
+- Les chapelets obsidienne `10669418283355` et sodalite `10522152436059` ont chacun une galerie V3 de cinq images et restent `DRAFT` pour controle Patrice.
+- Le Bracelet Iris `10669947781467`, EAN `3667407021495`, a ete repris entierement en V3, valide visuellement par Patrice puis active par lui. Il est le benchmark canonique.
+- Le pendentif coeur sodalite `10357637546331` a recu son enrichissement V3 complet et est `ACTIVE`.
+- Huit brouillons Sodalite ont recu uniquement leur nouvelle galerie V3. Les preuves sont dans `data/batches/2026-08-27-sodalite-visual-v3/` du workspace produit.
+- Le modal PDP `Photos et variations naturelles` est live sur le theme `190430282075`, source `68a4fa72`, avec pullback exact. Aucun redeploiement n'a ete effectue pendant ce handoff.
+- Workflow V3 : cinq images fixes, trois produit seules et deux humaines ; vraie macro en slot 2 ; nature morte contrastee en slot 3 ; scene calme avec macro portee integree en slot 4 ; scene vive distincte en slot 5 ; aucun visuel saisonnier ; generation et controle slot par slot ; fidelite des proportions et anatomie humaine comme gates dures.
+- Camilla : SOUL, skill installe, docs, prompts, schema, scripts, tests, benchmark Iris et preuves Sodalite synchronises sur `hermes-milaura-control`. Tests locaux et conteneur `PIPELINE_LOCAL_TESTS_PASSED`, contrat `V1_3`, cinq images. Seul ce conteneur a ete redemarre et il est `running`.
+- Sauvegarde locale pre-edition : `/Users/paesano/Documents/Agentic-Ops/backups/camilla-product-workflow-20260827T1848CEST/`.
+- Sauvegarde VPS pre-sync : `/docker/backups/camilla-product-workflow-pre-20260827T185650CEST/`.
+- Checkpoint exhaustif et prompt de reprise : `docs/checkpoints/2026-08-27-1901-inventory-v3-final-handoff.md` et `docs/codex-handoff.md`.
 
 ## Role de la session master au 2026-08-26
 
