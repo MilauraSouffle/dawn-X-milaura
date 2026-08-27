@@ -112,3 +112,46 @@ Le HTML de la preview a ete controle par requete sur une PDP :
 ## Etat a 18:38 CEST
 
 La preview technique est PASS. Le theme live `190430282075` reste intact. Aucun controle visuel automatise n a ete lance ; Patrice valide manuellement la position du lien, le modal et la hierarchie du bandeau avant tout GO live distinct.
+
+## GO et deploiement live
+
+Le 2026-08-27, Patrice a valide la preview et autorise le live avec le message :
+
+`magnifique pousse sur le live vas y go`
+
+Le lot `f528ae79` a ete integre par fast-forward dans `codex/milaura-integration`, puis la branche canonique a ete poussee sur GitHub avant le deploiement Shopify.
+
+Le preflight live a confirme que les six fichiers cibles correspondaient exactement a la base `196c5c39`. Aucun changement concurrent n a ete detecte.
+
+Le push vers le theme live `dawn-X-milaura/main`, ID `190430282075`, a ete limite aux six fichiers reserves avec `--only`, `--nodelete`, `--strict` et `--allow-live`.
+
+## Verification live
+
+Le pullback cible apres push est identique au canonique, 6 sur 6, avec les memes empreintes que la preview :
+
+- `assets/milaura-cookie-consent.css` : `c92cf69dbf4ad8b3b869711b1fab7859f0398243` ;
+- `assets/milaura-cookie-consent.js` : `ccc9efda48f52fa78b3a3de1c7e24f00e04dee25` ;
+- `assets/milaura-product-experience.css` : `a445a57e65712789d231500af03b5121bf53d480` ;
+- `snippets/milaura-cookie-consent.liquid` : `5924a2ac5cf64e23c8b89f8ad2877a0647bd3d33` ;
+- `sections/milaura-product-experience.liquid` : `dc08a2bdefdf3e64d5a699b4cabab36c92447560` ;
+- `sections/milaura-product-hero.liquid` : `71c6f5d7669ec01a69f9f00e30f571648bf7eab2`.
+
+Le HTML public a ete controle sur deux produits :
+
+- `https://milaura.fr/products/bracelet-labradorite` ;
+- `https://milaura.fr/products/bague-ouverte-doree-en-aigue-marine-naturelle-taille-54`.
+
+Les deux pages contiennent :
+
+- le lien sous la galerie avec `milaura-product-variation-note--gallery` ;
+- le texte `Photos et variations naturelles` ;
+- le modal stable `id="MilauraVariationModal"` ;
+- le groupe cookies `milaura-cookie-consent__controls` ;
+- le lien `Refuser les cookies` ;
+- le nouvel asset JavaScript cookies.
+
+Les templates `templates/product.json` et `templates/product.milaura-produit.json` contiennent tous les deux `milaura-product-hero` et `milaura-product-experience`. Le lien et le modal sont donc rendus sur les produits assignes a l un ou l autre de ces deux templates.
+
+## Etat final a 18:46 CEST
+
+Lot ferme, integre, pousse Git et live. Worktree retire et branche locale ephemere supprimee. La branche distante de preuve est conservee. Aucun controle visuel automatise n a ete lance ; Patrice controle maintenant le rendu public et signalera tout ecart visuel.
