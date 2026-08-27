@@ -64,6 +64,22 @@ L integration visuelle utilise uniquement les tokens MilAura : Nacre, Encre prun
 - 16 avertissements historiques dans 8 fichiers non modifies ;
 - aucun controle navigateur automatise, Patrice effectuera le controle visuel sur le live.
 
-## Etat du deploiement
+## Deploiement live
 
-Le commit, le push Git, le push cible sur le theme live et le pullback bit a bit sont consignes dans la fermeture de ce checkpoint apres execution.
+- commit source : `68a4fa72` ;
+- branche : `codex/milaura-integration` ;
+- push GitHub : reussi ;
+- theme live : `dawn-X-milaura/main`, ID `190430282075` ;
+- push Shopify limite aux deux fichiers du theme avec `--only`, `--nodelete`, `--strict` et `--allow-live` ;
+- aucun autre fichier du theme supprime ou envoye.
+
+Pullback cible : `/private/tmp/milaura-modal-live-pullback.segiUV/`.
+
+Les fichiers live et canoniques sont identiques bit a bit :
+
+- `sections/milaura-product-experience.liquid` : `4e7b79d49248a25ee539998fc25255a089d9b85567797e5ab366153841f0189a` ;
+- `assets/milaura-product-experience.css` : `5bbeaeec9744109521e423d54f580cdfefffef1b7df4d97abe7c7254f964818f`.
+
+## Etat final
+
+Lot ferme le 2026-08-27 a 18:07 CEST. Les deux produits sont en brouillon avec cinq images chacun. Le modal global est deploye sur le theme live. Le controle visuel public reste a effectuer par Patrice.
