@@ -11,7 +11,7 @@ Le chantier inventaire ferme sa session avec une cohorte exacte de 60 produits, 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant les ecritures de ce handoff du 2026-08-27 est `codex/milaura-integration` a `196c5c395ab60ff346fd9ffa1718200b169aeab5`, propre et aligne `0/0` avec origin. Le commit final de documentation est consigne dans `docs/checkpoints/2026-08-27-1901-inventory-v3-final-handoff.md`.
+- Le canonique verifie avant les ecritures de ce handoff du 2026-08-27 est `codex/milaura-integration` a `5094436a`, propre et aligne `0/0` avec origin. Le handoff inventaire principal a ete pousse dans `885269c0` ; son checkpoint est `docs/checkpoints/2026-08-27-1901-inventory-v3-final-handoff.md`.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.

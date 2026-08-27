@@ -14,6 +14,7 @@ La session inventaire est fermee proprement. Aucun traitement catalogue ne doit 
 - Benchmark valide et active par Patrice : Bracelet Iris Shopify `10669947781467`, EAN `3667407021495`.
 - Camilla : doctrine, skill, pipeline V1.3, tests et preuves V3 synchronises sur le VPS puis conteneur redemarre.
 - Pendant ce handoff : aucune mutation de produit, prix, stock, statut, collection ou theme Shopify.
+- Git : base propre `5094436a`, commit principal du handoff `885269c0` pousse sur `origin/codex/milaura-integration`.
 
 ## Pourquoi Patrice voyait initialement 52 produits ajoutes
 

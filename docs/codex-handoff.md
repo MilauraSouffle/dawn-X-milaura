@@ -70,7 +70,8 @@ Un produit deja actif ou une galerie historique a six images n'est jamais repris
 
 - Depot : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche : `codex/milaura-integration`.
-- Base propre avant ce handoff : `196c5c395ab60ff346fd9ffa1718200b169aeab5`.
+- Base propre avant ce handoff : `5094436a`.
+- Commit principal du handoff inventaire pousse : `885269c0`.
 - `origin/main` reste un miroir Shopify incomplet, jamais a fusionner aveuglement.
 - Theme live : `190430282075`.
 - Theme developpement : `199421952347`.
