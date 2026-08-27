@@ -214,16 +214,17 @@ Verification :
 - SOUL et skill installes relus avec regles 70/30, cinq images et benchmark Iris
 - `hermes-milaura-control` redemarre seul, etat final `running`, `restarting=false`
 
-## Theme et modal global
+## Information globale sur les variations naturelles
 
-Le lien `Photos et variations naturelles` et son modal sont live sur toutes les PDP du template concerne :
+Le premier modal `Photos et variations naturelles`, source `68a4fa72`, a ete deployee puis refuse visuellement par Patrice. Un lot concurrent l'a remplace le 2026-08-27 par une note statique compacte sous la galerie : `Photos non contractuelles`, sans lien, CTA ni interaction.
 
 - theme live : `190430282075`
-- commit source : `68a4fa72`
-- pullback : 2 fichiers sur 2 identiques
-- checkpoint : `docs/checkpoints/2026-08-27-1805-chapelets-v3-modal-produit.md`
+- integration du hotfix : `40de03d9`
+- pullback : 3 fichiers sur 3 identiques
+- controle HTML public : deux PDP conformes
+- checkpoint courant : `docs/checkpoints/2026-08-27-1858-pdp-variation-strip-hotfix-preview.md`
 
-Aucun redeploiement theme n'a ete effectue pendant ce handoff.
+Le hotfix theme a ete integre apres le commit principal de ce handoff inventaire. Il n'a modifie aucun produit, prix, stock, statut ou contenu de galerie.
 
 ## Gates de la prochaine session
 

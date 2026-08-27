@@ -14,7 +14,7 @@ Le master MilAura conserve seul la gouvernance Git, l'integration theme et le li
 2. `docs/project-state.md`
 3. `docs/workstreams.md`
 4. `docs/checkpoints/2026-08-27-1901-inventory-v3-final-handoff.md`
-5. `docs/checkpoints/2026-08-27-1805-chapelets-v3-modal-produit.md`
+5. `docs/checkpoints/2026-08-27-1858-pdp-variation-strip-hotfix-preview.md`
 6. `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/AGENTS.md`
 7. le `README.md`, le contrat produit, le runbook, le workflow V3 et les prompts du meme workspace
 8. les ledgers pilote 10 et file 175 indiques dans le checkpoint final
@@ -75,7 +75,7 @@ Un produit deja actif ou une galerie historique a six images n'est jamais repris
 - `origin/main` reste un miroir Shopify incomplet, jamais a fusionner aveuglement.
 - Theme live : `190430282075`.
 - Theme developpement : `199421952347`.
-- Modal `Photos et variations naturelles` deja live, source `68a4fa72`.
+- Le modal `Photos et variations naturelles` est historique et n'est plus live. Il a ete remplace par une note statique compacte `Photos non contractuelles`, sans lien ni interaction, via le hotfix integre dans `40de03d9`.
 - Aucun produit, stock, statut, collection ou theme Shopify n'a ete modifie pendant la cloture.
 - `/Users/paesano/Documents/Agentic-Ops` est tres dirty avec des chantiers concurrents. Ne rien nettoyer, restaurer, indexer ni committer globalement.
 
