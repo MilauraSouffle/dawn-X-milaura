@@ -451,7 +451,7 @@ milaura-recommendations {
 
 }
 
-/* Ruban de parure V2 : rail PDP tactile, statique et contextualise. */
+/* Ruban V3 adaptatif : une photographie produit visible, trois candidats en reserve. */
 @keyframes milaura-parure-enter {
   from {
     opacity: 0;
@@ -584,6 +584,23 @@ html.milaura-recommendations-in-view #MilauraStickyBarSection.milaura-sticky-bar
   touch-action: pan-x pan-y;
 }
 
+.milaura-recommendations--pdp:not([data-layout]) .milaura-recommendation-card:not(:first-child) {
+  display: none;
+}
+
+.milaura-recommendations--pdp:not([data-layout]) .milaura-recommendations__products {
+  display: block;
+}
+
+.milaura-recommendations--pdp:not([data-layout]) .milaura-recommendation-card:first-child {
+  width: min(100%, 400px);
+  margin-inline: auto;
+}
+
+.milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products[data-card-count='1'] {
+  justify-content: center;
+}
+
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendations__products::-webkit-scrollbar {
   display: none;
 }
@@ -616,8 +633,9 @@ html.milaura-recommendations-in-view #MilauraStickyBarSection.milaura-sticky-bar
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'][data-ribbon-revealed='true'] .milaura-recommendation-card {
-  animation: milaura-parure-enter 720ms cubic-bezier(0.22, 0.8, 0.22, 1) both;
-  animation-delay: calc(var(--milaura-reco-order) * 90ms);
+  animation: none;
+  opacity: 1;
+  transform: none;
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] {
@@ -656,7 +674,7 @@ html.milaura-recommendations-in-view #MilauraStickyBarSection.milaura-sticky-bar
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .grid__card-image {
-  transition: transform var(--milaura-transition-rapide), opacity var(--milaura-transition-rapide);
+  transition: opacity var(--milaura-transition-rapide);
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card__object-image {
@@ -671,7 +689,13 @@ html.milaura-recommendations-in-view #MilauraStickyBarSection.milaura-sticky-bar
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] .grid__card-image {
-  transform: scale(1.015);
+  transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card:hover .grid__card-image--primary {
+    transform: none;
+  }
 }
 
 .milaura-recommendations--pdp[data-layout='ribbon'] .milaura-recommendation-card[data-active='true'] .milaura-recommendation-card__object-image {

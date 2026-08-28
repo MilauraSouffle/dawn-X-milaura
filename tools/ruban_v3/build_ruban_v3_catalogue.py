@@ -273,6 +273,27 @@ def normalize_product(
   raw_with_inventory = {**raw, "inventory_stones": inventory_stones}
   normalized_type = normalize_type(raw_with_inventory)
   stones = normalize_stones(raw_with_inventory, config)
+  primary_stone = normalize_primary_stone(raw_with_inventory, stones, config)
+  primary_intention = first_tag_value(list(raw.get("tags", [])), "intention")
+  type_collections = {
+    "bague": "bagues-pierres",
+    "boucles-oreilles": "boucles-oreilles",
+    "bracelet": "bracelets-pierres",
+    "chaine": "chaines",
+    "collier": "colliers-pierres",
+    "pendentif": "pendentifs",
+  }
+  collection_handles = {
+    str(collection.get("handle"))
+    for collection in raw.get("collections", [])
+    if isinstance(collection, Mapping) and collection.get("handle")
+  }
+  if primary_stone:
+    collection_handles.add(f"par-pierre-{primary_stone}")
+  if normalized_type in type_collections:
+    collection_handles.add(type_collections[normalized_type])
+  if primary_intention:
+    collection_handles.add(primary_intention)
   eans = [str(row["ean"]) for row in inventory_rows if row.get("ean")]
   if not eans:
     eans = [
@@ -297,11 +318,12 @@ def normalize_product(
     "price_eur": price,
     "normalized_type": normalized_type,
     "family": FAMILIES.get(normalized_type, "autre"),
-    "primary_stone": normalize_primary_stone(raw_with_inventory, stones, config),
+    "primary_stone": primary_stone,
     "stones": stones,
     "finish": normalize_finish(raw),
-    "primary_intention": first_tag_value(tags, "intention"),
+    "primary_intention": primary_intention,
     "uses": sorted({value for key in ("usage", "use") if (value := first_tag_value(tags, key))}),
+    "collection_handles": sorted(collection_handles),
     "canonical_status": _canonical_status(inventory),
     "physical_stock_units": max(0, int((inventory or {}).get("physical_stock_units", 0))),
     "supplier_current": bool((inventory or {}).get("supplier_backed", False)),

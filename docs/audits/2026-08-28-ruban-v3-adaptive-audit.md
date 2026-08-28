@@ -2,7 +2,30 @@
 
 Date de l audit : 2026-08-28
 
-Statut : audit et Lot 1 completes. Lot 2 produit dans Higgsfield et techniquement valide. GO visuel Patrice en attente. Aucune mutation Shopify et aucun deploiement.
+Statut : audit, moteur V3.2 et runtime galerie implémentés sur la branche Ruban. Lot 2 Higgsfield reste un brouillon hors du chemin critique. Aucune mutation Shopify et aucun déploiement.
+
+## Addendum V3.2 du 2026-08-28
+
+La décision Patrice postérieure au premier audit remplace la gate vidéo et le masquage décrits plus bas : le Ruban ne doit jamais être vide. La version stable utilise uniquement les photographies des galeries Shopify et reporte toute nouvelle présentation vidéo.
+
+Résultat recalculé sur le même catalogue de 318 produits :
+
+| Statut | Sources |
+| --- | ---: |
+| Match adaptatif fort | 108 |
+| Match adaptatif | 15 |
+| Repli pierre ou intention proche | 62 |
+| Repli même famille | 110 |
+| Repli même collection | 0 |
+| Repli catalogue | 3 |
+| Aucun candidat | 0 |
+| Sources historiquement exclues mais dotées de replis sûrs | 20 |
+
+Les 318 sources possèdent exactement trois candidats. Les 318 payloads publics sont affichables avec une image de galerie. Hash V3.2 : `8fbcace0721d1dad893782b67eff467481b2dc7011792e67e746b0c14bae75f3`.
+
+Le runtime prend ses données dans Shopify au chargement : recommandations complémentaires et liées, collections courantes, catalogue public et panier. Il affiche un produit, garde trois candidats, puis promeut le suivant si le premier entre au panier. Aucun nouveau metafield et aucune liste manuelle de 318 associations ne sont nécessaires pour cette version.
+
+Les sections historiques qui prescrivent une vidéo approuvée ou un masquage en absence de match sont conservées comme trace du Lot 1, mais ne décrivent plus la décision active.
 
 ## Verdict
 

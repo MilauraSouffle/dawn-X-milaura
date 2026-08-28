@@ -13,6 +13,11 @@
   assign recommendation_limit = section.settings.products_to_show | default: 3
   assign current_product_id = blank
   assign current_product_handle = blank
+  assign current_product_stone = blank
+  assign current_product_type = blank
+  assign current_product_intention = blank
+  assign current_product_family = blank
+  assign current_product_finish = 'inconnu'
   assign recommendation_requires_filter = false
 
   if product != blank
@@ -20,6 +25,32 @@
     assign excluded_product_ids = product.id
     assign current_product_id = product.id
     assign current_product_handle = product.handle
+    assign current_product_stone = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
+    assign current_product_type = product.metafields.milaura.product_type_handle.value | default: product.type | downcase | handleize
+    assign current_product_intention = product.metafields.milaura.primary_intention.value | default: product.metafields.milaura.intention_handle.value
+    assign current_product_family = product.metafields.milaura.catalogue_family.value | default: product.metafields.milaura.catalogue_family
+    if current_product_family == blank
+      case current_product_type
+        when 'bague', 'boucles-oreilles', 'bracelet', 'chaine', 'chapelet', 'collier', 'pendentif'
+          assign current_product_family = 'bijou'
+        when 'bougie'
+          assign current_product_family = 'bougie'
+        else
+          assign current_product_family = product.type | downcase | handleize
+      endcase
+    endif
+    assign current_finish_source = product.title | append: ' ' | append: product.metafields.milaura.materials | downcase
+    if current_finish_source contains 'doré' or current_finish_source contains 'dore'
+      assign current_product_finish = 'dore'
+    elsif current_finish_source contains 'argenté' or current_finish_source contains 'argente' or current_finish_source contains 'argent 925' or current_finish_source contains 'acier inoxydable'
+      assign current_product_finish = 'argente'
+    elsif current_finish_source contains 'bronze'
+      assign current_product_finish = 'bronze'
+    elsif current_finish_source contains 'cuivre'
+      assign current_product_finish = 'cuivre'
+    elsif current_finish_source contains 'métal noir' or current_finish_source contains 'metal noir' or current_finish_source contains 'chaine noire'
+      assign current_product_finish = 'noir'
+    endif
   elsif cart != blank and cart.item_count > 0
     for cart_item in cart.items
       unless source_product_ids == blank
@@ -35,9 +66,7 @@
     when 'pdp'
       assign recommendation_intents = 'complementary'
       assign recommendation_minimum = 1
-      if recommendation_limit > 5
-        assign recommendation_limit = 5
-      endif
+      assign recommendation_limit = 3
     when 'cart-page'
       assign recommendation_intents = 'complementary'
       assign recommendation_minimum = 1
@@ -55,7 +84,105 @@
 -%}
 
 {%- capture recommendation_cards -%}
-  {%- if recommendation_context == 'editorial' -%}
+  {%- if recommendation_context == 'pdp' and product != blank -%}
+    {%- assign rendered_count = 0 -%}
+    {%- assign rendered_product_ids = '|' -%}
+    {%- assign stone_collection_handle = 'par-pierre-' | append: current_product_stone -%}
+    {%- assign stone_collection = collections[stone_collection_handle] -%}
+
+    {%- if current_product_stone != blank and stone_collection != blank -%}
+      {%- for fallback_product in stone_collection.products limit: 24 -%}
+        {%- if rendered_count >= 18 -%}{%- break -%}{%- endif -%}
+        {%- unless fallback_product.available -%}{%- continue -%}{%- endunless -%}
+        {%- if fallback_product.featured_image == blank or fallback_product.id == product.id -%}{%- continue -%}{%- endif -%}
+        {%- assign fallback_in_cart = false -%}
+        {%- for cart_item in cart.items -%}
+          {%- if cart_item.product_id == fallback_product.id -%}
+            {%- assign fallback_in_cart = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if fallback_in_cart -%}{%- continue -%}{%- endif -%}
+        {%- assign product_marker = '|' | append: fallback_product.id | append: '|' -%}
+        {%- if rendered_product_ids contains product_marker -%}{%- continue -%}{%- endif -%}
+        {%- assign rendered_product_ids = rendered_product_ids | append: fallback_product.id | append: '|' -%}
+        {%- assign rendered_count = rendered_count | plus: 1 -%}
+        {% render 'milaura-recommendation-card',
+          recommendation_product: fallback_product,
+          source_product: product,
+          recommendation_intent: 'collection',
+          recommendation_origin: 'same-stone-collection',
+          recommendation_fallback_tier: 'same-collection',
+          recommendation_role: 'secondary',
+          img_loading: 'lazy',
+          show_purchase: section.settings.show_purchase
+        %}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- for fallback_collection in product.collections -%}
+      {%- if rendered_count >= 18 -%}{%- break -%}{%- endif -%}
+      {%- if fallback_collection.handle == stone_collection_handle -%}{%- continue -%}{%- endif -%}
+      {%- for fallback_product in fallback_collection.products limit: 24 -%}
+        {%- if rendered_count >= 18 -%}{%- break -%}{%- endif -%}
+        {%- unless fallback_product.available -%}{%- continue -%}{%- endunless -%}
+        {%- if fallback_product.featured_image == blank or fallback_product.id == product.id -%}{%- continue -%}{%- endif -%}
+        {%- assign fallback_in_cart = false -%}
+        {%- for cart_item in cart.items -%}
+          {%- if cart_item.product_id == fallback_product.id -%}
+            {%- assign fallback_in_cart = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if fallback_in_cart -%}{%- continue -%}{%- endif -%}
+        {%- assign product_marker = '|' | append: fallback_product.id | append: '|' -%}
+        {%- if rendered_product_ids contains product_marker -%}{%- continue -%}{%- endif -%}
+        {%- assign rendered_product_ids = rendered_product_ids | append: fallback_product.id | append: '|' -%}
+        {%- assign rendered_count = rendered_count | plus: 1 -%}
+        {% render 'milaura-recommendation-card',
+          recommendation_product: fallback_product,
+          source_product: product,
+          recommendation_intent: 'collection',
+          recommendation_origin: 'same-collection',
+          recommendation_fallback_tier: 'same-collection',
+          recommendation_role: 'secondary',
+          img_loading: 'lazy',
+          show_purchase: section.settings.show_purchase
+        %}
+      {%- endfor -%}
+    {%- endfor -%}
+
+    {%- if rendered_count < 18 -%}
+      {%- assign catalogue_collection = collections.all -%}
+      {%- for fallback_product in catalogue_collection.products limit: 48 -%}
+        {%- if rendered_count >= 18 -%}{%- break -%}{%- endif -%}
+        {%- unless fallback_product.available -%}{%- continue -%}{%- endunless -%}
+        {%- if fallback_product.featured_image == blank or fallback_product.id == product.id -%}{%- continue -%}{%- endif -%}
+        {%- assign fallback_in_cart = false -%}
+        {%- for cart_item in cart.items -%}
+          {%- if cart_item.product_id == fallback_product.id -%}
+            {%- assign fallback_in_cart = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if fallback_in_cart -%}{%- continue -%}{%- endif -%}
+        {%- assign product_marker = '|' | append: fallback_product.id | append: '|' -%}
+        {%- if rendered_product_ids contains product_marker -%}{%- continue -%}{%- endif -%}
+        {%- assign rendered_product_ids = rendered_product_ids | append: fallback_product.id | append: '|' -%}
+        {%- assign rendered_count = rendered_count | plus: 1 -%}
+        {% render 'milaura-recommendation-card',
+          recommendation_product: fallback_product,
+          source_product: product,
+          recommendation_intent: 'catalogue',
+          recommendation_origin: 'catalogue',
+          recommendation_fallback_tier: 'catalogue',
+          recommendation_role: 'secondary',
+          img_loading: 'lazy',
+          show_purchase: section.settings.show_purchase
+        %}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- elsif recommendation_context == 'editorial' -%}
     {%- assign rendered_count = 0 -%}
     {%- if section.settings.curated_products != blank -%}
       {%- for curated_product in section.settings.curated_products -%}
@@ -111,6 +238,11 @@
   related_subtitle: section.settings.related_subtitle,
   current_product_id: current_product_id,
   current_product_handle: current_product_handle,
+  current_product_stone: current_product_stone,
+  current_product_type: current_product_type,
+  current_product_intention: current_product_intention,
+  current_product_family: current_product_family,
+  current_product_finish: current_product_finish,
   recommendation_requires_filter: recommendation_requires_filter
 %}
 
