@@ -570,7 +570,7 @@
       }
 
       const candidateCards = cards.slice(0, this.limit);
-      const visibleCards = this.context === 'pdp' ? candidateCards.slice(0, 1) : candidateCards;
+      const visibleCards = candidateCards;
       if (this.context === 'pdp') this.pdpCandidates = candidateCards;
       this.list.replaceChildren();
       visibleCards.forEach((card, index) => {
@@ -592,10 +592,7 @@
       this.configureRibbonComposition();
       this.updateCopy(intent);
       this.setState('ready');
-      this.announce(this.context === 'pdp'
-        ? `1 produit proposé, ${candidateCards.length} ${candidateCards.length > 1 ? 'sélections disponibles' : 'sélection disponible'}.`
-        : `${renderedCount} ${renderedCount > 1 ? 'produits proposés' : 'produit proposé'}.`
-      );
+      this.announce(`${renderedCount} ${renderedCount > 1 ? 'produits proposés' : 'produit proposé'}.`);
       this.observeImpression();
       document.dispatchEvent(new CustomEvent('milaura:recommendations:loaded', { detail: { root: this } }));
     }
