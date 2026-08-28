@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://milaura.fr/schemas/ruban-v3-adaptive-contract.schema.json",
+  "title": "Contrat Ruban V3 adaptatif",
+  "description": "Entree normalisee du moteur de recommandations Ruban V3. Les donnees privees de cout et de stock ne sont jamais exposees au storefront.",
+  "type": "object",
+  "required": [
+    "contract",
+    "score_version",
+    "generated_at",
+    "products"
+  ],
+  "properties": {
+    "contract": {
+      "const": "milaura.ruban-v3.catalogue"
+    },
+    "score_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/product"
+      }
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "uniqueItems": true
+      },
+      "default": {}
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "product": {
+      "type": "object",
+      "required": [
+        "shopify_product_id",
+        "title",
+        "handle",
+        "public",
+        "available",
+        "price_eur",
+        "normalized_type",
+        "family",
+        "primary_stone",
+        "stones",
+        "finish",
+        "physical_stock_units",
+        "supplier_current",
+        "paused",
+        "photo_fidelity_status",
+        "video_status",
+        "last_verified_at"
+      ],
+      "properties": {
+        "shopify_product_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "ean": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-9]{8,14}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "handle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "public": {
+          "type": "boolean"
+        },
+        "available": {
+          "type": "boolean"
+        },
+        "price_eur": {
+          "type": "number",
+          "minimum": 0
+        },
+        "normalized_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stones": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "primary_stone": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "finish": {
+          "type": "string",
+          "enum": [
+            "dore",
+            "argente",
+            "bronze",
+            "cuivre",
+            "noir",
+            "inconnu"
+          ]
+        },
+        "primary_intention": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "uses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "default": []
+        },
+        "canonical_status": {
+          "type": "string",
+          "enum": [
+            "physical-stock",
+            "supplier-backed",
+            "paused",
+            "unreconciled"
+          ],
+          "default": "unreconciled"
+        },
+        "physical_stock_units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "supplier_current": {
+          "type": "boolean"
+        },
+        "paused": {
+          "type": "boolean"
+        },
+        "contribution_ht": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "contribution_rate": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "photo_fidelity_status": {
+          "type": "string",
+          "enum": [
+            "patrice-approved",
+            "pipeline-validated",
+            "unverified",
+            "rejected"
+          ]
+        },
+        "video_status": {
+          "type": "string",
+          "enum": [
+            "missing",
+            "draft",
+            "approved",
+            "rejected"
+          ]
+        },
+        "video_reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "image_count": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "new_catalogue_entry": {
+          "type": "boolean",
+          "default": false
+        },
+        "excluded": {
+          "type": "boolean",
+          "default": false
+        },
+        "exclusion_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "default": []
+        },
+        "last_verified_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

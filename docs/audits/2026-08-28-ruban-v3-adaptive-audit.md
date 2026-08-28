@@ -2,7 +2,7 @@
 
 Date de l audit : 2026-08-28
 
-Statut : diagnostic et matrice recalculés, aucune mutation Shopify, aucun code V3, aucune production Higgsfield, aucun déploiement.
+Statut : audit complété par le Lot 1 local. Contrat, moteur adaptatif et tests écrits. Aucune mutation Shopify, aucune production Higgsfield et aucun déploiement.
 
 ## Verdict
 
@@ -186,7 +186,7 @@ Déclencheurs recommandés :
 - recalcul après changement de stock ou de statut fournisseur ;
 - recalcul après validation ou retrait d une vidéo.
 
-Le job peut vivre dans l automatisation MilAura et doit rester idempotent. Il lit le catalogue et l inventaire, calcule les candidats, puis écrit seulement les top 3 réellement utiles.
+Le noyau pur et versionné vit dans `tools/ruban_v3/`. Un adaptateur d automatisation pourra l appeler après le Lot 2. Il lit le catalogue et l inventaire, calcule les candidats, puis prépare seulement les top 3 réellement utiles.
 
 ### 3. Metafields V3 proposés
 
@@ -218,20 +218,20 @@ Le runtime ne doit jamais utiliser `intent=related` comme secours visible automa
 
 ### 5. Pool vidéo ambassadeur
 
-Le top 3 actuel mobilise 47 produits ambassadeurs distincts. Il ne faut pas lancer 47 vidéos d un coup.
+Le top 3 du moteur Lot 1 mobilise toujours 47 produits ambassadeurs distincts. Il ne faut pas lancer 47 vidéos d un coup.
 
-La production doit commencer par un pilote de huit ambassadeurs à forte couverture, après validation de leurs photos exactes :
+Le set de huit ambassadeurs qui maximise la couverture incrémentale au 2026-08-28 est le suivant, avant gate de fidélité photo :
 
-1. `Bracelet Murmure doré en améthyste 4 mm` ;
-2. `Collier boho doré en améthyste - 38 à 43 cm` ;
-3. `Bracelet en améthyste rubanée 6 mm` ;
-4. `Collier quartz rose doré bohème` ;
+1. `Bracelet doré en améthyste - 16 à 21 cm` ;
+2. `Collier quartz rose doré bohème` ;
+3. `Collier boho doré en améthyste - 38 à 43 cm` ;
+4. `Bracelet Aska noir en oeil de tigre et onyx 6 mm` ;
 5. `Boucles d'oreilles dorées en sodalite - 36 mm` ;
-6. `Bracelet Calysta doré en quartz rose et cristal de roche` ;
-7. `Bracelet Cléa doré en sodalite 8 mm` ;
-8. `Bracelet Aska noir en œil de tigre et onyx 6 mm`.
+6. `Bracelet Mira doré en cristal de roche 4 mm` ;
+7. `Collier obsidienne noire boho doré` ;
+8. `Bracelet en lapis-lazuli 4 mm - 16 à 18 cm`.
 
-Ce classement mesure la couverture des positions top 3. Il ne vaut pas GO visuel. Le quatrième produit possède une photo validée par le pipeline mais sans GO Patrice. Les autres sources visuelles doivent encore être validées.
+Ce set couvre 75 des 123 sources associables si les huit vidéos franchissent toutes les gates. Il ne vaut pas GO visuel. Chaque source photo doit être contrôlée avant envoi à Higgsfield.
 
 Une vidéo est rejetée si Higgsfield modifie la pierre, la taille ou le nombre de perles, la couleur du métal, la forme, le fermoir, les proportions ou un détail distinctif du produit.
 
@@ -263,9 +263,28 @@ KPI prioritaires :
 
 Le poids de la performance dans le score doit rester borné. Une bonne conversion ne doit jamais autoriser une association visuellement fausse ou un produit non vendable.
 
-## Plan de finition
+## Lot 1 exécuté le 2026-08-28
 
-### Lot 1. Contrat et moteur de scoring
+Le moteur `ruban-v3.1.0-2026-08-28` a été rejoué sur les 318 produits :
+
+- 67 cibles commercialement éligibles, identiques à l audit ;
+- zéro type non résolu après normalisation ;
+- 108 matchs forts ;
+- 15 matchs adaptatifs ;
+- 175 sources sans match honnête ;
+- 20 sources exclues ;
+- 47 ambassadeurs vidéo distincts dans les top 3 ;
+- zéro Ruban prêt à afficher avant approbation des vidéos.
+
+Les 113 sources associées dans la matrice initiale conservent un match. Dix sources supplémentaires deviennent associables après normalisation stricte : deux objets minéraux, quatre porte-clés et quatre bougies.
+
+Les 14 tests locaux et la baseline datée passent. Le hash de contenu est `b11db7446b9188976f02fca93208c237629f41fdfc9812a91448b7cd0476e143`.
+
+Documentation canonique : `docs/reference/2026-08-28-ruban-v3-adaptive-engine.md`.
+
+## Plan de finition révisé
+
+### Lot 1. Contrat et moteur de scoring, terminé
 
 - corriger les cinq types non normalisés utiles au moteur ;
 - définir les metafields V3 ;
@@ -273,48 +292,39 @@ Le poids de la performance dans le score doit rester borné. Une bonne conversio
 - générer le top 3 et les raisons ;
 - ajouter des tests de non-régression sur les règles et exclusions.
 
-Sortie : matrice reproductible sur chaque état du catalogue.
+Sortie obtenue : matrice reproductible sur chaque état du catalogue.
 
-### Lot 2. Pilote Higgsfield
+### Lot 2. Pilote Higgsfield, autorisé
 
 - valider les photos exactes des huit ambassadeurs pilotes ;
 - produire les vidéos dans Higgsfield uniquement ;
 - appliquer la gate de fidélité ;
-- charger uniquement les vidéos approuvées sur une cible de preview.
+- conserver localement uniquement les vidéos approuvées avant toute création de metafield ou tout chargement Shopify.
 
 Sortie : pool vidéo initial, aucun asset douteux.
 
-### Lot 3. Ruban thème V3
+### Lot 3. Preview sur thème de développement, retiré
 
-- une carte visible ;
-- média vidéo dédié en premier ;
-- autoplay mobile dans le viewport ;
-- poster en réduction de mouvement et économie de données ;
-- top 3 avec fallback runtime ;
-- masquage propre sans candidat ;
-- raison commerciale source-candidat ;
-- ajout direct sans perdre le contexte PDP.
+Patrice a retiré cette phase le 2026-08-28. Aucun thème de développement ne sera réservé ni utilisé. Les exigences fonctionnelles sont transférées au Lot 4 et restent obligatoires.
 
-Sortie : preview privée isolée, mobile 360, 390, 430 et desktop 1440.
+### Lot 4. Thème V3, analytics et passage direct au live
 
-### Lot 4. Analytics et décision live
-
+- implémenter une seule carte visible, la vidéo dédiée, l autoplay mobile dans le viewport, le poster de repli, le top 3 runtime, le masquage propre et l ajout direct ;
 - connecter le consommateur des événements ;
 - prouver impression, clic, ajout et achat attaché ;
-- mesurer une période de preview ou de trafic contrôlé ;
-- obtenir successivement GO technique, GO visuel Patrice, GO données Shopify, GO intégration et GO live ;
+- effectuer la QA locale et statique sans thème de développement ;
+- obtenir successivement GO technique, GO visuel Patrice, GO données Shopify, GO intégration et dernier GO live ;
 - pousser uniquement les fichiers et définitions approuvés ;
 - pullback et QA publique.
 
 ## Gates non accordées
 
-Cet audit ne donne aucun GO pour :
+Le GO Lot 1 et le GO Lot 2 sont accordés. Aucun GO n est encore accordé pour :
 
 - créer ou modifier des metafields Shopify ;
 - écrire des associations dans Shopify ;
-- produire des vidéos Higgsfield ;
 - modifier le thème ;
-- réserver un thème de preview ;
+- utiliser un thème de preview, phase explicitement retirée ;
 - intégrer la branche ;
 - déployer sur le live.
 
