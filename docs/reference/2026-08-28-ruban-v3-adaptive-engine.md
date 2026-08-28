@@ -4,7 +4,7 @@ Date : 2026-08-28
 
 Version de score : `ruban-v3.1.0-2026-08-28`
 
-Statut : Lot 1 implémenté et validé localement. Aucune mutation Shopify, aucun metafield créé, aucun média chargé et aucun déploiement effectué.
+Statut : Lot 1 implémenté et validé. Lot 2 produit dans Higgsfield et techniquement validé. GO visuel Patrice en attente. Aucune mutation Shopify, aucun metafield créé, aucun média chargé dans Shopify et aucun déploiement effectué.
 
 ## Décision
 
@@ -133,10 +133,20 @@ Les 113 sources déjà associées dans la matrice d audit conservent un match. D
 
 Hash de contenu de la baseline : `b11db7446b9188976f02fca93208c237629f41fdfc9812a91448b7cd0476e143`.
 
+## Lot 2 Higgsfield du 2026-08-28
+
+Huit videos ambassadrices ont ete produites avec Seedance 2.5 dans Higgsfield. Grok n a pas ete utilise.
+
+Toutes les sorties sont H.264, 960 x 960, 24 fps, 4,041667 secondes et sans audio. Le cout total est de 208 credits. Le solde Higgsfield est passe de 1 039 a 831 credits.
+
+Le controle technique Codex est `PASS` sur les huit videos. Le statut creatif reste `PENDING_PATRICE`, donc aucune video n est encore approuvee pour le runtime et le nombre de Rubans prets a afficher reste a zero.
+
+Le manifeste source de verite du Lot 2 est `config/ruban-v3-video-manifest-2026-08-28.json`. Il contient les references produit, sources exactes, jobs Higgsfield, URLs, parametres, empreintes SHA-256 et gates d approbation.
+
 ## Parcours de finition approuvé
 
-1. Lot 1 : terminé localement, à intégrer après vérification Git ;
-2. Lot 2 : autorisé par Patrice, Higgsfield uniquement, fidélité produit bloquante ;
+1. Lot 1 : terminé, validé et poussé ;
+2. Lot 2 : huit videos produites dans Higgsfield, controle technique passe, GO visuel Patrice en attente ;
 3. Lot 3 de preview sur thème de développement : retiré par décision de Patrice ;
 4. Lot 4 : regroupe l adaptation du thème, les metafields, l analytics et le passage direct au live, avec push ciblé, pullback et rollback prêt.
 

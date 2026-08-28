@@ -2,7 +2,7 @@
 
 Date de l audit : 2026-08-28
 
-Statut : audit complété par le Lot 1 local. Contrat, moteur adaptatif et tests écrits. Aucune mutation Shopify, aucune production Higgsfield et aucun déploiement.
+Statut : audit et Lot 1 completes. Lot 2 produit dans Higgsfield et techniquement valide. GO visuel Patrice en attente. Aucune mutation Shopify et aucun deploiement.
 
 ## Verdict
 
@@ -116,9 +116,9 @@ Résultat sur les 318 sources publiques :
 
 | Statut | Produits sources |
 | --- | ---: |
-| Match adaptatif fort | 102 |
-| Match adaptatif | 11 |
-| Aucun match honnête | 185 |
+| Match adaptatif fort | 108 |
+| Match adaptatif | 15 |
+| Aucun match honnête | 175 |
 | Source exclue | 20 |
 
 Les 113 produits avec match couvrent principalement les bijoux pour lesquels une pierre et une compatibilité de type sont identifiables. Les 185 produits sans match honnête ne doivent pas recevoir un substitut artificiel. Ruban doit se masquer tant que le catalogue ne fournit pas un complément défendable.
@@ -231,9 +231,23 @@ Le set de huit ambassadeurs qui maximise la couverture incrémentale au 2026-08-
 7. `Collier obsidienne noire boho doré` ;
 8. `Bracelet en lapis-lazuli 4 mm - 16 à 18 cm`.
 
-Ce set couvre 75 des 123 sources associables si les huit vidéos franchissent toutes les gates. Il ne vaut pas GO visuel. Chaque source photo doit être contrôlée avant envoi à Higgsfield.
+Ce set couvre 75 des 123 sources associables si les huit vidéos franchissent toutes les gates. Il ne vaut pas GO visuel.
 
 Une vidéo est rejetée si Higgsfield modifie la pierre, la taille ou le nombre de perles, la couleur du métal, la forme, le fermoir, les proportions ou un détail distinctif du produit.
+
+### Resultat du Lot 2
+
+Le 2026-08-28, les huit videos ont ete produites dans Higgsfield avec Seedance 2.5. Grok n a pas ete utilise.
+
+- huit jobs termines, zero echec final ;
+- H.264, 960 x 960, 24 fps, 4,041667 secondes, sans audio ;
+- 208 credits consommes, solde passe de 1 039 a 831 ;
+- controle technique Codex `PASS` sur les huit sorties ;
+- GO visuel Patrice encore `PENDING` ;
+- aucune video chargee dans Shopify ;
+- aucun candidat marque `approved` dans le runtime.
+
+Le manifeste complet est `config/ruban-v3-video-manifest-2026-08-28.json`.
 
 ## Mesure attendue
 
