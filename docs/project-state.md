@@ -1,20 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-28 10:20 CEST
+Derniere mise a jour : 2026-08-28 13:22 CEST
 
 ## Etat en une phrase
 
-Le Ruban V3 adaptatif est integre, pousse et live sur `190430282075` avec une photo reelle de galerie, une proposition visible, trois candidats ordonnes, exclusions runtime et replis garantissant un Ruban non vide tant qu un autre produit eligible existe ; le chantier inventaire conserve separement son snapshot de 60 produits traites et ses GO propres.
+Le Ruban V3 adaptatif est integre, pousse et live sur `190430282075` avec trois produits visibles, trois cartes egales sur desktop, un rail tactile sous 990 px, des photos reelles de galerie, les exclusions runtime et les replis garantissant un Ruban non vide tant qu un autre produit eligible existe ; le chantier inventaire conserve separement son snapshot de 60 produits traites et ses GO propres.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique Ruban verifie avant la fermeture documentaire du 2026-08-28 est `codex/milaura-integration` a `84185766`, propre et aligne `0/0` avec origin. Le checkpoint live est `docs/checkpoints/2026-08-28-1020-ruban-v3-gallery-live.md`.
+- Le canonique Ruban fonctionnel verifie avant la fermeture documentaire du 2026-08-28 est `codex/milaura-integration` a `51353dfb`, pousse sur origin. Le checkpoint courant est `docs/checkpoints/2026-08-28-1322-ruban-v3-three-visible-live.md`.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Le worktree Ruban V3 a ete retire proprement le 2026-08-28 apres integration et live ; sa branche source reste conservee au commit distant `38497e4b`. Les autres worktrees et proprietaires courants vivent dans `docs/workstreams.md`.
+- Les worktrees Ruban V3 ont ete retires proprement le 2026-08-28 apres integration et live ; les branches source restent conservees aux commits distants `38497e4b` et `f2eb61a8`. Les autres worktrees et proprietaires courants vivent dans `docs/workstreams.md`.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -405,13 +405,13 @@ Le Ruban de parure V2 est live depuis le 2026-08-16 a 10:46 CEST apres GO visuel
 
 Patrice a donne `GO LIVE RUBAN V3` le 2026-08-28. Le lot source final `38497e4b` a ete integre dans `codex/milaura-integration`, pousse sur origin puis publie directement sur le theme live `190430282075`, sans theme de developpement.
 
-Le runtime affiche une seule proposition et conserve trois candidats ordonnes. Il exclut le produit consulte, les produits indisponibles, ceux deja presents au panier et ceux sans image de galerie. Il descend successivement du match pierre, type et finition au match proche, a l univers, a la collection puis au catalogue global. La regle canonique est qu aucun Ruban ne doit etre vide tant qu un autre produit eligible existe.
+Le runtime affiche les trois candidats ordonnes. Desktop utilise trois cartes a largeur egale ; sous 990 px, le Ruban devient un rail horizontal tactile avec scroll snap, fleches et apercu de la carte suivante. Il exclut le produit consulte, les produits indisponibles, ceux deja presents au panier et ceux sans image de galerie. Il descend successivement du match pierre, type et finition au match proche, a l univers, a la collection puis au catalogue global. La regle canonique est qu aucun Ruban ne doit etre vide tant qu un autre produit eligible existe.
 
 Le rendu utilise exclusivement les images de galerie Shopify. La video et les anciens detourages sont hors chemin critique. Higgsfield reste le seul outil admis pour une future phase video, Grok reste exclu et aucune transformation visuelle du produit n est acceptable.
 
 Le snapshot du 2026-08-28 couvre 318 produits : 318 sources sur 318 ont trois candidats et un payload affichable, 67 cibles passent les gates strictes et le hash de regression est `8fbcace0721d1dad893782b67eff467481b2dc7011792e67e746b0c14bae75f3`. Le push live a porte sur onze fichiers, puis le pullback a confirme 11 sur 11 identiques a Git.
 
-La QA publique valide le match exact sur le collier aventurine, le repli collection sur la plaque Fleur de Vie, le repli univers sur le pendentif Oeil de Sainte Lucie historiquement exclu, et la promotion automatique du candidat suivant lorsque le premier est ajoute au panier. Mobile 390 px et desktop 1440 px sont sans debordement. Checkpoint : `docs/checkpoints/2026-08-28-1020-ruban-v3-gallery-live.md`.
+La QA publique valide trois cartes sur le collier aventurine, le repli collection sur la plaque Fleur de Vie, le repli univers sur le pendentif Oeil de Sainte Lucie historiquement exclu, et le passage immediat de trois a deux cartes lorsque le premier candidat est ajoute au panier. Les largeurs 360, 390, 430, 820 et 1440 px sont sans debordement. Checkpoints : `docs/checkpoints/2026-08-28-1020-ruban-v3-gallery-live.md` et `docs/checkpoints/2026-08-28-1322-ruban-v3-three-visible-live.md`.
 
 ## Contrat produit
 
@@ -471,7 +471,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. La nouvelle session master conserve seule l integration et le live a partir de `841857665b8d5b77a7d850ded1e526b2d76d3aa3` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
+1. La nouvelle session master conserve seule l integration et le live a partir de `51353dfb02eea462fb715b52fa6bc86c99a922ca` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
 2. Auditer en lecture seule les sessions ouvertes Mail, Rentree, Mon Ecrin et Pinterest ; demander leurs retours compacts, recadrer leurs scopes et fermer ce qui est reellement termine. Ruban V3 est deja ferme et live.
 3. Ouvrir une session inventaire fraiche et distincte. Lui transmettre les ledgers, les faits et les limites, puis la laisser commencer par un etat des lieux et un brainstorming direct avec Patrice avant tout plan d execution.
 4. Autoriser en parallele les travaux independants sans chevauchement : finition Mail, prochaines gates privees Mon Ecrin et fondations Pinterest hors theme.
@@ -493,7 +493,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
-- Ruban V3 : ferme et live sur `190430282075` depuis le 2026-08-28 ; 318 sources sur 318 ont trois candidats dans la regression, le runtime conserve une carte visible, exclut le panier et garantit les replis univers, collection puis catalogue ; pullback 11 sur 11 identique
+- Ruban V3 : ferme et live sur `190430282075` depuis le 2026-08-28 ; 318 sources sur 318 ont trois candidats dans la regression, le runtime affiche les trois, exclut le panier et garantit les replis univers, collection puis catalogue ; desktop trois cartes egales, rail tactile sous 990 px, pullback final 2 sur 2 identique
 - Ruban V2 : historique remplace par V3 pour le rendu PDP ; ses anciens placements Search & Discovery restent une source prioritaire lorsque valides, mais les anciens detourages ne sont plus utilises par le chemin critique V3
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
