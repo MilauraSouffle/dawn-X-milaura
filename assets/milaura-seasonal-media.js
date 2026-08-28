@@ -18,6 +18,7 @@
       let inView = false;
       let sourceLoaded = false;
       let userPaused = false;
+      let hasCompleted = false;
 
       const currentVariant = () => (mobileViewport.matches ? 'Mobile' : 'Desktop');
       const currentMediaUrl = (kind) => {
@@ -26,7 +27,16 @@
       };
 
       const setButtonState = () => {
+        if (hasCompleted || video.ended) {
+          media.dataset.mediaState = 'ended';
+          toggle.setAttribute('aria-pressed', 'false');
+          toggle.setAttribute('aria-label', 'Revoir la vidéo');
+          if (label) label.textContent = 'Revoir';
+          return;
+        }
+
         const paused = video.paused;
+        media.dataset.mediaState = paused ? 'paused' : 'playing';
         toggle.setAttribute('aria-pressed', String(!paused));
         toggle.setAttribute('aria-label', paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause');
         if (label) label.textContent = paused ? 'Lire' : 'Pause';
@@ -46,14 +56,26 @@
 
         activeSource = source;
         sourceLoaded = true;
+        hasCompleted = false;
         video.src = source;
         video.load();
         return true;
       };
 
-      const playVideo = (force = false) => {
+      const playVideo = (force = false, replay = false) => {
         if ((!force && (reducedMotion.matches || saveData)) || userPaused) return;
         if (!loadSource(force)) return;
+
+        if (hasCompleted && !replay) {
+          setButtonState();
+          return;
+        }
+
+        if (replay) {
+          hasCompleted = false;
+          video.currentTime = 0;
+        }
+
         video.play().catch(() => setButtonState());
       };
 
@@ -67,6 +89,7 @@
         video.pause();
         sourceLoaded = false;
         activeSource = '';
+        hasCompleted = false;
         loadSource(true);
         if (wasPlaying && inView && !reducedMotion.matches) {
           video.play().catch(() => setButtonState());
@@ -87,7 +110,10 @@
       );
 
       toggle.addEventListener('click', () => {
-        if (video.paused) {
+        if (hasCompleted || video.ended) {
+          userPaused = false;
+          playVideo(true, true);
+        } else if (video.paused) {
           userPaused = false;
           playVideo(true);
         } else {
@@ -99,6 +125,11 @@
 
       video.addEventListener('play', setButtonState);
       video.addEventListener('pause', setButtonState);
+      video.addEventListener('ended', () => {
+        hasCompleted = true;
+        userPaused = false;
+        setButtonState();
+      });
       mobileViewport.addEventListener('change', updateVariant);
       reducedMotion.addEventListener('change', () => {
         if (reducedMotion.matches) {
