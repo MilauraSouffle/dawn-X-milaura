@@ -25,6 +25,11 @@ globalThis.document = {
 };
 globalThis.window = {
   Shopify: { routes: { root: '/' } },
+  MilauraPreferenceStorage: {
+    async getPreferenceState() {
+      return { available: true, allowed: false };
+    },
+  },
 };
 
 await import('../../../assets/milaura-recommendations.js');
