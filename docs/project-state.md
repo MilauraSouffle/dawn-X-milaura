@@ -1,20 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-27 19:01 CEST
+Derniere mise a jour : 2026-08-28 10:20 CEST
 
 ## Etat en une phrase
 
-Le chantier inventaire ferme sa session avec une cohorte exacte de 60 produits, dont 40 ACTIVE et 20 DRAFT, 125 references non traitees et une reprise au lot 06 sans ecriture Shopify ; le workflow visuel V3 a cinq images est definitif, le Bracelet Iris est le benchmark valide et Camilla dispose de la doctrine, du pipeline et des preuves sur le VPS ; toute reprise catalogue reste une nouvelle session dediee et toute mutation Shopify, stock ou publication exige ses GO propres.
+Le Ruban V3 adaptatif est integre, pousse et live sur `190430282075` avec une photo reelle de galerie, une proposition visible, trois candidats ordonnes, exclusions runtime et replis garantissant un Ruban non vide tant qu un autre produit eligible existe ; le chantier inventaire conserve separement son snapshot de 60 produits traites et ses GO propres.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique verifie avant les ecritures de ce handoff du 2026-08-27 est `codex/milaura-integration` a `5094436a`, propre et aligne `0/0` avec origin. Le handoff inventaire principal a ete pousse dans `885269c0` ; son checkpoint est `docs/checkpoints/2026-08-27-1901-inventory-v3-final-handoff.md`.
+- Le canonique Ruban verifie avant la fermeture documentaire du 2026-08-28 est `codex/milaura-integration` a `84185766`, propre et aligne `0/0` avec origin. Le checkpoint live est `docs/checkpoints/2026-08-28-1020-ruban-v3-gallery-live.md`.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
-- Les worktrees theme conserves au 2026-08-22 sont Atelier des emotions a `2befe429` et Ruban V3 a `3aa0b66d`, tous deux parques, ainsi que Rentree Sodalite propre et alignee a `47cc3e62` sur son theme prive, en pause a `70 %`. La preview C1 V3 privee est propre et alignee a `d8d036ff` puis gelee. Le detail et les proprietaires vivent dans `docs/workstreams.md`.
+- Le worktree Ruban V3 a ete retire proprement le 2026-08-28 apres integration et live ; sa branche source reste conservee au commit distant `38497e4b`. Les autres worktrees et proprietaires courants vivent dans `docs/workstreams.md`.
 - Registre obligatoire : `docs/workstreams.md`.
 - Procedure obligatoire : `docs/reference/2026-08-12-repository-workflow.md`.
 
@@ -59,7 +59,7 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 
 Le master ne remplace aucune session specialiste. Il centralise les retours, controle la qualite, recadre les scopes, protege les proprietaires, detecte les conflits de fichiers, themes, consentements et Admin, ferme les gates, integre selectivement et reste seul proprietaire du live.
 
-Il coordonne actuellement Mail, Rentree, Mon Ecrin, Pinterest, Ruban et le catalogue. Il ouvre une nouvelle session inventaire distincte, mais celle-ci commence par discuter avec Patrice, rendre un etat des lieux et brainstormer la methode de controle, correction, enrichissement et mise en ligne. Le master lui transmet les sources, faits et limites ; il ne lui impose pas un plan produit par produit avant cet echange.
+Il coordonne actuellement Mail, Rentree, Mon Ecrin, Pinterest et le catalogue. Ruban V3 est ferme et live. Il ouvre une nouvelle session inventaire distincte, mais celle-ci commence par discuter avec Patrice, rendre un etat des lieux et brainstormer la methode de controle, correction, enrichissement et mise en ligne. Le master lui transmet les sources, faits et limites ; il ne lui impose pas un plan produit par produit avant cet echange.
 
 Atelier des emotions et Pierres de naissance restent en pause plus longue. Le polish SEO et la strategie organique large viennent apres stabilisation du catalogue, des routes et des priorites commerciales. Reference corrective : `docs/checkpoints/2026-08-26-1642-master-role-inventory-correction.md`.
 
@@ -83,7 +83,7 @@ Atelier des emotions et Pierres de naissance restent en pause plus longue. Le po
 - DataForSEO suit deux temps : recherche ciblee si elle doit guider une nouvelle page, puis audit global final lorsque les routes et enrichissements sont stabilises.
 - Decision Patrice du 2026-08-22 : la campagne saisonniere Sodalite destinee a remplacer la selection d aout est mise en pause a `70 %` jusqu au 2026-08-31. La photographie fixe est retenue, mais la section complete ne convient pas encore et ne possede aucun GO visuel final. La liste exacte, le stock, les couts, les marges, les statuts publics, la landing et les dates restent a fermer avant toute integration ou mise en ligne.
 - Cette reception ne vaut pas gate Atelier. L Atelier reste parque jusqu a reception et validation de ses propres composants, mesures, comptages, prototypes Karine, cout, prix, architecture Shopify et nouveau GO.
-- Organisation annoncee par Patrice : sessions distinctes pour la reprise C1, le polish email, la campagne Rentree Sodalite et les fondations Pinterest. Ruban V3 reprend apres l inventaire et la mise en ligne fiable du catalogue. Une seule session master integre et deploie.
+- Organisation annoncee par Patrice : sessions distinctes pour la reprise C1, le polish email, la campagne Rentree Sodalite et les fondations Pinterest. Ruban V3 est ferme et live depuis le 2026-08-28. Une seule session master integre et deploie.
 - La tache Pinterest `01a01eb8-192c-76c1-9fb7-7599654e5e64` a analyse 83 videos, soit 20 h 10, note la formation `14,5/20` et produit une feuille de route de 29 pages. Les fondations peuvent avancer ; aucune Ads avant inventaire, feed, consentement, tracking et economie verifies.
 
 ## Rentree Sodalite en pause a 70 %
@@ -226,7 +226,7 @@ L implementation privee a ferme G0 a G11. Toute future release doit encore ferme
 10. valider sur comptes de test, coordonner les emails de compte avec Mail, traiter le francais du shell natif et obtenir un GO Admin distinct avant toute bascule ;
 11. obtenir un GO live explicite seulement apres toutes les gates precedentes.
 
-La fin du SEO, Pinterest, Rentree Sodalite, Ruban V3 et Atelier ne bloque pas l implementation privee C1-1. Pour une release, Mail doit coordonner les emails de compte avant un switch ; l inventaire et le catalogue fiables doivent fermer le mapping commande-vers-pierre et les destinations produit ; un micro-lot theme distinct doit prouver le bridge et la purge locale reels. La fidelite reelle n est pas un prerequis : le bloc `A venir` reste honnete. S1B et S1C sont downstream et ne bloquent pas C1-1.
+La fin du SEO, Pinterest, Rentree Sodalite et Atelier ne bloque pas l implementation privee C1-1. Ruban V3 est deja ferme et live. Pour une release, Mail doit coordonner les emails de compte avant un switch ; l inventaire et le catalogue fiables doivent fermer le mapping commande-vers-pierre et les destinations produit ; un micro-lot theme distinct doit prouver le bridge et la purge locale reels. La fidelite reelle n est pas un prerequis : le bloc `A venir` reste honnete. S1B et S1C sont downstream et ne bloquent pas C1-1.
 
 References : `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`, `docs/milaura/shopify-admin-canonical/c1-v3-shopify-private-preview/2026-08-22-c1-v3-evidence.md` sur la branche privee, `docs/workstreams.md`, `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`, `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`, `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md` et `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -401,13 +401,17 @@ Le polish Sticky PDP est live depuis le 2026-08-16 a 09:32 CEST. La sticky utili
 
 Le Ruban de parure V2 est live depuis le 2026-08-16 a 10:46 CEST apres GO visuel, GO live et autorisation explicite de nettoyer l'ancienne configuration remplacee. Le lot final `222ef44f` est integre par `469212c0`. La matrice Search & Discovery preuve relie le collier obsidienne noire boho dore `10557516644699` aux boucles obsidienne noire `10357431206235` et au bracelet obsidienne flocon `10357456601435`. La definition Shopify `milaura.recommendation_cutout` existe avec acces Storefront. L'API reelle renvoie les deux complements, l'ajout du variant `52484191879515` dans un navigateur neuf a ete retire par sa seule cle de ligne et le panier final est revenu vide. Le push live est limite a neuf fichiers theme avec `--nodelete`; pullback 9/9 identique. La QA publique couvre 360/390/430/820/1440, rail horizontal reel, clavier, compteur, progression, sticky et jonction dock. Le widget tiers `merchantwidgetiframe` conserve une largeur hors viewport dans `documentElement`, mais `body` reste exactement au viewport et le Ruban n'est pas la source du debordement. Checkpoint : `docs/checkpoints/2026-08-16-1046-ruban-v2-live.md`.
 
-### Décision commerciale Ruban V3 du 2026-08-17
+### Ruban V3 adaptatif live depuis le 2026-08-28
 
-Patrice demande désormais une seule proposition cross-sell visible par PDP, présentée en vidéo et justifiée par une parure ou un matching concret. Higgsfield est retenu comme unique outil vidéo. Grok est exclu du workflow. Toute transformation visuelle du produit est un rejet bloquant.
+Patrice a donne `GO LIVE RUBAN V3` le 2026-08-28. Le lot source final `38497e4b` a ete integre dans `codex/milaura-integration`, pousse sur origin puis publie directement sur le theme live `190430282075`, sans theme de developpement.
 
-Le 2026-08-17, le storefront public retournait 268 produits disponibles au sens Shopify. Les 9 sources Search & Discovery V1 représentent environ 3,4 % de couverture source directe. Les 9 endpoints restent exacts et les 5 médias `milaura.recommendation_cutout` restent servis depuis `/cdn/shop/files/`.
+Le runtime affiche une seule proposition et conserve trois candidats ordonnes. Il exclut le produit consulte, les produits indisponibles, ceux deja presents au panier et ceux sans image de galerie. Il descend successivement du match pierre, type et finition au match proche, a l univers, a la collection puis au catalogue global. La regle canonique est qu aucun Ruban ne doit etre vide tant qu un autre produit eligible existe.
 
-Ruban V3 n'est pas implémenté. Les 268 associations n'existent pas, le volume de 25 à 40 vidéos est une estimation, aucune vidéo Higgsfield n'a été produite et aucun metafield vidéo V3 n'a été créé. Aucun thème n'est attribué à V3 et aucun GO de mutation Shopify, de développement, de preview ou de live n'a été reçu. Handoff complet : `docs/checkpoints/2026-08-17-0910-ruban-v3-handoff.md`.
+Le rendu utilise exclusivement les images de galerie Shopify. La video et les anciens detourages sont hors chemin critique. Higgsfield reste le seul outil admis pour une future phase video, Grok reste exclu et aucune transformation visuelle du produit n est acceptable.
+
+Le snapshot du 2026-08-28 couvre 318 produits : 318 sources sur 318 ont trois candidats et un payload affichable, 67 cibles passent les gates strictes et le hash de regression est `8fbcace0721d1dad893782b67eff467481b2dc7011792e67e746b0c14bae75f3`. Le push live a porte sur onze fichiers, puis le pullback a confirme 11 sur 11 identiques a Git.
+
+La QA publique valide le match exact sur le collier aventurine, le repli collection sur la plaque Fleur de Vie, le repli univers sur le pendentif Oeil de Sainte Lucie historiquement exclu, et la promotion automatique du candidat suivant lorsque le premier est ajoute au panier. Mobile 390 px et desktop 1440 px sont sans debordement. Checkpoint : `docs/checkpoints/2026-08-28-1020-ruban-v3-gallery-live.md`.
 
 ## Contrat produit
 
@@ -467,12 +471,12 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Prochain ordre d'execution
 
-1. La nouvelle session master conserve seule l integration et le live a partir de `364f3005e8d65aa443bba1c144fac398df6c1f93` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Auditer en lecture seule les sessions ouvertes Mail, Rentree, Mon Ecrin, Pinterest et Ruban ; demander leurs retours compacts, recadrer leurs scopes et fermer ce qui est reellement termine.
+1. La nouvelle session master conserve seule l integration et le live a partir de `841857665b8d5b77a7d850ded1e526b2d76d3aa3` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
+2. Auditer en lecture seule les sessions ouvertes Mail, Rentree, Mon Ecrin et Pinterest ; demander leurs retours compacts, recadrer leurs scopes et fermer ce qui est reellement termine. Ruban V3 est deja ferme et live.
 3. Ouvrir une session inventaire fraiche et distincte. Lui transmettre les ledgers, les faits et les limites, puis la laisser commencer par un etat des lieux et un brainstorming direct avec Patrice avant tout plan d execution.
 4. Autoriser en parallele les travaux independants sans chevauchement : finition Mail, prochaines gates privees Mon Ecrin et fondations Pinterest hors theme.
 5. A partir des decisions prises avec la session inventaire, corriger les 60, recevoir les 15 prix manquants, prioriser Sodalite et definir le rythme futur. Aucun passage en actif sans GO Admin distinct.
-6. Lorsque la verite catalogue pertinente est fiable, fermer RC5, la vraie selection Rentree, le feed, Ruban V3 et Pinterest final sous leurs gates propres.
+6. Lorsque la verite catalogue pertinente est fiable, fermer RC5, la vraie selection Rentree, le feed et Pinterest final sous leurs gates propres.
 7. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
 8. Laisser Atelier des emotions et Pierres de naissance en pause plus longue jusqu a une nouvelle decision de Patrice.
 9. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance et Mariage, le Journal, puis S1B et S1C seulement apres C1.
@@ -489,8 +493,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - parcours checkout reel du point relais non confirme
 - stock, couts, delais et tracking avant acquisition payante
 - Atelier de Karine : composants, faisabilite, prix, stock, photos et rendu d'apercu
-- Ruban V3 : matrice auditee sur 268 produits, 53 candidats forts, 77 a revoir et `0 PRET` sous le contrat strict ; reprise parquee jusqu a l inventaire, aux couts, aux marges, a la disponibilite et au catalogue fiables
-- Ruban V2 : 9 sources et 12 placements dirigés actifs ; les autres PDP restent sans complément direct validé et les médias sans `milaura.recommendation_cutout` utilisent le fallback catalogue
+- Ruban V3 : ferme et live sur `190430282075` depuis le 2026-08-28 ; 318 sources sur 318 ont trois candidats dans la regression, le runtime conserve une carte visible, exclut le panier et garantit les replis univers, collection puis catalogue ; pullback 11 sur 11 identique
+- Ruban V2 : historique remplace par V3 pour le rendu PDP ; ses anciens placements Search & Discovery restent une source prioritaire lorsque valides, mais les anciens detourages ne sont plus utilises par le chemin critique V3
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
 - C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; correctif d idempotence ferme a `7bb67efc`, preuves sans commande `1ee9c07f`, preuves commandes `e863fc10`, RC4, RC7 et RC8 PASS prive ; RC5 et RC6 restent ouverts ; aucun droit C1-2, app deploy/release, Admin, bascule, email, integration theme ou live
