@@ -31,6 +31,7 @@ class Product:
   ean: str | None = None
   primary_intention: str | None = None
   uses: tuple[str, ...] = field(default_factory=tuple)
+  collection_handles: tuple[str, ...] = field(default_factory=tuple)
   canonical_status: str = "unreconciled"
   physical_stock_units: int = 0
   supplier_current: bool = False
@@ -63,6 +64,7 @@ class Product:
       ean=str(data["ean"]) if data.get("ean") else None,
       primary_intention=data.get("primary_intention"),
       uses=tuple(sorted({str(value) for value in data.get("uses", []) if value})),
+      collection_handles=tuple(sorted({str(value) for value in data.get("collection_handles", []) if value})),
       canonical_status=str(data.get("canonical_status", "unreconciled")),
       physical_stock_units=max(0, int(data.get("physical_stock_units", 0))),
       supplier_current=bool(data.get("supplier_current", False)),
@@ -126,6 +128,8 @@ def target_gate(source: Product, target: Product, config: Mapping[str, Any]) -> 
     reasons.append("target_unavailable")
   if gates["require_positive_price"] and target.price_eur <= 0:
     reasons.append("target_non_positive_price")
+  if gates.get("require_gallery_image", False) and target.image_count <= 0:
+    reasons.append("target_without_gallery_image")
   if gates["reject_paused"] and target.paused:
     reasons.append("target_paused")
   if target.excluded:
@@ -280,7 +284,7 @@ def score_candidate(
       round(target.contribution_rate * 10),
     )
 
-  ratio = target.price_eur / source.price_eur
+  ratio = target.price_eur / source.price_eur if source.price_eur > 0 else float("inf")
   price_ratio = config["price_ratio"]
   if ratio <= float(price_ratio["low_max"]):
     components["price_ratio"] = int(weights["price_ratio_low"])
@@ -309,6 +313,7 @@ def score_candidate(
     "override_rank": override_rank,
     "video_status": target.video_status,
     "video_reference": target.video_reference,
+    "image_count": target.image_count,
   }
 
 
@@ -318,10 +323,11 @@ def rank_candidates(
   config: Mapping[str, Any],
   override_ids: Sequence[str] = (),
 ) -> list[dict[str, Any]]:
+  ordered_targets = list(targets)
   minimum = int(config["thresholds"]["honest_match"])
   scored = [
     candidate
-    for target in targets
+    for target in ordered_targets
     if (candidate := score_candidate(source, target, config, override_ids)) is not None
     and candidate["score"] >= minimum
   ]
@@ -332,7 +338,114 @@ def rank_candidates(
       candidate["shopify_product_id"],
     )
   )
-  return scored[: int(config["max_candidates"])]
+  maximum = int(config["max_candidates"])
+  selected = scored[:maximum]
+  selected_ids = {candidate["shopify_product_id"] for candidate in selected}
+  if len(selected) >= maximum:
+    return selected
+
+  fallback_tiers = (
+    "compatible_stone_or_intention",
+    "same_universe",
+    "same_collection",
+    "catalogue_fallback",
+  )
+  eligible_targets = [
+    target
+    for target in ordered_targets
+    if target.shopify_product_id not in selected_ids
+    and not target_gate(source, target, config)
+  ]
+  for tier in fallback_tiers:
+    tier_candidates = [
+      _fallback_candidate(source, target, config, tier, override_ids)
+      for target in eligible_targets
+      if _fallback_tier(source, target, config) == tier
+    ]
+    tier_candidates.sort(
+      key=lambda candidate: (
+        -candidate["score"],
+        candidate["override_rank"] if candidate["override_rank"] is not None else 9999,
+        candidate["shopify_product_id"],
+      )
+    )
+    for candidate in tier_candidates:
+      product_id = candidate["shopify_product_id"]
+      if product_id in selected_ids:
+        continue
+      selected.append(candidate)
+      selected_ids.add(product_id)
+      if len(selected) >= maximum:
+        return selected
+  return selected
+
+
+def _fallback_tier(
+  source: Product,
+  target: Product,
+  config: Mapping[str, Any],
+) -> str:
+  shared_stones = _shared_stones(source, target, config)
+  if shared_stones or (
+    source.primary_intention
+    and target.primary_intention
+    and source.primary_intention == target.primary_intention
+  ):
+    return "compatible_stone_or_intention"
+  if source.family and source.family == target.family:
+    return "same_universe"
+  if set(source.collection_handles).intersection(target.collection_handles):
+    return "same_collection"
+  return "catalogue_fallback"
+
+
+def _fallback_candidate(
+  source: Product,
+  target: Product,
+  config: Mapping[str, Any],
+  tier: str,
+  override_ids: Sequence[str],
+) -> dict[str, Any]:
+  tier_base = {
+    "compatible_stone_or_intention": 60,
+    "same_universe": 40,
+    "same_collection": 20,
+    "catalogue_fallback": 0,
+  }[tier]
+  components: dict[str, int] = {tier: tier_base}
+  if target.physical_stock_units > 0:
+    components["physical_stock"] = 15
+    components["physical_stock_depth"] = min(target.physical_stock_units, 8)
+  elif target.supplier_current:
+    components["supplier_current"] = 7
+  if target.image_count >= 5:
+    components["photo_gallery_complete"] = 4
+  if target.contribution_rate is not None and target.contribution_rate > 0:
+    components["positive_contribution"] = min(10, round(target.contribution_rate * 10))
+  ratio = target.price_eur / source.price_eur if source.price_eur > 0 else float("inf")
+  if ratio <= 1.1:
+    components["price_ratio"] = 8
+  elif ratio <= 1.5:
+    components["price_ratio"] = 3
+  elif ratio > 2.0:
+    components["price_ratio"] = -10
+  override_rank: int | None = None
+  if target.shopify_product_id in override_ids:
+    override_rank = override_ids.index(target.shopify_product_id)
+    components["historical_override"] = 12
+  return {
+    "shopify_product_id": target.shopify_product_id,
+    "handle": target.handle,
+    "title": target.title,
+    "score": sum(components.values()),
+    "relation": tier,
+    "shared_stones": _shared_stones(source, target, config),
+    "components": dict(sorted(components.items())),
+    "override_rank": override_rank,
+    "video_status": target.video_status,
+    "video_reference": target.video_reference,
+    "image_count": target.image_count,
+  }
 
 
 def build_matrix(
@@ -348,6 +461,10 @@ def build_matrix(
   status_counts = {
     "MATCH_ADAPTATIF_FORT": 0,
     "MATCH_ADAPTATIF": 0,
+    "MATCH_REPLI_PROCHE": 0,
+    "MATCH_REPLI_UNIVERS": 0,
+    "MATCH_REPLI_COLLECTION": 0,
+    "MATCH_REPLI_CATALOGUE": 0,
     "AUCUN_MATCH_HONNETE": 0,
     "EXCLU_SOURCE": 0,
   }
@@ -356,7 +473,12 @@ def build_matrix(
     source_reasons = source_gate(source, config)
     if source_reasons:
       status = "EXCLU_SOURCE"
-      candidates: list[dict[str, Any]] = []
+      candidates = rank_candidates(
+        source,
+        ordered_products,
+        config,
+        list(override_map.get(source.shopify_product_id, [])),
+      )
     else:
       candidates = rank_candidates(
         source,
@@ -368,6 +490,14 @@ def build_matrix(
         status = "AUCUN_MATCH_HONNETE"
       elif candidates[0]["score"] >= strong_threshold:
         status = "MATCH_ADAPTATIF_FORT"
+      elif candidates[0]["relation"] == "compatible_stone_or_intention":
+        status = "MATCH_REPLI_PROCHE"
+      elif candidates[0]["relation"] == "same_universe":
+        status = "MATCH_REPLI_UNIVERS"
+      elif candidates[0]["relation"] == "same_collection":
+        status = "MATCH_REPLI_COLLECTION"
+      elif candidates[0]["relation"] == "catalogue_fallback":
+        status = "MATCH_REPLI_CATALOGUE"
       else:
         status = "MATCH_ADAPTATIF"
     status_counts[status] += 1
@@ -409,18 +539,16 @@ def build_matrix(
 def public_payload(matrix: Mapping[str, Any]) -> dict[str, Any]:
   public_mappings = []
   for mapping in matrix["mappings"]:
-    has_approved_video_candidate = any(
-      candidate.get("video_status") == "approved" and candidate.get("video_reference")
-      for candidate in mapping["candidates"]
-    )
+    has_gallery_candidate = any(candidate.get("image_count", 0) > 0 for candidate in mapping["candidates"])
     public_mappings.append(
       {
         "source_product_id": mapping["source_product_id"],
-        "should_render": has_approved_video_candidate,
-        "has_approved_video_candidate": has_approved_video_candidate,
+        "should_render": has_gallery_candidate,
+        "has_gallery_candidate": has_gallery_candidate,
         "candidates": [
           {
             "product_id": candidate["shopify_product_id"],
+            "handle": candidate["handle"],
             "position": position,
             "relation": candidate["relation"],
             "score": candidate["score"],
@@ -454,9 +582,7 @@ def select_runtime_candidate(
       continue
     if available_ids is not None and product_id not in available_ids:
       continue
-    if candidate.get("video_status") != "approved":
-      continue
-    if not candidate.get("video_reference"):
+    if candidate.get("image_count", 1) <= 0:
       continue
     return candidate
   return None

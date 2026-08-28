@@ -9,8 +9,10 @@
 >
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
     {%- assign rendered_count = 0 -%}
+    {%- assign recommendation_origin = 'shopify-' | append: recommendations.intent -%}
     {%- for recommended_product in recommendations.products limit: 10 -%}
       {%- unless recommended_product.available -%}{%- continue -%}{%- endunless -%}
+      {%- if recommended_product.featured_image == blank -%}{%- continue -%}{%- endif -%}
       {%- assign rendered_count = rendered_count | plus: 1 -%}
       {%- assign recommendation_role = 'secondary' -%}
       {%- if rendered_count == 1 -%}
@@ -20,6 +22,7 @@
         recommendation_product: recommended_product,
         source_product: product,
         recommendation_intent: recommendations.intent,
+        recommendation_origin: recommendation_origin,
         recommendation_role: recommendation_role,
         img_loading: 'lazy'
       %}

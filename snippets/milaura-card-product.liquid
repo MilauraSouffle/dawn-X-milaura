@@ -15,6 +15,8 @@
   - recommendation_media: boolean, active des sources plus larges pour une mise
     en avant editoriale sans modifier les cartes standard
   - recommendation_focal: boolean, ajuste le hint responsive du media focal
+  - recommendation_gallery_only: boolean, interdit video et detourage et force
+    une image issue de la galerie Shopify du produit
   - recommendation_object_image: image Shopify issue du metafield detourage
   - recommendation_object_asset: asset PNG transparent valide pour la scene
   - recommendation_object_width / height: dimensions intrinseques de cet asset
@@ -29,7 +31,7 @@
   assign primary_alt = card_product.featured_image.alt | default: card_product.title
   assign secondary_alt = secondary_image.alt | default: card_product.title
   assign recommendation_video = blank
-  if recommendation_media and recommendation_focal
+  if recommendation_media and recommendation_focal and recommendation_gallery_only != true
     assign product_videos = card_product.media | where: 'media_type', 'video'
     assign recommendation_video = product_videos.first
   endif

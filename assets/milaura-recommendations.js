@@ -9,10 +9,19 @@
   const RECOMMENDATION_FRAGMENT = 'milaura-recommendation-fragment';
   const PRODUCT_FRAGMENT = 'milaura-product-fragment';
   const RECENT_FRAGMENT = 'milaura-recent-fragment';
-  const PDP_SCORE_CURRENT_PRODUCT = 100;
-  const PDP_SCORE_CART_PRODUCT = 40;
   const PDP_SCORE_RECENT_TIEBREAKER = 8;
   const PDP_SCORE_API_ORDER_MAX = 10;
+  const PDP_CANDIDATE_LIMIT = 3;
+  const PDP_CATALOGUE_SCAN_LIMIT = 250;
+  const TYPE_COMPATIBILITY = Object.freeze({
+    bracelet: Object.freeze({ 'boucles-oreilles': 30, collier: 25, bague: 20, pendentif: 12 }),
+    collier: Object.freeze({ 'boucles-oreilles': 30, bracelet: 25, bague: 20 }),
+    'boucles-oreilles': Object.freeze({ collier: 30, bracelet: 25, bague: 15 }),
+    bague: Object.freeze({ collier: 25, 'boucles-oreilles': 25, bracelet: 20 }),
+    pendentif: Object.freeze({ chaine: 45, bracelet: 10, 'boucles-oreilles': 10 }),
+    chaine: Object.freeze({ pendentif: 45 }),
+    chapelet: Object.freeze({ bracelet: 12, collier: 12 }),
+  });
 
   function storefrontRoot() {
     const root = window.Shopify?.routes?.root || '/';
@@ -35,11 +44,84 @@
       const productId = String(card.dataset.productId || '');
       if (!productId || excluded.has(productId) || seen.has(productId)) return;
       if (card.dataset.productAvailable === 'false') return;
+      if (card.dataset.hasGalleryImage === 'false') return;
       seen.add(productId);
       unique.push(card);
     });
 
     return unique.slice(0, limit);
+  }
+
+  function compatibleStone(sourceStone, candidateStone) {
+    if (!sourceStone || !candidateStone) return false;
+    if (sourceStone === candidateStone) return true;
+    return ['jade', 'obsidienne'].some((parent) => {
+      const sourceInFamily = sourceStone === parent || sourceStone.startsWith(`${parent}-`);
+      const candidateInFamily = candidateStone === parent || candidateStone.startsWith(`${parent}-`);
+      return sourceInFamily && candidateInFamily;
+    });
+  }
+
+  function classifyPdpCandidate(card, source) {
+    const candidateStone = card.dataset.stoneHandle || '';
+    const candidateType = card.dataset.productType || '';
+    const candidateIntention = card.dataset.primaryIntention || '';
+    const candidateFamily = card.dataset.productFamily || '';
+    const candidateFinish = card.dataset.productFinish || 'inconnu';
+    const origin = card.dataset.recommendationOrigin || '';
+    const fallbackTier = card.dataset.fallbackTier || '';
+    const stoneMatch = compatibleStone(source.stone, candidateStone);
+    const typeWeight = Number(TYPE_COMPATIBILITY[source.type]?.[candidateType] || 0);
+    const finishMatch =
+      source.finish === 'inconnu' || candidateFinish === 'inconnu' || source.finish === candidateFinish;
+    const intentionMatch = Boolean(source.intention && source.intention === candidateIntention);
+    const familyMatch = Boolean(source.family && source.family === candidateFamily);
+
+    if (stoneMatch && typeWeight > 0 && finishMatch) {
+      return { gate: 'exact', score: 500 + typeWeight };
+    }
+    if (stoneMatch || intentionMatch || origin === 'shopify-complementary') {
+      return { gate: 'close', score: 400 + typeWeight };
+    }
+    if (familyMatch) return { gate: 'universe', score: 300 + typeWeight };
+    if (fallbackTier === 'same-collection') return { gate: 'collection', score: 200 };
+    return { gate: 'catalogue', score: 100 };
+  }
+
+  function setPdpRecommendationReason(card, gate) {
+    const reason = card.querySelector('.milaura-recommendation-card__reason');
+    if (!reason) return;
+    const reasons = {
+      exact: 'Même pierre, une forme complémentaire.',
+      close: 'Une pièce accordée à votre choix.',
+      universe: 'Un produit de la même famille.',
+      collection: 'Une pièce disponible de la même collection.',
+      catalogue: 'Une sélection MilAura disponible maintenant.',
+    };
+    reason.textContent = reasons[gate] || reasons.catalogue;
+  }
+
+  function rankPdpCards(cards, source, recentIds, excludedIds, limit) {
+    const eligible = uniqueByProductId(cards, excludedIds, Number.MAX_SAFE_INTEGER).map((card, index) => {
+      const classification = classifyPdpCandidate(card, source);
+      const productId = String(card.dataset.productId || '');
+      let score = classification.score;
+      if (card.dataset.isBestseller === 'true') score += 20;
+      if (recentIds.has(productId)) score += PDP_SCORE_RECENT_TIEBREAKER;
+      score += Math.max(0, PDP_SCORE_API_ORDER_MAX - index);
+      card.dataset.recommendationGate = classification.gate;
+      card.dataset.recommendationSignal = classification.gate;
+      card.dataset.recommendationScore = String(score);
+      setPdpRecommendationReason(card, classification.gate);
+      return { card, productId, score, index };
+    });
+
+    eligible.sort((left, right) => {
+      if (right.score !== left.score) return right.score - left.score;
+      if (left.index !== right.index) return left.index - right.index;
+      return left.productId.localeCompare(right.productId);
+    });
+    return eligible.slice(0, limit).map((candidate) => candidate.card);
   }
 
   async function fetchCartProductIds() {
@@ -57,18 +139,6 @@
         seen.add(productId);
         return true;
       });
-  }
-
-  function setRecommendationReason(card, signal) {
-    const reason = card.querySelector('.milaura-recommendation-card__reason');
-    if (!reason) return;
-    if (signal === 'current-and-cart') {
-      reason.textContent = 'Sélectionnée pour compléter cette pièce et votre panier.';
-    } else if (signal === 'cart') {
-      reason.textContent = 'Sélectionnée pour compléter un article de votre panier.';
-    } else {
-      reason.textContent = 'Sélectionnée pour compléter cette pièce.';
-    }
   }
 
   function publishAnalytics(name, payload) {
@@ -205,6 +275,36 @@
     return card ? document.importNode(card, true) : null;
   }
 
+  async function fetchCatalogueFallbackCards(excludedIds, limit) {
+    const excluded = new Set(excludedIds.map(String));
+    const response = await fetch(
+      `${storefrontRoot()}collections/all/products.json?limit=${PDP_CATALOGUE_SCAN_LIMIT}`,
+      {
+        credentials: 'same-origin',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      }
+    );
+    if (!response.ok) return [];
+    const payload = await response.json();
+    const products = Array.isArray(payload.products) ? payload.products : [];
+    const handles = products
+      .filter((product) => {
+        if (!product?.id || !product?.handle || excluded.has(String(product.id))) return false;
+        if (!Array.isArray(product.images) || !product.images.length) return false;
+        return Array.isArray(product.variants) && product.variants.some((variant) => variant.available);
+      })
+      .slice(0, Math.max(limit * 3, 9))
+      .map((product) => product.handle);
+    const resolved = await Promise.all(
+      handles.map((handle) => fetchProductCard(handle).catch(function () { return null; }))
+    );
+    return uniqueByProductId(resolved.filter(Boolean), excludedIds, limit).map((card) => {
+      card.dataset.recommendationOrigin = 'catalogue';
+      card.dataset.fallbackTier = 'catalogue';
+      return card;
+    });
+  }
+
   class MilauraRecommendations extends HTMLElement {
     connectedCallback() {
       if (this.dataset.milauraInitialized === 'true') return;
@@ -220,13 +320,15 @@
       this.railMeterValue = this.querySelector('[data-milaura-rail-meter-value]');
       this.context = this.dataset.context || 'editorial';
       this.limit = Number.parseInt(this.dataset.limit, 10) || 3;
-      if (this.context === 'pdp') this.limit = Math.min(this.limit, 5);
+      if (this.context === 'pdp') this.limit = PDP_CANDIDATE_LIMIT;
       this.minimum = Number.parseInt(this.dataset.minimum, 10) || 1;
       this.sourceProductIds = parseList(this.dataset.sourceProductIds);
       this.excludedProductIds = parseList(this.dataset.excludedProductIds);
       this.intents = parseList(this.dataset.intents);
       this.currentIntent = this.intents[0] || 'curated';
       this.initialCards = Array.from(this.querySelectorAll('[data-milaura-recommendation-card]'));
+      this.fallbackCards = this.initialCards.map((card) => card.cloneNode(true));
+      this.pdpCandidates = [];
       this.historyPromise = prepareHistory({
         id: this.dataset.currentProductId,
         handle: this.dataset.currentProductHandle,
@@ -237,7 +339,7 @@
       this.bindDiagnosticResult();
       this.bindPdpVisibility();
 
-      if (this.dataset.state === 'ready') {
+      if (this.dataset.state === 'ready' && this.context !== 'pdp') {
         this.renderCards(this.initialCards, this.currentIntent);
         return;
       }
@@ -272,7 +374,9 @@
     async initialize() {
       if (this.loading) return;
       this.loading = true;
-      this.setState('loading');
+      const preservePdpFallback = this.context === 'pdp' && this.fallbackCards.length > 0;
+      if (preservePdpFallback) this.setAttribute('aria-busy', 'true');
+      else this.setState('loading');
 
       try {
         if (this.context === 'pdp') {
@@ -289,17 +393,22 @@
           this.setState('empty');
         }
       } catch (error) {
-        this.setState('error');
-        this.announce('Les recommandations sont momentanément indisponibles.');
+        if (this.context === 'pdp' && this.renderPdpFallback()) {
+          this.announce('Une sélection disponible est affichée.');
+        } else {
+          this.setState('error');
+          this.announce('Les recommandations sont momentanément indisponibles.');
+        }
       } finally {
         this.loading = false;
+        this.removeAttribute('aria-busy');
       }
     }
 
     async loadPdpRecommendations() {
       const currentProductId = String(this.sourceProductIds[0] || '');
       if (!currentProductId) {
-        this.setState('empty');
+        if (!this.renderPdpFallback()) this.setState('empty');
         return;
       }
 
@@ -307,74 +416,55 @@
         fetchCartProductIds().catch(function () { return []; }),
         this.historyPromise.catch(function () { return []; }),
       ]);
-      const cartIds = cartProductIds.filter((productId) => productId !== currentProductId);
       const excluded = new Set([...this.excludedProductIds, currentProductId, ...cartProductIds].map(String));
-      const sources = [
-        { id: currentProductId, kind: 'current', weight: PDP_SCORE_CURRENT_PRODUCT },
-        ...cartIds.map((productId) => ({ id: productId, kind: 'cart', weight: PDP_SCORE_CART_PRODUCT })),
-      ];
-      const batches = await Promise.all(
-        sources.map(async (source) => ({
-          source,
-          cards: await fetchRecommendationCards(source.id, 'complementary', 10).catch(function () { return []; }),
-        }))
-      );
-      const candidates = new Map();
-
-      batches.forEach(({ source, cards }) => {
-        cards.forEach((card, index) => {
-          const productId = String(card.dataset.productId || '');
-          if (!productId || excluded.has(productId) || card.dataset.productAvailable === 'false') return;
-          let candidate = candidates.get(productId);
-          if (!candidate) {
-            candidate = {
-              card,
-              productId,
-              score: 0,
-              bestApiRank: index,
-              sourceIds: new Set(),
-              sourceKinds: new Set(),
-            };
-            candidates.set(productId, candidate);
-          }
-          if (candidate.sourceIds.has(source.id)) return;
-          candidate.sourceIds.add(source.id);
-          candidate.sourceKinds.add(source.kind);
-          candidate.score += source.weight + Math.max(0, PDP_SCORE_API_ORDER_MAX - index);
-          candidate.bestApiRank = Math.min(candidate.bestApiRank, index);
-        });
-      });
-
+      const [complementaryCards, relatedCards] = await Promise.all([
+        fetchRecommendationCards(currentProductId, 'complementary', 10).catch(function () { return []; }),
+        fetchRecommendationCards(currentProductId, 'related', 10).catch(function () { return []; }),
+      ]);
+      const fallbackCards = this.fallbackCards.map((card) => card.cloneNode(true));
       const recentIds = new Set(history.map((item) => String(item.id || '')));
-      const ranked = Array.from(candidates.values())
-        .map((candidate) => {
-          if (recentIds.has(candidate.productId)) candidate.score += PDP_SCORE_RECENT_TIEBREAKER;
-          return candidate;
-        })
-        .sort((left, right) => {
-          if (right.score !== left.score) return right.score - left.score;
-          if (left.bestApiRank !== right.bestApiRank) return left.bestApiRank - right.bestApiRank;
-          return left.productId.localeCompare(right.productId);
-        })
-        .slice(0, this.limit);
+      const source = {
+        stone: this.dataset.currentProductStone || '',
+        type: this.dataset.currentProductType || '',
+        intention: this.dataset.currentProductIntention || '',
+        family: this.dataset.currentProductFamily || '',
+        finish: this.dataset.currentProductFinish || 'inconnu',
+      };
+      let candidatePool = [...complementaryCards, ...relatedCards, ...fallbackCards];
+      let cards = rankPdpCards(candidatePool, source, recentIds, Array.from(excluded), this.limit);
 
-      const cards = ranked.map((candidate) => {
-        const fromCurrent = candidate.sourceKinds.has('current');
-        const fromCart = candidate.sourceKinds.has('cart');
-        const signal = fromCurrent && fromCart ? 'current-and-cart' : fromCart ? 'cart' : 'current';
-        candidate.card.dataset.recommendationSignal = signal;
-        candidate.card.dataset.recommendationScore = String(candidate.score);
-        candidate.card.dataset.recommendationSourceIds = Array.from(candidate.sourceIds).join(',');
-        setRecommendationReason(candidate.card, signal);
-        return candidate.card;
-      });
+      if (cards.length < this.limit) {
+        const catalogueCards = await fetchCatalogueFallbackCards(
+          [...excluded, ...cards.map((card) => String(card.dataset.productId || ''))],
+          this.limit - cards.length
+        ).catch(function () { return []; });
+        candidatePool = [...candidatePool, ...catalogueCards];
+        cards = rankPdpCards(candidatePool, source, recentIds, Array.from(excluded), this.limit);
+      }
 
-      if (cards.length >= this.minimum) {
-        this.renderCards(cards, 'complementary');
+      if (cards.length) {
+        this.renderCards(cards, 'adaptive');
         return;
       }
 
-      this.setState('empty');
+      if (!this.renderPdpFallback(Array.from(excluded))) this.setState('empty');
+    }
+
+    renderPdpFallback(excludedIds) {
+      const excluded = excludedIds || this.excludedProductIds;
+      const fallback = uniqueByProductId(
+        this.fallbackCards.map((card) => card.cloneNode(true)),
+        excluded,
+        this.limit
+      );
+      if (!fallback.length) return false;
+      fallback.forEach((card) => {
+        card.dataset.recommendationGate = card.dataset.fallbackTier === 'same-collection' ? 'collection' : 'catalogue';
+        card.dataset.recommendationSignal = card.dataset.recommendationGate;
+        setPdpRecommendationReason(card, card.dataset.recommendationGate);
+      });
+      this.renderCards(fallback, 'adaptive-fallback');
+      return true;
     }
 
     async loadCartRecommendations() {
@@ -500,8 +590,11 @@
         return;
       }
 
+      const candidateCards = cards.slice(0, this.limit);
+      const visibleCards = this.context === 'pdp' ? candidateCards.slice(0, 1) : candidateCards;
+      if (this.context === 'pdp') this.pdpCandidates = candidateCards;
       this.list.replaceChildren();
-      cards.slice(0, this.limit).forEach((card, index) => {
+      visibleCards.forEach((card, index) => {
         card.classList.remove('milaura-recommendation-card--focal', 'milaura-recommendation-card--secondary');
         const focal = index === 0 && this.context !== 'recent';
         if (this.context === 'cart-page' || this.context === 'cart-drawer' || !focal) {
@@ -516,11 +609,13 @@
       this.currentIntent = intent;
       this.dataset.intent = intent;
       this.list.dataset.cardCount = String(renderedCount);
+      this.list.dataset.candidateCount = String(candidateCards.length);
       this.configureRibbonComposition();
       this.updateCopy(intent);
       this.setState('ready');
-      this.announce(
-        `${renderedCount} ${renderedCount > 1 ? 'produits proposés' : 'produit proposé'}.`
+      this.announce(this.context === 'pdp'
+        ? `1 produit proposé, ${candidateCards.length} ${candidateCards.length > 1 ? 'sélections disponibles' : 'sélection disponible'}.`
+        : `${renderedCount} ${renderedCount > 1 ? 'produits proposés' : 'produit proposé'}.`
       );
       this.observeImpression();
       document.dispatchEvent(new CustomEvent('milaura:recommendations:loaded', { detail: { root: this } }));
@@ -779,16 +874,45 @@
       }, 80);
     }
 
+    refreshPdpCartItems(items) {
+      if (!Array.isArray(items)) return;
+      const currentProductId = String(this.sourceProductIds[0] || '');
+      const cartProductIds = items
+        .map((item) => String(item.product_id || item.productId || ''))
+        .filter(Boolean);
+      const excluded = new Set([currentProductId, ...cartProductIds]);
+      const remaining = this.pdpCandidates.filter((card) => {
+        const productId = String(card.dataset.productId || '');
+        return productId && !excluded.has(productId) && card.dataset.productAvailable !== 'false';
+      });
+
+      window.clearTimeout(this.cartRefreshTimer);
+      this.cartRefreshTimer = window.setTimeout(() => {
+        this.excludedProductIds = Array.from(excluded);
+        this.dataset.milauraImpressionSent = '';
+        if (remaining.length) {
+          this.renderCards(remaining, 'adaptive');
+          return;
+        }
+        this.loading = false;
+        this.loadPdpRecommendations().catch(() => {
+          if (!this.renderPdpFallback(Array.from(excluded))) this.setState('error');
+        });
+      }, 80);
+    }
+
     bindCartRefresh() {
-      if (this.context !== 'cart-page') return;
+      if (this.context !== 'cart-page' && this.context !== 'pdp') return;
       this.cartRefreshHandler = (event) => {
-        this.refreshCartItems(event.detail?.items);
+        if (this.context === 'pdp') this.refreshPdpCartItems(event.detail?.items);
+        else this.refreshCartItems(event.detail?.items);
       };
       document.addEventListener('cart:updated', this.cartRefreshHandler);
 
       if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
         this.cartBusUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
-          this.refreshCartItems(event.cartData?.items);
+          if (this.context === 'pdp') this.refreshPdpCartItems(event.cartData?.items);
+          else this.refreshCartItems(event.cartData?.items);
         });
       }
     }
@@ -864,6 +988,7 @@
 
   window.MilauraRecommendations = Object.freeze({
     getPreferenceState,
+    rankPdpCards,
   });
   document.dispatchEvent(new CustomEvent('milaura:recommendations:ready'));
 

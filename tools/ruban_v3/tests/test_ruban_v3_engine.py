@@ -61,7 +61,7 @@ class RubanV3EngineTest(unittest.TestCase):
 
     candidates = rank_candidates(source, [source, different_finish, other_stone, exact], CONFIG)
 
-    self.assertEqual([candidate["shopify_product_id"] for candidate in candidates], ["2", "3"])
+    self.assertEqual([candidate["shopify_product_id"] for candidate in candidates[:2]], ["2", "3"])
     self.assertEqual(candidates[0]["relation"], "same_stone_jewellery")
     self.assertIn("same_finish", candidates[0]["components"])
 
@@ -75,6 +75,7 @@ class RubanV3EngineTest(unittest.TestCase):
       product("6", normalized_type="collier", physical_stock_units=0, supplier_current=False),
       product("7", normalized_type="collier", contribution_ht=0),
       product("8", normalized_type="collier", excluded=True, exclusion_reasons=("manual",)),
+      product("9", normalized_type="collier", image_count=0),
     ]
 
     for target in cases:
@@ -99,7 +100,9 @@ class RubanV3EngineTest(unittest.TestCase):
 
     candidates = rank_candidates(source, [source, target, generic], CONFIG)
 
-    self.assertEqual(candidates, [])
+    self.assertTrue(candidates)
+    self.assertTrue(all(candidate["relation"] != "compatible_stone_or_intention" for candidate in candidates))
+    self.assertEqual(candidates[0]["relation"], "same_universe")
 
   def test_approved_stone_family_can_match_variants(self):
     source = product("1", normalized_type="collier", stones=("obsidienne-noire",))
@@ -127,15 +130,57 @@ class RubanV3EngineTest(unittest.TestCase):
     self.assertEqual(len({item["shopify_product_id"] for item in first}), 3)
     self.assertNotIn("1", {item["shopify_product_id"] for item in first})
 
-  def test_no_honest_relation_hides_the_ruban(self):
+  def test_no_semantic_relation_uses_catalogue_fallback(self):
     source = product("1", normalized_type="savon", family="soin", stones=())
     unrelated = product("2", normalized_type="bracelet", stones=("amethyste",))
 
     matrix = build_matrix([source, unrelated], CONFIG, generated_at="2026-08-28T00:00:00Z")
     mapping = next(item for item in matrix["mappings"] if item["source_product_id"] == "1")
 
+    self.assertEqual(mapping["status"], "MATCH_REPLI_CATALOGUE")
+    self.assertEqual(mapping["candidates"][0]["shopify_product_id"], "2")
+
+  def test_same_collection_precedes_catalogue_fallback(self):
+    source = product(
+      "1",
+      normalized_type="savon",
+      family="soin",
+      stones=(),
+      collection_handles=("soins-bien-etre",),
+    )
+    collection_match = product(
+      "2",
+      normalized_type="decoration",
+      family="decoration",
+      stones=("sodalite",),
+      collection_handles=("soins-bien-etre",),
+    )
+    catalogue = product("3", normalized_type="bracelet", family="bijou", stones=("amethyste",))
+
+    candidates = rank_candidates(source, [source, catalogue, collection_match], CONFIG)
+
+    self.assertEqual(candidates[0]["shopify_product_id"], "2")
+    self.assertEqual(candidates[0]["relation"], "same_collection")
+
+  def test_ruban_is_empty_only_when_no_other_target_passes_hard_gates(self):
+    source = product("1", normalized_type="savon", family="soin", stones=())
+    blocked = product("2", available=False)
+
+    matrix = build_matrix([source, blocked], CONFIG, generated_at="2026-08-28T00:00:00Z")
+    mapping = next(item for item in matrix["mappings"] if item["source_product_id"] == "1")
+
     self.assertEqual(mapping["status"], "AUCUN_MATCH_HONNETE")
     self.assertEqual(mapping["candidates"], [])
+
+  def test_source_exclusion_does_not_remove_safe_fallback_candidates(self):
+    source = product("1", normalized_type="baguette-minerale", family="mineral", stones=())
+    target = product("2", normalized_type="bracelet", family="bijou")
+
+    matrix = build_matrix([source, target], CONFIG, generated_at="2026-08-28T00:00:00Z")
+    mapping = next(item for item in matrix["mappings"] if item["source_product_id"] == "1")
+
+    self.assertEqual(mapping["status"], "EXCLU_SOURCE")
+    self.assertEqual(mapping["candidates"][0]["shopify_product_id"], "2")
 
   def test_content_hash_is_idempotent(self):
     products = [product("1"), product("2", normalized_type="collier")]
@@ -146,11 +191,11 @@ class RubanV3EngineTest(unittest.TestCase):
     self.assertEqual(first["content_hash"], second["content_hash"])
     self.assertNotEqual(first["generated_at"], second["generated_at"])
 
-  def test_runtime_requires_video_cart_and_availability_gates(self):
+  def test_runtime_uses_gallery_cart_and_availability_gates_without_video(self):
     candidates = [
-      {"shopify_product_id": "2", "video_status": "approved", "video_reference": "gid://video/2"},
-      {"shopify_product_id": "3", "video_status": "draft", "video_reference": "gid://video/3"},
-      {"shopify_product_id": "4", "video_status": "approved", "video_reference": "gid://video/4"},
+      {"shopify_product_id": "2", "image_count": 3, "video_status": "approved"},
+      {"shopify_product_id": "3", "image_count": 4, "video_status": "draft"},
+      {"shopify_product_id": "4", "image_count": 0, "video_status": "approved"},
     ]
 
     selected = select_runtime_candidate(
@@ -160,21 +205,22 @@ class RubanV3EngineTest(unittest.TestCase):
     )
     hidden = select_runtime_candidate(
       candidates,
-      cart_product_ids={"2", "4"},
+      cart_product_ids={"2", "3"},
       available_product_ids={"2", "3", "4"},
     )
 
-    self.assertEqual(selected["shopify_product_id"], "4")
+    self.assertEqual(selected["shopify_product_id"], "3")
     self.assertIsNone(hidden)
 
-  def test_public_payload_stays_hidden_without_an_approved_video(self):
+  def test_public_payload_renders_with_gallery_without_video(self):
     products = [product("1"), product("2", normalized_type="collier")]
     matrix = build_matrix(products, CONFIG, generated_at="2026-08-28T00:00:00Z")
 
     payload = public_payload(matrix)
     mapping = next(item for item in payload["mappings"] if item["source_product_id"] == "1")
 
-    self.assertFalse(mapping["should_render"])
+    self.assertTrue(mapping["should_render"])
+    self.assertTrue(mapping["has_gallery_candidate"])
     self.assertTrue(mapping["candidates"])
 
 

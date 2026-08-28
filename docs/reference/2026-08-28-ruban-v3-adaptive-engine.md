@@ -2,15 +2,17 @@
 
 Date : 2026-08-28
 
-Version de score : `ruban-v3.1.0-2026-08-28`
+Version de score : `ruban-v3.2.0-2026-08-28`
 
-Statut : Lot 1 implémenté et validé. Lot 2 produit dans Higgsfield et techniquement validé. GO visuel Patrice en attente. Aucune mutation Shopify, aucun metafield créé, aucun média chargé dans Shopify et aucun déploiement effectué.
+Statut : moteur et runtime galerie implémentés et validés sur la branche Ruban. Lot 2 Higgsfield conservé en brouillon hors du chemin critique. Aucune mutation Shopify, aucun metafield créé, aucun média chargé dans Shopify et aucun déploiement effectué.
 
 ## Décision
 
 Ruban V3 ne dépend plus d une matrice manuelle figée. Le noyau livré transforme un export catalogue et la vérité commerciale courante en un top 3 déterministe par produit source.
 
-Le calcul peut être relancé après chaque évolution du catalogue. Un produit ajouté, retiré, épuisé, pausé, remis en stock ou devenu non rentable modifie automatiquement le pool au prochain calcul.
+Le calcul peut être relancé après chaque évolution du catalogue. Le storefront ne dépend toutefois pas d une table figée : il relit au chargement les recommandations Shopify, les collections actuelles, le catalogue disponible et le panier.
+
+Le contrat d affichage est désormais absolu : une PDP publique affiche un produit, conserve trois candidats ordonnés et utilise uniquement une photographie de la galerie Shopify du produit. Si les relations sémantiques ne suffisent pas, le moteur descend vers le même univers, la même collection, puis le catalogue éligible.
 
 Les anciennes associations V1 restent un signal borné. Elles ne peuvent jamais contourner une gate de disponibilité, de stock, de statut fournisseur, de prix ou de contribution.
 
@@ -35,6 +37,7 @@ Chaque produit porte au minimum :
 - pierre principale distincte de la liste complète des pierres ;
 - finition ;
 - intention et usages quand ils sont présents ;
+- collections calculées ou exposées par Shopify ;
 - statut canonique, quantité physique et statut fournisseur ;
 - contribution HT et taux de contribution ;
 - statut de fidélité photo ;
@@ -50,10 +53,11 @@ Une cible est rejetée avant scoring si une seule condition suivante est vraie :
 1. produit non public ou indisponible ;
 2. produit identique à la source ;
 3. prix nul ou négatif ;
-4. produit ou fournisseur pausé ;
-5. absence de stock physique positif et de fournisseur actuel vérifié ;
-6. contribution HT absente, nulle ou négative ;
-7. exclusion explicite.
+4. absence de photographie dans la galerie Shopify ;
+5. produit ou fournisseur pausé ;
+6. absence de stock physique positif et de fournisseur actuel vérifié ;
+7. contribution HT absente, nulle ou négative ;
+8. exclusion explicite.
 
 Un override ne s applique qu après ces gates.
 
@@ -75,18 +79,25 @@ Seuils :
 
 - `70` : match honnête minimum ;
 - `100` : match adaptatif fort ;
-- moins de `70` : aucun affichage forcé.
+- moins de `70` : passage aux replis ordonnés, sans masquer le Ruban.
 
-Le tri final est stable : score décroissant, ordre d override en départage, puis identifiant Shopify. La sortie est limitée à trois candidats uniques.
+Le tri final est stable : score décroissant, ordre d override en départage, puis identifiant Shopify. La sortie est limitée à trois candidats uniques. La chaîne de repli est : pierre et type exacts, pierre ou intention proche, même famille, même collection, catalogue éligible.
 
-## Gate vidéo et runtime
+## Runtime galerie et garantie jamais vide
 
-Le top 3 commercial est calculé même si les vidéos ne sont pas encore produites. Le payload public porte cependant `should_render: false` tant qu aucun candidat ne possède à la fois :
+Le média visible provient de `featured_image`, donc de la galerie Shopify du produit recommandé. Les détourages historiques et les vidéos Higgsfield ne sont pas utilisés dans ce runtime.
 
-- `video_status: approved` ;
-- une référence vidéo non vide.
+Le storefront :
 
-Au runtime, le premier candidat est encore rejeté s il est déjà au panier ou devenu indisponible. Ruban se masque si aucun candidat restant ne franchit toutes les gates.
+1. demande les produits complémentaires et liés du produit consulté ;
+2. classe les cartes avec pierre, type, finition, intention et famille ;
+3. complète avec les collections du produit ;
+4. complète avec le catalogue public si nécessaire ;
+5. exclut le produit courant, le panier, les produits indisponibles et les produits sans image ;
+6. conserve trois candidats mais n affiche que le premier ;
+7. promeut le candidat suivant après un ajout au panier.
+
+Le moteur offline confirme qu un repli existe pour les 318 sources du snapshot. Le seul cas théorique vide serait l absence totale d un autre produit éligible dans le catalogue.
 
 ## Reproduction de la baseline du 2026-08-28
 
@@ -124,14 +135,18 @@ Sur le snapshot du 2026-08-28 :
 | Cibles commercialement éligibles | 67 |
 | Match adaptatif fort | 108 |
 | Match adaptatif | 15 |
-| Aucun match honnête | 175 |
-| Source exclue | 20 |
-| Ambassadeurs vidéo distincts dans les top 3 | 47 |
-| Rubans prêts à afficher avant Lot 2 | 0 |
+| Repli pierre ou intention proche | 62 |
+| Repli même famille | 110 |
+| Repli même collection | 0 |
+| Repli catalogue | 3 |
+| Aucun candidat | 0 |
+| Sources historiquement exclues mais dotées de replis sûrs | 20 |
+| Sources avec trois candidats | 318 |
+| Rubans prêts à afficher avec une photo de galerie | 318 |
 
 Les 113 sources déjà associées dans la matrice d audit conservent un match. Dix sources supplémentaires obtiennent un match honnête après normalisation : deux objets minéraux, quatre porte-clés et quatre bougies avec pierre principale identifiable.
 
-Hash de contenu de la baseline : `b11db7446b9188976f02fca93208c237629f41fdfc9812a91448b7cd0476e143`.
+Hash de contenu de la baseline : `8fbcace0721d1dad893782b67eff467481b2dc7011792e67e746b0c14bae75f3`.
 
 ## Lot 2 Higgsfield du 2026-08-28
 
@@ -148,6 +163,6 @@ Le manifeste source de verite du Lot 2 est `config/ruban-v3-video-manifest-2026-
 1. Lot 1 : terminé, validé et poussé ;
 2. Lot 2 : huit videos produites dans Higgsfield, controle technique passe, GO visuel Patrice en attente ;
 3. Lot 3 de preview sur thème de développement : retiré par décision de Patrice ;
-4. Lot 4 : regroupe l adaptation du thème, les metafields, l analytics et le passage direct au live, avec push ciblé, pullback et rollback prêt.
+4. Lot 4 : runtime galerie implémenté sur la branche Ruban, sans nouveau metafield. L intégration canonique et le push live ciblé restent à exécuter après GO live explicite, avec pullback et rollback prêt.
 
 Le retrait du thème de développement ne retire aucune gate de fidélité ni de sécurité. Un dernier GO live explicite reste requis juste avant le push sur le thème `190430282075`.
