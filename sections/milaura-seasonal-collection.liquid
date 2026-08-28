@@ -8,9 +8,19 @@
   assign featured_2 = section.settings.featured_product_2
   assign featured_3 = section.settings.featured_product_3
   assign featured_4 = section.settings.featured_product_4
+  assign show_collection_products = section.settings.show_collection_products
   assign seasonal_title_id = 'MilauraSeasonalTitle-' | append: section.id
   assign rendered_count = 0
   assign editorial_inserted = false
+  assign has_products = false
+
+  if featured_1 != blank or featured_2 != blank or featured_3 != blank or featured_4 != blank
+    assign has_products = true
+  endif
+
+  if show_collection_products and collection.products_count > 0
+    assign has_products = true
+  endif
 -%}
 
 {%- capture editorial_tile -%}
@@ -338,7 +348,7 @@
           {%- if section.settings.edition_label != blank -%}
             <span>{{ section.settings.edition_label | escape }}</span>
           {%- endif -%}
-          {%- if section.settings.show_product_count -%}
+          {%- if section.settings.show_product_count and show_collection_products -%}
             <span>{{ collection.products_count }} créations</span>
           {%- endif -%}
         </div>
@@ -351,7 +361,7 @@
   <section class="milaura-seasonal-products" aria-label="Les créations de la sélection">
     <div class="milaura-seasonal-products__shell">
       {%- paginate collection.products by 48 -%}
-        {%- if collection.products_count > 0 or featured_1 != blank or featured_2 != blank or featured_3 != blank or featured_4 != blank -%}
+        {%- if has_products -%}
           <div class="milaura-seasonal-products__grid milaura-cards milaura-cards--editorial" role="list">
             {%- if featured_1 != blank -%}
               {%- assign rendered_count = rendered_count | plus: 1 -%}
@@ -401,26 +411,28 @@
               {%- endif -%}
             {%- endif -%}
 
-            {%- for product in collection.products -%}
-              {%- unless product.handle == featured_1.handle or product.handle == featured_2.handle or product.handle == featured_3.handle or product.handle == featured_4.handle -%}
-                {%- assign rendered_count = rendered_count | plus: 1 -%}
-                <div class="milaura-seasonal-products__card" role="listitem">
-                  {% render 'milaura-card-product',
-                    card_product: product,
-                    img_loading: 'lazy',
-                    show_vendor: false,
-                    show_badges: section.settings.show_badges,
-                    show_secondary_image: true,
-                    force_bestseller_badge: false
-                  %}
-                  {% render 'milaura-editorial-purchase', product: product %}
-                </div>
-                {%- if rendered_count == 4 and editorial_tile != blank -%}
-                  {{ editorial_tile }}
-                  {%- assign editorial_inserted = true -%}
-                {%- endif -%}
-              {%- endunless -%}
-            {%- endfor -%}
+            {%- if show_collection_products -%}
+              {%- for product in collection.products -%}
+                {%- unless product.handle == featured_1.handle or product.handle == featured_2.handle or product.handle == featured_3.handle or product.handle == featured_4.handle -%}
+                  {%- assign rendered_count = rendered_count | plus: 1 -%}
+                  <div class="milaura-seasonal-products__card" role="listitem">
+                    {% render 'milaura-card-product',
+                      card_product: product,
+                      img_loading: 'lazy',
+                      show_vendor: false,
+                      show_badges: section.settings.show_badges,
+                      show_secondary_image: true,
+                      force_bestseller_badge: false
+                    %}
+                    {% render 'milaura-editorial-purchase', product: product %}
+                  </div>
+                  {%- if rendered_count == 4 and editorial_tile != blank -%}
+                    {{ editorial_tile }}
+                    {%- assign editorial_inserted = true -%}
+                  {%- endif -%}
+                {%- endunless -%}
+              {%- endfor -%}
+            {%- endif -%}
 
             {%- if editorial_inserted == false and rendered_count > 0 and editorial_tile != blank -%}
               {{ editorial_tile }}
@@ -473,6 +485,12 @@
       "id": "show_product_count",
       "label": "Afficher le nombre de produits",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_products",
+      "label": "Afficher les autres produits de la collection",
+      "default": true
     },
     {
       "type": "text",
