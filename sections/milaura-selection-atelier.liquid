@@ -5,8 +5,6 @@
   assign selected_count = 0
   assign selection_title_id = 'MilauraSelectionTitle-' | append: section.id
   assign media_description_id = 'MilauraSelectionMediaDescription-' | append: section.id
-  assign campaign_video_desktop = section.settings.campaign_video
-  assign campaign_video_mobile = section.settings.campaign_video_mobile | default: campaign_video_desktop
   assign campaign_poster_desktop = section.settings.campaign_poster
   assign campaign_poster_mobile = section.settings.campaign_poster_mobile | default: campaign_poster_desktop
 
@@ -24,9 +22,7 @@
   <script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
-{%- if campaign_video_desktop != blank -%}
-  <script src="{{ 'milaura-seasonal-media.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
+<script src="{{ 'milaura-seasonal-media.js' | asset_url }}" defer="defer"></script>
 
 {%- style -%}
   #shopify-section-{{ section.id }} {
@@ -72,7 +68,7 @@
 
   #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
     position: relative;
-    aspect-ratio: 16 / 9;
+    min-height: clamp(420px, 43vw, 660px);
     overflow: hidden;
     background: var(--milaura-nacre-ombre);
   }
@@ -80,11 +76,12 @@
   #MilauraSelection-{{ section.id }} .milaura-season__media-frame::before {
     content: '';
     position: absolute;
-    z-index: 2;
-    inset-block: 0;
-    left: 0;
-    width: clamp(48px, 9vw, 136px);
-    background: linear-gradient(90deg, var(--milaura-nacre-ombre) 0%, transparent 100%);
+    z-index: 0;
+    inset: -12%;
+    background:
+      radial-gradient(circle at 72% 34%, color-mix(in srgb, var(--milaura-aigue-pierre) 42%, transparent) 0 8%, transparent 32%),
+      radial-gradient(circle at 34% 82%, color-mix(in srgb, var(--milaura-or-clair) 26%, transparent) 0 5%, transparent 28%),
+      var(--milaura-nacre-ombre);
     pointer-events: none;
   }
 
@@ -94,53 +91,124 @@
     z-index: 2;
     inset: 0;
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--milaura-nacre-pure) 38%, transparent),
-      inset 0 -1px 0 color-mix(in srgb, var(--milaura-nacre-pure) 38%, transparent);
+      inset 0 1px 0 color-mix(in srgb, var(--milaura-nacre-pure) 60%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--milaura-aigue-pierre) 56%, transparent);
     pointer-events: none;
   }
 
+  #MilauraSelection-{{ section.id }} .milaura-season__living-scene,
+  #MilauraSelection-{{ section.id }} .milaura-season__product-portrait {
+    position: absolute;
+    inset: 0;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__living-scene {
+    z-index: 1;
+    overflow: hidden;
+    perspective: 1100px;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__product-portrait {
+    inset: 3% 3% 1% 1%;
+    transform-origin: 56% 58%;
+    will-change: transform;
+  }
+
   #MilauraSelection-{{ section.id }} .milaura-season__picture,
-  #MilauraSelection-{{ section.id }} .milaura-season__video,
   #MilauraSelection-{{ section.id }} .milaura-season__image {
     width: 100%;
     height: 100%;
     display: block;
   }
 
-  #MilauraSelection-{{ section.id }} .milaura-season__video,
   #MilauraSelection-{{ section.id }} .milaura-season__image {
     object-fit: contain;
-    object-position: center;
-    background: var(--milaura-nacre-ombre);
+    object-position: 58% 52%;
+    -webkit-mask-image: radial-gradient(ellipse 68% 62% at 58% 52%, var(--milaura-encre) 54%, transparent 98%);
+    mask-image: radial-gradient(ellipse 68% 62% at 58% 52%, var(--milaura-encre) 54%, transparent 98%);
   }
 
-  #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
+  #MilauraSelection-{{ section.id }} .milaura-season__mineral-orbit {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--milaura-aigue-profonde);
+    filter: drop-shadow(0 8px 10px color-mix(in srgb, var(--milaura-prune) 8%, transparent));
+    pointer-events: none;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__branch,
+  #MilauraSelection-{{ section.id }} .milaura-season__twig {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__branch {
+    stroke-width: 2;
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__twig {
+    stroke-width: 1.2;
+    opacity: 0;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__leaf {
+    fill: color-mix(in srgb, var(--milaura-aigue) 28%, transparent);
+    stroke: currentColor;
+    stroke-width: 1;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0);
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__berry {
     position: absolute;
     z-index: 3;
-    right: clamp(16px, 3vw, 44px);
-    bottom: clamp(16px, 3vw, 44px);
-    min-width: 72px;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--milaura-esp-2xs) var(--milaura-esp-sm);
-    border: 1px solid currentColor;
-    border-radius: 0;
-    color: var(--milaura-nacre-pure);
-    background: color-mix(in srgb, var(--milaura-encre) 72%, transparent);
-    font-family: var(--milaura-font-texte);
-    font-size: var(--milaura-t-label);
-    font-weight: 650;
-    letter-spacing: var(--milaura-ls-label);
-    line-height: var(--milaura-lh-label);
-    text-transform: uppercase;
-    cursor: pointer;
+    left: var(--berry-x);
+    top: var(--berry-y);
+    width: clamp(8px, 0.9vw, 13px);
+    aspect-ratio: 1;
+    border: 1px solid color-mix(in srgb, var(--milaura-nacre-pure) 68%, transparent);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 32% 28%, var(--milaura-nacre-pure) 0 8%, transparent 24%),
+      radial-gradient(circle at 68% 72%, var(--milaura-prune) 0, var(--milaura-aigue-profonde) 72%);
+    box-shadow: 0 5px 9px color-mix(in srgb, var(--milaura-prune) 18%, transparent);
+    opacity: 0;
+    pointer-events: none;
   }
 
-  #MilauraSelection-{{ section.id }} .milaura-season__media-toggle:focus-visible {
-    outline: var(--milaura-focus);
-    outline-offset: 4px;
+  #MilauraSelection-{{ section.id }} .milaura-season__glint {
+    position: absolute;
+    z-index: 4;
+    left: 56.4%;
+    top: 72%;
+    width: clamp(22px, 3vw, 46px);
+    aspect-ratio: 1;
+    color: var(--milaura-or-clair);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__glint::before,
+  #MilauraSelection-{{ section.id }} .milaura-season__glint::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto;
+    height: 1px;
+    background: currentColor;
+    transform: translateY(-50%);
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__glint::after {
+    transform: translateY(-50%) rotate(90deg);
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__media-caption {
@@ -156,7 +224,7 @@
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__copy {
-    position: static;
+    position: relative;
     z-index: 2;
     width: min(1280px, calc(100% - clamp(32px, 6vw, 88px)));
     display: grid;
@@ -182,6 +250,7 @@
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__title {
+    position: relative;
     grid-column: 1;
     grid-row: 2;
     max-width: 12ch;
@@ -192,6 +261,40 @@
     font-weight: 400;
     letter-spacing: var(--milaura-ls-heading);
     line-height: var(--milaura-lh-heading);
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__butterfly {
+    position: absolute;
+    z-index: 5;
+    top: clamp(78px, 21%, 152px);
+    right: clamp(18px, 8%, 96px);
+    width: clamp(28px, 2.6vw, 42px);
+    color: var(--milaura-aigue-profonde);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__butterfly svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__butterfly-wing {
+    fill: color-mix(in srgb, var(--milaura-aigue-pierre) 52%, transparent);
+    stroke: currentColor;
+    stroke-width: 1.2;
+    transform-box: fill-box;
+    transform-origin: center right;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__butterfly-wing--right {
+    transform-origin: center left;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__butterfly-body {
+    fill: var(--milaura-or-profond);
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -412,13 +515,6 @@
       min-height: 0;
     }
 
-    #MilauraSelection-{{ section.id }} .milaura-season__media-frame::before {
-      inset-block: auto 0;
-      width: 100%;
-      height: clamp(36px, 8vw, 64px);
-      background: linear-gradient(0deg, var(--milaura-nacre) 0%, transparent 100%);
-    }
-
     #MilauraSelection-{{ section.id }} .milaura-season__copy {
       width: min(900px, calc(100% - 40px));
       grid-template-columns: 1fr;
@@ -448,6 +544,11 @@
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
       font-size: var(--milaura-t-corps);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__butterfly {
+      top: 78px;
+      right: 12%;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__cards {
@@ -494,16 +595,27 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
-      aspect-ratio: 16 / 9;
+      min-height: 0;
+      aspect-ratio: 4 / 3;
     }
 
-    #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
-      right: var(--milaura-esp-xs);
-      bottom: var(--milaura-esp-xs);
+    #MilauraSelection-{{ section.id }} .milaura-season__product-portrait {
+      inset: 2% -8% -2% -6%;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__image {
+      object-position: 55% 50%;
+      -webkit-mask-image: radial-gradient(ellipse 72% 66% at 55% 50%, var(--milaura-encre) 56%, transparent 98%);
+      mask-image: radial-gradient(ellipse 72% 66% at 55% 50%, var(--milaura-encre) 56%, transparent 98%);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__glint {
+      left: 55%;
+      top: 72%;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__copy {
-      position: static;
+      position: relative;
       width: calc(100% - 32px);
       display: block;
       margin: 0 auto;
@@ -519,6 +631,12 @@
       max-width: 17ch;
       color: var(--milaura-prune);
       font-size: var(--milaura-t-h3);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__butterfly {
+      top: 18px;
+      right: 8px;
+      width: 30px;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -573,9 +691,113 @@
     }
   }
 
+  #MilauraSelection-{{ section.id }} [data-milaura-seasonal-scene].is-seasonal-active .milaura-season__product-portrait {
+    animation: MilauraProductFloat-{{ section.id }} 9s cubic-bezier(0.42, 0, 0.36, 1) 0.4s infinite;
+  }
+
+  #MilauraSelection-{{ section.id }} [data-milaura-seasonal-scene].is-seasonal-active .milaura-season__branch {
+    animation: MilauraBranchDraw-{{ section.id }} 2.6s cubic-bezier(0.32, 0.7, 0.2, 1) 0.15s forwards;
+  }
+
+  #MilauraSelection-{{ section.id }} [data-milaura-seasonal-scene].is-seasonal-active .milaura-season__twig {
+    animation: MilauraTwigReveal-{{ section.id }} 0.8s ease-out 1.45s forwards;
+  }
+
+  #MilauraSelection-{{ section.id }} [data-milaura-seasonal-scene].is-seasonal-active .milaura-season__leaf {
+    animation: MilauraLeafOpen-{{ section.id }} 0.75s cubic-bezier(0.2, 0.8, 0.25, 1.2) var(--leaf-delay, 1.4s) forwards;
+  }
+
+  #MilauraSelection-{{ section.id }} [data-milaura-seasonal-scene].is-seasonal-active .milaura-season__berry {
+    animation: MilauraBerryFall-{{ section.id }} 6.8s cubic-bezier(0.32, 0.02, 0.22, 1) var(--berry-delay) infinite;
+  }
+
+  #MilauraSelection-{{ section.id }} [data-milaura-seasonal-scene].is-seasonal-active .milaura-season__glint {
+    animation: MilauraGlint-{{ section.id }} 5.8s ease-in-out 2.3s infinite;
+  }
+
+  #MilauraSelection-{{ section.id }}.is-seasonal-active .milaura-season__butterfly {
+    animation: MilauraButterflyLand-{{ section.id }} 3.4s cubic-bezier(0.18, 0.72, 0.18, 1) 0.9s forwards;
+  }
+
+  #MilauraSelection-{{ section.id }}.is-seasonal-active .milaura-season__butterfly-wing--left {
+    animation: MilauraWingLeft-{{ section.id }} 0.2s ease-in-out 0.9s 13 alternate;
+  }
+
+  #MilauraSelection-{{ section.id }}.is-seasonal-active .milaura-season__butterfly-wing--right {
+    animation: MilauraWingRight-{{ section.id }} 0.2s ease-in-out 0.9s 13 alternate;
+  }
+
+  @keyframes MilauraProductFloat-{{ section.id }} {
+    0%, 100% {
+      transform: translate3d(var(--seasonal-shift-x, 0px), calc(var(--seasonal-shift-y, 0px) + 3px), 0) rotateY(var(--seasonal-rotate-y, 0deg)) rotateZ(-0.35deg) scale(1.015);
+    }
+    50% {
+      transform: translate3d(var(--seasonal-shift-x, 0px), calc(var(--seasonal-shift-y, 0px) - 7px), 14px) rotateY(var(--seasonal-rotate-y, 0deg)) rotateZ(0.35deg) scale(1.035);
+    }
+  }
+
+  @keyframes MilauraBranchDraw-{{ section.id }} {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes MilauraTwigReveal-{{ section.id }} {
+    to { opacity: 0.72; }
+  }
+
+  @keyframes MilauraLeafOpen-{{ section.id }} {
+    to { transform: scale(1); }
+  }
+
+  @keyframes MilauraBerryFall-{{ section.id }} {
+    0%, 10% { opacity: 0; transform: translate3d(0, -5px, 0) scale(0.8); }
+    18%, 34% { opacity: 0.94; transform: translate3d(0, 0, 0) scale(1); }
+    72% { opacity: 0.9; transform: translate3d(var(--berry-drift), var(--berry-fall), 0) rotate(170deg) scale(0.96); }
+    84%, 100% { opacity: 0; transform: translate3d(var(--berry-drift), calc(var(--berry-fall) + 34px), 0) rotate(210deg) scale(0.82); }
+  }
+
+  @keyframes MilauraGlint-{{ section.id }} {
+    0%, 66%, 100% { opacity: 0; transform: rotate(45deg) scale(0.45); }
+    74% { opacity: 0.92; transform: rotate(45deg) scale(1); }
+    82% { opacity: 0; transform: rotate(45deg) scale(1.35); }
+  }
+
+  @keyframes MilauraButterflyLand-{{ section.id }} {
+    0% { opacity: 0; transform: translate3d(210px, -90px, 0) rotate(18deg) scale(0.7); }
+    28% { opacity: 1; transform: translate3d(120px, -26px, 0) rotate(-12deg) scale(0.9); }
+    58% { transform: translate3d(48px, 14px, 0) rotate(8deg) scale(1); }
+    82% { transform: translate3d(12px, -5px, 0) rotate(-4deg) scale(0.96); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0) scale(0.94); }
+  }
+
+  @keyframes MilauraWingLeft-{{ section.id }} {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(52deg); }
+  }
+
+  @keyframes MilauraWingRight-{{ section.id }} {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(-52deg); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    #MilauraSelection-{{ section.id }} .milaura-season__cta {
+    #MilauraSelection-{{ section.id }} .milaura-season__cta,
+    #MilauraSelection-{{ section.id }} [data-milaura-seasonal-scene] *,
+    #MilauraSelection-{{ section.id }} .milaura-season__butterfly {
+      animation: none !important;
       transition: none;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__branch {
+      stroke-dashoffset: 0;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__twig,
+    #MilauraSelection-{{ section.id }} .milaura-season__butterfly {
+      opacity: 0.72;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__leaf {
+      transform: scale(1);
     }
   }
 {%- endstyle -%}
@@ -591,32 +813,21 @@
   <div class="milaura-season__shell">
     <div class="milaura-season__campaign">
       <figure class="milaura-season__media">
-        <div class="milaura-season__media-frame"{% if campaign_video_desktop != blank %} data-milaura-seasonal-media{% endif %}>
-          {%- if campaign_video_desktop != blank -%}
-            <video
-              class="milaura-season__video"
-              poster="{{ campaign_poster_desktop | asset_url }}"
-              preload="none"
-              muted
-              loop
-              playsinline
-              aria-describedby="{{ media_description_id }}"
-              data-milaura-seasonal-video
-              data-src-desktop="{{ campaign_video_desktop | asset_url }}"
-              data-src-mobile="{{ campaign_video_mobile | asset_url }}"
-              data-poster-desktop="{{ campaign_poster_desktop | asset_url }}"
-              data-poster-mobile="{{ campaign_poster_mobile | asset_url }}"
-            ></video>
-            <button
-              class="milaura-season__media-toggle"
-              type="button"
-              aria-label="Lire la vidéo"
-              aria-pressed="false"
-              data-milaura-seasonal-toggle
-            >
-              <span data-milaura-seasonal-toggle-label>Lire</span>
-            </button>
-          {%- else -%}
+        <div class="milaura-season__media-frame" data-milaura-seasonal-scene>
+          <div class="milaura-season__living-scene">
+            <div class="milaura-season__product-portrait" data-milaura-seasonal-product>
+              {%- if featured_product != blank and featured_product.featured_image != blank -%}
+                {{
+                  featured_product.featured_image
+                  | image_url: width: 1400
+                  | image_tag:
+                    class: 'milaura-season__image',
+                    widths: '560, 760, 980, 1200, 1400',
+                    sizes: '(max-width: 749px) 112vw, (max-width: 989px) 100vw, 62vw',
+                    loading: 'lazy',
+                    alt: section.settings.campaign_media_description
+                }}
+              {%- else -%}
             <picture class="milaura-season__picture">
               <source media="(max-width: 749px)" srcset="{{ campaign_poster_mobile | asset_url }}">
               <img
@@ -629,13 +840,28 @@
                 decoding="async"
               >
             </picture>
-          {%- endif -%}
+              {%- endif -%}
+            </div>
+
+            <svg class="milaura-season__mineral-orbit" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <path class="milaura-season__branch" d="M 920 28 C 820 64 834 154 746 185 C 682 207 695 276 620 306 C 560 330 540 398 462 432" />
+              <path class="milaura-season__twig" d="M 805 121 C 756 104 726 78 704 42 M 744 187 C 790 187 824 169 858 136 M 676 247 C 630 230 601 198 584 163 M 617 307 C 662 299 697 278 724 246 M 548 380 C 501 367 464 338 442 300" />
+              <path class="milaura-season__leaf" style="--leaf-delay: 1.35s" d="M 724 82 C 691 72 673 48 676 20 C 710 28 729 50 724 82 Z" />
+              <path class="milaura-season__leaf" style="--leaf-delay: 1.55s" d="M 801 171 C 821 140 849 126 877 134 C 861 164 836 179 801 171 Z" />
+              <path class="milaura-season__leaf" style="--leaf-delay: 1.7s" d="M 606 204 C 577 190 562 165 570 138 C 600 149 616 174 606 204 Z" />
+              <path class="milaura-season__leaf" style="--leaf-delay: 1.9s" d="M 676 284 C 700 254 730 244 756 256 C 735 284 708 295 676 284 Z" />
+              <path class="milaura-season__leaf" style="--leaf-delay: 2.05s" d="M 474 352 C 442 342 423 319 427 291 C 460 298 480 321 474 352 Z" />
+            </svg>
+
+            <span class="milaura-season__berry" style="--berry-x: 80%; --berry-y: 24%; --berry-delay: 2.1s; --berry-drift: -28px; --berry-fall: 148px" aria-hidden="true"></span>
+            <span class="milaura-season__berry" style="--berry-x: 72%; --berry-y: 40%; --berry-delay: 3.35s; --berry-drift: 22px; --berry-fall: 170px" aria-hidden="true"></span>
+            <span class="milaura-season__berry" style="--berry-x: 63%; --berry-y: 56%; --berry-delay: 4.55s; --berry-drift: -18px; --berry-fall: 132px" aria-hidden="true"></span>
+            <span class="milaura-season__glint" aria-hidden="true"></span>
+          </div>
         </div>
-        {%- if campaign_video_desktop != blank -%}
-          <figcaption id="{{ media_description_id }}" class="milaura-season__media-caption">
-            {{ section.settings.campaign_media_description | escape }}
-          </figcaption>
-        {%- endif -%}
+        <figcaption id="{{ media_description_id }}" class="milaura-season__media-caption">
+          {{ section.settings.campaign_media_description | escape }}
+        </figcaption>
       </figure>
 
       <div class="milaura-season__copy">
@@ -646,6 +872,16 @@
         <h2 id="{{ selection_title_id }}" class="milaura-season__title">
           {{ section.settings.campaign_title | escape }}
         </h2>
+
+        <span class="milaura-season__butterfly" aria-hidden="true">
+          <svg viewBox="0 0 48 34" role="presentation">
+            <path class="milaura-season__butterfly-wing milaura-season__butterfly-wing--left" d="M 23 17 C 16 1 3 2 3 11 C 3 20 12 24 23 19 Z" />
+            <path class="milaura-season__butterfly-wing milaura-season__butterfly-wing--right" d="M 25 17 C 32 1 45 2 45 11 C 45 20 36 24 25 19 Z" />
+            <path class="milaura-season__butterfly-wing milaura-season__butterfly-wing--left" d="M 23 19 C 15 21 9 25 12 30 C 16 35 21 28 24 21 Z" />
+            <path class="milaura-season__butterfly-wing milaura-season__butterfly-wing--right" d="M 25 19 C 33 21 39 25 36 30 C 32 35 27 28 24 21 Z" />
+            <ellipse class="milaura-season__butterfly-body" cx="24" cy="18" rx="1.6" ry="8" />
+          </svg>
+        </span>
 
         {%- if section.settings.campaign_description != blank -%}
           <div class="milaura-season__description">{{ section.settings.campaign_description }}</div>
@@ -744,23 +980,13 @@
     },
     {
       "type": "text",
-      "id": "campaign_video",
-      "label": "Vidéo desktop dans les assets"
-    },
-    {
-      "type": "text",
       "id": "campaign_poster",
-      "label": "Poster desktop dans les assets"
-    },
-    {
-      "type": "text",
-      "id": "campaign_video_mobile",
-      "label": "Vidéo mobile dans les assets"
+      "label": "Image de secours desktop dans les assets"
     },
     {
       "type": "text",
       "id": "campaign_poster_mobile",
-      "label": "Poster mobile dans les assets"
+      "label": "Image de secours mobile dans les assets"
     },
     {
       "type": "text",

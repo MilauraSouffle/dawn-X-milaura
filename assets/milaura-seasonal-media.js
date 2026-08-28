@@ -1,120 +1,55 @@
 (() => {
-  const selector = '[data-milaura-seasonal-media]';
+  const selector = '[data-milaura-seasonal-scene]';
 
-  const initMedia = (root = document) => {
-    root.querySelectorAll(selector).forEach((media) => {
-      if (media.dataset.mediaReady === 'true') return;
-      media.dataset.mediaReady = 'true';
+  const initScenes = (root = document) => {
+    root.querySelectorAll(selector).forEach((scene) => {
+      if (scene.dataset.seasonalSceneReady === 'true') return;
+      scene.dataset.seasonalSceneReady = 'true';
 
-      const video = media.querySelector('[data-milaura-seasonal-video]');
-      const toggle = media.querySelector('[data-milaura-seasonal-toggle]');
-      const label = toggle?.querySelector('[data-milaura-seasonal-toggle-label]');
-      if (!video || !toggle) return;
-
+      const section = scene.closest('.milaura-season, .milaura-sodalite-landing');
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const mobileViewport = window.matchMedia('(max-width: 749px)');
-      const saveData = navigator.connection?.saveData === true;
-      let activeSource = '';
-      let inView = false;
-      let sourceLoaded = false;
-      let userPaused = false;
+      const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+      let animationFrame = 0;
 
-      const currentVariant = () => (mobileViewport.matches ? 'Mobile' : 'Desktop');
-      const currentMediaUrl = (kind) => {
-        const variantUrl = video.dataset[`${kind}${currentVariant()}`];
-        return variantUrl || video.dataset[`${kind}Desktop`] || '';
+      const setActive = (active) => {
+        scene.classList.toggle('is-seasonal-active', active);
+        section?.classList.toggle('is-seasonal-active', active);
       };
 
-      const setButtonState = () => {
-        const paused = video.paused;
-        toggle.setAttribute('aria-pressed', String(!paused));
-        toggle.setAttribute('aria-label', paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause');
-        if (label) label.textContent = paused ? 'Lire' : 'Pause';
+      const resetParallax = () => {
+        scene.style.removeProperty('--seasonal-shift-x');
+        scene.style.removeProperty('--seasonal-shift-y');
+        scene.style.removeProperty('--seasonal-rotate-y');
       };
 
-      const setPoster = () => {
-        const poster = currentMediaUrl('poster');
-        if (poster && video.poster !== poster) video.poster = poster;
-      };
+      const onPointerMove = (event) => {
+        if (!finePointer.matches || reducedMotion.matches) return;
+        const bounds = scene.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+        const y = (event.clientY - bounds.top) / bounds.height - 0.5;
 
-      const loadSource = (force = false) => {
-        if (!force && (reducedMotion.matches || saveData)) return false;
-
-        const source = currentMediaUrl('src');
-        if (!source) return false;
-        if (sourceLoaded && activeSource === source) return true;
-
-        activeSource = source;
-        sourceLoaded = true;
-        video.src = source;
-        video.load();
-        return true;
-      };
-
-      const playVideo = (force = false) => {
-        if ((!force && (reducedMotion.matches || saveData)) || userPaused) return;
-        if (!loadSource(force)) return;
-        video.play().catch(() => setButtonState());
-      };
-
-      const updateVariant = () => {
-        const wasPlaying = !video.paused && !userPaused;
-        const nextSource = currentMediaUrl('src');
-        setPoster();
-
-        if (!sourceLoaded || !nextSource || nextSource === activeSource) return;
-
-        video.pause();
-        sourceLoaded = false;
-        activeSource = '';
-        loadSource(true);
-        if (wasPlaying && inView && !reducedMotion.matches) {
-          video.play().catch(() => setButtonState());
-        }
+        cancelAnimationFrame(animationFrame);
+        animationFrame = requestAnimationFrame(() => {
+          scene.style.setProperty('--seasonal-shift-x', `${(x * 7).toFixed(2)}px`);
+          scene.style.setProperty('--seasonal-shift-y', `${(y * 5).toFixed(2)}px`);
+          scene.style.setProperty('--seasonal-rotate-y', `${(x * 1.3).toFixed(2)}deg`);
+        });
       };
 
       const observer = new IntersectionObserver(
-        ([entry]) => {
-          inView = entry.isIntersecting;
-          if (inView) {
-            playVideo();
-          } else {
-            video.pause();
-          }
-          setButtonState();
-        },
-        { rootMargin: '180px 0px', threshold: 0.25 }
+        ([entry]) => setActive(entry.isIntersecting),
+        { rootMargin: '80px 0px', threshold: 0.18 }
       );
 
-      toggle.addEventListener('click', () => {
-        if (video.paused) {
-          userPaused = false;
-          playVideo(true);
-        } else {
-          userPaused = true;
-          video.pause();
-        }
-        setButtonState();
-      });
-
-      video.addEventListener('play', setButtonState);
-      video.addEventListener('pause', setButtonState);
-      mobileViewport.addEventListener('change', updateVariant);
+      scene.addEventListener('pointermove', onPointerMove, { passive: true });
+      scene.addEventListener('pointerleave', resetParallax);
       reducedMotion.addEventListener('change', () => {
-        if (reducedMotion.matches) {
-          video.pause();
-        } else if (!userPaused && inView) {
-          playVideo();
-        }
-        setButtonState();
+        if (reducedMotion.matches) resetParallax();
       });
-
-      setPoster();
-      setButtonState();
-      observer.observe(media);
+      observer.observe(scene);
     });
   };
 
-  document.addEventListener('DOMContentLoaded', () => initMedia());
-  document.addEventListener('shopify:section:load', (event) => initMedia(event.target));
+  document.addEventListener('DOMContentLoaded', () => initScenes());
+  document.addEventListener('shopify:section:load', (event) => initScenes(event.target));
 })();
