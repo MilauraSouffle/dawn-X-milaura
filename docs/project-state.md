@@ -1,17 +1,17 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-28 13:22 CEST
+Derniere mise a jour : 2026-08-28 13:38 CEST
 
 ## Etat en une phrase
 
-Le Ruban V3 adaptatif est integre, pousse et live sur `190430282075` avec trois produits visibles, trois cartes egales sur desktop, un rail tactile sous 990 px, des photos reelles de galerie, les exclusions runtime et les replis garantissant un Ruban non vide tant qu un autre produit eligible existe ; le chantier inventaire conserve separement son snapshot de 60 produits traites et ses GO propres.
+Le Ruban V3 adaptatif est termine, accepte par Patrice, integre, pousse et live sur `190430282075` avec trois produits visibles, trois cartes egales sur desktop, un rail tactile sous 990 px, des photos reelles de galerie, les exclusions runtime et les replis garantissant un Ruban non vide tant qu un autre produit eligible existe ; le chantier inventaire conserve separement son snapshot de 60 produits traites et ses GO propres.
 
 ## Source de verite et etat du depot
 
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le canonique Ruban fonctionnel verifie avant la fermeture documentaire du 2026-08-28 est `codex/milaura-integration` a `51353dfb`, pousse sur origin. Le checkpoint courant est `docs/checkpoints/2026-08-28-1322-ruban-v3-three-visible-live.md`.
+- Le canonique Ruban verifie avant le handoff final du 2026-08-28 est `codex/milaura-integration` a `8db328a1`, propre et aligne avec origin. Le checkpoint final est `docs/checkpoints/2026-08-28-1338-ruban-v3-final-accepted-handoff.md`.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees Ruban V3 ont ete retires proprement le 2026-08-28 apres integration et live ; les branches source restent conservees aux commits distants `38497e4b` et `f2eb61a8`. Les autres worktrees et proprietaires courants vivent dans `docs/workstreams.md`.
@@ -404,6 +404,8 @@ Le Ruban de parure V2 est live depuis le 2026-08-16 a 10:46 CEST apres GO visuel
 ### Ruban V3 adaptatif live depuis le 2026-08-28
 
 Patrice a donne `GO LIVE RUBAN V3` le 2026-08-28. Le lot source final `38497e4b` a ete integre dans `codex/milaura-integration`, pousse sur origin puis publie directement sur le theme live `190430282075`, sans theme de developpement.
+
+Patrice a donne son verdict final le 2026-08-28 a 13:38 CEST : il considere la feature comme finie. Ruban V3 est donc termine et accepte. Aucune reprise n est requise sans anomalie reproductible ou nouvelle demande explicite.
 
 Le runtime affiche les trois candidats ordonnes. Desktop utilise trois cartes a largeur egale ; sous 990 px, le Ruban devient un rail horizontal tactile avec scroll snap, fleches et apercu de la carte suivante. Il exclut le produit consulte, les produits indisponibles, ceux deja presents au panier et ceux sans image de galerie. Il descend successivement du match pierre, type et finition au match proche, a l univers, a la collection puis au catalogue global. La regle canonique est qu aucun Ruban ne doit etre vide tant qu un autre produit eligible existe.
 
