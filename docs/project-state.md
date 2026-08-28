@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-28 13:38 CEST
+Derniere mise a jour : 2026-08-28 18:15 CEST
 
 ## Etat en une phrase
 
-Le Ruban V3 adaptatif est termine, accepte par Patrice, integre, pousse et live sur `190430282075` avec trois produits visibles, trois cartes egales sur desktop, un rail tactile sous 990 px, des photos reelles de galerie, les exclusions runtime et les replis garantissant un Ruban non vide tant qu un autre produit eligible existe ; le chantier inventaire conserve separement son snapshot de 60 produits traites et ses GO propres.
+Le Ruban V3 adaptatif reste termine et live ; l'inventaire canonique est maintenant ferme pour cette session a 71 produits traites et actifs, 89 references en file et 15 bloquees par prix, avec Shopify, le Sheet et le ledger rapproches.
 
 ## Source de verite et etat du depot
 
@@ -38,22 +38,20 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Une validation technique ne vaut jamais validation creative de Patrice.
 - Aucun produit, stock, prix ou statut de publication n'est modifie par un chantier theme sans autorisation explicite.
 
-## Inventaire et workflow produit V3 au 2026-08-27
+## Inventaire et workflow produit V3 au 2026-08-28
 
-- Cohorte historique traitee : 60 identites EAN exactes, dont 40 produits `ACTIVE` et 20 produits `DRAFT` au controle Shopify du 2026-08-27 vers 18:45 CEST.
-- Restant non traite : 125 references, dont 110 en file et 15 `BLOCKED_PRICE` sans prix TTC authentique. Aucun prix ne doit etre invente.
-- Reprise exacte : lot 06, positions 51 a 60 de la file principale. Les dix fiches sont preparees localement mais aucune ecriture Shopify n'a eu lieu pour ce lot.
-- Deux brouillons restent explicitement en attente de validation physique par Patrice : boucles Ornel `10670433993051` et bague aigue-marine `10669860192603`.
-- Les chapelets obsidienne `10669418283355` et sodalite `10522152436059` ont chacun une galerie V3 de cinq images et restent `DRAFT` pour controle Patrice.
-- Le Bracelet Iris `10669947781467`, EAN `3667407021495`, a ete repris entierement en V3, valide visuellement par Patrice puis active par lui. Il est le benchmark canonique.
-- Le pendentif coeur sodalite `10357637546331` a recu son enrichissement V3 complet et est `ACTIVE`.
-- Huit brouillons Sodalite ont recu uniquement leur nouvelle galerie V3. Les preuves sont dans `data/batches/2026-08-27-sodalite-visual-v3/` du workspace produit.
-- L'ancien modal PDP a ete remplace le 2026-08-27 par une note statique compacte `Photos non contractuelles` sans lien, CTA ni interaction. Le hotfix est live sur `190430282075`, pullback 3 sur 3 exact, et documente dans `docs/checkpoints/2026-08-27-1858-pdp-variation-strip-hotfix-preview.md`. Cette evolution a ete integree apres le commit principal du handoff inventaire, sans mutation catalogue.
-- Workflow V3 : cinq images fixes, trois produit seules et deux humaines ; vraie macro en slot 2 ; nature morte contrastee en slot 3 ; scene calme avec macro portee integree en slot 4 ; scene vive distincte en slot 5 ; aucun visuel saisonnier ; generation et controle slot par slot ; fidelite des proportions et anatomie humaine comme gates dures.
-- Camilla : SOUL, skill installe, docs, prompts, schema, scripts, tests, benchmark Iris et preuves Sodalite synchronises sur `hermes-milaura-control`. Tests locaux et conteneur `PIPELINE_LOCAL_TESTS_PASSED`, contrat `V1_3`, cinq images. Seul ce conteneur a ete redemarre et il est `running`.
-- Sauvegarde locale pre-edition : `/Users/paesano/Documents/Agentic-Ops/backups/camilla-product-workflow-20260827T1848CEST/`.
-- Sauvegarde VPS pre-sync : `/docker/backups/camilla-product-workflow-pre-20260827T185650CEST/`.
-- Checkpoint exhaustif et prompt de reprise : `docs/checkpoints/2026-08-27-1901-inventory-v3-final-handoff.md` et `docs/codex-handoff.md`.
+- Snapshot ferme : 175 references physiques, dont 71 traitees et `ACTIVE`, 89 `queued` et 15 `blocked-price`. La tache des prix manquants est explicitement reportee par Patrice ; aucun prix ne doit etre invente.
+- Ledger courant : 54 `active-user-approved-sheet-proved`, 17 `active-workflow-v3-sheet-proved`, 89 `queued` et 15 `blocked-price`. Cette distinction evite de declarer V3 une fiche uniquement parce qu'elle est active.
+- Shopify : l'audit frais de cloture confirme les 71 produits traites actifs. Aucun brouillon traite par cette session ne reste a publier.
+- Sheet : 54 activations ont ete synchronisees avec statut `ACTIVE`, URL publique, validation photo, couverture Shopify, preuve EAN et date `2026-08-28`. Relecture fraiche 54 sur 54, zero echec ; prix, stock, cout et formules intacts.
+- Bague aigue-marine `10669860192603`, EAN `3667407015593` : cinq images V3 corrigees, controlees, validees et activees par Patrice.
+- Boucles Ornel `10670433993051`, EAN `3667407007796` : validees physiquement et activees par Patrice. Leur galerie historique de six images est acceptee ; ne pas la rouvrir sans nouvelle demande.
+- Workflow V3 : exactement cinq images, trois produit seules et deux humaines ; vraie macro en slot 2 ; nature morte contrastee en slot 3 ; scene calme avec macro portee integree en slot 4 ; scene vive distincte en slot 5 ; aucun visuel saisonnier ; generation et controle slot par slot ; proportions, composants, pierre, metal, fermeture et anatomie humaine comme gates dures.
+- Le Bracelet Iris `10669947781467`, EAN `3667407021495`, reste le benchmark canonique du workflow V3.
+- Premier arbitrage de la prochaine session : regrouper les puces quartz rose du meme modele en variantes de diametre `6 mm`, `8 mm` et `10 mm`, apres verification de la galerie par variante, du trafic, des redirections et du feed. Aucune fusion n'a ete executee.
+- Apres cet arbitrage, reprendre la file au rang 61, EAN `3701459084494`, collier lapis-lazuli 4 mm.
+- Camilla avait passe `PIPELINE_LOCAL_TESTS_PASSED` et le contrat `V1_3` au 2026-08-27. Recontroler son runtime avant reutilisation ; ne pas presenter le dernier statut conteneur comme une preuve courante.
+- Checkpoint exhaustif et prompt de reprise : `docs/checkpoints/2026-08-28-1815-inventory-71-active-v3-handoff.md` et `docs/codex-handoff.md`.
 
 ## Role de la session master au 2026-08-26
 
@@ -74,7 +72,7 @@ Atelier des emotions et Pierres de naissance restent en pause plus longue. Le po
 - Le diagnostic est actuellement persiste dans le navigateur et le panier, pas dans une source cliente durable. Le chantier `C1 - Le Cercle MilAura` possede la correction entre appareils et sa restitution dans `Mon Ecrin`.
 - Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. L audit des emails, notifications, relances et du comportement apres inscription est ferme le 2026-08-20 ; leur implementation reste classee criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
-- L inventaire physique est etabli pour la file courante. La creation catalogue est arretee a 60 produits traites afin d auditer fidelite, doublons, images, prix, stock et marge avant publication. Il reste 125 references, dont 110 en file et 15 bloquees par prix. Cette verite reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
+- L inventaire physique courant compte 71 produits traites et actifs. Il reste 104 references non traitees, dont 89 en file et 15 bloquees par prix. Cette verite reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
 - Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
 - Decisions Pinterest de Patrice du 2026-08-20 : le titre et la bio actuels sont valides et restent inchanges. Aucun agent ne doit proposer de les remplacer sans nouvelle demande explicite. La phrase finale `Découvrez les créations et conseils sur milaura.fr.` est approuvee comme ajout optionnel ; si la limite de caracteres Pinterest empeche son ajout, la bio existante ne doit pas etre raccourcie sans validation de Patrice.
@@ -423,21 +421,13 @@ Pipeline actif :
 
 `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`
 
-## Catalogue physique arrete a 60 au 2026-08-26
+## Catalogue physique, reprise courante
 
-La grosse tache catalogue `01a038d2-cc6d-7c81-9ceb-bb08200ef937` est retiree du flux actif apres des erreurs d interface Codex liees a son volume. Ses ledgers persistent hors Git dans le pipeline prive et deviennent la preuve de reprise. Ne pas relire son historique detaille ni lui envoyer de nouveau message.
+L'ancienne tache volumineuse `01a038d2-cc6d-7c81-9ceb-bb08200ef937` reste retiree. Ses ledgers persistants ont ete repris par la session inventaire `01a046e1-748d-70d3-98c0-ec9c75ca82b7`, qui ferme au snapshot de 71 actifs, 89 en file et 15 bloques par prix.
 
-- Pilote : 10 produits `completed`, dont 8 creations et 2 mises a jour de brouillons.
-- File principale : 44 `batch-complete-draft`, 6 `prepared-active-cutover` strictement non modifies, 15 `blocked-price` et 110 `queued`.
-- Total traite : 60.
-- Total restant : 125.
-- Lot 06 : aucune ecriture Shopify.
+La prochaine reprise repart du Sheet, du ledger et d'un audit Shopify frais. Elle commence par l'arbitrage des puces quartz rose `6 mm`, `8 mm` et `10 mm` comme variantes possibles, puis reprend la file au rang 61. Le chantier prix reste volontairement reporte. Checkpoint canonique : `docs/checkpoints/2026-08-28-1815-inventory-71-active-v3-handoff.md`.
 
-La prochaine session inventaire est distincte du master. Elle commence par discuter avec Patrice, rendre un etat des lieux clair et brainstormer la methode de controle, correction, enrichissement et mise en ligne. Les categories `PASS CANDIDAT`, `CORRECTION REQUISE`, `DOUBLON A METTRE A JOUR` et `BLOQUE` sont une proposition disponible, pas un protocole impose avant cet echange. Aucun passage en actif sans validation Patrice et GO Admin distinct.
-
-Apres accord entre Patrice et la session inventaire sur la methode : fournir les 15 prix manquants, traiter Sodalite en priorite, puis les nouvelles references physiques. Les produits deja actifs a moderniser peuvent rester en fin de file. Le rythme cible de 10 produits par jour reste une intention de Patrice a confirmer dans ce dialogue.
-
-La disponibilite client repose d abord sur Shopify natif par variante : quantite reelle pour le physique ; quantite 0 et poursuite de vente seulement pour une reference fournisseur explicitement acceptee ; quantite 0 sans poursuite si indisponible. Aucun stock `Entrant` fictif et aucun faux lieu fournisseur. Un metafield interne reste optionnel et exige un lot Admin separe. Checkpoint : `docs/checkpoints/2026-08-26-1620-master-catalogue-60-handoff.md`.
+La disponibilite client repose d abord sur Shopify natif par variante : quantite reelle pour le physique ; quantite 0 et poursuite de vente seulement pour une reference fournisseur explicitement acceptee ; quantite 0 sans poursuite si indisponible. Aucun stock `Entrant` fictif et aucun faux lieu fournisseur. Un metafield interne reste optionnel et exige un lot Admin separe.
 
 ## Commits de consolidation des 2026-08-12 et 2026-08-13
 
@@ -475,9 +465,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 1. La nouvelle session master conserve seule l integration et le live a partir de `51353dfb02eea462fb715b52fa6bc86c99a922ca` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
 2. Auditer en lecture seule les sessions ouvertes Mail, Rentree, Mon Ecrin et Pinterest ; demander leurs retours compacts, recadrer leurs scopes et fermer ce qui est reellement termine. Ruban V3 est deja ferme et live.
-3. Ouvrir une session inventaire fraiche et distincte. Lui transmettre les ledgers, les faits et les limites, puis la laisser commencer par un etat des lieux et un brainstorming direct avec Patrice avant tout plan d execution.
+3. A la prochaine reprise inventaire, auditer Shopify, le Sheet et le ledger en lecture seule, arbitrer les variantes quartz rose, puis reprendre le workflow V3 au rang 61.
 4. Autoriser en parallele les travaux independants sans chevauchement : finition Mail, prochaines gates privees Mon Ecrin et fondations Pinterest hors theme.
-5. A partir des decisions prises avec la session inventaire, corriger les 60, recevoir les 15 prix manquants, prioriser Sodalite et definir le rythme futur. Aucun passage en actif sans GO Admin distinct.
+5. Continuer les 89 references en file par lots controles. Les 15 prix manquants restent reportes jusqu'a une tache dediee. Aucun passage en actif sans validation Patrice et GO Admin distinct.
 6. Lorsque la verite catalogue pertinente est fiable, fermer RC5, la vraie selection Rentree, le feed et Pinterest final sous leurs gates propres.
 7. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
 8. Laisser Atelier des emotions et Pierres de naissance en pause plus longue jusqu a une nouvelle decision de Patrice.
@@ -486,7 +476,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Dependances encore ouvertes
 
-- catalogue arrete a 60 : audit complet avant publication ; 125 references restantes, dont 110 en file et 15 bloquees par prix ; Sodalite prioritaire apres la passe
+- inventaire courant : 71 produits traites et actifs ; 89 references en file et 15 bloquees par prix ; prochain rang 61 apres arbitrage des variantes quartz rose
 - inventaire et retrait controle des 18 baguettes minerales
 - treize anciennes collections sans metas definitives
 - pages mensuelles de naissance et pages enfants mariage

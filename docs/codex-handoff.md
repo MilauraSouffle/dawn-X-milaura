@@ -1,54 +1,98 @@
-# Handoff Codex MilAura, Ruban V3 termine et accepte
+# Handoff Codex MilAura, inventaire a 71 produits actifs
 
-Date : 2026-08-28 13:38 CEST
+Date : 2026-08-28 18:15 CEST
 
 ## Etat de reprise
 
-Ruban V3 est ferme, integre, pousse, live et accepte par Patrice sur le theme `dawn-X-milaura/main`, ID `190430282075`.
+La session inventaire est fermee avec Shopify, le Sheet et le ledger rapproches :
 
-Verdict final de Patrice du 2026-08-28 : `top ecrit ton handoff, je considere cette feature comme fini`. La feature actuelle est terminee. Aucune reprise Ruban n est requise.
+- 71 produits traites et `ACTIVE` ;
+- 89 references `queued` ;
+- 15 references `blocked-price`, reportees a une tache ulterieure a la demande de Patrice ;
+- aucun brouillon traite pendant cette session ne reste a publier.
 
-Chaque PDP affiche maintenant les trois candidats ordonnes. Desktop utilise trois cartes egales sans carrousel. Sous 990 px, le Ruban devient un rail horizontal tactile avec scroll snap, fleches et apercu de la carte suivante. Il n utilise aucun autoplay et aucune video.
+Le ledger distingue 54 `active-user-approved-sheet-proved` et 17 `active-workflow-v3-sheet-proved`. Ne jamais convertir automatiquement la premiere categorie en preuve V3.
 
-Le contrat adaptatif reste inchange : images reelles de galerie, exclusion du produit consulte, des indisponibles, du panier et des produits sans image, puis replis exact, proche, univers, collection et catalogue. Le Ruban ne doit jamais etre vide tant qu un autre produit eligible existe.
+Patrice a valide et active les deux dernieres fiches :
 
-## Preuves
+- bague aigue-marine `10669860192603`, EAN `3667407015593`, avec cinq images V3 corrigees ;
+- boucles Ornel dorees `10670433993051`, EAN `3667407007796`, physiquement controlees et acceptees avec leur galerie historique.
 
-- Checkpoint V3 initial : `docs/checkpoints/2026-08-28-1020-ruban-v3-gallery-live.md`.
-- Checkpoint trois produits : `docs/checkpoints/2026-08-28-1322-ruban-v3-three-visible-live.md`.
-- Handoff final accepte : `docs/checkpoints/2026-08-28-1338-ruban-v3-final-accepted-handoff.md`.
-- Source du micro-lot : `codex/milaura-ruban-v3-three-visible-20260828` a `f2eb61a8`, branche locale et distante conservee.
-- Integration fonctionnelle : `51353dfb` sur `codex/milaura-integration`.
-- Tests : 17 Python sur 17, runtime JavaScript, syntaxe, Theme Check sans erreur et diff check PASS.
-- Live : push cible des deux assets Ruban avec `--nodelete`, `--strict`, `--allow-live`.
-- Pullback : 2 fichiers sur 2 identiques bit a bit a Git.
-- QA : trois cartes exactes sur aventurine, replis collection et univers, 360, 390, 430, 820 et 1440 px sans debordement.
-- Panier : 3 cartes avant ajout, 2 apres exclusion du produit ajoute, panier final vide.
+Ne rouvrir aucune de ces deux fiches sans nouvelle demande explicite.
 
-## Recuperation
+## Sources obligatoires
 
-Sauvegarde pre-push :
+Lire dans cet ordre :
 
-`/private/tmp/milaura-ruban-v3-three-visible-live-backup-20260828-1315`
+1. `AGENTS.md` ;
+2. `docs/project-state.md` ;
+3. `docs/workstreams.md` ;
+4. `docs/checkpoints/2026-08-28-1815-inventory-71-active-v3-handoff.md` ;
+5. le ledger prive courant ;
+6. la preuve de synchronisation du Sheet ;
+7. un nouvel audit Shopify en lecture seule.
 
-Pullback post-push :
+Workspace produit :
 
-`/private/tmp/milaura-ruban-v3-three-visible-live-pullback-20260828-1320`
+`/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`
 
-Le worktree du micro-lot a ete retire proprement. Ne pas le recreer sans nouveau lot.
+Ledger :
 
-## Prochaine action
+`/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/catalogue-batches/2026-08-25-physical-stock-175/ledger.json`
 
-La feature est terminee et acceptee par Patrice. Aucune action Ruban n est requise.
+Preuves de cloture :
 
-Si une anomalie reproductible apparait, commencer en lecture seule et relever la PDP, la largeur, le panier et les trois candidats. Ne pas modifier le catalogue, les matrices, les videos ou les metafields sans nouveau GO explicite. Toute future phase video avec Higgsfield est un nouveau chantier distinct.
+`/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/catalogue-batches/2026-08-25-physical-stock-175/activation-closeout-2026-08-28/`
+
+Sheet canonique :
+
+`https://docs.google.com/spreadsheets/d/1QrtP77A-6FUmzOaOdD9U5CigCbrRpDWH5GTb7N1NUbM/edit?gid=1034959372#gid=1034959372`
+
+## Workflow V3
+
+Une galerie V3 contient exactement cinq images :
+
+1. couverture produit seul sur mineral clair ;
+2. vraie macro produit ;
+3. produit seul sur support contraste ;
+4. scene humaine calme avec inset de macro portee ;
+5. scene humaine vive distincte, sans inset.
+
+Seuls les slots 4 et 5 sont humains. Conserver la meme identite de modele par produit. Proportions, nombre de composants, couleur de pierre, metal, fermeture et anatomie sont des gates dures. Aucun habillage saisonnier. Generer et valider slot par slot. Bracelet Iris `10669947781467`, EAN `3667407021495`, reste le benchmark.
+
+Camilla avait passe le contrat V1.3 et les tests locaux au 2026-08-27. Recontroler le runtime si necessaire avant de s'en servir.
+
+## Premiere decision : quartz rose 6, 8 et 10 mm
+
+Les trois puces d'oreilles quartz rose sont le meme modele et devraient, sous reserve des controles techniques, devenir une fiche unique avec option `Diametre` :
+
+- 6 mm, EAN `3701459082087`, stock 3, prix `10,90 EUR`, encore `queued` au rang 106 ;
+- 8 mm, EAN `3701459082186`, Shopify `10357431796059`, stock 4, prix `10,90 EUR`, active et V3 ;
+- 10 mm, EAN `3701459082285`, Shopify `10357432353115`, stock 3, prix `12,90 EUR`, active et V3.
+
+Verifier avant fusion : galerie et media par variante dans le theme, trafic et ventes des deux URL actives, EAN, prix, stock, panier, redirections, SEO et Google Merchant. Par defaut, garder 8 mm comme parent canonique, sauf preuve que 10 mm porte davantage de valeur. Ne supprimer aucune ancienne fiche avant validation des redirections et du feed.
+
+Aucune fusion n'a ete faite pendant la session close.
+
+## Reprise de la file
+
+Apres l'arbitrage quartz rose, commencer au rang 61 :
+
+- EAN `3701459084494`, collier lapis-lazuli 4 mm, stock 1, creation ;
+- puis rangs 62 a 66 : colliers howlite blanche, hematite, oeil de taureau, oeil de tigre et rhodonite en 6 mm.
+
+Repartir du ledger courant, pas d'un compteur recopie. Rapprocher l'EAN exact avant toute creation ou mise a jour. Ne jamais inventer un prix. Les 15 prix bloques restent hors scope tant que Patrice ne rouvre pas cette tache.
+
+## Etat technique et limites
+
+- Aucun deploiement de theme n'a ete effectue pendant cette session inventaire.
+- Les produits cites comme actifs ont ete verifies par audit Shopify frais avant le handoff.
+- Les 54 activations ont ete relues dans le Sheet apres ecriture, 54 sur 54 conformes.
+- Le repo `Agentic-Ops` est sale avec des travaux concurrents sans rapport ; ils ont ete preserves et ne doivent pas etre stages, revertes ou pousses par la reprise inventaire.
+- La source produit privee est ignoree par Git. Conserver les preuves absolues et refaire des lectures fraches avant toute mutation.
 
 ## Prompt de reprise copiable
 
 ```text
-Reprends MilAura depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Lis AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md et docs/checkpoints/2026-08-28-1338-ruban-v3-final-accepted-handoff.md.
-
-Ruban V3 est termine, accepte par Patrice et live sur le theme 190430282075. Chaque PDP affiche trois candidats ordonnes : trois cartes egales sur desktop et un rail tactile sans autoplay sous 990 px. Les images viennent des galeries Shopify. Le produit source, les indisponibles, le panier et les produits sans image sont exclus. Les replis exact, proche, univers, collection et catalogue garantissent un Ruban non vide tant qu un autre produit eligible existe. Le pullback des deux assets est identique a Git et le panier de QA est vide.
-
-Commence en lecture seule. Ne rouvre pas Ruban sans anomalie reproductible ou nouvelle demande explicite de Patrice. Une future phase video Higgsfield reste un chantier distinct avec son propre GO.
+Reprenons l'inventaire MilAura depuis le handoff du 2026-08-28. Lis AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md et docs/checkpoints/2026-08-28-1815-inventory-71-active-v3-handoff.md. Commence en lecture seule par un audit Shopify frais et une verification du ledger et du Sheet. Le snapshot ferme est 71 produits traites et actifs, 89 queued et 15 blocked-price. La bague aigue-marine et les Ornel sont validees et actives, ne les rouvre pas. Premier arbitrage : regrouper les puces quartz rose 6, 8 et 10 mm en variantes sans perdre EAN, prix, stock, medias, SEO ni feed. Ensuite reprends le workflow visuel V3 au rang 61. Le chantier des 15 prix manquants reste reporte.
 ```
