@@ -195,15 +195,33 @@
   #MilauraSelection-{{ section.id }} .milaura-season__title {
     grid-column: 1;
     grid-row: 2;
-    max-width: 14ch;
+    max-width: 100%;
+    display: grid;
+    justify-items: start;
     margin: 0;
     color: var(--milaura-prune);
-    font-family: var(--milaura-font-display);
-    font-size: var(--milaura-t-h2);
-    font-weight: 400;
-    letter-spacing: var(--milaura-ls-heading);
-    line-height: var(--milaura-lh-heading);
+    font-family: var(--milaura-font-signature);
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 1;
     text-wrap: balance;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__title-main,
+  #MilauraSelection-{{ section.id }} .milaura-season__title-secondary {
+    display: block;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__title-main {
+    font-size: clamp(5.2rem, 14vw, 7rem);
+    line-height: 0.92;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__title-secondary {
+    max-width: 15ch;
+    margin-top: 0.08em;
+    font-size: clamp(3.2rem, 8.5vw, 4.2rem);
+    line-height: 1;
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -412,9 +430,16 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__title {
+      max-width: 100%;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__title-main {
+      font-size: clamp(7.4rem, 7vw, 10.4rem);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__title-secondary {
       max-width: 14ch;
-      font-size: clamp(4rem, 4.6vw, 6.8rem);
-      line-height: 0.98;
+      font-size: clamp(3.8rem, 3.4vw, 5.2rem);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -477,7 +502,7 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__title {
-      font-size: var(--milaura-t-h2);
+      font-size: inherit;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -550,10 +575,8 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__title {
-      max-width: 16ch;
+      max-width: 100%;
       color: var(--milaura-prune);
-      font-size: clamp(3.4rem, 10.5vw, 4.8rem);
-      line-height: 1.02;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -677,9 +700,12 @@
           <p class="milaura-season__eyebrow">{{ section.settings.campaign_eyebrow | escape }}</p>
         {%- endif -%}
 
-        <h2 id="{{ selection_title_id }}" class="milaura-season__title">
-          {{ section.settings.campaign_title | escape }}
-        </h2>
+        <h1 id="{{ selection_title_id }}" class="milaura-season__title">
+          <span class="milaura-season__title-main">{{ section.settings.campaign_title | escape }}</span>
+          {%- if section.settings.campaign_title_secondary != blank -%}
+            <span class="milaura-season__title-secondary">{{ section.settings.campaign_title_secondary | escape }}</span>
+          {%- endif -%}
+        </h1>
 
         {%- if section.settings.campaign_description != blank -%}
           <div class="milaura-season__description">{{ section.settings.campaign_description }}</div>
@@ -767,8 +793,14 @@
     {
       "type": "text",
       "id": "campaign_title",
-      "label": "Accroche",
+      "label": "Accroche principale",
       "default": "La sélection du moment"
+    },
+    {
+      "type": "text",
+      "id": "campaign_title_secondary",
+      "label": "Accroche secondaire",
+      "default": ""
     },
     {
       "type": "richtext",
