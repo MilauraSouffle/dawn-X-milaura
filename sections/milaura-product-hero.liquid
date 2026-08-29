@@ -106,7 +106,7 @@
     }
   }
 
-  /* --- GROUPE 1: Header (mobile order 2 : apres la galerie) --- */
+  /* --- GROUPE 1: Header (ordre tablette historique, surcharge mobile en fin de feuille) --- */
   .milaura-hero-header-group {
     order: 2;
     text-align: center;
@@ -413,6 +413,12 @@
   .milaura-hero-actions-group {
     order: 3;
     width: 100%;
+  }
+
+  /* Ne cree pas de boite supplementaire sur tablette et desktop. Sur mobile,
+     ce conteneur devient l'item flex reserve a la zone d'achat. */
+  .milaura-hero-purchase-stack {
+    display: contents;
   }
 
   /* RIGHT COL WRAPPER : sur mobile, display:contents laisse header+actions
@@ -3403,7 +3409,8 @@
     box-shadow: 0 5px 16px rgba(26, 26, 46, 0.16);
   }
 
-  /* Variante : bulle social au-dessus de la galerie (mobile : tout premier element) */
+  /* Variante historique : bulle en tete sur tablette et desktop.
+     L'ordre mobile est defini en fin de feuille. */
   .milaura-hero-social--top {
     order: 0;
     width: fit-content;
@@ -4200,8 +4207,44 @@
     }
   }
 
-  /* Mobile : compact + galerie max 60vh */
+  /* Mobile : hierarchie produit, puis media, achat et preuve sociale. */
   @media screen and (max-width: 768px) {
+    .milaura-hero-header-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      order: 0;
+    }
+    .milaura-hero-header-group > .milaura-product__title {
+      order: 0;
+    }
+    .milaura-hero-header-group > [id^="price-"] {
+      order: 1;
+    }
+    .milaura-hero-header-group > .milaura-meta-badges--product {
+      order: 2;
+    }
+    .milaura-hero-gallery-column {
+      order: 1;
+    }
+    .milaura-hero-actions-group {
+      display: contents;
+    }
+    .milaura-hero-purchase-stack {
+      display: block;
+      order: 2;
+      width: 100%;
+      min-width: 0;
+    }
+    .milaura-hero-social--top {
+      order: 3;
+      margin: 0 auto;
+    }
+    .milaura-hero-actions-group > .milaura-info-block {
+      order: 4;
+      width: 100%;
+      min-width: 0;
+    }
     .milaura-hero-social {
       min-height: 40px;
       padding: 6px 13px;
@@ -4239,8 +4282,9 @@
       {%- comment -%} GROUPE 1 HEADER deplace dans .milaura-hero-rightcol (avec actions group) pour eviter le trou vertical sur desktop. Refonte 2026-05-28 evening. {%- endcomment -%}
 
       {%- comment -%}
-        Bulle sociale historique. Le compteur est stable par produit et varie entre 12
-        et 141 afin de representer le volume multi-canal communique par MilAura.
+        Donnees de la bulle sociale historique. Le compteur est stable par produit et varie entre 12
+        et 141 afin de representer le volume multi-canal communique par MilAura. La bulle est rendue
+        apres la zone d'achat dans le DOM, puis replacee dans sa zone historique par la grille desktop.
       {%- endcomment -%}
       {%- if section.settings.show_social_proof -%}
         {%- assign months_fr = 'janvier,février,mars,avril,mai,juin,juillet,août,septembre,octobre,novembre,décembre' | split: ',' -%}
@@ -4249,14 +4293,6 @@
         {%- assign year_fr = 'now' | date: '%Y' -%}
         {%- assign social_count_raw = product.id | default: 0 | modulo: 130 -%}
         {%- assign social_count = social_count_raw | plus: 12 -%}
-        <div class="milaura-hero-social milaura-hero-social--top">
-          <div class="milaura-hero-stars" aria-label="5 étoiles sur 5">
-            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-          </div>
-          <p class="milaura-hero-social-text">
-            Ce produit a déjà fait le <span class="milaura-hero-social-accent" aria-label="bonheur">b<span class="milaura-hero-social-heart" aria-hidden="true">♥</span>nheur</span> de <strong>+ de {{ social_count }} client(e)s</strong> en {{ month_fr }} {{ year_fr }}
-          </p>
-        </div>
       {%- endif -%}
 
       {%- comment -%} Pills atomiques : faits produit, pierre, qualite, provenance et vertus courtes. {%- endcomment -%}
@@ -4678,6 +4714,7 @@
           ============================================
         -->
         <div class="milaura-hero-actions-group">
+          <div class="milaura-hero-purchase-stack">
         <!-- Note: Variant Picker was here, moved to gallery above -->
 
         <!-- Volume Offer Block -->
@@ -5082,10 +5119,10 @@
               <a href="{{ routes.cart_url }}" class="milaura-cart-confirm__link">Voir mon panier</a>
             </div>
 	        {%- endif -%}
+        </div>
 
         {%- comment -%} ==========================================
-          INFO BLOCK (apres CTA) : description + badges metafield + social proof
-          Refonte 2026-05-28 : ces 3 elements descendent sous le CTA
+          INFO BLOCK (apres CTA et preuve sociale sur mobile) : description + Karine + miniatures desktop
           ========================================== {%- endcomment -%}
         <div class="milaura-info-block">
           {%- if section.settings.show_description -%}
@@ -5166,13 +5203,22 @@
               {%- endif -%}
             </div>
           {%- endif -%}
-
-          {%- comment -%} La preuve sociale reste le premier element de la grille desktop. {%- endcomment -%}
         </div>
       </div>
         <!-- Fin GROUPE 3: Actions -->
       </div>
       <!-- Fin RIGHT COL wrapper -->
+
+      {%- if section.settings.show_social_proof -%}
+        <div class="milaura-hero-social milaura-hero-social--top">
+          <div class="milaura-hero-stars" aria-label="5 étoiles sur 5">
+            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+          <p class="milaura-hero-social-text">
+            Ce produit a déjà fait le <span class="milaura-hero-social-accent" aria-label="bonheur">b<span class="milaura-hero-social-heart" aria-hidden="true">♥</span>nheur</span> de <strong>+ de {{ social_count }} client(e)s</strong> en {{ month_fr }} {{ year_fr }}
+          </p>
+        </div>
+      {%- endif -%}
 
       <!-- GROUPE 4: SCRATCH-TO-REVEAL (full width, premium) -->
       {%- if section.settings.show_scratch -%}
@@ -7074,6 +7120,32 @@
       }
     }
 
+    /* Keep the mobile reading order aligned with the visual hierarchy.
+       CSS already reserves the same positions, so moving the existing node
+       does not duplicate content or introduce a layout shift. */
+    function initMobileContentOrder() {
+      var productInfo = document.getElementById('ProductInfo-{{ section.id }}');
+      var wrapper = productInfo ? productInfo.querySelector('.milaura-hero-wrapper') : null;
+      var rightColumn = wrapper ? wrapper.querySelector('.milaura-hero-rightcol') : null;
+      var header = wrapper ? wrapper.querySelector('.milaura-hero-header-group') : null;
+      var gallery = wrapper ? wrapper.querySelector('.milaura-hero-gallery-column') : null;
+      var actions = rightColumn ? rightColumn.querySelector('.milaura-hero-actions-group') : null;
+      if (!wrapper || !rightColumn || !header || !gallery || !actions) return;
+
+      var mobileQuery = window.matchMedia('(max-width: 768px)');
+
+      function syncContentOrder(event) {
+        if (event.matches) {
+          if (header.nextElementSibling !== gallery) wrapper.insertBefore(header, gallery);
+        } else if (header.parentElement !== rightColumn) {
+          rightColumn.insertBefore(header, actions);
+        }
+      }
+
+      syncContentOrder(mobileQuery);
+      mobileQuery.addEventListener('change', syncContentOrder);
+    }
+
     /* Video slide play button handler (mobile carousel) */
     function initVideoSlidePlay() {
       var playBtns = document.querySelectorAll('.milaura-video-main-play');
@@ -7111,6 +7183,7 @@
     }
 
     function init() {
+      initMobileContentOrder();
       initZoom();
       initThumbnails();
       initSliderNav();
