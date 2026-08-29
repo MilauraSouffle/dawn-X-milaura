@@ -1,98 +1,119 @@
-# Handoff Codex MilAura, inventaire a 71 produits actifs
+# Handoff Codex MilAura, Mon Ecrin dynamique vers le live
 
-Date : 2026-08-28 18:15 CEST
+Date : 2026-08-29 07:29 CEST
+Statut : `SESSION C1 FERMEE - REPRISE FRAICHE REQUISE - NON LIVE`
 
-## Etat de reprise
+## Resultat a retenir
 
-La session inventaire est fermee avec Shopify, le Sheet et le ledger rapproches :
+Mon Ecrin n est pas bloque par la fin de l inventaire.
 
-- 71 produits traites et `ACTIVE` ;
-- 89 references `queued` ;
-- 15 references `blocked-price`, reportees a une tache ulterieure a la demande de Patrice ;
-- aucun brouillon traite pendant cette session ne reste a publier.
+Patrice a decide le 2026-08-29 que le catalogue et le stock MilAura sont vivants. C1 doit appeler dynamiquement les produits et categories Shopify actuellement publies, vendables et disponibles. Il ne doit plus attendre que les 175 references physiques soient toutes traitees, ni reposer sur une liste commerciale figee.
 
-Le ledger distingue 54 `active-user-approved-sheet-proved` et 17 `active-workflow-v3-sheet-proved`. Ne jamais convertir automatiquement la premiere categorie en preuve V3.
+Cette decision ne retire aucune gate Ads : stock, prix, cout, marge, feed, tracking, consentement et mesure restent obligatoires avant de payer pour diffuser un SKU.
 
-Patrice a valide et active les deux dernieres fiches :
+## Etat C1 ferme
 
-- bague aigue-marine `10669860192603`, EAN `3667407015593`, avec cinq images V3 corrigees ;
-- boucles Ornel dorees `10670433993051`, EAN `3667407007796`, physiquement controlees et acceptees avec leur galerie historique.
+- UX V3 validee : `d8d036ff7725c93168d24b9270da54de657ad6af`.
+- vraies surfaces privees C1-1 : `cf2877ba4ee5faac143a4273c486fe39c96106a8`, G0 a G11 PASS.
+- application RC privee : `c877d630`.
+- theme RC de base : `2f95b3d1`.
+- correctif d idempotence : `7bb67efca588913dc80ba877eb2c5e01f0d64f86`.
+- endpoint stable : `146ac026`.
+- runtime sans commande : `1ee9c07f`.
+- runtime avec commande : `e863fc100ccae47ff1c8a43cdfeccef763f4bcd4`.
 
-Ne rouvrir aucune de ces deux fiches sans nouvelle demande explicite.
+Gates :
 
-## Sources obligatoires
+- RC1 PASS ;
+- RC2 PASS technique ;
+- RC3 PASS prive ;
+- RC4 PASS prive ;
+- RC5 partiel, a fermer avec le nouveau resoluteur dynamique ;
+- RC6 `NO-GO CONDITIONNEL`, shell natif Orders et Profile encore en anglais ;
+- RC7 PASS prive O2 ;
+- RC8 PASS prive avec et sans commande ;
+- RC9 PASS ;
+- RC10 PASS ;
+- RC global ouvert.
 
-Lire dans cet ordre :
+## Etat Shopify et runtime
 
-1. `AGENTS.md` ;
-2. `docs/project-state.md` ;
-3. `docs/workstreams.md` ;
-4. `docs/checkpoints/2026-08-28-1815-inventory-71-active-v3-handoff.md` ;
-5. le ledger prive courant ;
-6. la preuve de synchronisation du Sheet ;
-7. un nouvel audit Shopify en lecture seule.
+- dev store C1 uniquement : `milaura-c1-preview`, ID `107347837273` ;
+- theme prive : `205027279193`, toujours unpublished ;
+- compte synthetique RNO1 : zero commande apres rollback ;
+- produit, variant, media, publication et commande O2 : supprimes ;
+- `backend_url` : vide ;
+- flag C1 : `false` ;
+- scopes temporaires : absents ;
+- App Dev, backend et listeners : arretes ;
+- theme general `199421952347` et live `190430282075` : non touches par C1 ;
+- Mon Ecrin C1 : non integre et non live.
 
-Workspace produit :
+## Contrat dynamique exige
 
-`/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`
+1. Lire depuis Shopify le titre, le prix, l URL, le media, la publication et la disponibilite au runtime.
+2. Exclure toute reference de-publiee, indisponible, sans URL ou sans media exploitable.
+3. Ordonner les recommandations depuis le profil, la pierre favorite, l intention et l historique qualifie.
+4. Utiliser des replis controles : exact, proche, univers ou categorie, collection, catalogue eligible.
+5. Ne jamais conserver un prix ou un lien de vente en dur dans C1.
+6. Conserver la semantique historique des commandes, mais resoudre les cartes actuelles contre le catalogue vivant.
+7. Absorber les changements de stock et de publication sans redeploiement.
+8. Mesurer les candidats, le niveau de repli, les etats vides, la latence et les erreurs sans exposer les donnees clientes.
 
-Ledger :
+Le Ruban V3 live constitue la meilleure reference locale pour ce moteur : il filtre les indisponibles et les produits sans image, puis descend par replis exact, proche, univers, collection et catalogue. Il doit etre audite et adapte au contexte Customer Accounts, pas copie aveuglement.
 
-`/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/catalogue-batches/2026-08-25-physical-stock-175/ledger.json`
+## Chemin minimal restant
 
-Preuves de cloture :
+### 1. Resolver dynamique et RC5 prive
 
-`/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/catalogue-batches/2026-08-25-physical-stock-175/activation-closeout-2026-08-28/`
+Auditer les mappings actuels, implementer le resoluteur dynamique, couvrir historique, retours, annulations, remboursements, cadeaux, egalites et produits sans pierre, puis rejouer uniquement la QA privee utile avec et sans commande.
 
-Sheet canonique :
+### 2. Productionisation
 
-`https://docs.google.com/spreadsheets/d/1QrtP77A-6FUmzOaOdD9U5CigCbrRpDWH5GTb7N1NUbM/edit?gid=1034959372#gid=1034959372`
+Backend production stable, secrets hors Git, retention, observabilite, sauvegarde, rollback, app deploy ou release, traductions et preparation Admin. Chaque mutation garde son GO propre.
 
-## Workflow V3
+### 3. Integration et live
 
-Une galerie V3 contient exactement cinq images :
+Integration ciblee du bridge et du correctif d idempotence, Theme Check et pullback, bascule Customer Accounts, QA publique mobile et desktop, verification consentement et purge, rollback pret, puis GO live explicite de Patrice.
 
-1. couverture produit seul sur mineral clair ;
-2. vraie macro produit ;
-3. produit seul sur support contraste ;
-4. scene humaine calme avec inset de macro portee ;
-5. scene humaine vive distincte, sans inset.
+## Premier geste de la session fraiche
 
-Seuls les slots 4 et 5 sont humains. Conserver la meme identite de modele par produit. Proportions, nombre de composants, couleur de pierre, metal, fermeture et anatomie sont des gates dures. Aucun habillage saisonnier. Generer et valider slot par slot. Bracelet Iris `10669947781467`, EAN `3667407021495`, reste le benchmark.
+Commencer strictement en lecture seule. Verifier Git, origin, worktrees, proprietaires, depot prive et commits C1. Lire les checkpoints listes ci-dessous. Rendre au master un audit borne des mappings figes et proposer le plus petit lot prive capable de fermer le contrat dynamique et RC5.
 
-Camilla avait passe le contrat V1.3 et les tests locaux au 2026-08-27. Recontroler le runtime si necessaire avant de s'en servir.
+Aucune branche, ecriture, app dev, backend, Shopify, compte, commande, scope, Admin, Mail, deploy, release, integration, publication ou live avant reservation master.
 
-## Premiere decision : quartz rose 6, 8 et 10 mm
+Master actif, proprietaire exclusif integration et live : `01a03e8e-aa31-76e1-937a-a4aeb6706c82`.
 
-Les trois puces d'oreilles quartz rose sont le meme modele et devraient, sous reserve des controles techniques, devenir une fiche unique avec option `Diametre` :
+## Fichiers a lire integralement
 
-- 6 mm, EAN `3701459082087`, stock 3, prix `10,90 EUR`, encore `queued` au rang 106 ;
-- 8 mm, EAN `3701459082186`, Shopify `10357431796059`, stock 4, prix `10,90 EUR`, active et V3 ;
-- 10 mm, EAN `3701459082285`, Shopify `10357432353115`, stock 3, prix `12,90 EUR`, active et V3.
+- `AGENTS.md`
+- `docs/project-state.md`
+- `docs/workstreams.md`
+- `docs/codex-handoff.md`
+- `docs/checkpoints/2026-08-29-0729-c1-mon-ecrin-dynamic-live-handoff.md`
+- `docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md`
+- `docs/checkpoints/2026-08-28-1338-ruban-v3-final-accepted-handoff.md`
+- `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`
+- `docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md`
 
-Verifier avant fusion : galerie et media par variante dans le theme, trafic et ventes des deux URL actives, EAN, prix, stock, panier, redirections, SEO et Google Merchant. Par defaut, garder 8 mm comme parent canonique, sauf preuve que 10 mm porte davantage de valeur. Ne supprimer aucune ancienne fiche avant validation des redirections et du feed.
-
-Aucune fusion n'a ete faite pendant la session close.
-
-## Reprise de la file
-
-Apres l'arbitrage quartz rose, commencer au rang 61 :
-
-- EAN `3701459084494`, collier lapis-lazuli 4 mm, stock 1, creation ;
-- puis rangs 62 a 66 : colliers howlite blanche, hematite, oeil de taureau, oeil de tigre et rhodonite en 6 mm.
-
-Repartir du ledger courant, pas d'un compteur recopie. Rapprocher l'EAN exact avant toute creation ou mise a jour. Ne jamais inventer un prix. Les 15 prix bloques restent hors scope tant que Patrice ne rouvre pas cette tache.
-
-## Etat technique et limites
-
-- Aucun deploiement de theme n'a ete effectue pendant cette session inventaire.
-- Les produits cites comme actifs ont ete verifies par audit Shopify frais avant le handoff.
-- Les 54 activations ont ete relues dans le Sheet apres ecriture, 54 sur 54 conformes.
-- Le repo `Agentic-Ops` est sale avec des travaux concurrents sans rapport ; ils ont ete preserves et ne doivent pas etre stages, revertes ou pousses par la reprise inventaire.
-- La source produit privee est ignoree par Git. Conserver les preuves absolues et refaire des lectures fraches avant toute mutation.
-
-## Prompt de reprise copiable
+## Prompt copie-collable
 
 ```text
-Reprenons l'inventaire MilAura depuis le handoff du 2026-08-28. Lis AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md et docs/checkpoints/2026-08-28-1815-inventory-71-active-v3-handoff.md. Commence en lecture seule par un audit Shopify frais et une verification du ledger et du Sheet. Le snapshot ferme est 71 produits traites et actifs, 89 queued et 15 blocked-price. La bague aigue-marine et les Ornel sont validees et actives, ne les rouvre pas. Premier arbitrage : regrouper les puces quartz rose 6, 8 et 10 mm en variantes sans perdre EAN, prix, stock, medias, SEO ni feed. Ensuite reprends le workflow visuel V3 au rang 61. Le chantier des 15 prix manquants reste reporte.
+Reprends C1 Mon Ecrin MilAura au 2026-08-29 depuis /Users/paesano/Documents/MilAura website/dawn-X-milaura. Commence strictement en lecture seule.
+
+Lis integralement AGENTS.md, docs/project-state.md, docs/workstreams.md, docs/codex-handoff.md, docs/checkpoints/2026-08-29-0729-c1-mon-ecrin-dynamic-live-handoff.md, docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md, docs/checkpoints/2026-08-28-1338-ruban-v3-final-accepted-handoff.md, docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md et docs/superpowers/plans/2026-08-05-milaura-renouveau-plan-execution.md.
+
+Decision Patrice : la fin de l inventaire ne bloque plus Mon Ecrin. Le catalogue et le stock sont vivants. C1 doit resoudre dynamiquement des recommandations et categories intelligentes depuis les produits Shopify actuellement publies, vendables et disponibles, avec prix, URL et medias vivants. Replis requis : exact, proche, univers ou categorie, collection, puis catalogue eligible. Une indisponibilite ou de-publication doit etre absorbee sans redeploiement. Les gates Ads stock, cout, marge, feed et tracking restent separees.
+
+Etat ferme : V3 d8d036ff, C1-1 cf2877ba, RC prive c877d630, theme RC 2f95b3d1, correctif idempotence 7bb67efc, endpoint 146ac026, preuve sans commande 1ee9c07f, preuve commandes e863fc10. RC4, RC7 et RC8 sont PASS prive. RC5 doit etre reformule et ferme par le resoluteur dynamique. RC6 reste NO-GO conditionnel sur le shell natif anglais. Mon Ecrin n est pas live. Dev store 107347837273, theme prive 205027279193 unpublished, backend_url vide, flag false, scopes temporaires absents, runtime arrete.
+
+Premiere mission uniquement : auditer les sources et contrats C1 actuels, identifier exactement les mappings figes a remplacer et proposer au master 01a03e8e-aa31-76e1-937a-a4aeb6706c82 le plus petit lot prive qui ferme le nouveau contrat dynamique et RC5. Utilise le moteur Ruban V3 comme reference architecturale, sans copier aveuglement son implementation. Ne rien executer ni ecrire avant reservation master : aucun code, compte, commande, scope, Admin, Mail, Shopify, backend, app dev, deploy, release, integration, publication ou live.
+
+Objectif final : terminer Mon Ecrin, le productioniser, l integrer, le tester publiquement et le mettre definitivement en ligne sous des GO distincts, sans attendre la fin de l inventaire complet.
 ```
+
+## References
+
+- checkpoint exhaustif de cette cloture : `docs/checkpoints/2026-08-29-0729-c1-mon-ecrin-dynamic-live-handoff.md` ;
+- commandes privees et rollback : `docs/checkpoints/2026-08-25-1228-c1-o2-orders-qa-pass.md` ;
+- architecture dynamique Ruban : `docs/checkpoints/2026-08-28-1338-ruban-v3-final-accepted-handoff.md`.

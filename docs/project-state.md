@@ -1,10 +1,10 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-28 18:21 CEST
+Derniere mise a jour : 2026-08-29 07:29 CEST
 
 ## Etat en une phrase
 
-Le Ruban V3 adaptatif reste termine et live ; l'inventaire est ferme pour cette session a 71 produits traites et actifs ; la Rentree Sodalite finale est integree dans le master apres validation privee, mais son live reste interdit sans GO separe.
+Le Ruban V3 adaptatif reste termine et live ; Mon Ecrin a ferme sa QA privee avec et sans commande et doit maintenant remplacer son catalogue fige par des recommandations dynamiques avant productionisation et mise en ligne ; la fin de l inventaire complet ne bloque plus C1, mais les gates Ads restent intactes.
 
 ## Source de verite et etat du depot
 
@@ -72,7 +72,7 @@ Atelier des emotions et Pierres de naissance restent en pause plus longue. Le po
 - Le diagnostic est actuellement persiste dans le navigateur et le panier, pas dans une source cliente durable. Le chantier `C1 - Le Cercle MilAura` possede la correction entre appareils et sa restitution dans `Mon Ecrin`.
 - Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. L audit des emails, notifications, relances et du comportement apres inscription est ferme le 2026-08-20 ; leur implementation reste classee criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
-- L inventaire physique courant compte 71 produits traites et actifs. Il reste 104 references non traitees, dont 89 en file et 15 bloquees par prix. Cette verite reste obligatoire avant paid acquisition et avant les destinations qui dependent de produits disponibles.
+- L inventaire physique courant compte 71 produits traites et actifs. Il reste 104 references non traitees, dont 89 en file et 15 bloquees par prix. Cette verite reste obligatoire avant paid acquisition. Elle ne bloque plus Mon Ecrin : ses destinations doivent etre resolues dynamiquement parmi les produits Shopify actuellement publies, vendables et disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
 - Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
 - Decisions Pinterest de Patrice du 2026-08-20 : le titre et la bio actuels sont valides et restent inchanges. Aucun agent ne doit proposer de les remplacer sans nouvelle demande explicite. La phrase finale `Découvrez les créations et conseils sur milaura.fr.` est approuvee comme ajout optionnel ; si la limite de caracteres Pinterest empeche son ajout, la bio existante ne doit pas etre raccourcie sans validation de Patrice.
@@ -117,6 +117,16 @@ Commit fonctionnel `43e93d10`, documentation `7a68ca5d`, integration canonique `
 Le controle authentifie a detecte puis fait corriger une selection personnalisee qui restait visible dans Mon Ecrin apres retrait. Le correctif live a ete limite a deux fichiers, pullback 2/2 identique. Le profil, le diagnostic et la selection disparaissent maintenant immediatement au retrait et ne reviennent pas au rechargement. La session de test a ete laissee en refus et son diagnostic purge.
 
 Anomalie de miroir : `1dccd18c` contient les six fichiers existants du push initial mais omet `assets/milaura-preference-storage.js`. `763d7ad9` reprend exactement les deux fichiers du correctif. Ne pas fusionner `origin/main` aveuglement ; le canonique et les pullbacks live restent les preuves. References : `docs/checkpoints/2026-08-20-0749-diagnostic-consent-dev.md` et `docs/checkpoints/2026-08-20-0809-diagnostic-consent-live.md`.
+
+## Decision C1 Mon Ecrin dynamique du 2026-08-29
+
+Patrice ferme la grande session C1 et demande une reprise fraiche orientee mise en ligne. La fin des 175 references physiques n est plus un prerequis de C1 : le stock MilAura est vivant et continuera de changer apres la release.
+
+Mon Ecrin doit donc interroger le catalogue Shopify courant et ne proposer que des produits publies sur la destination retenue, vendables, disponibles, avec URL, prix et media vivants. Les recommandations descendent par replis controles depuis le profil, la pierre favorite et l historique qualifie : correspondance exacte, correspondance proche, univers ou categorie, collection, puis catalogue eligible. Une reference de-publiee, supprimee ou devenue indisponible doit disparaitre sans correctif manuel ni redeploiement.
+
+Le Ruban V3 live est une reference d architecture utile pour les exclusions, l ordonnancement et les replis, sans constituer un code a copier aveuglement dans Customer Accounts. Le nouveau contrat doit encore etre implemente et prouve dans un lot prive avant productionisation. Les gates stock, prix, cout, marge, feed, tracking, consentement et mesure restent obligatoires avant Ads, mais elles ne bloquent plus la mise en ligne de Mon Ecrin.
+
+Handoff : `docs/checkpoints/2026-08-29-0729-c1-mon-ecrin-dynamic-live-handoff.md`.
 
 ## E1-E3 fermes, C1 V3 gelee et C1-1 prive ferme
 
@@ -218,13 +228,13 @@ L implementation privee a ferme G0 a G11. Toute future release doit encore ferme
 4. definir un handoff signe et idempotent depuis `MilauraPreferenceStorage` vers le compte, sans secret navigateur ;
 5. assurer la synchronisation inter-appareils, la resolution explicite des conflits et un mode hors ligne date ;
 6. garantir la purge locale, panier et serveur avec recu, reprise partielle et prevention de resurrection ;
-7. fermer le registre produit ou variant vers pierre pour historique, retours, annulations, remboursements, egalites, cadeaux et produits sans pierre ;
-8. brancher les vrais liens produit et collection, retirer toutes les actions simulees et traiter les etats d erreur production ;
+7. fermer la semantique produit ou variant vers pierre pour historique, retours, annulations, remboursements, egalites, cadeaux et produits sans pierre, sans transformer un mapping fige en catalogue de vente ;
+8. brancher un resoluteur dynamique vers les produits et categories Shopify publies, vendables et disponibles, avec prix, URL, media et replis vivants ; retirer toutes les actions simulees et traiter les etats d erreur production ;
 9. fermer securite, retention, audit, migration, observabilite, tests de parite et rollback ;
 10. valider sur comptes de test, coordonner les emails de compte avec Mail, traiter le francais du shell natif et obtenir un GO Admin distinct avant toute bascule ;
 11. obtenir un GO live explicite seulement apres toutes les gates precedentes.
 
-La fin du SEO, Pinterest, Rentree Sodalite et Atelier ne bloque pas l implementation privee C1-1. Ruban V3 est deja ferme et live. Pour une release, Mail doit coordonner les emails de compte avant un switch ; l inventaire et le catalogue fiables doivent fermer le mapping commande-vers-pierre et les destinations produit ; un micro-lot theme distinct doit prouver le bridge et la purge locale reels. La fidelite reelle n est pas un prerequis : le bloc `A venir` reste honnete. S1B et S1C sont downstream et ne bloquent pas C1-1.
+La fin du SEO, Pinterest, Rentree Sodalite, Atelier et inventaire complet ne bloque pas C1. Ruban V3 est deja ferme et live. Pour une release, Mail doit coordonner les emails de compte avant un switch ; le catalogue Shopify vivant doit fermer la resolution dynamique des destinations produit ; un micro-lot theme distinct doit prouver le bridge et la purge locale reels. La fidelite reelle n est pas un prerequis : le bloc `A venir` reste honnete. S1B et S1C sont downstream et ne bloquent pas C1-1.
 
 References : `docs/checkpoints/2026-08-21-0846-c1-0-rejet-handoff.md`, `docs/milaura/shopify-admin-canonical/c1-v3-shopify-private-preview/2026-08-22-c1-v3-evidence.md` sur la branche privee, `docs/workstreams.md`, `docs/checkpoints/2026-08-22-1235-c1-v3-closed-handoff.md`, `docs/checkpoints/2026-08-22-1302-c1-1-private-reservation.md`, `docs/checkpoints/2026-08-23-1046-c1-1-g11-closed.md` et `docs/checkpoints/2026-08-23-1100-c1-release-candidate-reservation.md`.
 
@@ -464,11 +474,11 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La nouvelle session master conserve seule l integration et le live a partir de `51353dfb02eea462fb715b52fa6bc86c99a922ca` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Auditer en lecture seule les sessions ouvertes Mail, Mon Ecrin et Pinterest ; demander leurs retours compacts, recadrer leurs scopes et fermer ce qui est reellement termine. Ruban V3 est ferme et live ; Rentree Sodalite est integree mais reste hors live.
+2. Reprendre Mon Ecrin dans une session fraiche strictement read-only, auditer les mappings figes et faire reserver par le master le plus petit lot prive de resoluteur dynamique. L objectif est de fermer RC5 sans attendre la fin de l inventaire.
 3. A la prochaine reprise inventaire, auditer Shopify, le Sheet et le ledger en lecture seule, arbitrer les variantes quartz rose, puis reprendre le workflow V3 au rang 61.
-4. Autoriser en parallele les travaux independants sans chevauchement : finition Mail, prochaines gates privees Mon Ecrin et fondations Pinterest hors theme.
+4. Apres validation privee du resoluteur, enchainer productionisation C1, integration ciblee, bascule Admin, QA publique et GO live sous gates distinctes. Finition Mail et fondations Pinterest restent paralleles sans chevauchement.
 5. Continuer les 89 references en file par lots controles. Les 15 prix manquants restent reportes jusqu'a une tache dediee. Aucun passage en actif sans validation Patrice et GO Admin distinct.
-6. Lorsque la verite catalogue pertinente est fiable, fermer RC5, le feed et Pinterest final sous leurs gates propres. Rentree Sodalite ne demande plus qu un GO live separe et sa QA publique.
+6. Fermer le feed et Pinterest final sous leurs gates propres. Rentree Sodalite ne demande plus qu un GO live separe et sa QA publique.
 7. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
 8. Laisser Atelier des emotions et Pierres de naissance en pause plus longue jusqu a une nouvelle decision de Patrice.
 9. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance et Mariage, le Journal, puis S1B et S1C seulement apres C1.
@@ -489,7 +499,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V2 : historique remplace par V3 pour le rendu PDP ; ses anciens placements Search & Discovery restent une source prioritaire lorsque valides, mais les anciens detourages ne sont plus utilises par le chemin critique V3
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
 - diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; correctif d idempotence ferme a `7bb67efc`, preuves sans commande `1ee9c07f`, preuves commandes `e863fc10`, RC4, RC7 et RC8 PASS prive ; RC5 et RC6 restent ouverts ; aucun droit C1-2, app deploy/release, Admin, bascule, email, integration theme ou live
+- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; correctif d idempotence ferme a `7bb67efc`, preuves sans commande `1ee9c07f`, preuves commandes `e863fc10`, RC4, RC7 et RC8 PASS prive ; RC5 doit etre ferme par le resoluteur dynamique independant de l inventaire complet ; RC6 reste ouvert sur le shell natif anglais ; aucun droit C1-2, app deploy/release, Admin, bascule, email, integration theme ou live
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
