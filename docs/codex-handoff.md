@@ -3,19 +3,21 @@
 Date : 2026-08-29 07:29 CEST
 Statut : `SESSION C1 FERMEE - REPRISE FRAICHE REQUISE - NON LIVE`
 
-Dernier encart inventaire : 2026-08-29 08:01 CEST
+Dernier encart inventaire : 2026-08-29 10:21 CEST
 
 ## Encart inventaire 185 et Camilla V3
 
 La reprise inventaire prioritaire est fermee techniquement. Le Sheet et les artefacts locaux portent maintenant la vue unique `185 references = ledger 175 + pilote 10`, soit 456 unites, 79 `ACTIVE`, 9 `DRAFT` et 97 absentes. Les dix EAN pilote sont rapproches et relus ; leurs photos restent volontairement `a valider`.
 
-Camilla a recu le meme schema, les memes prompts, scripts, auditeurs, builders et tests que le pipeline local. Le conteneur est `running`, `restarting=false` et passe `CONTRACT_V1_3_TEST_PASSED`, `PIPELINE_LOCAL_TESTS_PASSED`, `CAMILLA_SHOPIFY_READ_AUDITORS_READY` et `CAMILLA_INVENTORY_185_BUILDERS_READY`.
+Camilla a recu le meme schema, les memes prompts, scripts, auditeurs, builders et tests que le pipeline local. Le conteneur est `running` et passe `CONTRACT_V1_3_TEST_PASSED`, `PIPELINE_LOCAL_TESTS_PASSED`, `CAMILLA_SHOPIFY_READ_AUDITORS_READY`, `CAMILLA_PRICE_DISPOSITION_DECISIONS_READY` et `CAMILLA_INVENTORY_185_BUILDERS_READY`.
 
 Le contrat futur est exactement cinq images V3. Les galeries historiques a trois ou six images ne prouvent pas V3 et ne sont pas migrees automatiquement.
 
-Decision ouverte avant le rang 61 : architecture variantes. Le controle trouve cinq familles et 14 EAN qui ne different que par diametre ; 5 sont `ACTIVE`, 2 `DRAFT`, 7 absents. Le catalogue Shopify complet compte 658 produits et zero produit multi-variante. Le theme sait afficher une variante unique par choix de diametre, mais le pipeline refuse actuellement tout produit qui n a pas exactement une variante. Aucune fusion n a ete executee.
+Les 15 blocages prix sont fermes depuis la decision de Patrice du 2026-08-29 : neuf prix TTC sont inscrits dans le Sheet et six pierres roulees sont reservees comme cadeaux ou avantages client, donc exclues de toute creation Shopify. Le ledger 175 compte maintenant 71 actifs, 98 `queued`, 6 `excluded-non-sale` et 0 `blocked-price`.
 
-Checkpoint : `docs/checkpoints/2026-08-29-0801-inventory-185-camilla-v3.md`.
+L'architecture variantes reste un arbitrage separe : cinq familles et 14 EAN ne different que par diametre ; 5 sont `ACTIVE`, 2 `DRAFT`, 7 absents. Patrice ouvrira une session specialisee. Aucune fusion n'a ete executee et cette decision ne bloque plus la reprise du workflow mono-variante courant. Le prochain item reel est la position 72, EAN `3701459084494`.
+
+Checkpoints : `docs/checkpoints/2026-08-29-0801-inventory-185-camilla-v3.md` et `docs/checkpoints/2026-08-29-1021-inventory-price-dispositions.md`.
 
 ## Resultat a retenir
 

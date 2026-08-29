@@ -1,6 +1,6 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-29 08:01 CEST
+Derniere mise a jour : 2026-08-29 10:21 CEST
 
 ## Etat en une phrase
 
@@ -41,18 +41,18 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 ## Inventaire et workflow produit V3 au 2026-08-29
 
 - Vue canonique consolidee : `185 references = ledger 175 + pilote 10`, soit 456 unites physiques. Le Sheet relu apres rapprochement compte 79 `ACTIVE`, 9 `DRAFT` et 97 absentes, sans EAN positif duplique.
-- Ledger 175 : 433 unites, 54 `active-user-approved-sheet-proved`, 17 `active-workflow-v3-sheet-proved`, 89 `queued` et 15 `blocked-price`. Cette distinction evite de declarer V3 une fiche uniquement parce qu'elle est active. La tache des prix manquants reste reportee par Patrice ; aucun prix ne doit etre invente.
+- Ledger 175 : 433 unites, 54 `active-user-approved-sheet-proved`, 17 `active-workflow-v3-sheet-proved`, 98 `queued`, 6 `excluded-non-sale` et 0 `blocked-price`. Cette distinction evite de declarer V3 une fiche uniquement parce qu'elle est active. Patrice a fixe le 2026-08-29 les neuf prix de vente TTC manquants et reserve six pierres roulees comme cadeaux ou avantages client. Ces six EAN restent dans le stock physique mais ne doivent recevoir ni prix a 0 EUR ni produit Shopify.
 - Pilote 10 : 23 unites, 8 produits `ACTIVE` et 2 `DRAFT`. Les dix identites produit/variant, SKU, barcode, statuts, stocks et couvertures ont ete rapprochees avec Shopify puis relues dans le Sheet le 2026-08-29. `Photo fidele validee` reste `a valider` pour les dix : aucune validation visuelle Patrice n'a ete inventee.
 - Shopify : 88 correspondances EAN exactes dans la vue 185. Le stock est exact pour 81 ; les 7 ecarts restants sont les anciens `update-draft` du ledger, encore a 5 unites Shopify chacun. Aucun produit, prix, stock, statut ou publication Shopify n'a ete modifie par cette reprise.
-- Sheet : 185 references positives, 456 unites, 79 `ACTIVE`, 9 `DRAFT`, 97 absentes, 71 photos `validee pipeline + Patrice` et 114 `a valider`. Les formules, validations, prix, stocks physiques et couts sont restes intacts.
+- Sheet : 185 references positives, 456 unites, 79 `ACTIVE`, 9 `DRAFT`, 97 absentes, 71 photos `validee pipeline + Patrice` et 114 `a valider`. Les neuf prix TTC et les six decisions hors vente ont ete ecrits le 2026-08-29. Les quantites et couts unitaires de six achats fournisseur par lots ont ete normalises ; les lignes d'achat brutes, formules et validations sont restees intactes.
 - Bague aigue-marine `10669860192603`, EAN `3667407015593` : cinq images V3 corrigees, controlees, validees et activees par Patrice.
 - Boucles Ornel `10670433993051`, EAN `3667407007796` : validees physiquement et activees par Patrice. Leur galerie historique de six images est acceptee ; ne pas la rouvrir sans nouvelle demande.
 - Workflow V3 : exactement cinq images, trois produit seules et deux humaines ; vraie macro en slot 2 ; nature morte contrastee en slot 3 ; scene calme avec macro portee integree en slot 4 ; scene vive distincte en slot 5 ; aucun visuel saisonnier ; generation et controle slot par slot ; proportions, composants, pierre, metal, fermeture et anatomie humaine comme gates dures.
 - Le Bracelet Iris `10669947781467`, EAN `3667407021495`, reste le benchmark canonique du workflow V3.
 - Arbitrage variantes ouvert, sans mutation : le controle des 185 references trouve cinq familles exactes qui ne different que par diametre, soit 14 EAN. Elles couvrent les puces cornaline 6/8/10 mm, les puces quartz rose 6/8/10 mm, les bracelets boule cornaline 6/8/10/14 mm, pierre de lune multicolore 6/10 mm et quartz rose 6/12 mm. Etat de ces 14 EAN : 5 `ACTIVE`, 2 `DRAFT`, 7 absents.
-- Le catalogue Shopify complet audite en lecture seule le 2026-08-29 compte 658 produits et aucun produit multi-variante. Le theme contient pourtant un selecteur de variante qui met a jour variante, prix, media, URL et CTA. Le pipeline produit reste volontairement mono-variante : son schema contient un seul objet `shopify.variant` et `update_shopify_draft.py` refuse tout brouillon qui n'a pas exactement une variante. La decision produit et la migration du pipeline doivent donc preceder la reprise au rang 61.
-- Apres cet arbitrage et son implementation bornee, reprendre la file au rang 61, EAN `3701459084494`, collier lapis-lazuli 4 mm.
-- Camilla a ete sauvegardee, synchronisee sans suppression, redemarree et testee dans le conteneur le 2026-08-29. `CONTRACT_V1_3_TEST_PASSED`, `PIPELINE_LOCAL_TESTS_PASSED` et `CAMILLA_INVENTORY_185_BUILDERS_READY` passent ; le conteneur est `running`, `restarting=false`. Le checksum dry-run local/VPS ne retourne aucun fichier divergent.
+- Le catalogue Shopify complet audite en lecture seule le 2026-08-29 compte 658 produits et aucun produit multi-variante. Le theme contient pourtant un selecteur de variante qui met a jour variante, prix, media, URL et CTA. Le pipeline produit reste volontairement mono-variante : son schema contient un seul objet `shopify.variant` et `update_shopify_draft.py` refuse tout brouillon qui n'a pas exactement une variante. Patrice traitera cet arbitrage dans une session specialisee ; il ne bloque plus la reprise du stock avec le contrat mono-variante courant.
+- Reprendre la file au prochain item reel, position 72 apres actualisation des identites Shopify, EAN `3701459084494`, collier lapis-lazuli 4 mm. L'EAN est inchange ; l'ancien rang 61 est obsolete car onze positions sont maintenant classees actives par la reconciliation fraiche.
+- Camilla a ete sauvegardee, synchronisee sans suppression, redemarree et testee dans le conteneur le 2026-08-29. `CONTRACT_V1_3_TEST_PASSED`, `PIPELINE_LOCAL_TESTS_PASSED`, `CAMILLA_PRICE_DISPOSITION_DECISIONS_READY` et `CAMILLA_INVENTORY_185_BUILDERS_READY` passent ; le conteneur est `running`. Le checksum dry-run local/VPS ne retourne aucun fichier divergent.
 - Artefacts : `data/catalogue-batches/2026-08-25-physical-stock-175/consolidated-185.json`, `data/pilot-batches/2026-08-25-physical-stock-pilot-10/shopify-reconciliation-2026-08-29.json` et `scripts/build_inventory_consolidated_view.py` dans le workspace prive produit.
 - Checkpoint exhaustif : `docs/checkpoints/2026-08-29-0801-inventory-185-camilla-v3.md`.
 
@@ -75,7 +75,7 @@ Atelier des emotions et Pierres de naissance restent en pause plus longue. Le po
 - Le diagnostic est actuellement persiste dans le navigateur et le panier, pas dans une source cliente durable. Le chantier `C1 - Le Cercle MilAura` possede la correction entre appareils et sa restitution dans `Mon Ecrin`.
 - Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. L audit des emails, notifications, relances et du comportement apres inscription est ferme le 2026-08-20 ; leur implementation reste classee criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
-- La vue physique courante compte 185 references : 79 `ACTIVE`, 9 `DRAFT` et 97 absentes. Dans le ledger 175, il reste 89 references en file et 15 bloquees par prix ; le pilote 10 ajoute 8 actives et 2 brouillons. Cette verite reste obligatoire avant paid acquisition. Elle ne bloque plus Mon Ecrin : ses destinations doivent etre resolues dynamiquement parmi les produits Shopify actuellement publies, vendables et disponibles.
+- La vue physique courante compte 185 references : 79 `ACTIVE`, 9 `DRAFT` et 97 absentes. Dans le ledger 175, 98 references vendables restent en file, 6 references physiques sont exclues de la vente pour cadeau ou avantage client et aucune reference ne reste bloquee par prix ; le pilote 10 ajoute 8 actives et 2 brouillons. Cette verite reste obligatoire avant paid acquisition. Elle ne bloque plus Mon Ecrin : ses destinations doivent etre resolues dynamiquement parmi les produits Shopify actuellement publies, vendables et disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
 - Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
 - Decisions Pinterest de Patrice du 2026-08-20 : le titre et la bio actuels sont valides et restent inchanges. Aucun agent ne doit proposer de les remplacer sans nouvelle demande explicite. La phrase finale `Découvrez les créations et conseils sur milaura.fr.` est approuvee comme ajout optionnel ; si la limite de caracteres Pinterest empeche son ajout, la bio existante ne doit pas etre raccourcie sans validation de Patrice.
@@ -436,9 +436,9 @@ Pipeline actif :
 
 ## Catalogue physique, reprise courante
 
-L'ancienne tache volumineuse `01a038d2-cc6d-7c81-9ceb-bb08200ef937` reste retiree. Ses ledgers persistants sont maintenant presentes dans une vue unique de 185 references : ledger 175 plus pilote 10. Le ledger reste a 71 actifs, 89 en file et 15 bloques par prix ; le pilote ajoute 8 actifs et 2 brouillons.
+L'ancienne tache volumineuse `01a038d2-cc6d-7c81-9ceb-bb08200ef937` reste retiree. Ses ledgers persistants sont maintenant presentes dans une vue unique de 185 references : ledger 175 plus pilote 10. Le ledger compte 71 actifs, 98 vendables en file, 6 exclus de la vente et 0 bloques par prix ; le pilote ajoute 8 actifs et 2 brouillons.
 
-La prochaine reprise commence par la decision variantes sur les cinq familles et 14 EAN deja identifies, puis adapte schema, create/update, images, feed et redirections dans un lot prive testable. Aucune fusion de produit n'a ete executee. Le rang 61 et le chantier prix restent en attente. Checkpoint canonique : `docs/checkpoints/2026-08-29-0801-inventory-185-camilla-v3.md`.
+Les neuf prix TTC fixes par Patrice sont inscrits dans le Sheet et les six pierres reservees aux avantages client sont marquees `HORS VENTE`. Les couts unitaires de six references fournisseur vendues par lots de 2, 3 ou 5 ont ete normalises sans modifier les lignes d'achat brutes. Aucune fusion de produit n'a ete executee. L'arbitrage variantes est transmis a une session specialisee et la production peut reprendre avec le contrat courant a la position 72, EAN `3701459084494`. Checkpoints canoniques : `docs/checkpoints/2026-08-29-0801-inventory-185-camilla-v3.md` et `docs/checkpoints/2026-08-29-1021-inventory-price-dispositions.md`.
 
 La disponibilite client repose d abord sur Shopify natif par variante : quantite reelle pour le physique ; quantite 0 et poursuite de vente seulement pour une reference fournisseur explicitement acceptee ; quantite 0 sans poursuite si indisponible. Aucun stock `Entrant` fictif et aucun faux lieu fournisseur. Un metafield interne reste optionnel et exige un lot Admin separe.
 
@@ -478,9 +478,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 1. La nouvelle session master conserve seule l integration et le live a partir de `51353dfb02eea462fb715b52fa6bc86c99a922ca` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
 2. Reprendre Mon Ecrin dans une session fraiche strictement read-only, auditer les mappings figes et faire reserver par le master le plus petit lot prive de resoluteur dynamique. L objectif est de fermer RC5 sans attendre la fin de l inventaire.
-3. A la prochaine reprise inventaire, auditer Shopify, le Sheet et le ledger en lecture seule, arbitrer les variantes quartz rose, puis reprendre le workflow V3 au rang 61.
+3. Reprendre le workflow V3 a la position 72, EAN `3701459084494`, avec le prix, le stock et l'identite controles avant toute creation de brouillon. Traiter l'architecture variantes dans la session specialisee annoncee par Patrice, sans bloquer ce flux mono-variante courant.
 4. Apres validation privee du resoluteur, enchainer productionisation C1, integration ciblee, bascule Admin, QA publique et GO live sous gates distinctes. Finition Mail et fondations Pinterest restent paralleles sans chevauchement.
-5. Continuer les 89 references en file par lots controles. Les 15 prix manquants restent reportes jusqu'a une tache dediee. Aucun passage en actif sans validation Patrice et GO Admin distinct.
+5. Continuer les 98 references vendables en file par lots controles. Les 6 references `excluded-non-sale` restent physiquement tracees mais hors creation Shopify. Aucun passage en actif sans validation Patrice et GO Admin distinct.
 6. Fermer le feed et Pinterest final sous leurs gates propres. Rentree Sodalite ne demande plus qu un GO live separe et sa QA publique.
 7. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
 8. Laisser Atelier des emotions et Pierres de naissance en pause plus longue jusqu a une nouvelle decision de Patrice.
@@ -489,7 +489,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Dependances encore ouvertes
 
-- inventaire courant : 71 produits traites et actifs ; 89 references en file et 15 bloquees par prix ; prochain rang 61 apres arbitrage des variantes quartz rose
+- inventaire courant : 71 produits traites et actifs ; 98 references vendables en file, 6 exclues de la vente et 0 bloquee par prix ; prochain item position 72, EAN `3701459084494`
 - inventaire et retrait controle des 18 baguettes minerales
 - treize anciennes collections sans metas definitives
 - pages mensuelles de naissance et pages enfants mariage
