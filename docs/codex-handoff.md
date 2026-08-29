@@ -3,7 +3,19 @@
 Date : 2026-08-29 07:29 CEST
 Statut : `SESSION C1 FERMEE - REPRISE FRAICHE REQUISE - NON LIVE`
 
-Dernier encart inventaire : 2026-08-29 10:21 CEST
+Dernier encart inventaire : 2026-08-29 11:50 CEST
+
+## Encart sept brouillons Shopify V3
+
+Les sept brouillons historiques demandes par Patrice sont remis au contrat produit courant et prets pour sa validation unitaire. EAN concernes : `3701459056040`, `3667407007277`, `3701459056088`, `3701459082087`, `3701459081790`, `3701459056163` et `3701459080281`.
+
+Chaque fiche a exactement cinq images V3, ses textes et metafields controles, son prix, son cout et son stock physique. L audit Shopify frais est `verified: true`, sans failure. Les sept statuts sont `DRAFT` et les sept `onlineStoreUrl` sont `null`. Aucune publication ni activation de canal n a eu lieu.
+
+La plaque Fleur de Vie et Oeil d Horus, produit `10358583853403`, est techniquement correcte mais garde un risque economique majeur : 8,90 EUR TTC pour 8,20 EUR HT de cout fournisseur. Ne pas la publier sans arbitrage prix.
+
+Camilla dispose des memes cinq scripts et du meme schema que le pipeline local. Les six SHA-256 sont identiques. Son environnement persistant `.venv/bin/python` passe la compilation, le schema et les nouveaux points d entree, avec le resultat `CAMILLA_WORKFLOW_RUNTIME_PASS`.
+
+Checkpoint : `docs/checkpoints/2026-08-29-1150-seven-shopify-drafts-v3-review.md`.
 
 ## Encart inventaire 185 et Camilla V3
 
