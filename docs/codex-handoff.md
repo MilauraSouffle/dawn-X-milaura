@@ -3,6 +3,20 @@
 Date : 2026-08-29 07:29 CEST
 Statut : `SESSION C1 FERMEE - REPRISE FRAICHE REQUISE - NON LIVE`
 
+Dernier encart inventaire : 2026-08-29 08:01 CEST
+
+## Encart inventaire 185 et Camilla V3
+
+La reprise inventaire prioritaire est fermee techniquement. Le Sheet et les artefacts locaux portent maintenant la vue unique `185 references = ledger 175 + pilote 10`, soit 456 unites, 79 `ACTIVE`, 9 `DRAFT` et 97 absentes. Les dix EAN pilote sont rapproches et relus ; leurs photos restent volontairement `a valider`.
+
+Camilla a recu le meme schema, les memes prompts, scripts, auditeurs, builders et tests que le pipeline local. Le conteneur est `running`, `restarting=false` et passe `CONTRACT_V1_3_TEST_PASSED`, `PIPELINE_LOCAL_TESTS_PASSED`, `CAMILLA_SHOPIFY_READ_AUDITORS_READY` et `CAMILLA_INVENTORY_185_BUILDERS_READY`.
+
+Le contrat futur est exactement cinq images V3. Les galeries historiques a trois ou six images ne prouvent pas V3 et ne sont pas migrees automatiquement.
+
+Decision ouverte avant le rang 61 : architecture variantes. Le controle trouve cinq familles et 14 EAN qui ne different que par diametre ; 5 sont `ACTIVE`, 2 `DRAFT`, 7 absents. Le catalogue Shopify complet compte 658 produits et zero produit multi-variante. Le theme sait afficher une variante unique par choix de diametre, mais le pipeline refuse actuellement tout produit qui n a pas exactement une variante. Aucune fusion n a ete executee.
+
+Checkpoint : `docs/checkpoints/2026-08-29-0801-inventory-185-camilla-v3.md`.
+
 ## Resultat a retenir
 
 Mon Ecrin n est pas bloque par la fin de l inventaire.
