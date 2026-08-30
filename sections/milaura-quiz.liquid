@@ -1775,8 +1775,7 @@
           <div class="quiz-reveal-footer">
             <div class="quiz-reveal-account-invite" id="quiz-reveal-account-invite-{{ section.id }}">
               <p class="quiz-reveal-account-text">Sauvegardez votre profil émotionnel</p>
-              <a href="{{ routes.account_register_url }}" class="quiz-reveal-account-link">Créer mon compte</a>
-              {%- if settings.milaura_c1_release_candidate_enabled -%}
+              {%- if settings.milaura_c1_release_candidate_enabled and customer -%}
                 <div>
                   <button
                     type="button"
@@ -1784,7 +1783,7 @@
                     data-milaura-c1-save-diagnostic
                     aria-describedby="quiz-reveal-account-status-{{ section.id }}"
                   >
-                    Conserver ce résultat dans Mon Écrin
+                    Enregistrer et ouvrir Mon Écrin
                   </button>
                   <p
                     id="quiz-reveal-account-status-{{ section.id }}"
@@ -1794,6 +1793,8 @@
                     Votre résultat est transféré uniquement après votre choix explicite.
                   </p>
                 </div>
+              {%- else -%}
+                <a href="{{ routes.account_register_url }}" class="quiz-reveal-account-link">Créer mon compte</a>
               {%- endif -%}
             </div>
           </div>
@@ -2611,6 +2612,7 @@
         bougie: { data: profile.bougieProduct },
         collier: { data: profile.collierProduct }
       };
+      const monEcrinAccountUrl = {{ settings.milaura_c1_mon_ecrin_url | default: routes.account_url | json }};
       const availableTabs = Object.keys(productTypes).filter(function(tabKey) {
         return Boolean(productTypes[tabKey].data);
       });
@@ -2624,8 +2626,8 @@
         if (isCustomerLoggedIn) {
           if (accountTextEl) accountTextEl.textContent = 'Vous êtes connecté à votre espace MilAura.';
           if (accountLinkEl) {
-            accountLinkEl.href = {{ routes.account_url | json }};
-            accountLinkEl.textContent = 'Voir mon espace compte';
+            accountLinkEl.href = monEcrinAccountUrl;
+            accountLinkEl.textContent = 'Ouvrir Mon Écrin';
           }
         } else {
           if (accountTextEl) accountTextEl.textContent = 'Créez un compte MilAura pour suivre vos commandes.';

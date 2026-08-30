@@ -5,6 +5,7 @@
   if (!root || root.dataset.enabled !== 'true' || !window.MilauraPreferenceStorage) return;
 
   var endpoint = String(root.dataset.endpoint || '').replace(/\/$/, '');
+  var accountUrl = String(root.dataset.accountUrl || '');
   var loggedIn = root.dataset.loggedIn === 'true';
   var purgeInFlight = null;
 
@@ -113,8 +114,11 @@
       })
       .then(function () {
         button.dataset.saved = 'true';
-        button.textContent = 'Résultat prêt pour Mon Écrin';
-        setStatus(button, 'Ouvrez Mon Écrin pour confirmer l’importation dans votre compte.', 'success');
+        button.textContent = 'Ouverture de Mon Écrin…';
+        setStatus(button, 'Votre résultat est prêt. Ouverture de votre espace compte.', 'success');
+        if (/^https:\/\/shopify\.com\//i.test(accountUrl)) {
+          window.location.assign(accountUrl);
+        }
       })
       .catch(function (error) {
         setStatus(button, error.message || 'La synchronisation est momentanément indisponible.', 'error');
