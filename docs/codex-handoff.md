@@ -1,79 +1,95 @@
-# Handoff Codex MilAura, lot inventaire corrige et prouve
+# Handoff Codex MilAura, reprise inventaire du 30/08
 
-Date : 2026-08-30 09:14 CEST
+Date : 2026-08-30 11:30 CEST
 
-Statut : `PASS 10/10 - 3 ACTIVE - 7 DRAFT - 2 GO VISUELS PATRICE`
+Statut : `FERME - CONTENU PASS 36/36 - 96 ACTIVE - 2 DRAFT - 84 ABSENTES - 0 P0`
 
-## Reprise canonique
+## Prompt de reprise
 
 ```text
-Reprends l inventaire MilAura au 2026-08-30 depuis docs/codex-handoff.md et docs/checkpoints/2026-08-30-0906-inventory-next-ten-content-fix.md. Ne touche ni au statut ni aux canaux sans un nouveau GO explicite. Les deux organites sont actifs et valides visuellement. Le rouleau est actif mais attend encore le verdict visuel de Patrice. Les six colliers et la plaque bois sont des brouillons techniquement prets a controler puis activer un par un.
+Reprenons l inventaire MilAura. Lis AGENTS.md, docs/codex-handoff.md, docs/project-state.md, docs/workstreams.md et docs/checkpoints/2026-08-30-1130-inventory-active-catalogue-content-fix.md. Repars du Sheet canonique Inventaire canonique et relis Shopify en direct avant toute mutation. Etat ferme du 2026-08-30 : 182 references positives, 447 unites, 96 ACTIVE, 2 DRAFT, 84 absentes, 98 identites et stocks exacts, zero P0. Les 36 corrections de contenu du catalogue actif sont PASS et ne doivent pas etre rouvertes sans nouvelle preuve. Continue l inventaire produit par produit, separe toujours PASS technique, GO visuel Patrice, activation Admin et live. Ne modifie jamais statut, canal, prix, stock, cout, handle ou media sans GO exact.
 ```
 
-Avant toute action, lire `AGENTS.md`, `docs/project-state.md`, `docs/workstreams.md` et le checkpoint courant.
+La phrase courte de Patrice `reprenons l inventaire MilAura, lis le handoff du 30/08` doit conduire ici et au checkpoint courant.
 
-## Etat ferme
+## Etat canonique a la fermeture
 
-- Vue canonique : 185 references, 456 unites physiques.
-- Shopify dans la vue : 89 `ACTIVE`, 9 `DRAFT`, 87 absentes.
-- Correspondances et stocks exacts : 98 sur 98, zero ecart.
-- Ledger 175 : 63 actifs avec GO visuel prouve, 18 actifs techniques, 7 `batch-complete-draft`, 81 `queued`, 6 `excluded-non-sale`.
-- Photos : 63 `validee pipeline + Patrice`, 122 `a valider`. Un statut actif ne vaut plus validation visuelle dans le builder.
-- Catalogue Shopify complet : 668 produits relus le 2026-08-30.
-- Theme Shopify : aucun fichier, preview ou live theme modifie.
+- Sheet physique : 182 references positives, 447 unites.
+- Shopify exact : 98 correspondances EAN et 98 stocks exacts.
+- Statuts : 96 `ACTIVE`, 2 `DRAFT`, 84 absentes.
+- Qualite bloquante : zero P0.
+- Theme : aucun fichier theme modifie ou deploye par le lot inventaire.
+- Les sept brouillons du lot precedent ont ete actives manuellement par Patrice pendant la session. Codex n a pas modifie leur statut.
 
-## Etat exact du lot de dix
+Les deux seuls brouillons physiques trouves au pull final sont :
 
-| EAN | Produit | Etat | Gate visuelle | Lien Admin |
-| --- | --- | --- | --- | --- |
-| `3701459084494` | Collier en lapis-lazuli d'Afghanistan 4 mm - 45 cm | `DRAFT`, contenu corrige | attente Patrice | https://admin.shopify.com/store/milaura-2/products/10678645522779 |
-| `3701459074563` | Collier en howlite blanche 6 mm - 45 cm | `DRAFT`, contenu corrige | attente Patrice | https://admin.shopify.com/store/milaura-2/products/10678645883227 |
-| `3701459074556` | Collier en hematite 6 mm - 45 cm | `DRAFT`, contenu corrige | attente Patrice | https://admin.shopify.com/store/milaura-2/products/10678646309211 |
-| `3701459074617` | Collier en oeil de taureau 6 mm - 45 cm | `DRAFT`, contenu corrige | attente Patrice | https://admin.shopify.com/store/milaura-2/products/10678646866267 |
-| `3701459074624` | Collier en oeil de tigre 6 mm - 45 cm | `DRAFT`, contenu corrige | attente Patrice | https://admin.shopify.com/store/milaura-2/products/10678647521627 |
-| `3701459074686` | Collier en rhodonite de Madagascar 6 mm - 45 cm | `DRAFT`, contenu corrige | attente Patrice | https://admin.shopify.com/store/milaura-2/products/10678648308059 |
-| `3667407000353` | Orgonite pyramide Arbre de Vie en amethyste - 60 mm | `ACTIVE`, galerie ordonnee | GO Patrice 2026-08-30 | https://admin.shopify.com/store/milaura-2/products/10678648701275 |
-| `3667407000155` | Orgonite pyramide Cercle magique en amethyste - 60 mm | `ACTIVE`, galerie ordonnee | GO Patrice 2026-08-30 | https://admin.shopify.com/store/milaura-2/products/10678648996187 |
-| `3701459056033` | Plaque Arbre de Vie en bois de tilleul - 10 cm | `DRAFT`, contenu corrige | attente Patrice | https://admin.shopify.com/store/milaura-2/products/10678649454939 |
-| `3701459027453` | Rouleau de massage visage en jade de Chine a deux tetes | `ACTIVE`, contenu et galerie corriges | attente Patrice | https://admin.shopify.com/store/milaura-2/products/10678649848155 |
+| EAN | Produit | ID Shopify |
+| --- | --- | --- |
+| `3701459054732` | Encens Palo Santo du Perou - 1 baton | `10358581723483` |
+| `3701459082018` | Boucles d oreilles en cornaline - Perles de 6 mm | `10357427732827` |
 
-Le collier rhodonite est en rupture fournisseur, mais MilAura possede une unite physique. La plaque bois est vendue a l unite et le stock Shopify de 3 represente trois unites physiques.
+Ne pas les activer automatiquement. Relire leur place dans la sequence courante, refaire le controle technique et obtenir les gates necessaires.
 
-## Corrections effectuees
+## Lot ferme des 36 corrections
 
-- Six colliers : diametre des perles et longueur 45 cm explicites, metal non prouve retire, articles et FAQ corriges.
-- Plaque : copie recentree sur le bois, vente unitaire explicite, contradictions minerales retirees.
-- Rouleau : configuration a deux tetes, usage et entretien concrets, formulations generiques retirees.
-- Pipeline : quality gate et tests durcis contre les dimensions incoherentes, le metal invente, le mauvais francais, les contradictions bois/mineral et la mauvaise configuration du rouleau.
-- Galeries : meme cinq medias conserves sur les trois actifs, ordre V3 retabli sans upload ni suppression.
-- Sheet : statuts et URLs publiques realignes ; GO visuel inscrit seulement sur les deux organites.
+Patrice a autorise exactement : `les 36 corrections de contenu uniquement, sans statut, stock, prix, handle ni media`.
 
-## Preuves techniques
+Resultat :
 
-- `content-fix-proof-2026-08-30.json` : `PASS 10/10`, 3 actifs et 7 brouillons.
-- Tests du contrat V1.3 : PASS, y compris les quatre nouveaux controles semantiques.
-- Camilla : cinq scripts generiques en parite SHA-256 locale/VPS, test V1.3 PASS dans le conteneur et sauvegarde pre-synchronisation sous `/docker/hermes-milaura-control/data/backups/2026-08-30T0915-content-semantic-fix/`.
-- Le test contractuel est portable : les refus colliers, bois et rouleau restent exerces meme si les enrichissements locaux du lot ne sont pas presents sur le VPS.
-- Audit Shopify exact sur 175 EAN : 81 actifs, 7 brouillons, 87 absents.
-- Audit catalogue complet : 668 produits.
-- Prix, couts, stocks, suivi, politique `DENY`, EAN, collections et identifiants media preserves.
-- Sheet relu apres ecriture : deux organites `ELIGIBLE TECHNIQUEMENT`; rouleau `NON - PHOTO NON VALIDEE`; sept brouillons `NON - SHOPIFY NON ACTIF`.
+- 36 sur 36 corriges et relus depuis Shopify ;
+- 36 sur 36 restent actifs ;
+- 72 snapshots, avant et apres chaque produit ;
+- zero derive sur les champs interdits ;
+- zero echec de contenu ;
+- erreurs de francais ciblees corrigees ;
+- 26 mentions non prouvees `acier inoxydable` retirees ;
+- quatre specifications de colliers corrigees vers `Diametre des perles` ;
+- contrats locaux des memes 36 produits alignes et verifies.
 
-## Artefacts de reprise
+Seuls `descriptionHtml` et les metachamps necessaires parmi `milaura.content_updated_at`, `milaura.faq_json`, `milaura.ritual_steps` et `milaura.specifications` ont change. Aucun champ SEO n a finalement change.
 
-Workspace prive :
+Le checkpoint detaille contient les 36 EAN, le perimetre exact, les preuves et la sauvegarde :
 
-`/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`
+`docs/checkpoints/2026-08-30-1130-inventory-active-catalogue-content-fix.md`
 
-- `data/catalogue-batches/2026-08-25-physical-stock-175/next-10-2026-08-29/content-fix-proof-2026-08-30.json`
-- `data/catalogue-batches/2026-08-25-physical-stock-175/next-10-2026-08-29/content-fix-sheet-proof-2026-08-30.json`
-- `data/catalogue-batches/2026-08-25-physical-stock-175/consolidated-185.json`
-- `data/pilot-batches/2026-08-25-physical-stock-pilot-10/shopify-reconciliation-2026-08-30.json`
-- `backups/2026-08-30T0843-content-semantic-fix/`
+## Dette connue, hors du lot contenu
 
-## Prochaine action
+L audit final des 96 produits actifs conserve :
 
-1. Patrice controle visuellement le rouleau deja actif.
-2. Patrice controle les six colliers et la plaque dans Shopify Admin.
-3. Apres chaque GO visuel, Patrice peut activer le brouillon correspondant. Aucun autre correctif technique n est requis sur ces sept fiches.
-4. Feed, Pinterest, contribution, variantes et Ads restent des gates separees et ne sont pas autorises par cette fermeture.
+- 79 sources anciennes a rafraichir ;
+- 52 contrats historiques a migrer ;
+- 36 galeries a six images ;
+- 35 ecarts d alt ou d ordre ;
+- 32 ordres de slots non prouves ;
+- 16 gates visuelles non approuvees ;
+- 3 faux positifs semantiques connus sur de l acier source-prouve ;
+- 1 derive de titre et 1 derive de title SEO sur le galet anti-stress, dont le titre live est plus fidele a la source.
+
+Ces dettes sont des lots separes. Elles ne donnent aucun droit de modifier media, titre, SEO, handle, statut ou commerce dans la prochaine reprise inventaire.
+
+## Preuves
+
+- `/private/tmp/milaura-content-fix-36-2026-08-30/final-verification.json` : `PASS`, 36 cibles, 36 actifs, 36 receipts, 72 snapshots, zero derive interdite et zero echec.
+- `/private/tmp/milaura-content-fix-36-2026-08-30/shopify-apply-receipt.json` : mutations exactes.
+- `/private/tmp/milaura-content-fix-36-2026-08-30/local-contract-apply-receipt.json` : alignement local.
+- `/private/tmp/milaura-physical-stock-exact-live-2026-08-30.json` : pull final 182 / 98 / 96 / 2 / 84.
+- `/private/tmp/milaura-active-physical-catalogue-quality-findings-2026-08-30.json` : audit qualite des 96 actifs.
+- Sauvegarde durable : `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/backups/2026-08-30T1119-active-content-fix-36`.
+
+## Regles pour demain
+
+1. Lire le Sheet et Shopify en direct avant toute action. Les chiffres ci-dessus sont la photographie du 2026-08-30.
+2. Choisir la prochaine reference vendable absente ou incomplete depuis le Sheet courant. Ne pas reutiliser automatiquement une ancienne position de ledger.
+3. Preserver les 36 corrections fermees, sauf nouvelle preuve contradictoire.
+4. Separer `PASS technique`, `GO visuel Patrice`, `GO Admin / activation` et `live`.
+5. Aucun statut, canal, prix, stock, cout, handle ou media sans GO exact.
+6. Aucun push de theme, aucune Ads et aucune mutation des autres flux par deduction.
+
+## Etat Git et coexistence
+
+- Depot : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
+- Branche : `codex/milaura-integration`.
+- HEAD observe a la cloture : `8fb046588e0309e7875fdae7b2ad6b61d7c6a177`.
+- Le lot Sodalite concurrent integre dans ce HEAD reste distinct et hors live.
+- Le fichier utilisateur non suivi `docs/codex-handoff 2.md` est preserve et ne doit pas etre modifie.
+- Le depot Agentic-Ops etait deja sale et divergent. Le lot inventaire n a touche que le workspace prive produit ignore de Git et ses sauvegardes.
