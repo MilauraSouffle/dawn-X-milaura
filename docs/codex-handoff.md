@@ -2,6 +2,8 @@
 
 Date : 2026-08-30 11:30 CEST
 
+Mise a jour 2026-08-30 20:50 CEST : Mon Ecrin est live comme espace compte complet. La release Shopify `milaura-customer-accounts-7`, ID `gid://shopify/Version/1109042987009`, est active ; le theme live `190430282075` route les entrees compte et le quiz vers la page production exacte, avec bridge signe actif et rollback prepare. Le checkpoint canonique est `docs/checkpoints/2026-08-30-2050-mon-ecrin-account-hub-live.md`. Cette fermeture ne modifie pas les chiffres ni le prompt de reprise inventaire ci-dessous.
+
 Statut : `FERME - CONTENU PASS 36/36 - 96 ACTIVE - 2 DRAFT - 84 ABSENTES - 0 P0`
 
 ## Prompt de reprise

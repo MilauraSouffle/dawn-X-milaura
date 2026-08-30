@@ -1,10 +1,20 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-30 11:30 CEST
+Derniere mise a jour : 2026-08-30 20:50 CEST
 
 ## Etat en une phrase
 
-Le catalogue physique relu compte 182 references positives et 447 unites, avec 96 produits `ACTIVE`, 2 `DRAFT`, 84 absents et zero P0 ; les 36 corrections de contenu autorisees sont `PASS 36/36`, sans derive de statut, stock, prix, handle ou media ; Ruban reste live, Sodalite reste hors live, Mon Ecrin reste prive et les gates Ads restent intactes.
+Mon Ecrin est live comme espace compte complet avec la release Shopify 7, le point d entree storefront et le bridge quiz signes actifs ; le catalogue physique relu reste a 182 references positives et 447 unites, avec 96 produits `ACTIVE`, 2 `DRAFT`, 84 absents et zero P0 ; Sodalite reste hors live et les gates Ads restent intactes.
+
+## Mon Ecrin live au 2026-08-30
+
+- Release active : `milaura-customer-accounts-7`, ID `gid://shopify/Version/1109042987009`.
+- Page production : `https://shopify.com/97728069979/account/pages/01a04dd8-c889-76f4-ac40-b8aa7d2d48c0`.
+- Theme live `190430282075` : neuf fichiers fonctionnels et `config/settings_data.json` deployes de facon ciblee ; pullbacks `10/10 MATCH` en comptant le layout.
+- Backend `https://mon-ecrin-api.milaura.fr` sain et bridge quiz actif pour la boutique production exacte.
+- Page sans diagnostic : decouverte des cinq pierres, commandes, profil/adresses, Cercle a venir, historique reel et pierre preferee restent visibles.
+- Un diagnostic n est ecrit dans le compte qu apres le choix explicite `Enregistrer et ouvrir Mon Ecrin`.
+- Checkpoint : `docs/checkpoints/2026-08-30-2050-mon-ecrin-account-hub-live.md`.
 
 ## Source de verite et etat du depot
 
