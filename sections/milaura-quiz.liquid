@@ -614,6 +614,33 @@
     color: var(--milaura-gold-dark);
   }
 
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-save {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 10px 18px;
+    border: 1px solid rgba(185, 151, 91, 0.4);
+    border-radius: var(--milaura-border-radius-sm);
+    background: transparent;
+    color: var(--milaura-gold-dark);
+    font: 600 0.85rem/1.3 var(--milaura-font-body);
+    cursor: pointer;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-save:disabled {
+    cursor: wait;
+    opacity: 0.62;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-status {
+    max-width: 42rem;
+    margin: 8px auto 0;
+    color: var(--milaura-text-light);
+    font: 400 0.78rem/1.45 var(--milaura-font-body);
+  }
+
   /* --- LIEN DERNIÈRE RÉVÉLATION --- */
   #MilauraQuiz-{{ section.id }} .quiz-last-result-link {
     text-align: center;
@@ -1748,7 +1775,27 @@
           <div class="quiz-reveal-footer">
             <div class="quiz-reveal-account-invite" id="quiz-reveal-account-invite-{{ section.id }}">
               <p class="quiz-reveal-account-text">Sauvegardez votre profil émotionnel</p>
-              <a href="{{ routes.account_register_url }}" class="quiz-reveal-account-link">Créer mon compte</a>
+              {%- if settings.milaura_c1_release_candidate_enabled and customer -%}
+                <div>
+                  <button
+                    type="button"
+                    class="quiz-reveal-account-save"
+                    data-milaura-c1-save-diagnostic
+                    aria-describedby="quiz-reveal-account-status-{{ section.id }}"
+                  >
+                    Enregistrer et ouvrir Mon Écrin
+                  </button>
+                  <p
+                    id="quiz-reveal-account-status-{{ section.id }}"
+                    class="quiz-reveal-account-status"
+                    aria-live="polite"
+                  >
+                    Votre résultat est transféré uniquement après votre choix explicite.
+                  </p>
+                </div>
+              {%- else -%}
+                <a href="{{ routes.account_register_url }}" class="quiz-reveal-account-link">Créer mon compte</a>
+              {%- endif -%}
             </div>
           </div>
         </div>
@@ -2475,9 +2522,10 @@
       };
     }
 
-    function displayResults() {
+    function displayResults(restoredDiagnostic) {
       const results = calculateResults();
       const winnerProfile = results.winnerProfile;
+      const isRestoring = restoredDiagnostic && typeof restoredDiagnostic === 'object';
 
       const profile = profileData[winnerProfile];
       if (!profile) return;
@@ -2564,6 +2612,7 @@
         bougie: { data: profile.bougieProduct },
         collier: { data: profile.collierProduct }
       };
+      const monEcrinAccountUrl = {{ settings.milaura_c1_mon_ecrin_url | default: routes.account_url | json }};
       const availableTabs = Object.keys(productTypes).filter(function(tabKey) {
         return Boolean(productTypes[tabKey].data);
       });
@@ -2577,8 +2626,8 @@
         if (isCustomerLoggedIn) {
           if (accountTextEl) accountTextEl.textContent = 'Vous êtes connecté à votre espace MilAura.';
           if (accountLinkEl) {
-            accountLinkEl.href = {{ routes.account_url | json }};
-            accountLinkEl.textContent = 'Voir mon espace compte';
+            accountLinkEl.href = monEcrinAccountUrl;
+            accountLinkEl.textContent = 'Ouvrir Mon Écrin';
           }
         } else {
           if (accountTextEl) accountTextEl.textContent = 'Créez un compte MilAura pour suivre vos commandes.';
@@ -2597,7 +2646,7 @@
         productReasonsForStorage[tabKey] = getProductReason(tabKey, profile);
       });
 
-      const storageData = {
+      const resultData = isRestoring ? restoredDiagnostic : {
         schemaVersion: 2,
         profileId: winnerProfile,
         profileName: profile.displayName || profile.label,
@@ -2626,13 +2675,18 @@
       };
       syncResultUrl();
 
-      window.MilauraPreferenceStorage.writeDiagnostic(storageData).then(function(result) {
-        storedDiagnostic = result.stored ? storageData : null;
+      if (isRestoring) {
+        storedDiagnostic = resultData;
         updateStoredResultLink();
-      });
+      } else {
+        window.MilauraPreferenceStorage.writeDiagnostic(resultData).then(function(result) {
+          storedDiagnostic = result.stored ? resultData : null;
+          updateStoredResultLink();
+        });
+      }
 
       // Dispatch event so downstream sections can react
-      window.dispatchEvent(new CustomEvent('milaura:quiz-result', { detail: storageData }));
+      window.dispatchEvent(new CustomEvent('milaura:quiz-result', { detail: resultData }));
     }
 
     // ============================================
@@ -2650,7 +2704,7 @@
       if (!data) return;
       hasUserInteracted = true;
       restoreScoresFromStoredResult(data);
-      displayResults();
+      displayResults(data);
       goToState(QuizState.RESULT);
     }
 
@@ -2694,7 +2748,7 @@
       if (new URLSearchParams(window.location.search).get('show') === 'result' && lastResult) {
         restoreScoresFromStoredResult(lastResult);
         hasUserInteracted = true;
-        displayResults();
+        displayResults(lastResult);
         goToState(QuizState.RESULT);
         return; // ne pas afficher l'intro
       }
