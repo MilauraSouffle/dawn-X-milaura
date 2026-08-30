@@ -119,16 +119,17 @@
     z-index: 3;
     right: clamp(16px, 3vw, 44px);
     bottom: clamp(16px, 3vw, 44px);
-    min-width: 72px;
+    min-width: 58px;
     min-height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--milaura-esp-2xs) var(--milaura-esp-sm);
+    padding: var(--milaura-esp-2xs) var(--milaura-esp-xs);
     border: 1px solid currentColor;
     border-radius: 0;
     color: var(--milaura-nacre-pure);
-    background: color-mix(in srgb, var(--milaura-encre) 72%, transparent);
+    background: color-mix(in srgb, var(--milaura-encre) 66%, transparent);
+    backdrop-filter: blur(8px);
     font-family: var(--milaura-font-texte);
     font-size: var(--milaura-t-label);
     font-weight: 650;
@@ -171,6 +172,10 @@
   #MilauraSelection-{{ section.id }} .milaura-season__eyebrow {
     grid-column: 1;
     grid-row: 1;
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--milaura-esp-xs);
     margin: 0 0 var(--milaura-esp-sm);
     color: var(--milaura-aigue-profonde);
     font-family: var(--milaura-font-texte);
@@ -181,17 +186,42 @@
     text-transform: uppercase;
   }
 
+  #MilauraSelection-{{ section.id }} .milaura-season__eyebrow::after {
+    content: '';
+    width: clamp(28px, 3vw, 52px);
+    border-top: var(--milaura-filet-or);
+  }
+
   #MilauraSelection-{{ section.id }} .milaura-season__title {
     grid-column: 1;
     grid-row: 2;
-    max-width: 12ch;
+    max-width: 100%;
+    display: grid;
+    justify-items: start;
     margin: 0;
     color: var(--milaura-prune);
-    font-family: var(--milaura-font-display);
-    font-size: var(--milaura-t-h2);
-    font-weight: 400;
-    letter-spacing: var(--milaura-ls-heading);
-    line-height: var(--milaura-lh-heading);
+    font-family: var(--milaura-font-signature);
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 1;
+    text-wrap: balance;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__title-main,
+  #MilauraSelection-{{ section.id }} .milaura-season__title-secondary {
+    display: block;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__title-main {
+    font-size: clamp(5.2rem, 14vw, 7rem);
+    line-height: 0.92;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__title-secondary {
+    max-width: 15ch;
+    margin-top: 0.08em;
+    font-size: clamp(3.2rem, 8.5vw, 4.2rem);
+    line-height: 1;
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -352,54 +382,83 @@
 
   @media screen and (min-width: 990px) {
     #MilauraSelection-{{ section.id }} .milaura-season__campaign {
-      display: grid;
-      grid-template-columns: minmax(380px, 0.76fr) minmax(0, 1fr);
-      align-items: stretch;
+      min-height: min(56.25vw, 900px);
       background: var(--milaura-nacre-ombre);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media {
-      grid-column: 2;
-      grid-row: 1;
+      position: relative;
+      z-index: 1;
+      width: 100%;
       min-width: 0;
-      display: flex;
-      align-items: center;
       background: var(--milaura-nacre-ombre);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
       width: 100%;
-      flex: 0 0 auto;
+      aspect-ratio: 16 / 9;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__media-frame::before {
+      width: min(58vw, 900px);
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--milaura-nacre-ombre) 98%, transparent) 0%,
+        color-mix(in srgb, var(--milaura-nacre-ombre) 88%, transparent) 48%,
+        color-mix(in srgb, var(--milaura-nacre-ombre) 44%, transparent) 76%,
+        transparent 100%
+      );
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__video,
+    #MilauraSelection-{{ section.id }} .milaura-season__image {
+      object-fit: cover;
+      object-position: center;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__copy {
-      grid-column: 1;
-      grid-row: 1;
-      width: auto;
+      position: absolute;
+      z-index: 3;
+      inset: 0 auto 0 0;
+      width: min(48vw, 740px);
       display: flex;
       flex-direction: column;
       justify-content: center;
       margin: 0;
-      padding: clamp(44px, 5vw, 76px) clamp(40px, 5vw, 76px) clamp(44px, 5vw, 76px) max(clamp(40px, 6vw, 88px), calc((100vw - 1280px) / 2));
-      background: var(--milaura-nacre-ombre);
+      padding: clamp(44px, 5vw, 76px) clamp(34px, 4vw, 64px) clamp(44px, 5vw, 76px) max(clamp(40px, 6vw, 88px), calc((100vw - 1440px) / 2));
+      background: transparent;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__title {
-      max-width: 10ch;
-      font-size: clamp(3.6rem, 4.1vw, 6.2rem);
+      max-width: 100%;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__title-main {
+      font-size: clamp(7.4rem, 7vw, 10.4rem);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__title-secondary {
+      max-width: 14ch;
+      font-size: clamp(3.8rem, 3.4vw, 5.2rem);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
-      max-width: 42ch;
+      max-width: 36ch;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__featured {
-      width: 100%;
-      margin-top: clamp(24px, 2.4vw, 38px);
+      width: min(100%, 540px);
+      margin-top: clamp(22px, 2.2vw, 34px);
+      padding-block: var(--milaura-esp-xs);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__actions {
-      width: 100%;
+      width: min(100%, 540px);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
+      right: clamp(18px, 2vw, 32px);
+      bottom: clamp(18px, 2vw, 32px);
     }
   }
 
@@ -443,7 +502,7 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__title {
-      font-size: var(--milaura-t-h2);
+      font-size: inherit;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -516,9 +575,8 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__title {
-      max-width: 17ch;
+      max-width: 100%;
       color: var(--milaura-prune);
-      font-size: var(--milaura-t-h3);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
@@ -598,7 +656,6 @@
               poster="{{ campaign_poster_desktop | asset_url }}"
               preload="none"
               muted
-              loop
               playsinline
               aria-describedby="{{ media_description_id }}"
               data-milaura-seasonal-video
@@ -643,9 +700,12 @@
           <p class="milaura-season__eyebrow">{{ section.settings.campaign_eyebrow | escape }}</p>
         {%- endif -%}
 
-        <h2 id="{{ selection_title_id }}" class="milaura-season__title">
-          {{ section.settings.campaign_title | escape }}
-        </h2>
+        <h1 id="{{ selection_title_id }}" class="milaura-season__title">
+          <span class="milaura-season__title-main">{{ section.settings.campaign_title | escape }}</span>
+          {%- if section.settings.campaign_title_secondary != blank -%}
+            <span class="milaura-season__title-secondary">{{ section.settings.campaign_title_secondary | escape }}</span>
+          {%- endif -%}
+        </h1>
 
         {%- if section.settings.campaign_description != blank -%}
           <div class="milaura-season__description">{{ section.settings.campaign_description }}</div>
@@ -733,8 +793,14 @@
     {
       "type": "text",
       "id": "campaign_title",
-      "label": "Accroche",
+      "label": "Accroche principale",
       "default": "La sélection du moment"
+    },
+    {
+      "type": "text",
+      "id": "campaign_title_secondary",
+      "label": "Accroche secondaire",
+      "default": "Les choix de Karine"
     },
     {
       "type": "richtext",
