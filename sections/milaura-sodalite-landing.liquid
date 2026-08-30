@@ -1,0 +1,835 @@
+{{ 'milaura-section-heading.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign featured_product = section.settings.featured_product
+  assign selected_count = 0
+  assign seasonal_title_id = 'MilauraSeasonalTitle-' | append: section.id
+  assign star_title_id = 'MilauraSeasonalStarTitle-' | append: section.id
+  assign catalogue_title_id = 'MilauraSeasonalCatalogueTitle-' | append: section.id
+  assign media_description_id = 'MilauraSeasonalMediaDescription-' | append: section.id
+  assign campaign_video_desktop = section.settings.campaign_video
+  assign campaign_video_mobile = section.settings.campaign_video_mobile | default: campaign_video_desktop
+  assign campaign_poster_desktop = section.settings.campaign_poster
+  assign campaign_poster_mobile = section.settings.campaign_poster_mobile | default: campaign_poster_desktop
+
+  for block in section.blocks
+    assign block_product = block.settings.product
+    if block_product != blank
+      if featured_product == blank or block_product.handle != featured_product.handle
+        assign selected_count = selected_count | plus: 1
+      endif
+    endif
+  endfor
+
+  assign total_count = selected_count
+  if featured_product != blank
+    assign total_count = total_count | plus: 1
+  endif
+-%}
+
+{%- if campaign_video_desktop != blank -%}
+  <script src="{{ 'milaura-seasonal-media.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} {
+    position: relative;
+    isolation: isolate;
+    margin-top: calc(-1 * var(--header-height-desktop));
+    overflow: hidden;
+    color: var(--milaura-encre);
+    background: var(--milaura-nacre);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background: url('{{ section.settings.campaign_asset | asset_url }}') right 28% / min(52vw, 760px) auto no-repeat;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--header-height-desktop);
+    border-bottom: var(--milaura-filet-mineral);
+    background: var(--milaura-nacre);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__shell {
+    position: relative;
+    width: min(1440px, 100%);
+    min-height: min(56.25vw, 810px);
+    display: block;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__copy {
+    position: relative;
+    z-index: 2;
+    width: min(54%, 760px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: min(56.25vw, 810px);
+    padding: clamp(48px, 7vw, 104px) clamp(34px, 6vw, 88px);
+    background: linear-gradient(
+      90deg,
+      var(--milaura-nacre-pure) 0%,
+      color-mix(in srgb, var(--milaura-nacre-pure) 94%, transparent) 68%,
+      transparent 100%
+    );
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__eyebrow,
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__eyebrow,
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__eyebrow {
+    margin: 0 0 var(--milaura-esp-xs);
+    color: var(--milaura-aigue-profonde);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 700;
+    letter-spacing: var(--milaura-ls-label);
+    line-height: var(--milaura-lh-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__title {
+    max-width: 100%;
+    display: grid;
+    justify-items: start;
+    margin: 0;
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-signature);
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 1;
+    text-wrap: balance;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__title-main,
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__title-secondary {
+    display: block;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__title-main {
+    font-size: clamp(5.6rem, 7.5vw, 10.8rem);
+    line-height: 0.9;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__title-secondary {
+    max-width: 15ch;
+    margin-top: 0.12em;
+    font-size: clamp(3.2rem, 4vw, 5.8rem);
+    line-height: 1;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__text {
+    max-width: 48ch;
+    margin: var(--milaura-esp-md) 0 0;
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-corps-large);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__text p {
+    margin: 0;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--milaura-esp-sm);
+    align-items: center;
+    margin-top: var(--milaura-esp-lg);
+    color: var(--milaura-aigue-profonde);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 650;
+    letter-spacing: var(--milaura-ls-label);
+    line-height: var(--milaura-lh-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__meta span + span {
+    padding-left: var(--milaura-esp-sm);
+    border-left: var(--milaura-filet-or);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__media {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    background: var(--milaura-nacre-ombre) url('{{ section.settings.campaign_asset | asset_url }}') center / cover no-repeat;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__media-frame,
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__picture,
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__video,
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__video,
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__image {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__media-toggle {
+    position: absolute;
+    z-index: 4;
+    right: clamp(14px, 2vw, 28px);
+    bottom: clamp(14px, 2vw, 28px);
+    min-width: 58px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--milaura-esp-2xs) var(--milaura-esp-xs);
+    border: 1px solid currentColor;
+    border-radius: 0;
+    color: var(--milaura-nacre-pure);
+    background: color-mix(in srgb, var(--milaura-encre) 66%, transparent);
+    backdrop-filter: blur(8px);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 650;
+    letter-spacing: var(--milaura-ls-label);
+    line-height: var(--milaura-lh-label);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__media-toggle:focus-visible {
+    outline: var(--milaura-focus);
+    outline-offset: 4px;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__media-caption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star {
+    position: relative;
+    z-index: 1;
+    padding: 0 0 clamp(58px, 7vw, 104px);
+    border-bottom: var(--milaura-filet-mineral);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__shell {
+    width: min(1280px, calc(100% - clamp(36px, 8vw, 120px)));
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+    gap: clamp(38px, 7vw, 108px);
+    align-items: start;
+    margin: 0 auto;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--milaura-nacre-pure);
+    border: var(--milaura-filet-mineral);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__copy {
+    padding-block: var(--milaura-esp-md);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__title,
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__title {
+    margin: 0;
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-display);
+    font-weight: 400;
+    letter-spacing: var(--milaura-ls-titre);
+    line-height: var(--milaura-lh-h2);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__title {
+    max-width: 16ch;
+    font-size: var(--milaura-t-h1);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__text {
+    max-width: 48ch;
+    margin: var(--milaura-esp-md) 0 0;
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-corps);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__text p {
+    margin: 0;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__price {
+    display: block;
+    margin-top: var(--milaura-esp-md);
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-corps-large);
+    font-weight: 700;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__cta {
+    min-height: 44px;
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--milaura-esp-xs);
+    margin-top: var(--milaura-esp-lg);
+    padding: var(--milaura-esp-2xs) 0;
+    border-bottom: var(--milaura-filet-or);
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 700;
+    letter-spacing: var(--milaura-ls-label);
+    line-height: var(--milaura-lh-label);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color var(--milaura-transition-rapide), gap var(--milaura-transition-rapide);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__cta:hover {
+    gap: var(--milaura-esp-sm);
+    color: var(--milaura-aigue-profonde);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__cta:focus-visible,
+  #MilauraSeasonalCollection-{{ section.id }} .grid__card:focus-visible {
+    outline: var(--milaura-focus);
+    outline-offset: var(--milaura-focus-offset);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue {
+    position: relative;
+    z-index: 1;
+    padding: clamp(58px, 7vw, 104px) 0 clamp(84px, 10vw, 148px);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__shell {
+    width: min(1400px, calc(100% - clamp(36px, 8vw, 120px)));
+    margin: 0 auto;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--milaura-esp-lg);
+    align-items: end;
+    margin-bottom: clamp(32px, 4vw, 56px);
+    padding-bottom: var(--milaura-esp-md);
+    border-bottom: var(--milaura-filet-mineral);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__title {
+    font-size: var(--milaura-t-h2);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__count {
+    margin: 0;
+    color: var(--milaura-aigue-profonde);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 650;
+    letter-spacing: var(--milaura-ls-label);
+    line-height: var(--milaura-lh-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(28px, 3vw, 48px) clamp(14px, 1.8vw, 28px);
+    align-items: stretch;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__card {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    border: var(--milaura-filet-mineral);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__card .grid__card {
+    width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__card .grid__card-info {
+    flex: 1 1 auto;
+    padding: var(--milaura-esp-sm) var(--milaura-esp-sm) 0;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__card .milaura-editorial-purchase {
+    width: auto;
+    margin: var(--milaura-esp-xs) var(--milaura-esp-sm) var(--milaura-esp-sm);
+    padding-top: var(--milaura-esp-2xs);
+    border-top: 0;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__empty {
+    margin: 0;
+    padding: var(--milaura-esp-xl) 0;
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-corps);
+    text-align: center;
+  }
+
+  @media screen and (max-width: 1100px) {
+    #MilauraSeasonalCollection-{{ section.id }} {
+      margin-top: calc(-1 * var(--header-height-tablet));
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro {
+      padding-top: var(--header-height-tablet);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #MilauraSeasonalCollection-{{ section.id }} {
+      margin-top: calc(-1 * var(--header-height-mobile));
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }}::before {
+      background-position: right 35%;
+      background-size: 116vw auto;
+      opacity: 0.14;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro {
+      padding-top: var(--header-height-mobile);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__shell {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__media {
+      position: relative;
+      inset: auto;
+      min-height: 0;
+      aspect-ratio: 4 / 5;
+      grid-row: 1;
+      border-bottom: var(--milaura-filet-mineral);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__copy {
+      width: 100%;
+      grid-row: 2;
+      min-height: 0;
+      padding: 34px 18px 38px;
+      background: var(--milaura-nacre);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__video,
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__image {
+      object-fit: cover;
+      object-position: 80% center;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__title {
+      max-width: 12ch;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__title-main {
+      font-size: clamp(5.2rem, 18vw, 7.2rem);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__title-secondary {
+      font-size: clamp(3rem, 10.5vw, 4.2rem);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__text {
+      margin-top: var(--milaura-esp-sm);
+      font-size: var(--milaura-t-corps);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro__meta {
+      margin-top: var(--milaura-esp-md);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star {
+      padding: 24px 0 54px;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__shell {
+      width: calc(100% - 36px);
+      grid-template-columns: 1fr;
+      gap: var(--milaura-esp-lg);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__title {
+      max-width: 18ch;
+      font-size: var(--milaura-t-h2);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__copy {
+      padding-block: 0;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__cta {
+      margin-top: var(--milaura-esp-md);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue {
+      padding: 48px 0 92px;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__shell {
+      width: 100%;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__head {
+      flex-direction: column;
+      align-items: start;
+      margin: 0 14px 30px;
+      padding-bottom: var(--milaura-esp-sm);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__title {
+      font-size: var(--milaura-t-h3);
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-catalogue__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px 12px;
+      padding: 0 14px;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-editorial-purchase__add span {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__cta {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+<div id="MilauraSeasonalCollection-{{ section.id }}" class="milaura-sodalite-landing">
+  <section class="milaura-sodalite-intro" aria-labelledby="{{ seasonal_title_id }}">
+    <div class="milaura-sodalite-intro__shell">
+      <div class="milaura-sodalite-intro__copy">
+        {%- if section.settings.campaign_eyebrow != blank -%}
+          <p class="milaura-sodalite-intro__eyebrow">{{ section.settings.campaign_eyebrow | escape }}</p>
+        {%- endif -%}
+
+        <h1 id="{{ seasonal_title_id }}" class="milaura-sodalite-intro__title">
+          <span class="milaura-sodalite-intro__title-main">{{ section.settings.campaign_title | escape }}</span>
+          {%- if section.settings.campaign_title_secondary != blank -%}
+            <span class="milaura-sodalite-intro__title-secondary">{{ section.settings.campaign_title_secondary | escape }}</span>
+          {%- endif -%}
+        </h1>
+
+        {%- if section.settings.campaign_text != blank -%}
+          <div class="milaura-sodalite-intro__text">{{ section.settings.campaign_text }}</div>
+        {%- endif -%}
+
+        <div class="milaura-sodalite-intro__meta" aria-label="Repères de la sélection">
+          {%- if section.settings.edition_label != blank -%}
+            <span>{{ section.settings.edition_label | escape }}</span>
+          {%- endif -%}
+          <span>Expression</span>
+          <span>Confiance</span>
+        </div>
+      </div>
+
+      <figure class="milaura-sodalite-intro__media">
+        <div class="milaura-sodalite-intro__media-frame"{% if campaign_video_desktop != blank %} data-milaura-seasonal-media{% endif %}>
+          {%- if campaign_video_desktop != blank -%}
+            <video
+              class="milaura-sodalite-intro__video"
+              poster="{{ campaign_poster_desktop | asset_url }}"
+              preload="none"
+              muted
+              loop
+              playsinline
+              aria-describedby="{{ media_description_id }}"
+              data-milaura-seasonal-video
+              data-src-desktop="{{ campaign_video_desktop | asset_url }}"
+              data-src-mobile="{{ campaign_video_mobile | asset_url }}"
+              data-poster-desktop="{{ campaign_poster_desktop | asset_url }}"
+              data-poster-mobile="{{ campaign_poster_mobile | asset_url }}"
+            ></video>
+            <button
+              class="milaura-sodalite-intro__media-toggle"
+              type="button"
+              aria-label="Lire la vidéo"
+              aria-pressed="false"
+              data-milaura-seasonal-toggle
+            >
+              <span data-milaura-seasonal-toggle-label>Lire</span>
+            </button>
+          {%- else -%}
+            <picture class="milaura-sodalite-intro__picture">
+              <source media="(max-width: 749px)" srcset="{{ campaign_poster_mobile | asset_url }}">
+              <img
+                class="milaura-sodalite-intro__image"
+                src="{{ campaign_poster_desktop | asset_url }}"
+                width="1280"
+                height="720"
+                alt="{{ section.settings.campaign_media_alt | escape }}"
+                loading="eager"
+                fetchpriority="high"
+              >
+            </picture>
+          {%- endif -%}
+        </div>
+        {%- if campaign_video_desktop != blank -%}
+          <figcaption id="{{ media_description_id }}" class="milaura-sodalite-intro__media-caption">
+            {{ section.settings.campaign_media_alt | escape }}
+          </figcaption>
+        {%- endif -%}
+      </figure>
+    </div>
+  </section>
+
+  {%- if featured_product != blank -%}
+    <section class="milaura-sodalite-star" aria-labelledby="{{ star_title_id }}">
+      <div class="milaura-sodalite-star__shell">
+        <a class="milaura-sodalite-star__media" href="{{ featured_product.url }}" aria-label="Voir {{ featured_product.title | escape }}">
+          {%- if featured_product.featured_image != blank -%}
+            {{
+              featured_product.featured_image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'milaura-sodalite-star__image',
+                widths: '480, 720, 960, 1200',
+                sizes: '(max-width: 749px) calc(100vw - 36px), 48vw',
+                loading: 'eager',
+                alt: featured_product.featured_image.alt
+            }}
+          {%- endif -%}
+        </a>
+
+        <div class="milaura-sodalite-star__copy">
+          {%- if section.settings.star_label != blank -%}
+            <p class="milaura-sodalite-star__eyebrow">{{ section.settings.star_label | escape }}</p>
+          {%- endif -%}
+
+          <h2 id="{{ star_title_id }}" class="milaura-sodalite-star__title">
+            {{ featured_product.title | escape }}
+          </h2>
+
+          {%- if section.settings.star_text != blank -%}
+            <div class="milaura-sodalite-star__text">{{ section.settings.star_text }}</div>
+          {%- endif -%}
+
+          <span class="milaura-sodalite-star__price">{{ featured_product.price | money }}</span>
+
+          <a class="milaura-sodalite-star__cta" href="{{ featured_product.url }}">
+            <span>{{ section.settings.star_cta_label | escape }}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="milaura-sodalite-catalogue" aria-labelledby="{{ catalogue_title_id }}">
+    <div class="milaura-sodalite-catalogue__shell">
+      <header class="milaura-sodalite-catalogue__head">
+        <div>
+          <p class="milaura-sodalite-catalogue__eyebrow">La sélection complète</p>
+          <h2 id="{{ catalogue_title_id }}" class="milaura-sodalite-catalogue__title">Tous les produits en sodalite</h2>
+        </div>
+        {%- if total_count > 0 -%}
+          <p class="milaura-sodalite-catalogue__count">{{ total_count }} produits</p>
+        {%- endif -%}
+      </header>
+
+      {%- if selected_count > 0 -%}
+        <div class="milaura-sodalite-catalogue__grid milaura-cards milaura-cards--editorial" role="list">
+          {%- for block in section.blocks -%}
+            {%- assign product = block.settings.product -%}
+            {%- if product != blank -%}
+              {%- if featured_product == blank or product.handle != featured_product.handle -%}
+                <div class="milaura-sodalite-catalogue__card" role="listitem" {{ block.shopify_attributes }}>
+                  {% render 'milaura-card-product',
+                    card_product: product,
+                    img_loading: 'lazy',
+                    show_vendor: false,
+                    show_badges: section.settings.show_badges,
+                    show_secondary_image: true,
+                    force_bestseller_badge: false
+                  %}
+                  {% render 'milaura-editorial-purchase', product: product %}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="milaura-sodalite-catalogue__empty">La sélection Sodalite arrive bientôt.</p>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Landing Sodalite",
+  "tag": "section",
+  "class": "section-milaura-sodalite-landing",
+  "max_blocks": 48,
+  "settings": [
+    {
+      "type": "text",
+      "id": "campaign_asset",
+      "label": "Fond minéral dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_poster",
+      "label": "Rappel visuel desktop dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_poster_mobile",
+      "label": "Rappel visuel mobile dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_video",
+      "label": "Vidéo desktop dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_video_mobile",
+      "label": "Vidéo mobile dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_media_alt",
+      "label": "Description du rappel visuel"
+    },
+    {
+      "type": "text",
+      "id": "campaign_eyebrow",
+      "label": "Sur-titre",
+      "default": "Rentrée 2026"
+    },
+    {
+      "type": "text",
+      "id": "campaign_title",
+      "label": "Titre H1",
+      "default": "La rentrée en sodalite"
+    },
+    {
+      "type": "text",
+      "id": "campaign_title_secondary",
+      "label": "Sous-titre du H1",
+      "default": "la pierre de votre rentrée"
+    },
+    {
+      "type": "richtext",
+      "id": "campaign_text",
+      "label": "Introduction",
+      "default": "<p>Découvrez les produits en sodalite sélectionnés pour la rentrée.</p>"
+    },
+    {
+      "type": "text",
+      "id": "edition_label",
+      "label": "Édition",
+      "default": "Rentrée 2026"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Produit star"
+    },
+    {
+      "type": "text",
+      "id": "star_label",
+      "label": "Libellé du produit star",
+      "default": "Le produit star"
+    },
+    {
+      "type": "richtext",
+      "id": "star_text",
+      "label": "Texte du produit star"
+    },
+    {
+      "type": "text",
+      "id": "star_cta_label",
+      "label": "CTA du produit star",
+      "default": "Découvrir le bracelet"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Afficher les badges produit",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produit Sodalite",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produit"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing Sodalite"
+    }
+  ]
+}
+{% endschema %}
