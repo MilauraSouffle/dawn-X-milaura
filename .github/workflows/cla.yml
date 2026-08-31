@@ -1,22 +1,15 @@
-name: Contributor License Agreement (CLA)
+name: CLA disabled pending supply-chain review
 
 on:
-  pull_request_target:
-    types: [opened, synchronize, reopened]
-  issue_comment:
-    types: [created]
+  workflow_dispatch:
+
+permissions: {}
 
 jobs:
-  cla:
+  security-freeze:
     runs-on: ubuntu-latest
-    if: |
-      (github.event.issue.pull_request 
-        && !github.event.issue.pull_request.merged_at
-        && contains(github.event.comment.body, 'signed')
-      ) 
-      || (github.event.pull_request && !github.event.pull_request.merged)
     steps:
-      - uses: Shopify/shopify-cla-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          cla-token: ${{ secrets.CLA_TOKEN }}
+      - name: Refuse privileged fork-triggered execution
+        run: |
+          echo "CLA workflow disabled on 2026-08-31 after supply-chain review."
+          exit 1
