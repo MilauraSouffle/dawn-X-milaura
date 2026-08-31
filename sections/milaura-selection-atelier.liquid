@@ -1,7 +1,6 @@
 {{ 'milaura-section-heading.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign featured_product = section.settings.featured_product
   assign selected_count = 0
   assign selection_title_id = 'MilauraSelectionTitle-' | append: section.id
   assign media_description_id = 'MilauraSelectionMediaDescription-' | append: section.id
@@ -13,9 +12,7 @@
   for block in section.blocks
     assign block_product = block.settings.product
     if block_product != blank
-      if featured_product == blank or block_product.handle != featured_product.handle
-        assign selected_count = selected_count | plus: 1
-      endif
+      assign selected_count = selected_count | plus: 1
     endif
   endfor
 -%}
@@ -25,7 +22,7 @@
 {%- endif -%}
 
 {%- if campaign_video_desktop != blank -%}
-  <script src="{{ 'milaura-seasonal-media.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'milaura-home-seasonal-media.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {%- style -%}
@@ -109,9 +106,8 @@
 
   #MilauraSelection-{{ section.id }} .milaura-season__video,
   #MilauraSelection-{{ section.id }} .milaura-season__image {
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
-    background: var(--milaura-nacre-ombre);
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
@@ -142,6 +138,10 @@
   #MilauraSelection-{{ section.id }} .milaura-season__media-toggle:focus-visible {
     outline: var(--milaura-focus);
     outline-offset: 4px;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__media-toggle[hidden] {
+    display: none;
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__media-caption {
@@ -553,7 +553,7 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 1 / 1;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
@@ -649,7 +649,7 @@
   <div class="milaura-season__shell">
     <div class="milaura-season__campaign">
       <figure class="milaura-season__media">
-        <div class="milaura-season__media-frame"{% if campaign_video_desktop != blank %} data-milaura-seasonal-media{% endif %}>
+        <div class="milaura-season__media-frame"{% if campaign_video_desktop != blank %} data-milaura-home-seasonal-media{% endif %}>
           {%- if campaign_video_desktop != blank -%}
             <video
               class="milaura-season__video"
@@ -657,8 +657,9 @@
               preload="none"
               muted
               playsinline
+              disablepictureinpicture
               aria-describedby="{{ media_description_id }}"
-              data-milaura-seasonal-video
+              data-milaura-home-seasonal-video
               data-src-desktop="{{ campaign_video_desktop | asset_url }}"
               data-src-mobile="{{ campaign_video_mobile | asset_url }}"
               data-poster-desktop="{{ campaign_poster_desktop | asset_url }}"
@@ -667,11 +668,11 @@
             <button
               class="milaura-season__media-toggle"
               type="button"
-              aria-label="Lire la vidéo"
-              aria-pressed="false"
-              data-milaura-seasonal-toggle
+              aria-label="Rejouer la vidéo"
+              data-milaura-home-seasonal-replay
+              hidden
             >
-              <span data-milaura-seasonal-toggle-label>Lire</span>
+              <span>Rejouer</span>
             </button>
           {%- else -%}
             <picture class="milaura-season__picture">
@@ -711,30 +712,9 @@
           <div class="milaura-season__description">{{ section.settings.campaign_description }}</div>
         {%- endif -%}
 
-        {%- if featured_product != blank -%}
-          <div class="milaura-season__featured">
-            <div>
-              {%- if section.settings.product_label != blank -%}
-                <span class="milaura-season__featured-label">{{ section.settings.product_label | escape }}</span>
-              {%- endif -%}
-              <a class="milaura-season__featured-title" href="{{ featured_product.url }}">
-                {{ featured_product.title | escape }}
-              </a>
-            </div>
-            <span class="milaura-season__featured-price">{{ featured_product.price | money }}</span>
-          </div>
-        {%- endif -%}
-
         <div class="milaura-season__actions">
-          {%- if featured_product != blank and section.settings.product_cta_label != blank -%}
-            <a class="milaura-season__cta" href="{{ featured_product.url }}">
-              <span>{{ section.settings.product_cta_label | escape }}</span>
-              <span aria-hidden="true">→</span>
-            </a>
-          {%- endif -%}
-
           {%- if section.settings.selection_cta_label != blank and section.settings.selection_cta_link != blank -%}
-            <a class="milaura-season__cta milaura-season__cta--secondary" href="{{ section.settings.selection_cta_link }}">
+            <a class="milaura-season__cta" href="{{ section.settings.selection_cta_link }}">
               <span>{{ section.settings.selection_cta_label | escape }}</span>
               <span aria-hidden="true">→</span>
             </a>
@@ -750,19 +730,17 @@
           {%- for block in section.blocks -%}
             {%- assign product = block.settings.product -%}
             {%- if product != blank -%}
-              {%- if featured_product == blank or product.handle != featured_product.handle -%}
-                <div class="milaura-season__card" role="listitem" {{ block.shopify_attributes }}>
-                  {% render 'milaura-card-product',
-                    card_product: product,
-                    img_loading: 'lazy',
-                    show_vendor: false,
-                    show_badges: section.settings.show_badges,
-                    show_secondary_image: true,
-                    force_bestseller_badge: false
-                  %}
-                  {% render 'milaura-editorial-purchase', product: product %}
-                </div>
-              {%- endif -%}
+              <div class="milaura-season__card" role="listitem" {{ block.shopify_attributes }}>
+                {% render 'milaura-card-product',
+                  card_product: product,
+                  img_loading: 'lazy',
+                  show_vendor: false,
+                  show_badges: section.settings.show_badges,
+                  show_secondary_image: true,
+                  force_bestseller_badge: false
+                %}
+                {% render 'milaura-editorial-purchase', product: product %}
+              </div>
             {%- endif -%}
           {%- endfor -%}
         </div>
@@ -833,23 +811,6 @@
       "id": "campaign_media_description",
       "label": "Description accessible du média",
       "default": "Présentation portée du produit vedette de la sélection"
-    },
-    {
-      "type": "product",
-      "id": "featured_product",
-      "label": "Produit vedette"
-    },
-    {
-      "type": "text",
-      "id": "product_label",
-      "label": "Libellé du produit vedette",
-      "default": "Le choix de Karine"
-    },
-    {
-      "type": "text",
-      "id": "product_cta_label",
-      "label": "CTA du produit",
-      "default": "Voir le produit"
     },
     {
       "type": "text",
