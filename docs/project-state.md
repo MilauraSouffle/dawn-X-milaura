@@ -1,12 +1,12 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-30 20:50 CEST
+Derniere mise a jour : 2026-08-31 07:34 CEST
 
 ## Etat en une phrase
 
-Mon Ecrin est live comme espace compte complet avec la release Shopify 7, le point d entree storefront et le bridge quiz signes actifs ; le catalogue physique relu reste a 182 references positives et 447 unites, avec 96 produits `ACTIVE`, 2 `DRAFT`, 84 absents et zero P0 ; Sodalite reste hors live et les gates Ads restent intactes.
+La fondation Mon Ecrin est live avec la release Shopify 7, le point d entree storefront et le bridge quiz signes actifs, mais Patrice estime la feature a `70 %` : de nombreuses erreurs restent a qualifier, le polish visuel est important et quelques ameliorations de developpement restent ouvertes ; le catalogue physique relu reste a 182 references positives et 447 unites, avec 96 produits `ACTIVE`, 2 `DRAFT`, 84 absents et zero P0 ; Sodalite reste hors live et les gates Ads restent intactes.
 
-## Mon Ecrin live au 2026-08-30
+## Mon Ecrin, fondation live et reprise a 70 pour cent au 2026-08-31
 
 - Release active : `milaura-customer-accounts-7`, ID `gid://shopify/Version/1109042987009`.
 - Page production : `https://shopify.com/97728069979/account/pages/01a04dd8-c889-76f4-ac40-b8aa7d2d48c0`.
@@ -14,7 +14,11 @@ Mon Ecrin est live comme espace compte complet avec la release Shopify 7, le poi
 - Backend `https://mon-ecrin-api.milaura.fr` sain et bridge quiz actif pour la boutique production exacte.
 - Page sans diagnostic : decouverte des cinq pierres, commandes, profil/adresses, Cercle a venir, historique reel et pierre preferee restent visibles.
 - Un diagnostic n est ecrit dans le compte qu apres le choix explicite `Enregistrer et ouvrir Mon Ecrin`.
-- Checkpoint : `docs/checkpoints/2026-08-30-2050-mon-ecrin-account-hub-live.md`.
+- Relecture distante du 2026-08-31 : release 7 active, release 6 inactive, health backend `ok=true`, theme `190430282075` au role `live`.
+- Evaluation produit de Patrice : environ `70 %`, gros du developpement realise, nombreuses erreurs encore a reproduire et classer, polish visuel important, quelques ameliorations de developpement.
+- Le PASS technique du deploiement ne vaut pas validation visuelle finale ni fermeture produit.
+- Handoff courant : `docs/checkpoints/2026-08-31-0734-mon-ecrin-70-percent-handoff.md`.
+- Preuve historique du live : `docs/checkpoints/2026-08-30-2050-mon-ecrin-account-hub-live.md`.
 
 ## Source de verite et etat du depot
 
