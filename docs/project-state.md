@@ -511,7 +511,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 3. Reprendre l inventaire dans une session fraiche en relisant le Sheet et Shopify en direct. Etat date du 2026-08-30 : 182 references, 447 unites, 96 actifs, 2 brouillons et 84 absents. Les 36 corrections de contenu sont fermees et ne doivent pas etre rouvertes sans nouvelle preuve.
 4. Apres validation privee du resoluteur, enchainer productionisation C1, integration ciblee, bascule Admin, QA publique et GO live sous gates distinctes. Finition Mail et fondations Pinterest restent paralleles sans chevauchement.
 5. Continuer les references vendables absentes ou incompletes par lots controles. Les references `excluded-non-sale` restent physiquement tracees mais hors creation Shopify. Aucun nouveau passage en actif sans validation Patrice et GO Admin distinct.
-6. Fermer le feed et Pinterest final sous leurs gates propres. Rentree Sodalite ne demande plus qu un GO live separe et sa QA publique.
+6. Fermer le feed et Pinterest final sous leurs gates propres. Reprendre le polish UI Rentree Sodalite selon le checkpoint du 2026-08-31, sans gate live heritee.
 7. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
 8. Laisser Atelier des emotions et Pierres de naissance en pause plus longue jusqu a une nouvelle decision de Patrice.
 9. Traiter ensuite le rail commercial homepage, Karine et Sur mesure V1, les pages enfants Naissance et Mariage, le Journal, puis S1B et S1C seulement apres C1.
@@ -537,7 +537,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot
 - miroir automatique `origin/main` incomplet pour le nouvel asset `assets/milaura-preference-storage.js` au commit `1dccd18c` ; le correctif `763d7ad9` est complet, mais le canonique et les pullbacks restent les preuves du lot 1
-- Rentree Sodalite finale integree par `f84e0c72` depuis la branche `dc875ec8`, preview privee `200259043675` validee techniquement et visuellement ; developpement, live et Admin intacts ; title et handle historiques de collection encore ouverts cote Admin ; GO live et QA publique encore fermes
+- Rentree Sodalite : baseline live fermee techniquement ; verdict produit Patrice a environ 70 % ; polish UI et ameliorations ciblees ouverts selon `docs/checkpoints/2026-08-31-0735-sodalite-ui-polish-handoff.md`
 - rail commercial `Nouveautes / Meilleures ventes / Promotions` non construit et a maintenir hors du lot Rentree si les fichiers se chevauchent
 - Karine, preuves d atelier et Sur mesure V1 non termines
 - pages enfants Naissance et Mariage, Journal et clusters encore ouverts
