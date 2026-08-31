@@ -1,10 +1,18 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-08-31 07:34 CEST
+Derniere mise a jour : 2026-08-31 07:41 CEST
 
 ## Etat en une phrase
 
-La fondation Mon Ecrin est live avec la release Shopify 7, le point d entree storefront et le bridge quiz signes actifs, mais Patrice estime la feature a `70 %` : de nombreuses erreurs restent a qualifier, le polish visuel est important et quelques ameliorations de developpement restent ouvertes ; le catalogue physique relu reste a 182 references positives et 447 unites, avec 96 produits `ACTIVE`, 2 `DRAFT`, 84 absents et zero P0 ; Sodalite reste hors live et les gates Ads restent intactes.
+Patrice estime la refonte globale a environ `70 %` : le socle et le gros du developpement sont live, notamment Mon Ecrin et Rentree Sodalite, tandis que le travail restant porte surtout sur le polish visuel, des corrections reproduites et quelques ameliorations ciblees ; l inventaire continue en parallele et les gates Ads restent distinctes.
+
+## Pilotage master allege au 2026-08-31
+
+Le master devient un chef d orchestre leger : il suit le plan, protege les proprietaires, controle les handoffs, detecte les conflits, rappelle les gates et recadre seulement si necessaire. Il ne reprend pas l inventaire et ne rejoue pas par defaut les commits, previews, pushes, pullbacks et deploiements deja executes et prouves par une session specialiste.
+
+La session qui travaille directement avec Patrice execute son lot de bout en bout dans un perimetre reserve. Si une integration canonique ou un live est requis, le master peut lui attribuer temporairement cette execution pour son seul lot, apres GO explicite et sans qu une autre session possede le meme theme ou les memes fichiers.
+
+Checkpoint de reprise : `docs/checkpoints/2026-08-31-0741-master-orchestrator-handoff.md`.
 
 ## Mon Ecrin, fondation live et reprise a 70 pour cent au 2026-08-31
 
@@ -25,7 +33,7 @@ La fondation Mon Ecrin est live avec la release Shopify 7, le point d entree sto
 - Seul depot actif : `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
 - Branche de travail et d'integration : `codex/milaura-integration`.
 - `origin/main` reste un miroir automatique incomplet du theme Shopify live. Il omet des assets cookies et le contrat de preference dans des commits documentes ; ne jamais le fusionner aveuglement.
-- Le Ruban V3 est documente par `docs/checkpoints/2026-08-28-1338-ruban-v3-final-accepted-handoff.md`. La Rentree Sodalite finale `dc875ec8` est integree dans le master par le merge complet `f84e0c72`, sans deploiement Shopify.
+- Le Ruban V3 est documente par `docs/checkpoints/2026-08-28-1338-ruban-v3-final-accepted-handoff.md`. Rentree Sodalite est maintenant live ; sa reprise de polish est documentee dans `docs/checkpoints/2026-08-31-0735-sodalite-ui-polish-handoff.md`.
 - Les branches de lots fermees peuvent rester distantes comme preuve. Elles ne deviennent pas une source de deploiement et aucun worktree ancien ne pousse le theme.
 - Quatre anciennes branches sont conservees sous des tags `archive/2026-08-12/*`, puis ont ete retirees des branches actives.
 - Les worktrees Ruban V3 ont ete retires proprement le 2026-08-28 apres integration et live ; les branches source restent conservees aux commits distants `38497e4b` et `f2eb61a8`. Les autres worktrees et proprietaires courants vivent dans `docs/workstreams.md`.
@@ -48,7 +56,7 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Une session parallele utilise une branche et un worktree geres, declares avant edition dans `docs/workstreams.md`.
 - Deux sessions ne possedent jamais le meme fichier ou le meme theme Shopify au meme moment.
 - Aucun clone manuel, dossier numerote, handoff non committe ou push complet du theme.
-- Seul le proprietaire d'integration deploie le live, avec fichiers cibles, `--nodelete`, pullback et comparaison.
+- Une seule session possede l integration ou le live a un instant donne. Le master attribue temporairement cette execution a la session specialiste du lot exact ; celle-ci utilise des fichiers cibles, `--nodelete`, pullback et comparaison.
 - Une validation technique ne vaut jamais validation creative de Patrice.
 - Aucun produit, stock, prix ou statut de publication n'est modifie par un chantier theme sans autorisation explicite.
 
@@ -72,13 +80,13 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Le prochain produit ne doit pas etre deduit d un ancien numero de position. La prochaine session relit le Sheet canonique et Shopify en direct, puis choisit la prochaine reference vendable absente ou incomplete.
 - Checkpoint de reprise courant : `docs/checkpoints/2026-08-30-1130-inventory-active-catalogue-content-fix.md`.
 
-## Role de la session master au 2026-08-26
+## Role de la session master au 2026-08-31
 
-Le master ne remplace aucune session specialiste. Il centralise les retours, controle la qualite, recadre les scopes, protege les proprietaires, detecte les conflits de fichiers, themes, consentements et Admin, ferme les gates, integre selectivement et reste seul proprietaire du live.
+Le master ne remplace aucune session specialiste. Il maintient trois priorites maximum, centralise les retours, controle les preuves utiles, protege les proprietaires, detecte les conflits de fichiers, themes, consentements et Admin, puis rappelle les gates et dependances a Patrice.
 
-Il coordonne actuellement Mail, Mon Ecrin, Pinterest et le catalogue. Ruban V3 est ferme et live. Rentree Sodalite est fermee au niveau prive et integree dans le master ; seul son GO live reste ouvert. Chaque nouvelle session inventaire commence par discuter avec Patrice, rendre un etat des lieux et brainstormer la methode de controle, correction, enrichissement et mise en ligne. Le master lui transmet les sources, faits et limites ; il ne lui impose pas un plan produit par produit avant cet echange.
+La session specialiste qui travaille avec Patrice possede l execution de son lot, y compris commit, push, preview, documentation et deploiement cible lorsque les droits et GO sont explicites. Le master lui attribue temporairement l integration ou le live pour ce seul lot, puis audite son handoff sans refaire toutes les operations.
 
-Atelier des emotions et Pierres de naissance restent en pause plus longue. Le polish SEO et la strategie organique large viennent apres stabilisation du catalogue, des routes et des priorites commerciales. Reference corrective : `docs/checkpoints/2026-08-26-1642-master-role-inventory-correction.md`.
+Les priorites immediates sont le polish Rentree Sodalite, le polish et les bugfix Mon Ecrin, puis la preparation SEO/AEO/GEO et acquisition. L inventaire continue en parallele depuis le Sheet canonique. Ruban V3 est ferme et live. Mail ne se rouvre que sur besoin precis. Atelier des emotions et Pierres de naissance restent des chantiers ulterieurs non bloquants.
 
 ## Cap commercial, direction et arbitrages du 2026-08-16
 
@@ -88,7 +96,7 @@ Atelier des emotions et Pierres de naissance restent en pause plus longue. Le po
 - Le sujet d'un claim LFG global est clos par Patrice apres verification. Il est retire du backlog actif et ne doit plus etre presente comme anomalie ou risque sans nouvelle preuve contradictoire explicite.
 - La longueur des PDP n'est pas un probleme confirme. La nouvelle experience est validee ; une session PDP specialisee doit effectuer des recherches approfondies avant toute recommandation de reduction ou reorganisation.
 - Les formulations actuelles du diagnostic sur l'apaisement, la protection et l'energie sont approuvees. Aucun lot de reecriture corrective n'est ouvert. Le polish visuel, la page resultat et la persistance client restent ouverts.
-- Le diagnostic est actuellement persiste dans le navigateur et le panier, pas dans une source cliente durable. Le chantier `C1 - Le Cercle MilAura` possede la correction entre appareils et sa restitution dans `Mon Ecrin`.
+- Le diagnostic reste persiste dans le navigateur et le panier sous consentement Preferences. Depuis la release 7 de Mon Ecrin, un enregistrement serveur entre appareils est egalement disponible apres le choix explicite `Enregistrer et ouvrir Mon Ecrin` ; aucune ecriture silencieuse n est autorisee.
 - Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. L audit des emails, notifications, relances et du comportement apres inscription est ferme le 2026-08-20 ; leur implementation reste classee criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
 - La source physique courante compte 182 references positives et 447 unites : 96 `ACTIVE`, 2 `DRAFT` et 84 absentes, avec 98 correspondances et stocks exacts. Cette verite datee reste obligatoire avant paid acquisition et doit etre relue en direct a chaque reprise. Elle ne bloque plus Mon Ecrin : ses destinations doivent etre resolues dynamiquement parmi les produits Shopify actuellement publies, vendables et disponibles.
@@ -100,16 +108,16 @@ Atelier des emotions et Pierres de naissance restent en pause plus longue. Le po
 - DataForSEO suit deux temps : recherche ciblee si elle doit guider une nouvelle page, puis audit global final lorsque les routes et enrichissements sont stabilises.
 - Decision finale Patrice du 2026-08-28 : le film Rentree Sodalite final est accepte par `franchement j'adore` puis `ah ok alors vas-y continue`. La branche complete `codex/milaura-rentree-sodalite-final-20260828` a `dc875ec8` est integree dans le master par `f84e0c72`. Cette validation et cette integration ne donnent aucun GO live.
 - Cette reception ne vaut pas gate Atelier. L Atelier reste parque jusqu a reception et validation de ses propres composants, mesures, comptages, prototypes Karine, cout, prix, architecture Shopify et nouveau GO.
-- Organisation annoncee par Patrice : sessions distinctes pour la reprise C1, le polish email, la campagne Rentree Sodalite et les fondations Pinterest. Ruban V3 est ferme et live depuis le 2026-08-28. Une seule session master integre et deploie.
+- Organisation annoncee par Patrice : sessions distinctes pour Mon Ecrin, Rentree Sodalite, inventaire et Pinterest. Ruban V3 est ferme et live depuis le 2026-08-28. La session specialiste active peut recevoir temporairement l integration et le deploiement de son propre lot ; le master orchestre et controle.
 - La tache Pinterest `01a01eb8-192c-76c1-9fb7-7599654e5e64` a analyse 83 videos, soit 20 h 10, note la formation `14,5/20` et produit une feuille de route de 29 pages. Les fondations peuvent avancer ; aucune Ads avant inventaire, feed, consentement, tracking et economie verifies.
 
-## Rentree Sodalite integree dans le master, live ferme
+## Rentree Sodalite live et reprise de polish a 70 pour cent
 
-La branche finale `codex/milaura-rentree-sodalite-final-20260828` est poussee et propre a `dc875ec8e52459874e7fba1cde9302794f3d9a55`. Le master a audite son origine `47cc3e62`, son ancetre commun `94d33800`, ses 14 chemins reserves, l'absence de conflit et l'identite exacte du resultat final, puis a integre la branche complete par `f84e0c724c8872eed678fee0afa304682d825348`.
+La campagne Rentree Sodalite est live sur la home, dans la navigation et sur `/collections/selection-de-karine`. La route permanente `/collections/par-pierre-sodalite` est aussi publique, avec 17 produits. L ancienne route `/collections/selection-aout-2026` reste publique et ne doit pas etre supprimee ou redirigee sans audit SEO, Analytics et backlinks.
 
-La home associe le texte Rentree 2026 et le Bracelet Horus, seul produit star, a un film paysage fondu dans le decor. La landing conserve Horus comme star puis affiche 16 cartes Sodalite, dont le chapelet comme produit standard. Les sources video finales sont `1920 x 1080` pour desktop et `1080 x 1920` pour mobile. Le theme prive non publie `200259043675` a recu uniquement des pushes cibles sans suppression, avec pullbacks identiques. La QA privee couvre home et landing a `360`, `390`, `430` et `1440` px, sans overflow ; les 17 liens produits repondent en HTTP 200.
+Le baseline technique est ferme : QA 360, 390, 430 et 1440 sans overflow, sources video responsive, fin fixe avec `Revoir`, CTA et navigation vers la route permanente, landing HTTP 200 et canonical propre. Patrice requalifie toutefois le resultat produit a environ `70 %` : le gros du developpement est fait, mais un polish UI important et quelques ameliorations de developpement restent ouverts.
 
-Le developpement `199421952347`, le live `190430282075` et l Admin ne sont pas touches par ce lot. Le title navigateur et le handle historiques de la collection restent geres par Shopify Admin et ne sont pas corriges par l integration theme. Gate restante : aucun deploiement live sans `GO LIVE RENTREE SODALITE` explicite, suivi d un push cible, d un pullback et d une QA publique. Checkpoint : `docs/checkpoints/2026-08-28-1821-rentree-sodalite-integrated-private.md`.
+La reprise doit commencer en lecture seule, par captures live et discussion avec Patrice, sans inventer les defauts. Checkpoint courant : `docs/checkpoints/2026-08-31-0735-sodalite-ui-polish-handoff.md`.
 
 ## Consentement cookies live
 
