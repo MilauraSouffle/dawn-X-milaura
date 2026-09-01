@@ -69,9 +69,19 @@
         video.defaultMuted = true;
         hasStarted = true;
         setReplayVisibility(false);
+        const playbackStartTime = video.currentTime;
         video.play().catch(() => {
           setReplayVisibility(true, 'blocked');
         });
+        window.setTimeout(() => {
+          if (
+            inView &&
+            !hasCompleted &&
+            video.currentTime <= playbackStartTime + 0.05
+          ) {
+            setReplayVisibility(true, 'blocked');
+          }
+        }, 1200);
       };
 
       const updateVariant = () => {
@@ -128,6 +138,12 @@
       video.addEventListener('play', () => {
         hasStarted = true;
         setReplayVisibility(false);
+      });
+
+      video.addEventListener('timeupdate', () => {
+        if (!video.paused && !hasCompleted && media.dataset.mediaState === 'blocked') {
+          setReplayVisibility(false);
+        }
       });
 
       video.addEventListener('pause', () => {
