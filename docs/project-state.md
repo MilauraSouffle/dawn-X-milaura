@@ -1,10 +1,22 @@
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-09-01 12:19 CEST
+Derniere mise a jour : 2026-09-01 14:15 CEST
 
 ## Etat en une phrase
 
-Patrice estime la refonte globale a environ `70 %` : le socle et le gros du developpement sont live, notamment Mon Ecrin et Rentree Sodalite, tandis que le travail restant porte surtout sur le polish visuel, des corrections reproduites et quelques ameliorations ciblees ; l inventaire continue en parallele et les gates Ads restent distinctes.
+Patrice estime la refonte globale a environ `70 %` : le socle et le gros du developpement sont live, notamment Mon Ecrin et Rentree Sodalite, tandis que le travail restant porte surtout sur le polish visuel, des corrections reproduites et quelques ameliorations ciblees ; l inventaire continue en parallele et les gates Ads restent distinctes. Le premier mail marketing a ete envoye a 25 destinataires le 2026-09-01 et son systeme valide devient le `Template 1` reutilisable.
+
+## Template 1 marketing et premiere campagne envoyee au 2026-09-01
+
+- Decision Patrice : le systeme cree pour la campagne Sodalite devient `Template 1`, reutilisable pour un produit, une pierre, une collection, un article, un contenu editorial ou un envoi informatif.
+- Source canonique : `mail template commercial milaura/TEMPLATE-1.md`.
+- Implementation de reference : `mail template commercial milaura/2026-09-01-campagne-sodalite/index.html`.
+- Campagne Shopify Messaging `75713150`, objet `La sodalite, la pierre de votre rentree`.
+- Segment controle : `Abonnes a la liste de diffusion`, `25` destinataires.
+- Statut final Shopify relu : `Envoye`, le 2026-09-01 a 14:10 CEST.
+- Six fiches de test ou invalides nommees par Patrice ont ete supprimees definitivement. Une fiche restante sans adresse e-mail est restee hors cible. Aucune liste d adresses n est versionnee dans le depot.
+- Checkpoint complet : `docs/checkpoints/2026-09-01-1415-template-1-marketing-live-handoff.md`.
+- Le Template 1 appartient a Shopify Messaging marketing. Il ne remplace pas les Notifications transactionnelles ni les automatisations lifecycle existantes.
 
 ## Pilotage master allege au 2026-08-31
 
