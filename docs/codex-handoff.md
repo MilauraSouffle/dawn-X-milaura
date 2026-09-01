@@ -1,56 +1,45 @@
-# Handoff Codex MilAura, Template 1 marketing
+# Handoff Codex MilAura, Rentree Sodalite
 
-Date : 2026-09-01 14:15 CEST
+Date : 2026-09-01 20:37 CEST
 
-Statut : `TEMPLATE 1 VALIDE - PREMIERE CAMPAGNE ENVOYEE`
+Statut : `POLISH SITE VALIDE, INTEGRE ET LIVE`
 
 ## Prompt de reprise rapide
 
 ```text
-Reprends les mails marketing MilAura. Sujet : [SUJET]. Utilise Template 1. Adapte directement le contenu, les medias, les produits ou blocs informatifs, les liens et les UTM dans Shopify Messaging. Ouvre ensuite la verification. N envoie rien tant que je ne dis pas GO envoi.
+Reprends MilAura apres la fermeture du polish site Rentree Sodalite. Lis AGENTS.md, docs/codex-handoff.md puis uniquement docs/checkpoints/2026-09-01-2037-sodalite-site-polish-live-handoff.md. Commence en lecture seule. La Home Sodalite et /collections/selection-de-karine sont live et validees. Ne les modifie pas par deduction. En cas de regression, reproduis-la sur le live et propose un lot minimal. Aucun code, theme, Admin, Ads, credit creatif ou live sans reservation et GO separes.
 ```
 
-La reprise commence en lecture seule par `AGENTS.md`, ce fichier, `mail template commercial milaura/TEMPLATE-1.md` et `docs/checkpoints/2026-09-01-1415-template-1-marketing-live-handoff.md`.
+## Etat ferme
 
-## Template 1
+- Theme live : `190430282075`.
+- Commit canonique final : `e191857c98ac0ce20b23ea09f1fdbb2999f76ee9`.
+- Home : video declenchee au scroll, une seule lecture de `10,041667 s`, fin fixe, puis `Rejouer`.
+- Safari : fallback `Lire` en bas a droite si l autoplay est refuse ou fige.
+- Landing : scene et bijoux fixes, papillons seuls animes, boucle invisible de `15 s`.
+- Bande blanche Home supprimee.
+- Medias H.264 faststart reduits de `45,3 %` au total.
+- Pullback live : `6/6` fichiers identiques.
+- QA publique : `360`, `390`, `430` et `1440 px`, sans overflow.
+- Theme Check : `0 erreur`, `16 warnings historiques` hors lot.
+- Aucun Admin, produit, stock, prix, collection, Ads ou canal publicitaire modifie.
 
-`Template 1` est le systeme marketing valide par Patrice le 2026-09-01. Il peut etre reaffecte a une pierre, un produit, une collection, un article, un contenu editorial ou un envoi informatif.
+Checkpoint complet : `docs/checkpoints/2026-09-01-2037-sodalite-site-polish-live-handoff.md`.
 
-Source :
+## Gates
 
-- `mail template commercial milaura/TEMPLATE-1.md` ;
-- `mail template commercial milaura/2026-09-01-campagne-sodalite/index.html` ;
-- `mail template commercial milaura/2026-09-01-campagne-sodalite/README.md` ;
-- `mail template commercial milaura/2026-09-01-campagne-sodalite/milaura-rentree-sodalite-email-v2.gif`.
+Le polish site Sodalite ne possede plus de lot ouvert. Les creations pour TikTok, Meta et Pinterest, puis les Ads, constituent un chantier distinct. Aucun futur GO creatif ou Ads ne vaut autorisation de modifier le site.
 
-Ne pas refaire le design. Remplacer seulement le sujet, le hero, le hook, le pain point, les produits ou contenus, la citation, les CTA, les liens et les UTM. Conserver le rythme, les produits detoures ou blocs sans cadres lourds, la petite bulle ronde de Karine, la citation personnelle en italique, la rassurance polie et les logos officiels en haut et en bas.
+Toute regression site doit etre reproduite en lecture seule, reservee sur des fichiers et un theme exacts, corrigee sur theme prive apres GO, puis integree et poussee live seulement apres un nouveau GO separe.
 
-## Derniere campagne
+## Etat Git
 
-- Shopify Messaging : `75713150`.
-- Objet : `La sodalite, la pierre de votre rentree`.
-- Segment : `Abonnes a la liste de diffusion`.
-- Verification : `25` destinataires.
-- Statut final : `Envoye`.
-- Heure Shopify : `1 sept. 2026 a 14:10`.
-- Six fiches de test ou invalides ont ete supprimees definitivement avant envoi.
-- Une fiche sans adresse e-mail est restee hors cible.
-- La liste nominative n est pas versionnee dans le depot.
+La branche canonique est `codex/milaura-integration`. Le commit Sodalite est pousse sur origin. Le worktree source `sodalite-media-safari-20260901` est propre et aligne.
 
-## Gates des prochaines sessions mails
-
-1. Verifier le sujet, les sources, les liens, les produits, les prix, le stock et les medias.
-2. Adapter directement Template 1 dans un brouillon Shopify Messaging.
-3. Controler mobile, desktop, desabonnement et nombre de destinataires.
-4. Ouvrir l ecran Shopify de verification a Patrice.
-5. Sur `GO envoi`, envoyer immediatement au segment approuve et relire le statut final.
-
-Template 1 ne remplace pas les Notifications transactionnelles ni les automatisations lifecycle. Ne modifier aucune autre surface par deduction.
-
-## Etat du depot
-
-Le checkout `codex/milaura-integration` etait deja sale avec des changements concurrents hors mail. Aucun reset, nettoyage ou staging global ne doit etre effectue. Le checkpoint complet contient les preuves et limites du lot.
+Le checkout principal reste volontairement sale avec des changements concurrents Inventaire, CI, documentation et medias non suivis. Aucun reset, nettoyage, staging global ou commit global ne doit etre execute. La liste exacte figure dans le checkpoint.
 
 ## Autres chantiers
 
-L inventaire, Mon Ecrin, Rentree Sodalite, Pinterest, Ads et les autres workstreams gardent leurs propres proprietaires et checkpoints dans `docs/project-state.md` et `docs/workstreams.md`. Ce handoff ne les remplace pas.
+- Inventaire : reprendre depuis `docs/checkpoints/2026-09-01-1457-inventory-v4-lot-22-drafts.md` apres verification de l activation annoncee.
+- Template 1 marketing : reprendre depuis `docs/checkpoints/2026-09-01-1415-template-1-marketing-live-handoff.md` uniquement sur besoin precis.
+- Mon Ecrin, Pinterest, SEO et acquisition conservent leurs propres gates et checkpoints.
