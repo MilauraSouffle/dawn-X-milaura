@@ -9,6 +9,7 @@
       const video = media.querySelector('[data-milaura-home-seasonal-video]');
       const replay = media.querySelector('[data-milaura-home-seasonal-replay]');
       if (!video || !replay) return;
+      const replayLabel = replay.querySelector('[data-milaura-home-seasonal-replay-label]');
 
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       const mobileViewport = window.matchMedia('(max-width: 749px)');
@@ -25,9 +26,17 @@
         return variantUrl || video.dataset[`${kind}Desktop`] || '';
       };
 
-      const setReplayVisibility = (visible) => {
+      const setReplayVisibility = (visible, mode = 'replay') => {
         replay.hidden = !visible;
-        media.dataset.mediaState = visible ? 'ended' : hasStarted ? 'playing' : 'idle';
+        if (!visible) {
+          media.dataset.mediaState = hasStarted ? 'playing' : 'idle';
+          return;
+        }
+
+        const isBlocked = mode === 'blocked';
+        replay.setAttribute('aria-label', isBlocked ? 'Lire l’animation' : 'Rejouer la vidéo');
+        if (replayLabel) replayLabel.textContent = isBlocked ? 'Lire' : 'Rejouer';
+        media.dataset.mediaState = isBlocked ? 'blocked' : 'ended';
       };
 
       const setPoster = () => {
@@ -47,14 +56,20 @@
         return true;
       };
 
-      const playCurrent = () => {
-        if (hasCompleted || reducedMotion.matches || saveData) return;
+      const playCurrent = (force = false) => {
+        if (hasCompleted) return;
+        if (!force && (reducedMotion.matches || saveData)) {
+          setReplayVisibility(true, 'blocked');
+          return;
+        }
         if (!loadSource()) return;
 
+        video.muted = true;
+        video.defaultMuted = true;
         hasStarted = true;
         setReplayVisibility(false);
         video.play().catch(() => {
-          media.dataset.mediaState = 'blocked';
+          setReplayVisibility(true, 'blocked');
         });
       };
 
@@ -106,21 +121,28 @@
         hasCompleted = false;
         hasStarted = true;
         video.currentTime = 0;
+        playCurrent(true);
+      });
+
+      video.addEventListener('play', () => {
+        hasStarted = true;
         setReplayVisibility(false);
-        video.play().catch(() => {
-          media.dataset.mediaState = 'blocked';
-        });
       });
 
       video.addEventListener('ended', () => {
         hasCompleted = true;
-        setReplayVisibility(true);
+        setReplayVisibility(true, 'replay');
+      });
+
+      video.addEventListener('error', () => {
+        if (!hasCompleted) setReplayVisibility(true, 'blocked');
       });
 
       mobileViewport.addEventListener('change', updateVariant);
       reducedMotion.addEventListener('change', () => {
         if (reducedMotion.matches) {
           video.pause();
+          if (!hasCompleted) setReplayVisibility(true, 'blocked');
           return;
         }
         if (inView && !hasCompleted) playCurrent();

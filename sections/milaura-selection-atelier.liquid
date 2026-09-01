@@ -44,7 +44,7 @@
   }
 
   #shopify-section-{{ section.id }} > #MilauraSelection-{{ section.id }} {
-    padding: 0 0 clamp(48px, 5vw, 72px) !important;
+    padding: 0 0 {% if selected_count > 0 %}clamp(48px, 5vw, 72px){% else %}0{% endif %} !important;
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__shell {
@@ -534,7 +534,7 @@
 
   @media screen and (max-width: 749px) {
     #shopify-section-{{ section.id }} > #MilauraSelection-{{ section.id }} {
-      padding: 0 0 48px !important;
+      padding: 0 0 {% if selected_count > 0 %}48px{% else %}0{% endif %} !important;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__shell {
@@ -654,7 +654,8 @@
             <video
               class="milaura-season__video"
               poster="{{ campaign_poster_desktop | asset_url }}"
-              preload="none"
+              preload="metadata"
+              autoplay
               muted
               playsinline
               disablepictureinpicture
@@ -672,7 +673,7 @@
               data-milaura-home-seasonal-replay
               hidden
             >
-              <span>Rejouer</span>
+              <span data-milaura-home-seasonal-replay-label>Rejouer</span>
             </button>
           {%- else -%}
             <picture class="milaura-season__picture">
