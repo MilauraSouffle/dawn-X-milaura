@@ -28,6 +28,7 @@
 
       const setReplayVisibility = (visible, mode = 'replay') => {
         replay.hidden = !visible;
+        replay.style.display = visible ? 'inline-flex' : 'none';
         if (!visible) {
           media.dataset.mediaState = hasStarted ? 'playing' : 'idle';
           return;
