@@ -129,6 +129,15 @@
         setReplayVisibility(false);
       });
 
+      video.addEventListener('pause', () => {
+        if (!inView || !hasStarted || hasCompleted) return;
+        window.setTimeout(() => {
+          if (inView && video.paused && !video.ended && !hasCompleted) {
+            setReplayVisibility(true, 'blocked');
+          }
+        }, 120);
+      });
+
       video.addEventListener('ended', () => {
         hasCompleted = true;
         setReplayVisibility(true, 'replay');
