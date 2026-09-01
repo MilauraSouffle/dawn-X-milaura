@@ -47,16 +47,6 @@
     background: var(--milaura-nacre);
   }
 
-  #MilauraSeasonalCollection-{{ section.id }}::before {
-    content: '';
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    background: url('{{ section.settings.campaign_asset | asset_url }}') right 28% / min(52vw, 760px) auto no-repeat;
-    opacity: 0.18;
-    pointer-events: none;
-  }
-
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro {
     position: relative;
     z-index: 1;
@@ -268,11 +258,11 @@
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__shell {
-    width: min(1280px, calc(100% - clamp(36px, 8vw, 120px)));
+    width: min(1320px, calc(100% - clamp(36px, 8vw, 120px)));
     display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-    gap: clamp(38px, 7vw, 108px);
-    align-items: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    align-items: stretch;
     margin: 0 auto;
   }
 
@@ -282,6 +272,7 @@
     overflow: hidden;
     background: var(--milaura-nacre-pure);
     border: var(--milaura-filet-mineral);
+    border-right: 0;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__image {
@@ -292,7 +283,31 @@
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__copy {
-    padding-block: var(--milaura-esp-md);
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(42px, 5vw, 76px);
+    overflow: hidden;
+    background: var(--milaura-nacre-pure);
+    border: var(--milaura-filet-mineral);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__copy::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background: url('{{ section.settings.star_material_asset | asset_url }}') center / cover no-repeat;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__copy > * {
+    position: relative;
+    z-index: 1;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__title,
@@ -306,7 +321,7 @@
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__title {
-    max-width: 16ch;
+    max-width: 14ch;
     font-size: var(--milaura-t-h1);
   }
 
@@ -475,12 +490,6 @@
       margin-top: calc(-1 * var(--header-height-mobile));
     }
 
-    #MilauraSeasonalCollection-{{ section.id }}::before {
-      background-position: right 35%;
-      background-size: 116vw auto;
-      opacity: 0.14;
-    }
-
     #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-intro {
       padding-top: var(--header-height-mobile);
     }
@@ -558,9 +567,14 @@
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__shell {
-      width: calc(100% - 36px);
+      width: 100%;
       grid-template-columns: 1fr;
-      gap: var(--milaura-esp-lg);
+      gap: 0;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__media {
+      border-right: 0;
+      border-left: 0;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__title {
@@ -569,7 +583,16 @@
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__copy {
-      padding-block: 0;
+      min-height: 390px;
+      padding: 34px 18px 42px;
+      border-top: 0;
+      border-right: 0;
+      border-left: 0;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__copy::before {
+      background-position: 62% center;
+      opacity: 0.26;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__cta {
@@ -787,6 +810,11 @@
       "type": "text",
       "id": "campaign_asset",
       "label": "Fond minéral dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "star_material_asset",
+      "label": "Fond matière du produit star dans les assets"
     },
     {
       "type": "text",
