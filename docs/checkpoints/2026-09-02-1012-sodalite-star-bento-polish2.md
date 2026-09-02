@@ -1,6 +1,6 @@
 # Polish 2 Landing Sodalite, galerie Bento du produit star
 
-Date : 2026-09-02 10:21 CEST
+Date : 2026-09-02 10:58 CEST
 
 Statut : `PREVIEW PRIVEE PRETE, GO VISUEL PATRICE OUVERT`
 
@@ -19,8 +19,11 @@ Transformer la photo unique du produit star Horus en galerie Bento sur mobile et
 - image principale : couverture produit sur fond mineral clair ;
 - image secondaire : mise en situation portee ;
 - image tertiaire : produit sur bois sombre ;
-- desktop : image principale sur toute la largeur du Bento, deux vues secondaires en dessous ;
-- mobile : meme hierarchie, avec une proportion `5 / 6` pour garder la galerie compacte ;
+- la premiere grille plate, avec une grande image au-dessus de deux vignettes, a ete rejetee visuellement par Patrice le 2026-09-02 ;
+- la version qui la remplace est une composition editoriale superposee : grande image produit, portrait vertical chevauchant a droite, detail sombre carre chevauchant en bas a gauche ;
+- les cadrages sont propres a chaque vue : produit principal lisible, visage et bracelet visibles dans la vue portee, pendentif entier dans la vue sombre ;
+- mobile : scene carree compacte, sans rang de miniatures ni effet catalogue ;
+- desktop : meme composition superposee dans la colonne media, alignee avec le panneau texte ;
 - repli automatique vers une image unique si un futur produit ne possede pas de vues secondaires.
 
 ## Preflight et publication privee
@@ -31,7 +34,7 @@ Transformer la photo unique du produit star Horus en galerie Bento sur mobile et
 - theme prive : `200259043675` ;
 - le fichier du theme prive etait identique au fichier canonique avant le push ;
 - push cible avec `--nodelete --strict --only sections/milaura-sodalite-landing.liquid` ;
-- pullback prive identique au fichier local, SHA-256 `86aa179dfd0e0c86b1c1163fc8851f7c99bd15746a19bd8233d2d397f19f75d2` ;
+- pullback prive identique au fichier local, SHA-256 `11824f90e648d7412122fbe597df02d56c473055ebfe61a71b3f919ce85a94a2` ;
 - aucun push live ; le fichier du theme live reste identique a l integration, SHA-256 `48ffa901989121a05cd7480f0b59a265f0695e4d136f874d2f40853dc1cd3c44`.
 
 ## Verifications
@@ -39,7 +42,7 @@ Transformer la photo unique du produit star Horus en galerie Bento sur mobile et
 - `git diff --check` : PASS ;
 - `shopify theme check` : 0 erreur, 16 warnings historiques hors lot ;
 - 360, 390, 430 et 1440 px : trois images chargees, aucun overflow horizontal ;
-- desktop 1440 px : galerie et panneau texte alignes, aucun chevauchement ;
+- desktop 1440 px : galerie et panneau texte alignes, superpositions contenues dans la colonne media ;
 - le lien unique de la galerie continue de pointer vers `/products/bracelet-horus-dore-en-sodalite-6-mm` ;
 - console du theme prive : aucune erreur ni alerte ;
 - aucun mouvement ou script ajoute.
