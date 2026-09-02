@@ -43,4 +43,4 @@ Preview : https://milaura-2.myshopify.com?preview_theme_id=200259043675
 
 ## Etat et prochaine porte
 
-Candidate privee prete. Aucun merge, aucune integration et aucune publication live avant le GO visuel explicite de Patrice.
+Candidate privee prete. Patrice a valide le polish 1 visuellement le 2026-09-02 a 09:23 CEST. Aucun merge, aucune integration et aucune publication live sans les GO correspondants.
