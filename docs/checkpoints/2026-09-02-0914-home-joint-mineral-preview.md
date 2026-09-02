@@ -52,6 +52,23 @@ Integration Git terminee le 2026-09-02 a 09:29 CEST :
 - commit visuel `2808b3809d2ffa8c026b2c5acd336f713760f19b` confirme comme ancetre ;
 - fichiers concurrents du checkout principal conserves avec des empreintes SHA-256 identiques avant et apres integration ;
 - `docs/workstreams.md`, deja modifie par des travaux concurrents, volontairement exclu du commit de merge ;
-- aucun push Shopify et aucun changement du theme live `190430282075`.
+- a cette etape, aucun push Shopify et aucun changement du theme live `190430282075`.
 
-Prochaine porte : GO live explicite de Patrice. La preview privee `200259043675` reste disponible jusque-la.
+## Publication live
+
+Patrice a donne `GO LIVE POLISH 1`. Publication terminee le 2026-09-02 a 09:45 CEST :
+
+- theme live confirme par pull Shopify : `dawn-X-milaura/main`, ID `190430282075` ;
+- preflight : treize fichiers existants identiques a la base auditee `92b61393`, trois nouveaux composants absents comme attendu ;
+- push de seize fichiers avec `--allow-live --nodelete --strict --only` ;
+- pullback immediat : seize fichiers sur seize identiques bit a bit au checkout d integration ;
+- domaine public controle sur 360 x 800, 390 x 844, 430 x 932 et 1440 x 1000 ;
+- aucun debordement horizontal, cinq raccords presents, aucune bordure haute ou basse sur les sept sections controlees ;
+- animation normale de `scaleX(0.26)` a `scaleX(1)` sur mobile ;
+- `prefers-reduced-motion` : cinq raccords visibles, transformation finale et duree `0s` ;
+- aucune erreur JavaScript et aucun message console sur le domaine public ;
+- capture de controle locale : `/private/tmp/milaura-polish1-live-390.png`.
+
+Le premier appel `shopify theme list` a rencontre le bug local connu `Maximum call stack size exceeded`. Aucune preference Shopify n a ete supprimee ou modifiee. Le pull cible suivant a confirme le nom et l ID du theme live avant le push.
+
+Etat final : `FERME, LIVE ET VERIFIE`. La preview privee `200259043675` est conservee.
