@@ -1,8 +1,8 @@
 # Polish 2 Landing Sodalite, galerie Bento du produit star
 
-Date : 2026-09-02 11:10 CEST
+Date : 2026-09-02 14:54 CEST
 
-Statut : `GO VISUEL ACQUIS, INTEGRE, PAS LIVE`
+Statut : `FERME, GO VISUEL, INTEGRE ET LIVE`
 
 ## Demande
 
@@ -35,7 +35,7 @@ Transformer la photo unique du produit star Horus en galerie Bento sur mobile et
 - le fichier du theme prive etait identique au fichier canonique avant le push ;
 - push cible avec `--nodelete --strict --only sections/milaura-sodalite-landing.liquid` ;
 - pullback prive identique au fichier local, SHA-256 `11824f90e648d7412122fbe597df02d56c473055ebfe61a71b3f919ce85a94a2` ;
-- aucun push live ; le fichier du theme live reste identique a l integration, SHA-256 `48ffa901989121a05cd7480f0b59a265f0695e4d136f874d2f40853dc1cd3c44`.
+- avant le GO live, le fichier du theme live etait reste sur le SHA-256 `48ffa901989121a05cd7480f0b59a265f0695e4d136f874d2f40853dc1cd3c44`.
 
 ## Verifications
 
@@ -44,7 +44,8 @@ Transformer la photo unique du produit star Horus en galerie Bento sur mobile et
 - 360, 390, 430 et 1440 px : trois images chargees, aucun overflow horizontal ;
 - desktop 1440 px : galerie et panneau texte alignes, superpositions contenues dans la colonne media ;
 - le lien unique de la galerie continue de pointer vers `/products/bracelet-horus-dore-en-sodalite-6-mm` ;
-- console du theme prive : aucune erreur ni alerte ;
+- vrai storefront public sur le theme `190430282075`, sans barre de preview ;
+- console publique et erreurs navigateur : vides ;
 - aucun mouvement ou script ajoute.
 
 ## Preview
@@ -57,8 +58,18 @@ Transformer la photo unique du produit star Horus en galerie Bento sur mobile et
 - GO integration Patrice acquis le 2026-09-02 : `GO INTEGRATION POLISH 2` ;
 - les deux commits source ont ete integres sous une forme condensee dans `codex/milaura-integration` par `d180e7cb` ;
 - branche d integration poussee et SHA distant verifie ;
-- le theme live `190430282075` n a pas ete modifie.
+- fermeture documentaire d integration : `27b89c46`.
 
-## Gate restante
+## Publication live
 
-1. GO live separe avant toute mutation du theme `190430282075`.
+- GO live Patrice acquis le 2026-09-02 : `GO LIVE POLISH 2` ;
+- push limite a `sections/milaura-sodalite-landing.liquid` sur le theme live `190430282075` avec `--allow-live --nodelete --strict --only` ;
+- pullback live bit a bit identique au fichier integre ;
+- SHA-256 final local et live : `11824f90e648d7412122fbe597df02d56c473055ebfe61a71b3f919ce85a94a2` ;
+- storefront public controle en 360, 390, 430 et 1440 px : trois images chargees, aucun overflow horizontal ;
+- desktop 1440 px : colonnes media et texte alignees sur 594 px ;
+- aucun autre fichier du theme, produit, collection, Admin, panier ou Ads modifie.
+
+## Gates restantes
+
+Aucune pour ce lot.
