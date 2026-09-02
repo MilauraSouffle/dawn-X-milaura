@@ -1,8 +1,8 @@
 # Polish 2 Landing Sodalite, galerie Bento du produit star
 
-Date : 2026-09-02 10:58 CEST
+Date : 2026-09-02 11:10 CEST
 
-Statut : `PREVIEW PRIVEE PRETE, GO VISUEL PATRICE OUVERT`
+Statut : `GO VISUEL ACQUIS, INTEGRE, PAS LIVE`
 
 ## Demande
 
@@ -51,8 +51,14 @@ Transformer la photo unique du produit star Horus en galerie Bento sur mobile et
 
 `https://milaura-2.myshopify.com/collections/selection-de-karine?preview_theme_id=200259043675`
 
-## Gates restantes
+## Integration
 
-1. GO visuel Patrice.
-2. Integration dans `codex/milaura-integration` par le proprietaire du checkout principal.
-3. GO live separe avant toute mutation du theme `190430282075`.
+- GO visuel Patrice acquis le 2026-09-02 : `ah voila bravo jaime ca` ;
+- GO integration Patrice acquis le 2026-09-02 : `GO INTEGRATION POLISH 2` ;
+- les deux commits source ont ete integres sous une forme condensee dans `codex/milaura-integration` par `d180e7cb` ;
+- branche d integration poussee et SHA distant verifie ;
+- le theme live `190430282075` n a pas ete modifie.
+
+## Gate restante
+
+1. GO live separe avant toute mutation du theme `190430282075`.
