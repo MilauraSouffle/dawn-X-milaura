@@ -12,6 +12,10 @@
   assign campaign_video_mobile = section.settings.campaign_video_mobile | default: campaign_video_desktop
   assign campaign_poster_desktop = section.settings.campaign_poster
   assign campaign_poster_mobile = section.settings.campaign_poster_mobile | default: campaign_poster_desktop
+  assign star_image_media = featured_product.media | where: 'media_type', 'image'
+  assign star_primary_media = star_image_media[0] | default: featured_product.featured_media
+  assign star_secondary_media = star_image_media[1]
+  assign star_tertiary_media = star_image_media[3] | default: star_image_media[2]
 
   for block in section.blocks
     assign block_product = block.settings.product
@@ -268,18 +272,76 @@
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__media {
     position: relative;
-    aspect-ratio: 1 / 1;
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: 4 / 3;
+    display: block;
     overflow: hidden;
-    background: var(--milaura-nacre-pure);
+    background: var(--milaura-nacre);
     border: var(--milaura-filet-mineral);
     border-right: 0;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__tile {
+    position: absolute;
+    min-width: 0;
+    min-height: 0;
+    display: block;
+    overflow: hidden;
+    background: var(--milaura-nacre-pure);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__tile--primary {
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 78%;
+    height: 86%;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__tile--secondary {
+    z-index: 2;
+    top: 8%;
+    right: 0;
+    width: 38%;
+    height: 61%;
+    border: 4px solid var(--milaura-nacre);
+    box-shadow: 0 18px 42px color-mix(in srgb, var(--milaura-encre) 16%, transparent);
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__tile--tertiary {
+    z-index: 3;
+    bottom: 0;
+    left: 10%;
+    width: 42%;
+    aspect-ratio: 1 / 1;
+    border: 4px solid var(--milaura-nacre);
+    box-shadow: 0 18px 42px color-mix(in srgb, var(--milaura-encre) 18%, transparent);
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__image {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: contain;
+    object-fit: cover;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__tile--primary .milaura-sodalite-star__image {
+    object-position: center center;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__tile--secondary .milaura-sodalite-star__image {
+    object-position: 44% center;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__tile--tertiary .milaura-sodalite-star__image {
+    object-position: center center;
+  }
+
+  #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__media--single .milaura-sodalite-star__tile--primary {
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
   #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__copy {
@@ -573,8 +635,17 @@
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__media {
+      aspect-ratio: 1 / 1;
       border-right: 0;
       border-left: 0;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__media--single {
+      aspect-ratio: 1 / 1;
+    }
+
+    #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__media--single .milaura-sodalite-star__tile--primary .milaura-sodalite-star__image {
+      object-fit: contain;
     }
 
     #MilauraSeasonalCollection-{{ section.id }} .milaura-sodalite-star__title {
@@ -720,18 +791,54 @@
   {%- if featured_product != blank -%}
     <section class="milaura-sodalite-star" aria-labelledby="{{ star_title_id }}">
       <div class="milaura-sodalite-star__shell">
-        <a class="milaura-sodalite-star__media" href="{{ featured_product.url }}" aria-label="Voir {{ featured_product.title | escape }}">
-          {%- if featured_product.featured_image != blank -%}
-            {{
-              featured_product.featured_image
-              | image_url: width: 1200
-              | image_tag:
-                class: 'milaura-sodalite-star__image',
-                widths: '480, 720, 960, 1200',
-                sizes: '(max-width: 749px) calc(100vw - 36px), 48vw',
-                loading: 'eager',
-                alt: featured_product.featured_image.alt
-            }}
+        <a
+          class="milaura-sodalite-star__media{% if star_secondary_media == blank and star_tertiary_media == blank %} milaura-sodalite-star__media--single{% endif %}"
+          href="{{ featured_product.url }}"
+          aria-label="Voir {{ featured_product.title | escape }}"
+        >
+          {%- if star_primary_media != blank -%}
+            <span class="milaura-sodalite-star__tile milaura-sodalite-star__tile--primary">
+              {{
+                star_primary_media.preview_image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'milaura-sodalite-star__image',
+                  widths: '480, 720, 960, 1200',
+                  sizes: '(max-width: 749px) 78vw, 36vw',
+                  loading: 'eager',
+                  alt: star_primary_media.alt
+              }}
+            </span>
+          {%- endif -%}
+
+          {%- if star_secondary_media != blank -%}
+            <span class="milaura-sodalite-star__tile milaura-sodalite-star__tile--secondary">
+              {{
+                star_secondary_media.preview_image
+                | image_url: width: 720
+                | image_tag:
+                  class: 'milaura-sodalite-star__image',
+                  widths: '240, 360, 480, 720',
+                  sizes: '(max-width: 749px) 38vw, 18vw',
+                  loading: 'lazy',
+                  alt: star_secondary_media.alt
+              }}
+            </span>
+          {%- endif -%}
+
+          {%- if star_tertiary_media != blank -%}
+            <span class="milaura-sodalite-star__tile milaura-sodalite-star__tile--tertiary">
+              {{
+                star_tertiary_media.preview_image
+                | image_url: width: 720
+                | image_tag:
+                  class: 'milaura-sodalite-star__image',
+                  widths: '240, 360, 480, 720',
+                  sizes: '(max-width: 749px) 42vw, 20vw',
+                  loading: 'lazy',
+                  alt: star_tertiary_media.alt
+              }}
+            </span>
           {%- endif -%}
         </a>
 
