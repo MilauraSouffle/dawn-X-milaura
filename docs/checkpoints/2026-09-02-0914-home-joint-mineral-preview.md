@@ -43,4 +43,15 @@ Preview : https://milaura-2.myshopify.com?preview_theme_id=200259043675
 
 ## Etat et prochaine porte
 
-Candidate privee prete. Patrice a valide le polish 1 visuellement le 2026-09-02 a 09:23 CEST. Aucun merge, aucune integration et aucune publication live sans les GO correspondants.
+Patrice a valide le polish 1 visuellement le 2026-09-02 a 09:23 CEST, puis a donne `GO INTEGRATION POLISH 1`.
+
+Integration Git terminee le 2026-09-02 a 09:29 CEST :
+
+- commit de merge `23eae85545c74b04458b7b043b787b8f37a982f6` ;
+- branche `codex/milaura-integration` poussee et identique a GitHub ;
+- commit visuel `2808b3809d2ffa8c026b2c5acd336f713760f19b` confirme comme ancetre ;
+- fichiers concurrents du checkout principal conserves avec des empreintes SHA-256 identiques avant et apres integration ;
+- `docs/workstreams.md`, deja modifie par des travaux concurrents, volontairement exclu du commit de merge ;
+- aucun push Shopify et aucun changement du theme live `190430282075`.
+
+Prochaine porte : GO live explicite de Patrice. La preview privee `200259043675` reste disponible jusque-la.
