@@ -1,0 +1,367 @@
+{{ 'milaura-campaign-landing.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign featured_product = section.settings.featured_product
+  assign star_images = featured_product.media | where: 'media_type', 'image'
+  assign primary_index = section.settings.primary_image_index | minus: 1
+  assign secondary_index = section.settings.secondary_image_index | minus: 1
+  assign tertiary_index = section.settings.tertiary_image_index | minus: 1
+  assign star_primary_media = star_images[primary_index] | default: featured_product.featured_media
+  assign star_secondary_media = star_images[secondary_index]
+  assign star_tertiary_media = star_images[tertiary_index]
+  assign star_title = section.settings.star_title | default: featured_product.title
+  assign star_title_id = 'MilauraCampaignStarTitle-' | append: section.id
+  assign catalogue_title_id = 'MilauraCampaignCatalogueTitle-' | append: section.id
+  assign selected_count = 0
+
+  if section.blocks.size > 0
+    for block in section.blocks
+      assign block_product = block.settings.product
+      if block_product != blank
+        if featured_product == blank or block_product.handle != featured_product.handle
+          assign selected_count = selected_count | plus: 1
+        endif
+      endif
+    endfor
+  elsif collection != blank
+    assign selected_count = collection.products.size
+    assign featured_in_collection = false
+    if featured_product != blank
+      for collection_product in collection.products
+        if collection_product.handle == featured_product.handle
+          assign featured_in_collection = true
+          break
+        endif
+      endfor
+    endif
+    if featured_in_collection and selected_count > 0
+      assign selected_count = selected_count | minus: 1
+    endif
+  endif
+
+  assign total_count = selected_count
+  if featured_product != blank
+    assign total_count = total_count | plus: 1
+  endif
+-%}
+
+<div
+  id="MilauraCampaign-{{ section.id }}"
+  class="milaura-campaign milaura-campaign--{{ section.settings.tone }}"
+  style="
+    --milaura-campaign-primary-position: {{ section.settings.primary_image_position }};
+    --milaura-campaign-secondary-position: {{ section.settings.secondary_image_position }};
+    --milaura-campaign-tertiary-position: {{ section.settings.tertiary_image_position }};
+    {%- if section.settings.panel_background_asset != blank -%}
+      --milaura-campaign-panel-image: url('{{ section.settings.panel_background_asset | asset_url }}');
+    {%- endif -%}
+  "
+>
+  {%- if featured_product != blank -%}
+    <section class="milaura-campaign__star" aria-labelledby="{{ star_title_id }}">
+      <div class="milaura-campaign__star-shell">
+        <a
+          class="milaura-campaign__star-media{% if star_secondary_media == blank and star_tertiary_media == blank %} milaura-campaign__star-media--single{% endif %}"
+          href="{{ featured_product.url }}"
+          aria-label="Voir {{ featured_product.title | escape }}"
+        >
+          {%- if star_primary_media != blank -%}
+            <span class="milaura-campaign__star-tile milaura-campaign__star-tile--primary">
+              {{
+                star_primary_media.preview_image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'milaura-campaign__star-image',
+                  widths: '480, 720, 960, 1200',
+                  sizes: '(max-width: 749px) 78vw, 36vw',
+                  loading: 'lazy',
+                  alt: star_primary_media.alt
+              }}
+            </span>
+          {%- endif -%}
+
+          {%- if star_secondary_media != blank -%}
+            <span class="milaura-campaign__star-tile milaura-campaign__star-tile--secondary">
+              {{
+                star_secondary_media.preview_image
+                | image_url: width: 720
+                | image_tag:
+                  class: 'milaura-campaign__star-image',
+                  widths: '240, 360, 480, 720',
+                  sizes: '(max-width: 749px) 38vw, 18vw',
+                  loading: 'lazy',
+                  alt: star_secondary_media.alt
+              }}
+            </span>
+          {%- endif -%}
+
+          {%- if star_tertiary_media != blank -%}
+            <span class="milaura-campaign__star-tile milaura-campaign__star-tile--tertiary">
+              {{
+                star_tertiary_media.preview_image
+                | image_url: width: 720
+                | image_tag:
+                  class: 'milaura-campaign__star-image',
+                  widths: '240, 360, 480, 720',
+                  sizes: '(max-width: 749px) 42vw, 20vw',
+                  loading: 'lazy',
+                  alt: star_tertiary_media.alt
+              }}
+            </span>
+          {%- endif -%}
+        </a>
+
+        <div class="milaura-campaign__star-copy{% if section.settings.panel_background_asset != blank %} has-panel-image{% endif %}">
+          {%- if section.settings.star_label != blank -%}
+            <p class="milaura-campaign__eyebrow">{{ section.settings.star_label | escape }}</p>
+          {%- endif -%}
+
+          <h2 id="{{ star_title_id }}" class="milaura-campaign__star-title">
+            {{ star_title | escape }}
+          </h2>
+
+          {%- if section.settings.star_text != blank -%}
+            <div class="milaura-campaign__star-text">{{ section.settings.star_text }}</div>
+          {%- endif -%}
+
+          <span class="milaura-campaign__star-price">{{ featured_product.price | money }}</span>
+
+          {%- if section.settings.star_cta_label != blank -%}
+            <a class="milaura-campaign__star-cta" href="{{ featured_product.url }}">
+              <span>{{ section.settings.star_cta_label | escape }}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="milaura-campaign__catalogue" aria-labelledby="{{ catalogue_title_id }}">
+    <div class="milaura-campaign__catalogue-shell">
+      <header class="milaura-campaign__catalogue-head">
+        <div>
+          {%- if section.settings.catalogue_eyebrow != blank -%}
+            <p class="milaura-campaign__eyebrow">{{ section.settings.catalogue_eyebrow | escape }}</p>
+          {%- endif -%}
+          <h2 id="{{ catalogue_title_id }}" class="milaura-campaign__catalogue-title">
+            {{ section.settings.catalogue_title | escape }}
+          </h2>
+        </div>
+        {%- if total_count > 0 -%}
+          <p class="milaura-campaign__catalogue-count">
+            {{ total_count }} {{ total_count | pluralize: 'création', 'créations' }}
+          </p>
+        {%- endif -%}
+      </header>
+
+      {%- if selected_count > 0 -%}
+        <div class="milaura-campaign__catalogue-grid milaura-cards milaura-cards--editorial" role="list">
+          {%- if section.blocks.size > 0 -%}
+            {%- for block in section.blocks -%}
+              {%- assign product = block.settings.product -%}
+              {%- if product != blank -%}
+                {%- if featured_product == blank or product.handle != featured_product.handle -%}
+                  <div class="milaura-campaign__card" role="listitem" {{ block.shopify_attributes }}>
+                    {% render 'milaura-card-product',
+                      card_product: product,
+                      img_loading: 'lazy',
+                      show_vendor: false,
+                      show_badges: section.settings.show_badges,
+                      show_secondary_image: true,
+                      force_bestseller_badge: false
+                    %}
+                    {% render 'milaura-editorial-purchase', product: product %}
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for product in collection.products -%}
+              {%- if featured_product == blank or product.handle != featured_product.handle -%}
+                <div class="milaura-campaign__card" role="listitem">
+                  {% render 'milaura-card-product',
+                    card_product: product,
+                    img_loading: 'lazy',
+                    show_vendor: false,
+                    show_badges: section.settings.show_badges,
+                    show_secondary_image: true,
+                    force_bestseller_badge: false
+                  %}
+                  {% render 'milaura-editorial-purchase', product: product %}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      {%- else -%}
+        <p class="milaura-campaign__catalogue-empty">{{ section.settings.empty_text | escape }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Landing campagne",
+  "tag": "section",
+  "class": "section-milaura-campaign-landing",
+  "max_blocks": 48,
+  "settings": [
+    {
+      "type": "select",
+      "id": "tone",
+      "label": "Tonalité",
+      "options": [
+        { "value": "aigue", "label": "Aigue-marine" },
+        { "value": "amethyste", "label": "Améthyste" },
+        { "value": "nacre", "label": "Nacre" }
+      ],
+      "default": "aigue"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Produit star"
+    },
+    {
+      "type": "text",
+      "id": "star_label",
+      "label": "Libellé du produit star",
+      "default": "Le produit star"
+    },
+    {
+      "type": "text",
+      "id": "star_title",
+      "label": "Titre éditorial du produit star"
+    },
+    {
+      "type": "richtext",
+      "id": "star_text",
+      "label": "Texte du produit star"
+    },
+    {
+      "type": "text",
+      "id": "star_cta_label",
+      "label": "CTA du produit star",
+      "default": "Découvrir le produit"
+    },
+    {
+      "type": "text",
+      "id": "panel_background_asset",
+      "label": "Fond matière dans les assets"
+    },
+    {
+      "type": "header",
+      "content": "Photos du bento"
+    },
+    {
+      "type": "range",
+      "id": "primary_image_index",
+      "label": "Numéro de la photo principale",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "secondary_image_index",
+      "label": "Numéro de la photo verticale",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "tertiary_image_index",
+      "label": "Numéro de la photo de détail",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "primary_image_position",
+      "label": "Cadrage de la photo principale",
+      "options": [
+        { "value": "center center", "label": "Centre" },
+        { "value": "center 38%", "label": "Haut" },
+        { "value": "center 62%", "label": "Bas" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "select",
+      "id": "secondary_image_position",
+      "label": "Cadrage de la photo verticale",
+      "options": [
+        { "value": "center center", "label": "Centre" },
+        { "value": "38% center", "label": "Gauche" },
+        { "value": "62% center", "label": "Droite" }
+      ],
+      "default": "38% center"
+    },
+    {
+      "type": "select",
+      "id": "tertiary_image_position",
+      "label": "Cadrage de la photo de détail",
+      "options": [
+        { "value": "center center", "label": "Centre" },
+        { "value": "center 38%", "label": "Haut" },
+        { "value": "center 62%", "label": "Bas" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "header",
+      "content": "Sélection"
+    },
+    {
+      "type": "text",
+      "id": "catalogue_eyebrow",
+      "label": "Sur-titre de la sélection",
+      "default": "La sélection complète"
+    },
+    {
+      "type": "text",
+      "id": "catalogue_title",
+      "label": "Titre de la sélection",
+      "default": "Découvrir les créations"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Texte si la sélection est vide",
+      "default": "La sélection sera bientôt disponible."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Afficher les badges produit",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produit sélectionné",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produit"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Landing campagne"
+    }
+  ]
+}
+{% endschema %}
