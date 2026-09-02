@@ -1,0 +1,62 @@
+/* Raccords editoriaux de la Home.
+   Chaque transition est explicite dans sa section : aucun selecteur global
+   ne dessine de filet automatiquement entre les wrappers Shopify. */
+.milaura-home-transition {
+  --milaura-home-transition-surface: var(--milaura-surface);
+  --milaura-home-transition-start: 0.1;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: clamp(18px, 2vw, 28px);
+  display: block;
+  overflow: hidden;
+  background: var(--milaura-home-transition-surface);
+  pointer-events: none;
+}
+
+.milaura-home-transition--mineral {
+  --milaura-home-transition-surface: var(--milaura-surface-mineral);
+}
+
+.milaura-home-transition::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 4%;
+  left: 4%;
+  height: 1px;
+  box-shadow: 0 5px 18px 7px var(--milaura-encre);
+  opacity: 0.035;
+}
+
+.milaura-home-transition__line {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+  display: block;
+  background: var(--milaura-or);
+  opacity: 0.62;
+  transform: scaleX(var(--milaura-home-transition-start));
+  transform-origin: center;
+  transition: transform 800ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.milaura-home-transition.is-visible .milaura-home-transition__line {
+  transform: scaleX(1);
+}
+
+@media screen and (max-width: 749px) {
+  .milaura-home-transition {
+    --milaura-home-transition-start: 0.26;
+    height: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milaura-home-transition__line {
+    transform: scaleX(1);
+    transition: none;
+  }
+}

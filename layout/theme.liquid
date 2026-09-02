@@ -313,6 +313,10 @@
     {{ 'milaura-card.css' | asset_url | stylesheet_tag }}
     {{ 'milaura-actions.css' | asset_url | stylesheet_tag }}
     {{ 'milaura-recommendations.css' | asset_url | stylesheet_tag }}
+    {%- if template.name == 'index' -%}
+      {{ 'milaura-home-transitions.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'milaura-home-transitions.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
     <script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'milaura-preference-storage.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'milaura-recommendations.js' | asset_url }}" defer="defer"></script>
@@ -415,60 +419,7 @@
         }
       }
 
-      /* --- HOMEPAGE - SÉPARATEUR DORÉ ENTRE SECTIONS --- */
       {% if template.name == 'index' %}
-      /* Position relative pour le ::before separator */
-      main#MainContent > div[id^="shopify-section-"] {
-        position: relative;
-        overflow: visible;
-      }
-
-      /* Séparateur doré centré dans le gap de 12px */
-      main#MainContent > div[id^="shopify-section-"]:not(:first-child)::before {
-        content: '';
-        position: absolute;
-        top: -6px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 140px;
-        height: 1px;
-        background: linear-gradient(90deg, transparent 0%, rgba(214, 176, 96, 0.55) 20%, rgba(214, 176, 96, 0.65) 50%, rgba(214, 176, 96, 0.55) 80%, transparent 100%);
-        z-index: 2;
-        pointer-events: none;
-        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), background 0.8s ease;
-        will-change: width;
-      }
-
-      /* Animation : étirement du trait au scroll */
-      main#MainContent > div[id^="shopify-section-"]:not(:first-child).is-approaching::before {
-        width: 100%;
-        background: linear-gradient(90deg, transparent 0%, rgba(214, 176, 96, 0.65) 10%, rgba(214, 176, 96, 0.75) 50%, rgba(214, 176, 96, 0.65) 90%, transparent 100%);
-      }
-
-      @media screen and (max-width: 768px) {
-        main#MainContent > div[id^="shopify-section-"]:not(:first-child)::before {
-          width: 100px;
-        }
-
-        main#MainContent > div[id^="shopify-section-"]:not(:first-child).is-approaching::before {
-          width: 100%;
-        }
-      }
-
-      /* Respecte prefers-reduced-motion */
-      @media (prefers-reduced-motion: reduce) {
-        main#MainContent > div[id^="shopify-section-"]:not(:first-child)::before {
-          transition: none;
-        }
-      }
-
-      /* Contenu au-dessus du séparateur */
-      main#MainContent > div[id^="shopify-section-"] > * {
-        position: relative;
-        z-index: 1;
-      }
-
-
       /* --- HEADER MOBILE COMPACT HOMEPAGE --- */
       @media screen and (max-width: 768px) {
         /* Réduit la position top du header */
@@ -524,7 +475,12 @@
 
     {% sections 'header-group' %}
 
-    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+    <main
+      id="MainContent"
+      class="content-for-layout focus-none{% if template.name == 'index' %} milaura-home{% endif %}"
+      role="main"
+      tabindex="-1"
+    >
       {{ content_for_layout }}
     </main>
 
@@ -588,54 +544,6 @@
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- if template.name == 'index' -%}
-      <script>
-        (function () {
-          'use strict';
-          /* Vérifie prefers-reduced-motion */
-          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return;
-          }
-
-          function initSeparatorAnimation() {
-            var main = document.getElementById('MainContent');
-            if (!main) return;
-
-            var sections = Array.from(main.querySelectorAll('div[id^="shopify-section-"]:not(:first-child)'));
-            if (sections.length === 0) return;
-
-            /* IntersectionObserver pour détecter l'approche des sections */
-            var observer = new IntersectionObserver(
-              function (entries) {
-                entries.forEach(function (entry) {
-                  if (entry.isIntersecting) {
-                    entry.target.classList.add('is-approaching');
-                  } else {
-                    entry.target.classList.remove('is-approaching');
-                  }
-                });
-              },
-              {
-                rootMargin: '-20% 0px -60% 0px',
-                threshold: 0,
-              }
-            );
-
-            /* Observe toutes les sections sauf la première */
-            sections.forEach(function (section) {
-              observer.observe(section);
-            });
-          }
-
-          /* Initialise au chargement */
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initSeparatorAnimation);
-          } else {
-            initSeparatorAnimation();
-          }
-        })();
-      </script>
-    {%- endif -%}
     {% render 'milaura-cookie-consent' %}
     {% render 'milaura-c1-release-bridge' %}
   </body>
