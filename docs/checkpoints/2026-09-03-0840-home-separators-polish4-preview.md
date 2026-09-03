@@ -73,3 +73,21 @@ Date : 2026-09-03 09:10 CEST
 - Theme Check : 0 erreur et 16 avertissements historiques hors lot.
 
 Etat final : `PREVIEW PRIVEE AJUSTEE ET VERIFIEE`. Integration et live toujours en attente d un GO separe de Patrice.
+
+## Integration et live
+
+Date : 2026-09-03 09:32 CEST
+
+- GO explicite Patrice : `tu deploie commity et push sur le live`.
+- Les huit chemins source ont ete reproduits bit a bit dans le checkout d integration sans inclure les changements concurrents.
+- Commit d integration : `42968fad`, pousse sur `origin/codex/milaura-integration`.
+- Theme live confirme avant push : `dawn-X-milaura/main`, ID `190430282075`.
+- Push live strict, cible, `--allow-live` et `--nodelete` : sept fichiers actifs uniquement.
+- Pullback live : identique 7 sur 7 avec le commit d integration.
+- Le JavaScript d animation est supprime du depot et absent du document public ; l ancien asset distant peut rester orphelin a cause de la protection `--nodelete`.
+- Storefront public `milaura.fr` controle sans barre de preview : sept separateurs, ancien script non charge et aucun debordement horizontal.
+- Mobile 360, 390 et 430 px : bandes de 18 px, filets pleine largeur, teinte Nacre avant les deux sections Mineral, `transform: none` et `transition-duration: 0s`.
+- Desktop 1440 px : bandes de 23,04 px, filets pleine largeur et memes raccords Nacre vers Mineral.
+- Theme Check : 0 erreur et 16 avertissements historiques hors lot.
+
+Etat final : `FERME, INTEGRE, PUSH GIT ET LIVE VERIFIE`.
