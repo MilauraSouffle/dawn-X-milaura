@@ -1,7 +1,7 @@
 # Preview Polish 5 Home, campagne Sodalite mobile
 
 Date : 2026-09-03 10:03 CEST
-Statut : preview privee prete pour validation visuelle de Patrice
+Statut : valide par Patrice, integre, pousse Git et live
 
 ## Demande
 
@@ -44,4 +44,16 @@ Le prochain lot sur la visibilite globale des titres, sur-titres et CTA reste ex
 
 Le fichier de section a ete pousse uniquement sur le theme prive `200259043675` avec `--only`, `--nodelete` et `--strict`.
 
-Le theme live `190430282075` n a pas ete modifie. Integration et live restent bloques jusqu aux GO explicites de Patrice.
+## Integration et live
+
+Patrice a valide la preview et donne le GO explicite de commit, push et deploiement live le 2026-09-03.
+
+- commit source : `63cfee3a`
+- commit d integration : `1a529e71`
+- branche d integration poussee : `codex/milaura-integration`
+- theme live : `190430282075`
+- deploiement strictement cible sur `sections/milaura-selection-atelier.liquid` avec `--only`, `--nodelete`, `--strict` et `--allow-live`
+- pullback live identique au fichier local, SHA-256 `ef33d207dec5d55f8ddd119486c556dbfa03dff327d5599219bee49067e404de`
+- QA du theme live `dawn-X-milaura/main` : 360, 390, 430 et 1440 px, aucun overflow, un CTA, espace titre vers CTA de 18 px sur mobile, composition desktop conservee
+- lecture HTTP publique sans cookie : nouveau conteneur editorial, grille mobile et voile a 72 pour cent presents ; aucun `preview_theme_id`, aucune barre de preview et aucune erreur Liquid dans le HTML public
+- checkout d integration : modifications concurrentes preexistantes preservees et non stagees
