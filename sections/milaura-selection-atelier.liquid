@@ -153,6 +153,10 @@
     transform: none;
   }
 
+  #MilauraSelection-{{ section.id }} .milaura-season__lead {
+    display: contents;
+  }
+
   #MilauraSelection-{{ section.id }} .milaura-season__eyebrow {
     grid-column: 1;
     grid-row: 1;
@@ -528,11 +532,14 @@
     #MilauraSelection-{{ section.id }} .milaura-season__campaign {
       display: grid;
       grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
       color: var(--milaura-encre);
       background: var(--milaura-nacre);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media {
+      grid-column: 1;
+      grid-row: 1;
       width: 100%;
     }
 
@@ -540,21 +547,40 @@
       aspect-ratio: 1 / 1;
     }
 
+    #MilauraSelection-{{ section.id }} .milaura-season__media-frame::before {
+      height: 72%;
+      background: linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--milaura-nacre) 98%, transparent) 0%,
+        color-mix(in srgb, var(--milaura-nacre) 88%, transparent) 42%,
+        color-mix(in srgb, var(--milaura-nacre) 28%, transparent) 76%,
+        transparent 100%
+      );
+    }
+
     #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
       right: var(--milaura-esp-xs);
-      bottom: var(--milaura-esp-xs);
+      top: var(--milaura-esp-xs);
+      bottom: auto;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__copy {
-      position: static;
-      width: calc(100% - 32px);
+      display: contents;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__lead {
+      z-index: 3;
+      grid-column: 1;
+      grid-row: 1;
+      align-self: end;
       display: block;
-      margin: 0 auto;
-      padding-top: 28px;
-      transform: none;
+      min-width: 0;
+      padding: 0 16px 76px;
+      pointer-events: none;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__eyebrow {
+      margin-bottom: var(--milaura-esp-xs);
       color: var(--milaura-aigue-profonde);
     }
 
@@ -564,7 +590,11 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__description {
-      margin-top: var(--milaura-esp-sm);
+      grid-column: 1;
+      grid-row: 2;
+      width: calc(100% - 32px);
+      margin: 0 auto;
+      padding-top: 26px;
       color: var(--milaura-encre-secondaire);
       opacity: 1;
     }
@@ -595,10 +625,15 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__actions {
+      z-index: 4;
+      grid-column: 1;
+      grid-row: 1;
+      align-self: end;
+      justify-self: start;
       display: grid;
       grid-template-columns: 1fr;
       gap: var(--milaura-esp-xs);
-      margin-top: var(--milaura-esp-sm);
+      margin: 0 16px 14px;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__cta {
@@ -681,16 +716,18 @@
       </figure>
 
       <div class="milaura-season__copy">
-        {%- if section.settings.campaign_eyebrow != blank -%}
-          <p class="milaura-season__eyebrow">{{ section.settings.campaign_eyebrow | escape }}</p>
-        {%- endif -%}
-
-        <h1 id="{{ selection_title_id }}" class="milaura-season__title">
-          <span class="milaura-season__title-main">{{ section.settings.campaign_title | escape }}</span>
-          {%- if section.settings.campaign_title_secondary != blank -%}
-            <span class="milaura-season__title-secondary">{{ section.settings.campaign_title_secondary | escape }}</span>
+        <div class="milaura-season__lead">
+          {%- if section.settings.campaign_eyebrow != blank -%}
+            <p class="milaura-season__eyebrow">{{ section.settings.campaign_eyebrow | escape }}</p>
           {%- endif -%}
-        </h1>
+
+          <h1 id="{{ selection_title_id }}" class="milaura-season__title">
+            <span class="milaura-season__title-main">{{ section.settings.campaign_title | escape }}</span>
+            {%- if section.settings.campaign_title_secondary != blank -%}
+              <span class="milaura-season__title-secondary">{{ section.settings.campaign_title_secondary | escape }}</span>
+            {%- endif -%}
+          </h1>
+        </div>
 
         {%- if section.settings.campaign_description != blank -%}
           <div class="milaura-season__description">{{ section.settings.campaign_description }}</div>
