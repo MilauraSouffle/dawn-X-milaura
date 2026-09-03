@@ -41,6 +41,18 @@ Date : 2026-09-03 08:40 CEST
 - Themes developpement `199421952347` et live `190430282075` interdits dans ce lot.
 - Integration, live et Admin restent en attente d un GO separe de Patrice apres validation visuelle.
 
+## Publication et verification privees
+
+- Commit source : `84a929d4` sur `codex/milaura-home-separators-polish4-20260903`, pousse sur `origin`.
+- Push Shopify strict et cible sur le theme prive `200259043675` : PASS.
+- Pullback des cinq fichiers actifs du theme : identique 5 sur 5.
+- Le fichier JavaScript supprime reste eventuellement present comme asset orphelin sur le theme prive a cause de `--nodelete`, mais aucun layout ne le charge plus.
+- Home de preview : sept separateurs presents, feuille CSS chargee et ancien script absent du document.
+- Mobile 360, 390 et 430 px : sept bandes de 18 px, filets de 1 px sur toute la largeur, aucun debordement horizontal.
+- Desktop 1440 px : sept bandes de 23,04 px, filets de 1 px sur toute la largeur, aucun debordement horizontal.
+- Styles controles : Or mat `rgb(185, 151, 91)`, `transform: none` et `transition-duration: 0s`.
+- Les traits reperes autour des composants sont des bordures internes de cartes et de CTA, pas des bordures de section ; les racines adjacentes au nouveau composant ont bien une bordure nulle.
+
 ## Etat
 
-Implementation locale terminee. Commit, push Git, publication privee, pullback et controles visuels restent a consigner avant remise du lien de preview.
+`PREVIEW PRIVEE VERIFIEE` au 2026-09-03 08:44 CEST. Validation visuelle de Patrice requise avant integration ou live.
