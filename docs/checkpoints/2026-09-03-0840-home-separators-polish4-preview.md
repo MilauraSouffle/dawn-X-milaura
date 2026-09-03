@@ -56,3 +56,20 @@ Date : 2026-09-03 08:40 CEST
 ## Etat
 
 `PREVIEW PRIVEE VERIFIEE` au 2026-09-03 08:44 CEST. Validation visuelle de Patrice requise avant integration ou live.
+
+## Ajustement des raccords avant sections Mineral
+
+Date : 2026-09-03 09:10 CEST
+
+- Les captures de Patrice montraient que la bande du separateur prenait trop tot le fond Mineral avant Best-sellers et Occasions.
+- Cause confirmee : les deux appels du composant transmettaient explicitement la teinte `mineral` ; les fonds des sections ne debordaient pas.
+- `sections/milaura-featured-products.liquid` et `sections/milaura-home-occasions.liquid` utilisent maintenant une bande Nacre avant leur section bleue.
+- Commit source : `95e92afb`, pousse sur `origin`.
+- Push strict limite aux deux sections sur le theme prive `200259043675` : PASS.
+- Pullback Shopify : identique 2 sur 2.
+- Desktop 1440 px : bande Nacre de 23,04 px, filet Or mat pleine largeur, puis fond Mineral.
+- Mobile 390 px : bande Nacre de 18 px, filet Or mat pleine largeur, puis fond Mineral.
+- Sept separateurs toujours presents, aucune animation et aucun debordement horizontal.
+- Theme Check : 0 erreur et 16 avertissements historiques hors lot.
+
+Etat final : `PREVIEW PRIVEE AJUSTEE ET VERIFIEE`. Integration et live toujours en attente d un GO separe de Patrice.
