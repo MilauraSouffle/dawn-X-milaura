@@ -10,7 +10,6 @@
   {%- style -%}
     #MilauraProd-{{ section.id }} {
       --prod-columns: {{ desktop_columns }};
-      padding: var(--milaura-esp-3xl) 0;
       overflow: hidden;
       color: var(--milaura-encre);
       background: var(--milaura-surface);
@@ -40,22 +39,12 @@
     }
 
     #MilauraProd-{{ section.id }} .prod-eyebrow {
-      margin: 0 0 var(--milaura-esp-sm);
-      color: var(--milaura-aigue-profonde);
-      font-size: var(--milaura-t-label);
-      font-weight: 650;
-      letter-spacing: var(--milaura-ls-label);
-      line-height: var(--milaura-lh-label);
-      text-transform: uppercase;
+      margin-bottom: var(--milaura-esp-xs);
     }
 
     #MilauraProd-{{ section.id }} .prod-title {
+      max-width: 18ch;
       margin: 0;
-      color: var(--milaura-encre);
-      font-family: var(--milaura-font-display);
-      font-size: var(--milaura-t-h2);
-      font-weight: 400;
-      line-height: var(--milaura-lh-h2);
     }
 
     #MilauraProd-{{ section.id }} .prod-subtitle {
@@ -84,36 +73,12 @@
     }
 
     #MilauraProd-{{ section.id }} .prod-link {
-      display: inline-flex;
-      min-height: var(--milaura-cible-tactile);
-      align-items: center;
-      gap: var(--milaura-esp-2xs);
-      border-bottom: var(--milaura-filet-or);
-      color: var(--milaura-encre);
-      font-size: var(--milaura-t-label);
-      font-weight: 650;
-      letter-spacing: var(--milaura-ls-label);
-      line-height: var(--milaura-lh-label);
-      text-decoration: none;
-      text-transform: uppercase;
       white-space: nowrap;
-    }
-
-    #MilauraProd-{{ section.id }} .prod-link::after {
-      content: '↗';
-      color: var(--milaura-or-profond);
-      font-size: var(--milaura-t-corps-large);
-      font-weight: 400;
-      line-height: 1;
     }
 
     #MilauraProd-{{ section.id }} .prod-link:focus-visible {
       outline: var(--milaura-focus);
       outline-offset: var(--milaura-focus-offset);
-    }
-
-    #MilauraProd-{{ section.id }} .prod-mobile-link {
-      display: none;
     }
 
     @media screen and (max-width: 989px) {
@@ -144,10 +109,6 @@
     }
 
     @media screen and (max-width: 749px) {
-      #MilauraProd-{{ section.id }} {
-        padding: var(--milaura-esp-2xl) 0;
-      }
-
       #MilauraProd-{{ section.id }} .prod-container {
         width: min(100% - 32px, 680px);
       }
@@ -162,14 +123,8 @@
       }
 
       #MilauraProd-{{ section.id }} .prod-header .prod-link {
-        display: none;
-      }
-
-      #MilauraProd-{{ section.id }} .prod-mobile-link {
-        display: inline-flex;
         width: fit-content;
-        margin-top: var(--milaura-esp-md);
-        margin-left: 16px;
+        justify-self: start;
       }
     }
   {%- endstyle -%}
@@ -185,25 +140,26 @@
     aria-labelledby="MilauraProdTitle-{{ section.id }}"
   >
     <div class="prod-container">
-      <header class="prod-header">
+      <header class="prod-header milaura-section-intro">
         <div>
           {%- if section.settings.eyebrow != blank -%}
-            <p class="prod-eyebrow">{{ section.settings.eyebrow | escape }}</p>
+            <p class="prod-eyebrow milaura-section-label">{{ section.settings.eyebrow | escape }}</p>
           {%- endif -%}
-          <h2 id="MilauraProdTitle-{{ section.id }}" class="prod-title">{{ section.settings.title | escape }}</h2>
+          <h2 id="MilauraProdTitle-{{ section.id }}" class="prod-title milaura-section-title">{{ section.settings.title | escape }}</h2>
           {%- if section.settings.subtitle != blank -%}
             <p class="prod-subtitle">{{ section.settings.subtitle | escape }}</p>
           {%- endif -%}
         </div>
 
         {%- if section.settings.cta_label != blank -%}
-          <a href="{{ section.settings.cta_link | default: featured_collection.url }}" class="prod-link">
+          <a href="{{ section.settings.cta_link | default: featured_collection.url }}" class="prod-link milaura-action milaura-action--editorial">
             <span>
               {{ section.settings.cta_label | escape }}
               {%- if section.settings.show_product_count -%}
                 <span class="visually-hidden">, {{ featured_collection.products_count }} produits</span>
               {%- endif -%}
             </span>
+            {% render 'milaura-action-icon' %}
           </a>
         {%- endif -%}
       </header>
@@ -230,11 +186,6 @@
       </div>
     </div>
 
-    {%- if section.settings.cta_label != blank -%}
-      <a href="{{ section.settings.cta_link | default: featured_collection.url }}" class="prod-link prod-mobile-link">
-        {{ section.settings.cta_label | escape }}
-      </a>
-    {%- endif -%}
   </section>
 {%- endif -%}
 
