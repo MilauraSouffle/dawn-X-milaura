@@ -1,3 +1,21 @@
+# Reprise prioritaire : inventaire apres retrait legacy
+
+Date : 2026-09-04 18:40 CEST. Statut : `RETRAIT EXECUTE ; SHEET SYNCHRONISE ; DEUX LISTES FOURNISSEUR ATTENDUES`.
+
+237 anciens produits sont passes en DRAFT, sans suppression. Les 179 canoniques sont inchanges : 173 ACTIVE et six DRAFT volontaires. Les 333 anciens deja hors vente restent intouches. Les 237 endpoints produit controles renvoient 404 ; les deux listes publiques completes ne contiennent que les 173 actifs canoniques. Sheet : 145 cellules sur 46 lignes, formules, couts et quantites physiques preserves.
+
+Preuves, liste nominative, limites et prompt complet : [checkpoint courant](checkpoints/2026-09-04-1826-inventory-legacy-retirement.md). Ce resultat remplace le mandat de retrait de 17:38 reproduit plus bas, qui devient historique. Ne pas rejouer cette operation.
+
+Prochaine etape : attendre les deux listes fournisseur de Patrice. Aucun nouveau produit, activation ou stock a modifier par deduction. Les six cadeaux exclus et les quatre visuels refuses restent proteges. Corrections distinctes a decider : cadeau panier encore reference, deux mappings de recommandations orphelins, ecart Unys physique Sheet 4 / Shopify 1. Mon Ecrin connecte et feeds Meta/Google/Pinterest restent non certifies. Aucun theme ni Ads modifie.
+
+## Prompt de reprise courant
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-04-1826-inventory-legacy-retirement.md. Le retrait legacy est termine et ne doit pas etre rejoue. Commence en lecture seule. Attends mes deux listes fournisseur pour rapprocher commandes, receptions physiques et IDs canoniques. Preserve les brouillons volontaires et les exclusions ; garde les correctifs cadeau/mappings, Unys et les limites de canaux dans des lots distincts soumis au GO adapte.
+```
+
+## Historique et autres chantiers preserves
+
 # Handoff prioritaire : catalogue MilAura
 
 Date : 2026-09-04 17:38 CEST. Statut : `PASSATION PRETE ; RETRAIT LEGACY NON EXECUTE`.

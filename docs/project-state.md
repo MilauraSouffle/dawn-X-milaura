@@ -1,3 +1,7 @@
+> Inventaire, 2026-09-04 18:40 CEST : RETRAIT LEGACY EXECUTE ET VERIFIE. 237 anciens produits passes en DRAFT, 179 canoniques inchanges (173 ACTIVE, six DRAFT volontaires), 333 anciens deja hors vente intouches. Sheet synchronise : 145 cellules sur 46 lignes, formules et donnees physiques preservees. [Checkpoint courant](checkpoints/2026-09-04-1826-inventory-legacy-retirement.md). Les anciennes instructions de retrait ci-dessous sont historiques et ne doivent pas etre rejouees.
+
+> Suite : attendre les deux listes fournisseur. Lot correctif distinct a decider pour le cadeau panier et deux mappings orphelins ; ecart Unys preexistant Sheet 4 / Shopify 1 non corrige. Mon Ecrin connecte et feeds externes non certifies, aucun theme ni Ads modifie.
+
 > Mise a jour Polish 6, 2026-09-04 08:40 CEST : LIVE VERIFIE sur le theme `190430282075`, commit `4067ea35` pousse sur `codex/milaura-integration`. Titres, surtitres, CTA et derniers ajustements fleches/espacements approuves sont publies. Pullback 18/18, Home 360/390/430/768/1440 et regressions 390/1440 PASS. Details : [checkpoint Polish 6](checkpoints/2026-09-04-polish6-live.md). Les autres chantiers ci-dessous restent inchanges.
 
 # MilAura - Etat courant du projet
