@@ -1,3 +1,13 @@
+# Reprise prioritaire : SEO, cadeau et trois stocks a confirmer
+
+Date : 2026-09-04 18:55 CEST. Les factures FCAN2026-59350 et FCAN2026-59481 sont integrees au Sheet : 35 lignes d'achat, 33 EAN (24 nouveaux, neuf existants), aucun doublon. Ne pas reimporter les commandes 76878 et 77055 ni ajouter une seconde fois leurs stocks.
+
+[Checkpoint courant](checkpoints/2026-09-04-1855-invoices-seo-gift-clarifications.md) : trois quantites physiques en attente, distinction cadeau hematite/amethyste, preuves et limites. Les 24 nouvelles lignes Sheet ne sont pas des creations Shopify. Aucun stock, produit, prix ou canal Shopify modifie dans ce lot.
+
+Priorite demandee : proteger le SEO organique. Les 237 retraits legacy sont effectues, mais trafic, backlinks et redirections pertinentes restent a traiter dans un lot cible. Ne pas promettre un impact nul, rediriger tout vers la Home, reactiver tous les produits ou falsifier leurs stocks a zero. Cadeau : produit 10504072954203 DRAFT, variante 53142713925979, hematite 4 mm, ancien stock Shopify 50 ; Patrice annonce amethyste et 12 unites, confirmation necessaire. Stocks a confirmer : EAN 3701459098132 (facture cinq / message un achete et vendu), 3701459010042 (Sheet une ancienne unite), 3701459011551 (Sheet deux anciennes unites). Unys reste un ecart distinct.
+
+Les anciens prompts et attentes ci-dessous sont historiques. Reprendre en lecture seule depuis le checkpoint courant, puis appliquer uniquement les confirmations et GO nouveaux de Patrice.
+
 # Reprise prioritaire : inventaire apres retrait legacy
 
 Date : 2026-09-04 18:40 CEST. Statut : `RETRAIT EXECUTE ; SHEET SYNCHRONISE ; DEUX LISTES FOURNISSEUR ATTENDUES`.
