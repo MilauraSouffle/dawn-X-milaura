@@ -1,3 +1,11 @@
+# Reprise prioritaire : pilote SEO PASS, GO collectif exact requis
+
+Date : 2026-09-04 21:33 CEST. [Checkpoint courant](checkpoints/2026-09-04-2133-seo-corrective-explicit-go.md).
+
+Sitemap GSC soumis avec confirmation. Pilote `10358876275035` restaure sous son URL : ACTIVE, stock zero, DENY, HTTP 200, canonique correcte, OutOfStock et achat desactive. Contenu et autres champs inchanges. Ne pas rejouer l'operation stock.
+
+Les 58 autres produits a clics sont inchanges. Le garde-fou exige une autorisation exacte pour activer collectivement 57 fiches avec stock zero et le collier Boho `10557516644699` avec stock quatre confirme. Cette action rendra les anciennes pages visibles dans le sitemap, les collections et la recherche Shopify ; 57 seront epuisees et non achetables, Boho sera achetable. Aucune 301 automatique. Attendre la reponse explicite de Patrice. Hematite 12 versus neuf reste separee et non resolue.
+
 # Reprise prioritaire : audit GSC termine, comptage hematite a clarifier
 
 Date : 2026-09-04 19:42 CEST. [Checkpoint courant](checkpoints/2026-09-04-1942-gsc-stock-hematite.md), [audit Search Console](audits/2026-09-04-legacy-retirement-search-console.md).
