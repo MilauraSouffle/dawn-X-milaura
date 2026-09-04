@@ -1,3 +1,11 @@
+# Reprise prioritaire : 59 anciennes URLs SEO restaurees
+
+Date : 2026-09-04 22:10 CEST. [Checkpoint courant](checkpoints/2026-09-04-2210-seo-clicked-urls-restored.md).
+
+Correctif termine, ne pas le rejouer. Les 59 anciennes fiches avec clics GSC sont `ACTIVE` sous leurs URLs historiques : 58 a stock zero et politique `DENY`, plus le collier Boho `10557516644699` a stock quatre et politique `DENY`. Le pullback Admin est PASS 59/59 en comptant le pilote ; aucun contenu, prix, media, handle, EAN, SKU, metachamp ou collection n'a ete modifie.
+
+Le sitemap produits repond HTTP 200 avec 234 entrees ; les 59 handles restaures sont tous presents. Pilote et echantillon stock zero sont indexables, `OutOfStock` et non achetables ; Boho est indexable, `InStock` et achetable. Le sitemap a ete soumis dans GSC, mais recrawl, impressions et positions restent en attente. Une verification individuelle immediate des 59 pages a ete arretee apres rate-limit 429 ; ne pas marteler Shopify. Hematite douze versus neuf reste un lot distinct non resolu.
+
 # Reprise prioritaire : pilote SEO PASS, GO collectif exact requis
 
 Date : 2026-09-04 21:33 CEST. [Checkpoint courant](checkpoints/2026-09-04-2133-seo-corrective-explicit-go.md).
