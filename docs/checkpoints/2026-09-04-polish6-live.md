@@ -47,4 +47,13 @@ snippets/milaura-section-heading.liquid
 
 ## Etat de publication
 
-Integration preparee le 2026-09-04. Commit, push, deploiement cible, pullback et QA publique a renseigner apres execution.
+- FERME, LIVE VERIFIE le 2026-09-04 a 08:40 CEST.
+- Commit d'integration `4067ea35`, pousse sur `origin/codex/milaura-integration`.
+- Push Shopify cible sur les 18 chemins ci-dessus avec `--allow-live --strict --nodelete --only`, termine avec succes.
+- Pullback apres push : 18/18 fichiers strictement identiques au commit local, dans `/private/tmp/milaura-polish6-release.BzFEPu/live-after`.
+- Controle public hors preview : aucune barre de preview, CSS servi depuis `/cdn/shop/t/3/`, un seul chargement de `milaura-section-heading.css`.
+- Home verifiee a 360, 390, 430, 768 et 1440 px : aucun overflow horizontal ni erreur Liquid ; quatre introductions avec padding 32 px jusqu'a 768 et 56 px a 1440 ; onze icones `↗` ; huit CTA visibles, chacun de 48 px de haut.
+- Captures navigateur observees a 390 et 1440 px autour de la jonction Aigue-marine/best-sellers : espaces et trait nacre/or preserves, fond bleu contenu, titres et CTA lisibles.
+- Regressions DOM et mise en page a 390/1440 : `/collections/selection-de-karine`, `/collections/par-pierre-aigue-marine`, `/pages/pierres-de-naissance`, `/products/palo-santo` ; H1 present, zero overflow, zero erreur Liquid, un seul CSS partage et aucune preview.
+- Aucune transaction ni modification de panier executee. Verification responsive Chrome ; pas de test sur appareil physique Safari dans cette passe.
+- Worktree source propre retire apres integration et controle. Branche source distante conservee pour tracabilite. Checkout d'integration toujours sale uniquement des travaux preexistants non inclus dans cette release.
