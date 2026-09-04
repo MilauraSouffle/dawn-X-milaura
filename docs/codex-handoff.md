@@ -1,3 +1,13 @@
+# Reprise prioritaire : audit GSC termine, comptage hematite a clarifier
+
+Date : 2026-09-04 19:42 CEST. [Checkpoint courant](checkpoints/2026-09-04-1942-gsc-stock-hematite.md), [audit Search Console](audits/2026-09-04-legacy-retirement-search-console.md).
+
+Audit SEO execute en lecture seule : 109 clics historiques sur 28 jours concernent 59 handles retires, 55,6 % des clics de la table Pages. Ne pas annoncer une perte deja mesuree. Aucune action manuelle ni alerte securite, sitemap public conforme aux 173 actifs, rapport GSC ancien. Aucune redirection, demande d'indexation ou soumission de sitemap ; correction a autoriser separement.
+
+Les trois stocks physiques sont confirmes : Boho obsidienne Sheet 4, rhodonite 6 mm 1 conservee, oeil-de-tigre 8 mm 2 conservees. Aucun ajout d'achat ou import a rejouer. Cadeau `10504072954203` : stock Shopify corrige 50 -> 12, toujours DRAFT, prix zero, pas encore enrichi/reactive. Le lien CAN donne par Patrice identifie l'EAN `3701459008254`, deja present sur la fiche canonique ACTIVE `10685849862491`, cinq images approuvees, prix 8,50 EUR, stock 9 Sheet/Shopify. Question ouverte : 12 cadeaux supplementaires ou 12 physiques au total ? Ne pas creer de doublon, additionner 12+9, alterer les neuf ou regenerer la galerie acceptee par deduction. Clarifier puis finaliser le modele cadeau/vente et sa preuve panier.
+
+Le retrait legacy, les factures et les ecritures de ce lot sont termines, pas a rejouer. Les attentes contradictoires plus anciennes ci-dessous sont historiques. Aucun theme ou autre produit autorise par ce checkpoint ; Unys et recommandations orphelines restent distincts.
+
 # Reprise prioritaire : SEO, cadeau et trois stocks a confirmer
 
 Date : 2026-09-04 18:55 CEST. Les factures FCAN2026-59350 et FCAN2026-59481 sont integrees au Sheet : 35 lignes d'achat, 33 EAN (24 nouveaux, neuf existants), aucun doublon. Ne pas reimporter les commandes 76878 et 77055 ni ajouter une seconde fois leurs stocks.
