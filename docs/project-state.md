@@ -2,11 +2,13 @@
 
 # MilAura - Etat courant du projet
 
-Derniere mise a jour : 2026-09-01 14:15 CEST
+Derniere mise a jour inventaire : 2026-09-04 17:38 CEST. Les dates des autres chantiers restent leurs dates de verification.
 
 ## Etat en une phrase
 
 Patrice estime la refonte globale a environ `70 %` : le socle et le gros du developpement sont live, notamment Mon Ecrin et Rentree Sodalite, tandis que le travail restant porte surtout sur le polish visuel, des corrections reproduites et quelques ameliorations ciblees ; l inventaire continue en parallele et les gates Ads restent distinctes. Le premier mail marketing a ete envoye a 25 destinataires le 2026-09-01 et son systeme valide devient le `Template 1` reutilisable.
+
+Inventaire au 2026-09-04 : revue Patrice terminee, brouillons volontaires a conserver ; prochaine passe dediee au retrait reversible de tous les anciens produits hors catalogue canonique, puis aux deux commandes fournisseur dont les listes sont attendues. Aucun retrait legacy execute pendant ce handoff.
 
 ## Template 1 marketing et premiere campagne envoyee au 2026-09-01
 
@@ -74,17 +76,17 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Une validation technique ne vaut jamais validation creative de Patrice.
 - Aucun produit, stock, prix ou statut de publication n'est modifie par un chantier theme sans autorisation explicite.
 
-## Inventaire et workflow produit V4 au 2026-09-01
+## Inventaire et retrait de l'ancien catalogue au 2026-09-04
 
-- Source physique et Shopify relus en direct : `185 references positives`, `456 unites`, `118 identites Shopify exactes`, `118 stocks exacts`, `116 ACTIVE`, `2 DRAFT`, `67 absentes`. La progression est de `63,8 %` par reference.
-- Le lot V4 du 2026-09-01 contient dix nouvelles fiches, dix identites EAN exactes, dix stocks exacts et cinquante images en `1024 x 1024`. Quality gate, audit editorial et audit visuel passent `10/10`.
-- La preuve initiale ferme les dix fiches en `DRAFT`, sans publication. Le pull Shopify complet de fermeture confirme ensuite les dix produits `ACTIVE` et publics apres validation de Patrice. Le statut courant vient du pull complet, pas de la preuve initiale conservee dans le batch.
-- Le bracelet aigue-marine EAN `3701459072392`, produit `10684076949851`, appartient a la collection manuelle `par-pierre-aigue-marine`.
-- Patrice a confirme un stock physique de trois chaines dorees, EAN `3701459096435`, produit `10684097986907`. Le metachamp complementaire Shopify standard pointe vers cette chaine sur les 29 pendentifs actifs candidats : readback Admin `29/29`, endpoints publics `29/29` et fragment theme reel controle.
-- Les deux brouillons physiques restants sont l encens Palo Santo EAN `3701459054732`, produit `10358581723483`, et les boucles cornaline 6 mm EAN `3701459082018`, produit `10357427732827`. Ne pas les activer sans controle et GO distincts.
-- La prochaine session commence en lecture seule, relit le Sheet, Shopify et les sources fournisseur, puis presente dix nouvelles references a Patrice avant toute creation. Le prochain lot provisoire est documente dans le checkpoint et doit etre rafraichi avant usage.
-- Workflow V4 obligatoire : produit Shopify `DRAFT` uniquement apres GO, cinq images controlees a pleine resolution, handle, SEO, textes, grammaire, syntaxe, orthographe, tournure, metachamps, prix, EAN et stock verifies. Aucune activation ni publication automatique.
-- Checkpoint de reprise courant : `docs/checkpoints/2026-09-01-1219-inventory-v4-ten-active-crosssell.md`.
+- [DECISION 2026-09-04] Patrice a termine sa revue et active manuellement les produits finalises. Tous les produits canoniques laisses en DRAFT le sont volontairement : les proteger sans les activer.
+- Prochaine mission : relire Sheet, Shopify et preuves de toutes les sessions, proteger les IDs canoniques traites/valides, puis passer tous les autres anciens produits actifs en DRAFT. Retrait reversible, pas de suppression definitive de masse ; aucune exception pour doublon, savon, SEO ou placement editorial.
+- Le perimetre protege inclut les anciens IDs reenrichis dans le chantier et les galeries historiques acceptees. Ne pas le limiter au dernier lot de 47, a une date de creation ou a cinq images.
+- FINAL47 : 47 DRAFT crees historiquement, puis six fiches cadeaux supprimees et verifiees le 2026-09-04 a 16:56 CEST. Le Sheet conserve leurs quantites physiques/couts et les exclut de la vente et des creations. Les statuts actuels des autres produits restent a relire apres les actions manuelles de Patrice.
+- Grenouille quartz rose : visuel accepte. Trois calendriers et coffret decouverte : refuses, intouchables avant reception des vraies photos. Aucun autre brouillon volontaire a activer.
+- Apres le retrait legacy : recevoir les listes des deux commandes fournisseur annoncees par Patrice, integrer achats/reassorts/nouvelles references au Sheet, puis appliquer le workflow V4.1. Listes non recues ; commandes et receptions physiques distinctes. GO de creation, validation visuelle et activation/publication restent distincts.
+- Contrat creatif : tenue contrastant avec le produit, references mannequin reservees a l'identite, aucun tee-shirt gris recopie, douceur et presence organique/vegetale des scenes ; pas de reprise des galeries acceptees par deduction.
+- Aucun nouveau controle global ou retrait legacy execute pendant le handoff. Aucun total actuel d'anciens produits a retirer n'est etabli ; les nombres 175/182/185 et les anciennes files restent historiques.
+- Reprise canonique : `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md`. Preuves des six suppressions : `docs/checkpoints/2026-09-04-1659-inventory-gifts-six-deleted.md`.
 
 ## Role de la session master au 2026-08-31
 
@@ -105,7 +107,7 @@ Les priorites immediates sont le polish Rentree Sodalite, le polish et les bugfi
 - Le diagnostic reste persiste dans le navigateur et le panier sous consentement Preferences. Depuis la release 7 de Mon Ecrin, un enregistrement serveur entre appareils est egalement disponible apres le choix explicite `Enregistrer et ouvrir Mon Ecrin` ; aucune ecriture silencieuse n est autorisee.
 - Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. L audit des emails, notifications, relances et du comportement apres inscription est ferme le 2026-08-20 ; leur implementation reste classee criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
-- La source physique courante compte 185 references positives et 456 unites : 116 `ACTIVE`, 2 `DRAFT` et 67 absentes, avec 118 correspondances et stocks exacts. Cette verite datee reste obligatoire avant paid acquisition et doit etre relue en direct a chaque reprise. Elle ne bloque plus Mon Ecrin : ses destinations doivent etre resolues dynamiquement parmi les produits Shopify actuellement publies, vendables et disponibles.
+- La source physique courante doit etre relue dans le Sheet et Shopify ; les compteurs historiques sont perimes pour la prochaine action. Voir la section inventaire du 2026-09-04. Mon Ecrin conserve sa resolution dynamique parmi les produits publies, vendables et disponibles.
 - L'Atelier des emotions est confie a une session dediee. Little Words Project est la reference fonctionnelle ; Van Cleef & Arpels la reference de niveau visuel ; la charte MilAura reste la source executable.
 - Pinterest doit commencer par ses fondations sans attendre la fin : domaine, Shopify, catalogue, tracking, tableaux et branding. Le paid attend stock, flux et mesure verifies.
 - Decisions Pinterest de Patrice du 2026-08-20 : le titre et la bio actuels sont valides et restent inchanges. Aucun agent ne doit proposer de les remplacer sans nouvelle demande explicite. La phrase finale `Découvrez les créations et conseils sur milaura.fr.` est approuvee comme ajout optionnel ; si la limite de caracteres Pinterest empeche son ajout, la bio existante ne doit pas etre raccourcie sans validation de Patrice.
@@ -466,17 +468,9 @@ Pipeline actif :
 
 ## Catalogue physique, reprise courante
 
-L'ancienne tache volumineuse `01a038d2-cc6d-7c81-9ceb-bb08200ef937` reste retiree. Les anciens ledgers restent des preuves historiques, mais ne doivent plus servir de total courant. La source canonique relue le 2026-09-01 contient 185 references positives et 456 unites. Le pull Shopify frais rapproche 118 references et stocks exacts, avec 116 actifs, 2 brouillons et 67 absentes.
+L'etat courant est celui de la section inventaire du 2026-09-04 et du checkpoint `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md`. Les anciens compteurs et files de creation ne doivent plus etre rejoues. Les checkpoints des 2026-08-28 au 2026-09-04 et le ledger prive conservent les preuves de toutes les sessions, y compris les produits traites sur un ancien ID.
 
-Les neuf prix TTC fixes par Patrice sont inscrits dans le Sheet et les six pierres reservees aux avantages client sont marquees `HORS VENTE`. Les couts unitaires de six references fournisseur vendues par lots de 2, 3 ou 5 ont ete normalises sans modifier les lignes d'achat brutes. Aucune fusion de produit n'a ete executee. L'arbitrage variantes est transmis a une session specialisee. La prochaine reference vendable doit etre choisie apres une nouvelle lecture du Sheet et de Shopify, pas depuis l ancienne position 84. Checkpoints historiques : `docs/checkpoints/2026-08-29-0801-inventory-185-camilla-v3.md` et `docs/checkpoints/2026-08-29-1021-inventory-price-dispositions.md`.
-
-Le 2026-08-29, sept anciens brouillons de la vue 185 ont ete remis au contrat courant avant la creation de nouveaux produits. Les EAN `3701459056040`, `3667407007277`, `3701459056088`, `3701459082087`, `3701459081790`, `3701459056163` et `3701459080281` ont chacun exactement cinq images V3, leurs contenus et metafields controles, leur prix, leur cout et leur stock physique. Patrice les a tous valides puis actives sur tous les canaux. L audit Shopify confirme 7 sur 7 `ACTIVE`, avec URL publique, prix et stock exacts. La plaque Oeil d Horus reste live au prix choisi de 8,90 EUR TTC pour 8,20 EUR HT de cout ; ce risque marge est documente et ne doit pas provoquer de correction silencieuse. Checkpoint courant : `docs/checkpoints/2026-08-29-1621-inventory-seven-active-next-ten-handoff.md`.
-
-Le 2026-08-30, le lot suivant de dix a ete reaudite apres activation manuelle de trois fiches. Huit contenus ont ete corriges et les trois galeries actives remises dans l ordre sans remplacement. Le pullback final passe 10 sur 10. Cinq garde-fous generiques ont ete synchronises sans suppression vers le bundle persistant de Camilla, apres sauvegarde VPS ; la parite SHA-256 est 5 sur 5 et le test V1.3 passe dans le conteneur. Les sept fiches qui etaient encore brouillon ont ensuite ete activees manuellement par Patrice.
-
-Le meme jour, l audit qualite du catalogue physique deja actif a detecte 36 fiches avec erreurs de contenu. Patrice a autorise leur correction de contenu uniquement. Le lot passe 36 sur 36, reste 36 sur 36 actif et ne montre aucune derive de statut, stock, prix, cout, handle ou media. Le pull final compte 182 references positives, 447 unites, 96 actifs, 2 brouillons et 84 absents. Checkpoint courant : `docs/checkpoints/2026-08-30-1130-inventory-active-catalogue-content-fix.md`.
-
-La disponibilite client repose d abord sur Shopify natif par variante : quantite reelle pour le physique ; quantite 0 et poursuite de vente seulement pour une reference fournisseur explicitement acceptee ; quantite 0 sans poursuite si indisponible. Aucun stock `Entrant` fictif et aucun faux lieu fournisseur. Un metafield interne reste optionnel et exige un lot Admin separe.
+Les six cadeaux hors vente restent traces dans le Sheet et exclus de Shopify. Les quantites commandees des deux nouveaux achats ne seront pas assimilees a du stock physique avant preuve de reception. Aucun stock entrant fictif, aucun reassort automatique, aucune recuperation d'ancien produit sans decision specifique de Patrice.
 
 ## Commits de consolidation des 2026-08-12 et 2026-08-13
 
@@ -514,9 +508,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 1. La nouvelle session master conserve seule l integration et le live a partir de `8fb046588e0309e7875fdae7b2ad6b61d7c6a177` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
 2. Reprendre Mon Ecrin dans une session fraiche strictement read-only, auditer les mappings figes et faire reserver par le master le plus petit lot prive de resoluteur dynamique. L objectif est de fermer RC5 sans attendre la fin de l inventaire.
-3. Reprendre l inventaire dans une session fraiche en relisant le Sheet et Shopify en direct. Etat date du 2026-09-01 : 185 references, 456 unites, 116 actifs, 2 brouillons et 67 absentes. Le prochain lot provisoire est dans `docs/checkpoints/2026-09-01-1219-inventory-v4-ten-active-crosssell.md` et doit etre rafraichi avant presentation.
+3. Reprendre le catalogue depuis `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md` : audit exact de toutes les sessions, protection des canoniques et DRAFT volontaires, retrait reversible des anciens produits, puis listes des deux nouvelles commandes.
 4. Apres validation privee du resoluteur, enchainer productionisation C1, integration ciblee, bascule Admin, QA publique et GO live sous gates distinctes. Finition Mail et fondations Pinterest restent paralleles sans chevauchement.
-5. Continuer les references vendables absentes ou incompletes par lots controles. Les references `excluded-non-sale` restent physiquement tracees mais hors creation Shopify. Aucun nouveau passage en actif sans validation Patrice et GO Admin distinct.
+5. Apres le retrait legacy et reception des deux listes fournisseur, integrer achats, reassorts et nouvelles references au Sheet ; DRAFT sous workflow V4.1 apres GO, sans activer les brouillons volontaires ni recreer les six cadeaux exclus.
 6. Fermer le feed et Pinterest final sous leurs gates propres. Reprendre le polish UI Rentree Sodalite selon le checkpoint du 2026-08-31, sans gate live heritee.
 7. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
 8. Laisser Atelier des emotions et Pierres de naissance en pause plus longue jusqu a une nouvelle decision de Patrice.
@@ -525,8 +519,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Dependances encore ouvertes
 
-- inventaire courant : 185 references positives, 456 unites, 116 produits actifs, 2 brouillons et 67 absentes ; 118 correspondances et stocks exacts ; lot V4 du 2026-09-01 ferme 10 sur 10 ; dette media, migration et gates visuelles a traiter uniquement dans des lots separes
-- inventaire et retrait controle des 18 baguettes minerales
+- inventaire courant : total actuel a recalculer en lecture seule ; mandat de retrait reversible de tous les anciens produits hors liste canonique, nouveaux actifs et DRAFT volontaires proteges
+- retrait legacy : toutes les anciennes references hors nouvel inventaire, pas seulement les 18 baguettes historiques ; aucune exception commerciale
 - treize anciennes collections sans metas definitives
 - pages mensuelles de naissance et pages enfants mariage
 - GSC, GA4, Merchant Center et Pinterest non verifies
@@ -553,6 +547,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## References de reprise
 
+- `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md`
+- `docs/checkpoints/2026-09-04-1659-inventory-gifts-six-deleted.md`
+- `docs/checkpoints/2026-09-04-1523-inventory-final47-drafts.md`
 - `docs/checkpoints/2026-08-30-1130-inventory-active-catalogue-content-fix.md`
 - `docs/checkpoints/2026-08-30-0906-inventory-next-ten-content-fix.md`
 - `docs/checkpoints/2026-08-26-1642-master-role-inventory-correction.md`
