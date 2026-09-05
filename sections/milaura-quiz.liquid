@@ -634,6 +634,19 @@
     opacity: 0.62;
   }
 
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-skip {
+    min-height: 44px;
+    padding: 8px 0;
+    border: 0;
+    background: transparent;
+    color: var(--milaura-text-light);
+    font: inherit;
+    font-size: var(--milaura-t-petit);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-status {
     max-width: 42rem;
     margin: 8px auto 0;
@@ -1752,6 +1765,7 @@
             </section>
 
             <div class="quiz-reveal-selection">
+              {% render 'milaura-quiz-account-save', section_id: section.id %}
               {% render 'milaura-recommendation-shell',
                 recommendation_context: 'diagnostic',
                 recommendation_instance_id: 'quiz-result',
@@ -1772,32 +1786,6 @@
             </div>
           </div>
 
-          <div class="quiz-reveal-footer">
-            <div class="quiz-reveal-account-invite" id="quiz-reveal-account-invite-{{ section.id }}">
-              <p class="quiz-reveal-account-text">Sauvegardez votre profil émotionnel</p>
-              {%- if settings.milaura_c1_release_candidate_enabled and customer -%}
-                <div>
-                  <button
-                    type="button"
-                    class="quiz-reveal-account-save"
-                    data-milaura-c1-save-diagnostic
-                    aria-describedby="quiz-reveal-account-status-{{ section.id }}"
-                  >
-                    Enregistrer et ouvrir Mon Écrin
-                  </button>
-                  <p
-                    id="quiz-reveal-account-status-{{ section.id }}"
-                    class="quiz-reveal-account-status"
-                    aria-live="polite"
-                  >
-                    Votre résultat est transféré uniquement après votre choix explicite.
-                  </p>
-                </div>
-              {%- else -%}
-                <a href="{{ routes.account_register_url }}" class="quiz-reveal-account-link">Créer mon compte</a>
-              {%- endif -%}
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -2624,13 +2612,13 @@
         var accountLinkEl = accountInviteEl.querySelector('.quiz-reveal-account-link');
         accountInviteEl.style.display = '';
         if (isCustomerLoggedIn) {
-          if (accountTextEl) accountTextEl.textContent = 'Vous êtes connecté à votre espace MilAura.';
+          if (accountTextEl) accountTextEl.textContent = 'Retrouvez votre pierre et vos conseils dans Mon Écrin.';
           if (accountLinkEl) {
             accountLinkEl.href = monEcrinAccountUrl;
             accountLinkEl.textContent = 'Ouvrir Mon Écrin';
           }
         } else {
-          if (accountTextEl) accountTextEl.textContent = 'Créez un compte MilAura pour suivre vos commandes.';
+          if (accountTextEl) accountTextEl.textContent = 'Retrouvez votre pierre et vos conseils dans Mon Écrin.';
           if (accountLinkEl) {
             accountLinkEl.href = {{ routes.account_register_url | json }};
             accountLinkEl.textContent = 'Créer mon compte';
@@ -2742,7 +2730,9 @@
       if (showLastResultEl) showLastResultEl.addEventListener('click', showLastResult);
 
       // Vérifier dernière révélation
-      const lastResult = await checkLastResult();
+      const saveIntent = window.MilauraAccountSaveIntent && window.MilauraAccountSaveIntent.read();
+      const isSaveReturn = new URLSearchParams(window.location.search).get('save') === '1';
+      const lastResult = isSaveReturn && saveIntent ? saveIntent.diagnostic : await checkLastResult();
 
       // Si ?show=result dans l'URL → afficher direct le dernier résultat
       if (new URLSearchParams(window.location.search).get('show') === 'result' && lastResult) {
