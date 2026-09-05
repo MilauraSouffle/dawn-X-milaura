@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-05 09:20 CEST
+Derniere mise a jour : 2026-09-05 17:15 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -27,6 +27,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 - Branche : `codex/milaura-stone-mobile-compact-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-mobile-compact-20260905`, base `794febf0`.
 - Fichiers reserves : `assets/milaura-stone-pages.css`, documentation propre au lot. Retablir les dimensions et espacements mobiles precedents en conservant les fleches et les cadrages valides ; aucun changement desktop.
 - Theme live `190430282075` reserve pour cette correction ciblee dans la continuite du GO de publication. Verification locale par substitution CSS avant push. Preview `200974958939` laissee a la session avantages panier, aucun push sur cette preview.
+
+### Visibilite des avantages panier du 2026-09-05
+
+- Etat final au 2026-09-05 17:15 CEST : FERME, INTEGRE ET LIVE. Source `45b42b5c`, integration `1c6463ef` puis `8a5465c6`, toutes poussees. Les cercles de jalon conservent le logo MilAura ; les cartes acquises, les etats 30/50/80, le cadeau automatique et la remise automatique sont verifies. Responsive 360/390/430/768/1440 conforme, public recontrole a 390 et 1280 px. Deux fichiers deployes sur le live `190430282075`, pullback identique sous `/private/tmp/milaura-cart-live-pullback-20260905-1716`. Checkpoint `docs/checkpoints/2026-09-05-1655-cart-rewards-visibility-preview.md`. Reservation des fichiers et de la preview liberee.
+- Proprietaire : Codex, demande de Patrice du 2026-09-05 a 16:39 CEST, GO implementation explicite apres validation de la direction.
+- Branche : `codex/milaura-cart-rewards-visibility-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/cart-rewards-visibility-20260905`, base `fcd6524f`.
+- Fichiers reserves : `snippets/milaura-cart-rewards-drawer.liquid`, `assets/milaura-cart-drawer-v3.css`, tests et documentation propres au lot. La logique des seuils, les codes, le cadeau, le catalogue, les stocks, les prix, les canaux et les Ads restent hors perimetre.
+- Cible : afficher chaque avantage atteint comme acquis, conserver une progression claire vers le suivant et verifier 360/390/430/768/1440. Preview privee reservee `200974958939`, sauvegarde ciblee des deux fichiers sous `/private/tmp/milaura-cart-preview-backup-20260905-kxGOE1` ; `config/settings_schema.json`, absent de cette ancienne preview mais identique entre le live et le commit source, peut y etre synchronise uniquement pour rendre le module testable. Aucun deploy live autorise a ce stade.
 
 ### Navigation par fleches des pierres du 2026-09-05
 
