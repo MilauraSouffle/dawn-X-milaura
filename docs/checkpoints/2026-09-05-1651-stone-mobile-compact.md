@@ -13,4 +13,4 @@ Verification avant publication : styles calcules et dimensions des six premieres
 
 Preuves locales : `/private/tmp/milaura-mobile-compact-20260905/`, rapport `candidate-qa.json` et captures. Simulation Chromium, pas de test sur iPhone physique. Preview `200974958939` reservee a la tache panier et non touchee.
 
-Publication live et pullback a consigner apres execution.
+Publication verifiee au 2026-09-05 16:53 CEST : source `85737031`, integration `98e158d6`, toutes deux poussees. Un seul CSS publie sur le theme live `190430282075`, sauvegarde prealable identique a la base puis pullback identique au commit. Recette publique repetee aux six largeurs ci-dessus : dimensions et styles mobiles precedents retrouves, desktop identique, treize rangees et clavier conformes. Rapport `live-qa.json` et captures dans le dossier de preuves. Travaux concurrents preserves, preview panier non touchee.

@@ -12,6 +12,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Retour au format compact mobile des pierres du 2026-09-05
+
+- Etat final au 2026-09-05 16:53 CEST : INTEGRE ET LIVE. Source `85737031`, integration `98e158d6` poussees. Un seul CSS deploye sur `190430282075`, pullback identique. Format mobile precedent retabli a 360/390/430/749 ; desktop inchange a 768/1440. Treize rangees, clavier, mouvement reduit et redimensionnement verifies publiquement. Preview panier non touchee. Checkpoint `docs/checkpoints/2026-09-05-1651-stone-mobile-compact.md`. Reservation des fichiers et du live liberee.
+- Proprietaire : Codex, tache `Polish visuel Milaura`, correction demandee par Patrice le 2026-09-05 apres rejet des cartes mobiles agrandies. Desktop explicitement valide et a conserver.
+- Branche : `codex/milaura-stone-mobile-compact-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-mobile-compact-20260905`, base `794febf0`.
+- Fichiers reserves : `assets/milaura-stone-pages.css`, documentation propre au lot. Retablir les dimensions et espacements mobiles precedents en conservant les fleches et les cadrages valides ; aucun changement desktop.
+- Theme live `190430282075` reserve pour cette correction ciblee dans la continuite du GO de publication. Verification locale par substitution CSS avant push. Preview `200974958939` laissee a la session avantages panier, aucun push sur cette preview.
+
 ### Navigation par fleches des pierres du 2026-09-05
 
 - Etat final au 2026-09-05 16:38 CEST : FERME, INTEGRE ET LIVE. Source `c6ddfede`, integration `7c22cac0` poussees, themes live `190430282075` et preview `200974958939` relus 3/3 identiques. Swipe et ancien code retires, fleches sur les photos et grille desktop reguliere ; Aigue-marine au format commun. Recette publique 360/390/430/768/1440, clavier, treize rangees, mouvement reduit et acces sans JS conformes. Worktree integre propre retire, branche conservee, reservation des fichiers et themes liberee. Checkpoint `docs/checkpoints/2026-09-05-1635-stone-arrow-navigation.md`. Autres changements du checkout preserves.

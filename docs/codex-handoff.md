@@ -1,3 +1,7 @@
+# Format compact des cartes mobiles retabli
+
+Date : 2026-09-05 16:53 CEST. Patrice confirme le desktop et rejette uniquement l'agrandissement mobile introduit avec les fleches. Le format mobile precedent est retabli : largeur 286 px, apercu de la carte suivante, hauteur de texte et marges precedentes. Fleches et cadrages conserves ; aucune modification du desktop. Source `85737031`, integration `98e158d6` poussees, un CSS live sur `190430282075`, pullback identique. Comparaison publique 360/390/430/749 avec le format precedent, desktop 768/1440 inchange, treize rangees, clavier, mouvement reduit et redimensionnement conformes. Theme Check 0 erreur/16 avertissements historiques. Preview `200974958939` reservee au panier et non touchee. Checkpoint `docs/checkpoints/2026-09-05-1651-stone-mobile-compact.md`. Ne pas agrandir les cartes mobiles pour modifier leur navigation.
+
 # Navigation des pierres par fleches, live
 
 Date : 2026-09-05 16:38 CEST. Patrice abandonne explicitement le swipe apres deux retours negatifs sur iPhone. Le composant fonctionne maintenant par fleches translucides superposees aux bords des photos, avec une indication discrete de deux cycles et le compteur dessous. Les anciens ecouteurs, mesures, regles de scroll et variantes `is-featured` ont ete retires. Aigue-marine a le meme format que les autres cartes desktop, avec quatre colonnes et liens alignes ; les photos restent telles que validees.
