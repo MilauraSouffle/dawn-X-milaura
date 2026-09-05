@@ -1,6 +1,6 @@
-# Mon Ecrin : recette privee en cours, connexion invite en attente
+# Mon Ecrin : recette privee terminee avec reserves
 
-Date : 2026-09-05 09:52 CEST.
+Date : 2026-09-05 09:52 CEST. Mise a jour finale : 2026-09-05 10:10 CEST.
 Proprietaire : Codex, tache 01a05660-7e67-7473-8945-ee872773aa2d.
 GO : tester le parcours complet prive avec le vrai backend. Aucun live.
 
@@ -23,16 +23,27 @@ GO : tester le parcours complet prive avec le vrai backend. Aucun live.
 - Quiz invite Protection termine, message connexion/creation par email visible,
   redirection Shopify et demande de code reel executees, case marketing non cochee.
 
-## Etape en attente
+## Suite de la recette apres le code saisi par Patrice
 
-Le navigateur integre attend la saisie humaine du code Shopify. Demande envoyee
-a Patrice par la question de cette tache ; ne pas lire Mail ni des OTP sans
-autorisation explicite. Le resultat temporaire du quiz expire apres 20 minutes.
-S'il expire avant la reprise, refaire le quiz invite et suivre le vrai parcours.
+- Connexion invite reelle, reprise automatique du resultat Protection, choix
+  explicite face au diagnostic existant et persistance inter-navigateurs PASS.
+- Recommandation reelle Obsidienne noire, prix et lien produit disponibles.
+- Retrait depuis le navigateur integre : diagnostic du compte supprime, message
+  explicite et compte generique avec commandes/profil accessibles.
+- Retour boutique : purge locale acquittee, backend PURGE_FINALIZED 200.
+- Chrome et navigateur integre retrouvent le compte sans diagnostic. Un nouveau
+  quiz suivi de Continuer sans enregistrer ne cree aucun handoff.
+- 97 tests relances PASS et controle statique PASS.
 
-Une fois connecte : verifier retour au quiz, reprise automatique, resultat Protection
-dans le compte et conservation apres reload, puis executer retrait du consentement
-et purge compte/theme. Ne pas intercaler une purge avant la fin de ce scenario.
+## Reserves avant live
+
+ECART REEL : apres la purge acquittee par le navigateur integre, Chrome conserve
+encore l'ancien lien Revoir ma derniere revelation du quiz. Le compte reste vide,
+mais la suppression locale ne se propage pas aux navigateurs suivants.
+Cause : pendingThemePurge ne renvoie que awaiting_theme, pas le retrait deja
+finalise. Correction a developper avec marqueur de retrait versionne, comparaison
+du consentement et regression multi-navigateurs, y compris retour OTP ancien.
+Ne pas effacer un nouveau resultat explicitement reconserve apres le retrait.
 
 Creation d'un nouveau compte, commandes avec suivi et panne injectee entre chaque
 ecriture ne sont pas certifiees par cette recette. Les comptes de test ne contiennent
@@ -41,13 +52,17 @@ aucune commande. Ne pas elargir l'allowlist ni creer de commande par deduction.
 Le rendu personnalise confirme des titres H1 multiples. La hierarchie des sections
 et le branding natif restent a finir avant validation visuelle finale.
 
-## Etat conserve pendant la pause
+## Etat final
 
-- App Dev actif, configuration ui-preview, boutique de test uniquement.
-- Backend prive running/healthy, restart no, image 2026-09-05-qa2.
-- Arret et nettoyage a effectuer apres la recette ; ils ne sont pas declares faits.
+- App Dev arrete et dev preview nettoyee sur la seule boutique de test.
+- Flag du theme prive false, confirme par pullback des reglages.
+- URL backend videe/enregistree dans la configuration du dev store uniquement.
+- Backend prive exited, image 2026-09-05-qa2, volume et sauvegardes conserves.
+- Base privee saine : trois migrations, zero handoff, cinq purges historiques
+  finalisees. Ne pas assimiler cet etat a l'effacement de tous les navigateurs.
 - Aucune release, integration ou modification de production.
-- Theme live 190430282075 et backend production non modifies.
+- Theme live 190430282075 non cible ; backend production toujours running avec
+  la meme image et date de demarrage du 2026-08-29.
 - Les modifications concurrentes du checkout d'integration sont preservees.
 
 Compte rendu detaille :
@@ -55,3 +70,7 @@ Compte rendu detaille :
 
 Captures personnalisees 390/1440 dans :
 /Users/paesano/.codex/visualizations/2026/08/31/01a05660-7e67-7473-8945-ee872773aa2d/.
+Capture apres retrait : 2026-09-05-mon-ecrin-qa-apres-retrait-desktop.png.
+
+Prochaine etape : correctif de purge multi-navigateurs et hierarchie des titres,
+puis recette ciblee. Ne pas demander un GO live tant que ces reserves restent ouvertes.
