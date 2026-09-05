@@ -32,6 +32,66 @@
         const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
         track.scrollBy({ left: direction * (first.getBoundingClientRect().width + gap), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       };
+      if ('PointerEvent' in window) {
+        let gesture = null;
+        let suppressClick = false;
+        const targets = () => {
+          const inset = parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0;
+          const left = track.getBoundingClientRect().left;
+          const maximum = track.scrollWidth - track.clientWidth;
+          return visible().map((card) => Math.max(0, Math.min(maximum, track.scrollLeft + card.getBoundingClientRect().left - left - inset)));
+        };
+        const nearest = (stops, offset) => stops.reduce((best, stop, index) => Math.abs(stop - offset) < Math.abs(stops[best] - offset) ? index : best, 0);
+        const finish = (event) => {
+          if (event.type === 'lostpointercapture' && event.target !== track) return;
+          if (!gesture || gesture.id !== event.pointerId) return;
+          const ended = gesture;
+          gesture = null;
+          if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+          if (!ended.dragging) return;
+          const stops = targets();
+          let index = nearest(stops, track.scrollLeft);
+          if (event.type === 'pointerup' && index === ended.index && Math.abs(ended.dx) >= 36) {
+            index = Math.max(0, Math.min(stops.length - 1, index - Math.sign(ended.dx)));
+          }
+          track.classList.remove('is-dragging');
+          track.scrollTo({ left: stops[index], behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        };
+        track.classList.add('is-swipe-ready');
+        track.addEventListener('pointerdown', (event) => {
+          if (!event.isPrimary || event.button !== 0 || track.scrollWidth <= track.clientWidth + 2) return;
+          suppressClick = false;
+          gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, left: track.scrollLeft, index: nearest(targets(), track.scrollLeft), dx: 0, dragging: false };
+        });
+        track.addEventListener('pointermove', (event) => {
+          if (!gesture || gesture.id !== event.pointerId) return;
+          const dx = event.clientX - gesture.x;
+          const dy = event.clientY - gesture.y;
+          if (!gesture.dragging) {
+            if (Math.max(Math.abs(dx), Math.abs(dy)) < 8) return;
+            if (Math.abs(dy) >= Math.abs(dx)) { gesture = null; return; }
+            gesture.dragging = true;
+            suppressClick = true;
+            track.classList.add('is-dragging');
+            track.setPointerCapture(event.pointerId);
+          }
+          gesture.dx = dx;
+          event.preventDefault();
+          track.scrollLeft = gesture.left - dx;
+        });
+        track.addEventListener('pointerup', finish);
+        track.addEventListener('pointercancel', finish);
+        track.addEventListener('lostpointercapture', finish);
+        track.addEventListener('dragstart', (event) => {
+          if (track.scrollWidth > track.clientWidth + 2) event.preventDefault();
+        });
+        track.addEventListener('click', (event) => {
+          if (!suppressClick || event.detail === 0) return;
+          event.preventDefault();
+          event.stopPropagation();
+          suppressClick = false;
+        }, true);
+      }
       prev.addEventListener('click', () => move(-1));
       next.addEventListener('click', () => move(1));
       track.addEventListener('scroll', update, { passive: true });
