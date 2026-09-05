@@ -68,8 +68,7 @@
 .milaura-stone-directory__item:nth-child(3n + 2) .milaura-hub__destination { --card-surface: var(--milaura-amethyste-lueur); }
 .milaura-stone-directory__item[data-stone-name="Quartz rose"] .milaura-hub__destination { --card-surface: var(--milaura-quartz-rose-poudre); }
 .milaura-stone-directory__item:nth-child(3n) .milaura-hub__destination { --card-surface: var(--milaura-nacre-ombre); }
-.milaura-stone-directory__controls,
-.milaura-stone-directory__position { display: none; }
+.milaura-stone-directory__controls { display: none; }
 .milaura-stone-directory [hidden] { display: none !important; }
 .milaura-stone-directory :focus-visible,
 .milaura-stone-hero :focus-visible { outline: 2px solid var(--milaura-aigue-profonde); outline-offset: 5px; }
@@ -89,7 +88,7 @@
   #MainContent > .shopify-section > #MilauraStoneDirectory { padding-block: var(--milaura-esp-lg) !important; }
   .milaura-stone-directory__rows { display: block; margin-top: var(--milaura-esp-md); }
   .milaura-stone-directory__row { --milaura-stone-card-width: 286px; display: block; margin-bottom: var(--milaura-esp-xl); }
-  .milaura-stone-directory__viewport { display: block; position: relative; margin-inline: -18px; padding-inline: 18px; }
+  .milaura-stone-directory__viewport { display: block; margin-inline: -18px; padding-inline: 18px; }
   .milaura-stone-directory__track { display: grid; gap: var(--milaura-esp-sm); margin: 0; padding: 0 0 var(--milaura-esp-sm); }
   .milaura-stone-directory .milaura-hub__destination .milaura-hub__destination-copy { min-height: 0; }
   .milaura-stone-directory .milaura-hub__destination-link { margin-top: var(--milaura-esp-md); padding-top: 0; }
@@ -100,30 +99,29 @@
     transition: transform 280ms ease;
   }
   .milaura-stone-directory__controls {
-    position: absolute; inset: 0 auto auto 0; width: calc(var(--milaura-stone-card-width) + 36px); height: var(--milaura-stone-card-width); z-index: 1;
-    display: flex; align-items: center; justify-content: space-between; padding: 0;
-    pointer-events: none;
+    display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 44px;
+    align-items: center; gap: var(--milaura-esp-xs);
   }
-  .milaura-stone-directory__arrow {
+  .milaura-stone-directory__button {
     display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
     border: 0; border-radius: 0; background: transparent; color: var(--milaura-encre);
-    pointer-events: auto; cursor: pointer;
+    cursor: pointer; transition: color var(--milaura-transition-rapide);
   }
-  .milaura-stone-directory__arrow span,
-  .milaura-stone-directory__arrow svg { display: block; }
-  .milaura-stone-directory__arrow:disabled { visibility: hidden; pointer-events: none; }
-  .milaura-stone-directory__arrow:active span { opacity: 0.55; }
-  .milaura-stone-directory__arrow--prev { --milaura-arrow-direction: -1; justify-items: start; }
-  .milaura-stone-directory__arrow--next { --milaura-arrow-direction: 1; justify-items: end; }
-  .milaura-stone-directory__row.is-hinted .milaura-stone-directory__arrow:not(:disabled) span { animation: milaura-stone-arrow-hint 800ms ease-in-out 500ms 1; }
-  .milaura-stone-directory__position { display: block; margin: var(--milaura-esp-sm) 0 0; text-align: center; font-family: var(--milaura-font-texte); font-size: var(--milaura-t-petit); }
-}
-@keyframes milaura-stone-arrow-hint {
-  50% { transform: translateX(calc(2px * var(--milaura-arrow-direction))); }
+  .milaura-stone-directory__button svg { display: block; }
+  .milaura-stone-directory__button:disabled { opacity: 0.3; cursor: default; }
+  .milaura-stone-directory__button:not(:disabled):hover { color: var(--milaura-aigue-profonde); }
+  .milaura-stone-directory__progress { height: 3px; overflow: hidden; background: var(--milaura-aigue-pierre); }
+  .milaura-stone-directory__indicator {
+    display: block; width: calc(100% / var(--milaura-stone-count)); height: 100%;
+    background: var(--milaura-encre);
+    transform: translateX(calc(var(--milaura-stone-index, 0) * 100%));
+    transition: transform 280ms ease;
+  }
+  .milaura-stone-directory__position { margin: 0; white-space: nowrap; font-family: var(--milaura-font-texte); font-size: var(--milaura-t-petit); font-variant-numeric: tabular-nums; }
 }
 @media (prefers-reduced-motion: reduce) {
   .milaura-stone-directory .milaura-hub__destination,
   .milaura-stone-directory .milaura-hub__destination-image,
-  .milaura-stone-directory[data-enhanced] .milaura-stone-directory__track { transition: none; }
-  .milaura-stone-directory__row.is-hinted .milaura-stone-directory__arrow:not(:disabled) span { animation: none; }
+  .milaura-stone-directory[data-enhanced] .milaura-stone-directory__track,
+  .milaura-stone-directory__indicator { transition: none; }
 }
