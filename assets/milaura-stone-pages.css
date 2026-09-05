@@ -55,24 +55,25 @@
 #MainContent > .shopify-section > #MilauraStoneDirectory { padding-block: var(--milaura-esp-xl) !important; }
 .milaura-stone-directory__rows { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(18px, 2vw, 30px); margin-top: var(--milaura-esp-lg); }
 .milaura-stone-directory__row,
+.milaura-stone-directory__viewport,
 .milaura-stone-directory__track { display: contents; }
 .milaura-stone-directory__item { list-style: none; min-width: 0; }
-.milaura-stone-directory__item.is-featured { grid-column: 1 / -1; }
-.milaura-stone-directory .milaura-hub__destination { height: 100%; }
-.milaura-stone-directory .milaura-hub__destination:not(.is-featured) { grid-column: auto; grid-template-columns: none; grid-template-rows: auto 1fr; min-height: 0; }
-.milaura-stone-directory .milaura-hub__destination:not(.is-featured) .milaura-hub__destination-media { height: auto; aspect-ratio: 1; }
+.milaura-stone-directory .milaura-hub__destination { height: 100%; grid-column: auto; grid-template-columns: none; grid-template-rows: auto 1fr; min-height: 0; }
+.milaura-stone-directory .milaura-hub__destination .milaura-hub__destination-media { height: auto; aspect-ratio: 1; }
 .milaura-stone-directory .milaura-hub__destination-image { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; }
 .milaura-stone-directory .milaura-hub__destination:hover .milaura-hub__destination-image { transform: none; }
-.milaura-stone-directory .milaura-hub__destination:not(.is-featured) .milaura-hub__destination-copy { padding: var(--milaura-esp-md); justify-content: flex-start; }
-.milaura-stone-directory .milaura-hub__destination:not(.is-featured) h3 { font-size: var(--milaura-t-h3); line-height: var(--milaura-lh-h3); }
+.milaura-stone-directory .milaura-hub__destination .milaura-hub__destination-copy { padding: var(--milaura-esp-md); justify-content: flex-start; }
+.milaura-stone-directory .milaura-hub__destination-link { margin-top: auto; padding-top: var(--milaura-esp-md); }
+.milaura-stone-directory .milaura-hub__destination h3 { font-size: var(--milaura-t-h3); line-height: var(--milaura-lh-h3); }
 .milaura-stone-directory__item:nth-child(3n + 2) .milaura-hub__destination { --card-surface: var(--milaura-amethyste-lueur); }
 .milaura-stone-directory__item[data-stone-name="Quartz rose"] .milaura-hub__destination { --card-surface: var(--milaura-quartz-rose-poudre); }
 .milaura-stone-directory__item:nth-child(3n) .milaura-hub__destination { --card-surface: var(--milaura-nacre-ombre); }
-.milaura-stone-directory .milaura-hub__destination.is-featured { grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr); grid-template-rows: none; }
-.milaura-stone-directory__controls { display: none; }
+.milaura-stone-directory__controls,
+.milaura-stone-directory__position { display: none; }
 .milaura-stone-directory [hidden] { display: none !important; }
 .milaura-stone-directory :focus-visible,
 .milaura-stone-hero :focus-visible { outline: 2px solid var(--milaura-aigue-profonde); outline-offset: 5px; }
+.milaura-stone-directory .milaura-hub__destination:focus-visible { outline-offset: -3px; }
 @media (min-width: 750px) and (max-width: 1100px) {
   .milaura-stone-directory__rows { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -88,28 +89,40 @@
   #MainContent > .shopify-section > #MilauraStoneDirectory { padding-block: var(--milaura-esp-lg) !important; }
   .milaura-stone-directory__rows { display: block; margin-top: var(--milaura-esp-md); }
   .milaura-stone-directory__row { display: block; margin-bottom: var(--milaura-esp-xl); }
-  .milaura-stone-directory__track {
-    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(286px, 82vw); gap: var(--milaura-esp-sm);
-    margin: 0 -18px; padding: 0 18px var(--milaura-esp-sm); overflow-x: auto;
-    overscroll-behavior-inline: contain; scroll-snap-type: x proximity; scroll-padding-inline: 18px;
-    touch-action: pan-x pan-y pinch-zoom; -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin; scrollbar-color: var(--milaura-aigue) transparent;
+  .milaura-stone-directory__viewport { display: block; position: relative; }
+  .milaura-stone-directory__track { display: grid; gap: var(--milaura-esp-sm); margin: 0; padding: 0; }
+  .milaura-stone-directory[data-enhanced] .milaura-stone-directory__viewport { overflow: hidden; }
+  .milaura-stone-directory[data-enhanced] .milaura-stone-directory__track {
+    grid-auto-flow: column; grid-auto-columns: 100%;
+    transform: translateX(calc(var(--milaura-stone-index, 0) * -100% - var(--milaura-stone-index, 0) * var(--milaura-esp-sm)));
+    transition: transform 280ms ease;
   }
-  .milaura-stone-directory__item,
-  .milaura-stone-directory__item.is-featured { grid-column: auto; scroll-snap-align: start; }
-  .milaura-stone-directory .milaura-hub__destination-image { -webkit-user-drag: none; }
-  .milaura-stone-directory .milaura-hub__destination,
-  .milaura-stone-directory .milaura-hub__destination.is-featured { display: grid; grid-template-columns: none; grid-template-rows: auto 1fr; min-height: 0; }
-  .milaura-stone-directory .milaura-hub__destination .milaura-hub__destination-media,
-  .milaura-stone-directory .milaura-hub__destination.is-featured .milaura-hub__destination-media { height: auto; aspect-ratio: 1; }
-  .milaura-stone-directory .milaura-hub__destination .milaura-hub__destination-copy { min-height: 0; padding: var(--milaura-esp-md); }
-  .milaura-stone-directory .milaura-hub__destination.is-featured h3 { font-size: var(--milaura-t-h3); line-height: var(--milaura-lh-h3); }
-  .milaura-stone-directory__controls { display: flex; align-items: center; justify-content: flex-end; gap: var(--milaura-esp-sm); }
-  .milaura-stone-directory__controls button { width: 44px; height: 44px; border: 0; border-bottom: var(--milaura-filet); border-radius: 0; background: transparent; color: var(--milaura-encre); font-size: var(--milaura-t-corps); cursor: pointer; }
-  .milaura-stone-directory__controls button:disabled { opacity: 0.35; cursor: default; }
-  .milaura-stone-directory__controls span { font-family: var(--milaura-font-texte); font-size: var(--milaura-t-petit); }
+  .milaura-stone-directory__controls {
+    position: absolute; inset: 0 0 auto; aspect-ratio: 1; z-index: 1;
+    display: flex; align-items: center; justify-content: space-between; padding: var(--milaura-esp-xs);
+    pointer-events: none;
+  }
+  .milaura-stone-directory__arrow {
+    display: grid; place-items: center; width: 44px; height: 48px; padding: 0;
+    border: var(--milaura-filet); border-radius: var(--milaura-rayon-sm);
+    background: color-mix(in srgb, var(--milaura-nacre) 78%, transparent); color: var(--milaura-encre);
+    pointer-events: auto; cursor: pointer; transition: background var(--milaura-transition-rapide);
+  }
+  .milaura-stone-directory__arrow span,
+  .milaura-stone-directory__arrow svg { display: block; }
+  .milaura-stone-directory__arrow:disabled { opacity: 0.22; cursor: default; }
+  .milaura-stone-directory__arrow:not(:disabled):hover { background: var(--milaura-nacre); }
+  .milaura-stone-directory__arrow--prev { --milaura-arrow-direction: -1; }
+  .milaura-stone-directory__arrow--next { --milaura-arrow-direction: 1; }
+  .milaura-stone-directory__row.is-hinted .milaura-stone-directory__arrow:not(:disabled) span { animation: milaura-stone-arrow-hint 900ms ease-in-out 2; }
+  .milaura-stone-directory__position { display: block; margin: var(--milaura-esp-sm) 0 0; text-align: center; font-family: var(--milaura-font-texte); font-size: var(--milaura-t-petit); }
+}
+@keyframes milaura-stone-arrow-hint {
+  50% { transform: translateX(calc(3px * var(--milaura-arrow-direction))); }
 }
 @media (prefers-reduced-motion: reduce) {
   .milaura-stone-directory .milaura-hub__destination,
-  .milaura-stone-directory .milaura-hub__destination-image { transition: none; }
+  .milaura-stone-directory .milaura-hub__destination-image,
+  .milaura-stone-directory[data-enhanced] .milaura-stone-directory__track { transition: none; }
+  .milaura-stone-directory__row.is-hinted .milaura-stone-directory__arrow:not(:disabled) span { animation: none; }
 }

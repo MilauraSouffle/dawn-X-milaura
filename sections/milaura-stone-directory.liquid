@@ -11,52 +11,55 @@
       {%- for row in (0..last_row) -%}
         {%- assign row_start = row | times: 3 -%}
         {%- assign first_block = section.blocks[row_start] -%}
-          <div class="milaura-stone-directory__row" data-stone-row>
-            <ul class="milaura-stone-directory__track" data-stone-track aria-label="{{ first_block.settings.row_label | default: 'Découvrir les pierres' | escape }}">
-      {%- for block in section.blocks offset: row_start limit: 3 -%}
-        {%- liquid
-          assign stone_link = block.settings.link
-          if section.settings.preview_mode
-            assign stone_link = block.settings.preview_link
-          endif
-          comment
-            Le compteur suit les bijoux de la landing configuree. Le compteur
-            brut de collection inclut aussi des objets mineraux historiques.
-          endcomment
-          assign stone_count = block.settings.piece_count
-          assign image_connector = '?'
-          if block.settings.image_url contains '?'
-            assign image_connector = '&'
-          endif
-          assign image_base = block.settings.image_url | append: image_connector
-          assign image_sizes = '(max-width: 749px) 82vw, (max-width: 1100px) 45vw, 24vw'
-          if row == 0 and forloop.first
-            assign image_sizes = '(max-width: 749px) 82vw, 60vw'
-          endif
-        -%}
-        <li class="milaura-stone-directory__item{% if row == 0 and forloop.first %} is-featured{% endif %}" data-stone-card data-stone-name="{{ block.settings.heading | escape }}" {{ block.shopify_attributes }}>
-          <a class="milaura-hub__destination{% if row == 0 and forloop.first %} is-featured{% endif %}" href="{{ stone_link }}">
-            <div class="milaura-hub__destination-media">
-              {% # theme-check-disable RemoteAsset %}
-              <img class="milaura-hub__destination-image" src="{{ image_base | escape }}width=900" srcset="{{ image_base | escape }}width=420 420w, {{ image_base | escape }}width=780 780w, {{ image_base | escape }}width=1200 1200w" sizes="{{ image_sizes }}" alt="{{ block.settings.image_alt | escape }}" width="1024" height="1024" loading="lazy" draggable="false">
-              {% # theme-check-enable RemoteAsset %}
-            </div>
-            <div class="milaura-hub__destination-copy">
-              <p class="milaura-hub__destination-count milaura-label">{{ stone_count }} {{ stone_count | pluralize: 'création', 'créations' }}</p>
-              <h3>{{ block.settings.heading | escape }}</h3>
-              <p class="milaura-hub__destination-body">{{ block.settings.body | escape }}</p>
-              <span class="milaura-hub__destination-link">Voir les bijoux <span aria-hidden="true">→</span></span>
-            </div>
-          </a>
-        </li>
-      {%- endfor -%}
+        <div class="milaura-stone-directory__row" data-stone-row>
+          <div class="milaura-stone-directory__viewport">
+            <ul id="MilauraStoneTrack-{{ section.id }}-{{ row }}" class="milaura-stone-directory__track" data-stone-track aria-label="{{ first_block.settings.row_label | default: 'Découvrir les pierres' | escape }}">
+              {%- for block in section.blocks offset: row_start limit: 3 -%}
+                {%- liquid
+                  assign stone_link = block.settings.link
+                  if section.settings.preview_mode
+                    assign stone_link = block.settings.preview_link
+                  endif
+                  comment
+                    Le compteur suit les bijoux de la landing configuree. Le compteur
+                    brut de collection inclut aussi des objets mineraux historiques.
+                  endcomment
+                  assign stone_count = block.settings.piece_count
+                  assign image_connector = '?'
+                  if block.settings.image_url contains '?'
+                    assign image_connector = '&'
+                  endif
+                  assign image_base = block.settings.image_url | append: image_connector
+                  assign image_sizes = '(max-width: 749px) 92vw, (max-width: 1100px) 45vw, 24vw'
+                -%}
+                <li class="milaura-stone-directory__item" data-stone-card data-stone-name="{{ block.settings.heading | escape }}" {{ block.shopify_attributes }}>
+                  <a class="milaura-hub__destination" href="{{ stone_link }}">
+                    <div class="milaura-hub__destination-media">
+                      {% # theme-check-disable RemoteAsset %}
+                      <img class="milaura-hub__destination-image" src="{{ image_base | escape }}width=900" srcset="{{ image_base | escape }}width=420 420w, {{ image_base | escape }}width=780 780w, {{ image_base | escape }}width=1200 1200w" sizes="{{ image_sizes }}" alt="{{ block.settings.image_alt | escape }}" width="1024" height="1024" loading="lazy">
+                      {% # theme-check-enable RemoteAsset %}
+                    </div>
+                    <div class="milaura-hub__destination-copy">
+                      <p class="milaura-hub__destination-count milaura-label">{{ stone_count }} {{ stone_count | pluralize: 'création', 'créations' }}</p>
+                      <h3>{{ block.settings.heading | escape }}</h3>
+                      <p class="milaura-hub__destination-body">{{ block.settings.body | escape }}</p>
+                      <span class="milaura-hub__destination-link">Voir les bijoux <span aria-hidden="true">→</span></span>
+                    </div>
+                  </a>
+                </li>
+              {%- endfor -%}
             </ul>
             <div class="milaura-stone-directory__controls" data-stone-controls hidden>
-              <button type="button" data-stone-prev aria-label="Pierre précédente">←</button>
-              <span data-stone-position aria-live="off">1 / 3</span>
-              <button type="button" data-stone-next aria-label="Pierre suivante">→</button>
+              <button class="milaura-stone-directory__arrow milaura-stone-directory__arrow--prev" type="button" data-stone-prev aria-label="Pierre précédente" aria-controls="MilauraStoneTrack-{{ section.id }}-{{ row }}">
+                <span><svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><path d="m14 5-7 7 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
+              <button class="milaura-stone-directory__arrow milaura-stone-directory__arrow--next" type="button" data-stone-next aria-label="Pierre suivante" aria-controls="MilauraStoneTrack-{{ section.id }}-{{ row }}">
+                <span><svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true"><path d="m10 5 7 7-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </button>
             </div>
           </div>
+          <p class="milaura-stone-directory__position" data-stone-position aria-live="polite" aria-atomic="true" hidden>1 / 3</p>
+        </div>
       {%- endfor -%}
     </div>
   </div>
