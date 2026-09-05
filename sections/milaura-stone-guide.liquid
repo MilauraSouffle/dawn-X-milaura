@@ -1,0 +1,630 @@
+{{ 'milaura-product-experience.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-product-experience.js' | asset_url }}" defer="defer"></script>
+
+{%- comment -%}
+  Guide editorial pour les landings dediees a une pierre.
+  Le composant reprend la structure et les interactions du guide PDP.
+  Les metafields de collection restent la source prioritaire. Les reglages
+  de section servent uniquement de repli editorial explicite.
+{%- endcomment -%}
+
+{%- liquid
+  assign guide_collection = section.settings.source_collection
+  if guide_collection == blank
+    assign guide_collection = collection
+  endif
+
+  assign mf_intro = guide_collection.metafields.milaura.stone_intro
+  assign mf_composition = guide_collection.metafields.milaura.stone_composition
+  assign mf_colors = guide_collection.metafields.milaura.stone_colors
+  assign mf_benefits = guide_collection.metafields.milaura.stone_benefits
+  assign mf_wear = guide_collection.metafields.milaura.comment_porter
+  assign mf_care = guide_collection.metafields.milaura.care
+  assign mf_sources = guide_collection.metafields.milaura.source_urls
+  assign mf_updated_at = guide_collection.metafields.milaura.content_updated_at
+
+  assign intro = section.settings.intro_text
+  assign benefits = section.settings.benefits_text
+  assign wear = section.settings.wear_text
+  assign care = section.settings.care_text
+  assign composition = section.settings.composition_text
+
+  assign stone_name = section.settings.stone_name | default: guide_collection.title
+  assign guide_title = section.settings.title | default: guide_collection.title
+  assign guide_image = section.settings.image
+  if guide_image == blank and guide_collection.image != blank
+    assign guide_image = guide_collection.image
+  endif
+  if guide_image == blank and guide_collection.products.first.featured_image != blank
+    assign guide_image = guide_collection.products.first.featured_image
+  endif
+  assign guide_image_alt = guide_image.alt | default: stone_name
+-%}
+
+{%- if mf_intro != blank -%}
+  {%- capture intro -%}{{ mf_intro | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+{%- if mf_benefits != blank -%}
+  {%- capture benefits -%}{{ mf_benefits | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+{%- if mf_wear != blank -%}
+  {%- capture wear -%}{{ mf_wear | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+{%- if mf_care != blank -%}
+  {%- capture care -%}{{ mf_care | metafield_tag }}{%- endcapture -%}
+{%- endif -%}
+{%- if mf_composition != blank -%}
+  {%- assign composition = mf_composition.value -%}
+{%- endif -%}
+
+{%- liquid
+  assign has_benefits = false
+  if intro != blank or benefits != blank
+    assign has_benefits = true
+  endif
+
+  assign has_wear = false
+  if wear != blank or composition != blank or mf_colors != blank or section.settings.colors_text != blank
+    assign has_wear = true
+  endif
+
+  assign has_care = false
+  if care != blank or mf_sources != blank or mf_updated_at != blank
+    assign has_care = true
+  endif
+-%}
+
+{%- if has_benefits or has_wear or has_care -%}
+  {%- style -%}
+    #MilauraStoneGuide-{{ section.id }} {
+      background: var(--milaura-nacre);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__media::after {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        transparent 48%,
+        color-mix(in srgb, var(--milaura-encre) 72%, transparent) 100%
+      );
+      content: '';
+      pointer-events: none;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__identity {
+      position: absolute;
+      z-index: 1;
+      right: var(--milaura-esp-md);
+      bottom: var(--milaura-esp-md);
+      left: var(--milaura-esp-md);
+      color: var(--milaura-nacre);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__identity-label,
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__identity-name {
+      display: block;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__identity-label {
+      font-family: var(--milaura-font-texte);
+      font-size: var(--milaura-t-label);
+      font-weight: 700;
+      letter-spacing: var(--milaura-ls-label);
+      line-height: var(--milaura-lh-label);
+      text-transform: uppercase;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__identity-name {
+      margin-top: var(--milaura-esp-3xs);
+      font-family: var(--milaura-font-display);
+      font-size: clamp(30px, 3vw, 46px);
+      line-height: 1.05;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__body {
+      display: grid;
+      gap: var(--milaura-esp-sm);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__body + .milaura-stone-guide__body {
+      padding-top: var(--milaura-esp-sm);
+      border-top: var(--milaura-filet);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__body p,
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__body ul,
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__body ol {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__facts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: var(--milaura-filet);
+      border-left: var(--milaura-filet);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__fact {
+      min-width: 0;
+      padding: var(--milaura-esp-xs) var(--milaura-esp-sm);
+      border-right: var(--milaura-filet);
+      border-bottom: var(--milaura-filet);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__fact-label {
+      display: block;
+      color: var(--milaura-encre-tertiaire);
+      font-family: var(--milaura-font-texte);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__fact-value {
+      display: block;
+      margin-top: var(--milaura-esp-3xs);
+      color: var(--milaura-encre);
+      font-family: var(--milaura-font-texte);
+      font-size: var(--milaura-t-petit);
+      line-height: var(--milaura-lh-petit);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__sources {
+      padding-top: var(--milaura-esp-sm);
+      border-top: var(--milaura-filet);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__sources summary {
+      display: flex;
+      min-height: var(--milaura-cible-tactile);
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--milaura-esp-sm);
+      color: var(--milaura-encre);
+      font-family: var(--milaura-font-texte);
+      font-size: var(--milaura-t-petit);
+      font-weight: 700;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__sources summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__sources summary::after {
+      color: var(--milaura-or-profond);
+      content: '+';
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__sources[open] summary::after {
+      content: '−';
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__sources summary:focus-visible {
+      outline: var(--milaura-focus);
+      outline-offset: var(--milaura-focus-offset);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__source-list {
+      margin: 0;
+      padding: 0 0 var(--milaura-esp-sm);
+      color: var(--milaura-encre-secondaire);
+      font-family: var(--milaura-font-texte);
+      font-size: var(--milaura-t-petit);
+      line-height: var(--milaura-lh-petit);
+      list-style: none;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__source-list li + li {
+      margin-top: var(--milaura-esp-3xs);
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__source-list a {
+      color: inherit;
+      text-decoration-color: var(--milaura-or);
+      text-underline-offset: 0.2em;
+    }
+
+    #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__updated {
+      margin: 0;
+      color: var(--milaura-encre-tertiaire);
+      font-family: var(--milaura-font-texte);
+      font-size: 12px;
+      line-height: var(--milaura-lh-petit);
+    }
+
+    @media screen and (max-width: 749px) {
+      #MilauraStoneGuide-{{ section.id }} .milaura-product-guide__tab {
+        font-size: clamp(13px, 4vw, 17px);
+      }
+
+      #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__identity {
+        right: var(--milaura-esp-sm);
+        bottom: var(--milaura-esp-sm);
+        left: var(--milaura-esp-sm);
+      }
+
+      #MilauraStoneGuide-{{ section.id }} .milaura-stone-guide__facts {
+        grid-template-columns: 1fr;
+      }
+    }
+  {%- endstyle -%}
+
+  <section
+    id="MilauraStoneGuide-{{ section.id }}"
+    class="milaura-product-experience milaura-stone-guide"
+    aria-labelledby="MilauraStoneGuideTitle-{{ section.id }}"
+  >
+    <div class="milaura-product-guide" data-milaura-product-guide>
+      <div class="milaura-product-guide__inner">
+        <header class="milaura-product-guide__header">
+          <div>
+            {%- if section.settings.eyebrow != blank -%}
+              <p class="milaura-product-guide__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+            {%- endif -%}
+            <h2 id="MilauraStoneGuideTitle-{{ section.id }}" class="milaura-product-guide__title">
+              {{ guide_title | escape }}
+            </h2>
+          </div>
+          {%- if section.settings.lead != blank -%}
+            <p class="milaura-product-guide__lead">{{ section.settings.lead | escape }}</p>
+          {%- endif -%}
+        </header>
+
+        <div class="milaura-product-guide__tabs" role="tablist" aria-label="Informations sur {{ stone_name | escape }}">
+          <button
+            id="MilauraStoneGuideTab-{{ section.id }}-benefits"
+            class="milaura-product-guide__tab"
+            type="button"
+            role="tab"
+            aria-controls="MilauraStoneGuidePanel-{{ section.id }}-benefits"
+            aria-selected="true"
+            tabindex="0"
+            data-product-guide-tab
+            data-product-guide-key="guide-vertus"
+          >
+            <span>{{ section.settings.benefits_tab_label | escape }}</span>
+            <span class="milaura-product-guide__tab-marker" aria-hidden="true">↗</span>
+          </button>
+          <button
+            id="MilauraStoneGuideTab-{{ section.id }}-wear"
+            class="milaura-product-guide__tab"
+            type="button"
+            role="tab"
+            aria-controls="MilauraStoneGuidePanel-{{ section.id }}-wear"
+            aria-selected="false"
+            tabindex="-1"
+            data-product-guide-tab
+            data-product-guide-key="guide-porter"
+          >
+            <span>{{ section.settings.wear_tab_label | escape }}</span>
+            <span class="milaura-product-guide__tab-marker" aria-hidden="true">↗</span>
+          </button>
+          <button
+            id="MilauraStoneGuideTab-{{ section.id }}-care"
+            class="milaura-product-guide__tab"
+            type="button"
+            role="tab"
+            aria-controls="MilauraStoneGuidePanel-{{ section.id }}-care"
+            aria-selected="false"
+            tabindex="-1"
+            data-product-guide-tab
+            data-product-guide-key="guide-entretien"
+          >
+            <span>{{ section.settings.care_tab_label | escape }}</span>
+            <span class="milaura-product-guide__tab-marker" aria-hidden="true">↗</span>
+          </button>
+        </div>
+
+        <div class="milaura-product-guide__panels">
+          <article
+            id="MilauraStoneGuidePanel-{{ section.id }}-benefits"
+            class="milaura-product-panel"
+            role="tabpanel"
+            aria-labelledby="MilauraStoneGuideTab-{{ section.id }}-benefits"
+            tabindex="0"
+            data-product-guide-panel
+          >
+            <div class="milaura-product-panel__layout">
+              <div class="milaura-product-panel__media milaura-stone-guide__media">
+                {%- if guide_image != blank -%}
+                  {{- guide_image
+                    | image_url: width: 1200
+                    | image_tag:
+                      class: 'milaura-product-panel__image',
+                      widths: '420, 620, 840, 1000, 1200',
+                      sizes: '(max-width: 749px) 88vw, 42vw',
+                      loading: 'lazy',
+                      alt: guide_image_alt
+                  -}}
+                  <span class="milaura-stone-guide__identity" aria-hidden="true">
+                    <span class="milaura-stone-guide__identity-label">La pierre</span>
+                    <span class="milaura-stone-guide__identity-name">{{ stone_name | escape }}</span>
+                  </span>
+                {%- else -%}
+                  {{ 'product-2' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
+                {%- endif -%}
+              </div>
+              <div class="milaura-product-panel__content">
+                <p class="milaura-product-panel__eyebrow">{{ section.settings.benefits_tab_label | escape }}</p>
+                <h3 class="milaura-product-panel__title">{{ section.settings.benefits_heading | escape }}</h3>
+                {%- if intro != blank -%}
+                  <div class="milaura-product-panel__body milaura-stone-guide__body rte">{{ intro }}</div>
+                {%- endif -%}
+                {%- if benefits != blank -%}
+                  <div class="milaura-product-panel__body milaura-stone-guide__body rte">{{ benefits }}</div>
+                {%- endif -%}
+              </div>
+            </div>
+          </article>
+
+          <article
+            id="MilauraStoneGuidePanel-{{ section.id }}-wear"
+            class="milaura-product-panel"
+            role="tabpanel"
+            aria-labelledby="MilauraStoneGuideTab-{{ section.id }}-wear"
+            tabindex="0"
+            data-product-guide-panel
+            hidden
+          >
+            <div class="milaura-product-panel__layout">
+              <div class="milaura-product-panel__media milaura-stone-guide__media">
+                {%- if guide_image != blank -%}
+                  {{- guide_image
+                    | image_url: width: 1200
+                    | image_tag:
+                      class: 'milaura-product-panel__image',
+                      widths: '420, 620, 840, 1000, 1200',
+                      sizes: '(max-width: 749px) 88vw, 42vw',
+                      loading: 'lazy',
+                      alt: guide_image_alt
+                  -}}
+                  <span class="milaura-stone-guide__identity" aria-hidden="true">
+                    <span class="milaura-stone-guide__identity-label">Bien choisir</span>
+                    <span class="milaura-stone-guide__identity-name">{{ stone_name | escape }}</span>
+                  </span>
+                {%- else -%}
+                  {{ 'product-2' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
+                {%- endif -%}
+              </div>
+              <div class="milaura-product-panel__content">
+                <p class="milaura-product-panel__eyebrow">{{ section.settings.wear_tab_label | escape }}</p>
+                <h3 class="milaura-product-panel__title">{{ section.settings.wear_heading | escape }}</h3>
+                {%- if wear != blank -%}
+                  <div class="milaura-product-panel__body milaura-stone-guide__body rte">{{ wear }}</div>
+                {%- endif -%}
+                {%- if composition != blank or mf_colors != blank or section.settings.colors_text != blank -%}
+                  <div class="milaura-stone-guide__facts">
+                    {%- if composition != blank -%}
+                      <div class="milaura-stone-guide__fact">
+                        <span class="milaura-stone-guide__fact-label">Composition</span>
+                        <span class="milaura-stone-guide__fact-value">{{ composition | escape }}</span>
+                      </div>
+                    {%- endif -%}
+                    {%- if mf_colors != blank -%}
+                      <div class="milaura-stone-guide__fact">
+                        <span class="milaura-stone-guide__fact-label">Couleurs</span>
+                        <span class="milaura-stone-guide__fact-value">
+                          {%- for color in mf_colors.value -%}
+                            {{ color | replace: '-', ' ' | capitalize | escape }}{% unless forloop.last %}, {% endunless %}
+                          {%- endfor -%}
+                        </span>
+                      </div>
+                    {%- elsif section.settings.colors_text != blank -%}
+                      <div class="milaura-stone-guide__fact">
+                        <span class="milaura-stone-guide__fact-label">Couleurs</span>
+                        <span class="milaura-stone-guide__fact-value">{{ section.settings.colors_text | escape }}</span>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </article>
+
+          <article
+            id="MilauraStoneGuidePanel-{{ section.id }}-care"
+            class="milaura-product-panel"
+            role="tabpanel"
+            aria-labelledby="MilauraStoneGuideTab-{{ section.id }}-care"
+            tabindex="0"
+            data-product-guide-panel
+            hidden
+          >
+            <div class="milaura-product-panel__layout">
+              <div class="milaura-product-panel__media milaura-stone-guide__media">
+                {%- if guide_image != blank -%}
+                  {{- guide_image
+                    | image_url: width: 1200
+                    | image_tag:
+                      class: 'milaura-product-panel__image',
+                      widths: '420, 620, 840, 1000, 1200',
+                      sizes: '(max-width: 749px) 88vw, 42vw',
+                      loading: 'lazy',
+                      alt: guide_image_alt
+                  -}}
+                  <span class="milaura-stone-guide__identity" aria-hidden="true">
+                    <span class="milaura-stone-guide__identity-label">Au quotidien</span>
+                    <span class="milaura-stone-guide__identity-name">{{ stone_name | escape }}</span>
+                  </span>
+                {%- else -%}
+                  {{ 'product-2' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
+                {%- endif -%}
+              </div>
+              <div class="milaura-product-panel__content">
+                <p class="milaura-product-panel__eyebrow">{{ section.settings.care_tab_label | escape }}</p>
+                <h3 class="milaura-product-panel__title">{{ section.settings.care_heading | escape }}</h3>
+                {%- if care != blank -%}
+                  <div class="milaura-product-panel__body milaura-stone-guide__body rte">{{ care }}</div>
+                {%- endif -%}
+                {%- if mf_sources != blank -%}
+                  <details class="milaura-stone-guide__sources">
+                    <summary>Sources documentaires</summary>
+                    <ul class="milaura-stone-guide__source-list">
+                      {%- for source_url in mf_sources.value -%}
+                        <li>
+                          <a href="{{ source_url | escape }}" target="_blank" rel="noopener noreferrer">
+                            {{ source_url | remove: 'https://' | remove: 'http://' | escape }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </details>
+                {%- endif -%}
+                {%- if mf_updated_at != blank -%}
+                  <p class="milaura-stone-guide__updated">
+                    Contenu vérifié le
+                    <time datetime="{{ mf_updated_at.value | escape }}">{{ mf_updated_at.value | date: '%d/%m/%Y' }}</time>
+                  </p>
+                {%- endif -%}
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <noscript>
+    <style>
+      #MilauraStoneGuide-{{ section.id }} [data-product-guide-panel][hidden] { display: block; }
+    </style>
+  </noscript>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Guide landing pierre",
+  "tag": "section",
+  "class": "milaura-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Reprend le guide des fiches produit. Les metafields milaura de la collection source sont prioritaires sur les textes de repli."
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Collection source"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image du guide"
+    },
+    {
+      "type": "text",
+      "id": "stone_name",
+      "label": "Nom de la pierre"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "Guide de la pierre"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Tout savoir sur cette pierre."
+    },
+    {
+      "type": "text",
+      "id": "lead",
+      "label": "Introduction courte",
+      "default": "Les repères utiles pour comprendre, choisir et préserver votre pierre."
+    },
+    {
+      "type": "header",
+      "content": "Vertus et symbolique"
+    },
+    {
+      "type": "text",
+      "id": "benefits_tab_label",
+      "label": "Nom de l onglet",
+      "default": "Vertus & symbolique"
+    },
+    {
+      "type": "text",
+      "id": "benefits_heading",
+      "label": "Titre du contenu",
+      "default": "Vertus et symbolique"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Présentation (repli)"
+    },
+    {
+      "type": "richtext",
+      "id": "benefits_text",
+      "label": "Vertus (repli)"
+    },
+    {
+      "type": "header",
+      "content": "Choisir et porter"
+    },
+    {
+      "type": "text",
+      "id": "wear_tab_label",
+      "label": "Nom de l onglet",
+      "default": "Choisir & porter"
+    },
+    {
+      "type": "text",
+      "id": "wear_heading",
+      "label": "Titre du contenu",
+      "default": "Comment choisir et porter"
+    },
+    {
+      "type": "richtext",
+      "id": "wear_text",
+      "label": "Conseils (repli)"
+    },
+    {
+      "type": "text",
+      "id": "composition_text",
+      "label": "Composition (repli)"
+    },
+    {
+      "type": "text",
+      "id": "colors_text",
+      "label": "Couleurs (repli)"
+    },
+    {
+      "type": "header",
+      "content": "Entretien"
+    },
+    {
+      "type": "text",
+      "id": "care_tab_label",
+      "label": "Nom de l onglet",
+      "default": "Entretien"
+    },
+    {
+      "type": "text",
+      "id": "care_heading",
+      "label": "Titre du contenu",
+      "default": "Comment entretenir la pierre"
+    },
+    {
+      "type": "richtext",
+      "id": "care_text",
+      "label": "Entretien (repli)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Guide landing pierre"
+    }
+  ]
+}
+{% endschema %}
