@@ -24,6 +24,7 @@ Statut : `VALIDE VISUELLEMENT, INTEGRE, POUSSE ET LIVE`
 
 - Branche canonique : `codex/milaura-integration`.
 - Commit d integration : `ac2144de`, pousse sur `origin/codex/milaura-integration`.
+- Worktree source retire proprement apres integration ; branche source `codex/milaura-stone-guides-polish7-20260905` conservee au commit pousse `60bf5ade`.
 - Theme live : `190430282075`.
 - Push Shopify cible : quatre fichiers, `--allow-live --nodelete --strict --only`.
 - Pullback live : `4/4` fichiers identiques bit a bit au checkout.
