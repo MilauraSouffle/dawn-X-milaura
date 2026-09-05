@@ -91,6 +91,10 @@ Le catalogue contient aussi des pierres actuellement proposees uniquement en obj
 
 Des references publiques anciennes epuises portent d'autres noms, notamment peridot, seraphinite, opale dendrite et spinelle noire. Elles ne sont pas comptees comme bijoux disponibles ni reactivees par cet audit. Leur eventuelle page doit distinguer contenu editorial et offre reellement achetable.
 
+### Arrivages suivis par la session catalogue
+
+Le checkpoint concurrent `2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md`, relu apres le recensement, annonce 18 references physiques encore absentes de Shopify et quatre enrichissements en place. Ce chantier reste proprietaire des produits et de leurs galeries. Les futurs bijoux introduisent notamment nacre, aventurine bleue et zoisite, ainsi que tourmaline noire, quartz fume et spinelle noire en associations. Ces noms doivent etre prevus dans le registre evolutif, sans compter ces references comme deja creees ou disponibles en ligne. Les comptes 39/124 ci-dessus restent ceux du storefront observe, pas une limite definitive du futur hub.
+
 ## Architecture proposee
 
 Parcours : accueil > Bijoux par pierre > landing propre a la pierre > fiche produit.
