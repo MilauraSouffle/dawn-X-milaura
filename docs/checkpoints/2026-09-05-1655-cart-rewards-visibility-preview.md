@@ -41,6 +41,10 @@ Date : 2026-09-05 16:55 CEST
 
 ## État de publication
 
-- Préversion privée : prête pour le GO visuel de Patrice.
-- Thème en ligne : inchangé.
-- Intégration et publication : non autorisées dans cette étape.
+- GO visuel et GO publication reçus de Patrice le 2026-09-05.
+- Branche source poussée au commit `45b42b5c`.
+- Intégration poussée avec les commits `1c6463ef` et `8a5465c6`.
+- Sauvegarde du panier en ligne avant déploiement : `/private/tmp/milaura-cart-live-backup-20260905-1715`.
+- Déploiement ciblé des deux fichiers fonctionnels sur le thème en ligne `190430282075` le 2026-09-05 à 17:15 CEST.
+- Pullback en ligne identique aux fichiers intégrés : `/private/tmp/milaura-cart-live-pullback-20260905-1716`.
+- Vérification publique réussie sur desktop et à 390 px : avantage livraison acquis, prochain cadeau visible et logos MilAura présents dans les trois jalons.
