@@ -12,6 +12,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Swipe natif sur la navigation validee du 2026-09-05
+
+- Etat final au 2026-09-05 17:55 CEST : FERME, INTEGRE ET LIVE. Source `a9e4dcb5`, integration `e2236d13` poussees. Deux assets deployes sur `190430282075`, pullback 2/2 identique. Swipe natif ajoute aux commandes existantes, ancien translateX retire, design preserve. Recette publique Chromium 360/390/430/768/1440 et WebKit 390/1440 conforme ; treize rangees, gestes simules, CPU x4, vertical, clavier, geste rapide et annulation verifies. Theme Check 0 erreur/16 avertissements historiques. Worktree propre retire, branche source conservee. Reservations des deux assets, de la preview `200974958939` et du live liberees. Checkpoint `docs/checkpoints/2026-09-05-1747-stone-native-swipe.md`.
+- Proprietaire : Codex, tache `Polish visuel Milaura`, demande explicite de Patrice du 2026-09-05 : ajouter le swipe au doigt en complement des fleches, sans modifier le design valide.
+- Branche : `codex/milaura-stone-native-swipe-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-native-swipe-20260905`, base `a6eff85f`.
+- Fichiers reserves : `assets/milaura-stone-directory.js`, `assets/milaura-stone-pages.css`, documentation propre au lot. Aucun changement de Liquid, photo, texte, carte ou desktop.
+- Themes reserves : preview `200974958939`, puis live `190430282075` dans la continuite du GO de publication. La preview panier distincte `200990818651` reste hors lot. La nouvelle demande autorise le swipe en complement du footer valide et remplace sa precedente exclusion.
+
 ### Defilement global du volet panier du 2026-09-05
 
 - Etat final au 2026-09-05 17:49 CEST : FERME, INTEGRE ET LIVE. Source `a1c8eef0`, integration `8e229f98` poussees. Uniquement `assets/milaura-cart-drawer-v3.css` deploye sur le live `190430282075`, avec `--nodelete`, `--allow-live` et `--strict` ; pullback identique SHA-256 `30cf5df34057304e4aac81862897184e205e082867143f22b86f5a9791f89f75`. Recette publique 390 px conforme a 33,80 EUR puis au-dessus de 80 EUR avec cadeau automatique : volet unique scrollable, liste produits sans scroll interne, total et paiement atteignables, trois logos MilAura preserves. Theme Check 0 erreur/16 avertissements historiques. Preview `200990818651` conservee comme preuve ; reservations CSS, preview et live liberees. Checkpoint `docs/checkpoints/2026-09-05-1741-cart-whole-drawer-scroll-preview.md`.
