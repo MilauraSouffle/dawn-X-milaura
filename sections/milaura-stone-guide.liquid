@@ -39,6 +39,48 @@
     assign guide_image = guide_collection.products.first.featured_image
   endif
   assign guide_image_alt = guide_image.alt | default: stone_name
+
+  assign benefits_image = section.settings.benefits_image
+  assign benefits_product = section.settings.benefits_product
+  if benefits_product != blank
+    assign benefits_image_index = section.settings.benefits_image_index | minus: 1
+    assign benefits_media = benefits_product.media[benefits_image_index]
+  endif
+  if benefits_image == blank and benefits_media != blank
+    assign benefits_image = benefits_media.preview_image
+  endif
+  if benefits_image == blank
+    assign benefits_image = guide_image
+  endif
+  assign benefits_image_alt = benefits_media.alt | default: benefits_image.alt | default: guide_image_alt
+
+  assign wear_image = section.settings.wear_image
+  assign wear_product = section.settings.wear_product
+  if wear_product != blank
+    assign wear_image_index = section.settings.wear_image_index | minus: 1
+    assign wear_media = wear_product.media[wear_image_index]
+  endif
+  if wear_image == blank and wear_media != blank
+    assign wear_image = wear_media.preview_image
+  endif
+  if wear_image == blank
+    assign wear_image = guide_image
+  endif
+  assign wear_image_alt = wear_media.alt | default: wear_image.alt | default: guide_image_alt
+
+  assign care_image = section.settings.care_image
+  assign care_product = section.settings.care_product
+  if care_product != blank
+    assign care_image_index = section.settings.care_image_index | minus: 1
+    assign care_media = care_product.media[care_image_index]
+  endif
+  if care_image == blank and care_media != blank
+    assign care_image = care_media.preview_image
+  endif
+  if care_image == blank
+    assign care_image = guide_image
+  endif
+  assign care_image_alt = care_media.alt | default: care_image.alt | default: guide_image_alt
 -%}
 
 {%- if mf_intro != blank -%}
@@ -333,25 +375,12 @@
             data-product-guide-panel
           >
             <div class="milaura-product-panel__layout">
-              <div class="milaura-product-panel__media milaura-stone-guide__media">
-                {%- if guide_image != blank -%}
-                  {{- guide_image
-                    | image_url: width: 1200
-                    | image_tag:
-                      class: 'milaura-product-panel__image',
-                      widths: '420, 620, 840, 1000, 1200',
-                      sizes: '(max-width: 749px) 88vw, 42vw',
-                      loading: 'lazy',
-                      alt: guide_image_alt
-                  -}}
-                  <span class="milaura-stone-guide__identity" aria-hidden="true">
-                    <span class="milaura-stone-guide__identity-label">La pierre</span>
-                    <span class="milaura-stone-guide__identity-name">{{ stone_name | escape }}</span>
-                  </span>
-                {%- else -%}
-                  {{ 'product-2' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
-                {%- endif -%}
-              </div>
+              {%- render 'milaura-stone-guide-media',
+                image: benefits_image,
+                image_alt: benefits_image_alt,
+                identity_label: 'La pierre',
+                stone_name: stone_name
+              -%}
               <div class="milaura-product-panel__content">
                 <p class="milaura-product-panel__eyebrow">{{ section.settings.benefits_tab_label | escape }}</p>
                 <h3 class="milaura-product-panel__title">{{ section.settings.benefits_heading | escape }}</h3>
@@ -375,25 +404,12 @@
             hidden
           >
             <div class="milaura-product-panel__layout">
-              <div class="milaura-product-panel__media milaura-stone-guide__media">
-                {%- if guide_image != blank -%}
-                  {{- guide_image
-                    | image_url: width: 1200
-                    | image_tag:
-                      class: 'milaura-product-panel__image',
-                      widths: '420, 620, 840, 1000, 1200',
-                      sizes: '(max-width: 749px) 88vw, 42vw',
-                      loading: 'lazy',
-                      alt: guide_image_alt
-                  -}}
-                  <span class="milaura-stone-guide__identity" aria-hidden="true">
-                    <span class="milaura-stone-guide__identity-label">Bien choisir</span>
-                    <span class="milaura-stone-guide__identity-name">{{ stone_name | escape }}</span>
-                  </span>
-                {%- else -%}
-                  {{ 'product-2' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
-                {%- endif -%}
-              </div>
+              {%- render 'milaura-stone-guide-media',
+                image: wear_image,
+                image_alt: wear_image_alt,
+                identity_label: 'Bien choisir',
+                stone_name: stone_name
+              -%}
               <div class="milaura-product-panel__content">
                 <p class="milaura-product-panel__eyebrow">{{ section.settings.wear_tab_label | escape }}</p>
                 <h3 class="milaura-product-panel__title">{{ section.settings.wear_heading | escape }}</h3>
@@ -439,25 +455,12 @@
             hidden
           >
             <div class="milaura-product-panel__layout">
-              <div class="milaura-product-panel__media milaura-stone-guide__media">
-                {%- if guide_image != blank -%}
-                  {{- guide_image
-                    | image_url: width: 1200
-                    | image_tag:
-                      class: 'milaura-product-panel__image',
-                      widths: '420, 620, 840, 1000, 1200',
-                      sizes: '(max-width: 749px) 88vw, 42vw',
-                      loading: 'lazy',
-                      alt: guide_image_alt
-                  -}}
-                  <span class="milaura-stone-guide__identity" aria-hidden="true">
-                    <span class="milaura-stone-guide__identity-label">Au quotidien</span>
-                    <span class="milaura-stone-guide__identity-name">{{ stone_name | escape }}</span>
-                  </span>
-                {%- else -%}
-                  {{ 'product-2' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
-                {%- endif -%}
-              </div>
+              {%- render 'milaura-stone-guide-media',
+                image: care_image,
+                image_alt: care_image_alt,
+                identity_label: 'Au quotidien',
+                stone_name: stone_name
+              -%}
               <div class="milaura-product-panel__content">
                 <p class="milaura-product-panel__eyebrow">{{ section.settings.care_tab_label | escape }}</p>
                 <h3 class="milaura-product-panel__title">{{ section.settings.care_heading | escape }}</h3>
@@ -517,7 +520,7 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image du guide"
+      "label": "Image de repli"
     },
     {
       "type": "text",
@@ -549,7 +552,7 @@
     {
       "type": "text",
       "id": "benefits_tab_label",
-      "label": "Nom de l onglet",
+      "label": "Nom de l’onglet",
       "default": "Vertus & symbolique"
     },
     {
@@ -557,6 +560,25 @@
       "id": "benefits_heading",
       "label": "Titre du contenu",
       "default": "Vertus et symbolique"
+    },
+    {
+      "type": "image_picker",
+      "id": "benefits_image",
+      "label": "Image personnalisée"
+    },
+    {
+      "type": "product",
+      "id": "benefits_product",
+      "label": "Produit source de l’image"
+    },
+    {
+      "type": "range",
+      "id": "benefits_image_index",
+      "label": "Numéro de l’image produit",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 1
     },
     {
       "type": "richtext",
@@ -575,7 +597,7 @@
     {
       "type": "text",
       "id": "wear_tab_label",
-      "label": "Nom de l onglet",
+      "label": "Nom de l’onglet",
       "default": "Choisir & porter"
     },
     {
@@ -583,6 +605,25 @@
       "id": "wear_heading",
       "label": "Titre du contenu",
       "default": "Comment choisir et porter"
+    },
+    {
+      "type": "image_picker",
+      "id": "wear_image",
+      "label": "Image personnalisée"
+    },
+    {
+      "type": "product",
+      "id": "wear_product",
+      "label": "Produit source de l’image"
+    },
+    {
+      "type": "range",
+      "id": "wear_image_index",
+      "label": "Numéro de l’image produit",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 1
     },
     {
       "type": "richtext",
@@ -606,7 +647,7 @@
     {
       "type": "text",
       "id": "care_tab_label",
-      "label": "Nom de l onglet",
+      "label": "Nom de l’onglet",
       "default": "Entretien"
     },
     {
@@ -614,6 +655,25 @@
       "id": "care_heading",
       "label": "Titre du contenu",
       "default": "Comment entretenir la pierre"
+    },
+    {
+      "type": "image_picker",
+      "id": "care_image",
+      "label": "Image personnalisée"
+    },
+    {
+      "type": "product",
+      "id": "care_product",
+      "label": "Produit source de l’image"
+    },
+    {
+      "type": "range",
+      "id": "care_image_index",
+      "label": "Numéro de l’image produit",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 1
     },
     {
       "type": "richtext",
