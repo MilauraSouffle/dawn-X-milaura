@@ -83,6 +83,7 @@
   assign care_image_alt = care_media.alt | default: care_image.alt | default: guide_image_alt
 -%}
 
+{%- unless section.settings.prefer_section_content -%}
 {%- if mf_intro != blank -%}
   {%- capture intro -%}{{ mf_intro | metafield_tag }}{%- endcapture -%}
 {%- endif -%}
@@ -98,6 +99,11 @@
 {%- if mf_composition != blank -%}
   {%- assign composition = mf_composition.value -%}
 {%- endif -%}
+{%- else -%}
+  {%- assign mf_colors = nil -%}
+  {%- assign mf_sources = nil -%}
+  {%- assign mf_updated_at = nil -%}
+{%- endunless -%}
 
 {%- liquid
   assign has_benefits = false
@@ -508,6 +514,12 @@
   "tag": "section",
   "class": "milaura-section",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "prefer_section_content",
+      "label": "Utiliser les textes et couleurs de cette landing",
+      "default": false
+    },
     {
       "type": "paragraph",
       "content": "Reprend le guide des fiches produit. Les metafields milaura de la collection source sont prioritaires sur les textes de repli."
