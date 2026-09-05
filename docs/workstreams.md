@@ -1,6 +1,6 @@
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-05 17:15 CEST
+Derniere mise a jour : 2026-09-05 17:49 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -11,6 +11,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-integration` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
 
 ## Sessions declarees
+
+### Defilement global du volet panier du 2026-09-05
+
+- Etat final au 2026-09-05 17:49 CEST : FERME, INTEGRE ET LIVE. Source `a1c8eef0`, integration `8e229f98` poussees. Uniquement `assets/milaura-cart-drawer-v3.css` deploye sur le live `190430282075`, avec `--nodelete`, `--allow-live` et `--strict` ; pullback identique SHA-256 `30cf5df34057304e4aac81862897184e205e082867143f22b86f5a9791f89f75`. Recette publique 390 px conforme a 33,80 EUR puis au-dessus de 80 EUR avec cadeau automatique : volet unique scrollable, liste produits sans scroll interne, total et paiement atteignables, trois logos MilAura preserves. Theme Check 0 erreur/16 avertissements historiques. Preview `200990818651` conservee comme preuve ; reservations CSS, preview et live liberees. Checkpoint `docs/checkpoints/2026-09-05-1741-cart-whole-drawer-scroll-preview.md`.
+- Proprietaire : Codex, correction demandee par Patrice le 2026-09-05 a partir de trois captures iPhone montrant la zone produits comprimee sous les avantages.
+- Branche : `codex/milaura-cart-whole-drawer-scroll-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/cart-whole-drawer-scroll-20260905`, base `c337a81a`.
+- Fichier reserve : `assets/milaura-cart-drawer-v3.css` et documentation propre au lot. Les cartes, les textes, les avantages, les logos, les seuils, les automatismes, le catalogue, les stocks, les prix et les Ads restent inchanges.
+- Cible livree : un seul axe de defilement sur le volet complet ; articles en hauteur naturelle ; total et paiement dans le flux sans recouvrement.
 
 ### Barre de navigation sous les cartes pierres du 2026-09-05
 
