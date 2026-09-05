@@ -12,6 +12,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Navigation par fleches des pierres du 2026-09-05
+
+- Etat final au 2026-09-05 16:38 CEST : FERME, INTEGRE ET LIVE. Source `c6ddfede`, integration `7c22cac0` poussees, themes live `190430282075` et preview `200974958939` relus 3/3 identiques. Swipe et ancien code retires, fleches sur les photos et grille desktop reguliere ; Aigue-marine au format commun. Recette publique 360/390/430/768/1440, clavier, treize rangees, mouvement reduit et acces sans JS conformes. Worktree integre propre retire, branche conservee, reservation des fichiers et themes liberee. Checkpoint `docs/checkpoints/2026-09-05-1635-stone-arrow-navigation.md`. Autres changements du checkout preserves.
+- Proprietaire : Codex, tache `Polish visuel Milaura`, demande de Patrice du 2026-09-05 apres nouveau constat negatif sur le glissement mobile. Retirer le geste et son code, ajouter des fleches translucides sur les cartes avec une indication discrete, conserver le compteur ; corriger l'Aigue-marine isolee sur desktop.
+- Branche : `codex/milaura-stone-arrow-navigation-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-arrow-navigation-20260905`, base `fcd6524f`.
+- Fichiers reserves : `sections/milaura-stone-directory.liquid`, `assets/milaura-stone-directory.js`, `assets/milaura-stone-pages.css`, documentation propre au lot. Aucune modification des galeries, autres composants, catalogue, stocks, prix ou Ads.
+- Themes reserves : preview `200974958939` pour recette, puis correction ciblee sur le live `190430282075` dans la continuite du GO de publication du lot. Les cadrages photos deja valides restent conserves. Checkout concurrent preserve.
+
 ### Correctif tactile et cadrage des cartes du 2026-09-05
 
 - Etat final au 2026-09-05 16:13 CEST : FERME, INTEGRE ET LIVE. GO cadrages execute, integration `911e206d`. Premier geste juge insuffisamment fluide par Patrice, remplace par le defilement natif `6ba3120e`, integration `34bf06ca`. Theme live `190430282075`, pullback final 4/4 identique ; preview `200974958939` actualisee. Cadrages 390/1440, gestes publics 360/390/430 avec CPU x4, fleches, liens, redimensionnement et mouvement reduit conformes. Ressenti sur iPhone physique encore a confirmer. Worktree propre et integre retire, branche conservee ; reservation des fichiers et du live liberee. Checkpoint `docs/checkpoints/2026-09-05-1613-framing-native-swipe-live.md`. Aucun changement catalogue ni perte de travaux concurrents.

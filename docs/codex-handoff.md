@@ -1,3 +1,9 @@
+# Navigation des pierres par fleches, live
+
+Date : 2026-09-05 16:38 CEST. Patrice abandonne explicitement le swipe apres deux retours negatifs sur iPhone. Le composant fonctionne maintenant par fleches translucides superposees aux bords des photos, avec une indication discrete de deux cycles et le compteur dessous. Les anciens ecouteurs, mesures, regles de scroll et variantes `is-featured` ont ete retires. Aigue-marine a le meme format que les autres cartes desktop, avec quatre colonnes et liens alignes ; les photos restent telles que validees.
+
+Source `c6ddfede`, integration `7c22cac0`, branche canonique poussee ; live `190430282075` et preview `200974958939`, pullbacks 3/3 identiques. Recette publique 360/390/430/768/1440, treize rangees par fleches, liens, clavier, preference de mouvement reduit, changement de largeur, rechargement de section et acces aux 39 cartes sans JS conformes. Theme Check 0 erreur/16 avertissements historiques. Aucune recette sur iPhone physique revendiquee. Le worktree propre et integre est retire, branche `codex/milaura-stone-arrow-navigation-20260905` conservee. Checkpoint : `docs/checkpoints/2026-09-05-1635-stone-arrow-navigation.md`. Les anciens bilans de swipe ci-dessous sont historiques et ne doivent pas conduire a le reintroduire. Autres composants, catalogue, stocks, prix, galeries et travaux concurrents preserves.
+
 # Cadrages valides et glissement natif en ligne
 
 Date : 2026-09-05 16:13 CEST. Cadrages valides explicitement par Patrice puis integres et deployes : `d7e8f7af` -> `911e206d`. Retour iPhone negatif sur la fluidite du premier correctif tactile ; cette implementation est remplacee par le defilement et l'inertie natifs : `6ba3120e` -> `34bf06ca`. Theme live `190430282075`, branche canonique poussee, pullback final 4/4 identique ; preview `200974958939` actualisee aussi.

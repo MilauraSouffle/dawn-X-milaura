@@ -27,3 +27,7 @@ Trois fichiers : `sections/milaura-stone-directory.liquid`, `assets/milaura-ston
 - Preuves hors Git : `/private/tmp/milaura-arrow-navigation-20260905/`, `private-qa.json`, captures `private-row-*.png`, `private-grid-*.png`, sauvegarde `live-before/`.
 
 Limite : tests de navigateur isole, aucun controle de l'iPhone physique par Codex. Ne pas annoncer une recette utilisateur a partir de ces seuls controles.
+
+## Publication du 2026-09-05 16:38 CEST
+
+Source `c6ddfede`, integration `7c22cac0`, branches poussees. Les trois fichiers ont ete deployes sans suppression sur le theme live `190430282075`. Pullback prive 3/3 et pullback public 3/3 identiques. L'alignement final des liens des quatre premieres cartes desktop est verifie au pixel pres. Les preuves de recette publique sont conservees dans `live-qa.json` et les captures `live-row-*.png` / `live-grid-*.png` du meme dossier. Les anciens bilans positifs de gestes simules ne valent plus pour le fonctionnement utilisateur : le swipe est abandonne sur demande explicite de Patrice.
