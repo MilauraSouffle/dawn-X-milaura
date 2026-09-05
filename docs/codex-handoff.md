@@ -1,3 +1,11 @@
+# Swipe explicite des pierres, preview a tester sur iPhone
+
+Date : 2026-09-05 18:31 CEST. Le test reel de Patrice invalide le swipe natif du lot precedent, meme sur le lien neuf : la carte reste immobile avec un petit mouvement vertical. Les bilans automatisees ci-dessous sont historiques et ne valent pas validation sur son appareil.
+
+Correction `23b6b565` dans `codex/milaura-stone-pointer-swipe-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-pointer-swipe-20260905`. Deux assets reserves : `assets/milaura-stone-directory.js`, `assets/milaura-stone-pages.css`. Geste horizontal explicite avec Pointer Events, mouvement vertical et zoom conserves, memes cartes et footer ; ancien code natif retire. Preview `200974958939` actualisee, pullback 2/2 identique, 13 rangees au toucher simule conformes. Chromium 360/390/430/768/1440 ; WebKit 390/1440 par pointeur souris. Theme Check 0 erreur/16 avertissements historiques. Aucun test iPhone physique par Codex.
+
+Lien envoye a Patrice : `https://milaura.fr/pages/bijoux-par-pierre?preview_theme_id=200974958939&swipe=pointer-20260905#MilauraStoneDirectory`. Retour utilisateur attendu ; live `190430282075` encore au lot natif precedent. Autorisation de correction/publication conservee, pas de nouveau GO a solliciter. Checkpoint source : `docs/checkpoints/2026-09-05-1829-stone-pointer-swipe-preview.md`. Worktree et reservations conserves ; modifications concurrentes du checkout principal preservees.
+
 # Swipe natif ajoute sans changement de design, live
 
 Date : 2026-09-05 17:55 CEST. Patrice demande explicitement le swipe au doigt en complement du footer valide. Cette demande remplace son exclusion historique : conserver desormais swipe, fleches, segment mobile et compteur ensemble. Le viewport defile nativement avec arret sur chaque carte ; l'ancien translateX est supprime. Aucun pilotage JS du rail pendant le toucher, aucune bibliotheque ajoutee, aucun changement du Liquid, des cartes, des photos ou du desktop. Les liens restent accessibles et la carte recevant le focus est alignee.

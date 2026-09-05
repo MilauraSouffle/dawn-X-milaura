@@ -12,6 +12,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Geste horizontal explicite des pierres du 2026-09-05
+
+- Etat au 2026-09-05 18:31 CEST : PREVIEW, retour iPhone attendu. Source `23b6b565`, deux assets sur `200974958939`, pullback 2/2 identique. Geste horizontal explicite, anciennes regles de defilement natif retirees, dimensions et styles preserves. 13 rangees testees au toucher simule ; WebKit par pointeur souris uniquement. Theme Check 0 erreur/16 avertissements historiques. Aucun nouveau deploy live dans ce lot. Worktree conserve pour le retour de Patrice, checkpoint source `docs/checkpoints/2026-09-05-1829-stone-pointer-swipe-preview.md`.
+- Proprietaire : Codex, tache `Polish visuel Milaura`. Patrice confirme le 2026-09-05 que le lien neuf reste sans swipe sur iPhone et que seul un mouvement vertical apparait. Le defilement natif du lot precedent n'est donc pas valide sur son appareil.
+- Branche : `codex/milaura-stone-pointer-swipe-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-pointer-swipe-20260905`, base `640633ac`.
+- Fichiers reserves : `assets/milaura-stone-directory.js`, `assets/milaura-stone-pages.css`, documentation du lot. Geste horizontal explicite, distinction avec le geste vertical et nettoyage du mecanisme natif precedent ; design, cartes, photos, footer et desktop preserves.
+- Themes reserves : preview `200974958939`, puis live `190430282075` dans le perimetre de correction autorise. Verification du geste avec Patrice sur la preview proposee avant de conclure au fonctionnement sur iPhone.
+
 ### Swipe natif sur la navigation validee du 2026-09-05
 
 - Etat final au 2026-09-05 17:55 CEST : FERME, INTEGRE ET LIVE. Source `a9e4dcb5`, integration `e2236d13` poussees. Deux assets deployes sur `190430282075`, pullback 2/2 identique. Swipe natif ajoute aux commandes existantes, ancien translateX retire, design preserve. Recette publique Chromium 360/390/430/768/1440 et WebKit 390/1440 conforme ; treize rangees, gestes simules, CPU x4, vertical, clavier, geste rapide et annulation verifies. Theme Check 0 erreur/16 avertissements historiques. Worktree propre retire, branche source conservee. Reservations des deux assets, de la preview `200974958939` et du live liberees. Checkpoint `docs/checkpoints/2026-09-05-1747-stone-native-swipe.md`.
