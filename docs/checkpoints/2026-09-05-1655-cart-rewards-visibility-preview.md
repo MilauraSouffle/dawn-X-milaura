@@ -14,6 +14,7 @@ Date : 2026-09-05 16:55 CEST
 - Chaque avantage atteint reste affiché dans une carte minérale claire avec une coche et une explication concrète.
 - Le prochain avantage et le montant restant sont prioritaires tant que les trois paliers ne sont pas atteints.
 - La frise distingue explicitement `Acquis`, `Prochain` et `À débloquer`.
+- Les trois jalons conservent les cercles avec le logo MilAura. Seules les cartes d'avantage utilisent une coche.
 - À 30 €, la livraison en point relais est confirmée comme offerte.
 - À 50 €, le cadeau du mois est confirmé comme offert et son ajout automatique reste visible dans le panier.
 - À 80 €, la remise de 15 % est confirmée comme débloquée et son application automatique reste visible dans le récapitulatif.
@@ -31,6 +32,7 @@ Date : 2026-09-05 16:55 CEST
 
 - États visuels testés : 33,80 €, 54,70 € et 82,10 € avant avantages.
 - Responsive contrôlé : 360, 390, 430, 768 et 1440 px.
+- Le retour du logo et le libellé mobile `À débloquer` ont été revérifiés à 390 px le 2026-09-05.
 - Accessibilité vérifiée dans l'arbre du navigateur : titre, compteur, liste des avantages acquis, progression et états des trois paliers.
 - `shopify theme check` : PASS, 0 erreur, 16 avertissements historiques dans 8 fichiers hors périmètre.
 - `python3 tools/check_copywriting.py` : PASS, 331 fichiers contrôlés.
