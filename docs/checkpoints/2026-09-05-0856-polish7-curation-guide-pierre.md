@@ -45,3 +45,13 @@ Finaliser la curation visuelle et editoriale des nouveaux guides Aigue-marine et
 - Aucun push sur le live `190430282075`.
 - Aucun changement Shopify Admin.
 - Gate suivant : GO visuel de Patrice, puis integration et live uniquement sur ordres distincts.
+
+## Ajustement produit star, 2026-09-05 09:06 CEST
+
+- Le produit star Aigue-marine est maintenant `bague-argent-925-modele-01-aigue-marine-bresil-aa-1-piece-lo`.
+- Titre : `Bague Aigue-Marine Argent`.
+- Texte : bague en argent 925, aigue-marine naturelle de qualite AA et nuances bleu clair cristallin, informations verifiees sur la fiche produit.
+- Le bento utilise les trois images de la galerie, dans leur ordre 1, 2 et 3.
+- Desktop et mobile 390 x 844 verifies, sans debordement ni erreur console.
+- Pullback du template Aigue-marine identique au checkout.
+- La fiche produit indiquait `Epuise` lors du controle public du 2026-09-05. Le choix du produit star est conserve conformement a la demande de Patrice.
