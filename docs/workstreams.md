@@ -12,6 +12,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Correctif tactile et cadrage des cartes du 2026-09-05
+
+- Proprietaire : Codex, tache `Polish visuel Milaura`, demande de Patrice apres test mobile reel et screenshot du 2026-09-05 15:31.
+- Branche : `codex/milaura-touch-framing-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/touch-framing-20260905`, base `c89db69d`.
+- Perimetre reserve : `assets/milaura-stone-directory.js`, `assets/milaura-stone-pages.css`, `sections/milaura-stone-directory.liquid`, `assets/milaura-home-paths.css`, `sections/milaura-home-paths.liquid`, `assets/milaura-card.css` pour le cadrage des cartes produit partagees, audit des autres composants photo en lecture seule et documentation ciblee. Aucun fichier Mon Ecrin ni contenu catalogue a modifier.
+- Cible : correction du swipe mobile du lot live `190430282075`, puis cadrages accueil/annuaire dans le theme prive `200974958939` pour revue visuelle. Aucune generation ni remplacement de galerie produit. Checkout concurrent preserve.
+- Etat au 2026-09-05 15:48 CEST : TACTILE LIVE, source `2a1e963c`, integration `3074ae39` poussee, trois fichiers deployes et pullback 3/3 identique, gestes simules 360/390/430 conformes. iPhone physique non teste par Codex. CADRAGES EN PREVIEW PRIVEE, commit `d7e8f7af` pousse, theme `200974958939`, cinq fichiers relus identiques, recette 390/1440 et Theme Check 0 erreur/16 avertissements historiques. Validation visuelle attendue avant integration/live des trois CSS. Worktree conserve propre pour cette decision ; reservation live liberee. Checkpoint tactile `2026-09-05-1537-stone-touch-fix.md`, rapport photo `docs/audits/2026-09-05-photo-framing-preview.md` dans le worktree.
+
 ### Annuaire et landings par pierre du 2026-09-05
 
 - Proprietaire : Codex, tache `Polish visuel Milaura`, demande Patrice du 2026-09-05 : recenser les pierres, completer leurs pages depuis le modele Polish 7, puis traiter la navigation mobile en rangees courtes.

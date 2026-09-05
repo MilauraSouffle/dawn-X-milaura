@@ -1,3 +1,9 @@
+# Tactile live et cadrages en preview privee
+
+Date : 2026-09-05 15:48 CEST. Le glissement de l'annuaire est corrige et live, integration `3074ae39` sur `codex/milaura-integration`, theme `190430282075`, pullback 3/3 et gestes simules 360/390/430 conformes. Aucun test sur iPhone physique par Codex ; retour demande a Patrice. Checkpoint : `docs/checkpoints/2026-09-05-1537-stone-touch-fix.md`.
+
+Les cadrages des choix de l'accueil, des cartes de l'annuaire et des cartes produit partagees sont prepares au commit `d7e8f7af` de `codex/milaura-touch-framing-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/touch-framing-20260905`. Theme prive `200974958939`, pullback 5/5 et recette 390/1440 conformes, photos entieres sans zoom au survol. Rapport : `docs/audits/2026-09-05-photo-framing-preview.md` dans ce worktree. Attendre le GO visuel pour integrer et publier uniquement `assets/milaura-home-paths.css`, `assets/milaura-stone-pages.css`, `assets/milaura-card.css`. Les grandes images editoriales et les autres hubs gardent leurs cadrages propres a revoir individuellement. Aucun changement de catalogue, source photo, stock, prix ou Ads dans ce lot. Conserver les travaux concurrents et le worktree de preview.
+
 # Mise en ligne terminee : annuaire et landings par pierre
 
 Date : 2026-09-05 10:55 CEST. Statut : LIVE VERIFIE apres GO explicite de Patrice. Le hub public `/pages/bijoux-par-pierre` contient 39 cartes sans recherche, treize rangees courtes sur mobile, et ouvre les landings sans parametre de preview. Les 40 pages sont publiques, les dix anciennes affectations et trente publications Boutique en ligne sont executees. Theme `190430282075`, pullback 49/49 identique, un H1/trois onglets/produits/canoniques conformes sur les 40 pages, responsive 390/1440 controle. Integration `3d29f3a8`, compteurs `3492023f` pousses. [Checkpoint de release](checkpoints/2026-09-05-1055-stone-directory-live.md).

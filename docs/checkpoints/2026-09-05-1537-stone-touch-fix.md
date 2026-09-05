@@ -22,3 +22,8 @@ Preuves hors Git : `/private/tmp/milaura-touch-framing-20260905/`, fichiers `tou
 Fichiers du correctif : `assets/milaura-stone-directory.js`, `assets/milaura-stone-pages.css`, `sections/milaura-stone-directory.liquid`.
 
 Le cadrage photo fait l'objet d'un lot visuel distinct dans la meme tache, avec revue privee avant publication.
+
+
+## Mise en ligne verifiee le 2026-09-05
+
+Correction source `2a1e963c`, integration `3074ae39`, branches poussees. Theme live `190430282075`, push cible sans suppression et pullback trois fichiers sur trois identiques. Les tests de gestes tactiles ont ete rejoues sur les vrais assets publics aux largeurs 360, 390 et 430, avec aller/retour, defilement vertical, swipe court, fleches, limites et ouverture du lien conformes. Preuve : `live-swipe-checks.json` dans le dossier temporaire ci-dessus. L'iPhone physique reste non teste par Codex.
