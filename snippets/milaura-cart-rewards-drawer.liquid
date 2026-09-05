@@ -19,10 +19,6 @@
     if reward_label_2 == 'Livraison offerte'
       assign reward_label_2 = 'Cadeau du mois offert'
     endif
-    assign reward_logo = settings.favicon
-    if reward_logo == blank
-      assign reward_logo = settings.logo
-    endif
     assign paid_cart_cents = 0
 
     for item in cart.items
@@ -59,16 +55,18 @@
     endif
 
     assign next_threshold_cents = threshold_1_cents
-    assign next_reward_label = reward_label_1
     if unlocked_rewards == 1
       assign next_threshold_cents = threshold_2_cents
-      assign next_reward_label = reward_label_2
     elsif unlocked_rewards == 2
       assign next_threshold_cents = threshold_3_cents
-      assign next_reward_label = reward_label_3
     endif
 
     assign next_remaining_cents = next_threshold_cents | minus: paid_cart_cents | at_least: 0
+    assign paid_cart_label = paid_cart_cents | money_without_trailing_zeros | remove: 'EUR' | remove: '€' | strip | append: ' €'
+    assign next_remaining_label = next_remaining_cents | money_without_trailing_zeros | remove: 'EUR' | remove: '€' | strip | append: ' €'
+    assign threshold_1_label = threshold_1_cents | money_without_trailing_zeros | remove: 'EUR' | remove: '€' | strip | append: ' €'
+    assign threshold_2_label = threshold_2_cents | money_without_trailing_zeros | remove: 'EUR' | remove: '€' | strip | append: ' €'
+    assign threshold_3_label = threshold_3_cents | money_without_trailing_zeros | remove: 'EUR' | remove: '€' | strip | append: ' €'
     assign progress_percent = paid_cart_cents | times: 100.0 | divided_by: threshold_3_cents | at_most: 100
     assign mark_1_percent = threshold_1_cents | times: 100.0 | divided_by: threshold_3_cents | at_most: 100
     assign mark_2_percent = threshold_2_cents | times: 100.0 | divided_by: threshold_3_cents | at_most: 100
@@ -76,26 +74,56 @@
 
   <section class="milaura-drawer-rewards" aria-labelledby="MilauraDrawerRewardsTitle">
     <div class="milaura-drawer-rewards__heading">
-      <div>
-        <p class="milaura-drawer-rewards__eyebrow">Vos avantages de commande</p>
-        <h3 class="milaura-drawer-rewards__title" id="MilauraDrawerRewardsTitle">
-          {%- if unlocked_rewards >= 3 -%}
-            Tous vos avantages sont débloqués
-          {%- else -%}
-            Encore {{ next_remaining_cents | money_without_trailing_zeros }} pour {{ next_reward_label | downcase }}
-          {%- endif -%}
-        </h3>
-      </div>
-      <span class="milaura-drawer-rewards__count" aria-hidden="true">{{ unlocked_rewards }}/3</span>
+      <h3 class="milaura-drawer-rewards__title" id="MilauraDrawerRewardsTitle">Vos avantages</h3>
+      <p class="milaura-drawer-rewards__count">
+        {{ unlocked_rewards }} avantage{% unless unlocked_rewards == 1 %}s{% endunless %} sur 3 débloqué{% unless unlocked_rewards == 1 %}s{% endunless %}
+      </p>
     </div>
 
-    <p class="milaura-drawer-rewards__status" aria-live="polite">
+    {%- if unlocked_rewards > 0 -%}
+      <ul class="milaura-drawer-rewards__earned milaura-drawer-rewards__earned--{{ unlocked_rewards }}" aria-label="Avantages débloqués">
+        <li>
+          <span class="milaura-drawer-rewards__check" aria-hidden="true">✓</span>
+          <span class="milaura-drawer-rewards__earned-copy">
+            <strong>Livraison en point relais offerte</strong>
+            <span>Choisissez un point relais éligible au paiement.</span>
+          </span>
+        </li>
+        {%- if unlocked_rewards >= 2 -%}
+          <li>
+            <span class="milaura-drawer-rewards__check" aria-hidden="true">✓</span>
+            <span class="milaura-drawer-rewards__earned-copy">
+              <strong>Cadeau du mois offert</strong>
+              <span>Il est ajouté automatiquement au panier.</span>
+            </span>
+          </li>
+        {%- endif -%}
+        {%- if unlocked_rewards >= 3 -%}
+          <li>
+            <span class="milaura-drawer-rewards__check" aria-hidden="true">✓</span>
+            <span class="milaura-drawer-rewards__earned-copy">
+              <strong>Remise de 15 % débloquée</strong>
+              <span>Elle s'applique automatiquement à la commande.</span>
+            </span>
+          </li>
+        {%- endif -%}
+      </ul>
+    {%- endif -%}
+
+    <p class="milaura-drawer-rewards__next{% if unlocked_rewards >= 3 %} is-complete{% endif %}" aria-live="polite">
       {%- if unlocked_rewards >= 3 -%}
-        Les trois paliers de cette commande sont atteints.
-      {%- elsif unlocked_rewards > 0 -%}
-        {{ unlocked_rewards }} palier{% if unlocked_rewards > 1 %}s{% endif %} atteint{% if unlocked_rewards > 1 %}s{% endif %}. Le prochain avantage se rapproche.
+        <strong>Tous vos avantages sont débloqués.</strong>
       {%- else -%}
-        Votre premier avantage se débloque au palier de {{ threshold_1_cents | money_without_trailing_zeros }}.
+        <span>Prochain avantage</span>
+        <strong>
+          {%- if unlocked_rewards == 0 -%}
+            Plus que {{ next_remaining_label }} pour obtenir la livraison offerte en point relais.
+          {%- elsif unlocked_rewards == 1 -%}
+            Plus que {{ next_remaining_label }} pour recevoir le cadeau du mois.
+          {%- else -%}
+            Plus que {{ next_remaining_label }} pour obtenir 15 % de remise sur la commande.
+          {%- endif -%}
+        </strong>
       {%- endif -%}
     </p>
 
@@ -106,59 +134,48 @@
       aria-valuemin="0"
       aria-valuemax="{{ threshold_3_cents }}"
       aria-valuenow="{{ paid_cart_cents | at_most: threshold_3_cents }}"
-      aria-valuetext="{{ paid_cart_cents | money_without_trailing_zeros }} sur {{ threshold_3_cents | money_without_trailing_zeros }}"
+      aria-valuetext="{{ paid_cart_label }} sur {{ threshold_3_label }}"
     >
       <span class="milaura-drawer-rewards__fill" style="width: {{ progress_percent }}%;"></span>
       <span
         class="milaura-drawer-rewards__mark{% if unlocked_rewards >= 1 %} is-reached{% elsif unlocked_rewards == 0 %} is-next{% endif %}"
         style="left: {{ mark_1_percent }}%;"
         aria-hidden="true"
-      >
-        {%- if reward_logo != blank -%}
-          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
-        {%- else -%}
-          <span class="milaura-drawer-rewards__fallback">M</span>
-        {%- endif -%}
-      </span>
+      ></span>
       <span
         class="milaura-drawer-rewards__mark{% if unlocked_rewards >= 2 %} is-reached{% elsif unlocked_rewards == 1 %} is-next{% endif %}"
         style="left: {{ mark_2_percent }}%;"
         aria-hidden="true"
-      >
-        {%- if reward_logo != blank -%}
-          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
-        {%- else -%}
-          <span class="milaura-drawer-rewards__fallback">M</span>
-        {%- endif -%}
-      </span>
+      ></span>
       <span
         class="milaura-drawer-rewards__mark milaura-drawer-rewards__mark--last{% if unlocked_rewards >= 3 %} is-reached{% elsif unlocked_rewards == 2 %} is-next{% endif %}"
         aria-hidden="true"
-      >
-        {%- if reward_logo != blank -%}
-          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
-        {%- else -%}
-          <span class="milaura-drawer-rewards__fallback">M</span>
-        {%- endif -%}
-      </span>
+      ></span>
     </div>
 
     <ol class="milaura-drawer-rewards__steps">
-      <li class="{% if unlocked_rewards >= 1 %}is-reached{% endif %}">
-        <strong>{{ threshold_1_cents | money_without_trailing_zeros }}</strong>
+      <li class="{% if unlocked_rewards >= 1 %}is-reached{% else %}is-next{% endif %}">
+        <span class="milaura-drawer-rewards__step-head">
+          <strong>{{ threshold_1_label }}</strong>
+          <small>{% if unlocked_rewards >= 1 %}Acquis{% else %}Prochain{% endif %}</small>
+        </span>
         <span>{{ reward_label_1 }}</span>
       </li>
-      <li class="{% if unlocked_rewards >= 2 %}is-reached{% endif %}">
-        <strong>{{ threshold_2_cents | money_without_trailing_zeros }}</strong>
+      <li class="{% if unlocked_rewards >= 2 %}is-reached{% elsif unlocked_rewards == 1 %}is-next{% endif %}">
+        <span class="milaura-drawer-rewards__step-head">
+          <strong>{{ threshold_2_label }}</strong>
+          <small>{% if unlocked_rewards >= 2 %}Acquis{% elsif unlocked_rewards == 1 %}Prochain{% else %}À débloquer{% endif %}</small>
+        </span>
         <span>{{ reward_label_2 }}</span>
       </li>
-      <li class="{% if unlocked_rewards >= 3 %}is-reached{% endif %}">
-        <strong>{{ threshold_3_cents | money_without_trailing_zeros }}</strong>
+      <li class="{% if unlocked_rewards >= 3 %}is-reached{% elsif unlocked_rewards == 2 %}is-next{% endif %}">
+        <span class="milaura-drawer-rewards__step-head">
+          <strong>{{ threshold_3_label }}</strong>
+          <small>{% if unlocked_rewards >= 3 %}Acquis{% elsif unlocked_rewards == 2 %}Prochain{% else %}À débloquer{% endif %}</small>
+        </span>
         <span>{{ reward_label_3 }}</span>
       </li>
     </ol>
-
-    <p class="milaura-drawer-rewards__note">Progression calculée hors cadeaux, avant avantages MilAura.</p>
   </section>
 {%- endif -%}
 
