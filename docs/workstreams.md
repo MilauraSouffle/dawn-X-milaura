@@ -12,6 +12,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Polish des fleches mobiles des pierres du 2026-09-05
+
+- Etat final au 2026-09-05 17:11 CEST : INTEGRE ET LIVE. Source `085465e8`, integration `fe4fe056` poussees. Deux fichiers deployes sur `190430282075`, pullback 2/2 identique. Chevrons fins hors des photos, cibles tactiles invisibles 44 px, cartes et desktop inchanges. Recette publique 360/390/430/768/1440, appui sur les SVG, treize rangees, clavier et mouvement reduit conformes. Theme Check 0 erreur/16 avertissements historiques. Preview panier non touchee. Checkpoint `docs/checkpoints/2026-09-05-1708-stone-arrow-polish.md`. Reservation des fichiers et du live liberee.
+- Proprietaire : Codex, tache `Polish visuel Milaura`, demande de Patrice du 2026-09-05 : observer Van Cleef & Arpels et Tiffany, puis corriger le dessin et la position des fleches. Cartes compactes et desktop deja valides a conserver.
+- Branche : `codex/milaura-stone-arrow-polish-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-arrow-polish-20260905`, base `02e72dc7`.
+- Fichiers reserves : `assets/milaura-stone-pages.css`, `sections/milaura-stone-directory.liquid`, documentation du lot. Commandes seules : chevrons fins sans boite, position aux bords des photos, cible tactile invisible de 44 px et indication discrete unique.
+- Theme live `190430282075` reserve pour cette correction dans la continuite du GO de publication ; controles visuels locaux avant push cible et pullback. Preview `200974958939` laissee a la tache panier.
+
 ### Retour au format compact mobile des pierres du 2026-09-05
 
 - Etat final au 2026-09-05 16:53 CEST : INTEGRE ET LIVE. Source `85737031`, integration `98e158d6` poussees. Un seul CSS deploye sur `190430282075`, pullback identique. Format mobile precedent retabli a 360/390/430/749 ; desktop inchange a 768/1440. Treize rangees, clavier, mouvement reduit et redimensionnement verifies publiquement. Preview panier non touchee. Checkpoint `docs/checkpoints/2026-09-05-1651-stone-mobile-compact.md`. Reservation des fichiers et du live liberee.
