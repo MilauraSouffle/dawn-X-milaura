@@ -1,6 +1,6 @@
 # MilAura : annuaire et landings par pierre
 
-Date : 2026-09-05 10:25 CEST.
+Date : 2026-09-05 10:38 CEST.
 Statut : implementation et corrections de collections realisees ; preview privee en recette visuelle Patrice. Aucun deploiement sur le theme live.
 Branche : `codex/milaura-stone-directory-20260905`, base `5a51f592`.
 Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/stone-directory-20260905`.
@@ -23,7 +23,7 @@ Sodalite conserve la composition de la landing validee, Horus et son guide. Aigu
 
 Les reglages nouveaux des composants partages sont retrocompatibles. Le guide accepte des textes propres a la configuration sans reprendre par erreur les metachamps d'une autre collection pendant la preview. Une landing avec un seul bijou conserve son bento et son guide, sans section catalogue vide.
 
-Le titre du hub, sa grande photographie et l'acces depuis l'accueil sont conserves. L'annuaire ajoute une recherche sans accents, des fleches et un compteur de position par rangee. Les photos utilisent les tailles CDN adaptees et le chargement differe. Les textes des cartes ont un contraste calcule de 5,00:1 minimum sur les quatre fonds utilises.
+Le titre du hub, sa grande photographie et l'acces depuis l'accueil sont conserves. L'annuaire ajoute des fleches et un compteur de position par rangee. Les photos utilisent les tailles CDN adaptees et le chargement differe. Les textes des cartes ont un contraste calcule de 5,00:1 minimum sur les quatre fonds utilises.
 
 ## Corrections Shopify executees
 
@@ -65,12 +65,12 @@ Les selections et compteurs des landings sont explicites. Un arrivage n'ajoute p
 - 39 destinations controlees dans le navigateur a 1440 px : un H1, un produit star, trois onglets, aucun message Liquid ni debordement horizontal.
 - 39 destinations controlees a 390 px : Choisir & porter puis Entretien fonctionnels, un seul panneau actif, aucun debordement. Jaspe rouge controle separement a 390 px et inclus dans la comparaison des produits.
 - 40 pages comparees aux produits de la matrice : aucun manquant ni produit inattendu.
-- Recherche `oeil` : Oeil de tigre et Oeil de taureau trouves ; recherche sans resultat et remise a zero au clavier conformes.
+- Correction demandee par Patrice le 2026-09-05 : recherche et compteur global retires. Les cartes suivent directement l'introduction, avec 40 px d'espace a 1440 px et 24 px a 390 px. Les 39 cartes restent presentes, aucun debordement, carrousel 1/3 > 2/3 fonctionnel. Theme Check toujours 0 erreur et 16 avertissements historiques ; pullback des trois fichiers corriges identique 3/3.
 - Navigation mobile : treize rangees, trois cartes par rangee, passage de 1/3 a 2/3 verifie ; acces clavier aux cartes controle.
 - Parcours annuaire > Amazonite > retour au hub : 39 cartes et liens de recette conformes au retour.
 - Captures et preuves detaillees hors Git : `/private/tmp/milaura-stone-implementation-20260905/`.
 
-Les checks navigateur sont techniques. Le choix final du rendu reste a valider visuellement par Patrice.
+Patrice a valide le rendu le 2026-09-05 sous reserve de retirer la recherche. Cette correction est maintenant visible sur le theme prive. Les captures `annuaire-sans-recherche-1440.png` et `annuaire-sans-recherche-390.png` sont dans le dossier de preuves ci-dessus, sous `captures/`.
 
 ## Particularites de la preview et suite
 

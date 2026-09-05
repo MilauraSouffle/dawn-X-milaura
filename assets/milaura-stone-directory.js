@@ -1,13 +1,8 @@
 (() => {
-  const normalize = (value) => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/œ/g, 'oe').trim();
   const initialize = (root) => {
     if (root.dataset.initialized === 'true') return;
     root.dataset.initialized = 'true';
-    const search = root.querySelector('[data-stone-search]');
-    const cards = Array.from(root.querySelectorAll('[data-stone-card]'));
-    const result = root.querySelector('[data-stone-result]');
-    const empty = root.querySelector('[data-stone-empty]');
-    const rows = Array.from(root.querySelectorAll('[data-stone-row]')).map((row) => {
+    root.querySelectorAll('[data-stone-row]').forEach((row) => {
       const track = row.querySelector('[data-stone-track]');
       const controls = row.querySelector('[data-stone-controls]');
       const prev = row.querySelector('[data-stone-prev]');
@@ -42,18 +37,6 @@
       track.addEventListener('scroll', update, { passive: true });
       if ('ResizeObserver' in window) new ResizeObserver(update).observe(track);
       update();
-      return { track, update };
-    });
-    search.addEventListener('input', () => {
-      const query = normalize(search.value);
-      let count = 0;
-      cards.forEach((card) => {
-        card.hidden = !normalize(card.dataset.stoneName).includes(query);
-        if (!card.hidden) count += 1;
-      });
-      rows.forEach(({ track, update }) => { track.scrollLeft = 0; update(); });
-      result.textContent = `${count} ${count === 1 ? 'pierre' : 'pierres'}`;
-      empty.hidden = count > 0;
     });
   };
   const initializeAll = (root = document) => {
