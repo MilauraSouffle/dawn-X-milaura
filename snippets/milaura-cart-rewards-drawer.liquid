@@ -19,6 +19,10 @@
     if reward_label_2 == 'Livraison offerte'
       assign reward_label_2 = 'Cadeau du mois offert'
     endif
+    assign reward_logo = settings.favicon
+    if reward_logo == blank
+      assign reward_logo = settings.logo
+    endif
     assign paid_cart_cents = 0
 
     for item in cart.items
@@ -141,16 +145,34 @@
         class="milaura-drawer-rewards__mark{% if unlocked_rewards >= 1 %} is-reached{% elsif unlocked_rewards == 0 %} is-next{% endif %}"
         style="left: {{ mark_1_percent }}%;"
         aria-hidden="true"
-      ></span>
+      >
+        {%- if reward_logo != blank -%}
+          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
+        {%- else -%}
+          <span class="milaura-drawer-rewards__fallback">M</span>
+        {%- endif -%}
+      </span>
       <span
         class="milaura-drawer-rewards__mark{% if unlocked_rewards >= 2 %} is-reached{% elsif unlocked_rewards == 1 %} is-next{% endif %}"
         style="left: {{ mark_2_percent }}%;"
         aria-hidden="true"
-      ></span>
+      >
+        {%- if reward_logo != blank -%}
+          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
+        {%- else -%}
+          <span class="milaura-drawer-rewards__fallback">M</span>
+        {%- endif -%}
+      </span>
       <span
         class="milaura-drawer-rewards__mark milaura-drawer-rewards__mark--last{% if unlocked_rewards >= 3 %} is-reached{% elsif unlocked_rewards == 2 %} is-next{% endif %}"
         aria-hidden="true"
-      ></span>
+      >
+        {%- if reward_logo != blank -%}
+          {{ reward_logo | image_url: width: 56 | image_tag: class: 'milaura-drawer-rewards__logo', loading: 'lazy', widths: '32, 56', sizes: '22px', alt: '' }}
+        {%- else -%}
+          <span class="milaura-drawer-rewards__fallback">M</span>
+        {%- endif -%}
+      </span>
     </div>
 
     <ol class="milaura-drawer-rewards__steps">
