@@ -93,18 +93,19 @@
   .milaura-stone-directory .milaura-hub__destination .milaura-hub__destination-copy { min-height: 0; }
   .milaura-stone-directory .milaura-hub__destination-link { margin-top: var(--milaura-esp-md); padding-top: 0; }
   .milaura-stone-directory[data-enhanced] .milaura-stone-directory__viewport {
-    overflow-x: auto; scrollbar-width: none;
-    scroll-snap-type: x mandatory; scroll-padding-inline: 18px;
+    overflow: clip; touch-action: pan-y pinch-zoom;
+    -webkit-user-select: none; user-select: none;
   }
-  .milaura-stone-directory[data-enhanced] .milaura-stone-directory__viewport::-webkit-scrollbar { display: none; }
   .milaura-stone-directory[data-enhanced] .milaura-stone-directory__track {
     grid-auto-flow: column; grid-auto-columns: var(--milaura-stone-card-width);
     width: max-content;
-    padding-inline-end: max(0px, calc(100vw - var(--milaura-stone-card-width) - 36px));
+    transform: translate3d(var(--milaura-stone-offset, 0px), 0, 0);
+    transition: transform var(--milaura-stone-duration, 280ms) ease;
   }
-  .milaura-stone-directory[data-enhanced] .milaura-stone-directory__item {
-    scroll-snap-align: start; scroll-snap-stop: always;
-  }
+  .milaura-stone-directory[data-enhanced] .milaura-hub__destination,
+  .milaura-stone-directory[data-enhanced] .milaura-hub__destination-image { -webkit-user-drag: none; }
+  .milaura-stone-directory__row.is-dragging .milaura-stone-directory__track,
+  .milaura-stone-directory__row.is-dragging .milaura-stone-directory__indicator { transition: none; }
   .milaura-stone-directory__controls {
     display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 44px;
     align-items: center; gap: var(--milaura-esp-xs);
@@ -122,10 +123,13 @@
     display: block; width: calc(100% / var(--milaura-stone-count)); height: 100%;
     background: var(--milaura-encre);
     transform: translateX(calc(var(--milaura-stone-index, 0) * 100%));
+    transition: transform var(--milaura-stone-duration, 280ms) ease;
   }
   .milaura-stone-directory__position { margin: 0; white-space: nowrap; font-family: var(--milaura-font-texte); font-size: var(--milaura-t-petit); font-variant-numeric: tabular-nums; }
 }
 @media (prefers-reduced-motion: reduce) {
   .milaura-stone-directory .milaura-hub__destination,
-  .milaura-stone-directory .milaura-hub__destination-image { transition: none; }
+  .milaura-stone-directory .milaura-hub__destination-image,
+  .milaura-stone-directory[data-enhanced] .milaura-stone-directory__track,
+  .milaura-stone-directory__indicator { transition: none; }
 }
