@@ -1,10 +1,10 @@
-# Swipe explicite des pierres, preview a tester sur iPhone
+# Swipe explicite des pierres, integre et live
 
-Date : 2026-09-05 18:31 CEST. Le test reel de Patrice invalide le swipe natif du lot precedent, meme sur le lien neuf : la carte reste immobile avec un petit mouvement vertical. Les bilans automatisees ci-dessous sont historiques et ne valent pas validation sur son appareil.
+Date : 2026-09-05 18:56 CEST. Patrice demande explicitement commit, push et deploiement live du correctif prepare en preview. Source `23b6b565`, integration `372dd0c3` poussees. Deux assets seulement publies sur `190430282075` avec `--nodelete --allow-live --strict`, pullback 2/2 identique. Geste horizontal explicite, scroll vertical et zoom preserves, design et commandes inchanges, code natif precedent retire.
 
-Correction `23b6b565` dans `codex/milaura-stone-pointer-swipe-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-pointer-swipe-20260905`. Deux assets reserves : `assets/milaura-stone-directory.js`, `assets/milaura-stone-pages.css`. Geste horizontal explicite avec Pointer Events, mouvement vertical et zoom conserves, memes cartes et footer ; ancien code natif retire. Preview `200974958939` actualisee, pullback 2/2 identique, 13 rangees au toucher simule conformes. Chromium 360/390/430/768/1440 ; WebKit 390/1440 par pointeur souris. Theme Check 0 erreur/16 avertissements historiques. Aucun test iPhone physique par Codex.
+Recette publique Chromium 360/390/430/768/1440 et WebKit 390/1440 conforme ; gestes CDP simules, fleches, barre, clavier, liens, vertical, mouvement reduit et resize verifies. Les 13 rangees avaient ete verifiees en preview. WebKit controle par pointeur souris, aucun iPhone physique teste par Codex ; le GO de publication ne constitue pas une mesure du geste sur son appareil. Theme Check 0 erreur/16 avertissements historiques.
 
-Lien envoye a Patrice : `https://milaura.fr/pages/bijoux-par-pierre?preview_theme_id=200974958939&swipe=pointer-20260905#MilauraStoneDirectory`. Retour utilisateur attendu ; live `190430282075` encore au lot natif precedent. Autorisation de correction/publication conservee, pas de nouveau GO a solliciter. Checkpoint source : `docs/checkpoints/2026-09-05-1829-stone-pointer-swipe-preview.md`. Worktree et reservations conserves ; modifications concurrentes du checkout principal preservees.
+Worktree propre retire, branche source conservee, reservations liberees. Nouveaux commits du miroir Shopify classes : leurs cinq fichiers sont identiques a l'integration avant publication. Les deux assets live avant deploy correspondent aussi a cette base. Modifications concurrentes preservees. Checkpoint : `docs/checkpoints/2026-09-05-1829-stone-pointer-swipe-preview.md`. Les bilans precedents restent historiques ; conserver le design actuel.
 
 # Swipe natif ajoute sans changement de design, live
 

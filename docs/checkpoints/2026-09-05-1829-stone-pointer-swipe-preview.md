@@ -40,3 +40,15 @@ Correction disponible en preview. Lien de test transmis a Patrice : `https://mil
 Retour sur son iPhone attendu. Aucun nouveau deploiement live effectue dans ce lot a cette heure ; le live `190430282075` sert encore le lot natif precedent. Ne pas annoncer le swipe iPhone comme valide sans son retour. L'autorisation de correction et de publication du perimetre persiste ; le test demande porte sur le fonctionnement reel.
 
 Le checkout principal et ses modifications concurrentes restent preserves. Le theme panier prive `200990818651` est hors lot.
+
+## Publication live du 2026-09-05 a 18:56 CEST
+
+GO explicite de Patrice : « push commit deploie live ». Source `23b6b565` deja poussee, integration `372dd0c3` poussee sur `codex/milaura-integration`.
+
+Avant integration, les cinq fichiers modifies par les nouveaux commits du miroir `origin/main` (`e7717b59`) ont ete compares a HEAD et sont identiques. Les deux assets live relus correspondent aussi a cette base. Le controle automatique a d'abord suspendu le merge ; la comparaison separee a etabli l'absence de changement distant a perdre, puis l'integration a ete autorisee. Aucun merge du miroir effectue.
+
+Deploiement cible des deux assets sur `190430282075`, sans suppression, avec `--allow-live --strict`. Pullback 2/2 identique aux SHA-256 ci-dessus. Preuves : `live-push.json`, `live-pullback-comparison.json`, `mirror-before.json`, `live-qa.json`, `live-webkit-qa.json` sous le dossier temporaire du lot.
+
+Recette publique : Chromium 360/390/430/768/1440, WebKit 390/1440. Gestes tactiles simules, fleches, indicateur, liens, clavier, defilement vertical, CPU x4, resize et mouvement reduit conformes. Verification des dimensions/styles identiques ; capture mobile publique relue. Theme Check d'integration : zero erreur, 16 avertissements historiques. Aucun iPhone physique teste par Codex ; ne pas transformer le GO live en preuve instrumentee sur son appareil.
+
+Worktree propre et integre retire ; branche source poussee conservee. Reservations liberees. Les sept fichiers deja modifies du checkout principal ont ete verifies identiques bit a bit apres integration ; seules les contributions documentaires de ce lot sont ensuite actualisees avec un index isole. Autres travaux preserves. Le statut preview ci-dessus decrit l'etape precedente, remplacee par cette publication live.
