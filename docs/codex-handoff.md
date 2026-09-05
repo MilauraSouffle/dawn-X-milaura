@@ -1,3 +1,17 @@
+# Reprise prioritaire : polish visuel apres le Polish 7
+
+Date : 2026-09-05 09:20 CEST. Statut : `POLISH 7 FERME, INTEGRE ET LIVE`.
+
+Les landings dediees Aigue-marine et Sodalite utilisent maintenant le guide pierre reutilisable en trois onglets apres les cartes produit. Aigue-marine met en avant la bague argent modele 01 dans le bento ; Sodalite conserve le bracelet Horus. Le lot est integre et pousse au commit `ac2144de`, puis deploye par quatre fichiers exacts sur le theme live `190430282075`. Pullback `4/4` identique, Theme Check sans erreur, parcours publics Aigue-marine et Sodalite controles. Checkpoint : [2026-09-05-0920-polish7-stone-landings-live-handoff.md](checkpoints/2026-09-05-0920-polish7-stone-landings-live-handoff.md).
+
+Point connu : la bague Aigue-marine est actuellement epuisee. La route dediee Aigue-marine fonctionne avec `?view=milaura-campaign-aigue` ; aucune affectation de template Shopify Admin n a ete modifiee dans ce lot. Le checkout principal reste sale avec des travaux concurrents preserves.
+
+## Prompt de reprise courant
+
+```text
+Reprends le polish visuel MilAura depuis docs/checkpoints/2026-09-05-0920-polish7-stone-landings-live-handoff.md. Lis AGENTS.md, docs/project-state.md, docs/codex-handoff.md et docs/workstreams.md, puis commence en lecture seule. Le Polish 7 est ferme, pousse au commit ac2144de et live sur le theme 190430282075 : guides reutilisables Aigue-marine et Sodalite, trois onglets cures et bague Aigue-Marine Argent en produit star. Ne redeploie rien par deduction. Demande-moi le prochain polish de la landing, reproduis le point exact en desktop et mobile, puis garde preview, GO visuel, integration et live comme gates distinctes. Preserve tous les changements concurrents du checkout principal et n utilise jamais origin/main comme source d integration.
+```
+
 # Reprise prioritaire : 59 anciennes URLs SEO restaurees
 
 Date : 2026-09-04 22:10 CEST. [Checkpoint courant](checkpoints/2026-09-04-2210-seo-clicked-urls-restored.md).
