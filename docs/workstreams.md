@@ -12,6 +12,17 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Annuaire et landings par pierre du 2026-09-05
+
+- Proprietaire : Codex, tache `Polish visuel Milaura`, demande Patrice du 2026-09-05 : recenser les pierres, completer leurs pages depuis le modele Polish 7, puis traiter la navigation mobile en rangees courtes.
+- Branche : `codex/milaura-stone-directory-20260905`, base `5a51f592`, implementation `3785be3a`, correction recherche `d3eca97b`.
+- Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/stone-directory-20260905`.
+- Correction du 2026-09-05 10:38 CEST : Patrice valide le rendu sous reserve de retirer la recherche. Recherche et compteur global supprimes dans la preview privee ; cartes a 40 px de l'introduction sur desktop, 24 px sur mobile. Recette 390/1440 et fleches 1/3 > 2/3 > 1/3 conformes, Theme Check 0 erreur/16 avertissements historiques, pullback 3/3 identique. Integration et mise en ligne restent a effectuer.
+- GO live explicite du 2026-09-05 : integration et theme `190430282075` reserves temporairement a cette tache pour les 49 fichiers publics du lot, les dix affectations existantes et la publication des trente nouvelles collections sur Boutique en ligne uniquement. Checkout concurrent preserve ; autres produits, stocks, prix, canaux et Ads hors perimetre.
+- Zone reservee : audit et matrice `docs/audits/2026-09-05-stone-directory*`, configurations `templates/collection.milaura-pierre-*.json`, templates hub/preview, `sections/milaura-stone-hero.liquid`, `sections/milaura-stone-directory.liquid`, assets associes, adaptations retrocompatibles de `sections/milaura-campaign-landing.liquid`, `sections/milaura-stone-guide.liquid`, `sections/milaura-catalogue-hub.liquid`, scripts et donnees de generation de ce lot. Les landings Sodalite et Aigue-marine validees restent les references.
+- Cible : GO implementation et corrections confirme par Patrice le 2026-09-05. Collections par pierre uniquement : inclusions correctives et nouvelles collections non publiees ; configurations et preview privee avant affectations/publication finales. Aucun produit, stock ou prix a modifier. Theme prive reserve `200974958939`, MilAura Toutes les pierres 2026-09-05. Copie du live `190430282075`, dont le layout est recopie a l'identique dans la preview uniquement pour corriger le placeholder cree par la duplication CLI.
+- Etat final au 2026-09-05 10:55 CEST : FERME, INTEGRE ET LIVE. Integration `3d29f3a8`, correction de compteurs `3492023f` poussee. Theme live `190430282075`, 49 fichiers publics deployes et pullback 49/49 identique. Dix affectations existantes modifiees, trente nouvelles collections publiees uniquement sur Boutique en ligne `320846594395`. Quarante pages publiques et produits compares sans ecart ; hub de 39 cartes sans recherche, recette 390/1440 conforme. Les trois Boho passes en DRAFT par la tache catalogue sont masques ; compteurs Quartz rose 10, Aventurine 6, Obsidienne 4. Aucun produit, stock, prix ou canal produit modifie par cette release. Checkpoint `docs/checkpoints/2026-09-05-1055-stone-directory-live.md`. Worktree source propre retire apres integration ; branche et theme prives conserves comme preuves. Reservation du live et des fichiers liberee.
+
 ### Enrichissement catalogue P1 du 2026-09-05
 
 - Proprietaire : Codex, tache `01a0708c-b881-7b41-bbf0-c0aa9d4ac367`, reprise du checkpoint `2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md`.

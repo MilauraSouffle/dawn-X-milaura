@@ -1,7 +1,14 @@
 # MilAura : annuaire et landings par pierre
 
-Date : 2026-09-05 10:38 CEST.
-Statut : implementation et corrections de collections realisees ; preview privee en recette visuelle Patrice. Aucun deploiement sur le theme live.
+Date : 2026-09-05 10:55 CEST.
+Statut : LIVE VERIFIE apres GO explicite de Patrice. Le compte rendu de preparation ci-dessous est historique ; la release et ses preuves sont dans `../checkpoints/2026-09-05-1055-stone-directory-live.md`.
+
+Les 49 fichiers publics sont deployes sur `190430282075`, les dix collections existantes ont leur template dedie et les trente nouvelles collections sont publiees sur Boutique en ligne uniquement. Les 40 URLs publiques, leurs canoniques, produits star et trois onglets sont conformes. Le hub contient 39 cartes sans recherche, en treize rangees de trois maximum sur mobile. Le pullback live est identique 49/49.
+
+Trois colliers Boho sont passes en DRAFT dans la tache catalogue concurrente pendant la release. Le rendu les masque automatiquement ; les compteurs du hub ont ete ajustes a Quartz rose 10, Aventurine 6 et Obsidienne 4. Les selections publiques contiennent ainsi 122 bijoux distincts sur les 125 references configurees. Aucun statut produit n'a ete modifie par cette release. Leur reactivation future impliquera de remettre ces trois compteurs a jour.
+
+## Preparation historique en preview
+
 Branche : `codex/milaura-stone-directory-20260905`, base `5a51f592`.
 Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/stone-directory-20260905`.
 

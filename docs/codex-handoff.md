@@ -1,3 +1,9 @@
+# Mise en ligne terminee : annuaire et landings par pierre
+
+Date : 2026-09-05 10:55 CEST. Statut : LIVE VERIFIE apres GO explicite de Patrice. Le hub public `/pages/bijoux-par-pierre` contient 39 cartes sans recherche, treize rangees courtes sur mobile, et ouvre les landings sans parametre de preview. Les 40 pages sont publiques, les dix anciennes affectations et trente publications Boutique en ligne sont executees. Theme `190430282075`, pullback 49/49 identique, un H1/trois onglets/produits/canoniques conformes sur les 40 pages, responsive 390/1440 controle. Integration `3d29f3a8`, compteurs `3492023f` pousses. [Checkpoint de release](checkpoints/2026-09-05-1055-stone-directory-live.md).
+
+Trois Boho ont ete passes en DRAFT par la tache catalogue concurrente ; leurs references restent configurees et se masquent automatiquement. Compteurs ajustes a Quartz rose 10, Aventurine 6 et Obsidienne 4. Les remettre a jour apres une reactivation verifiee, sans modifier les statuts par deduction. Les anciens etats preview ci-dessous ne valent plus pour le lot pierre. Repartir de la branche canonique et du live ; les travaux concurrents du checkout sont preserves.
+
 # Reprise prioritaire : enrichissement du catalogue physique
 
 Date : 2026-09-05 09:41 CEST. Statut : `HANDOFF DEDIE PRET`.
