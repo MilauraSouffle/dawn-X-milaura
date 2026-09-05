@@ -24,20 +24,20 @@ Date : 2026-09-05 10:55 CEST. Statut : LIVE VERIFIE apres GO explicite de Patric
 
 Trois Boho ont ete passes en DRAFT par la tache catalogue concurrente ; leurs references restent configurees et se masquent automatiquement. Compteurs ajustes a Quartz rose 10, Aventurine 6 et Obsidienne 4. Les remettre a jour apres une reactivation verifiee, sans modifier les statuts par deduction. Les anciens etats preview ci-dessous ne valent plus pour le lot pierre. Repartir de la branche canonique et du live ; les travaux concurrents du checkout sont preserves.
 
-# Reprise prioritaire : enrichissement du catalogue physique
+# Catalogue ferme : Patrice reprend le tri des anciennes fiches
 
-Date : 2026-09-05 09:41 CEST. Statut : `HANDOFF DEDIE PRET`.
+Date : 2026-09-05 17:35 CEST. Statut : `PRODUCTION TERMINEE ; TRI REPRIS PAR PATRICE`.
 
-Le correctif SEO a restaure 59 anciennes URLs et le sitemap a ete soumis dans GSC. Le bracelet hematite est ACTIVE a 8,50 EUR avec stock total 12 et sert a la remise cadeau des 50 EUR ; le libelle redondant `1 cadeau` a ete retire du theme live. Les deux factures sont integrees au Sheet canonique : 27 references vendables ont un stock physique positif. Neuf sont deja ACTIVE dans Shopify avec leur stock exact, dont quatre anciennes fiches a reenrichir en place ; 18 references restent absentes de Shopify et n'ont encore aucun enrichissement ni DRAFT.
+Patrice prend personnellement la main sur le choix des anciennes fiches en ligne a conserver ou retirer. Une session fraiche enrichira uniquement celles qu'il aura retenues. Le mandat de creation est termine : trois nouvelles Boho puis treize autres fiches ont ete creees en DRAFT ; les deux fils de perles restants sont du materiel personnel explicitement exclu de la vente. Les trois anciennes Boho P1 ont ete approuvees puis activees ; le chapelet historique enrichi est au dernier controle en DRAFT, avec 78 cm et sans nombre de perles invente. Prix Boho 14,90 EUR conserve.
 
-La liste exacte des quatre fiches P1, des 18 creations, des cinq references a stock zero et des 59 anciennes fiches actives figure dans [le checkpoint dedie](checkpoints/2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md). Les 18 sources fournisseur et les recus sont conserves dans le workspace produit prive sous `data/catalogue-batches/2026-09-05-invoices-enrichment-handoff/`.
+Treize contrats et imports PASS, 65 images comparees aux pixels Shopify, 269 cellules Sheet actualisees et 585 verifiees. Copie canonique privee `data/catalogue-batches/2026-09-05-p2-remaining13/`, 514 fichiers compares par SHA-256 puis rapport ajoute. [Revue des treize brouillons](http://127.0.0.1:8766/REVIEW.html), serveur local necessaire. Les statuts sont ceux des derniers controles de chaque lot ; les relire par EAN/IDs lors d'une prochaine action de Patrice ou de Codex. Aucune activation ou publication deduite du message de cloture.
 
-Camilla controle uniquement les produits ACTIVE marques `supplier-backed`. Le cron `supplier-watch-can-daily`, ID `2b4400dc036b`, est actif chaque jour a 07:15 UTC avec livraison Telegram uniquement en cas d'alerte. Ne pas le dupliquer.
+Le [handoff de cloture](checkpoints/2026-09-05-1735-catalogue-handoff-patrice-triage.md) remplace le mandat de 09:41. Il contient les preuves, decisions et chemins durables. Les anciens nombres 27/59/55 ne sont pas un inventaire actuel. Le compteur de ventes est conserve sur instruction de Patrice. Hematite, cadeau, cron Camilla, themes et travaux concurrents preserves ; aucune regeneration hematite automatiquement ouverte. Aucun besoin d'information supplementaire pour terminer les nouveaux produits.
 
-## Prompt de reprise catalogue courant
+## Prompt pour les anciennes fiches retenues
 
 ```text
-Reprends MilAura depuis docs/checkpoints/2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md. Ne refais pas d'audit global et ne rejoue ni les factures, ni les stocks, ni les 59 activations SEO, ni le cadeau hematite, ni le cron Camilla. Relis les 27 EAN physiques du Sheet, puis traite d'abord en place les quatre fiches legacy physiques P1 en preservant leurs IDs, handles et stocks. Utilise le workflow V4.1, cinq images et le copywriting MilAura, puis presente textes et galeries a Patrice avant ecriture. Montre aussi l'hematite actuelle et ne regenere ses visuels que si Patrice maintient cette demande apres revue. Enchaine ensuite les 18 references physiques absentes de Shopify depuis les sources durables, DRAFT uniquement. Les cinq references a stock zero et les cartes Sodalite restent hors lot. Les 55 autres anciennes fiches restent ACTIVE a stock zero jusqu'a leur revue individuelle. Aucun GO Ads, feed ou publication n'est deduit.
+Reprends MilAura depuis docs/checkpoints/2026-09-05-1735-catalogue-handoff-patrice-triage.md. La production des nouvelles fiches est terminee. Voici les anciennes fiches que je conserve : [ma liste de liens, IDs ou EAN]. Relis uniquement leur etat actuel dans le Sheet et Shopify, puis reprends leur enrichissement avec le workflow V4.1 et le copywriting MilAura. Preserve les IDs et handles historiques et prepare la revue des textes et galeries. Ne recree pas les produits deja importes, ne vends pas les deux fils de perles personnels et ne rejoue ni factures ni stocks. Aucune modification de statut ou publication par deduction. Les autres anciennes fiches restent hors de ce lot.
 ```
 
 # Reprise prioritaire : polish visuel apres le Polish 7
