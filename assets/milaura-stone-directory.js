@@ -5,13 +5,6 @@
     if (instances.has(root)) return;
     const mobile = matchMedia('(max-width: 749px)');
     const rows = [];
-    const hint = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
-      entries.forEach(({ target, isIntersecting }) => {
-        if (!isIntersecting || !mobile.matches) return;
-        target.classList.add('is-hinted');
-        hint.unobserve(target);
-      });
-    }, { threshold: 0.5 }) : null;
 
     root.querySelectorAll('[data-stone-row]').forEach((row) => {
       const track = row.querySelector('[data-stone-track]');
@@ -23,12 +16,12 @@
       const cards = Array.from(track.children);
       if (!cards.length) return;
       let index = 0;
+      row.style.setProperty('--milaura-stone-count', cards.length);
 
       const render = () => {
         const active = mobile.matches && cards.length > 1;
-        track.style.setProperty('--milaura-stone-index', active ? index : 0);
+        row.style.setProperty('--milaura-stone-index', active ? index : 0);
         controls.hidden = !active;
-        position.hidden = !active;
         prev.disabled = index === 0;
         next.disabled = index === cards.length - 1;
         position.textContent = `${index + 1} / ${cards.length}`;
@@ -41,15 +34,12 @@
       };
       const move = (direction) => {
         index = Math.max(0, Math.min(cards.length - 1, index + direction));
-        row.classList.remove('is-hinted');
-        hint?.unobserve(row);
         render();
       };
       const previous = () => move(-1);
       const following = () => move(1);
       prev.addEventListener('click', previous);
       next.addEventListener('click', following);
-      hint?.observe(row);
       rows.push({ render, cleanup: () => {
         prev.removeEventListener('click', previous);
         next.removeEventListener('click', following);
@@ -62,7 +52,6 @@
     root.dataset.enhanced = 'true';
     instances.set(root, () => {
       mobile.removeEventListener('change', resize);
-      hint?.disconnect();
       rows.forEach(({ cleanup }) => cleanup());
       instances.delete(root);
     });

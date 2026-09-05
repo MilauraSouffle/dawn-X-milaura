@@ -1,0 +1,20 @@
+# Navigation regroupee sous les cartes pierres
+
+Date : 2026-09-05.
+
+Patrice rejette les chevrons juges invisibles sur les cotes des photos et demande une barre de mouvement, un indicateur et les fleches cliquables a l'emplacement du compteur sous chaque rangee. Cette decision remplace les precedents essais de commandes superposees. Cartes compactes et desktop deja valides a conserver.
+
+Implementation dans trois fichiers : `sections/milaura-stone-directory.liquid`, `assets/milaura-stone-pages.css`, `assets/milaura-stone-directory.js`.
+
+- Bloc en flux normal sous le rail : fleche precedente, barre avec segment mobile, compteur, fleche suivante. Zones tactiles 44 x 44 px, SVG 24 px avec trait 1.75 et tige horizontale pour une lecture plus nette. Fleches indisponibles visibles et desactivees.
+- Barre de 3 px : fond aigue-marine pierre, segment encre prune. Le segment occupe un tiers pour trois cartes et se deplace en meme temps que le rail. Un seul index CSS porte l'etat du rail et de l'indicateur ; le nombre de cartes est calcule par rangee.
+- Compteur annonce via aria-live ; barre decorative masquee aux lecteurs d'ecran. Aucun nouveau texte public.
+- Suppression du DOM des anciens chevrons dans le viewport, de leurs classes, du placement absolu, de l'IntersectionObserver, de `is-hinted`, de la variable de direction et de l'animation d'appel.
+- La barre contient un span explicite : cela respecte la regle Dawn qui masque les div vides, sans modifier ni surcharger le CSS global.
+- Cartes de 286 px, photos, textes, desktop et comportement de navigation existant conserves. Aucun mecanisme tactile ajoute. Sans JavaScript, les 39 liens restent accessibles en pile verticale et les commandes sont masquees.
+
+Base `c337a81a`, branche `codex/milaura-stone-bottom-navigation-20260905`. Themes reserves : preview `200974958939`, puis live `190430282075`. Preuves locales : `/private/tmp/milaura-bottom-navigation-20260905/`.
+
+Recette preview du 2026-09-05 : conforme a 360, 390, 430, 768 et 1440 px. Les mesures et styles des 39 cartes sont identiques au live de depart. Navigation 1-2-3-2-1 sur les treize rangees a 390 px, synchronisation du segment et du compteur, limites des boutons, clic sur SVG, clavier, liens, mouvement reduit, redimensionnement et rechargement de section Shopify verifies. Sans JavaScript, les 39 liens restent accessibles. Captures 360 et 390 px inspectees. Aucun bouton superpose ni ancienne classe de chevron dans le DOM.
+
+`git diff --check` et `node --check` conformes. Theme Check : 0 erreur, 16 avertissements historiques hors lot. Pullback preview : trois fichiers identiques. Publication live a consigner apres verification.
