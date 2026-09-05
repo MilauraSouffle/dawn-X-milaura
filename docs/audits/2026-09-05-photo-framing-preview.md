@@ -1,7 +1,7 @@
 # Cadrage des cartes : proposition privee
 
 Date : 2026-09-05 15:48 CEST.
-Statut : PREVIEW PRIVEE, validation visuelle de Patrice attendue.
+Statut au 2026-09-05 16:10 CEST : CADRAGES VALIDES PAR PATRICE, INTEGRES ET LIVE.
 Branche : `codex/milaura-touch-framing-20260905`.
 Theme prive : `200974958939`.
 Apercu : https://milaura.fr/?preview_theme_id=200974958939
@@ -37,4 +37,6 @@ Cette proposition corrige trois familles partagees. Elle ne signifie pas que cha
 
 Le correctif tactile est deja live au commit d'integration `3074ae39`, avec pullback 3/3 et tests de gestes simules 360/390/430 conformes. L'iPhone physique de Patrice reste le controle final du symptome qu'il a signale ; aucune reproduction Safari physique n'est revendiquee.
 
-Pour publier les cadrages apres validation visuelle : integrer le commit de cette branche dans `codex/milaura-integration`, deployer uniquement les trois CSS ci-dessus sur `190430282075`, puis pullback 3/3 et recette publique. Ne pas pousser tout le theme prive, dont le template de preview conserve ses parametres propres.
+Publication executee le 2026-09-05 apres GO visuel et GO deploiement explicites : source `d7e8f7af`, integration `911e206d` poussee sur `codex/milaura-integration`, trois CSS ci-dessus deployes sur `190430282075`. Pullback 3/3 identique. Preuves : `/private/tmp/milaura-smooth-20260905/photo-live-after/`. Ne pas pousser tout le theme prive, dont le template de preview conserve ses parametres propres.
+
+Le retour iPhone de Patrice juge le premier correctif tactile insuffisamment fluide. La correction suivante retire le pilotage du geste par JavaScript, conserve l'inertie native et limite les mises a jour du compteur aux changements utiles. Ce retour remplace toute interpretation du premier controle simule comme une validation de fluidite sur l'iPhone physique.
