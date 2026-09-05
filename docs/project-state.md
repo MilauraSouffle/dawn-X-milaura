@@ -1,32 +1,18 @@
 > Polish 7, 2026-09-05 09:20 CEST : les guides reutilisables `Tout savoir sur l aigue-marine` et `Tout savoir sur la sodalite` sont integres au commit `ac2144de`, pousses et live sur le theme `190430282075`. La landing Aigue-marine met maintenant en avant la bague argent modele 01 ; Sodalite conserve Horus. Pullback live `4/4` identique, storefronts publics controles et responsive prive `390/1440` valide. La bague Aigue-marine reste epuisee et l affectation Admin sans parametre `view` n a pas ete modifiee. [Checkpoint courant](checkpoints/2026-09-05-0920-polish7-stone-landings-live-handoff.md).
 
-> Correctif SEO, 2026-09-04 22:10 CEST : les 59 anciennes URLs avec clics GSC sont restaurees, pilote compris. Lot final : 58/58 ACTIVE, dont 57 stocks zero et collier Boho stock quatre, toutes en `DENY`, aucun autre champ modifie. Sitemap produits HTTP 200 avec 234 entrees ; 59 handles attendus, 59 trouves. Echantillons publics conformes `OutOfStock` et `InStock`. Le sitemap a ete soumis dans GSC ; recrawl Google en attente. [Checkpoint courant](checkpoints/2026-09-04-2210-seo-clicked-urls-restored.md).
-
-> Correctif SEO, 2026-09-04 21:33 CEST : sitemap soumis dans GSC avec confirmation, traitement Google encore en attente. Pilote `pendule-cristal-de-roche` restaure : ACTIVE, stock zero, DENY, public 200, canonique correcte, OutOfStock et achat desactive. Les 58 autres produits n'ont pas ete modifies : la mutation collective 57 stocks zero + Boho quatre, puis ACTIVE, exige un GO explicite sur ces nombres. Aucune 301 par simple ressemblance. [Checkpoint courant](checkpoints/2026-09-04-2133-seo-corrective-explicit-go.md).
-
-> SEO et stocks, 2026-09-04 19:42 CEST : audit GSC termine en lecture seule. Les 59 handles retires avec clics recents representent 109 clics sur 28 jours, soit 55,6 % de la table Pages ; exposition historique, pas perte mesuree. Pas d'action manuelle ni alerte securite. Sitemap public conforme aux 173 canoniques, rapport GSC ancien. Aucune 301 ou soumission executee. [Audit](audits/2026-09-04-legacy-retirement-search-console.md), [checkpoint courant](checkpoints/2026-09-04-1942-gsc-stock-hematite.md).
-
-> Confirmations appliquees au Sheet : Boho obsidienne 4, rhodonite 6 mm 1 conservee, oeil-de-tigre 8 mm 2 conservees, sans rejouer les achats. Objet cadeau hematite stock Shopify 50 -> 12, toujours DRAFT a prix zero. Le lien CAN identifie EAN 3701459008254, deja traite sur une fiche canonique ACTIVE a 8,50 EUR, cinq images validees et stock 9 (Sheet ligne 163 et Shopify). Attente : 12 cadeaux en plus des neuf, ou 12 au total ? Aucune activation, nouvelle generation ou modification de la galerie acceptee avant resolution. Les anciennes attentes amethyste/trois stocks ci-dessous sont depassees ; l'ecart Unys reste distinct.
-
-> Inventaire et SEO, 2026-09-04 18:55 CEST : les deux factures sont maintenant integrees au Sheet, 35 lignes d'achat ajoutees, 24 nouveaux EAN et neuf EAN reutilises, zero doublon. Trois stocks physiques restent en attente (obsidienne Boho, rhodonite 6 mm, oeil-de-tigre 8 mm). Aucun stock ni produit Shopify modifie. [Checkpoint courant](checkpoints/2026-09-04-1855-invoices-seo-gift-clarifications.md).
-
-> Priorite organique explicite : le retrait legacy technique ne ferme pas l'accompagnement SEO. Preparer le traitement des anciennes URLs et les 301 pertinentes apres audit, sans reactivation ou redirection en masse par deduction. Cadeau panier relu DRAFT, hématite 4 mm, stock Shopify 50 ; Patrice dit amethyste et 12 physiques, identite a confirmer avant reprise. Les anciennes mentions de listes fournisseur attendues ci-dessous sont depassees.
-
-> Inventaire, 2026-09-04 18:40 CEST : RETRAIT LEGACY EXECUTE ET VERIFIE. 237 anciens produits passes en DRAFT, 179 canoniques inchanges (173 ACTIVE, six DRAFT volontaires), 333 anciens deja hors vente intouches. Sheet synchronise : 145 cellules sur 46 lignes, formules et donnees physiques preservees. [Checkpoint courant](checkpoints/2026-09-04-1826-inventory-legacy-retirement.md). Les anciennes instructions de retrait ci-dessous sont historiques et ne doivent pas etre rejouees.
-
-> Suite : attendre les deux listes fournisseur. Lot correctif distinct a decider pour le cadeau panier et deux mappings orphelins ; ecart Unys preexistant Sheet 4 / Shopify 1 non corrige. Mon Ecrin connecte et feeds externes non certifies, aucun theme ni Ads modifie.
+> Catalogue physique, 2026-09-05 09:41 CEST : le correctif SEO a restaure 59 anciennes URLs et le sitemap a ete soumis dans GSC. Le bracelet hematite est ACTIVE a 8,50 EUR, stock total 12, et sert au cadeau automatique des 50 EUR ; le libelle panier redondant est retire du live. Les deux factures sont integrees au Sheet : 27 references vendables ont un stock physique positif. Neuf sont deja ACTIVE avec leur stock exact, dont quatre anciennes fiches a reenrichir en place ; 18 references restent absentes de Shopify. Les 55 autres anciennes fiches restent ACTIVE a stock zero jusqu'a leur revue individuelle. Camilla controle uniquement les ACTIVE `supplier-backed` via le cron Telegram quotidien `2b4400dc036b`. Reprise : [handoff enrichissement catalogue](checkpoints/2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md).
 
 > Mise a jour Polish 6, 2026-09-04 08:40 CEST : LIVE VERIFIE sur le theme `190430282075`, commit `4067ea35` pousse sur `codex/milaura-integration`. Titres, surtitres, CTA et derniers ajustements fleches/espacements approuves sont publies. Pullback 18/18, Home 360/390/430/768/1440 et regressions 390/1440 PASS. Details : [checkpoint Polish 6](checkpoints/2026-09-04-polish6-live.md). Les autres chantiers ci-dessous restent inchanges.
 
 # MilAura - Etat courant du projet
 
-Derniere mise a jour inventaire : 2026-09-04 17:38 CEST. Les dates des autres chantiers restent leurs dates de verification.
+Derniere mise a jour inventaire : 2026-09-05 09:41 CEST. Les dates des autres chantiers restent leurs dates de verification.
 
 ## Etat en une phrase
 
 Patrice estime la refonte globale a environ `70 %` : le socle et le gros du developpement sont live, notamment Mon Ecrin et Rentree Sodalite, tandis que le travail restant porte surtout sur le polish visuel, des corrections reproduites et quelques ameliorations ciblees ; l inventaire continue en parallele et les gates Ads restent distinctes. Le premier mail marketing a ete envoye a 25 destinataires le 2026-09-01 et son systeme valide devient le `Template 1` reutilisable.
 
-Inventaire au 2026-09-04 : revue Patrice terminee, brouillons volontaires a conserver ; prochaine passe dediee au retrait reversible de tous les anciens produits hors catalogue canonique, puis aux deux commandes fournisseur dont les listes sont attendues. Aucun retrait legacy execute pendant ce handoff.
+Inventaire au 2026-09-05 : Sheet des deux factures a jour, 59 URLs SEO restaurees, cadeau hematite operationnel. Priorite suivante : enrichir en place quatre fiches physiques legacy, arbitrer le refresh hematite, puis creer en DRAFT les 18 references physiques absentes. Aucun catalogue Ads ne doit etre declare pret avant cette reconciliation et la verification des feeds.
 
 ## Template 1 marketing et premiere campagne envoyee au 2026-09-01
 
@@ -94,17 +80,15 @@ Manifest : `docs/reference/2026-08-12-obsolete-repository-archive.md`.
 - Une validation technique ne vaut jamais validation creative de Patrice.
 - Aucun produit, stock, prix ou statut de publication n'est modifie par un chantier theme sans autorisation explicite.
 
-## Inventaire et retrait de l'ancien catalogue au 2026-09-04
+## Inventaire et catalogue au 2026-09-05
 
-- [DECISION 2026-09-04] Patrice a termine sa revue et active manuellement les produits finalises. Tous les produits canoniques laisses en DRAFT le sont volontairement : les proteger sans les activer.
-- Prochaine mission : relire Sheet, Shopify et preuves de toutes les sessions, proteger les IDs canoniques traites/valides, puis passer tous les autres anciens produits actifs en DRAFT. Retrait reversible, pas de suppression definitive de masse ; aucune exception pour doublon, savon, SEO ou placement editorial.
-- Le perimetre protege inclut les anciens IDs reenrichis dans le chantier et les galeries historiques acceptees. Ne pas le limiter au dernier lot de 47, a une date de creation ou a cinq images.
-- FINAL47 : 47 DRAFT crees historiquement, puis six fiches cadeaux supprimees et verifiees le 2026-09-04 a 16:56 CEST. Le Sheet conserve leurs quantites physiques/couts et les exclut de la vente et des creations. Les statuts actuels des autres produits restent a relire apres les actions manuelles de Patrice.
-- Grenouille quartz rose : visuel accepte. Trois calendriers et coffret decouverte : refuses, intouchables avant reception des vraies photos. Aucun autre brouillon volontaire a activer.
-- Apres le retrait legacy : recevoir les listes des deux commandes fournisseur annoncees par Patrice, integrer achats/reassorts/nouvelles references au Sheet, puis appliquer le workflow V4.1. Listes non recues ; commandes et receptions physiques distinctes. GO de creation, validation visuelle et activation/publication restent distincts.
-- Contrat creatif : tenue contrastant avec le produit, references mannequin reservees a l'identite, aucun tee-shirt gris recopie, douceur et presence organique/vegetale des scenes ; pas de reprise des galeries acceptees par deduction.
-- Aucun nouveau controle global ou retrait legacy execute pendant le handoff. Aucun total actuel d'anciens produits a retirer n'est etabli ; les nombres 175/182/185 et les anciennes files restent historiques.
-- Reprise canonique : `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md`. Preuves des six suppressions : `docs/checkpoints/2026-09-04-1659-inventory-gifts-six-deleted.md`.
+- Le retrait legacy du 2026-09-04 est termine et ne doit jamais etre rejoue. Le correctif SEO a ensuite restaure 59 anciennes URLs : quatre portent maintenant du stock physique et 55 restent a zero, ACTIVE et DENY jusqu'a leur revue individuelle.
+- Les deux factures sont integrees au Sheet canonique. Elles couvrent 33 EAN : 27 references vendables avec stock physique positif, cinq vendables a zero et une reference de cartes Sodalite hors vente.
+- Shopify contient neuf des 27 references physiques avec leurs stocks exacts. Cinq sont deja au workflow courant. Quatre anciennes fiches SEO doivent etre enrichies en place sans changer leur ID ou handle. Les 18 autres references physiques sont absentes de Shopify et doivent etre creees en DRAFT sous V4.1.
+- Le bracelet hematite EAN `3701459008254` est ACTIVE a 8,50 EUR avec stock total 12, cinq images et 29 metachamps. Il sert au cadeau automatique des 50 EUR. Le libelle panier redondant a ete retire du live.
+- Les quatre fiches P1 sont Boho obsidienne stock 4, Boho aventurine stock 2, Boho quartz rose stock 2 et chapelet sodalite stock 1. Elles doivent conserver leurs URLs historiques.
+- Camilla controle uniquement les produits ACTIVE `supplier-backed`. Le cron Telegram `2b4400dc036b` est actif tous les jours a 07:15 UTC et reste silencieux sans alerte.
+- Reprise canonique : `docs/checkpoints/2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md`.
 
 ## Role de la session master au 2026-08-31
 
@@ -486,9 +470,9 @@ Pipeline actif :
 
 ## Catalogue physique, reprise courante
 
-L'etat courant est celui de la section inventaire du 2026-09-04 et du checkpoint `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md`. Les anciens compteurs et files de creation ne doivent plus etre rejoues. Les checkpoints des 2026-08-28 au 2026-09-04 et le ledger prive conservent les preuves de toutes les sessions, y compris les produits traites sur un ancien ID.
+L'etat courant est celui du checkpoint `docs/checkpoints/2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md`. Les factures, stocks, restaurations SEO et la remise hematite ne doivent pas etre rejoues. Le Sheet reste la source de verite et chaque ecriture Shopify se fait par EAN, produit et variante exacts.
 
-Les six cadeaux hors vente restent traces dans le Sheet et exclus de Shopify. Les quantites commandees des deux nouveaux achats ne seront pas assimilees a du stock physique avant preuve de reception. Aucun stock entrant fictif, aucun reassort automatique, aucune recuperation d'ancien produit sans decision specifique de Patrice.
+Prochaine execution : quatre mises a niveau en place, revue de l'hematite deja conforme, puis 18 creations DRAFT. Les cinq references vendables a zero et les cartes Sodalite restent hors lot. Les 55 autres URLs historiques seront arbitrees une par une plus tard.
 
 ## Commits de consolidation des 2026-08-12 et 2026-08-13
 
@@ -526,7 +510,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 1. La nouvelle session master conserve seule l integration et le live a partir de `8fb046588e0309e7875fdae7b2ad6b61d7c6a177` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
 2. Reprendre Mon Ecrin dans une session fraiche strictement read-only, auditer les mappings figes et faire reserver par le master le plus petit lot prive de resoluteur dynamique. L objectif est de fermer RC5 sans attendre la fin de l inventaire.
-3. Reprendre le catalogue depuis `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md` : audit exact de toutes les sessions, protection des canoniques et DRAFT volontaires, retrait reversible des anciens produits, puis listes des deux nouvelles commandes.
+3. Reprendre le catalogue depuis `docs/checkpoints/2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md` : quatre enrichissements en place, revue hematite, puis 18 creations DRAFT depuis les sources durables.
 4. Apres validation privee du resoluteur, enchainer productionisation C1, integration ciblee, bascule Admin, QA publique et GO live sous gates distinctes. Finition Mail et fondations Pinterest restent paralleles sans chevauchement.
 5. Apres le retrait legacy et reception des deux listes fournisseur, integrer achats, reassorts et nouvelles references au Sheet ; DRAFT sous workflow V4.1 apres GO, sans activer les brouillons volontaires ni recreer les six cadeaux exclus.
 6. Fermer le feed et Pinterest final sous leurs gates propres. Reprendre le polish UI Rentree Sodalite selon le checkpoint du 2026-08-31, sans gate live heritee.

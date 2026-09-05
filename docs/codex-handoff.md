@@ -1,3 +1,19 @@
+# Reprise prioritaire : enrichissement du catalogue physique
+
+Date : 2026-09-05 09:41 CEST. Statut : `HANDOFF DEDIE PRET`.
+
+Le correctif SEO a restaure 59 anciennes URLs et le sitemap a ete soumis dans GSC. Le bracelet hematite est ACTIVE a 8,50 EUR avec stock total 12 et sert a la remise cadeau des 50 EUR ; le libelle redondant `1 cadeau` a ete retire du theme live. Les deux factures sont integrees au Sheet canonique : 27 references vendables ont un stock physique positif. Neuf sont deja ACTIVE dans Shopify avec leur stock exact, dont quatre anciennes fiches a reenrichir en place ; 18 references restent absentes de Shopify et n'ont encore aucun enrichissement ni DRAFT.
+
+La liste exacte des quatre fiches P1, des 18 creations, des cinq references a stock zero et des 59 anciennes fiches actives figure dans [le checkpoint dedie](checkpoints/2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md). Les 18 sources fournisseur et les recus sont conserves dans le workspace produit prive sous `data/catalogue-batches/2026-09-05-invoices-enrichment-handoff/`.
+
+Camilla controle uniquement les produits ACTIVE marques `supplier-backed`. Le cron `supplier-watch-can-daily`, ID `2b4400dc036b`, est actif chaque jour a 07:15 UTC avec livraison Telegram uniquement en cas d'alerte. Ne pas le dupliquer.
+
+## Prompt de reprise catalogue courant
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md. Ne refais pas d'audit global et ne rejoue ni les factures, ni les stocks, ni les 59 activations SEO, ni le cadeau hematite, ni le cron Camilla. Relis les 27 EAN physiques du Sheet, puis traite d'abord en place les quatre fiches legacy physiques P1 en preservant leurs IDs, handles et stocks. Utilise le workflow V4.1, cinq images et le copywriting MilAura, puis presente textes et galeries a Patrice avant ecriture. Montre aussi l'hematite actuelle et ne regenere ses visuels que si Patrice maintient cette demande apres revue. Enchaine ensuite les 18 references physiques absentes de Shopify depuis les sources durables, DRAFT uniquement. Les cinq references a stock zero et les cartes Sodalite restent hors lot. Les 55 autres anciennes fiches restent ACTIVE a stock zero jusqu'a leur revue individuelle. Aucun GO Ads, feed ou publication n'est deduit.
+```
+
 # Reprise prioritaire : polish visuel apres le Polish 7
 
 Date : 2026-09-05 09:20 CEST. Statut : `POLISH 7 FERME, INTEGRE ET LIVE`.
