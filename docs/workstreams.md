@@ -12,6 +12,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Barre de navigation sous les cartes pierres du 2026-09-05
+
+- Etat final au 2026-09-05 17:38 CEST : FERME, INTEGRE ET LIVE. Source `29fb3ec9`, integration `7f3b20eb` poussees. Trois fichiers deployes sur `190430282075`, pullback 3/3 identique. Fleches, barre a segment mobile et compteur sous les cartes ; anciennes commandes superposees et leur code retires. Recette publique 360/390/430/768/1440, treize rangees et acces sans JS conformes. Dimensions et styles des 39 cartes et desktop inchanges. Theme Check 0 erreur/16 avertissements historiques. Worktree propre retire ; branche source conservee. Reservations des trois fichiers, de la preview `200974958939` et du live liberees. Checkpoint `docs/checkpoints/2026-09-05-1733-stone-bottom-navigation.md`.
+- Proprietaire : Codex, tache `Polish visuel Milaura`, nouvelle correction demandee par Patrice le 2026-09-05. Retirer les chevrons sur les photos, placer fleches cliquables, indicateur mobile et compteur sous chaque rangee ; conserver les cartes et le desktop.
+- Branche : `codex/milaura-stone-bottom-navigation-20260905`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-bottom-navigation-20260905`, base `c337a81a`.
+- Fichiers reserves : `assets/milaura-stone-pages.css`, `assets/milaura-stone-directory.js`, `sections/milaura-stone-directory.liquid`, documentation du lot. Suppression du positionnement superpose, de l'observateur et de l'animation des anciens chevrons.
+- Themes reserves : preview `200974958939` liberee par la tache panier, puis live `190430282075` pour le correctif cible dans la continuite du GO. Aucun autre fichier ou composant a modifier.
+
 ### Polish des fleches mobiles des pierres du 2026-09-05
 
 - Etat final au 2026-09-05 17:11 CEST : INTEGRE ET LIVE. Source `085465e8`, integration `fe4fe056` poussees. Deux fichiers deployes sur `190430282075`, pullback 2/2 identique. Chevrons fins hors des photos, cibles tactiles invisibles 44 px, cartes et desktop inchanges. Recette publique 360/390/430/768/1440, appui sur les SVG, treize rangees, clavier et mouvement reduit conformes. Theme Check 0 erreur/16 avertissements historiques. Preview panier non touchee. Checkpoint `docs/checkpoints/2026-09-05-1708-stone-arrow-polish.md`. Reservation des fichiers et du live liberee.

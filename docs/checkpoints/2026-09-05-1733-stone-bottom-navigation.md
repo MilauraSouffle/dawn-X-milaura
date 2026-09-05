@@ -17,4 +17,8 @@ Base `c337a81a`, branche `codex/milaura-stone-bottom-navigation-20260905`. Theme
 
 Recette preview du 2026-09-05 : conforme a 360, 390, 430, 768 et 1440 px. Les mesures et styles des 39 cartes sont identiques au live de depart. Navigation 1-2-3-2-1 sur les treize rangees a 390 px, synchronisation du segment et du compteur, limites des boutons, clic sur SVG, clavier, liens, mouvement reduit, redimensionnement et rechargement de section Shopify verifies. Sans JavaScript, les 39 liens restent accessibles. Captures 360 et 390 px inspectees. Aucun bouton superpose ni ancienne classe de chevron dans le DOM.
 
-`git diff --check` et `node --check` conformes. Theme Check : 0 erreur, 16 avertissements historiques hors lot. Pullback preview : trois fichiers identiques. Publication live a consigner apres verification.
+`git diff --check` et `node --check` conformes. Theme Check : 0 erreur, 16 avertissements historiques hors lot. Pullback preview : trois fichiers identiques.
+
+Publication verifiee le 2026-09-05 a 17:38 CEST : source `29fb3ec9`, integration `7f3b20eb`, toutes deux poussees. Trois fichiers deployes sans suppression sur le live `190430282075`, pullback 3/3 identique. Recette publique 360/390/430/768/1440 conforme, incluant les treize rangees a 390 px et l'acces sans JS. Les mesures et styles des cartes sont inchanges. Capture publique 390 px inspectee : fleches visibles, indicateur sur le deuxieme tiers et compteur 2/3. Aucun controle sur iPhone physique revendique.
+
+Worktree propre et integre retire ; branche source poussee conservee. Reservations des trois fichiers, de la preview et du live liberees. Les modifications concurrentes du checkout sont preservees. Preuves : `live-push.json`, `live-after/`, `live-qa.json` et captures sous le dossier temporaire indique plus haut. Capture durable : `/Users/paesano/.codex/visualizations/2026/09/05/01a0707d-afa2-7582-b289-2d9df6990e6a/milaura-navigation-sous-cartes.png`.
