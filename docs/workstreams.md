@@ -12,6 +12,13 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Enrichissement catalogue P1 du 2026-09-05
+
+- Proprietaire : Codex, tache `01a0708c-b881-7b41-bbf0-c0aa9d4ac367`, reprise du checkpoint `2026-09-05-0941-catalogue-enrichment-dedicated-handoff.md`.
+- Perimetre : EAN `3701459098132`, `3701459098071`, `3701459098088`, `3667407018617` ; preparation privee texte, SEO, metachamps et galeries V4.1. IDs et handles historiques conserves.
+- Artefacts : revue locale `/Users/paesano/.codex/visualizations/2026/09/05/01a0708c-b881-7b41-bbf0-c0aa9d4ac367/catalogue-p1/REVIEW.html` ; copie durable sous `milaura-automation/private-workspace/product-generation/data/catalogue-batches/2026-09-05-p1-enrichment-review/` (124 fichiers verifies par SHA-256). Aucun fichier theme reserve ; documentation seulement sur `codex/milaura-integration`.
+- Etat au 2026-09-05 10:19 CEST : 27 EAN physiques relus, neuf ACTIVE/stocks exacts et 18 absents confirmes. Trois colliers prets pour revue : textes, SEO, metachamps et 15 PNG V4.1, controles PASS. Texte du chapelet pret ; galerie suspendue au nombre total de perles et au sens des 78 cm CAN. Hematite existante presentee, regeneration non autorisee. GO texte/visuel, prix proposes 15 EUR/39 EUR et GO ecriture en attente. Aucune mutation Shopify/Sheet/theme. Checkpoint `2026-09-05-1019-catalogue-p1-review.md`.
+
 | Lot | Proprietaire | Branche | Worktree | Fichiers ou zone exclusive | Theme | Statut | Mise a jour |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Polish 7, guides reutilisables des landings pierre | Codex, tache `Polish visuel site MilAura` ; GO visuel et GO live explicites de Patrice le 2026-09-05 | source `codex/milaura-stone-guides-polish7-20260905` au commit `60bf5ade` ; integration `ac2144de` poussee sur `codex/milaura-integration` | worktree source retire proprement apres integration ; checkout principal pour integration ciblee | `sections/milaura-stone-guide.liquid`, `snippets/milaura-stone-guide-media.liquid`, templates Aigue-marine et Selection de Karine, checkpoints du lot ; tout autre theme, produit, stock, prix, Admin, canal et Ads exclus | preview `200259043675`, puis live `190430282075` par quatre chemins exacts | `FERME, INTEGRE ET LIVE` : Aigue-marine et Sodalite ont leur guide curaté en trois onglets apres le catalogue ; Aigue-marine utilise la bague argent modele 01 en produit star ; pullback live 4/4 identique ; Theme Check zero erreur ; public Aigue et Sodalite controle ; mobile 390 et desktop 1440 valides en preview identique ; bague epuisee et affectation Admin sans `view` non modifiee | 2026-09-05 09:20 CEST |
