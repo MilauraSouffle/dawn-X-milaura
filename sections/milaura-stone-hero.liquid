@@ -1,0 +1,62 @@
+{{ 'milaura-stone-pages.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign hero_product = section.settings.product
+  assign hero_images = hero_product.media | where: 'media_type', 'image'
+  assign desktop_index = section.settings.desktop_image_index | minus: 1
+  assign mobile_index = section.settings.mobile_image_index | minus: 1
+  assign desktop_image = hero_images[desktop_index].preview_image | default: hero_product.featured_image
+  assign mobile_image = hero_images[mobile_index].preview_image | default: desktop_image
+  assign hero_title = section.settings.heading | default: collection.title
+  assign hero_id = 'MilauraStoneHero-' | append: section.id
+  assign hub_url = section.settings.hub_url | default: '/pages/bijoux-par-pierre'
+-%}
+
+<section id="{{ hero_id }}" class="milaura-stone-hero{% if section.settings.desktop_asset != blank %} milaura-stone-hero--editorial{% endif %}{% if section.settings.dark_text == false %} milaura-stone-hero--light{% endif %}" aria-labelledby="{{ hero_id }}-title">
+  <div class="milaura-stone-hero__media">
+    {%- if section.settings.desktop_asset != blank -%}
+      <picture>
+        <source media="(max-width: 749px)" srcset="{{ section.settings.mobile_asset | asset_url }}">
+        <img src="{{ section.settings.desktop_asset | asset_url }}" alt="{{ section.settings.image_alt | escape }}" width="1536" height="1024" fetchpriority="high">
+      </picture>
+    {%- elsif desktop_image != blank -%}
+      <picture>
+        <source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 800 }}">
+        {{ desktop_image | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(max-width: 749px) 100vw, 58vw', loading: 'eager', fetchpriority: 'high', alt: section.settings.image_alt }}
+      </picture>
+    {%- endif -%}
+  </div>
+  <div class="milaura-stone-hero__copy">
+    <nav class="milaura-stone-hero__breadcrumb" aria-label="Fil d’Ariane">
+      <a href="{{ routes.root_url }}">Accueil</a><span aria-hidden="true">/</span><a href="{{ hub_url }}">Bijoux par pierre</a>
+    </nav>
+    <p class="milaura-section-label">Bijoux par pierre</p>
+    <h1 id="{{ hero_id }}-title">{{ hero_title | escape }}</h1>
+    <div class="milaura-stone-hero__intro rte">{{ section.settings.introduction }}</div>
+    <a class="milaura-action milaura-action--editorial milaura-stone-hero__action" href="#MilauraStoneSelection">
+      <span>Découvrir les bijoux</span><span aria-hidden="true">↘</span>
+    </a>
+  </div>
+</section>
+<div id="MilauraStoneSelection" class="milaura-stone-anchor"></div>
+
+{% schema %}
+{
+  "name": "Hero landing pierre",
+  "tag": "section",
+  "class": "section-milaura-stone-hero",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Pierre" },
+    { "type": "richtext", "id": "introduction", "label": "Introduction" },
+    { "type": "url", "id": "hub_url", "label": "Lien vers toutes les pierres" },
+    { "type": "product", "id": "product", "label": "Produit photographié" },
+    { "type": "range", "id": "desktop_image_index", "label": "Photo desktop", "min": 1, "max": 10, "step": 1, "default": 3 },
+    { "type": "range", "id": "mobile_image_index", "label": "Photo mobile", "min": 1, "max": 10, "step": 1, "default": 2 },
+    { "type": "text", "id": "desktop_asset", "label": "Scène éditoriale desktop existante" },
+    { "type": "text", "id": "mobile_asset", "label": "Scène éditoriale mobile existante" },
+    { "type": "text", "id": "image_alt", "label": "Description de la photographie" },
+    { "type": "checkbox", "id": "dark_text", "label": "Texte sombre sur la scène éditoriale", "default": true }
+  ],
+  "presets": [{ "name": "Hero landing pierre" }]
+}
+{% endschema %}

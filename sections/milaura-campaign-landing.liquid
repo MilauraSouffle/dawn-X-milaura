@@ -24,7 +24,7 @@
         endif
       endif
     endfor
-  elsif collection != blank
+  elsif collection != blank and section.settings.catalogue_mode != 'curated'
     assign selected_count = collection.products.size
     assign featured_in_collection = false
     if featured_product != blank
@@ -140,6 +140,7 @@
     </section>
   {%- endif -%}
 
+  {%- if selected_count > 0 or section.settings.hide_empty_catalogue != true -%}
   <section class="milaura-campaign__catalogue" aria-labelledby="{{ catalogue_title_id }}">
     <div class="milaura-campaign__catalogue-shell">
       <header class="milaura-campaign__catalogue-head">
@@ -202,6 +203,7 @@
       {%- endif -%}
     </div>
   </section>
+  {%- endif -%}
 </div>
 
 {% schema %}
@@ -321,6 +323,22 @@
     {
       "type": "header",
       "content": "Sélection"
+    },
+    {
+      "type": "select",
+      "id": "catalogue_mode",
+      "label": "Source du catalogue",
+      "options": [
+        { "value": "collection", "label": "Collection si aucun produit choisi" },
+        { "value": "curated", "label": "Produits choisis uniquement" }
+      ],
+      "default": "collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_empty_catalogue",
+      "label": "Masquer le catalogue si le produit star est la seule pièce",
+      "default": false
     },
     {
       "type": "text",

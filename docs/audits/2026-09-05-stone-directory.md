@@ -1,5 +1,7 @@
 # MilAura : recensement des destinations par pierre
 
+Suite du 2026-09-05 : [implementation, corrections de collections et preview privee](2026-09-05-stone-directory-implementation.md). Le present document conserve l'etat de l'audit avant implementation.
+
 Date : 2026-09-05 09:44 CEST
 Statut : audit public et Shopify Admin termine ; architecture proposee, aucune modification distante.
 Proprietaire : Codex, tache Polish visuel Milaura.
