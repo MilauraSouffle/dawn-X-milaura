@@ -12,6 +12,8 @@
   var purgeInFlight = null;
   var resumed = false;
   var purgeCompleted = false;
+  var resultVersion = 0;
+  var lastCompleted = '';
 
   function request(path, options) {
     var settings = options || {};
@@ -59,55 +61,75 @@
     window.location.assign(destination.pathname + destination.search);
   }
 
-  async function saveDiagnostic(button, pending) {
+  function savedLink(visible) {
+    var link = document.querySelector('[data-milaura-c1-saved-link]');
+    if (link) {
+      link.href = accountUrl;
+      link.hidden = !visible;
+    }
+  }
+
+  async function saveDiagnostic(button, pending, choice) {
     if (button.disabled || button.dataset.sent === 'true') return;
+    var version = resultVersion;
     button.disabled = true;
+    button.hidden = loggedIn;
+    savedLink(false);
     setStatus(button, loggedIn ? 'Enregistrement de votre résultat…' : 'Préparation de votre connexion…', 'pending');
     try {
       var diagnostic = pending && pending.diagnostic ||
         intentStore.current() || await window.MilauraPreferenceStorage.readDiagnostic();
       if (!diagnostic) throw new Error('Votre résultat n’est plus disponible. Refaites le quiz pour le conserver.');
       var purge = await resumePurge();
+      if (version !== resultVersion) return;
       if (purge && purge.failed) throw new Error('La vérification de votre compte est momentanément indisponible. Réessayez.');
-      if (pending && purgeCompleted) throw new Error('Votre ancien résultat a été supprimé selon votre demande. Choisissez à nouveau de le conserver si vous le souhaitez.');
-      var intent = pending || intentStore.prepare(diagnostic, ownerId);
+      if (pending && purgeCompleted) throw new Error('Votre ancien résultat a été supprimé selon votre demande. Refaites le quiz pour en conserver un nouveau.');
+      var intent = pending || intentStore.prepare(diagnostic, ownerId, choice);
       if (intent.ownerId && intent.ownerId !== ownerId) {
         intentStore.clear();
         throw new Error('Ce résultat était destiné à un autre compte. Refaites le quiz avec ce compte.');
       }
-      if (!loggedIn) {
-        login(intent);
-        return;
-      }
+      if (!loggedIn) return login(intent);
       if (!/^https:\/\/shopify\.com\//i.test(accountUrl)) throw new Error('L’accès à Mon Écrin est indisponible.');
-      var issued = await request('/v1/handoffs', {
+      var saved = await request('/v1/diagnostics', {
         method: 'POST',
-        body: JSON.stringify({
-          diagnostic: intent.diagnostic,
-          idempotencyKey: 'issue_' + intent.diagnostic.resultId + '_v1',
-        }),
+        body: JSON.stringify({diagnostic: intent.diagnostic, idempotencyKey: 'issue_' + intent.diagnostic.resultId + '_v1'}),
       });
-      if (!issued.handoffId) throw new Error('Le transfert n’a pas été confirmé. Réessayez.');
+      if (version !== resultVersion) return;
+      if (saved.status !== 'saved' || saved.resultId !== intent.diagnostic.resultId || saved.profileId !== intent.diagnostic.profileId) throw new Error('L’enregistrement n’a pas été confirmé. Réessayez.');
       intentStore.clear();
       button.dataset.sent = 'true';
-      button.textContent = 'Ouverture de Mon Écrin…';
-      setStatus(button, 'Votre résultat est transmis. Mon Écrin va confirmer son enregistrement.', 'pending');
-      window.location.assign(accountUrl);
+      button.hidden = true;
+      savedLink(true);
+      setStatus(button, 'Votre résultat est enregistré dans Mon Écrin. Retrouvez-y votre pierre et vos conseils.', 'saved');
     } catch (error) {
+      if (version !== resultVersion) return;
+      button.hidden = false;
+      button.textContent = 'Réessayer l’enregistrement';
       if (error.status === 410) {
         intentStore.clear();
-        setStatus(button, 'Le transfert a expiré. Appuyez à nouveau sur « Conserver mon résultat » pour le relancer.', 'error');
+        button.hidden = true;
+        setStatus(button, 'Ce résultat est trop ancien pour être enregistré. Refaites le quiz pour actualiser Mon Écrin.', 'error');
+      } else if (error.code === 'DIAGNOSTIC_NEWER_RESULT_EXISTS') {
+        intentStore.clear();
+        button.hidden = true;
+        savedLink(true);
+        setStatus(button, 'Un résultat plus récent est déjà conservé dans Mon Écrin. Il reste inchangé.', 'newer-result');
+      } else if (error.code === 'DIAGNOSTIC_PREDATES_PURGE') {
+        intentStore.clear();
+        button.hidden = true;
+        setStatus(button, 'Vous avez supprimé votre résultat. Refaites le quiz pour en conserver un nouveau.', 'error');
       } else if (error.status === 401 || error.status === 403) {
         loggedIn = false;
-        button.textContent = 'Se connecter et conserver mon résultat';
-        setStatus(button, 'Reconnectez-vous pour terminer l’enregistrement de votre résultat.', 'login-required');
+        button.textContent = 'Se connecter pour retrouver ma pierre';
+        setStatus(button, 'Votre session a expiré. Reconnectez-vous pour conserver ce résultat.', 'login-required');
       } else {
         setStatus(button, error.name === 'AbortError'
           ? 'La connexion prend trop de temps. Réessayez : votre résultat reste disponible ici.'
           : error.message || 'L’enregistrement n’est pas confirmé. Réessayez.', 'error');
       }
     } finally {
-      button.disabled = button.dataset.sent === 'true';
+      if (version === resultVersion) button.disabled = button.dataset.sent === 'true';
     }
   }
 
@@ -150,14 +172,59 @@
     saveDiagnostic(button);
   });
   window.addEventListener('milaura:quiz-result', function () {
-    if (resumed || !loggedIn || new URLSearchParams(window.location.search).get('save') !== '1') return;
-    var pending = intentStore.read();
     var button = document.querySelector('[data-milaura-c1-save-diagnostic]');
-    if (!pending || !button) return;
-    resumed = true;
-    saveDiagnostic(button, pending);
+    if (!button) return;
+    resultVersion++;
+    button.disabled = false;
+    button.hidden = false;
+    button.dataset.sent = '';
+    savedLink(false);
+    if (loggedIn) setStatus(button, 'Vous consultez ce résultat sur cet appareil. Son enregistrement dans le compte n’est pas encore confirmé.', 'local-result');
+    var pending = intentStore.read();
+    if (!resumed && loggedIn && pending && new URLSearchParams(window.location.search).get('save') === '1') {
+      resumed = true;
+      saveDiagnostic(button, pending);
+    }
+  });
+  window.addEventListener('milaura:quiz-completed', function (event) {
+    var detail = event.detail;
+    if (!loggedIn || !detail || !detail.diagnostic || !detail.startedAt) return;
+    var fingerprint = detail.diagnostic.profileId + ':' + detail.diagnostic.timestamp;
+    if (fingerprint === lastCompleted) return;
+    var button = document.querySelector('[data-milaura-c1-save-diagnostic]');
+    if (!button) return;
+    lastCompleted = fingerprint;
+    saveDiagnostic(button, null, {source: 'quiz_start_notice', acceptedAt: detail.startedAt});
   });
   window.addEventListener('online', resumePurge);
+  window.addEventListener('milaura:quiz-restored', async function (event) {
+    var button = document.querySelector('[data-milaura-c1-save-diagnostic]');
+    if (!loggedIn || !button || button.disabled || !event.detail) return;
+    var version = resultVersion;
+    button.hidden = true;
+    setStatus(button, 'Vérification de votre résultat dans Mon Écrin…', 'pending');
+    try {
+      var current = await request('/v1/diagnostics/current', {method: 'GET'});
+      if (version !== resultVersion || button.disabled || button.dataset.sent === 'true') return;
+      savedLink(true);
+      if (current.status === 'saved' && current.profileId === event.detail.profileId &&
+          Date.parse(current.completedAt) === new Date(event.detail.timestamp).getTime()) {
+        button.dataset.sent = 'true';
+        button.disabled = true;
+        setStatus(button, 'Votre résultat est enregistré dans Mon Écrin. Retrouvez-y votre pierre et vos conseils.', 'saved');
+      } else {
+        button.hidden = false;
+        setStatus(button, current.status === 'saved'
+          ? 'Un autre résultat est conservé dans Mon Écrin. Vous pouvez le consulter depuis votre compte.'
+          : 'Ce résultat est disponible sur cet appareil. Vous pouvez le conserver dans Mon Écrin.', 'local-result');
+      }
+    } catch (_) {
+      if (version !== resultVersion || button.disabled || button.dataset.sent === 'true') return;
+      button.hidden = false;
+      savedLink(true);
+      setStatus(button, 'La vérification est momentanément indisponible. Ouvrez Mon Écrin pour consulter votre résultat.', 'error');
+    }
+  });
   window.addEventListener('pageshow', resumePurge);
   resumePurge();
 })();
