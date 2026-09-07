@@ -16,6 +16,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Diagnostic SEO AEO GEO lot 1 du 2026-09-07
+
+- Proprietaire : Codex, tache 01a07c21-8804-7f00-8168-730dd611758f, GO explicite de Patrice du 2026-09-07.
+- Branche : `codex/milaura-seo-aeo-geo-lot1-20260907`, base `0f23d275`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/seo-aeo-geo-lot1-20260907`.
+- Reservation exclusive : `docs/audits/2026-09-07-seo-aeo-geo-lot1/` et checkpoint propre au lot. Registre : insertion de cette entree seulement, changements concurrents preserves.
+- Etat au 2026-09-07 : PREPARE LOCAL, diagnostic de 13 pages et 3 endpoints publics, matrice de 13 URL, panel IA de 20 demandes et qualification initiale des mentions. Documents dans `docs/audits/2026-09-07-seo-aeo-geo-lot1/`. Mesure native multi-moteurs non executee ; aucune correction publiee.
+- Aucun fichier theme reserve. Aucune mutation Shopify, tracking, Merchant Center, Ads, publication ou deploy autorise dans ce lot. Mariage et onglet pierre restent aux proprietaires existants.
+
 ### Lien Pinterest du footer du 2026-09-07
 
 - Proprietaire : Codex, tache Pinterest `01a07069-b8b7-73e2-880a-37f444a91195`, demande explicite de Patrice du 2026-09-07 : corriger immediatement le lien du footer vers `https://fr.pinterest.com/MilAuraMineraux/`.
