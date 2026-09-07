@@ -243,3 +243,11 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 6. Apres integration et validation, la ligne passe a `ferme`, puis le worktree est retire.
 
 Procedure detaillee : `docs/reference/2026-08-12-repository-workflow.md`.
+# Journal, polish du 2026-09-07
+
+- Proprietaire : sous-agent journal_polish de la tache SEO, coordination master 01a0565f-d62e-77e1-b74e-a65d776ade61.
+- Branche : `codex/milaura-journal-polish-20260907`.
+- Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/journal-polish-20260907`.
+- Reservation : `templates/blog.json`, `sections/milaura-journal.liquid`, `assets/milaura-journal.css`, checkpoint dedie. Aucun article, navigation, footer ou token partage.
+- Theme : aucun live ; preview isolee a confirmer avec le master.
+- Statut : preparation locale, GO visuel Patrice requis avant live.
