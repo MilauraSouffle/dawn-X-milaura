@@ -16,6 +16,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Notes PDP et etats vides Mariage du 2026-09-07
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-07, GO implementation pour remplacer la formule `Photos non contractuelles`, ajouter un repli natif `Lire la suite` et traiter les onglets sans offre avec un rendu sobre et premium.
+- Branche : `codex/milaura-pdp-empty-state-20260907`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/pdp-empty-state-20260907`, base d integration `0f23d275`.
+- Perimetre reserve : `sections/milaura-product-hero.liquid`, `assets/milaura-product-experience.css`, `sections/milaura-catalogue-hub.liquid`, `assets/milaura-catalogue-hub.css` et documentation propre au lot. Aucun produit, stock, prix, galerie, template JSON, Admin, Ads ou tracking.
+- Cible : implementation locale puis preview privee dediee `201065824603`, dupliquee du live `190430282075`, pour revue visuelle mobile et desktop. Theme live exclu sans GO live distinct. Le lot performance reste separe : le module Chrome DevTools requis n est pas disponible dans cette session.
+- Etat au 2026-09-07 17:19 CEST : implementation et revue visuelle terminees sur la preview `201065824603`, controlees a 360, 390, 430 et 1440 px sans debordement. Le theme live `190430282075` reste intact et attend un GO live distinct.
+
 ### Lien Pinterest du footer du 2026-09-07
 
 - Proprietaire : Codex, tache Pinterest `01a07069-b8b7-73e2-880a-37f444a91195`, demande explicite de Patrice du 2026-09-07 : corriger immediatement le lien du footer vers `https://fr.pinterest.com/MilAuraMineraux/`.
