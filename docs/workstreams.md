@@ -16,6 +16,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Landing Tous les bijoux du 2026-09-07
+
+- Proprietaire : Codex, demande de Patrice du 2026-09-07 : transformer `/collections/bijoux-pierres-naturelles` en landing de conversion premium, epuree, conforme a la DA MilAura et inspiree du niveau de respiration des maisons de joaillerie sans copie de marque.
+- Branche : `codex/milaura-all-jewelry-landing-20260907`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/all-jewelry-landing-20260907`, base d'integration `74bd5f20`.
+- Perimetre reserve : nouveau template collection `templates/collection.milaura-all-jewelry.json`, nouvelle section et nouvel asset CSS `milaura-all-jewelry-landing`, nouveaux medias Hero desktop/mobile dedies et documentation du lot. Les composants partages, l'annuaire des pierres, les autres templates, les produits, stocks, prix, collections et contenus Admin restent hors modification.
+- Theme : preview privee `201065824603` (`MilAura Notes et états vides Preview 2026-09-07`) avec push cible des cinq fichiers du lot. Live `190430282075`, integration et affectation Admin interdits a ce stade.
+- Etat au 2026-09-07 17:59 CEST : PREVIEW PRETE, PASS TECHNIQUE, GO VISUEL PATRICE EN ATTENTE. Hero joaillier, cinq entrees par type, filtres et grille valides sans debordement a 360, 390, 430, 768 et 1440 px. Theme Check sans erreur, controle copywriting PASS, erreurs navigateur nulles et pullback Shopify identique 5/5.
+
 ### Lien Pinterest du footer du 2026-09-07
 
 - Proprietaire : Codex, tache Pinterest `01a07069-b8b7-73e2-880a-37f444a91195`, demande explicite de Patrice du 2026-09-07 : corriger immediatement le lien du footer vers `https://fr.pinterest.com/MilAuraMineraux/`.
