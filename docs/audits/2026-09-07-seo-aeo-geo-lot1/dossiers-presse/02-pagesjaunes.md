@@ -2,6 +2,8 @@
 
 Date : 2026-09-07. Statut : champs et texte préparés, aucune création de compte ni inscription.
 
+Mise a jour du 2026-09-07 : une entree Milaura au 92 rue Pont a Mousson, 57950 Montigny-les-Metz figure dans le resultat public PagesJaunes https://www.pagesjaunes.fr/annuaire/departement/moselle-57/diamants-pierres-precieuses-et-gemmes (categorie diamants, pierres precieuses, gemmes). Ne pas creer de doublon. Fiche detail et lien vers milaura.fr non verifies ; lecture HTTP directe refusee 403. Prochaine action : retrouver/revendiquer cette entree dans Solocal Manager, puis comparer les champs existants au dossier. Ce n'est pas un nouveau lien obtenu.
+
 Source officielle : https://www.pagesjaunes.fr/plusdeservices/gerer-ma-fiche-pagesjaunes
 Accès : Solocal Manager depuis cette page. Gestion gratuite annoncée ; aucun service payant demandé.
 
@@ -30,4 +32,3 @@ Repères publics de Montigny Entreprendre : 92 rue de Pont-à-Mousson, 57950 Mon
 ## Pièces et mesure
 
 Préparer logo MilAura existant, un visuel de bijou et l'URL du site ; pas de photo censée représenter un magasin ouvert si elle ne correspond pas à l'activité réelle. Après autorisation de saisie, vérifier l'absence de doublon, la page publique, l'adresse et le lien. Mesurer les visites pagesjaunes.fr / referral, pas un nombre de backlinks attendu.
-

@@ -4,7 +4,7 @@ Date : 2026-09-07. Dossier préparatoire, aucune pièce transmise.
 
 ## Identité
 
-Expéditeur proposé : Patrice Allié, pour MilAura. Fondatrice : Karine. Implantation : Montigny-lès-Metz. Vente : boutique en ligne sur https://milaura.fr/.
+Expéditrice validée le 2026-09-07 : Karine Allié, fondatrice de MilAura, contact@milaura.fr. Implantation : Montigny-lès-Metz. Vente : boutique en ligne sur https://milaura.fr/.
 Sources : https://milaura.fr/pages/notre-histoire et https://www.montigny-entreprendre.com/annuaire/milaura.
 Aucune biographie, citation, qualification personnelle ou date d'ouverture nouvelle inventée. Ne pas présenter Karine comme fabricant de toutes les bagues ou gemmologue.
 
@@ -31,7 +31,7 @@ https://cdn.shopify.com/s/files/1/0977/2806/9979/files/01-cover_6fbca830-a3f7-4d
 
 ## Avant utilisation
 
-Vérifier le prix et la disponibilité juste avant l'envoi. Obtenir le portrait réel de Karine si le média demande une interview illustrée. Reprendre les coordonnées professionnelles courantes de Patrice pour l'expéditeur. Aucun envoi d'échantillon ni budget commercial prévu.
+Vérifier le prix et la disponibilité juste avant l'envoi. Obtenir le portrait réel de Karine si le média demande une interview illustrée. Utiliser Karine Allié et contact@milaura.fr pour l'expéditrice. Aucun envoi d'échantillon ni budget commercial prévu.
 
 ## Suivi
 

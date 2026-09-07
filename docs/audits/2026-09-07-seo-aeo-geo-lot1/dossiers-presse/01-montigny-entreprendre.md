@@ -34,10 +34,9 @@ Je vous propose une mise à jour de la fiche MilAura pour présenter plus claire
 Pour un prochain relais consacré aux commerces adhérents, nous avons aussi un angle utile : choisir un bijou selon le mois de naissance, puis vérifier sa matière et sa taille. Le guide est disponible ici : https://milaura.fr/pages/pierres-de-naissance.
 
 Merci,
-Patrice Allié
+Karine Allié
 Pour MilAura
 
 ## Exécution et mesure
 
 Faire valider le texte puis transmettre au propriétaire de la plateforme, ou modifier par l'espace pro autorisé. Préserver les autres champs. Vérifier la fiche publiée, le lien canonique et les sessions référentes montigny-entreprendre.com. Pas de promesse de nouveau lien ni de trafic chiffré.
-

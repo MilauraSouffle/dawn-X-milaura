@@ -1,6 +1,6 @@
 # La mariée aux pieds nus : conseil d'achat et sélection aigue-marine
 
-Date : 2026-09-07. Statut : texte et fiche produit prêts, aucun envoi.
+Date : 2026-09-07. Statut : envoyé au nom de Karine Allié ; réponse automatique reçue, nouvelles propositions suspendues. Aucune relance. Le texte final et la preuve remplacent le brouillon historique ci-dessous : [envois](envois-2026-09-07.md).
 
 Canal officiel : lmapn.publications@gmail.com
 Sources : https://www.lamarieeauxpiedsnus.com/contact/ et https://www.lamarieeauxpiedsnus.com/publications/
@@ -27,7 +27,7 @@ Karine porte MilAura depuis Montigny-lès-Metz et sélectionne les bijoux de sa 
 Je reste disponible pour compléter les informations dont vous avez besoin.
 
 Bien à vous,
-Patrice Allié
+Karine Allié
 Pour MilAura
 
 ## Texte court de sélection
@@ -38,5 +38,4 @@ Une aigue-marine bleu pâle, une monture en argent 925 et une forme allongée : 
 
 Le média demande des visuels web de 2000 px de large maximum, correctement nommés. Le dossier commun référence les images existantes ; aucun fichier n'a été converti ni envoyé dans ce lot. Choisir les visuels acceptés pour la presse, puis vérifier format, crédit et droits avant de constituer les pièces jointes. Les liens commerciaux seuls suffisent pour relire la proposition, pas pour déclarer un dossier photo conforme.
 
-Délai : ne pas relancer pendant les quinze jours annoncés par le média. Une relance au plus tôt J+16 après envoi autorisé. Mesurer présence éditoriale, lien produit, visites engagées et commandes.
-
+Délai initial devenu caduc : réponse reçue le 2026-09-07 annonçant la suspension des nouvelles demandes. Aucune relance.

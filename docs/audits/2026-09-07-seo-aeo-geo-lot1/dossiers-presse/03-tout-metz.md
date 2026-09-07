@@ -1,6 +1,6 @@
 # Tout-Metz : portrait local et conseil cadeau
 
-Date : 2026-09-07. Statut : proposition rédigée, aucun envoi.
+Date : 2026-09-07. Statut : envoyé au nom de Karine Allié à contact@tout-metz.com. Le message final et sa preuve remplacent le brouillon historique ci-dessous : [envois](envois-2026-09-07.md).
 
 Canal vérifié : https://tout-metz.com/contact/envoyer-une-info
 Destination éditoriale : https://milaura.fr/pages/notre-histoire
@@ -12,7 +12,7 @@ Complément utile : https://milaura.fr/pages/pierres-de-naissance
 
 ## Formulaire préparé
 
-Prénom : Patrice
+Prénom : Karine
 Nom : Allié
 Objet : Sujet local : Karine et les bijoux en pierres de MilAura, à Montigny
 
@@ -29,7 +29,7 @@ Deux exemples de la sélection actuelle : un collier en obsidienne noire, régla
 Si cet angle vous intéresse, je peux organiser la suite avec Karine et préciser les éléments souhaités par votre rédaction.
 
 Bien à vous,
-Patrice Allié
+Karine Allié
 Pour MilAura
 
 ## Encadré factuel proposé
@@ -45,4 +45,3 @@ Les champs email et téléphone doivent utiliser les coordonnées professionnell
 ## Suivi proposé
 
 Après autorisation d'envoi : une relance courte à J+10 si aucune réponse, puis arrêt. Mesurer publication, lien cliquable et sessions référentes engagées tout-metz.com. Pas de demande d'ancre SEO imposée.
-
