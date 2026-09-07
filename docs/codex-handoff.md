@@ -4,13 +4,11 @@
 
 GO live unique execute : backend, application V8, six fichiers theme et logo natif officiel 72 px partage avec le paiement. Source app `2070546`, version active `1117541007361`, integration theme `5368ec27`. 100 tests PASS, pullback 6/6, enregistrement reel du resultat Amethyste et persistance apres reload verifies. Compte, rituel et carrousel mobile/desktop conformes. Sauvegardes et image precedente conservees. Purge multi-navigateurs reportee ; pas de recette nouvelle commande ou iPhone physique. Aucun autre chantier embarque. Le statut prive des paragraphes historiques Mon Ecrin est depasse par cette publication. [Rapport exhaustif et retour arriere](checkpoints/2026-09-06-mon-ecrin-v8-live.md).
 
-# Swipe explicite des pierres, integre et live
+# Swipe des pierres valide sur iPhone, session fermee
 
-Date : 2026-09-05 18:56 CEST. Patrice demande explicitement commit, push et deploiement live du correctif prepare en preview. Source `23b6b565`, integration `372dd0c3` poussees. Deux assets seulement publies sur `190430282075` avec `--nodelete --allow-live --strict`, pullback 2/2 identique. Geste horizontal explicite, scroll vertical et zoom preserves, design et commandes inchanges, code natif precedent retire.
+Date : 2026-09-07. Patrice confirme que le swipe fonctionne sur son iPhone et clot la session. La validation utilisateur est acquise ; aucun point restant pour ce lot. Source `23b6b565`, integration `372dd0c3`, live Shopify `190430282075` depuis le 2026-09-05, pullback 2/2 identique. Design, cadrages, fleches et barre sous les cartes conserves. Worktree deja retire et reservations liberees.
 
-Recette publique Chromium 360/390/430/768/1440 et WebKit 390/1440 conforme ; gestes CDP simules, fleches, barre, clavier, liens, vertical, mouvement reduit et resize verifies. Les 13 rangees avaient ete verifiees en preview. WebKit controle par pointeur souris, aucun iPhone physique teste par Codex ; le GO de publication ne constitue pas une mesure du geste sur son appareil. Theme Check 0 erreur/16 avertissements historiques.
-
-Worktree propre retire, branche source conservee, reservations liberees. Nouveaux commits du miroir Shopify classes : leurs cinq fichiers sont identiques a l'integration avant publication. Les deux assets live avant deploy correspondent aussi a cette base. Modifications concurrentes preservees. Checkpoint : `docs/checkpoints/2026-09-05-1829-stone-pointer-swipe-preview.md`. Les bilans precedents restent historiques ; conserver le design actuel.
+Les tests automatises Chromium/WebKit et Theme Check du 2026-09-05 restent les preuves techniques ; le retour de Patrice du 2026-09-07 constitue la validation sur appareil reel. Aucun nouveau code ou deploy pendant cette cloture. Les autres sessions et leurs modifications restent preservees. [Checkpoint de cloture](checkpoints/2026-09-07-1647-stone-swipe-iphone-closure.md).
 
 # Swipe natif ajoute sans changement de design, live
 
