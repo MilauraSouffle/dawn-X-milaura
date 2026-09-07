@@ -5,7 +5,13 @@
   assign catalogue_family = product.metafields.milaura.catalogue_family.value | default: ''
   assign product_type = product.metafields.milaura.product_type_handle.value | default: product.type | handleize
   assign stone_handle = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
+  assign stone_name = product.metafields.milaura.stone_name.value
   assign scent_handle = product.metafields.milaura.scent_handle.value | default: product.metafields.milaura.scent_handle
+
+  assign has_stone = false
+  if stone_handle != blank or stone_name != blank
+    assign has_stone = true
+  endif
 
   assign first_tab_label = 'Le produit'
   assign second_tab_label = 'Son histoire'
@@ -14,9 +20,11 @@
 
   if catalogue_family == 'bijou' or product_type == 'bijou' or product_type == 'bracelet' or product_type == 'collier' or product_type == 'bague' or product_type == 'pendentif' or product_type == 'fil-de-perles'
     assign first_tab_label = 'Le bijou'
-    assign second_tab_label = 'La pierre'
     assign first_panel_title = 'Le bijou en détail'
-    assign second_panel_title = 'L’histoire de la pierre'
+    if has_stone
+      assign second_tab_label = 'La pierre'
+      assign second_panel_title = 'L’histoire de la pierre'
+    endif
   elsif catalogue_family == 'pierre-mineral' or product_type == 'pierre' or product_type == 'mineral' or product_type == 'pierre-roulee' or product_type == 'cabochon'
     assign first_tab_label = 'Le minéral'
     assign second_tab_label = 'La pierre'
@@ -48,7 +56,6 @@
   assign specifications = product.metafields.milaura.specifications.value
   assign materials = product.metafields.milaura.materials.value
   assign story_text = product.metafields.milaura.story_text.value
-  assign stone_name = product.metafields.milaura.stone_name.value
   assign stone_description = product.metafields.milaura.stone_description.value
   assign stone_benefits = product.metafields.milaura.stone_benefits.value
   assign product_quality = product.metafields.milaura.qualite.value
@@ -60,11 +67,6 @@
   assign certificate_lab = product.metafields.milaura.certificate_lab.value | default: 'LFG Paris'
   assign certificate_reference = product.metafields.milaura.certificate_reference.value
   assign certificate_url = certificate_file.url
-
-  assign has_stone = false
-  if stone_handle != blank or stone_name != blank
-    assign has_stone = true
-  endif
 
   assign payment_whitelist = 'visa,master,american_express,apple_pay,shop_pay,shopify_pay,klarna,cartes_bancaires,carte_bleue,cb' | split: ','
   assign payment_count = 0
