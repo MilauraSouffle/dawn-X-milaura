@@ -1,3 +1,10 @@
+## Landing Tous les bijoux du 2026-09-07
+
+- Proprietaire : Codex, tache `01a07c4e-0f36-7900-a0d5-5eddc918f31a`, demande de Patrice de transformer `/collections/bijoux-pierres-naturelles` en landing premium puis GO commit, push et live explicite.
+- Source : `codex/milaura-all-jewelry-landing-20260907` au commit `86c90ea9`. Integration : `codex/milaura-integration` au commit `91596690` pousse.
+- Perimetre : `sections/milaura-all-jewelry-landing.liquid`, `assets/milaura-all-jewelry-landing.css`, deux WebP Hero dedies et `templates/collection.milaura-all-jewelry.json`.
+- Etat au 2026-09-07 18:28 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Cinq fichiers cibles sur `190430282075`, pullback identique 5/5. Collection `660994851163` affectee a `milaura-all-jewelry` dans Shopify Admin. QA publique 390/1440 px conforme, phrase d affinage retiree. Reservations theme, Admin et fichiers liberees. [Checkpoint](checkpoints/2026-09-07-1828-all-jewelry-landing-live-handoff.md).
+
 ## Cloture SEO et Journal du 2026-09-07
 
 - Cloture 2026-09-07 18:17 CEST : Journal LIVE c7b22c42, scope trois fichiers valide. Handoff `docs/checkpoints/2026-09-07-1817-seo-journal-handoff.md`. Heartbeat local de mesure PAUSED, aucun cron editorial active ; exigence utilisateur : autonomie Mac eteint. Specification serveur/cockpit prete, implementation non active. Registre et docs de cette branche mis a jour ; integration des seuls documents au master a coordonner, aucun nettoyage des changements concurrents.

@@ -1,3 +1,15 @@
+# Landing Tous les bijoux : session fermee, live verifie
+
+Date : 2026-09-07 18:28 CEST. La collection publique `https://milaura.fr/collections/bijoux-pierres-naturelles` utilise maintenant `milaura-all-jewelry` sur le theme live `190430282075`, apres validation visuelle et GO live explicites de Patrice. Source `86c90ea9`, integration `91596690`, cinq fichiers pousses de facon ciblee et pullback 5/5 identique. Affectation Admin enregistree sur la collection `660994851163`, ancien template `milaura-collection`. QA publique 390/1440 px conforme, cinq cartes, H1 unique, phrase d affinage retiree, zero debordement et aucune erreur navigateur.
+
+Le lot est termine. Ne pas rejouer le push ni modifier la landing sans nouvelle demande. Retour arriere rapide si necessaire : reaffecter `milaura-collection` a la collection dans Shopify Admin ; les cinq fichiers additifs peuvent rester sur le theme. Preuves et fichiers exacts : [checkpoint du 2026-09-07](checkpoints/2026-09-07-1828-all-jewelry-landing-live-handoff.md).
+
+## Reprise eventuelle
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-07-1828-all-jewelry-landing-live-handoff.md. La landing Tous les bijoux est integree au commit 91596690 et live sur le theme 190430282075 ; la collection Shopify 660994851163 utilise milaura-all-jewelry. Commence en lecture seule et ne redeploie rien par deduction. Preserve les modifications concurrentes du checkout principal. N ouvre un nouveau lot que sur une demande explicite de Patrice.
+```
+
 # SEO et Journal : cloture du 2026-09-07 18:17 CEST
 
 Journal LIVE, integration c7b22c42 poussee, trois fichiers verifies par pullback et QA publique. SEO : quatre contenus sur six publies ; deux fiches restent catalogue. Deux premiers contacts presse envoyes au nom de Karine Allie, aucune publication acquise. La mariee aux pieds nus suspend ses propositions ; Un Beau Jour non envoye. Heartbeat Codex local de mesure mis en PAUSED sur refus de dependance au Mac. Aucun cron editorial active. Reprise : collecte serveur et cockpit ONORA Center, specification prete mais non deployee. [Handoff et prompt de reprise](checkpoints/2026-09-07-1817-seo-journal-handoff.md). Les etats des autres chantiers ci-dessous sont conserves.

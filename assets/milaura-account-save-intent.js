@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  // 2026-09-05: temporary, explicit save request, not browsing preferences.
+  // 2026-09-07: temporary quiz save, after the start notice or login request.
   var KEY = 'milauraAccountSaveIntentV1';
   var TTL = 20 * 60 * 1000;
   var PROFILES = ['serenite', 'apaisement', 'protection', 'amour', 'chance'];
@@ -31,7 +31,7 @@
     return value;
   }
 
-  function prepare(diagnostic, ownerId) {
+  function prepare(diagnostic, ownerId, choice) {
     if (!diagnostic || PROFILES.indexOf(diagnostic.profileId) < 0) throw new Error('Refaites le quiz pour obtenir votre résultat.');
     var timestamp = new Date(diagnostic.timestamp).toISOString();
     var previous = read();
@@ -48,8 +48,8 @@
     retained.accountPersonalization = {
       schemaVersion: 1,
       status: 'granted',
-      source: 'quiz_account_save_button',
-      acceptedAt: new Date().toISOString(),
+      source: choice && choice.source || 'quiz_account_save_button',
+      acceptedAt: choice && choice.acceptedAt || new Date().toISOString(),
     };
     var value = { version: 1, ownerId: ownerId || null, expiresAt: Date.now() + TTL, diagnostic: retained, stored: true };
     memoryIntent = value;

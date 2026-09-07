@@ -1,6 +1,5 @@
-{% comment %}2026-09-05: explicit account save, before product recommendations.{% endcomment %}
+{% comment %}2026-09-07: connected customers save on completion; visitors choose login.{% endcomment %}
 <div class="quiz-reveal-account-invite" id="quiz-reveal-account-invite-{{ section_id }}">
-  <p class="quiz-reveal-account-text">Retrouvez votre pierre et vos conseils dans Mon Écrin.</p>
   {%- if settings.milaura_c1_release_candidate_enabled -%}
     <button
       type="button"
@@ -8,16 +7,17 @@
       data-milaura-c1-save-diagnostic
       aria-describedby="quiz-reveal-account-status-{{ section_id }}"
     >
-      Conserver mon résultat
+      {% if customer %}Enregistrer ce résultat{% else %}Se connecter pour retrouver ma pierre{% endif %}
     </button>
     <p id="quiz-reveal-account-status-{{ section_id }}" class="quiz-reveal-account-status" aria-live="polite">
-      {% if customer %}Votre résultat sera enregistré dans votre compte.{% else %}Connectez-vous ou créez votre compte par e-mail pour le conserver.{% endif %}
+      {% if customer %}Enregistrement de votre résultat dans Mon Écrin…{% else %}Connectez-vous ou créez votre compte par e-mail pour retrouver votre pierre et vos conseils sur tous vos appareils.{% endif %}
     </p>
-    <p class="quiz-reveal-account-status">Ce choix personnalise votre pierre, vos suggestions et votre pierre préférée selon vos achats. Il ne vous inscrit pas aux e-mails ou aux SMS.</p>
-    <button type="button" class="quiz-reveal-account-skip" data-milaura-c1-skip-save>
-      Continuer sans enregistrer
-    </button>
+    <a href="{{ settings.milaura_c1_mon_ecrin_url | escape }}" class="quiz-reveal-account-link" data-milaura-c1-saved-link hidden>Ouvrir Mon Écrin</a>
+    {% unless customer %}
+      <button type="button" class="quiz-reveal-account-skip" data-milaura-c1-skip-save>Continuer sans compte</button>
+    {% endunless %}
   {%- else -%}
+    <p class="quiz-reveal-account-text">Retrouvez votre pierre et vos conseils dans Mon Écrin.</p>
     <a href="{{ routes.account_register_url }}" class="quiz-reveal-account-link">Créer mon compte</a>
   {%- endif -%}
 </div>
