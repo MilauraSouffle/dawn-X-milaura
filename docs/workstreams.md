@@ -18,6 +18,8 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ### Diagnostic SEO AEO GEO lot 1 du 2026-09-07
 
+- Suite du 2026-09-07 : incident Chrome resolu par sortie de preview privee, sans mutation live ; GSC 307 pages lues, extrait cible pages/requetes, six priorites et 20 opportunites documentees. Aucun contact envoye. Checkpoint `docs/checkpoints/2026-09-07-preview-incident-gsc-liens.md`. Deux produits prioritaires restent dependants du lot catalogue, coordonne avec sa tache proprietaire.
+
 - Resultat du GO execution au 2026-09-07 : corrections Admin Bagues/titles et maillage naissance-Aigue LIVE VERIFIES. Deux templates publies seuls, pullbacks identiques, Theme Check 0 erreur/16 avertissements. Premier pilote ChatGPT et lecture GA4 termines, plan de six semaines documente. Reservations production liberees ; integration des deux templates restant au proprietaire central. Checkpoint `docs/checkpoints/2026-09-07-seo-collections-naissance-live.md`. Les statuts du diagnostic initial ci-dessous sont historiques.
 
 - Extension autorisee par Patrice le 2026-09-07 : correction description Bagues et titles SEO Bracelets, Colliers, Sodalite dans Shopify ; consolidation Aigue-marine et pierres de naissance, mesures IA/referrals et plan acquisition. Certification LFG confirmee par Patrice, point clos et aucun retrait. Reservation des champs Admin concernes et de `templates/page.milaura-pierres-naissance.json`, `templates/collection.milaura-pierre-aigue-marine.json` si correction necessaire apres lecture. Aucun tracking, Merchant Center, Ads ou contact tiers.

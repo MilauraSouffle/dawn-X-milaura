@@ -1,0 +1,51 @@
+# 20 opportunités de liens et de trafic référent
+
+Date de recherche : 2026-09-07. Aucun contact, inscription, achat de lien ou publication effectué. Ce sont des pistes documentées, pas des placements acquis. La pertinence et l'ordre sont notre appréciation ; audiences, trafic potentiel, coût, acceptation, indexation du futur lien et attribut rel ne sont pas établis.
+
+P1 : premier lot à préparer. P2 : approche éditoriale après dossier. P3 : qualification complémentaire avant contact. Une présence existante n'est pas comptée comme nouveau domaine acquis. Les preuves ci-dessous sont les pages publiques consultées ou retrouvées dans les résultats actuels ; une page de contact ne prouve pas qu'un média acceptera MilAura.
+
+## Destinations prêtes
+
+- A : [Accueil MilAura](https://milaura.fr/), présentation de l'entreprise et navigation.
+- B : [Collier doré obsidienne noire](https://milaura.fr/products/collier-obsidienne-noire-boho-dore), 14,90 EUR et disponible le 2026-09-07.
+- C : [Bague argent 925 aigue-marine](https://milaura.fr/products/bague-en-argent-925-et-aigue-marine-du-bresil), 69,90 EUR et disponible le 2026-09-07.
+- D : [Pierres de naissance](https://milaura.fr/pages/pierres-de-naissance), guide et parcours mars.
+- E : [Guide débutants](https://milaura.fr/blogs/journal/lithotherapie-le-guide-complet-pour-debutants), à renforcer avant approche experte.
+- F : [Cadeaux anniversaire de mariage](https://milaura.fr/pages/cadeaux-anniversaire-de-mariage), parcours suivi par une autre tâche.
+- G : [Notre histoire](https://milaura.fr/pages/notre-histoire), portrait de Karine.
+- H : [Bijoux par pierre](https://milaura.fr/pages/bijoux-par-pierre), choix dans le catalogue.
+
+## Liste qualifiée
+
+| # | Priorité et site | Preuve / accès public | Angle proposé | Destination | Travail préalable / limite |
+| --- | --- | --- | --- | --- | --- |
+| 1 | P1 Montigny Entreprendre | [Fiche MilAura existante](https://www.montigny-entreprendre.com/annuaire/milaura) | Actualiser le portrait Karine et proposer un relais réel autour des cadeaux par pierre | A, puis D si article | Lien déjà existant : amélioration d'une relation, pas acquisition d'un domaine. Coordonner avec propriétaire de la plateforme. |
+| 2 | P1 PagesJaunes | [Gestion de fiche](https://www.pagesjaunes.fr/plusdeservices/gerer-ma-fiche-pagesjaunes) | Présentation factuelle de MilAura, bijoux/minéraux, site et modalités de vente | A | Rechercher/revendiquer la fiche avant toute création pour éviter doublon. Présence actuelle non vérifiée. Inscription gratuite annoncée ; pas de pack payant demandé. |
+| 3 | P1 Tout-Metz | [Envoyer une information](https://tout-metz.com/contact/envoyer-une-info) et [contact](https://tout-metz.com/contact) | Portrait d'une commerçante de Montigny et conseils concrets pour choisir un cadeau en pierre | G ou D | Préparer histoire réelle, photos de Karine et sélection disponible. Sujet local utile ; publication au choix de la rédaction. |
+| 4 | P1 Un Beau Jour | [Contact / boutique en ligne / publication / annuaire](https://www.unbeaujour.fr/contact/) | Un détail bleu pour la mariée : aigue-marine en argent à moins de 80 EUR | C | Photos portées autorisées et dimensions exactes ; respecter leurs consignes de soumission. Partenariat/annuaire peuvent être payants, tarif non vérifié. |
+| 5 | P1 La mariée aux pieds nus | [Contact et partenariats](https://www.lamarieeauxpiedsnus.com/contact/) | Choisir un bijou bleu que l'on reportera après le mariage | C puis D | Vraie séance photo ou sélection documentée, aucun mariage fictif. Publication éditoriale distincte d'un dispositif promotionnel payant. |
+| 6 | P2 Moselle TV | [Formulaire officiel](https://moselle.tv/contact/) | Karine montre comment comparer trois bijoux : pierre, matière et taille | G | Sujet visuel court, disponibilité pour interview. Rechercher une page de replay avec lien ; passage antenne seul ne garantit pas un backlink. |
+| 7 | P2 Hello Metz | [Mission du guide](https://www.hello-metz.com/a-propos) et [exemple commerce](https://www.hello-metz.com/la-bande-a-elyna-metz) | Découvrir une sélection de pierres à Montigny, avec modalités d'achat exactes | A | Guide orienté commerces de proximité ; admissibilité MilAura et accueil physique à vérifier. Ne pas présenter une simple adresse administrative comme boutique ouverte. |
+| 8 | P2 Mariée.fr | [Site et calendrier des noces récent](https://www.mariee.fr/) ; [rédactrice et contact](https://www.mariee.fr/auteur-clemence-gautier/) | Cadeau d'anniversaire de mariage en pierre, budget et choix du bijou | F | Préparer un complément concret à leur calendrier. Présence de publi-rédactionnels sur le site : conditions à clarifier avant engagement. |
+| 9 | P2 Mademoiselle Dentelle | [Annuaire avec catégorie Bijoux](https://www.mademoiselle-dentelle.fr/prestataires-mariage/) | Bijoux en pierres pour témoins ou invitées, choix selon leur style | H ou C | Vérifier conditions d'inscription et activité actuelle de la rubrique. Ne pas promettre personnalisation ou fabrication sur mesure. |
+| 10 | P2 Happinez | [Magazine et boutique pierres](https://www.happinez.fr/) ; [contact](https://www.happinez.fr/contact/) | Karine explique sa sélection et comment choisir un bijou en pierre au quotidien | E ou H | Le magazine vend aussi ses propres bijoux : possible conflit commercial. Préférer une contribution utile ; aucune acceptation présumée. |
+| 11 | P2 Journal des Femmes | [Article pierre / signe astrologique](https://www.journaldesfemmes.fr/mode/magazine-mode/2551398-quelle-pierre-porter-selon-son-signe-astrologique/) | Distinguer pierre de naissance par mois et choix symbolique selon le signe ; exemples accessibles | D | Sujet existant identifié ; canal rédaction mode à trouver. Ne pas déposer de faux témoignage ni de lien promotionnel dans les forums. |
+| 12 | P2 Femmes Magazine | [Contact rédaction Web](https://femmesmagazine.lu/contact/) | Portrait d'une entrepreneuse de la région messine et cadeau en pierre à petit budget | G ou B | Audience luxembourgeoise : vérifier livraison et coûts au Luxembourg avant angle transfrontalier. Sinon angle portrait régional seulement. |
+| 13 | P3 La Semaine | [Page contact indexée](https://0c47-2553d83d0023.wptiger.fr/nous-contacter/) | Portrait Karine et commerce en ligne ancré à Montigny | G | Résultat retrouvé sur domaine technique ; URL officielle /nous-contacter inaccessible dans notre lecture. Revalider le canal officiel avant tout envoi. |
+| 14 | P3 Inspire Metz / Journal économique | [Numéro officiel avec contact rédaction](https://www.investinmetz.com/UserFiles/File/jeem/jeem-n15-mars-avril-2024.pdf) | Développement commercial d'une entreprise de l'Eurométropole et sélection produit | G | Source 2024 : vérifier contact actuel et actualité éditoriale recevable. Aucun article ou partenariat garanti. |
+| 15 | P3 Initiative Metz | [Annuaire des entrepreneurs](https://annuaire-initiative-metz.fr/annuaire/) | Présentation d'entreprise et parcours entrepreneurial de Karine | A | Annuaire de réseau : éligibilité/adhésion/accompagnement MilAura non établis. À exploiter seulement si lien réel avec le réseau. |
+| 16 | P3 Hélène Gisserot / Healing Hourglass | [Blog lithothérapie et bien-être](https://helenegisserot.fr/blog) | Entretien croisé sur le choix et l'usage symbolique des pierres, avec comparaison des formats | E | Blog pertinent repéré ; modèle économique, audience et ouverture à collaboration à vérifier. Ne pas proposer de promesse thérapeutique ni d'échange automatique de liens. |
+| 17 | P3 Eugénie | [Contact et règles éditoriales](https://www.absolute-eugenie.fr/contact/) | Aigue-marine et détail bleu du mariage : matière, couleur, entretien | D ou C | Refuse publi-rédactionnels et listes de partenaires. Seulement proposition de sujet étayé. Même contact public que le site suivant : ne pas compter comme deux relations indépendantes. |
+| 18 | P3 Le Site du Mariage | [Contact et sujets acceptés](https://www.lesitedumariage.fr/contact/) | Origines et évolution des associations de pierres aux anniversaires de mariage | F | Refuse recommandations prestataires/publicité. Recherche historique sourcée à préparer, adéquation commerciale faible. Même contact que #17. |
+| 19 | P3 Gralon | [Soumettre un site](https://www.gralon.net/ajouter-son-site.htm) | Fiche sobre de boutique en ligne avec catégories pertinentes | A | Soumission gratuite et lien annoncés. Annuaire généraliste, valeur référente non mesurée : effort plafonné, pas de paiement ni promesse de gain SEO reprise du site. |
+| 20 | P3 EPRO | [Annuaire et référencement entreprise](https://www.e-pro.fr/Metz_57/) | Fiche entreprise cohérente avec identité, activité et site | A | Éligibilité RCS annoncée ; vérifier absence de fiche et conditions exactes. Annuaire généraliste, priorité basse, pas d'abonnement pour obtenir un lien. |
+
+## Ordre d'exécution proposé
+
+Les cinq premières constituent le premier lot concret. Préparer une correction de fiche existante, une fiche entreprise, un portrait local et deux propositions éditoriales nationales. Aucun envoi n'est fait dans cette tâche. Les P3 ne sont pas prêts à contacter : les limites sont explicites pour éviter de transformer une piste de recherche en faux placement certain.
+
+Les liens éditoriaux vers les guides conduisent ensuite vers les produits disponibles. Les portraits et fiches d'entreprise conduisent vers l'identité MilAura et les collections. On cherche des lecteurs concernés et des mentions exactes de la marque, pas seulement un nombre de backlinks. Aucun lien entrant ne garantit une citation IA.
+
+Après autorisation des contacts : consigner pour chaque ligne la date, l'angle envoyé, la réponse, l'URL publiée, la destination, l'attribut du lien, les sessions référentes engagées et les ventes. Deux propositions éditoriales ciblées par semaine puis une seule relance utile. À 28 jours, conserver les sources qui apportent des lecteurs ou une mention éditoriale crédible ; ne pas acheter des packs de centaines d'annuaires.
+
+Si un placement devient payant, l'évaluer sur trafic et ventes attendus ; budget à autoriser séparément, lien qualifié sponsored/nofollow selon le cas. Référence : [politique Google sur le spam de liens](https://developers.google.com/search/docs/essentials/spam-policies#link-spam). Aucun achat n'a été fait.
