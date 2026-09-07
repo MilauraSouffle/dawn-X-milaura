@@ -1,0 +1,60 @@
+{{ 'milaura-journal.css' | asset_url | stylesheet_tag }}
+
+{%- paginate blog.articles by 9 -%}
+  <div class="milaura-journal page-width">
+    <header class="milaura-journal__header">
+      <h1>{{ blog.title | escape }}</h1>
+    </header>
+
+    <div class="milaura-journal__articles">
+      {%- for article in blog.articles -%}
+        {%- liquid
+          assign is_featured = false
+          assign image_loading = 'lazy'
+          assign image_priority = 'auto'
+          assign image_sizes = '(min-width: 1200px) 600px, (min-width: 750px) 45vw, 100vw'
+          if forloop.first and paginate.current_page == 1
+            assign is_featured = true
+            assign image_loading = 'eager'
+            assign image_priority = 'high'
+            assign image_sizes = '(min-width: 1200px) 720px, (min-width: 750px) 55vw, 100vw'
+          endif
+        -%}
+        <article class="milaura-journal__article{% if is_featured %} milaura-journal__article--featured{% endif %}{% unless article.image %} milaura-journal__article--text{% endunless %}">
+          {%- if article.image -%}
+            <a class="milaura-journal__image" href="{{ article.url }}" tabindex="-1" aria-hidden="true">
+              {{ article.image | image_url: width: 1600 | image_tag: widths: '360, 540, 720, 960, 1200, 1600', sizes: image_sizes, loading: image_loading, fetchpriority: image_priority, alt: '' }}
+            </a>
+          {%- endif -%}
+          <div class="milaura-journal__body">
+            <time class="milaura-journal__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'date' }}</time>
+            <h2><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+            {%- if article.excerpt != blank -%}
+              <p class="milaura-journal__excerpt">{{ article.excerpt | strip_html | truncatewords: 32 }}</p>
+            {%- endif -%}
+            <a class="milaura-journal__read" href="{{ article.url }}" aria-label="Lire l’article : {{ article.title | escape }}">Lire l’article</a>
+          </div>
+        </article>
+      {%- else -%}
+        <p>{{ 'sections.featured_blog.onboarding_content' | t }}</p>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="milaura-journal__pagination" aria-label="Pagination du journal">
+        {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">Articles précédents</a>{%- endif -%}
+        <span>{{ paginate.current_page }} / {{ paginate.pages }}</span>
+        {%- if paginate.next -%}<a href="{{ paginate.next.url }}">Articles suivants</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Journal MilAura",
+  "tag": "section",
+  "class": "section",
+  "settings": []
+}
+{% endschema %}
