@@ -14,11 +14,13 @@ Reprends MilAura depuis docs/checkpoints/2026-09-07-1828-all-jewelry-landing-liv
 
 Journal LIVE, integration c7b22c42 poussee, trois fichiers verifies par pullback et QA publique. SEO : quatre contenus sur six publies ; deux fiches restent catalogue. Deux premiers contacts presse envoyes au nom de Karine Allie, aucune publication acquise. La mariee aux pieds nus suspend ses propositions ; Un Beau Jour non envoye. Heartbeat Codex local de mesure mis en PAUSED sur refus de dependance au Mac. Aucun cron editorial active. Reprise : collecte serveur et cockpit ONORA Center, specification prete mais non deployee. [Handoff et prompt de reprise](checkpoints/2026-09-07-1817-seo-journal-handoff.md). Les etats des autres chantiers ci-dessous sont conserves.
 
-# Mon Ecrin V8, publie et verifie le 2026-09-06
+# Mon Ecrin V9, live verifie et chantier ferme le 2026-09-07
 
 > Correction distincte du 2026-09-07 16:02 CEST : footer Pinterest LIVE VERIFIE vers `MilAuraMineraux`, commit `c019bd9e`, pullback 1/1 identique et lien public controle. Les trois reglages deja presents sur Shopify ont ete preserves et rapproches dans Git. Compteur produit et Ads inchanges. [Checkpoint footer](checkpoints/2026-09-07-1602-pinterest-footer-live.md).
 
-GO live unique execute : backend, application V8, six fichiers theme et logo natif officiel 72 px partage avec le paiement. Source app `2070546`, version active `1117541007361`, integration theme `5368ec27`. 100 tests PASS, pullback 6/6, enregistrement reel du resultat Amethyste et persistance apres reload verifies. Compte, rituel et carrousel mobile/desktop conformes. Sauvegardes et image precedente conservees. Purge multi-navigateurs reportee ; pas de recette nouvelle commande ou iPhone physique. Aucun autre chantier embarque. Le statut prive des paragraphes historiques Mon Ecrin est depasse par cette publication. [Rapport exhaustif et retour arriere](checkpoints/2026-09-06-mon-ecrin-v8-live.md).
+Mon Ecrin V9, 2026-09-07 : LIVE VERIFIE ET CHANTIER FERME sur GO de Patrice. App 1119132909569 active, backend 2026-09-07-425a473 healthy, quatre fichiers theme relus identiques. Quiz connecte enregistre automatiquement, favoris durables et Mes pieces livres. 135 tests PASS, recette live quiz/favoris et rendu 390/1440 conformes. Coeurs PDP/catalogue non developpes, purge multi-navigateurs reportee ; commandes aux quantites ambigues renvoyees a l'historique. [Handoff V9 et retour arriere](checkpoints/2026-09-07-1839-mon-ecrin-v9-live.md).
+
+Reprise uniquement sur anomalie ou nouvelle demande. Le checkpoint V9 contient le prompt copiable, les versions, la recette, les sauvegardes et les limites. Pas de nouveau deploy, quiz, favori ou purge par deduction.
 
 # Swipe des pierres valide sur iPhone, session fermee
 

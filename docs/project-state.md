@@ -8,7 +8,7 @@ Journal LIVE, integration c7b22c42 poussee, trois fichiers verifies par pullback
 
 > Onglet `La pierre`, 2026-09-07 10:14 CEST : CORRECTIF LIVE VERIFIE sur le theme `190430282075`. `story_text` ne remplace plus `stone_description` dans le panneau pierre. Source `a6cceb12`, integration `98fe4bd7` poussee, fichier unique deploye puis pullback identique SHA-256 `b8e63ebf65befb8b271c0b98c9496572eba9fd2fcdb41a9312a6aa4da5f3522a`. Sur Horus public, le clic `La pierre` affiche la phrase sodalite et les trois faits courts ; le texte bijou reste dans `Le bijou`. Aucun contenu produit ou statut modifie. Les 228 descriptions pierre actives restent un chantier editorial separe. [Checkpoint](checkpoints/2026-09-07-1014-stone-tab-live.md).
 
-> Mon Ecrin V8, 2026-09-06 : LIVE sur le GO unique de Patrice. Backend sain, migration 003 appliquee, application `milaura-customer-accounts-8` active (1117541007361), six fichiers theme `190430282075` relus identiques et logo natif officiel 72 px partage avec le paiement. 100 tests PASS, quiz reel vers compte et persistance apres reload valides, carrousel une ligne et portrait compact de 360 a 1440 px. Purge multi-navigateurs toujours reportee ; autres travaux preserves. [Rapport et retour arriere](checkpoints/2026-09-06-mon-ecrin-v8-live.md).
+> Mon Ecrin V9, 2026-09-07 : LIVE VERIFIE ET CHANTIER FERME sur GO de Patrice. App 1119132909569 active, backend 2026-09-07-425a473 healthy, quatre fichiers theme relus identiques. Quiz connecte enregistre automatiquement, favoris durables et Mes pieces livres. 135 tests PASS, recette live quiz/favoris et rendu 390/1440 conformes. Coeurs PDP/catalogue non developpes, purge multi-navigateurs reportee ; commandes aux quantites ambigues renvoyees a l'historique. [Handoff V9 et retour arriere](checkpoints/2026-09-07-1839-mon-ecrin-v9-live.md).
 
 > Swipe des pierres, 2026-09-07 : VALIDE SUR IPHONE PAR PATRICE, SESSION FERMEE. Il confirme que le geste fonctionne ; dernier point de validation leve. Correctif source `23b6b565`, integration `372dd0c3`, live `190430282075` depuis le 2026-09-05, pullback 2/2 identique et design conserve. Aucun nouveau code ni deploy pendant la cloture. Autres travaux preserves. [Cloture](checkpoints/2026-09-07-1647-stone-swipe-iphone-closure.md).
 
@@ -64,19 +64,11 @@ La session qui travaille directement avec Patrice execute son lot de bout en bou
 
 Checkpoint de reprise : `docs/checkpoints/2026-08-31-0741-master-orchestrator-handoff.md`.
 
-## Mon Ecrin, fondation live et reprise a 70 pour cent au 2026-08-31
+## Mon Ecrin V9 : ferme et live au 2026-09-07
 
-- Release active : `milaura-customer-accounts-7`, ID `gid://shopify/Version/1109042987009`.
-- Page production : `https://shopify.com/97728069979/account/pages/01a04dd8-c889-76f4-ac40-b8aa7d2d48c0`.
-- Theme live `190430282075` : neuf fichiers fonctionnels et `config/settings_data.json` deployes de facon ciblee ; pullbacks `10/10 MATCH` en comptant le layout.
-- Backend `https://mon-ecrin-api.milaura.fr` sain et bridge quiz actif pour la boutique production exacte.
-- Page sans diagnostic : decouverte des cinq pierres, commandes, profil/adresses, Cercle a venir, historique reel et pierre preferee restent visibles.
-- Un diagnostic n est ecrit dans le compte qu apres le choix explicite `Enregistrer et ouvrir Mon Ecrin`.
-- Relecture distante du 2026-08-31 : release 7 active, release 6 inactive, health backend `ok=true`, theme `190430282075` au role `live`.
-- Evaluation produit de Patrice : environ `70 %`, gros du developpement realise, nombreuses erreurs encore a reproduire et classer, polish visuel important, quelques ameliorations de developpement.
-- Le PASS technique du deploiement ne vaut pas validation visuelle finale ni fermeture produit.
-- Handoff courant : `docs/checkpoints/2026-08-31-0734-mon-ecrin-70-percent-handoff.md`.
-- Preuve historique du live : `docs/checkpoints/2026-08-30-2050-mon-ecrin-account-hub-live.md`.
+Mon Ecrin V9, 2026-09-07 : LIVE VERIFIE ET CHANTIER FERME sur GO de Patrice. App 1119132909569 active, backend 2026-09-07-425a473 healthy, quatre fichiers theme relus identiques. Quiz connecte enregistre automatiquement, favoris durables et Mes pieces livres. 135 tests PASS, recette live quiz/favoris et rendu 390/1440 conformes. Coeurs PDP/catalogue non developpes, purge multi-navigateurs reportee ; commandes aux quantites ambigues renvoyees a l'historique. [Handoff V9 et retour arriere](checkpoints/2026-09-07-1839-mon-ecrin-v9-live.md).
+
+Le resultat nouvellement termine est conserve sans clic supplementaire pour le client connecte, avec explication au debut et confirmation apres ecriture. L'invite doit se connecter ou creer son compte ; un ancien resultat simplement restaure n'est jamais reecrit automatiquement. Favoris independants du diagnostic et du marketing. Logo natif/paiement 72 px et presentation V8 conserves. Les anciens etats prives et l'evaluation a 70 pour cent du 2026-08-31 sont historiques, pas des travaux encore ouverts.
 
 ## Source de verite et etat du depot
 
@@ -126,7 +118,7 @@ Le master ne remplace aucune session specialiste. Il maintient trois priorites m
 
 La session specialiste qui travaille avec Patrice possede l execution de son lot, y compris commit, push, preview, documentation et deploiement cible lorsque les droits et GO sont explicites. Le master lui attribue temporairement l integration ou le live pour ce seul lot, puis audite son handoff sans refaire toutes les operations.
 
-Les priorites immediates sont le polish Rentree Sodalite, le polish et les bugfix Mon Ecrin, puis la preparation SEO/AEO/GEO et acquisition. L inventaire continue en parallele depuis le Sheet canonique. Ruban V3 est ferme et live. Mail ne se rouvre que sur besoin precis. Atelier des emotions et Pierres de naissance restent des chantiers ulterieurs non bloquants.
+Mon Ecrin V9 est ferme au 2026-09-07. Les priorites immediates sont le polish Rentree Sodalite, puis la preparation SEO/AEO/GEO et acquisition. L inventaire continue en parallele depuis le Sheet canonique. Ruban V3 est ferme et live. Mail ne se rouvre que sur besoin precis. Atelier des emotions et Pierres de naissance restent des chantiers ulterieurs non bloquants.
 
 ## Cap commercial, direction et arbitrages du 2026-08-16
 
@@ -135,8 +127,8 @@ Les priorites immediates sont le polish Rentree Sodalite, le polish et les bugfi
 - La charte MilAura reste executable. Tiffany & Co. et Van Cleef & Arpels sont des references de niveau visuel et de branding : sobriete, photographie joailliere, macro produit, respiration et precision. Aucun signe distinctif, motif, couleur proprietaire ou mise en page ne doit etre copie.
 - Le sujet d'un claim LFG global est clos par Patrice apres verification. Il est retire du backlog actif et ne doit plus etre presente comme anomalie ou risque sans nouvelle preuve contradictoire explicite.
 - La longueur des PDP n'est pas un probleme confirme. La nouvelle experience est validee ; une session PDP specialisee doit effectuer des recherches approfondies avant toute recommandation de reduction ou reorganisation.
-- Les formulations actuelles du diagnostic sur l'apaisement, la protection et l'energie sont approuvees. Aucun lot de reecriture corrective n'est ouvert. Le polish visuel, la page resultat et la persistance client restent ouverts.
-- Le diagnostic reste persiste dans le navigateur et le panier sous consentement Preferences. Depuis la release 7 de Mon Ecrin, un enregistrement serveur entre appareils est egalement disponible apres le choix explicite `Enregistrer et ouvrir Mon Ecrin` ; aucune ecriture silencieuse n est autorisee.
+- Les formulations actuelles du diagnostic sur l'apaisement, la protection et l'energie sont approuvees. Aucun lot de reecriture corrective n'est ouvert. Le polish visuel, la page resultat et la persistance client sont livres dans Mon Ecrin V9 au 2026-09-07.
+- Au 2026-09-07, le diagnostic navigateur reste soumis aux Preferences. L'ecriture dans Mon Ecrin a la fin d'un nouveau quiz connecte est autorisee par Patrice et expliquee avant le demarrage. L'invite passe par la connexion ; le resultat restaure reste en lecture seule. Aucun consentement marketing n'est deduit.
 - Le nouveau bandeau cookies gemme est live et valide publiquement depuis le 2026-08-17. L audit des emails, notifications, relances et du comportement apres inscription est ferme le 2026-08-20 ; leur implementation reste classee criticite 10/10.
 - La piste retenue pour la home est une section commerciale unique avec choix `Nouveautes`, `Meilleures ventes` et `Promotions`, un seul rail visible et un CTA adapte. Elle reste a prototyper et valider apres `Pierre du moment` ; Promotions se masque sans offre reelle.
 - La source physique courante doit etre relue dans le Sheet et Shopify ; les compteurs historiques sont perimes pour la prochaine action. Voir la section inventaire du 2026-09-04. Mon Ecrin conserve sa resolution dynamique parmi les produits publies, vendables et disponibles.
@@ -191,7 +183,7 @@ Patrice ferme la grande session C1 et demande une reprise fraiche orientee mise 
 
 Mon Ecrin doit donc interroger le catalogue Shopify courant et ne proposer que des produits publies sur la destination retenue, vendables, disponibles, avec URL, prix et media vivants. Les recommandations descendent par replis controles depuis le profil, la pierre favorite et l historique qualifie : correspondance exacte, correspondance proche, univers ou categorie, collection, puis catalogue eligible. Une reference de-publiee, supprimee ou devenue indisponible doit disparaitre sans correctif manuel ni redeploiement.
 
-Le Ruban V3 live est une reference d architecture utile pour les exclusions, l ordonnancement et les replis, sans constituer un code a copier aveuglement dans Customer Accounts. Le nouveau contrat doit encore etre implemente et prouve dans un lot prive avant productionisation. Les gates stock, prix, cout, marge, feed, tracking, consentement et mesure restent obligatoires avant Ads, mais elles ne bloquent plus la mise en ligne de Mon Ecrin.
+Le Ruban V3 live est une reference d architecture utile pour les exclusions, l ordonnancement et les replis, sans constituer un code a copier aveuglement dans Customer Accounts. Ce contrat a ete implemente, verifie et publie ; la V9 du 2026-09-07 est le statut courant. Les gates stock, prix, cout, marge, feed, tracking, consentement et mesure restent obligatoires avant Ads, mais elles ne bloquent plus la mise en ligne de Mon Ecrin.
 
 Handoff : `docs/checkpoints/2026-08-29-0729-c1-mon-ecrin-dynamic-live-handoff.md`.
 
@@ -539,9 +531,9 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 ## Prochain ordre d'execution
 
 1. La nouvelle session master conserve seule l integration et le live a partir de `8fb046588e0309e7875fdae7b2ad6b61d7c6a177` ou plus recent, audite chaque retour et interdit tout merge aveugle de `origin/main`.
-2. Reprendre Mon Ecrin dans une session fraiche strictement read-only, auditer les mappings figes et faire reserver par le master le plus petit lot prive de resoluteur dynamique. L objectif est de fermer RC5 sans attendre la fin de l inventaire.
+2. Mon Ecrin V9 est ferme et live au 2026-09-07. Ne reprendre que sur anomalie reproductible ou nouvelle demande explicite, depuis son handoff V9.
 3. Catalogue : production terminee au 2026-09-05 17:35 CEST. Patrice fait son tri ; reprendre uniquement ses anciennes fiches retenues depuis `docs/checkpoints/2026-09-05-1735-catalogue-handoff-patrice-triage.md`. Aucun nouveau lot automatique.
-4. Apres validation privee du resoluteur, enchainer productionisation C1, integration ciblee, bascule Admin, QA publique et GO live sous gates distinctes. Finition Mail et fondations Pinterest restent paralleles sans chevauchement.
+4. Mon Ecrin V9 publie et verifie : aucune nouvelle bascule a rejouer. Finition Mail et fondations Pinterest restent paralleles sans chevauchement.
 5. Apres le retrait legacy et reception des deux listes fournisseur, integrer achats, reassorts et nouvelles references au Sheet ; DRAFT sous workflow V4.1 apres GO, sans activer les brouillons volontaires ni recreer les six cadeaux exclus.
 6. Fermer le feed et Pinterest final sous leurs gates propres. Reprendre le polish UI Rentree Sodalite selon le checkpoint du 2026-08-31, sans gate live heritee.
 7. Lancer un pilote Ads borne seulement apres stock, cout complet, marge de contribution, feed, tracking, consentement, conversion et regles d arret verifies.
@@ -562,8 +554,8 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - Ruban V3 : ferme et live sur `190430282075` depuis le 2026-08-28 ; 318 sources sur 318 ont trois candidats dans la regression, le runtime affiche les trois, exclut le panier et garantit les replis univers, collection puis catalogue ; desktop trois cartes egales, rail tactile sous 990 px, pullback final 2 sur 2 identique
 - Ruban V2 : historique remplace par V3 pour le rendu PDP ; ses anciens placements Search & Discovery restent une source prioritaire lorsque valides, mais les anciens detourages ne sont plus utilises par le chemin critique V3
 - mobile root overflow : corrigé live par `be96a5d1`, pullback bit à bit et QA publique 360/390/430 validés ; ne rouvrir que sur régression reproductible
-- diagnostic navigateur soumis au consentement et live ; aucune source cliente durable ni persistance entre appareils
-- C1 V3 privee fermee a `d8d036ff` et C1-1 prive ferme a `cf2877ba` ; correctif d idempotence ferme a `7bb67efc`, preuves sans commande `1ee9c07f`, preuves commandes `e863fc10`, RC4, RC7 et RC8 PASS prive ; RC5 doit etre ferme par le resoluteur dynamique independant de l inventaire complet ; RC6 reste ouvert sur le shell natif anglais ; aucun droit C1-2, app deploy/release, Admin, bascule, email, integration theme ou live
+- Mon Ecrin : diagnostic durable et favoris en compte, autosave connecte live en V9 ; details et limites dans le handoff du 2026-09-07
+- C1 : fondations et V9 live fermees ; coeurs PDP/catalogue non construits, qualification complementaire commandes complexes/multi-appareils possible sur nouvelle demande, purge multi-navigateurs reportee
 - E1, E2 et E3 fermes le 2026-08-20 ; notifications transactionnelles testees mais reprise creative E4 encore ouverte
 - regression du bandeau cookies fermee par `aa3a9930`, poussee sur developpement puis live `190430282075` apres GO ; pullback et QA publique desktop/mobile valides
 - miroir automatique `origin/main` incomplet pour les trois nouveaux assets cookies au commit `004ce94f` ; canonique et pullback live restent les preuves du lot

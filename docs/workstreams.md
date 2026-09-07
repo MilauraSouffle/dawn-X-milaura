@@ -9,6 +9,14 @@
 
 - Cloture 2026-09-07 18:17 CEST : Journal LIVE c7b22c42, scope trois fichiers valide. Handoff `docs/checkpoints/2026-09-07-1817-seo-journal-handoff.md`. Heartbeat local de mesure PAUSED, aucun cron editorial active ; exigence utilisateur : autonomie Mac eteint. Specification serveur/cockpit prete, implementation non active. Registre et docs de cette branche mis a jour ; integration des seuls documents au master a coordonner, aucun nettoyage des changements concurrents.
 
+## Mon Ecrin apres-achat du 2026-09-07
+
+- Proprietaire : Codex, tache 01a05660-7e67-7473-8945-ee872773aa2d. GO commit/push/live/handoff execute, chantier ferme au 2026-09-07 18:39 CEST. Reservations application, backend et quatre fichiers theme liberees.
+- App 425a473, paquet 2e3c07f, version V9 1119132909569 active. Source theme c55beb77, integration d91a2b8a poussee, live 190430282075, pullback4/4. Backend 2026-09-07-425a473 healthy ; aucun settings_data/layout/logo modifie.
+- 108 tests application/backend +27 theme PASS, build/statique/bundle PASS, Theme Check0erreur/16warnings historiques. Vrai quiz connecte Quartz rose sauvegarde sans clic et relu ; favori ajoute/recharge/retire/recharge, liste finale vide. Mobile390/bureau1440 sans debordement.
+- Worktrees preuves propres et pousses conserves : /Users/paesano/Documents/MilAura website/_worktrees/mon-ecrin-aftercare-20260907 et /Users/paesano/Documents/_worktrees/agentic-ops-mon-ecrin-aftercare-20260907, branche codex/milaura-mon-ecrin-aftercare-20260907. App Dev/prive arretes, backend_url prive vide, flagfalse. Production active.
+- Hors lot : coeurs favoris PDP/catalogue, iPhone physique et recette complementaire multi-appareils. Retours/remboursements partiels ambigus exclus de Mes pieces avec renvoi natif. Bundle522octets de marge, a reduire avant extension. [Handoff V9 et retour arriere](checkpoints/2026-09-07-1839-mon-ecrin-v9-live.md).
+
 ## Cloture Mon Ecrin V8 du 2026-09-06
 
 - Proprietaire : Codex, tache `01a05660-7e67-7473-8945-ee872773aa2d`. GO unique backend/application/six fichiers theme/logo natif execute. LIVE VERIFIE, reservations production liberees. App `2070546`, version active `1117541007361` ; integration theme `5368ec27` sur `190430282075`, pullback 6/6. Backend healthy, migration 003, logo partage compte/paiement 72 px. 100 tests PASS et vraie conservation quiz/compte confirmee. Worktrees de preuve propres conserves, aucun travail concurrent embarque. Les anciens statuts prives ci-dessous sont historiques. [Checkpoint](checkpoints/2026-09-06-mon-ecrin-v8-live.md).
