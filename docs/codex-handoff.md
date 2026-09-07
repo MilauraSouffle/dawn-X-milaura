@@ -1,3 +1,7 @@
+# SEO et Journal : cloture du 2026-09-07 18:17 CEST
+
+Journal LIVE, integration c7b22c42 poussee, trois fichiers verifies par pullback et QA publique. SEO : quatre contenus sur six publies ; deux fiches restent catalogue. Deux premiers contacts presse envoyes au nom de Karine Allie, aucune publication acquise. La mariee aux pieds nus suspend ses propositions ; Un Beau Jour non envoye. Heartbeat Codex local de mesure mis en PAUSED sur refus de dependance au Mac. Aucun cron editorial active. Reprise : collecte serveur et cockpit ONORA Center, specification prete mais non deployee. [Handoff et prompt de reprise](checkpoints/2026-09-07-1817-seo-journal-handoff.md). Les etats des autres chantiers ci-dessous sont conserves.
+
 # Mon Ecrin V8, publie et verifie le 2026-09-06
 
 > Correction distincte du 2026-09-07 16:02 CEST : footer Pinterest LIVE VERIFIE vers `MilAuraMineraux`, commit `c019bd9e`, pullback 1/1 identique et lien public controle. Les trois reglages deja presents sur Shopify ont ete preserves et rapproches dans Git. Compteur produit et Ads inchanges. [Checkpoint footer](checkpoints/2026-09-07-1602-pinterest-footer-live.md).
