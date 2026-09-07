@@ -26,6 +26,8 @@
 
 # MilAura - Etat courant du projet
 
+> Footer Pinterest, 2026-09-07 16:02 CEST : lien corrige vers `https://fr.pinterest.com/MilAuraMineraux/`, commit `c019bd9e` integre et pousse, configuration unique live `190430282075`, pullback identique et footer public verifie. Seule modification live : `current.social_pinterest_link`. Compteur produit et Ads conserves. [Checkpoint](checkpoints/2026-09-07-1602-pinterest-footer-live.md).
+
 Derniere mise a jour inventaire : 2026-09-05 17:35 CEST, cloture documentaire sans nouveau scan global. Les dates des autres chantiers restent leurs dates de verification.
 
 ## Etat en une phrase

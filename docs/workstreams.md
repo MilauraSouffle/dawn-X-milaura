@@ -16,6 +16,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Lien Pinterest du footer du 2026-09-07
+
+- Proprietaire : Codex, tache Pinterest `01a07069-b8b7-73e2-880a-37f444a91195`, demande explicite de Patrice du 2026-09-07 : corriger immediatement le lien du footer vers `https://fr.pinterest.com/MilAuraMineraux/`.
+- Branche : `codex/milaura-pinterest-footer-20260907`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/pinterest-footer-20260907`, base d'integration `a1681947`.
+- Perimetre reserve : valeur `current.social_pinterest_link` de `config/settings_data.json`, theme live `190430282075` apres confirmation de son role ; pull avant/apres et verification publique. Aucun autre parametre, compteur produit, contenu, Pin ou reglage Ads.
+- Etat au 2026-09-07 16:02 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Commit `c019bd9e`, fichier unique publie avec `--only --allow-live --nodelete --strict` ; pullback identique SHA-256 `0084a8992360f37d5b98fa8bbd546ad04b3485c5edb068a8848b1c0a5fd09777`. Seule difference live : le lien Pinterest. Les trois reglages deja presents sur Shopify sont conserves et rapproches dans Git. Theme Check 0 erreur/16 avertissements historiques ; lien public de footer verifie dans Chrome. Reservations liberees. [Checkpoint](checkpoints/2026-09-07-1602-pinterest-footer-live.md).
+
+
 ### Geste horizontal explicite des pierres du 2026-09-05
 
 - Etat final au 2026-09-05 18:56 CEST : FERME, INTEGRE ET LIVE sur GO explicite de Patrice. Source `23b6b565`, integration `372dd0c3` poussees ; deux assets sur `190430282075`, pullback 2/2 identique. Recette publique Chromium 360/390/430/768/1440 et WebKit 390/1440 conforme. Design preserve, anciens scroll/scroll-snap retires. Theme Check 0 erreur/16 avertissements historiques. Aucun iPhone physique teste par Codex. Worktree propre retire, branche conservee, reservations des deux assets et themes liberees. Checkpoint `docs/checkpoints/2026-09-05-1829-stone-pointer-swipe-preview.md`.

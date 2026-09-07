@@ -1,5 +1,7 @@
 # Mon Ecrin V8, publie et verifie le 2026-09-06
 
+> Correction distincte du 2026-09-07 16:02 CEST : footer Pinterest LIVE VERIFIE vers `MilAuraMineraux`, commit `c019bd9e`, pullback 1/1 identique et lien public controle. Les trois reglages deja presents sur Shopify ont ete preserves et rapproches dans Git. Compteur produit et Ads inchanges. [Checkpoint footer](checkpoints/2026-09-07-1602-pinterest-footer-live.md).
+
 GO live unique execute : backend, application V8, six fichiers theme et logo natif officiel 72 px partage avec le paiement. Source app `2070546`, version active `1117541007361`, integration theme `5368ec27`. 100 tests PASS, pullback 6/6, enregistrement reel du resultat Amethyste et persistance apres reload verifies. Compte, rituel et carrousel mobile/desktop conformes. Sauvegardes et image precedente conservees. Purge multi-navigateurs reportee ; pas de recette nouvelle commande ou iPhone physique. Aucun autre chantier embarque. Le statut prive des paragraphes historiques Mon Ecrin est depasse par cette publication. [Rapport exhaustif et retour arriere](checkpoints/2026-09-06-mon-ecrin-v8-live.md).
 
 # Swipe explicite des pierres, integre et live
