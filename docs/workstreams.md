@@ -16,6 +16,13 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Ouverture du guide mariage du 2026-09-07
+
+- Proprietaire : Codex, tache Meta Ads `01a07a97-4d8f-7900-b84c-143b65439202`, demande directe de Patrice : ouvrir la page sur une categorie ayant des produits disponibles.
+- Branche : `codex/milaura-mariage-default-20260907`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/mariage-default-20260907`, base `0f23d275`.
+- Perimetre exclusif : `templates/page.milaura-cadeaux-mariage.json`, valeurs `year17.settings.is_default` et `year25.settings.is_default`, plus documentation du lot. Aucun autre onglet, texte, stock, produit, page Aigue-marine ou reglage Ads.
+- Etat au 2026-09-07 16:28 CEST : LIVE VERIFIE, reservation du fichier/theme liberee. Ouverture 17 ans avec onze bijoux et onze boutons Ajouter actifs. Theme Check zero erreur/16 avertissements ; push unique cible et pullback identique SHA-256 `3200fa98d6b290aa06ff62c46913277e665bf49f2e075731fd49ab8d336fc08a`. Source sur branche dediee, rapprochement integration restant au proprietaire du checkout principal. [Checkpoint](checkpoints/2026-09-07-1628-mariage-default-live.md).
+
 ### Lien Pinterest du footer du 2026-09-07
 
 - Proprietaire : Codex, tache Pinterest `01a07069-b8b7-73e2-880a-37f444a91195`, demande explicite de Patrice du 2026-09-07 : corriger immediatement le lien du footer vers `https://fr.pinterest.com/MilAuraMineraux/`.
