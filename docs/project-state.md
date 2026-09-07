@@ -1,3 +1,5 @@
+> Onglet `La pierre`, 2026-09-07 10:14 CEST : CORRECTIF LIVE VERIFIE sur le theme `190430282075`. `story_text` ne remplace plus `stone_description` dans le panneau pierre. Source `a6cceb12`, integration `98fe4bd7` poussee, fichier unique deploye puis pullback identique SHA-256 `b8e63ebf65befb8b271c0b98c9496572eba9fd2fcdb41a9312a6aa4da5f3522a`. Sur Horus public, le clic `La pierre` affiche la phrase sodalite et les trois faits courts ; le texte bijou reste dans `Le bijou`. Aucun contenu produit ou statut modifie. Les 228 descriptions pierre actives restent un chantier editorial separe. [Checkpoint](checkpoints/2026-09-07-1014-stone-tab-live.md).
+
 > Mon Ecrin V8, 2026-09-06 : LIVE sur le GO unique de Patrice. Backend sain, migration 003 appliquee, application `milaura-customer-accounts-8` active (1117541007361), six fichiers theme `190430282075` relus identiques et logo natif officiel 72 px partage avec le paiement. 100 tests PASS, quiz reel vers compte et persistance apres reload valides, carrousel une ligne et portrait compact de 360 a 1440 px. Purge multi-navigateurs toujours reportee ; autres travaux preserves. [Rapport et retour arriere](checkpoints/2026-09-06-mon-ecrin-v8-live.md).
 
 > Swipe explicite, 2026-09-05 18:56 CEST : LIVE sur GO explicite de Patrice. Source `23b6b565`, integration `372dd0c3` poussees ; deux assets deployes sur `190430282075`, pullback 2/2 identique. Design, cartes et footer preserves ; ancien mecanisme natif retire. Recette publique Chromium 360/390/430/768/1440 et WebKit 390/1440 conforme ; gestes simules, fleches, barre, clavier, liens et vertical verifies. Aucun iPhone physique teste par Codex. Theme Check 0 erreur/16 avertissements historiques. Worktree propre retire, branche source conservee, reservations liberees. Modifications concurrentes preservees. [Checkpoint courant](checkpoints/2026-09-05-1829-stone-pointer-swipe-preview.md).
@@ -539,8 +541,7 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 
 ## Dependances encore ouvertes
 
-- inventaire courant : total actuel a recalculer en lecture seule ; mandat de retrait reversible de tous les anciens produits hors liste canonique, nouveaux actifs et DRAFT volontaires proteges
-- retrait legacy : toutes les anciennes references hors nouvel inventaire, pas seulement les 18 baguettes historiques ; aucune exception commerciale
+- inventaire courant : la file des 18 references absentes a ete traitee le 2026-09-05, avec 16 fiches vendables creees en DRAFT et deux fournitures personnelles exclues de Shopify ; le tri des anciennes fiches en ligne est repris par Patrice et leur etat doit etre relu avant toute action
 - treize anciennes collections sans metas definitives
 - pages mensuelles de naissance et pages enfants mariage
 - GSC, GA4, Merchant Center et Pinterest non verifies
