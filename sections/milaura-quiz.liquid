@@ -589,24 +589,32 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-invite {
-    margin-top: var(--milaura-spacing-md);
-    padding-top: var(--milaura-spacing-sm);
+    margin-top: 0;
+    padding-top: 0;
     text-align: center;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-text {
     font-family: var(--milaura-font-body);
-    color: var(--milaura-text-light, #666);
-    font-size: 0.85rem;
-    margin-bottom: 6px;
+    color: var(--quiz-soft-ink);
+    font-size: var(--milaura-t-petit);
+    margin: 0 0 4px;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-invite [hidden] {
+    display: none;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-link {
-    display: inline-block;
-    color: var(--milaura-gold);
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    color: var(--milaura-gold-dark);
+    font-family: var(--milaura-font-body);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: var(--milaura-t-petit);
     text-decoration: underline;
+    text-underline-offset: 3px;
     transition: color 0.3s ease;
   }
 
@@ -625,7 +633,7 @@
     border-radius: var(--milaura-border-radius-sm);
     background: transparent;
     color: var(--milaura-gold-dark);
-    font: 600 0.85rem/1.3 var(--milaura-font-body);
+    font: 600 var(--milaura-t-petit)/1.3 var(--milaura-font-body);
     cursor: pointer;
   }
 
@@ -651,7 +659,7 @@
     max-width: 42rem;
     margin: 8px auto 0;
     color: var(--milaura-text-light);
-    font: 400 0.78rem/1.45 var(--milaura-font-body);
+    font: 400 var(--milaura-t-petit)/1.45 var(--milaura-font-body);
   }
 
   /* --- LIEN DERNIÈRE RÉVÉLATION --- */
@@ -1194,27 +1202,6 @@
     padding: 12px 20px;
   }
 
-  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-invite {
-    margin-top: 0;
-    padding-top: 0;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-text {
-    margin: 0 0 4px;
-    color: var(--quiz-soft-ink);
-    font-family: var(--milaura-font-body);
-    font-size: 0.78rem;
-  }
-
-  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-link {
-    color: var(--milaura-gold-dark, #926451);
-    font-family: var(--milaura-font-body);
-    font-size: 0.82rem;
-    font-weight: 900;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
   @media screen and (min-width: 990px) {
     #MilauraQuiz-{{ section.id }} .quiz-reveal-main {
       grid-template-columns: minmax(0, 1.02fr) minmax(340px, 0.72fr);
@@ -1665,6 +1652,11 @@
         {% endif %}
 
         {% if section.settings.intro_button_label != blank %}
+          {% if settings.milaura_c1_release_candidate_enabled %}
+            <p class="quiz-reveal-account-status" data-milaura-quiz-save-notice>
+              {% if customer %}Votre résultat sera conservé dans Mon Écrin à la fin du quiz. Vous pourrez le supprimer depuis votre compte.{% else %}À la fin du quiz, connectez-vous pour retrouver votre pierre et vos conseils dans Mon Écrin.{% endif %}
+            </p>
+          {% endif %}
           <button
             type="button"
             class="milaura-cta"
@@ -2675,6 +2667,13 @@
 
       // Dispatch event so downstream sections can react
       window.dispatchEvent(new CustomEvent('milaura:quiz-result', { detail: resultData }));
+      if (!isRestoring) {
+        window.dispatchEvent(new CustomEvent('milaura:quiz-completed', {
+          detail: { diagnostic: resultData, startedAt: accountSaveStartedAt }
+        }));
+      } else {
+        window.dispatchEvent(new CustomEvent('milaura:quiz-restored', { detail: resultData }));
+      }
     }
 
     // ============================================
@@ -2699,11 +2698,13 @@
     // ============================================
     // INITIALISATION
     // ============================================
+    var accountSaveStartedAt = null;
     async function init() {
       // Bouton start
       const startBtn = container.querySelector('#quiz-start-btn-' + sectionId);
       if (startBtn) {
         startBtn.addEventListener('click', () => {
+          accountSaveStartedAt = new Date().toISOString();
           hasUserInteracted = true; // Activer le scroll après la première interaction
           goToQuestions();
         });
@@ -2713,6 +2714,7 @@
       const restartBtn = container.querySelector('#quiz-restart-btn-' + sectionId);
       if (restartBtn) {
         restartBtn.addEventListener('click', () => {
+          accountSaveStartedAt = new Date().toISOString();
           scores = {
             apaisement: 0,
             protection: 0,
