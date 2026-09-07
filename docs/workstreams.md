@@ -1,3 +1,11 @@
+## Mon Ecrin apres-achat du 2026-09-07
+
+- Proprietaire : Codex, tache `01a05660-7e67-7473-8945-ee872773aa2d`. GO tests commandes/Mes pieces/favoris et reduction friction quiz ; V8 live deja valide visuellement.
+- Branches theme et application : `codex/milaura-mon-ecrin-aftercare-20260907`. Theme : `/Users/paesano/Documents/MilAura website/_worktrees/mon-ecrin-aftercare-20260907`. Application : `/Users/paesano/Documents/_worktrees/agentic-ops-mon-ecrin-aftercare-20260907`, commit `a4aa165` pousse.
+- Etat au 2026-09-07 17:46 CEST : Mes pieces et favoris natifs developpes ; 95 tests PASS, build et bundle PASS ; ajout/retrait/rechargement et rail mobile/desktop verifies. Commande QA #1005 : 3 pieces, puis 2 apres remboursement partiel, puis aucune apres annulation. Boutique privee refermee, backend_url vide, App Dev nettoye et backend prive arrete. Aucun nouveau live.
+- Ouverts : accord technique demande pour nouvel acces serveur aux champs du compte, conservation du quiz sans clic non implementee ; coeurs favoris sur fiches produit et cas retours/remboursements combines a finir. Selection de favoris actuellement depuis Mon Ecrin.
+- Reservation conservee sur application `docs/milaura/shopify-apps/customer-accounts-release-candidate/**` et futurs modules quiz/favoris du theme ; aucun fichier theme effectivement modifie. Les fichiers PDP des autres sessions restent exclus. [Checkpoint apres-achat](</Users/paesano/Documents/MilAura website/_worktrees/mon-ecrin-aftercare-20260907/docs/checkpoints/2026-09-07-1746-mon-ecrin-aftercare-private.md>).
+
 ## Cloture Mon Ecrin V8 du 2026-09-06
 
 - Proprietaire : Codex, tache `01a05660-7e67-7473-8945-ee872773aa2d`. GO unique backend/application/six fichiers theme/logo natif execute. LIVE VERIFIE, reservations production liberees. App `2070546`, version active `1117541007361` ; integration theme `5368ec27` sur `190430282075`, pullback 6/6. Backend healthy, migration 003, logo partage compte/paiement 72 px. 100 tests PASS et vraie conservation quiz/compte confirmee. Worktrees de preuve propres conserves, aucun travail concurrent embarque. Les anciens statuts prives ci-dessous sont historiques. [Checkpoint](checkpoints/2026-09-06-mon-ecrin-v8-live.md).
