@@ -249,5 +249,5 @@ Procedure detaillee : `docs/reference/2026-08-12-repository-workflow.md`.
 - Branche : `codex/milaura-journal-polish-20260907`.
 - Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/journal-polish-20260907`.
 - Reservation : `templates/blog.json`, `sections/milaura-journal.liquid`, `assets/milaura-journal.css`, checkpoint dedie. Aucun article, navigation, footer ou token partage.
-- Theme : preview privee dediee `201069199707`, duplication Shopify en cours ; live `190430282075` intact.
-- Statut au 2026-09-07 : code `2c984869` pousse, Theme Check 0 erreur, recette locale 5 largeurs conforme ; recette directe preview en attente de fin de duplication. GO visuel Patrice requis avant live.
+- Theme : preview privee dediee `201069199707`, base reconstruite depuis snapshot live read-only apres duplication incomplete ; live `190430282075` intact.
+- Statut au 2026-09-07 : code `2c984869`, Theme Check 0 erreur, pullback exact 3/3, layout/tokens verifies, recette directe preview 5 largeurs conforme. GO visuel Patrice requis avant integration et live des seuls trois fichiers.
