@@ -1,0 +1,182 @@
+{%- comment -%}
+  Landing editoriale pour la collection Tous les bijoux.
+  Le Hero et les portes d'entree par type restent propres a cette destination.
+  Les filtres et la grille produit sont rendus par les sections collection partagees.
+{%- endcomment -%}
+
+{{ 'milaura-all-jewelry-landing.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign hero_desktop = section.settings.hero_desktop_asset | default: 'milaura-hero-editorial-collection-all-jewelry-desktop.webp'
+  assign hero_mobile = section.settings.hero_mobile_asset | default: 'milaura-hero-editorial-collection-all-jewelry-mobile.webp'
+  assign hero_title_id = 'MilauraAllJewelryTitle-' | append: section.id
+  assign families_id = 'MilauraJewelryFamilies-' | append: section.id
+  assign families_title_id = families_id | append: '-title'
+  assign products_id = 'MilauraAllJewelryProducts-' | append: section.id
+  assign products_title_id = products_id | append: '-title'
+-%}
+
+<div class="milaura-all-jewelry">
+  <section class="milaura-all-jewelry__hero" aria-labelledby="{{ hero_title_id }}">
+    <picture class="milaura-all-jewelry__hero-media">
+      <source media="(max-width: 749px)" srcset="{{ hero_mobile | asset_url }}">
+      <img
+        class="milaura-all-jewelry__hero-image"
+        src="{{ hero_desktop | asset_url }}"
+        alt="{{ section.settings.hero_image_alt | escape }}"
+        width="1586"
+        height="992"
+        loading="eager"
+        fetchpriority="high"
+      >
+    </picture>
+
+    <div class="milaura-all-jewelry__hero-inner">
+      <div class="milaura-all-jewelry__hero-copy">
+        {%- if section.settings.signature != blank -%}
+          <p class="milaura-all-jewelry__signature">{{ section.settings.signature | escape }}</p>
+        {%- endif -%}
+
+        <h1 id="{{ hero_title_id }}" class="milaura-all-jewelry__title">
+          {{ section.settings.heading | default: collection.title | escape }}
+        </h1>
+
+        {%- if section.settings.introduction != blank -%}
+          <div class="milaura-all-jewelry__intro rte">{{ section.settings.introduction }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.hero_cta_label != blank -%}
+          <a class="milaura-all-jewelry__text-link" href="#{{ families_id }}">
+            {{ section.settings.hero_cta_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- if section.settings.trust_1 != blank or section.settings.trust_2 != blank or section.settings.trust_3 != blank -%}
+    <div class="milaura-all-jewelry__trust" aria-label="Les engagements MilAura">
+      <div class="milaura-all-jewelry__shell milaura-all-jewelry__trust-inner">
+        {%- if section.settings.trust_1 != blank -%}<p>{{ section.settings.trust_1 | escape }}</p>{%- endif -%}
+        {%- if section.settings.trust_2 != blank -%}<p>{{ section.settings.trust_2 | escape }}</p>{%- endif -%}
+        {%- if section.settings.trust_3 != blank -%}<p>{{ section.settings.trust_3 | escape }}</p>{%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <section id="{{ families_id }}" class="milaura-all-jewelry__families" aria-labelledby="{{ families_title_id }}">
+    <div class="milaura-all-jewelry__shell">
+      <header class="milaura-all-jewelry__families-header">
+        <h2 id="{{ families_title_id }}">{{ section.settings.families_heading | escape }}</h2>
+        {%- if section.settings.families_text != blank -%}
+          <p>{{ section.settings.families_text | escape }}</p>
+        {%- endif -%}
+      </header>
+
+      <ul class="milaura-all-jewelry__family-list" aria-label="Choisir un type de bijou">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign family_collection = block.settings.collection
+            assign family_product = block.settings.product
+            assign family_link = block.settings.link
+            if family_link == blank and family_collection != blank
+              assign family_link = family_collection.url
+            endif
+            assign family_media = family_product.featured_image
+            if family_media == blank and family_collection != blank
+              assign family_media = family_collection.image | default: family_collection.products.first.featured_image
+            endif
+            assign family_alt = block.settings.image_alt | default: family_product.title | default: block.settings.heading
+          -%}
+
+          {%- if family_link != blank and family_media != blank and block.settings.heading != blank -%}
+            <li class="milaura-all-jewelry__family-item" {{ block.shopify_attributes }}>
+              <a class="milaura-all-jewelry__family-card" href="{{ family_link }}">
+                <div class="milaura-all-jewelry__family-media">
+                  {{ family_media
+                    | image_url: width: 900
+                    | image_tag:
+                      widths: '320, 480, 640, 780, 900',
+                      sizes: '(max-width: 749px) 76vw, (max-width: 1100px) 33vw, 20vw',
+                      loading: 'lazy',
+                      class: 'milaura-all-jewelry__family-image',
+                      alt: family_alt
+                  }}
+                </div>
+                <div class="milaura-all-jewelry__family-copy">
+                  <h3>{{ block.settings.heading | escape }}</h3>
+                  {%- if block.settings.body != blank -%}
+                    <p>{{ block.settings.body | escape }}</p>
+                  {%- endif -%}
+                  <span class="milaura-all-jewelry__family-link">{{ block.settings.cta_label | escape }}</span>
+                </div>
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      {%- if section.settings.stone_link != blank and section.settings.stone_link_label != blank -%}
+        <div class="milaura-all-jewelry__stone-path">
+          <span>{{ section.settings.stone_link_intro | escape }}</span>
+          <a class="milaura-all-jewelry__text-link" href="{{ section.settings.stone_link }}">
+            {{ section.settings.stone_link_label | escape }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  <section id="{{ products_id }}" class="milaura-all-jewelry__products-lead" aria-labelledby="{{ products_title_id }}">
+    <div class="milaura-all-jewelry__shell milaura-all-jewelry__products-lead-inner">
+      <h2 id="{{ products_title_id }}">{{ section.settings.products_heading | escape }}</h2>
+      {%- if section.settings.products_text != blank -%}
+        <p>{{ section.settings.products_text | escape }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Landing Tous les bijoux",
+  "tag": "section",
+  "class": "section-milaura-all-jewelry-landing",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "hero_desktop_asset", "label": "Asset Hero bureau", "default": "milaura-hero-editorial-collection-all-jewelry-desktop.webp" },
+    { "type": "text", "id": "hero_mobile_asset", "label": "Asset Hero mobile", "default": "milaura-hero-editorial-collection-all-jewelry-mobile.webp" },
+    { "type": "text", "id": "hero_image_alt", "label": "Description du Hero", "default": "Bracelet, collier, boucles d'oreilles, bague et pendentif MilAura en pierres naturelles" },
+    { "type": "text", "id": "signature", "label": "Signature", "default": "Choisir par bijou" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Bijoux en pierres naturelles" },
+    { "type": "richtext", "id": "introduction", "label": "Introduction", "default": "<p>Bracelets, colliers, boucles d’oreilles, bagues et pendentifs : choisissez la forme que vous aimez porter. La pierre, la matière et les dimensions sont précisées sur chaque fiche.</p>" },
+    { "type": "text", "id": "hero_cta_label", "label": "Action du Hero", "default": "Choisir mon bijou" },
+    { "type": "text", "id": "trust_1", "label": "Engagement 1", "default": "Pierres naturelles sélectionnées" },
+    { "type": "text", "id": "trust_2", "label": "Engagement 2", "default": "Préparé dans notre atelier à Metz" },
+    { "type": "text", "id": "trust_3", "label": "Engagement 3", "default": "Service humain 6j/7" },
+    { "type": "text", "id": "families_heading", "label": "Titre des types", "default": "Choisissez votre bijou" },
+    { "type": "text", "id": "families_text", "label": "Introduction des types", "default": "Commencez par ce que vous aimez porter, puis découvrez les pierres disponibles." },
+    { "type": "text", "id": "stone_link_intro", "label": "Introduction du lien pierres", "default": "Vous préférez commencer par une pierre ?" },
+    { "type": "text", "id": "stone_link_label", "label": "Lien pierres", "default": "Choisir par pierre" },
+    { "type": "url", "id": "stone_link", "label": "Destination pierres" },
+    { "type": "text", "id": "products_heading", "label": "Titre du catalogue", "default": "Tous les bijoux" },
+    { "type": "text", "id": "products_text", "label": "Introduction du catalogue", "default": "Affinez la sélection par pierre, disponibilité ou prix." }
+  ],
+  "blocks": [
+    {
+      "type": "jewelry_type",
+      "name": "Type de bijou",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Titre" },
+        { "type": "text", "id": "body", "label": "Description" },
+        { "type": "text", "id": "cta_label", "label": "Action" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "product", "id": "product", "label": "Produit photographié" },
+        { "type": "url", "id": "link", "label": "Lien de remplacement" },
+        { "type": "text", "id": "image_alt", "label": "Description de la photographie" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Landing Tous les bijoux" }]
+}
+{% endschema %}
