@@ -16,6 +16,16 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Remplacement du doublon bague aigue-marine du 2026-09-07
+
+- Etat au 2026-09-07 16:15 Europe/Paris : trois fichiers pousses sur le live et pullback identique ; redirection publique verifiee ; ancien produit en brouillon, suppression definitive en attente de confirmation navigateur. Checkpoint `docs/checkpoints/2026-09-07-1615-aigue-ring-replacement.md`.
+
+- Proprietaire : Codex, tache SEO, demande explicite Patrice du 2026-09-07 pour remplacement public immediat du doublon confirme.
+- Branche : `codex/milaura-aigue-ring-replacement-20260907`, worktree `/Users/paesano/.codex/worktrees/d25d/dawn-X-milaura`.
+- Perimetre : `templates/index.json`, `templates/collection.milaura-pierre-aigue-marine.json`, `templates/collection.milaura-campaign-aigue.json` ; seules les references a la bague doublon changent. Theme live `190430282075`, push cible apres lecture distante et verification.
+- Admin : ancien produit `10488132108635`, nouvelle fiche `10680525357403`, redirection de l ancienne URL vers la nouvelle. Aucun autre produit ou stock a modifier.
+- Le programme SEO general reste en attente de GO. Aucun merge au checkout principal ; changements concurrents preserves.
+
 ### Geste horizontal explicite des pierres du 2026-09-05
 
 - Etat final au 2026-09-05 18:56 CEST : FERME, INTEGRE ET LIVE sur GO explicite de Patrice. Source `23b6b565`, integration `372dd0c3` poussees ; deux assets sur `190430282075`, pullback 2/2 identique. Recette publique Chromium 360/390/430/768/1440 et WebKit 390/1440 conforme. Design preserve, anciens scroll/scroll-snap retires. Theme Check 0 erreur/16 avertissements historiques. Aucun iPhone physique teste par Codex. Worktree propre retire, branche conservee, reservations des deux assets et themes liberees. Checkpoint `docs/checkpoints/2026-09-05-1829-stone-pointer-swipe-preview.md`.
