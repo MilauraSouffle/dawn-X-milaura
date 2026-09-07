@@ -3,6 +3,10 @@
 Date : 2026-09-07. Statut : diagnostic local prêt à relire, aucune correction publiée dans ce lot.
 Marché : France, vente en ligne nationale. Metz est un élément d'identité, pas la limite du marché.
 
+## Décision métier du 2026-09-07
+
+Patrice confirme détenir le certificat émis par l’importateur (LFG) à l’arrivée en France. Le point certification est clos sur sa confirmation ; aucun retrait ou affaiblissement de cette promesse demandé. Les constats ci-dessous décrivent le diagnostic antérieur et ne constituent plus une action ouverte sur la certification.
+
 ## Décision proposée
 
 1. Consolider les pages existantes Aigue-marine, bracelets et pierres de naissance avant de multiplier les contenus. La matrice donne une destination et une mesure à chaque intention.

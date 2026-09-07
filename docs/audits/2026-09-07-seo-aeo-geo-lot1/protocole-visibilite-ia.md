@@ -1,6 +1,6 @@
 # Protocole de visibilité IA MilAura
 
-Date : 2026-09-07. Statut : panel préparé, mesures natives non exécutées.
+Date : 2026-09-07. Statut : panel préparé ; premier test pilote natif ChatGPT exécuté après GO, voir `plan-10-visites-jour.md` pour le prompt exact et les observations. Le panel complet multi-moteurs reste à mesurer. Le pilote précise livraison France et citation des prix, donc ne se substitue pas silencieusement à la demande 3 ci-dessous.
 
 Objectif : mesurer la présence, la citation et l'exactitude de MilAura sur des intentions françaises ; distinguer ces résultats des publicités et des clics réels.
 

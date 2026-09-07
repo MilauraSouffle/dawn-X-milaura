@@ -18,6 +18,10 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ### Diagnostic SEO AEO GEO lot 1 du 2026-09-07
 
+- Resultat du GO execution au 2026-09-07 : corrections Admin Bagues/titles et maillage naissance-Aigue LIVE VERIFIES. Deux templates publies seuls, pullbacks identiques, Theme Check 0 erreur/16 avertissements. Premier pilote ChatGPT et lecture GA4 termines, plan de six semaines documente. Reservations production liberees ; integration des deux templates restant au proprietaire central. Checkpoint `docs/checkpoints/2026-09-07-seo-collections-naissance-live.md`. Les statuts du diagnostic initial ci-dessous sont historiques.
+
+- Extension autorisee par Patrice le 2026-09-07 : correction description Bagues et titles SEO Bracelets, Colliers, Sodalite dans Shopify ; consolidation Aigue-marine et pierres de naissance, mesures IA/referrals et plan acquisition. Certification LFG confirmee par Patrice, point clos et aucun retrait. Reservation des champs Admin concernes et de `templates/page.milaura-pierres-naissance.json`, `templates/collection.milaura-pierre-aigue-marine.json` si correction necessaire apres lecture. Aucun tracking, Merchant Center, Ads ou contact tiers.
+
 - Proprietaire : Codex, tache 01a07c21-8804-7f00-8168-730dd611758f, GO explicite de Patrice du 2026-09-07.
 - Branche : `codex/milaura-seo-aeo-geo-lot1-20260907`, base `0f23d275`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/seo-aeo-geo-lot1-20260907`.
 - Reservation exclusive : `docs/audits/2026-09-07-seo-aeo-geo-lot1/` et checkpoint propre au lot. Registre : insertion de cette entree seulement, changements concurrents preserves.
