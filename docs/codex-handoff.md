@@ -1,3 +1,15 @@
+# Handoff catalogue : workflow V4.2 et Camilla deployes
+
+Date : 2026-09-08 16:26 CEST
+
+Statut : `WORKFLOW DEPLOYE, REVUE DES BROUILLONS ET AUDIT DES MODIFICATIONS CAMILLA A POURSUIVRE`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-08-1626-product-workflow-v4-2-camilla-handoff.md. Commence en lecture seule. Le workflow produit V4.2 et Camilla sont deployes : pas de grade fournisseur dans le titre ou le SEO title, image portee en position 2 pour tout nouveau bijou, stone_description strictement centree sur la pierre, Sol exclusivement, nouveaux produits uniquement en DRAFT, aucun canal active par un agent. Audite d'abord les modifications Shopify effectuees par Camilla le 2026-09-07 et fournis la liste exacte des produits et champs touches sans rien corriger. Patrice controle et active les brouillons un par un. Ne lance aucun batch, aucune publication, aucun changement de statut, prix, stock, handle, galerie, collection ou canal sans liste fermee et nouveau GO explicite.
+```
+
+Preuve complete, sauvegardes, tests, chemins VPS et dernier etat lu du bracelet baroque en labradorite : [checkpoint V4.2](checkpoints/2026-09-08-1626-product-workflow-v4-2-camilla-handoff.md).
+
 # Catalogue : cinq enrichissements en DRAFT et baguette Pyrite retiree
 
 Date : 2026-09-08 09:50 CEST. Patrice a retenu cinq anciennes fiches et a demande le retrait de la baguette Pyrite. La baguette `10357681619291` reste conservee dans Shopify mais est maintenant `DRAFT`, stock zero, `onlineStoreUrl=null` et n'apparait plus sur le storefront. Aucun enrichissement n'a ete applique a cette fiche.
