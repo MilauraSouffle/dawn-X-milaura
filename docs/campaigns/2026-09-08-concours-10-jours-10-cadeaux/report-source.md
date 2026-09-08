@@ -193,20 +193,20 @@ L'objectif publicitaire final dépendra des options réellement disponibles le j
 
 ## 5. Calendrier éditorial
 
-Fenêtre validée explicitement par Patrice le 2026-09-08 : du mardi 2026-09-08 à 20:00 CEST au vendredi 2026-09-18 à 19:59 CEST. Tirages le 2026-09-19 à 12:00 CEST.
+Fenêtre reportée explicitement par Patrice le 2026-09-08 : du mercredi 2026-09-09 à 20:00 CEST au samedi 2026-09-19 à 19:59 CEST. Tirages le 2026-09-20 à 12:00 CEST.
 
 | Date | Cadeau | Contenu principal | Angle commercial utile |
 | --- | --- | --- | --- |
-| 2026-09-08 à 20 h | Distributeur aventurine bleue | Reel ouverture | Objet en pierre pour la maison |
-| 2026-09-09 à 20 h | Bague sodalite | Macro portée | Bague réglable, facile à offrir |
-| 2026-09-10 à 20 h | Bougie Sérénité | Vidéo matière | Bougie et pierre dans un même rituel |
-| 2026-09-11 à 20 h | Pendentif cœur | Gros plan | Préciser sans chaîne |
-| 2026-09-12 à 20 h | Bracelet rondelles | Carrousel détails | Sodalite, doré et perles de 6 mm |
-| 2026-09-13 à 20 h | Boucles sodalite | Try-on réel | Longueur 36 mm |
-| 2026-09-14 à 20 h | Bougie Réconfort | Vidéo ambiance réelle | Néroli et calcédoine bleue |
-| 2026-09-15 à 20 h | Collier pampilles | Mouvement réel | Reflets argentés et pampilles |
-| 2026-09-16 à 20 h | Bracelet Horus | Reel fondateur | Un produit déjà présent sur Instagram |
-| 2026-09-17 à 20 h | Carte cadeau 30 € | Récapitulatif | Dernier cadeau, clôture le lendemain à 19 h 59 |
+| 2026-09-09 à 20 h | Distributeur aventurine bleue | Reel ouverture | Objet en pierre pour la maison |
+| 2026-09-10 à 20 h | Bague sodalite | Macro portée | Bague réglable, facile à offrir |
+| 2026-09-11 à 20 h | Bougie Sérénité | Vidéo matière | Bougie et pierre dans un même rituel |
+| 2026-09-12 à 20 h | Pendentif cœur | Gros plan | Préciser sans chaîne |
+| 2026-09-13 à 20 h | Bracelet rondelles | Carrousel détails | Sodalite, doré et perles de 6 mm |
+| 2026-09-14 à 20 h | Boucles sodalite | Try-on réel | Longueur 36 mm |
+| 2026-09-15 à 20 h | Bougie Réconfort | Vidéo ambiance réelle | Néroli et calcédoine bleue |
+| 2026-09-16 à 20 h | Collier pampilles | Mouvement réel | Reflets argentés et pampilles |
+| 2026-09-17 à 20 h | Bracelet Horus | Reel fondateur | Un produit déjà présent sur Instagram |
+| 2026-09-18 à 20 h | Carte cadeau 30 € | Récapitulatif | Dernier cadeau, clôture le lendemain à 19 h 59 |
 
 Chaque jour : un Reel ou post, trois Stories maximum, un rappel du faux compte, un lien vers la landing, une réponse humaine aux commentaires. TikTok reçoit seulement les meilleures vidéos adaptées, pas un copier-coller avec watermark.
 
@@ -295,7 +295,7 @@ Une petite étude de 52 comptes sponsorisés a observé une forte attrition apr�
 
 ## 10. Décisions encore requises
 
-1. Confirmer la fenêtre du 2026-09-08 à 20 h au 2026-09-18 à 19 h 59.
+1. Fenêtre reportée et confirmée du 2026-09-09 à 20 h au 2026-09-19 à 19 h 59.
 2. Donner le coût de revient total des neuf produits et le coût d'expédition estimé.
 3. Confirmer ONORA SARL comme organisateur juridique du jeu MilAura.
 4. Fixer la validité de la carte cadeau et la règle exacte de livraison offerte.

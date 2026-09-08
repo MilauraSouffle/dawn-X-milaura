@@ -14,7 +14,7 @@ Contact relatif au jeu : contact@milaura.fr.
 
 ## Article 2. Durée
 
-Le jeu est ouvert du 2026-09-08 à 20:00, heure de Paris, au 2026-09-18 à 19:59, heure de Paris.
+Le jeu est ouvert du 2026-09-09 à 20:00, heure de Paris, au 2026-09-19 à 19:59, heure de Paris.
 
 Aucune participation reçue avant l'ouverture ou après la clôture ne sera retenue.
 
@@ -79,7 +79,7 @@ En cas d'indisponibilité justifiée d'un lot, l'Organisateur pourra le remplace
 
 ## Article 7. Désignation des gagnants
 
-Les dix tirages au sort seront réalisés le 2026-09-19 à 12:00, heure de Paris, après vérification des participations.
+Les dix tirages au sort seront réalisés le 2026-09-20 à 12:00, heure de Paris, après vérification des participations.
 
 Cinq lots sont attribués parmi les participations Instagram conformes et cinq parmi les participations Facebook conformes, selon le tableau de l'article 6.
 
