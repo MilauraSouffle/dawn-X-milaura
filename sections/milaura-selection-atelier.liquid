@@ -97,6 +97,28 @@
     object-position: center;
   }
 
+  #MilauraSelection-{{ section.id }} .milaura-season__fallback,
+  #MilauraSelection-{{ section.id }} .milaura-season__video {
+    position: absolute;
+    inset: 0;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__fallback {
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__video {
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 180ms ease-out;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__media-frame[data-media-state='playing'] .milaura-season__video,
+  #MilauraSelection-{{ section.id }} .milaura-season__media-frame[data-media-state='ended'] .milaura-season__video {
+    opacity: 1;
+  }
+
   #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
     position: absolute;
     z-index: 3;
@@ -613,7 +635,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #MilauraSelection-{{ section.id }} .milaura-season__cta {
+    #MilauraSelection-{{ section.id }} .milaura-season__cta,
+    #MilauraSelection-{{ section.id }} .milaura-season__video {
       transition: none;
     }
   }
@@ -633,10 +656,22 @@
       <figure class="milaura-season__media">
         <div class="milaura-season__media-frame"{% if campaign_video_desktop != blank %} data-milaura-home-seasonal-media{% endif %}>
           {%- if campaign_video_desktop != blank -%}
+            <picture class="milaura-season__picture milaura-season__fallback" aria-hidden="true">
+              <source media="(max-width: 749px)" srcset="{{ campaign_poster_mobile | asset_url }}">
+              <img
+                class="milaura-season__image"
+                src="{{ campaign_poster_desktop | asset_url }}"
+                width="1280"
+                height="720"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              >
+            </picture>
             <video
               class="milaura-season__video"
               poster="{{ campaign_poster_desktop | asset_url }}"
-              preload="metadata"
+              preload="none"
               muted
               playsinline
               disablepictureinpicture
