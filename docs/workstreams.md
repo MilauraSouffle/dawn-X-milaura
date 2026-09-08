@@ -35,6 +35,13 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Landing et strategie concours 10 jours, 10 cadeaux du 2026-09-08
+
+- Proprietaire : Codex, tache `01a0814e-44bb-7842-929a-c0933280a989`, demande directe de Patrice du 2026-09-08.
+- Branche : `codex/milaura-concours-20260908`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/milaura-concours-20260908`, base `2833fa4e`.
+- Perimetre reserve : nouvelle section et nouveau template de page pour le concours, assets exclusivement lies au concours, variante reversible du bloc newsletter de `sections/milaura-footer.liquid`, configuration `sections/footer-group.json`, strategie et reglement dates du lot.
+- Etat au 2026-09-08 : OUVERT, strategie et implementation terminees sur la preview privee non publiee `201111306587` (`MilAura Concours 10 jours Preview 2026-09-08`). Theme Check : 0 erreur et 16 avertissements historiques hors lot. QA visuelle et interaction du coffret validees sur desktop et mobile 360/390/430 px. Aucun contenu Admin, theme live, campagne Meta, budget, publication sociale, email, Pinterest, TikTok ou Snapchat modifie. GO visuel Patrice, integration, release et live restent des gates separees.
+
 ### Lien Pinterest du footer du 2026-09-07
 
 - Proprietaire : Codex, tache Pinterest `01a07069-b8b7-73e2-880a-37f444a91195`, demande explicite de Patrice du 2026-09-07 : corriger immediatement le lien du footer vers `https://fr.pinterest.com/MilAuraMineraux/`.

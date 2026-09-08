@@ -41,7 +41,20 @@
         {%- endif -%}
       </div>
 
-      {%- if section.settings.show_newsletter -%}
+      {%- if section.settings.footer_feature_mode == 'contest' -%}
+        <div class="milaura-footer__campaign">
+          <p class="milaura-footer__newsletter-title">{{ section.settings.contest_title | escape }}</p>
+          {%- if section.settings.contest_text != blank -%}
+            <p class="milaura-footer__newsletter-text">{{ section.settings.contest_text | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.contest_url != blank -%}
+            <a class="milaura-footer__campaign-link" href="{{ section.settings.contest_url }}">
+              <span>{{ section.settings.contest_button | escape }}</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- elsif section.settings.show_newsletter -%}
         <div class="milaura-footer__newsletter">
           <p class="milaura-footer__newsletter-title">{{ section.settings.newsletter_title | escape }}</p>
           {%- if section.settings.newsletter_text != blank -%}
@@ -232,6 +245,27 @@
     color: var(--milaura-encre-secondaire);
     font-size: var(--milaura-t-petit);
     line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraFooter-{{ section.id }} .milaura-footer__campaign-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--milaura-esp-lg);
+    min-height: var(--milaura-cible-conversion);
+    margin-top: var(--milaura-esp-md);
+    padding: var(--milaura-esp-xs) 0 var(--milaura-esp-2xs);
+    color: var(--milaura-encre);
+    border-bottom: var(--milaura-filet-action);
+    font-size: var(--milaura-t-bouton);
+    font-weight: 600;
+    line-height: var(--milaura-lh-bouton);
+    text-decoration: none;
+  }
+
+  #MilauraFooter-{{ section.id }} .milaura-footer__campaign-link span:last-child {
+    color: var(--milaura-or-profond);
+    font-size: var(--milaura-t-corps-large);
   }
 
   #MilauraFooter-{{ section.id }} .milaura-footer__form {
@@ -445,6 +479,14 @@
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "textarea", "id": "tagline", "label": "Présentation", "default": "Bijoux en pierres naturelles, minéraux et bougies sélectionnés par Karine à Metz." },
     { "type": "checkbox", "id": "show_social", "label": "Afficher les réseaux sociaux", "default": true },
+    { "type": "select", "id": "footer_feature_mode", "label": "Bloc mis en avant", "default": "newsletter", "options": [
+      { "value": "newsletter", "label": "Inscription email" },
+      { "value": "contest", "label": "Jeu concours" }
+    ] },
+    { "type": "text", "id": "contest_title", "label": "Titre concours", "default": "10 jours. 10 cadeaux." },
+    { "type": "textarea", "id": "contest_text", "label": "Texte concours", "default": "Ouvrez le coffret du jour et tentez de gagner l’un des dix cadeaux MilAura." },
+    { "type": "url", "id": "contest_url", "label": "Page du concours" },
+    { "type": "text", "id": "contest_button", "label": "Bouton concours", "default": "Découvrir le cadeau du jour" },
     { "type": "checkbox", "id": "show_newsletter", "label": "Afficher l inscription email", "default": true },
     { "type": "text", "id": "newsletter_title", "label": "Titre inscription", "default": "Les nouvelles MilAura" },
     { "type": "textarea", "id": "newsletter_text", "label": "Texte inscription", "default": "Nouvelles créations, guides et rendez-vous de la maison. Aucun avantage inventé." },

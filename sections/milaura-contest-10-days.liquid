@@ -1,0 +1,1244 @@
+{%- liquid
+  assign preview_day = section.settings.preview_day | default: 1
+  assign selected_prize = section.blocks.first
+
+  for block in section.blocks
+    if forloop.index == preview_day
+      assign selected_prize = block
+    endif
+  endfor
+
+  assign selected_asset = blank
+  case preview_day
+    when 1
+      assign selected_asset = 'milaura-concours-jour-01-distributeur-aventurine.webp'
+    when 2
+      assign selected_asset = 'milaura-concours-jour-02-bague-sodalite.webp'
+    when 3
+      assign selected_asset = 'milaura-concours-jour-03-bougie-serenite.webp'
+    when 4
+      assign selected_asset = 'milaura-concours-jour-04-pendentif-sodalite.webp'
+    when 5
+      assign selected_asset = 'milaura-concours-jour-05-bracelet-rondelles.webp'
+    when 6
+      assign selected_asset = 'milaura-concours-jour-06-boucles-sodalite.webp'
+    when 7
+      assign selected_asset = 'milaura-concours-jour-07-bougie-reconfort.webp'
+    when 8
+      assign selected_asset = 'milaura-concours-jour-08-collier-sodalite.webp'
+    when 9
+      assign selected_asset = 'milaura-concours-jour-09-bracelet-horus.webp'
+  endcase
+-%}
+
+<section
+  id="MilauraContest-{{ section.id }}"
+  class="milaura-contest"
+  data-milaura-contest
+  data-preview-mode="{{ section.settings.preview_mode }}"
+  data-preview-day="{{ preview_day }}"
+  data-start-at="{{ section.settings.start_at | escape }}"
+  data-end-at="{{ section.settings.end_at | escape }}"
+>
+  <div class="milaura-contest__hero">
+    <div class="milaura-contest__hero-copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="milaura-contest__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="milaura-contest__title">{{ section.settings.title | escape }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <div class="milaura-contest__intro rte">{{ section.settings.intro }}</div>
+      {%- endif -%}
+
+      <div class="milaura-contest__status" aria-live="polite">
+        <span class="milaura-contest__status-day" data-contest-status-day>Jour {{ preview_day }} sur 10</span>
+        <span class="milaura-contest__status-text" data-contest-status-text>{{ section.settings.preview_status | escape }}</span>
+      </div>
+
+      <p class="milaura-contest__instruction" data-contest-instruction>
+        {{ section.settings.opening_instruction | escape }}
+      </p>
+    </div>
+
+    <div class="milaura-contest__stage">
+      <div
+        id="MilauraContestPrize-{{ section.id }}"
+        class="milaura-contest__reveal"
+        data-contest-reveal
+        aria-hidden="true"
+      >
+        <div class="milaura-contest__reveal-media" data-contest-reveal-media>
+          {%- if selected_prize.settings.image != blank -%}
+            {{- selected_prize.settings.image
+              | image_url: width: 1200
+              | image_tag:
+                class: 'milaura-contest__reveal-image',
+                widths: '480, 720, 960, 1200',
+                sizes: '(min-width: 990px) 42vw, 88vw',
+                loading: 'eager',
+                alt: selected_prize.settings.title
+            -}}
+          {%- elsif selected_asset != blank -%}
+            <img
+              class="milaura-contest__reveal-image"
+              src="{{ selected_asset | asset_url }}"
+              width="1024"
+              height="1024"
+              alt="{{ selected_prize.settings.title | escape }}"
+              loading="eager"
+              data-contest-reveal-image
+            >
+          {%- else -%}
+            <div class="milaura-contest__voucher" data-contest-reveal-voucher>
+              <span>MilAura</span>
+              <strong>30 €</strong>
+              <small>Carte cadeau</small>
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="milaura-contest__reveal-copy">
+          <span data-contest-reveal-day>Le cadeau du jour</span>
+          <h2 data-contest-reveal-title>{{ selected_prize.settings.title | escape }}</h2>
+          <p data-contest-reveal-detail>{{ selected_prize.settings.detail | escape }}</p>
+          <strong data-contest-reveal-value>{{ selected_prize.settings.value | escape }}</strong>
+        </div>
+      </div>
+
+      <button
+        class="milaura-contest__gift"
+        type="button"
+        aria-expanded="false"
+        aria-controls="MilauraContestPrize-{{ section.id }}"
+        data-contest-gift
+      >
+        <span class="visually-hidden">{{ section.settings.opening_instruction | escape }}</span>
+        <span class="milaura-contest__gift-object" aria-hidden="true">
+          <span class="milaura-contest__gift-lid"></span>
+          <span class="milaura-contest__gift-box"></span>
+          <span class="milaura-contest__gift-ribbon"></span>
+          <span class="milaura-contest__gift-knot milaura-contest__gift-knot--left"></span>
+          <span class="milaura-contest__gift-knot milaura-contest__gift-knot--right"></span>
+        </span>
+        <span class="milaura-contest__gift-action" data-contest-gift-label>{{ section.settings.gift_button | escape }}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="milaura-contest__participation" id="participer">
+    <div>
+      <p class="milaura-contest__section-label">{{ section.settings.participation_eyebrow | escape }}</p>
+      <h2>{{ section.settings.participation_title | escape }}</h2>
+    </div>
+    <ol class="milaura-contest__steps">
+      <li>
+        <span>01</span>
+        <p>{{ section.settings.step_one | escape }}</p>
+      </li>
+      <li>
+        <span>02</span>
+        <p>{{ section.settings.step_two | escape }}</p>
+      </li>
+      <li>
+        <span>03</span>
+        <p>{{ section.settings.step_three | escape }}</p>
+      </li>
+    </ol>
+    <div class="milaura-contest__social-actions">
+      {%- if section.settings.instagram_url != blank -%}
+        <a
+          class="milaura-contest__social-link milaura-contest__social-link--primary"
+          href="{{ section.settings.instagram_url }}"
+          target="_blank"
+          rel="noopener"
+          data-contest-social="instagram"
+        >
+          <span>{{ section.settings.instagram_label | escape }}</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      {%- endif -%}
+      {%- if section.settings.facebook_url != blank -%}
+        <a
+          class="milaura-contest__social-link"
+          href="{{ section.settings.facebook_url }}"
+          target="_blank"
+          rel="noopener"
+          data-contest-social="facebook"
+        >
+          <span>{{ section.settings.facebook_label | escape }}</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      {%- endif -%}
+    </div>
+    <p class="milaura-contest__social-note">{{ section.settings.participation_note | escape }}</p>
+  </div>
+
+  <div class="milaura-contest__calendar" id="cadeaux">
+    <div class="milaura-contest__section-heading">
+      <div>
+        <p class="milaura-contest__section-label">{{ section.settings.calendar_eyebrow | escape }}</p>
+        <h2>{{ section.settings.calendar_title | escape }}</h2>
+      </div>
+      <p>{{ section.settings.calendar_intro | escape }}</p>
+    </div>
+
+    <div class="milaura-contest__prize-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign fallback_asset = blank
+          case forloop.index
+            when 1
+              assign fallback_asset = 'milaura-concours-jour-01-distributeur-aventurine.webp'
+            when 2
+              assign fallback_asset = 'milaura-concours-jour-02-bague-sodalite.webp'
+            when 3
+              assign fallback_asset = 'milaura-concours-jour-03-bougie-serenite.webp'
+            when 4
+              assign fallback_asset = 'milaura-concours-jour-04-pendentif-sodalite.webp'
+            when 5
+              assign fallback_asset = 'milaura-concours-jour-05-bracelet-rondelles.webp'
+            when 6
+              assign fallback_asset = 'milaura-concours-jour-06-boucles-sodalite.webp'
+            when 7
+              assign fallback_asset = 'milaura-concours-jour-07-bougie-reconfort.webp'
+            when 8
+              assign fallback_asset = 'milaura-concours-jour-08-collier-sodalite.webp'
+            when 9
+              assign fallback_asset = 'milaura-concours-jour-09-bracelet-horus.webp'
+          endcase
+        -%}
+        <article
+          class="milaura-contest__prize-card{% if forloop.index == preview_day %} is-current{% endif %}"
+          data-contest-prize
+          data-day="{{ forloop.index }}"
+          data-title="{{ block.settings.title | escape }}"
+          data-detail="{{ block.settings.detail | escape }}"
+          data-value="{{ block.settings.value | escape }}"
+          data-has-image="{% if block.settings.image != blank or fallback_asset != blank %}true{% else %}false{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="milaura-contest__prize-media">
+            {%- if block.settings.image != blank -%}
+              {{- block.settings.image
+                | image_url: width: 720
+                | image_tag:
+                  class: 'milaura-contest__prize-image',
+                  widths: '240, 360, 480, 720',
+                  sizes: '(min-width: 990px) 19vw, (min-width: 600px) 31vw, 46vw',
+                  loading: 'lazy',
+                  alt: block.settings.title
+              -}}
+            {%- elsif fallback_asset != blank -%}
+              <img
+                class="milaura-contest__prize-image"
+                src="{{ fallback_asset | asset_url }}"
+                width="1024"
+                height="1024"
+                alt="{{ block.settings.title | escape }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              <div class="milaura-contest__voucher milaura-contest__voucher--card">
+                <span>MilAura</span>
+                <strong>30 €</strong>
+                <small>Carte cadeau</small>
+              </div>
+            {%- endif -%}
+            <span class="milaura-contest__day-index">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          </div>
+          <div class="milaura-contest__prize-copy">
+            <p>{{ block.settings.day_label | escape }}</p>
+            <h3>{{ block.settings.title | escape }}</h3>
+            <span>{{ block.settings.value | escape }}</span>
+          </div>
+          {%- if block.settings.product_url != blank -%}
+            <a class="milaura-contest__prize-link" href="{{ block.settings.product_url }}">
+              Voir ce cadeau
+            </a>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <div class="milaura-contest__rules" id="reglement">
+    <div class="milaura-contest__rules-heading">
+      <p class="milaura-contest__section-label">{{ section.settings.rules_eyebrow | escape }}</p>
+      <h2>{{ section.settings.rules_title | escape }}</h2>
+      <p>{{ section.settings.rules_intro | escape }}</p>
+    </div>
+
+    <dl class="milaura-contest__rules-grid">
+      <div>
+        <dt>Qui peut participer ?</dt>
+        <dd>{{ section.settings.eligibility | escape }}</dd>
+      </div>
+      <div>
+        <dt>Où ?</dt>
+        <dd>{{ section.settings.territory | escape }}</dd>
+      </div>
+      <div>
+        <dt>Quand ?</dt>
+        <dd>{{ section.settings.period | escape }}</dd>
+      </div>
+      <div>
+        <dt>Comment sont choisis les gagnants ?</dt>
+        <dd>{{ section.settings.draw_method | escape }}</dd>
+      </div>
+    </dl>
+
+    <details class="milaura-contest__rules-details" data-contest-rules>
+      <summary>
+        <span>{{ section.settings.rules_button | escape }}</span>
+        <span aria-hidden="true">+</span>
+      </summary>
+      <div class="milaura-contest__rules-body rte">
+        {{ section.settings.rules_body }}
+      </div>
+    </details>
+
+    <p class="milaura-contest__fraud-warning">{{ section.settings.fraud_warning | escape }}</p>
+    <p class="milaura-contest__platform-note">{{ section.settings.platform_note | escape }}</p>
+  </div>
+</section>
+
+{%- style -%}
+  #MilauraContest-{{ section.id }},
+  #MilauraContest-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #MilauraContest-{{ section.id }} {
+    overflow: hidden;
+    color: var(--milaura-encre);
+    background: var(--milaura-surface);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__hero,
+  #MilauraContest-{{ section.id }} .milaura-contest__participation,
+  #MilauraContest-{{ section.id }} .milaura-contest__calendar,
+  #MilauraContest-{{ section.id }} .milaura-contest__rules {
+    width: min(1320px, calc(100% - clamp(32px, 7vw, 112px)));
+    margin: 0 auto;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__hero {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(440px, 1.22fr);
+    align-items: center;
+    min-height: min(860px, calc(100svh - 92px));
+    gap: clamp(32px, 6vw, 104px);
+    padding: clamp(56px, 8vw, 128px) 0;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__eyebrow,
+  #MilauraContest-{{ section.id }} .milaura-contest__section-label,
+  #MilauraContest-{{ section.id }} .milaura-contest__status-day,
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal-copy > span,
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-copy > p {
+    margin: 0;
+    color: var(--milaura-aigue-profonde);
+    font-size: var(--milaura-t-label);
+    font-weight: 600;
+    line-height: var(--milaura-lh-label);
+    letter-spacing: var(--milaura-ls-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__title {
+    max-width: 720px;
+    margin: var(--milaura-esp-sm) 0 0;
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-display);
+    font-weight: 400;
+    line-height: var(--milaura-lh-display);
+    letter-spacing: var(--milaura-ls-display);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__intro {
+    max-width: 610px;
+    margin-top: var(--milaura-esp-md);
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-corps-large);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__intro p {
+    margin: 0;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--milaura-esp-xs) var(--milaura-esp-md);
+    margin-top: var(--milaura-esp-lg);
+    padding-top: var(--milaura-esp-md);
+    border-top: var(--milaura-filet-or);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__status-text,
+  #MilauraContest-{{ section.id }} .milaura-contest__instruction {
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__instruction {
+    margin: var(--milaura-esp-md) 0 0;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__stage {
+    position: relative;
+    min-height: clamp(500px, 52vw, 690px);
+    border: var(--milaura-filet-mineral);
+    background: var(--milaura-surface-mineral);
+    isolation: isolate;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__stage::before,
+  #MilauraContest-{{ section.id }} .milaura-contest__stage::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__stage::before {
+    inset: var(--milaura-esp-md);
+    border: var(--milaura-filet);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__stage::after {
+    inset: auto var(--milaura-esp-xl) var(--milaura-esp-xl) auto;
+    width: 42%;
+    border-bottom: var(--milaura-filet-or);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    padding: 0;
+    color: var(--milaura-encre);
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift:disabled {
+    cursor: not-allowed;
+    opacity: var(--milaura-opacite-disabled);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift:focus-visible,
+  #MilauraContest-{{ section.id }} .milaura-contest__social-link:focus-visible,
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-link:focus-visible,
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-details summary:focus-visible {
+    outline: var(--milaura-focus);
+    outline-offset: var(--milaura-focus-offset);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-object {
+    position: relative;
+    display: block;
+    width: clamp(230px, 36vw, 410px);
+    height: clamp(240px, 37vw, 420px);
+    transition: opacity var(--milaura-transition-rapide);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-box,
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-lid {
+    position: absolute;
+    left: 50%;
+    display: block;
+    border: var(--milaura-filet-or);
+    background: var(--milaura-surface-haute);
+    box-shadow: var(--milaura-ombre-portee);
+    transform: translateX(-50%);
+    transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1), opacity 420ms ease;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-box {
+    bottom: 18%;
+    width: 72%;
+    height: 48%;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-lid {
+    z-index: 2;
+    bottom: 63%;
+    width: 82%;
+    height: 14%;
+    transform-origin: 18% 100%;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-ribbon {
+    position: absolute;
+    z-index: 3;
+    bottom: 18%;
+    left: 50%;
+    width: 7%;
+    height: 59%;
+    background: var(--milaura-or);
+    transform: translateX(-50%);
+    transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1), opacity 420ms ease;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-knot {
+    position: absolute;
+    z-index: 4;
+    bottom: 76%;
+    width: 26%;
+    height: 15%;
+    border: var(--milaura-filet-or);
+    background: var(--milaura-surface-haute);
+    transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1), opacity 420ms ease;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-knot--left {
+    left: 25%;
+    transform: rotate(18deg);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-knot--right {
+    right: 25%;
+    transform: rotate(-18deg);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift-action {
+    position: absolute;
+    bottom: clamp(32px, 5vw, 64px);
+    min-height: var(--milaura-cible-tactile);
+    padding: var(--milaura-esp-xs) 0 var(--milaura-esp-2xs);
+    border-bottom: var(--milaura-filet-action);
+    font-size: var(--milaura-t-bouton);
+    font-weight: 600;
+    line-height: var(--milaura-lh-bouton);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift.is-open .milaura-contest__gift-lid {
+    opacity: 0;
+    transform: translate(-78%, -260%) rotate(-16deg);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift.is-open .milaura-contest__gift-box {
+    opacity: 0;
+    transform: translate(-50%, 90%);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift.is-open .milaura-contest__gift-ribbon,
+  #MilauraContest-{{ section.id }} .milaura-contest__gift.is-open .milaura-contest__gift-knot {
+    opacity: 0;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__gift.is-open {
+    pointer-events: none;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal {
+    position: absolute;
+    inset: var(--milaura-esp-lg);
+    z-index: 2;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    opacity: 0;
+    transform: translateY(var(--milaura-esp-md));
+    transition: opacity 440ms ease 180ms, transform 620ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal-media {
+    display: grid;
+    place-items: center;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal-image {
+    display: block;
+    width: min(100%, 520px);
+    height: 100%;
+    min-height: 0;
+    object-fit: contain;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--milaura-esp-2xs) var(--milaura-esp-md);
+    padding-top: var(--milaura-esp-md);
+    border-top: var(--milaura-filet-or);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal-copy > span {
+    grid-column: 1 / -1;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal-copy h2 {
+    margin: 0;
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h3);
+    font-weight: 400;
+    line-height: var(--milaura-lh-h3);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal-copy p {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__reveal-copy strong {
+    align-self: start;
+    color: var(--milaura-encre);
+    font-size: var(--milaura-t-corps);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__voucher {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    width: min(82%, 420px);
+    aspect-ratio: 4 / 3;
+    color: var(--milaura-encre);
+    border: var(--milaura-filet-or);
+    background: var(--milaura-surface-haute);
+    box-shadow: var(--milaura-ombre-portee);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__voucher span {
+    font-family: var(--milaura-font-signature);
+    font-size: var(--milaura-t-signature);
+    font-weight: 600;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__voucher strong {
+    margin-top: var(--milaura-esp-xs);
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h2);
+    font-weight: 400;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__voucher small {
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-label);
+    letter-spacing: var(--milaura-ls-label);
+    text-transform: uppercase;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__participation {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
+    gap: var(--milaura-esp-xl);
+    padding: var(--milaura-esp-2xl) 0;
+    border-top: var(--milaura-filet);
+    border-bottom: var(--milaura-filet-or);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__participation h2,
+  #MilauraContest-{{ section.id }} .milaura-contest__section-heading h2,
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-heading h2 {
+    margin: var(--milaura-esp-xs) 0 0;
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h2);
+    font-weight: 400;
+    line-height: var(--milaura-lh-h2);
+    letter-spacing: var(--milaura-ls-titre);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--milaura-esp-md);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__steps li {
+    padding-top: var(--milaura-esp-sm);
+    border-top: var(--milaura-filet-mineral);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__steps span {
+    color: var(--milaura-or-profond);
+    font-size: var(--milaura-t-label);
+    font-weight: 600;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__steps p {
+    margin: var(--milaura-esp-xs) 0 0;
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-corps);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__social-actions {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--milaura-esp-md);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--milaura-esp-lg);
+    min-width: min(100%, 250px);
+    min-height: var(--milaura-cible-conversion);
+    padding: var(--milaura-esp-xs) var(--milaura-esp-sm);
+    color: var(--milaura-encre);
+    border: var(--milaura-filet-mineral);
+    border-bottom: var(--milaura-filet-action);
+    text-decoration: none;
+    transition: background var(--milaura-transition-rapide);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__social-link--primary,
+  #MilauraContest-{{ section.id }} .milaura-contest__social-link:hover {
+    background: var(--milaura-surface-mineral);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__social-note {
+    grid-column: 2;
+    margin: 0;
+    color: var(--milaura-encre-tertiaire);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__calendar,
+  #MilauraContest-{{ section.id }} .milaura-contest__rules {
+    padding: var(--milaura-esp-3xl) 0;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.68fr);
+    align-items: end;
+    gap: var(--milaura-esp-xl);
+    margin-bottom: var(--milaura-esp-xl);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__section-heading > p,
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-heading > p:last-child {
+    margin: 0;
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-corps);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--milaura-esp-lg) var(--milaura-esp-md);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-card {
+    position: relative;
+    min-width: 0;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-card.is-current .milaura-contest__prize-media {
+    border-color: var(--milaura-or);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-media {
+    position: relative;
+    aspect-ratio: var(--milaura-ratio-produit);
+    overflow: hidden;
+    border: var(--milaura-filet-mineral);
+    background: var(--milaura-surface-mineral);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__day-index {
+    position: absolute;
+    right: var(--milaura-esp-xs);
+    bottom: var(--milaura-esp-xs);
+    color: var(--milaura-encre);
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h3);
+    line-height: 1;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__voucher--card {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    border: 0;
+    box-shadow: none;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-copy {
+    padding-top: var(--milaura-esp-sm);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-copy h3 {
+    margin: var(--milaura-esp-2xs) 0 0;
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h3);
+    font-weight: 400;
+    line-height: var(--milaura-lh-h3);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-copy > span {
+    display: block;
+    margin-top: var(--milaura-esp-2xs);
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-petit);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__prize-link {
+    display: inline-block;
+    min-height: var(--milaura-cible-tactile);
+    margin-top: var(--milaura-esp-xs);
+    padding: var(--milaura-esp-xs) 0 var(--milaura-esp-2xs);
+    color: var(--milaura-encre);
+    border-bottom: var(--milaura-filet-or);
+    font-size: var(--milaura-t-petit);
+    text-decoration: none;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules {
+    border-top: var(--milaura-filet-or);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(280px, 0.3fr);
+    gap: var(--milaura-esp-sm) var(--milaura-esp-xl);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-heading .milaura-contest__section-label,
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-heading h2 {
+    grid-column: 1;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-heading > p:last-child {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: end;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--milaura-esp-md);
+    margin: var(--milaura-esp-xl) 0 0;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-grid > div {
+    padding-top: var(--milaura-esp-sm);
+    border-top: var(--milaura-filet-mineral);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-grid dt {
+    font-size: var(--milaura-t-petit);
+    font-weight: 600;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-grid dd {
+    margin: var(--milaura-esp-xs) 0 0;
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-details {
+    margin-top: var(--milaura-esp-xl);
+    border-top: var(--milaura-filet-or);
+    border-bottom: var(--milaura-filet);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-details summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--milaura-cible-conversion);
+    padding: var(--milaura-esp-sm) 0;
+    font-size: var(--milaura-t-bouton);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-details[open] summary span:last-child {
+    transform: rotate(45deg);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__rules-body {
+    max-width: 900px;
+    padding: 0 0 var(--milaura-esp-lg);
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__fraud-warning {
+    margin: var(--milaura-esp-lg) 0 0;
+    padding: var(--milaura-esp-md);
+    color: var(--milaura-encre);
+    border: var(--milaura-filet-mineral);
+    background: var(--milaura-surface-mineral);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraContest-{{ section.id }} .milaura-contest__platform-note {
+    margin: var(--milaura-esp-md) 0 0;
+    color: var(--milaura-encre-tertiaire);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
+  @media screen and (max-width: 989px) {
+    #MilauraContest-{{ section.id }} .milaura-contest__hero {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      gap: var(--milaura-esp-lg);
+      padding-top: var(--milaura-esp-xl);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__stage {
+      min-height: min(650px, 118vw);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__participation,
+    #MilauraContest-{{ section.id }} .milaura-contest__section-heading,
+    #MilauraContest-{{ section.id }} .milaura-contest__rules-heading {
+      grid-template-columns: 1fr;
+      gap: var(--milaura-esp-lg);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__social-actions,
+    #MilauraContest-{{ section.id }} .milaura-contest__social-note,
+    #MilauraContest-{{ section.id }} .milaura-contest__rules-heading .milaura-contest__section-label,
+    #MilauraContest-{{ section.id }} .milaura-contest__rules-heading h2,
+    #MilauraContest-{{ section.id }} .milaura-contest__rules-heading > p:last-child {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__prize-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__rules-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 599px) {
+    #MilauraContest-{{ section.id }} .milaura-contest__hero,
+    #MilauraContest-{{ section.id }} .milaura-contest__participation,
+    #MilauraContest-{{ section.id }} .milaura-contest__calendar,
+    #MilauraContest-{{ section.id }} .milaura-contest__rules {
+      width: min(100% - 32px, 1320px);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__hero {
+      gap: 0;
+      padding: var(--milaura-esp-lg) 0 var(--milaura-esp-xl);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__hero-copy {
+      display: contents;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__eyebrow {
+      order: 1;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__title {
+      order: 2;
+      font-size: clamp(38px, 10.5vw, 42px);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__stage {
+      order: 3;
+      margin-top: var(--milaura-esp-md);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__intro {
+      order: 4;
+      margin-top: var(--milaura-esp-lg);
+      font-size: var(--milaura-t-corps);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__status {
+      order: 5;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__instruction {
+      order: 6;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__stage {
+      min-height: min(470px, 118vw);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__stage::before {
+      inset: var(--milaura-esp-sm);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__reveal {
+      inset: var(--milaura-esp-md);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__reveal-copy {
+      grid-template-columns: 1fr;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__steps,
+    #MilauraContest-{{ section.id }} .milaura-contest__rules-grid {
+      grid-template-columns: 1fr;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__social-actions {
+      display: grid;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__social-link {
+      width: 100%;
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__prize-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--milaura-esp-lg) var(--milaura-esp-sm);
+    }
+
+    #MilauraContest-{{ section.id }} .milaura-contest__prize-copy h3 {
+      font-size: var(--milaura-t-corps-large);
+      font-family: var(--milaura-font-texte);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #MilauraContest-{{ section.id }} .milaura-contest__gift-box,
+    #MilauraContest-{{ section.id }} .milaura-contest__gift-lid,
+    #MilauraContest-{{ section.id }} .milaura-contest__gift-ribbon,
+    #MilauraContest-{{ section.id }} .milaura-contest__gift-knot,
+    #MilauraContest-{{ section.id }} .milaura-contest__reveal {
+      transition: none;
+    }
+  }
+{%- endstyle -%}
+
+<script>
+  (() => {
+    const root = document.getElementById('MilauraContest-{{ section.id }}');
+    if (!root || root.dataset.initialized === 'true') return;
+    root.dataset.initialized = 'true';
+
+    const gift = root.querySelector('[data-contest-gift]');
+    const reveal = root.querySelector('[data-contest-reveal]');
+    const cards = Array.from(root.querySelectorAll('[data-contest-prize]'));
+    const statusDay = root.querySelector('[data-contest-status-day]');
+    const statusText = root.querySelector('[data-contest-status-text]');
+    const instruction = root.querySelector('[data-contest-instruction]');
+    const heroMedia = root.querySelector('[data-contest-reveal-media]');
+    const heroTitle = root.querySelector('[data-contest-reveal-title]');
+    const heroDetail = root.querySelector('[data-contest-reveal-detail]');
+    const heroValue = root.querySelector('[data-contest-reveal-value]');
+    const heroDay = root.querySelector('[data-contest-reveal-day]');
+    const giftLabel = root.querySelector('[data-contest-gift-label]');
+
+    if (!gift || !reveal || !cards.length) return;
+
+    const emit = (name, detail = {}) => {
+      const payload = { event: name, campaign: '10-jours-10-cadeaux', ...detail };
+      if (Array.isArray(window.dataLayer)) window.dataLayer.push(payload);
+      document.dispatchEvent(new CustomEvent(name, { detail: payload }));
+    };
+
+    const setHeroDay = (day) => {
+      const card = cards.find((item) => Number(item.dataset.day) === day) || cards[0];
+      const sourceImage = card.querySelector('img');
+      const sourceVoucher = card.querySelector('.milaura-contest__voucher');
+
+      cards.forEach((item) => item.classList.toggle('is-current', item === card));
+      heroTitle.textContent = card.dataset.title || '';
+      heroDetail.textContent = card.dataset.detail || '';
+      heroValue.textContent = card.dataset.value || '';
+      heroDay.textContent = `Cadeau du jour ${day}`;
+
+      if (sourceImage) {
+        heroMedia.innerHTML = '';
+        const image = sourceImage.cloneNode(true);
+        image.className = 'milaura-contest__reveal-image';
+        image.loading = 'eager';
+        heroMedia.appendChild(image);
+      } else if (sourceVoucher) {
+        heroMedia.innerHTML = '';
+        const voucher = sourceVoucher.cloneNode(true);
+        voucher.className = 'milaura-contest__voucher';
+        heroMedia.appendChild(voucher);
+      }
+
+      root.dataset.activeDay = String(day);
+      statusDay.textContent = `Jour ${day} sur 10`;
+    };
+
+    const previewMode = root.dataset.previewMode === 'true';
+    const previewDay = Math.min(10, Math.max(1, Number(root.dataset.previewDay) || 1));
+    const startAt = Date.parse(root.dataset.startAt);
+    const endAt = Date.parse(root.dataset.endAt);
+    const now = Date.now();
+    let activeDay = previewDay;
+    let state = 'active';
+
+    if (!previewMode && Number.isFinite(startAt) && Number.isFinite(endAt)) {
+      if (now < startAt) {
+        activeDay = 1;
+        state = 'upcoming';
+      } else if (now > endAt) {
+        activeDay = 10;
+        state = 'ended';
+      } else {
+        activeDay = Math.min(10, Math.floor((now - startAt) / 86400000) + 1);
+      }
+    }
+
+    setHeroDay(activeDay);
+
+    if (state === 'upcoming') {
+      gift.disabled = true;
+      statusText.textContent = 'Le jeu ouvre bientôt. Les dix cadeaux sont déjà présentés plus bas.';
+      instruction.textContent = 'Revenez à l’ouverture pour découvrir le premier cadeau.';
+      giftLabel.textContent = 'Bientôt disponible';
+    } else if (state === 'ended') {
+      statusText.textContent = 'Le jeu est terminé. Le tirage au sort est en préparation.';
+      instruction.textContent = 'Retrouvez les dix cadeaux et le règlement ci-dessous.';
+      giftLabel.textContent = 'Voir le dernier cadeau';
+    }
+
+    gift.addEventListener('click', () => {
+      gift.classList.add('is-open');
+      gift.setAttribute('aria-expanded', 'true');
+      reveal.classList.add('is-visible');
+      reveal.setAttribute('aria-hidden', 'false');
+      emit('milaura_contest_gift_open', { contest_day: activeDay });
+    });
+
+    root.querySelectorAll('[data-contest-social]').forEach((link) => {
+      link.addEventListener('click', () => {
+        emit('milaura_contest_social_click', {
+          contest_day: activeDay,
+          platform: link.dataset.contestSocial,
+          destination: link.href
+        });
+      });
+    });
+
+    const rules = root.querySelector('[data-contest-rules]');
+    if (rules) {
+      rules.addEventListener('toggle', () => {
+        if (rules.open) emit('milaura_contest_rules_open', { contest_day: activeDay });
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "MilAura concours 10 jours",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "header", "content": "Calendrier et aperçu" },
+    { "type": "checkbox", "id": "preview_mode", "label": "Mode aperçu local", "default": true, "info": "Désactiver uniquement après validation des dates et avant publication." },
+    { "type": "range", "id": "preview_day", "label": "Jour affiché en aperçu", "min": 1, "max": 10, "step": 1, "default": 1 },
+    { "type": "text", "id": "start_at", "label": "Début ISO avec fuseau", "default": "2026-09-14T08:00:00+02:00" },
+    { "type": "text", "id": "end_at", "label": "Fin ISO avec fuseau", "default": "2026-09-23T23:59:00+02:00" },
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Jeu concours national" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "10 jours. 10 cadeaux MilAura." },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Chaque jour, ouvrez le coffret et découvrez une création choisie par Karine. Dix cadeaux d’une valeur totale de 299,90 € sont à gagner.</p>" },
+    { "type": "text", "id": "preview_status", "label": "Statut en aperçu", "default": "Aperçu de la landing avant publication." },
+    { "type": "text", "id": "opening_instruction", "label": "Instruction", "default": "Touchez le coffret pour découvrir le cadeau du jour." },
+    { "type": "text", "id": "gift_button", "label": "Libellé coffret", "default": "Ouvrir le coffret" },
+    { "type": "header", "content": "Participation" },
+    { "type": "text", "id": "participation_eyebrow", "label": "Surtitre participation", "default": "Participer gratuitement" },
+    { "type": "text", "id": "participation_title", "label": "Titre participation", "default": "Choisissez Instagram ou Facebook." },
+    { "type": "text", "id": "step_one", "label": "Étape 1", "default": "Suivez le compte MilAura sur le réseau choisi." },
+    { "type": "text", "id": "step_two", "label": "Étape 2", "default": "Aimez la publication principale du concours." },
+    { "type": "text", "id": "step_three", "label": "Étape 3", "default": "Répondez à la question dans un commentaire sous cette publication." },
+    { "type": "url", "id": "instagram_url", "label": "Publication Instagram" },
+    { "type": "text", "id": "instagram_label", "label": "Libellé Instagram", "default": "Participer sur Instagram" },
+    { "type": "url", "id": "facebook_url", "label": "Publication Facebook" },
+    { "type": "text", "id": "facebook_label", "label": "Libellé Facebook", "default": "Participer sur Facebook" },
+    { "type": "text", "id": "participation_note", "label": "Note participation", "default": "Une participation par personne et par réseau. Aucun achat, partage ou identification d’une autre personne n’est demandé." },
+    { "type": "header", "content": "Calendrier cadeaux" },
+    { "type": "text", "id": "calendar_eyebrow", "label": "Surtitre calendrier", "default": "Les dix cadeaux" },
+    { "type": "text", "id": "calendar_title", "label": "Titre calendrier", "default": "À découvrir pendant dix jours." },
+    { "type": "text", "id": "calendar_intro", "label": "Introduction calendrier", "default": "Cinq gagnants seront tirés au sort sur Instagram et cinq sur Facebook. Une même personne ne peut gagner qu’un seul lot." },
+    { "type": "header", "content": "Règlement" },
+    { "type": "text", "id": "rules_eyebrow", "label": "Surtitre règlement", "default": "Règles essentielles" },
+    { "type": "text", "id": "rules_title", "label": "Titre règlement", "default": "Un jeu simple et transparent." },
+    { "type": "text", "id": "rules_intro", "label": "Introduction règlement", "default": "Les dates, modalités de tirage et conditions de remise des lots doivent être relues avant publication." },
+    { "type": "text", "id": "eligibility", "label": "Éligibilité", "default": "Toute personne physique majeure disposant d’un compte personnel valide sur Instagram ou Facebook." },
+    { "type": "text", "id": "territory", "label": "Territoire", "default": "France métropolitaine, Corse comprise." },
+    { "type": "text", "id": "period", "label": "Période", "default": "Du 14 septembre 2026 à 8 h au 23 septembre 2026 à 23 h 59, heure de Paris. À valider." },
+    { "type": "text", "id": "draw_method", "label": "Tirage", "default": "Dix tirages aléatoires après la clôture, parmi les participations conformes, avec suppléants et preuve horodatée." },
+    { "type": "text", "id": "rules_button", "label": "Bouton règlement", "default": "Lire le règlement complet" },
+    { "type": "richtext", "id": "rules_body", "label": "Règlement complet", "default": "<p><strong>Brouillon avant validation.</strong> Jeu gratuit sans obligation d’achat organisé par ONORA SARL, exploitant MilAura. Les participations sont enregistrées uniquement sous la publication principale du réseau choisi. Les gagnants seront contactés par message privé depuis le compte officiel MilAura et disposeront de 72 heures pour répondre. Les données communiquées par les gagnants servent uniquement à vérifier leur éligibilité et à expédier leur lot. Elles ne sont pas ajoutées à une liste de prospection sans consentement séparé.</p><p>La carte cadeau de 30 € est non échangeable contre des espèces. Sa durée de validité et les conditions de livraison offerte doivent être configurées et ajoutées avant publication. Les lots ne sont ni remboursables, ni échangeables. En cas d’indisponibilité justifiée, MilAura pourra proposer un lot de valeur équivalente.</p>" },
+    { "type": "text", "id": "fraud_warning", "label": "Alerte fraude", "default": "Attention aux faux comptes : MilAura ne demandera jamais de paiement, de numéro de carte bancaire ni de mot de passe pour remettre un lot." },
+    { "type": "textarea", "id": "platform_note", "label": "Mention plateformes", "default": "Ce jeu n’est ni sponsorisé, ni soutenu, ni géré par Meta, Facebook ou Instagram, et n’y est pas associé. Chaque participant dégage ces plateformes de toute responsabilité liée au jeu." }
+  ],
+  "blocks": [
+    {
+      "type": "prize",
+      "name": "Cadeau",
+      "settings": [
+        { "type": "text", "id": "day_label", "label": "Jour", "default": "Jour du concours" },
+        { "type": "text", "id": "title", "label": "Nom", "default": "Cadeau MilAura" },
+        { "type": "text", "id": "value", "label": "Valeur", "default": "Valeur à confirmer" },
+        { "type": "text", "id": "detail", "label": "Détail utile", "default": "Caractéristiques à confirmer avant publication." },
+        { "type": "image_picker", "id": "image", "label": "Photo de remplacement" },
+        { "type": "url", "id": "product_url", "label": "Lien produit facultatif" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura concours 10 jours",
+      "blocks": [
+        { "type": "prize" },
+        { "type": "prize" },
+        { "type": "prize" },
+        { "type": "prize" },
+        { "type": "prize" },
+        { "type": "prize" },
+        { "type": "prize" },
+        { "type": "prize" },
+        { "type": "prize" },
+        { "type": "prize" }
+      ]
+    }
+  ]
+}
+{% endschema %}
