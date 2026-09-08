@@ -16,6 +16,15 @@
   var busy = false;
   var noticeTimer = null;
 
+  function mountPdpButton() {
+    var button = document.querySelector('[data-milaura-favorite-detached]');
+    var gallery = document.querySelector('.milaura-hero-gallery-column');
+    if (!button || !gallery) return;
+    gallery.insertBefore(button, gallery.firstChild);
+    button.hidden = false;
+    button.removeAttribute('data-milaura-favorite-detached');
+  }
+
   function buttons() {
     return Array.prototype.slice.call(document.querySelectorAll('[data-milaura-favorite]'));
   }
@@ -227,6 +236,7 @@
     if (loggedIn && event.persisted) load();
   });
 
+  mountPdpButton();
   load().then(function (loaded) {
     if (!loaded || !loggedIn || new URLSearchParams(window.location.search).get('milaura_favorite') !== '1') return;
     var intent = readIntent();

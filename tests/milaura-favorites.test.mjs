@@ -7,7 +7,7 @@ const code = await readFile(new URL('../assets/milaura-favorites.js', import.met
 const liquid = {
   card: await readFile(new URL('../snippets/milaura-card-product.liquid', import.meta.url), 'utf8'),
   dawn: await readFile(new URL('../snippets/card-product.liquid', import.meta.url), 'utf8'),
-  pdp: await readFile(new URL('../sections/milaura-product-hero.liquid', import.meta.url), 'utf8'),
+  bridge: await readFile(new URL('../snippets/milaura-c1-release-bridge.liquid', import.meta.url), 'utf8'),
   button: await readFile(new URL('../snippets/milaura-favorite-button.liquid', import.meta.url), 'utf8'),
 };
 const tick = () => new Promise((resolve) => setImmediate(resolve));
@@ -19,8 +19,10 @@ function favoriteButton(id = productId) {
     dataset: {productId: id, productTitle: 'Bracelet test'},
     disabled: true,
     title: '',
+    hidden: false,
     setAttribute(name, value) { attributes.set(name, String(value)); },
     getAttribute(name) { return attributes.get(name); },
+    removeAttribute(name) { attributes.delete(name); },
   };
 }
 
@@ -37,10 +39,16 @@ function browser({loggedIn = true, initial = [], storage = new Map(), search = '
     loggedIn: String(loggedIn),
     loginPath: '/customer_authentication/login',
   }};
+  const gallery = {firstChild: null, insertBefore() {}};
   const body = {appendChild(node) { notices.set(node.id, node); }};
   const document = {
     body,
-    querySelector(selector) { return selector.includes('release-bridge') ? root : buttons[0]; },
+    querySelector(selector) {
+      if (selector.includes('release-bridge')) return root;
+      if (selector.includes('favorite-detached')) return buttons[0];
+      if (selector.includes('hero-gallery')) return gallery;
+      return buttons[0];
+    },
     querySelectorAll() { return buttons; },
     getElementById(id) { return notices.get(id) || null; },
     createElement() {
@@ -117,7 +125,7 @@ test('rend un bouton partage sans interaction imbriquee dans le lien produit', (
   assert.match(liquid.button, /aria-pressed="false"/);
   assert.ok(liquid.card.indexOf('</a>') < liquid.card.indexOf("render 'milaura-favorite-button'"));
   assert.match(liquid.dawn, /render 'milaura-favorite-button'/);
-  assert.match(liquid.pdp, /favorite_placement: 'pdp'/);
+  assert.match(liquid.bridge, /favorite_placement: 'pdp', favorite_detached: true/);
 });
 
 test('charge un favori durable et synchronise tous les coeurs du produit', async () => {
