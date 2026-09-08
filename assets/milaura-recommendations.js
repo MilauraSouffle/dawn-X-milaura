@@ -13,6 +13,26 @@
   const PDP_SCORE_API_ORDER_MAX = 10;
   const PDP_CANDIDATE_LIMIT = 3;
   const PDP_CATALOGUE_SCAN_LIMIT = 250;
+  const DIAGNOSTIC_SEARCH_LIMIT = 10;
+  const DIAGNOSTIC_CARD_CANDIDATE_LIMIT = 6;
+  const DIAGNOSTIC_FALLBACK_QUERY = 'bijoux pierres naturelles';
+  const DIAGNOSTIC_INTENT_HANDLES = Object.freeze({
+    apaisement: Object.freeze(['calme', 'sommeil', 'douceur']),
+    protection: Object.freeze(['protection', 'ancrage']),
+    serenite: Object.freeze(['calme', 'sommeil', 'intuition']),
+    amour: Object.freeze(['amour', 'douceur']),
+    chance: Object.freeze(['confiance', 'energie']),
+  });
+  const DIAGNOSTIC_TYPE_PRIORITY = Object.freeze({
+    collier: 120,
+    bracelet: 115,
+    'boucles-oreilles': 110,
+    pendentif: 105,
+    bague: 100,
+    chapelet: 90,
+    bougie: 70,
+  });
+  const diagnosticSearchCache = new Map();
   const TYPE_COMPATIBILITY = Object.freeze({
     bracelet: Object.freeze({ 'boucles-oreilles': 30, collier: 25, bague: 20, pendentif: 12 }),
     collier: Object.freeze({ 'boucles-oreilles': 30, bracelet: 25, bague: 20 }),
@@ -33,6 +53,179 @@
       .split(',')
       .map((item) => item.trim())
       .filter(Boolean);
+  }
+
+  function toHandle(value) {
+    return String(value || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function productTagValues(product, namespace) {
+    const prefix = `${namespace}:`;
+    return (Array.isArray(product?.tags) ? product.tags : [])
+      .map((tag) => String(tag || '').trim())
+      .filter((tag) => tag.toLowerCase().startsWith(prefix))
+      .map((tag) => toHandle(tag.slice(prefix.length)))
+      .filter(Boolean);
+  }
+
+  function diagnosticProductType(product) {
+    return productTagValues(product, 'type')[0] || toHandle(product?.type || product?.product_type || '');
+  }
+
+  function diagnosticIntentHandles(diagnostic) {
+    const supplied = Array.isArray(diagnostic?.intentionHandles)
+      ? diagnostic.intentionHandles.map(toHandle).filter(Boolean)
+      : [];
+    if (supplied.length) return supplied;
+    return Array.from(DIAGNOSTIC_INTENT_HANDLES[diagnostic?.profileId] || []);
+  }
+
+  function classifyDiagnosticProduct(product, diagnostic) {
+    const targetStone = toHandle(diagnostic?.stoneHandle || diagnostic?.stone || '');
+    const candidateStones = productTagValues(product, 'pierre');
+    const targetIntentions = diagnosticIntentHandles(diagnostic);
+    const candidateIntentions = productTagValues(product, 'intention');
+    const productType = diagnosticProductType(product);
+    const exactStone = Boolean(targetStone && candidateStones.includes(targetStone));
+    const stoneFamily = Boolean(
+      targetStone && candidateStones.some((candidateStone) => compatibleStone(targetStone, candidateStone))
+    );
+    const intentionMatch = targetIntentions.some((intention) => candidateIntentions.includes(intention));
+    let signal = 'catalogue';
+    let score = 100;
+
+    if (exactStone) {
+      signal = 'stone';
+      score = 1200;
+    } else if (stoneFamily) {
+      signal = 'stone-family';
+      score = 1000;
+    } else if (intentionMatch) {
+      signal = 'intention';
+      score = 600;
+    }
+
+    if (candidateStones.length || candidateIntentions.length) score += 30;
+    if ((product?.tags || []).some((tag) => toHandle(tag) === 'bijoux-pierres')) score += 20;
+    score += DIAGNOSTIC_TYPE_PRIORITY[productType] || 20;
+
+    return { score, signal, productType };
+  }
+
+  function rankDiagnosticProducts(products, diagnostic, excludedIds) {
+    const excluded = new Set((excludedIds || []).map(String));
+    const seen = new Set();
+    return (Array.isArray(products) ? products : [])
+      .map((product, index) => {
+        if (!product?.id || !product?.handle || product.available === false || !product.image) return null;
+        const productId = String(product.id);
+        if (excluded.has(productId) || seen.has(productId)) return null;
+        seen.add(productId);
+        const classification = classifyDiagnosticProduct(product, diagnostic);
+        return { product, index, ...classification };
+      })
+      .filter(Boolean)
+      .sort((left, right) => {
+        if (right.score !== left.score) return right.score - left.score;
+        if (left.index !== right.index) return left.index - right.index;
+        return String(left.product.id).localeCompare(String(right.product.id));
+      });
+  }
+
+  function rankDiagnosticMatches(products, diagnostic, excludedIds) {
+    return rankDiagnosticProducts(products, diagnostic, excludedIds).filter(
+      (candidate) => candidate.signal !== 'catalogue'
+    );
+  }
+
+  async function fetchDiagnosticSearchProducts(query) {
+    const normalizedQuery = String(query || '').trim();
+    if (!normalizedQuery) return [];
+    if (diagnosticSearchCache.has(normalizedQuery)) return diagnosticSearchCache.get(normalizedQuery);
+
+    const promise = (async () => {
+      const params = new URLSearchParams({ q: normalizedQuery });
+      params.set('resources[type]', 'product');
+      params.set('resources[limit]', String(DIAGNOSTIC_SEARCH_LIMIT));
+      params.set('resources[options][unavailable_products]', 'hide');
+      params.set('resources[options][fields]', 'tag,title,product_type');
+      const response = await fetch(`${storefrontRoot()}search/suggest.json?${params.toString()}`, {
+        credentials: 'same-origin',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      });
+      if (!response.ok) throw new Error(`diagnostic_search_${response.status}`);
+      const payload = await response.json();
+      return Array.isArray(payload?.resources?.results?.products) ? payload.resources.results.products : [];
+    })();
+
+    diagnosticSearchCache.set(normalizedQuery, promise);
+    try {
+      return await promise;
+    } catch (error) {
+      diagnosticSearchCache.delete(normalizedQuery);
+      throw error;
+    }
+  }
+
+  function hasEnoughDiagnosticVariety(ranked, limit) {
+    if (ranked.length < limit) return false;
+    return new Set(ranked.slice(0, Math.max(limit * 2, 4)).map((candidate) => candidate.productType)).size > 1;
+  }
+
+  async function resolveDiagnosticProductItems(diagnostic, excludedIds, limit) {
+    const targetStone = String(diagnostic?.stoneHandle || diagnostic?.stone || '').replace(/-/g, ' ').trim();
+    let products = targetStone
+      ? await fetchDiagnosticSearchProducts(targetStone).catch(function () { return []; })
+      : [];
+    let ranked = rankDiagnosticMatches(products, diagnostic, excludedIds);
+
+    if (!hasEnoughDiagnosticVariety(ranked, limit)) {
+      const intentionResults = await Promise.all(
+        diagnosticIntentHandles(diagnostic)
+          .slice(0, 2)
+          .map((intention) => fetchDiagnosticSearchProducts(intention).catch(function () { return []; }))
+      );
+      products = products.concat(...intentionResults);
+      ranked = rankDiagnosticMatches(products, diagnostic, excludedIds);
+    }
+
+    if (ranked.length < limit) {
+      const fallback = await fetchDiagnosticSearchProducts(DIAGNOSTIC_FALLBACK_QUERY).catch(function () { return []; });
+      ranked = rankDiagnosticProducts(
+        ranked.map((candidate) => candidate.product).concat(fallback),
+        diagnostic,
+        excludedIds
+      );
+    }
+
+    return ranked.slice(0, Math.max(limit * 3, DIAGNOSTIC_CARD_CANDIDATE_LIMIT));
+  }
+
+  function diagnosticReason(signal, stone) {
+    if (signal === 'stone' || signal === 'stone-family') return `Sélection en ${stone || 'votre pierre'}.`;
+    if (signal === 'intention') return 'Sélectionnée pour accompagner votre intention.';
+    return 'Une création MilAura disponible maintenant.';
+  }
+
+  function selectDiverseDiagnosticCards(records, limit) {
+    const remaining = records.slice();
+    const selected = [];
+    const usedTypes = new Set();
+
+    while (remaining.length && selected.length < limit) {
+      let index = remaining.findIndex((record) => !usedTypes.has(record.productType));
+      if (index < 0) index = 0;
+      const [record] = remaining.splice(index, 1);
+      selected.push(record);
+      if (record.productType) usedTypes.add(record.productType);
+    }
+
+    return selected;
   }
 
   function uniqueByProductId(cards, excludedIds, limit) {
@@ -525,42 +718,65 @@
 
     async loadDiagnosticRecommendations(detail, loadGeneration) {
       const activeGeneration = loadGeneration || ++this.loadGeneration;
-      const privacy = await window.MilauraPreferenceStorage.getPreferenceState();
-      if (activeGeneration !== this.loadGeneration) return;
-      if (!privacy.available || !privacy.allowed) {
+      let diagnostic = detail || this.currentDiagnostic || null;
+      if (!diagnostic) {
+        const privacy = await window.MilauraPreferenceStorage.getPreferenceState();
+        if (activeGeneration !== this.loadGeneration) return;
+        if (!privacy.available || !privacy.allowed) {
+          this.setState('empty');
+          return;
+        }
+        diagnostic = await window.MilauraPreferenceStorage.readDiagnostic();
+        if (activeGeneration !== this.loadGeneration) return;
+      }
+      if (!diagnostic?.profileId && !diagnostic?.stoneHandle && !diagnostic?.stone) {
         this.setState('empty');
         return;
       }
 
-      let diagnostic = detail || null;
-      if (!diagnostic) {
-        diagnostic = await window.MilauraPreferenceStorage.readDiagnostic();
-        if (activeGeneration !== this.loadGeneration) return;
+      this.currentDiagnostic = diagnostic;
+      this.setState('loading');
+      const cartProductIds = await fetchCartProductIds().catch(function () { return []; });
+      if (activeGeneration !== this.loadGeneration) return;
+      const excludedIds = [...this.excludedProductIds, ...cartProductIds];
+      const candidates = await resolveDiagnosticProductItems(diagnostic, excludedIds, this.limit);
+      if (activeGeneration !== this.loadGeneration) return;
+      if (!candidates.length) {
+        this.setState('empty');
+        return;
       }
 
-      const products = diagnostic?.products || {};
-      const stone = diagnostic?.stone || 'votre pierre';
-      const reasons = {
-        bracelet: `Bracelet associé à ${stone}.`,
-        bougie: `Bougie associée à ${stone}.`,
-        collier: `Collier associé à ${stone}.`,
-      };
-      const selected = ['bracelet', 'bougie', 'collier']
-        .map((category) => {
-          const item = products[category];
-          if (!item?.handle) return null;
-          return { handle: item.handle, reason: reasons[category] };
+      const resolved = await Promise.all(
+        candidates.map(async (candidate) => ({
+          candidate,
+          card: await fetchProductCard(candidate.product.handle).catch(function () { return null; }),
+        }))
+      );
+      if (activeGeneration !== this.loadGeneration) return;
+
+      const seen = new Set();
+      const records = resolved
+        .filter(({ card }) => {
+          const productId = String(card?.dataset.productId || '');
+          if (!card || !productId || seen.has(productId)) return false;
+          if (card.dataset.productAvailable === 'false' || card.dataset.hasGalleryImage === 'false') return false;
+          seen.add(productId);
+          return true;
         })
-        .filter(Boolean);
-
-      if (!selected.length && diagnostic?.braceletHandle) {
-        selected.push({ handle: diagnostic.braceletHandle, reason: reasons.bracelet });
-      }
+        .map(({ candidate, card }) => {
+          const reasonElement = card.querySelector('.milaura-recommendation-card__reason');
+          if (reasonElement) reasonElement.textContent = diagnosticReason(candidate.signal, diagnostic.stone);
+          card.dataset.recommendationSignal = candidate.signal;
+          card.dataset.recommendationGate = candidate.signal;
+          card.dataset.recommendationScore = String(candidate.score);
+          return { card, productType: candidate.productType };
+        });
+      const selected = selectDiverseDiagnosticCards(records, this.limit).map((record) => record.card);
       if (!selected.length) {
         this.setState('empty');
         return;
       }
-      await this.renderHandles(selected, 'curated', activeGeneration);
+      this.renderCards(selected, 'dynamic-diagnostic');
     }
 
     renderCards(cards, intent) {
@@ -576,7 +792,7 @@
       visibleCards.forEach((card, index) => {
         card.classList.remove('milaura-recommendation-card--focal', 'milaura-recommendation-card--secondary');
         const focal = index === 0 && this.context !== 'recent';
-        if (this.context === 'cart-page' || this.context === 'cart-drawer' || !focal) {
+        if (this.context === 'cart-page' || this.context === 'cart-drawer' || this.context === 'diagnostic' || !focal) {
           this.replaceMotionWithPoster(card);
         }
         card.classList.add(focal ? 'milaura-recommendation-card--focal' : 'milaura-recommendation-card--secondary');
@@ -600,7 +816,7 @@
     configureRibbonComposition() {
       this.teardownRibbon();
       const cards = Array.from(this.list?.querySelectorAll('[data-milaura-recommendation-card]') || []);
-      const ribbon = this.context === 'pdp' && cards.length > 0;
+      const ribbon = (this.context === 'pdp' || this.context === 'diagnostic') && cards.length > 0;
       const hasMultipleCards = cards.length > 1;
 
       this.dataset.layout = ribbon ? 'ribbon' : 'gallery';
@@ -896,7 +1112,13 @@
     bindDiagnosticResult() {
       if (this.context !== 'diagnostic') return;
       this.diagnosticHandler = (event) => {
-        this.loadDiagnosticRecommendations(event.detail || null, ++this.loadGeneration);
+        const loadGeneration = ++this.loadGeneration;
+        this.loading = false;
+        this.loadDiagnosticRecommendations(event.detail || null, loadGeneration).catch(() => {
+          if (loadGeneration !== this.loadGeneration) return;
+          this.setState('error');
+          this.announce('Les recommandations sont momentanément indisponibles.');
+        });
       };
       window.addEventListener('milaura:quiz-result', this.diagnosticHandler);
     }
@@ -964,6 +1186,10 @@
 
   window.MilauraRecommendations = Object.freeze({
     getPreferenceState: window.MilauraPreferenceStorage.getPreferenceState,
+    diagnosticIntentHandles,
+    rankDiagnosticMatches,
+    rankDiagnosticProducts,
+    selectDiverseDiagnosticCards,
     rankPdpCards,
   });
   document.dispatchEvent(new CustomEvent('milaura:recommendations:ready'));
