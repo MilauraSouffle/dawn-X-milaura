@@ -193,7 +193,7 @@ L'objectif publicitaire final dépendra des options réellement disponibles le j
 
 ## 5. Calendrier éditorial
 
-Fenêtre accélérée demandée par Patrice, à valider juridiquement : du mardi 2026-09-08 à 20:00 CEST au vendredi 2026-09-18 à 19:59 CEST. Tirages proposés le 2026-09-19 à 12:00 CEST.
+Fenêtre validée explicitement par Patrice le 2026-09-08 : du mardi 2026-09-08 à 20:00 CEST au vendredi 2026-09-18 à 19:59 CEST. Tirages le 2026-09-19 à 12:00 CEST.
 
 | Date | Cadeau | Contenu principal | Angle commercial utile |
 | --- | --- | --- | --- |
@@ -232,7 +232,7 @@ Le prototype local utilise la charte MilAura 2026. Van Cleef & Arpels est un niv
 - `milaura_contest_rules_open` ;
 - les clics produits restent mesurables par les liens UTM à ajouter lors de la publication.
 
-La restriction Meta actuelle rend GA4, Shopify et les UTM indispensables. Les liens des boutons sociaux doivent être remplacés par les permaliens exacts des deux publications principales avant toute publication.
+La restriction Meta actuelle rend GA4, Shopify et les UTM indispensables. Les liens des boutons sociaux doivent être remplacés par les permaliens exacts des deux publications principales dès leur publication. Jusqu’à cette mise à jour, les boutons mènent aux comptes officiels.
 
 ### Footer
 

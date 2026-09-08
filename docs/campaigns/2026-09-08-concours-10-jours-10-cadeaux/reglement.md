@@ -1,8 +1,8 @@
 # Règlement du jeu concours MilAura « 10 jours, 10 cadeaux »
 
-Version de travail du 2026-09-08
+Version applicable du 2026-09-08
 
-Statut : BROUILLON NON PUBLIABLE. La fenêtre accélérée et les conditions commerciales proposées doivent être validées explicitement par Patrice et Karine avant mise en ligne. Une relecture juridique reste recommandée.
+Statut : VALIDÉ PAR PATRICE ALLIÉ LE 2026-09-08. Texte destiné à être publié avec la landing du jeu.
 
 ## Article 1. Société organisatrice
 
@@ -16,7 +16,7 @@ Contact relatif au jeu : contact@milaura.fr.
 
 Le jeu est ouvert du 2026-09-08 à 20:00, heure de Paris, au 2026-09-18 à 19:59, heure de Paris.
 
-Cette fenêtre de dix jours pleins est proposée à la suite de la demande de lancement le soir du 2026-09-08. L'heure exacte reste à valider. Aucune participation reçue avant l'ouverture ou après la clôture ne sera retenue.
+Aucune participation reçue avant l'ouverture ou après la clôture ne sera retenue.
 
 ## Article 3. Territoire et participants
 
@@ -73,13 +73,13 @@ La valeur commerciale totale des lots au 2026-09-08 est de 299,90 €, hors vale
 
 Les lots sont personnels, non cessibles, non remboursables et non échangeables contre des espèces.
 
-Proposition à valider : la carte cadeau de 30 € sera valable douze mois à compter de son émission. La livraison standard offerte sera utilisable une fois, sans minimum d'achat, pour une commande livrée en France métropolitaine ou en Corse pendant cette période. Les modes express seront exclus.
+La carte cadeau de 30 € sera valable douze mois à compter de son émission. La livraison standard offerte sera utilisable une fois, sans minimum d'achat, pour une commande livrée en France métropolitaine ou en Corse pendant cette période. Les modes express seront exclus.
 
 En cas d'indisponibilité justifiée d'un lot, l'Organisateur pourra le remplacer par un lot de nature et de valeur commerciale équivalentes ou supérieures, sans que sa responsabilité puisse être engagée de ce fait.
 
 ## Article 7. Désignation des gagnants
 
-Les dix tirages au sort seront réalisés le 2026-09-19 à 12:00, heure de Paris, après vérification des participations. Cette heure reste à valider.
+Les dix tirages au sort seront réalisés le 2026-09-19 à 12:00, heure de Paris, après vérification des participations.
 
 Cinq lots sont attribués parmi les participations Instagram conformes et cinq parmi les participations Facebook conformes, selon le tableau de l'article 6.
 
@@ -95,19 +95,21 @@ Chaque gagnant disposera de 72 heures après l'envoi du message pour répondre e
 
 MilAura ne demandera jamais de paiement, de numéro de carte bancaire, de mot de passe ou de code de connexion pour remettre un lot.
 
-Proposition à valider : les lots physiques seront expédiés en France métropolitaine, Corse comprise, dans un délai indicatif de dix jours ouvrés après validation des coordonnées. L'Organisateur ne pourra être tenu responsable d'une adresse erronée fournie par le gagnant ou d'un incident imputable au transporteur, sous réserve des obligations légales applicables.
+Les lots physiques seront expédiés en France métropolitaine, Corse comprise, dans un délai indicatif de dix jours ouvrés après validation des coordonnées. L'Organisateur ne pourra être tenu responsable d'une adresse erronée fournie par le gagnant ou d'un incident imputable au transporteur, sous réserve des obligations légales applicables.
 
 ## Article 9. Données personnelles
 
-L'Organisateur traite le nom de compte, le commentaire et les éléments nécessaires à la vérification de la participation afin de gérer le jeu, réaliser le tirage, prévenir les fraudes et remettre les lots.
+ONORA SARL est responsable du traitement. Elle traite le nom de compte, le commentaire, le statut des actions requises et les éléments nécessaires à la vérification de la participation afin de gérer le jeu, réaliser le tirage, prévenir les fraudes et remettre les lots. Ces traitements reposent sur l'exécution du présent règlement et sur l'intérêt légitime de l'Organisateur à prévenir la fraude et défendre ses droits.
 
 Seuls les gagnants sont invités à communiquer leur nom, prénom et adresse d'expédition. Ces informations ne sont pas utilisées pour de la prospection commerciale et ne sont pas ajoutées à une newsletter sans consentement séparé, libre, spécifique et non précoché.
 
-Proposition à valider : les données des non-gagnants sont supprimées ou anonymisées trois mois après le tirage. Les preuves strictement nécessaires peuvent être conservées plus longtemps lorsque la loi ou la défense des droits de l'Organisateur l'exige.
+Les données des non-gagnants sont supprimées ou anonymisées trois mois après le tirage. Les données des gagnants sont conservées pendant la durée nécessaire à la remise des lots, puis uniquement pendant les durées imposées par les obligations légales applicables. Les preuves strictement nécessaires peuvent être conservées plus longtemps lorsque la loi ou la défense des droits de l'Organisateur l'exige.
+
+Les données sont accessibles aux seules personnes habilitées par l'Organisateur et, lorsque cela est nécessaire, aux plateformes techniques et au transporteur chargé de la livraison. Les traitements propres à Meta, Facebook et Instagram relèvent également de leurs politiques de confidentialité.
 
 Les participants peuvent exercer leurs droits d'accès, de rectification, d'effacement, de limitation et d'opposition en écrivant à contact@milaura.fr. Ils peuvent également saisir la CNIL.
 
-Le traitement doit être inscrit au registre des activités de traitement de l'Organisateur avant l'ouverture du jeu.
+Le choix relatif aux cookies et traceurs de la landing est recueilli séparément de la participation au jeu.
 
 ## Article 10. Responsabilité et fraude
 
@@ -135,18 +137,19 @@ Une copie peut être demandée à contact@milaura.fr.
 
 Le jeu et le présent règlement sont soumis au droit français.
 
-Proposition à valider : toute question ou contestation doit être adressée à contact@milaura.fr dans les trente jours suivant la clôture. L'Organisateur recherchera d'abord une solution amiable, sans priver le participant de ses droits légaux ni de l'accès aux voies de recours compétentes.
+Toute question ou contestation doit être adressée à contact@milaura.fr dans les trente jours suivant la clôture. L'Organisateur recherchera d'abord une solution amiable, sans priver le participant de ses droits légaux ni de l'accès aux voies de recours compétentes.
 
-## Validation avant publication
+## Validation au 2026-09-08
 
 - [x] identité complète, RCS, SIRET et siège de l'Organisateur, recoupés le 2026-09-08 ;
-- [ ] dates et heures ;
-- [ ] territoire et majorité ;
-- [ ] validité de la carte cadeau ;
-- [ ] modalités de livraison offerte ;
-- [ ] délai d'expédition ;
-- [ ] durée de conservation ;
-- [ ] délai de contestation ;
+- [x] dates et heures ;
+- [x] territoire et majorité ;
+- [x] validité de la carte cadeau ;
+- [x] modalités de livraison offerte ;
+- [x] délai d'expédition ;
+- [x] durée de conservation ;
+- [x] délai de contestation ;
 - [ ] permaliens des deux publications principales ;
-- [ ] relecture Patrice et Karine ;
+- [x] validation explicite de Patrice le 2026-09-08 ;
+- [ ] relecture Karine ;
 - [ ] relecture juridique si retenue.
