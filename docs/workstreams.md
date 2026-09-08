@@ -1,3 +1,12 @@
+## Coeurs favoris PDP et catalogue du 2026-09-08
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour relier les coeurs des fiches produit et du catalogue aux favoris durables de Mon Ecrin.
+- Theme : branche `codex/milaura-favorite-hearts-20260908`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/favorite-hearts-20260908`, base `ce9303c5`. Fichiers reserves : `layout/theme.liquid`, `snippets/milaura-c1-release-bridge.liquid`, `snippets/milaura-favorite-button.liquid`, `snippets/milaura-card-product.liquid`, `snippets/card-product.liquid`, `sections/milaura-product-hero.liquid`, `assets/milaura-favorites.css`, `assets/milaura-favorites.js`, tests et checkpoint propres au lot.
+- Backend : branche `codex/milaura-favorite-hearts-backend-20260908`, worktree `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-favorite-hearts-20260908`, base Mon Ecrin V9 `1d25384`. Fichiers reserves dans `docs/milaura/shopify-apps/customer-accounts-release-candidate/` : `server/src/app-rc.mjs`, `server/src/shopify-diagnostic-store.mjs`, nouveau contrat favoris serveur, `scripts/check-release-candidate.mjs`, tests cibles et documentation de release du lot.
+- Cibles reservees apres validation technique : backend `milaura-mon-ecrin-backend` puis theme live `190430282075`, avec deploiements atomiques et retours arriere coordonnes. Aucun changement de bundle Customer Account, aucun nouveau scope, secret ou paquet. Les favoris restent lies au compte Shopify authentifie, avec ecriture CAS ; aucun faux etat local persistant.
+- Direction : coeur fin, discret, sans pastille massive, cible tactile 44 px, photographie prioritaire. Etat invite : connexion puis reprise du choix explicite. Etat connecte : lecture initiale, ajout/retrait optimiste avec rollback et synchronisation de tous les exemplaires du meme produit.
+- Etat au 2026-09-08 18:31 CEST : OUVERT, architecture lue, aucune ecriture backend ou theme encore effectuee hors registre.
+
 ## Landing Tous les bijoux du 2026-09-07
 
 - Proprietaire : Codex, tache `01a07c4e-0f36-7900-a0d5-5eddc918f31a`, demande de Patrice de transformer `/collections/bijoux-pierres-naturelles` en landing premium puis GO commit, push et live explicite.
