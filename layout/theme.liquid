@@ -8,7 +8,7 @@
     <meta name="facebook-domain-verification" content="dmh3qx13bsc822c0eybjodyz1z5qya">
     <link rel="canonical" href="{{ canonical_url }}">
 
-    {%- if request.page_type == 'search' or current_tags -%}
+    {%- if request.page_type == 'search' or current_tags or request.path == '/blogs/infos' -%}
       <meta name="robots" content="noindex,follow">
     {%- endif -%}
 
@@ -313,21 +313,38 @@
     {{ 'milaura-card.css' | asset_url | stylesheet_tag }}
     {{ 'milaura-section-heading.css' | asset_url | stylesheet_tag }}
     {{ 'milaura-actions.css' | asset_url | stylesheet_tag }}
-    {{ 'milaura-recommendations.css' | asset_url | stylesheet_tag }}
+    {%- liquid
+      assign milaura_load_recommendations = false
+      if template.name == 'product' or template.name == 'cart' or template.name == 'customers/account' or template.suffix == 'diagnostic-emotionnel'
+        assign milaura_load_recommendations = true
+      endif
+    -%}
+    {%- if milaura_load_recommendations -%}
+      {{ 'milaura-recommendations.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
     {%- if template.name == 'index' -%}
       {{ 'milaura-home-transitions.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
     <script src="{{ 'milaura-editorial-purchase.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'milaura-preference-storage.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'milaura-recommendations.js' | asset_url }}" defer="defer"></script>
+    {%- if milaura_load_recommendations -%}
+      <script src="{{ 'milaura-preference-storage.js' | asset_url }}" defer="defer"></script>
+      <script src="{{ 'milaura-recommendations.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
-      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
-      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
-      {{ 'component-price.css' | asset_url | stylesheet_tag }}
-      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+      <link rel="stylesheet" href="{{ 'component-cart-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'component-cart.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'component-totals.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+      <link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'">
+      <noscript>
+        {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+        {{ 'component-cart.css' | asset_url | stylesheet_tag }}
+        {{ 'component-totals.css' | asset_url | stylesheet_tag }}
+        {{ 'component-price.css' | asset_url | stylesheet_tag }}
+        {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
+      </noscript>
     {%- endif -%}
 
     {%- comment -%}
