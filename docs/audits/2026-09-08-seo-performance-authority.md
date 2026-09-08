@@ -25,7 +25,7 @@ Les trois priorites sont donc :
 
 Conclusion : le site est sain pour les visiteurs reels deja mesures, mais l acquisition froide sur mobile reste exposee a un premier chargement trop lourd. Le signal RUM et le signal laboratoire ne se contredisent pas : ils mesurent des populations et des conditions differentes.
 
-### Correctifs produits et verifies sur la preview
+### Correctifs publies et verifies
 
 - Chargement des scripts et styles de recommandations limite aux fiches produit, panier, compte et diagnostic.
 - Cinq feuilles de style du panier sorties du chemin bloquant avec repli `noscript`.
@@ -34,7 +34,18 @@ Conclusion : le site est sain pour les visiteurs reels deja mesures, mais l acqu
 - Dimensions intrinseques corrigees pour le bloc pierres de naissance afin de proteger la stabilite visuelle.
 - Poster mobile Sodalite reduit a `832 x 832`.
 
-La QA privee confirme : aucune regression visuelle observee, aucun debordement a `390 px`, un seul H1 sur la Home et la fiche produit, panier fonctionnel, recommandations absentes de la Home mais presentes et fonctionnelles sur la fiche produit.
+Le lot a ete publie le 2026-09-08 sur le theme live `190430282075`. Le pullback des sept fichiers est identique au worktree. La QA publique confirme : aucune regression visuelle observee, aucun debordement a `390 px` ou `1440 px`, un seul H1 sur la Home et la fiche produit, panier fonctionnel, recommandations absentes de la Home mais presentes et fonctionnelles sur la fiche produit.
+
+### Mesure publique apres deploiement
+
+Le rapport PageSpeed public du 2026-09-08 a 19:03 CEST donne :
+
+Rapport : `https://pagespeed.web.dev/analysis/https-milaura-fr/p811h06fmc?form_factor=mobile`.
+
+- mobile : performance `60`, SEO `100`, FCP `5,5 s`, LCP `12,5 s`, TBT `30 ms`, CLS `0`, Speed Index `6,2 s`, poids transfere `2 764 KiB` ;
+- bureau : performance `95`, SEO `100`, FCP `0,6 s`, LCP `1,4 s`, TBT `110 ms`, CLS `0,001`, Speed Index `0,8 s`, poids transfere `2 787 KiB`.
+
+Par rapport au laboratoire mobile releve avant le lot, le poids baisse de `143 KiB`, le TBT de `280 ms`, le blocage du rendu estime de `280 ms` et les taches longues passent de quatre a trois. Le score mobile et le LCP d une execution unique se degradent cependant de `65` a `60` et de `7,6 s` a `12,5 s`. Le detail du meme rapport attribue seulement `50 ms` au chargement de l image LCP et `2,1 s` a son delai d affichage, ce qui ne reconstitue pas le LCP global annonce. Une seconde execution est restee bloquee cote PageSpeed. La mesure mobile de laboratoire est donc non concluante, et non une preuve d amelioration globale. Les donnees reelles Shopify et Search Console restent vertes ; il faut juger l effet d acquisition froide sur une fenetre reelle, pas sur ce seul run.
 
 ### Risque residuel
 
@@ -61,8 +72,8 @@ Une part importante du JavaScript et du temps CPU provient des pixels et applica
 
 ### Correction prete dans le theme
 
-- `/blogs/infos` recoit `noindex,follow` afin de ne pas concurrencer le Journal. Cette balise est validee sur la preview mais ne sera publique qu apres publication du lot theme.
-- Le second H1 de la Home est remplace par un H2. La preview rend exactement un H1.
+- `/blogs/infos` recoit publiquement `noindex,follow` afin de ne pas concurrencer le Journal.
+- Le second H1 de la Home est remplace par un H2. Le storefront public rend exactement un H1.
 
 ### Indexation et contenu
 
@@ -93,9 +104,9 @@ Envois verifies le 2026-09-08 :
 - Hello Metz ;
 - Yoga avec Valentine ;
 - NeverMind ;
-- FemininBio, relancee vers son contact editorial public actuel.
+- FemininBio, tentee sur deux adresses publiques mais non delivree.
 
-FemininBio a rejete l ancienne adresse `redaction@femininbio.com` avec le code `550 5.4.1`. Le nouvel envoi vers le contact editorial public actuel `presse@femininbio.com` apparait dans les messages envoyes, comme celui de NeverMind. Tout-Metz avait deja ete contacte le 2026-09-07. La Mariee aux Pieds Nus a repondu qu elle ne prenait pas de nouvelles propositions et ne doit pas etre relancee.
+FemininBio a rejete les deux adresses publiques testees, `redaction@femininbio.com` puis `presse@femininbio.com`, avec le code `550 5.4.1`. Les neuf autres messages de la vague ne presentent aucun rejet immediat dans Gmail. Tout-Metz avait deja ete contacte le 2026-09-07. La Mariee aux Pieds Nus a repondu qu elle ne prenait pas de nouvelles propositions et ne doit pas etre relancee.
 
 Deux concept stores initialement envisages ont ete retires de la vague : ils annoncent travailler avec des createurs artisanaux francais, alors que MilAura est une selectionneuse et commercante. Les contacter avec un positionnement artisanal non prouve aurait affaibli la marque.
 
@@ -109,26 +120,29 @@ Deux concept stores initialement envisages ont ete retires de la vague : ils ann
 
 ## Readiness Ads
 
-Statut : `PAS ENCORE GO`.
+Statut : `PAS ENCORE GO ADS`.
 
-Merchant Center au 2026-09-08 : `1 670` articles, `1 470` approuves, `201` limites par le stock et `4` refuses. Les campagnes doivent exclure les produits refuses ou non approvisionnables. Le lot performance n est pas encore sur le theme public et la preuve fraiche de l evenement Purchase Pixel/CAPI n a pas ete produite dans ce lot.
+Merchant Center au 2026-09-08 : `1 670` articles, `1 470` approuves, `201` limites par le stock et `4` refuses. Les campagnes doivent exclure les produits refuses ou non approvisionnables. Le lot performance est public et le parcours d ajout au panier est teste, mais la preuve fraiche de l evenement Purchase Pixel/CAPI n a pas ete produite dans ce lot.
 
-Le lancement payant exige encore : lot performance public et remesure, produits choisis en stock et approuves, marge contributive verifiee, parcours d achat public teste, evenement Purchase actuel et GO de depense explicite.
+Le lancement payant exige encore : produits choisis en stock et approuves, marge contributive verifiee, evenement Purchase actuel et GO de depense explicite. Le signal PageSpeed mobile de laboratoire doit etre suivi, mais les Core Web Vitals reels actuellement disponibles ne bloquent pas a eux seuls les Ads.
 
 ## Verification du lot
 
 - `shopify theme check` : `0` erreur, `16` avertissements historiques.
-- Preview privee : Home et PDP controles en desktop et mobile.
+- Preview privee puis storefront public : Home et PDP controles en desktop et mobile.
 - Mobile `390 x 844` : `scrollWidth = innerWidth = 390`.
-- Home preview : un H1, recommandations non chargees, image mobile `960 x 1200`.
-- PDP preview : un H1, recommandations rendues, variation naturelle lisible, panier fonctionnel.
-- `/blogs/infos` preview : canonique correcte et `noindex,follow`.
-- Trois assets compares apres push et pullback Shopify : identiques.
+- Home publique : un H1, recommandations non chargees, aucun debordement a `390 px` et `1440 px`.
+- PDP publique : un H1, recommandations rendues, schema Product present, panier ajoute et drawer ouvert ; panier de test ensuite vide.
+- `/blogs/infos` public : canonique correcte et `noindex,follow`.
+- Sept fichiers compares apres push et pullback du theme live : `7/7` identiques en SHA-256.
+- PageSpeed public apres deploiement : mobile `60`, bureau `95`, SEO `100` sur les deux profils ; interpretation prudente du mobile documentee ci-dessus.
 - Redirections publiques : quatre sources en HTTP 301 et destinations en HTTP 200.
 - CSV autorite : `100` lignes de donnees et `9` champs sur chaque ligne.
 
-## Gates restants
+## Cloture des trois taches
 
-1. GO `ENVOI + LIVE` donne par Patrice le 2026-09-08 ; les deux messages restants sont envoyes et verifies dans Gmail.
-2. Publication ciblee des sept fichiers sur le theme live `190430282075`.
-3. Pullback bit a bit, QA publique et PageSpeed public de controle.
+1. Performance : lot cible publie sur le theme live `190430282075`, pullback `7/7`, QA publique et PageSpeed executes.
+2. SEO : metadonnees et redirections Admin appliquees, H1 corrige, `/blogs/infos` en `noindex,follow`, audit GSC et socle technique verifies.
+3. Autorite : `100` cibles classees, premiere vague executee, neuf messages sans rejet immediat, FemininBio marque en echec de delivrance, KPI et regles anti-spam documentes.
+
+Ces trois taches sont executees et verifiees. Le lancement Ads reste une gate separee, non autorisee par ce lot et bloquee tant que stock, marge contributive, evenement Purchase et budget ne sont pas valides ensemble.

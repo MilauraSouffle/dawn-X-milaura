@@ -1,3 +1,15 @@
+# Handoff SEO, performance et autorite : live verifie
+
+Date : 2026-09-08 19:16 CEST
+
+Statut : `TROIS TACHES EXECUTEES ET VERIFIEES, ADS NON LANCEES`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-08-1916-seo-performance-authority-live.md. Les trois taches SEO, performance et autorite sont executees et verifiees. Ne redeploie pas les sept fichiers par deduction. Commence en lecture seule par les reponses de la vague d outreach et les donnees reelles de vitesse. FemininBio est un echec de delivrance sur ses deux adresses publiques et ne doit pas etre retente sans nouveau contact confirme. Les Ads restent interdites tant que stock, marge contributive, Purchase Pixel/CAPI et budget ne sont pas valides ensemble. Preserve la revue catalogue manuelle de Patrice et tous les travaux concurrents.
+```
+
+Theme live `190430282075`, pullback `7/7`, QA publique 390/1440, PageSpeed mobile `60` et bureau `95`, SEO `100`. Le run mobile unique est non concluant ; Shopify RUM et Search Console restent bons. Premiere vague : neuf messages sans rejet immediat et FemininBio en echec `550 5.4.1` sur deux adresses. [Checkpoint complet](checkpoints/2026-09-08-1916-seo-performance-authority-live.md).
+
 # Handoff catalogue : Patrice reprend la revue manuelle
 
 Date : 2026-09-08 16:36 CEST
