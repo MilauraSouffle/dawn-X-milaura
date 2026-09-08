@@ -1,3 +1,15 @@
+# Handoff catalogue : Patrice reprend la revue manuelle
+
+Date : 2026-09-08 16:36 CEST
+
+Statut : `SESSION FERMEE, PATRICE CONTROLE ET ACTIVE LES PRODUITS UN PAR UN`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-08-1636-catalogue-patrice-manual-review-handoff.md. Patrice a repris lui-meme la revue et l'activation des vingt et un produits annonces, un par un. Commence exclusivement en lecture seule et demande-lui s'il a termine avant de toucher au catalogue. Ne modifie aucun produit qu'il est encore en train de controler. Ensuite, audite d'abord les modifications effectuees par Camilla le 2026-09-07 et fournis la liste exacte des produits et champs touches sans correction. Le workflow V4.2 est deploye : Sol exclusivement, aucun grade fournisseur dans titre ou SEO title, image portee en position 2 pour les bijoux, onglet pierre pertinent, nouveaux produits DRAFT et aucun canal active par un agent. Traite les anciennes fiches en rupture et les bougies dans des lots separes. Les bougies sont une collaboration Patrice et Maison Candella, jamais un produit Camille Ambiance Nature. Aucun batch, changement de statut, prix, stock, handle, galerie, collection, redirection ou canal sans nouvelle liste fermee et GO explicite.
+```
+
+Etat complet, limites, dernier etat Shopify connu du bracelet et inventaire des travaux ouverts : [handoff final du 2026-09-08](checkpoints/2026-09-08-1636-catalogue-patrice-manual-review-handoff.md). Preuves techniques V4.2 : [checkpoint Camilla](checkpoints/2026-09-08-1626-product-workflow-v4-2-camilla-handoff.md).
+
 # Catalogue : cinq enrichissements en DRAFT et baguette Pyrite retiree
 
 Date : 2026-09-08 09:50 CEST. Patrice a retenu cinq anciennes fiches et a demande le retrait de la baguette Pyrite. La baguette `10357681619291` reste conservee dans Shopify mais est maintenant `DRAFT`, stock zero, `onlineStoreUrl=null` et n'apparait plus sur le storefront. Aucun enrichissement n'a ete applique a cette fiche.
