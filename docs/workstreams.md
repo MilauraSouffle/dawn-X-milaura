@@ -1,3 +1,12 @@
+## Coeurs favoris PDP et catalogue du 2026-09-08
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour relier les coeurs des fiches produit et du catalogue aux favoris durables de Mon Ecrin.
+- Theme : branche `codex/milaura-favorite-hearts-20260908`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/favorite-hearts-20260908`, base `ce9303c5`. Fichiers reserves : `layout/theme.liquid`, `snippets/milaura-c1-release-bridge.liquid`, `snippets/milaura-favorite-button.liquid`, `snippets/milaura-card-product.liquid`, `snippets/card-product.liquid`, `sections/milaura-product-hero.liquid`, `assets/milaura-favorites.css`, `assets/milaura-favorites.js`, tests et checkpoint propres au lot.
+- Backend : branche `codex/milaura-favorite-hearts-backend-20260908`, worktree `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-favorite-hearts-20260908`, base Mon Ecrin V9 `1d25384`. Fichiers reserves dans `docs/milaura/shopify-apps/customer-accounts-release-candidate/` : `server/src/app-rc.mjs`, `server/src/shopify-diagnostic-store.mjs`, nouveau contrat favoris serveur, `scripts/check-release-candidate.mjs`, tests cibles et documentation de release du lot.
+- Cibles reservees apres validation technique : backend `milaura-mon-ecrin-backend` puis theme live `190430282075`, avec deploiements atomiques et retours arriere coordonnes. Aucun changement de bundle Customer Account, aucun nouveau scope, secret ou paquet. Les favoris restent lies au compte Shopify authentifie, avec ecriture CAS ; aucun faux etat local persistant.
+- Direction : coeur fin, discret, sans pastille massive, cible tactile 44 px, photographie prioritaire. Etat invite : connexion puis reprise du choix explicite. Etat connecte : lecture initiale, ajout/retrait optimiste avec rollback et synchronisation de tous les exemplaires du meme produit.
+- Etat au 2026-09-08 18:31 CEST : OUVERT, architecture lue, aucune ecriture backend ou theme encore effectuee hors registre.
+
 ## Landing Tous les bijoux du 2026-09-07
 
 - Proprietaire : Codex, tache `01a07c4e-0f36-7900-a0d5-5eddc918f31a`, demande de Patrice de transformer `/collections/bijoux-pierres-naturelles` en landing premium puis GO commit, push et live explicite.
@@ -34,6 +43,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-integration` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
 
 ## Sessions declarees
+
+### Landing et strategie concours 10 jours, 10 cadeaux du 2026-09-08
+
+- Proprietaire : Codex, tache `01a0814e-44bb-7842-929a-c0933280a989`, demande directe de Patrice du 2026-09-08.
+- Branche : `codex/milaura-concours-20260908`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/milaura-concours-20260908`, base `2833fa4e`.
+- Perimetre reserve : nouvelle section et nouveau template de page pour le concours, assets exclusivement lies au concours, variante reversible du bloc newsletter de `sections/milaura-footer.liquid`, configuration `sections/footer-group.json`, mode compact du consentement limite au template concours dans `layout/theme.liquid`, `snippets/milaura-cookie-consent.liquid` et `assets/milaura-cookie-consent.css`, strategie et reglement dates du lot.
+- Etat au 2026-09-08 a 17:55 CEST : LIVE TECHNIQUE, OUVERT POUR LES PERMALIENS SOCIAUX. GO visuel V1 et conditions commerciales confirmes explicitement par Patrice le 2026-09-08. Source et branche d'integration alignees sur `d7fcd4a3`. Dix-sept fichiers pousses de facon ciblee sur le theme live `190430282075`, puis pullback 17/17 conforme ; Shopify ajoute seulement son commentaire standard au template JSON. Page Admin visible `168261681499`, template `milaura-concours-10-jours`, URL publique `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux`. Ouverture automatique le 2026-09-08 a 20:00, fermeture le 2026-09-18 a 19:59, tirage le 2026-09-19 a 12:00. Footer live sur le mode concours et consentement compact limite a cette page. HTTP 200, theme public `190430282075`, canonical, H1, SEO, dix cadeaux, reglement complet et footer verifies ; QA visuelle publique desktop et mobile 390 px conforme. Aucune campagne Meta, depense, publication Instagram, Facebook, TikTok, Snapchat, email ou action Pinterest executee. Les deux permaliens des publications principales restent a injecter apres leur publication.
+- Etat au 2026-09-08 a 18:10 CEST : lancement reporte d'un jour sur demande explicite de Patrice. Nouvelle ouverture le 2026-09-09 a 20:00, fermeture le 2026-09-19 a 19:59, tirage le 2026-09-20 a 12:00. Aucun autre changement de campagne ou de creation autorise aujourd'hui.
 
 ### Lien Pinterest du footer du 2026-09-07
 
