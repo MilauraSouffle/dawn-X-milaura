@@ -19,6 +19,8 @@
       let inView = false;
       let hasStarted = false;
       let hasCompleted = false;
+      let hasVisiblePlayback = false;
+      let switchingVariant = false;
 
       const currentVariant = () => (mobileViewport.matches ? 'Mobile' : 'Desktop');
       const currentMediaUrl = (kind) => {
@@ -30,7 +32,7 @@
         replay.hidden = !visible;
         replay.style.display = visible ? 'inline-flex' : 'none';
         if (!visible) {
-          media.dataset.mediaState = hasStarted ? 'playing' : 'idle';
+          media.dataset.mediaState = hasVisiblePlayback ? 'playing' : 'fallback';
           return;
         }
 
@@ -69,8 +71,10 @@
         video.defaultMuted = true;
         hasStarted = true;
         setReplayVisibility(false);
+        if (!hasVisiblePlayback) media.dataset.mediaState = 'loading';
         const playbackStartTime = video.currentTime;
         video.play().catch(() => {
+          hasVisiblePlayback = false;
           setReplayVisibility(true, 'blocked');
         });
         window.setTimeout(() => {
@@ -79,6 +83,7 @@
             !hasCompleted &&
             video.currentTime <= playbackStartTime + 0.05
           ) {
+            hasVisiblePlayback = false;
             setReplayVisibility(true, 'blocked');
           }
         }, 1200);
@@ -92,16 +97,21 @@
 
         if (!sourceLoaded || !nextSource || nextSource === activeSource) return;
 
+        switchingVariant = true;
         video.pause();
         activeSource = nextSource;
         video.src = nextSource;
+        hasVisiblePlayback = false;
+        setReplayVisibility(false);
         video.load();
 
         video.addEventListener(
           'loadedmetadata',
           () => {
+            switchingVariant = false;
             if (hasCompleted) {
               video.currentTime = Math.max(0, video.duration - 0.04);
+              hasVisiblePlayback = true;
               setReplayVisibility(true);
               return;
             }
@@ -131,25 +141,27 @@
         if (!loadSource()) return;
         hasCompleted = false;
         hasStarted = true;
+        hasVisiblePlayback = false;
         video.currentTime = 0;
         playCurrent(true);
       });
 
       video.addEventListener('play', () => {
         hasStarted = true;
-        setReplayVisibility(false);
       });
 
       video.addEventListener('timeupdate', () => {
-        if (!video.paused && !hasCompleted && media.dataset.mediaState === 'blocked') {
+        if (!video.paused && !hasCompleted && video.currentTime > 0.05) {
+          hasVisiblePlayback = true;
           setReplayVisibility(false);
         }
       });
 
       video.addEventListener('pause', () => {
-        if (!inView || !hasStarted || hasCompleted) return;
+        if (!inView || !hasStarted || hasCompleted || switchingVariant) return;
         window.setTimeout(() => {
           if (inView && video.paused && !video.ended && !hasCompleted) {
+            hasVisiblePlayback = false;
             setReplayVisibility(true, 'blocked');
           }
         }, 120);
@@ -157,18 +169,32 @@
 
       video.addEventListener('ended', () => {
         hasCompleted = true;
+        hasVisiblePlayback = true;
         setReplayVisibility(true, 'replay');
       });
 
       video.addEventListener('error', () => {
-        if (!hasCompleted) setReplayVisibility(true, 'blocked');
+        if (!hasCompleted) {
+          hasVisiblePlayback = false;
+          setReplayVisibility(true, 'blocked');
+        }
+      });
+
+      video.addEventListener('stalled', () => {
+        if (inView && !hasCompleted) {
+          hasVisiblePlayback = false;
+          setReplayVisibility(true, 'blocked');
+        }
       });
 
       mobileViewport.addEventListener('change', updateVariant);
       reducedMotion.addEventListener('change', () => {
         if (reducedMotion.matches) {
           video.pause();
-          if (!hasCompleted) setReplayVisibility(true, 'blocked');
+          if (!hasCompleted) {
+            hasVisiblePlayback = false;
+            setReplayVisibility(true, 'blocked');
+          }
           return;
         }
         if (inView && !hasCompleted) playCurrent();
