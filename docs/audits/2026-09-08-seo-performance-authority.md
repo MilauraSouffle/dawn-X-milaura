@@ -91,9 +91,11 @@ Envois verifies le 2026-09-08 :
 - Blog MOSL ;
 - Metamorphose ;
 - Hello Metz ;
-- Yoga avec Valentine.
+- Yoga avec Valentine ;
+- NeverMind ;
+- FemininBio, relancee vers son contact editorial public actuel.
 
-FemininBio a rejete l ancienne adresse `redaction@femininbio.com` avec le code `550 5.4.1`. Le contact editorial public actuel `presse@femininbio.com` est verifie et le nouvel envoi est pret. NeverMind est pret mais non envoye apres le delai du navigateur. Tout-Metz avait deja ete contacte le 2026-09-07. La Mariee aux Pieds Nus a repondu qu elle ne prenait pas de nouvelles propositions et ne doit pas etre relancee.
+FemininBio a rejete l ancienne adresse `redaction@femininbio.com` avec le code `550 5.4.1`. Le nouvel envoi vers le contact editorial public actuel `presse@femininbio.com` apparait dans les messages envoyes, comme celui de NeverMind. Tout-Metz avait deja ete contacte le 2026-09-07. La Mariee aux Pieds Nus a repondu qu elle ne prenait pas de nouvelles propositions et ne doit pas etre relancee.
 
 Deux concept stores initialement envisages ont ete retires de la vague : ils annoncent travailler avec des createurs artisanaux francais, alors que MilAura est une selectionneuse et commercante. Les contacter avec un positionnement artisanal non prouve aurait affaibli la marque.
 
@@ -127,6 +129,6 @@ Le lancement payant exige encore : lot performance public et remesure, produits 
 
 ## Gates restants
 
-1. Confirmation immediate pour envoyer NeverMind et relancer FemininBio vers son adresse editoriale actuelle.
-2. Validation visuelle de Patrice sur `https://milaura.fr/?preview_theme_id=201115566427`.
-3. Apres GO : integration ciblee, push des fichiers exacts vers le theme live `190430282075`, pullback bit a bit et PageSpeed public de controle.
+1. GO `ENVOI + LIVE` donne par Patrice le 2026-09-08 ; les deux messages restants sont envoyes et verifies dans Gmail.
+2. Publication ciblee des sept fichiers sur le theme live `190430282075`.
+3. Pullback bit a bit, QA publique et PageSpeed public de controle.

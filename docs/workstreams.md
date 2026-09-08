@@ -263,3 +263,12 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 6. Apres integration et validation, la ligne passe a `ferme`, puis le worktree est retire.
 
 Procedure detaillee : `docs/reference/2026-08-12-repository-workflow.md`.
+## SEO, performance et autorite du 2026-09-08
+
+- Proprietaire : Codex, demande et GO explicites de Patrice du 2026-09-08 pour executer les trois lots jusqu a validation : performance, SEO/indexation et autorite externe.
+- Branche : `codex/milaura-seo-performance-authority-20260908`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/seo-performance-authority-20260908`, base integration `b9742034`.
+- Perimetre theme reserve : `layout/theme.liquid`, `sections/milaura-home-occasions.liquid`, `sections/milaura-product-hero.liquid`, `sections/milaura-selection-atelier.liquid`, les deux assets `milaura-hero-editorial-hub-birthstone-*.webp`, `assets/milaura-rentree-sodalite-hero-v4-mobile-poster.webp` et nouveaux tests ou documents propres au lot. `sections/milaura-hero-portal.liquid` et ses nouveaux assets restent au lot Home Hero concurrent.
+- Themes : preview dediee `201115566427`, copie exacte du live creee le 2026-09-08 ; GO `ENVOI + LIVE` donne par Patrice le 2026-09-08, deploiement cible du live `190430282075` autorise avec pullback exact. Aucun push complet.
+- Perimetre SEO/Admin : champs SEO des collections Bracelets, Colliers et Sodalite, blogs `journal` et `infos`, motifs GSC et etat Merchant Center. Aucun produit actuellement revu manuellement par Patrice, stock, prix, galerie, statut ou Ads.
+- Perimetre autorite : recherche et classement de 100 cibles, messages personnalises et envois par vagues de dix. Aucun achat de lien, commentaire de forum automatise, echantillon, commission ou depense sans gate specifique ; confirmation utilisateur immediate avant chaque vague d envoi au nom de MilAura.
+- Etat au 2026-09-08 18:50 CEST : LIVE EN COURS. Source `2fe9e0c4` poussee ; dix contacts de la vague sont dans Gmail, dont la relance FemininBio sur son adresse editoriale actuelle apres rejet de l ancienne. Le pull cible de la preview est identique au worktree ; la version live validee de la note sur les variations naturelles est preservee dans le lot. Checkout d integration sale preserve.
