@@ -2,19 +2,21 @@
 
 Version de travail du 2026-09-08
 
-Statut : BROUILLON NON PUBLIABLE. Les mentions entre crochets et les dates doivent être validées par Patrice et Karine avant mise en ligne. Une relecture juridique reste recommandée.
+Statut : BROUILLON NON PUBLIABLE. La fenêtre accélérée et les conditions commerciales proposées doivent être validées explicitement par Patrice et Karine avant mise en ligne. Une relecture juridique reste recommandée.
 
 ## Article 1. Société organisatrice
 
-Le jeu concours gratuit intitulé « 10 jours, 10 cadeaux » est organisé par ONORA SARL, exploitant la marque MilAura, immatriculée au RCS de Metz sous le numéro [à confirmer], SIRET [à confirmer], dont le siège est situé [adresse complète à confirmer], ci-après « l'Organisateur ».
+Le jeu concours gratuit intitulé « 10 jours, 10 cadeaux » est organisé par ONORA SARL, exploitant la marque MilAura, immatriculée au RCS de Metz sous le numéro 994 096 816, SIRET 994 096 816 00016, dont le siège est situé 92 rue de Pont-à-Mousson, 57950 Montigny-lès-Metz, ci-après « l'Organisateur ».
+
+Ces informations ont été recoupées le 2026-09-08 avec [l'Annuaire des Entreprises](https://annuaire-entreprises.data.gouv.fr/entreprise/994096816).
 
 Contact relatif au jeu : contact@milaura.fr.
 
 ## Article 2. Durée
 
-Le jeu est ouvert du 2026-09-14 à 08:00, heure de Paris, au 2026-09-23 à 23:59, heure de Paris.
+Le jeu est ouvert du 2026-09-08 à 20:00, heure de Paris, au 2026-09-18 à 19:59, heure de Paris.
 
-Ces dates sont proposées et restent à valider. Aucune participation reçue avant l'ouverture ou après la clôture ne sera retenue.
+Cette fenêtre de dix jours pleins est proposée à la suite de la demande de lancement le soir du 2026-09-08. L'heure exacte reste à valider. Aucune participation reçue avant l'ouverture ou après la clôture ne sera retenue.
 
 ## Article 3. Territoire et participants
 
@@ -71,13 +73,13 @@ La valeur commerciale totale des lots au 2026-09-08 est de 299,90 €, hors vale
 
 Les lots sont personnels, non cessibles, non remboursables et non échangeables contre des espèces.
 
-La carte cadeau de 30 € sera valable pendant [durée à confirmer] à compter de son émission. La livraison offerte s'appliquera [territoire, mode de livraison, minimum d'achat et éventuelles exclusions à confirmer].
+Proposition à valider : la carte cadeau de 30 € sera valable douze mois à compter de son émission. La livraison standard offerte sera utilisable une fois, sans minimum d'achat, pour une commande livrée en France métropolitaine ou en Corse pendant cette période. Les modes express seront exclus.
 
 En cas d'indisponibilité justifiée d'un lot, l'Organisateur pourra le remplacer par un lot de nature et de valeur commerciale équivalentes ou supérieures, sans que sa responsabilité puisse être engagée de ce fait.
 
 ## Article 7. Désignation des gagnants
 
-Les dix tirages au sort seront réalisés le 2026-09-24 [heure à confirmer], après vérification des participations.
+Les dix tirages au sort seront réalisés le 2026-09-19 à 12:00, heure de Paris, après vérification des participations. Cette heure reste à valider.
 
 Cinq lots sont attribués parmi les participations Instagram conformes et cinq parmi les participations Facebook conformes, selon le tableau de l'article 6.
 
@@ -93,7 +95,7 @@ Chaque gagnant disposera de 72 heures après l'envoi du message pour répondre e
 
 MilAura ne demandera jamais de paiement, de numéro de carte bancaire, de mot de passe ou de code de connexion pour remettre un lot.
 
-Les lots physiques seront expédiés en France métropolitaine, Corse comprise, dans un délai indicatif de [délai à confirmer] après validation des coordonnées. L'Organisateur ne pourra être tenu responsable d'une adresse erronée fournie par le gagnant ou d'un incident imputable au transporteur, sous réserve des obligations légales applicables.
+Proposition à valider : les lots physiques seront expédiés en France métropolitaine, Corse comprise, dans un délai indicatif de dix jours ouvrés après validation des coordonnées. L'Organisateur ne pourra être tenu responsable d'une adresse erronée fournie par le gagnant ou d'un incident imputable au transporteur, sous réserve des obligations légales applicables.
 
 ## Article 9. Données personnelles
 
@@ -101,7 +103,7 @@ L'Organisateur traite le nom de compte, le commentaire et les éléments nécess
 
 Seuls les gagnants sont invités à communiquer leur nom, prénom et adresse d'expédition. Ces informations ne sont pas utilisées pour de la prospection commerciale et ne sont pas ajoutées à une newsletter sans consentement séparé, libre, spécifique et non précoché.
 
-Les données des non-gagnants sont supprimées ou anonymisées à l'issue de la période raisonnablement nécessaire au traitement des contestations, fixée provisoirement à [trois mois à valider]. Les preuves strictement nécessaires peuvent être conservées plus longtemps lorsque la loi ou la défense des droits de l'Organisateur l'exige.
+Proposition à valider : les données des non-gagnants sont supprimées ou anonymisées trois mois après le tirage. Les preuves strictement nécessaires peuvent être conservées plus longtemps lorsque la loi ou la défense des droits de l'Organisateur l'exige.
 
 Les participants peuvent exercer leurs droits d'accès, de rectification, d'effacement, de limitation et d'opposition en écrivant à contact@milaura.fr. Ils peuvent également saisir la CNIL.
 
@@ -133,11 +135,11 @@ Une copie peut être demandée à contact@milaura.fr.
 
 Le jeu et le présent règlement sont soumis au droit français.
 
-Toute question ou contestation doit être adressée à contact@milaura.fr dans un délai de [trente jours à confirmer] suivant la clôture. L'Organisateur recherchera d'abord une solution amiable, sans priver le participant de ses droits légaux ni de l'accès aux voies de recours compétentes.
+Proposition à valider : toute question ou contestation doit être adressée à contact@milaura.fr dans les trente jours suivant la clôture. L'Organisateur recherchera d'abord une solution amiable, sans priver le participant de ses droits légaux ni de l'accès aux voies de recours compétentes.
 
 ## Validation avant publication
 
-- [ ] identité complète, RCS, SIRET et siège de l'Organisateur ;
+- [x] identité complète, RCS, SIRET et siège de l'Organisateur, recoupés le 2026-09-08 ;
 - [ ] dates et heures ;
 - [ ] territoire et majorité ;
 - [ ] validité de la carte cadeau ;

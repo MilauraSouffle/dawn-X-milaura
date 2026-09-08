@@ -29,8 +29,8 @@ Lecture directe des profils connectés le 2026-09-08 :
 
 | Réseau | Compte | Abonnés | Rôle recommandé |
 | --- | --- | ---: | --- |
-| Instagram | `@milaura_mineraux` | 36 | Canal principal, 65 % du média |
-| Facebook | `MilAura` | 76 | Canal principal, 35 % du média |
+| Instagram | `@milaura_mineraux` | 36 | Canal principal et premier test payant |
+| Facebook | `MilAura` | 76 | Canal principal, organique sur les premières 48 heures |
 | Total KPI | Instagram + Facebook | 112 | Base officielle T0 |
 | TikTok | `@milaura_creations` | non mesuré dans ce lot | Relais organique seulement |
 | Snapchat | aucun lien configuré dans le thème | aucune base | Hors lancement |
@@ -49,12 +49,14 @@ Important : 299,90 € est une valeur commerciale, pas le coût réel de la camp
 Les échanges Codex les plus récents ont été relus. Au 2026-09-08 :
 
 - le dossier de catégorie sensible `Religion` du dataset Meta `milaurashopify` a été refusé ;
-- le compte n'est pas désactivé, mais sa configuration reste basique et la fiabilité de l'optimisation Purchase est limitée ;
+- Qualité du compte indique directement que `Karine ZA` ne présente aucun problème lié aux publicités ;
+- le refus du classement du dataset n'est donc pas la preuve d'une interdiction globale de publicité, mais la fiabilité de l'optimisation Purchase reste limitée ;
+- un nouveau dossier support actif porte le numéro `903464745887340`, sans reclassement confirmé à cette heure ;
 - une campagne Trafic de test à 105 € sur sept jours existe en brouillon et n'est pas publiée ;
 - aucune dépense n'a été engagée dans ce brouillon ;
 - ce brouillon vise une page Oeil de tigre et ne doit pas fonctionner en parallèle du concours.
 
-Conséquence : le concours peut encore utiliser des objectifs de notoriété, d'engagement, de vues ou de clics, sous réserve de ce que l'interface Meta autorise au moment du lancement. Les ventes doivent être lues d'abord dans Shopify et GA4 avec des UTM. On ne doit ni contourner la restriction, ni créer un autre pixel ou compte.
+Conséquence : le concours peut utiliser un objectif d'interactions avec la publication ou une option de visites du profil réellement disponible, sous réserve de ce que l'interface Meta autorise au lancement. Les ventes doivent être lues d'abord dans Shopify et GA4 avec des UTM. On ne doit ni contourner la restriction, ni créer un autre pixel ou compte. L'ancien pixel `889541567223962` ne doit pas être sélectionné.
 
 Preuves locales relues :
 
@@ -140,31 +142,27 @@ Le budget média exact ne peut être fixé honnêtement sans le coût de revient
 
 `média disponible = 500 € - coût de revient des lots - 30 € de carte cadeau - expédition et emballage - réserve`.
 
-Deux limites utiles :
+Le terme `budget média` désigne uniquement l'argent effectivement dépensé en publicité Meta. Il ne comprend pas la valeur publique des cadeaux. Aucun seuil de 250 € ne constitue une condition de réussite démontrée par l'historique MilAura.
 
-| Média disponible | Coût média maximal par nouvel abonné pour atteindre +1 000 | Lecture |
-| ---: | ---: | --- |
-| 140 € | 0,14 € | Très improbable sans relais massif |
-| 300 € | 0,30 € | Objectif stretch, pilotable par tests quotidiens |
-| 400 € | 0,40 € | Plus crédible, toujours non garanti |
+Recommandation opérationnelle corrigée : commencer par un palier de 30 € au total pendant 48 heures, avec une date de fin et un plafond de dépense effectifs. Promouvoir une seule publication principale Instagram et garder Facebook en organique pendant ce premier test. Après 30 €, relire les participations valides, les visites de profil, les abonnements gagnés et perdus, les clics et les commandes avant toute prolongation.
 
-Recommandation opérationnelle : viser 300 € de média si, et seulement si, le coût de revient, l'expédition et la réserve restent dans les 200 € restants. Si le média disponible tombe sous 250 €, ramener l'objectif public interne à 500 nouveaux abonnés nets et garder +1 000 comme plafond ambitionnel.
+Le reste de l'enveloppe média n'est engagé qu'après cette revue. Si le coût de revient, l'expédition et la réserve occupent 200 € sur les 500 €, le maximum théorique disponible pour Meta est 300 €. Cela ne signifie pas qu'il faut dépenser 300 € immédiatement.
 
 Le brouillon Meta de 105 € préparé pour l'Oeil de tigre reste éteint. Sur validation, il faut soit le réaffecter proprement au concours, soit le conserver pour après. Ne pas additionner silencieusement les deux budgets.
 
-### Allocation recommandée pour 300 €
+### Premier palier recommandé
 
-| Période | Budget | But |
+| Période | Budget maximal | But |
 | --- | ---: | --- |
-| J1 à J2 | 40 € | Tester trois créas et les deux réseaux |
-| J3 à J7 | 160 € | Concentrer sur les gagnantes |
-| J8 à J10 | 100 € | Urgence réelle et clôture |
+| Premières 48 heures | 30 € au total | Tester la publication principale Instagram |
+| Après 30 € | Aucun ajout automatique | Revue avant prolongation, correction ou arrêt |
+| J3 à J10 | À décider sur résultats | Répartir le solde sans dépasser 500 € tout compris |
 
-Répartition initiale : 65 % Instagram, 35 % Facebook. Réviser chaque matin sur le coût par abonné net, pas sur les likes.
+La répartition 65 % Instagram et 35 % Facebook reste un scénario pour la suite, pas le lancement. Elle ne s'applique qu'après le premier palier et si Facebook apporte des participations ou abonnements utiles. Le coût média divisé par le gain net total reste un indicateur mixte organique et payant, pas un coût d'acquisition publicitaire parfaitement attribué.
 
 ### Créas
 
-Trois familles suffisent :
+Trois familles sont préparées, mais une seule est promue pendant le premier palier :
 
 1. Karine ouvre réellement le coffret, format vertical 9:16, visage ou mains visibles dans les deux premières secondes ;
 2. macro produit, ouverture du cadeau puis prix et règle en trois plans ;
@@ -195,20 +193,20 @@ L'objectif publicitaire final dépendra des options réellement disponibles le j
 
 ## 5. Calendrier éditorial
 
-Fenêtre proposée, à valider : du lundi 2026-09-14 à 08:00 CEST au mercredi 2026-09-23 à 23:59 CEST. Tirages le 2026-09-24.
+Fenêtre accélérée demandée par Patrice, à valider juridiquement : du mardi 2026-09-08 à 20:00 CEST au vendredi 2026-09-18 à 19:59 CEST. Tirages proposés le 2026-09-19 à 12:00 CEST.
 
 | Date | Cadeau | Contenu principal | Angle commercial utile |
 | --- | --- | --- | --- |
-| 2026-09-14 | Distributeur aventurine bleue | Reel ouverture | Objet en pierre pour la maison |
-| 2026-09-15 | Bague sodalite | Macro portée | Bague réglable, facile à offrir |
-| 2026-09-16 | Bougie Sérénité | Vidéo matière | Bougie et pierre dans un même rituel |
-| 2026-09-17 | Pendentif cœur | Gros plan | Préciser sans chaîne |
-| 2026-09-18 | Bracelet rondelles | Carrousel détails | Sodalite, doré et perles de 6 mm |
-| 2026-09-19 | Boucles sodalite | Try-on réel | Longueur 36 mm |
-| 2026-09-20 | Bougie Réconfort | Vidéo ambiance réelle | Néroli et calcédoine bleue |
-| 2026-09-21 | Collier pampilles | Mouvement réel | Reflets argentés et pampilles |
-| 2026-09-22 | Bracelet Horus | Reel fondateur | Un produit déjà présent sur Instagram |
-| 2026-09-23 | Carte cadeau 30 € | Récapitulatif | Dernier jour, choix libre |
+| 2026-09-08 à 20 h | Distributeur aventurine bleue | Reel ouverture | Objet en pierre pour la maison |
+| 2026-09-09 à 20 h | Bague sodalite | Macro portée | Bague réglable, facile à offrir |
+| 2026-09-10 à 20 h | Bougie Sérénité | Vidéo matière | Bougie et pierre dans un même rituel |
+| 2026-09-11 à 20 h | Pendentif cœur | Gros plan | Préciser sans chaîne |
+| 2026-09-12 à 20 h | Bracelet rondelles | Carrousel détails | Sodalite, doré et perles de 6 mm |
+| 2026-09-13 à 20 h | Boucles sodalite | Try-on réel | Longueur 36 mm |
+| 2026-09-14 à 20 h | Bougie Réconfort | Vidéo ambiance réelle | Néroli et calcédoine bleue |
+| 2026-09-15 à 20 h | Collier pampilles | Mouvement réel | Reflets argentés et pampilles |
+| 2026-09-16 à 20 h | Bracelet Horus | Reel fondateur | Un produit déjà présent sur Instagram |
+| 2026-09-17 à 20 h | Carte cadeau 30 € | Récapitulatif | Dernier cadeau, clôture le lendemain à 19 h 59 |
 
 Chaque jour : un Reel ou post, trois Stories maximum, un rappel du faux compte, un lien vers la landing, une réponse humaine aux commentaires. TikTok reçoit seulement les meilleures vidéos adaptées, pas un copier-coller avec watermark.
 
@@ -252,7 +250,7 @@ La version recommandée est un « indice du jour » éditorial : le contenu quot
 | --- | ---: | --- |
 | Abonnés Instagram + Facebook | +1 000 nets | Base 112, cible finale 1 112 |
 | Rythme | +100 nets par jour | Réallouer dès deux relevés faibles |
-| Coût média par abonné | 0,30 € si média 300 € | Ne pas masquer les désabonnements |
+| Dépense du premier palier | 30 € maximum sur 48 h | Revue obligatoire avant prolongation |
 | Participants conformes | à mesurer | Comptes uniques, hors doublons et fraude |
 | Clics landing vers réseaux | à mesurer dès J1 | UTM et événements actifs |
 | Commandes attribuées | à mesurer | Shopify et GA4, pas seulement Meta |
@@ -297,7 +295,7 @@ Une petite étude de 52 comptes sponsorisés a observé une forte attrition apr�
 
 ## 10. Décisions encore requises
 
-1. Confirmer ou changer la fenêtre du 2026-09-14 au 2026-09-23.
+1. Confirmer la fenêtre du 2026-09-08 à 20 h au 2026-09-18 à 19 h 59.
 2. Donner le coût de revient total des neuf produits et le coût d'expédition estimé.
 3. Confirmer ONORA SARL comme organisateur juridique du jeu MilAura.
 4. Fixer la validité de la carte cadeau et la règle exacte de livraison offerte.
