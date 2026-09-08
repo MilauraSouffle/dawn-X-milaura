@@ -4,7 +4,8 @@
 - Branche : `codex/milaura-footer-media-fix-20260908`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/footer-media-fix-20260908`, base d'integration `508ee409`.
 - Perimetre reserve : `sections/milaura-footer.liquid`, `sections/milaura-selection-atelier.liquid`, `assets/milaura-home-seasonal-media.js`, `assets/milaura-rentree-sodalite-hero-v4-desktop-poster.webp`, `assets/milaura-rentree-sodalite-hero-v4-mobile-poster.webp` et theme live `190430282075` pour un push cible.
 - Livraison autorisee : supprimer les trois liens visibles qui utilisent les deux routes 404 des guides A a Z ; afficher une image finale utile tant que la video Sodalite de la Home ne joue pas reellement ; ne charger la video qu'a l'approche de la section.
-- Hors perimetre : page resultat du quiz, landing Sodalite, autres liens du footer, recompression video, catalogue, textes produit, reglages Shopify et toute recette visuelle. Etat au 2026-09-08 : ACTIF.
+- Hors perimetre : page resultat du quiz, landing Sodalite, autres liens du footer, recompression video, catalogue, textes produit, reglages Shopify et toute recette visuelle.
+- Etat au 2026-09-08 12:04 CEST : FERME, INTEGRE, POUSSE ET LIVE TECHNIQUEMENT VERIFIE. Source `d73b1817`, integration `2833fa4e`, theme `190430282075`, pullback identique 5/5. Theme Check sans erreur et 16 avertissements historiques hors lot. Conformement a la demande de Patrice, aucune recette visuelle n'a ete realisee ; controle visuel Safari et mobile reserve a Patrice avant le lot quiz.
 
 ## Landing Tous les bijoux du 2026-09-07
 
