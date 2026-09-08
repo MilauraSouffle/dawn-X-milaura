@@ -490,6 +490,21 @@ Pipeline actif :
 
 `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation`
 
+### Cinq anciennes fiches enrichies en DRAFT le 2026-09-08
+
+Patrice a retenu cinq anciennes fiches pour une remise a niveau complete et a retire la baguette Pyrite du storefront. Etat Shopify relu apres production :
+
+- Bracelet baroque en seraphinite AA `10357443330395`, EAN `3701459058181`, 12,90 EUR, cinq images, stock interne 1, `DRAFT` ;
+- Collier en jaspe rouge 6 mm `10402430452059`, EAN/SKU/code-barres `3701459074594`, 17,90 EUR, cinq images, stock interne 1, `DRAFT` ;
+- Collier en pyrite 8 mm `10357493203291`, EAN `3701459074938`, 22,90 EUR, cinq images, stock interne 1, `DRAFT` ;
+- Pendule hexagonal en labradorite AB `10358581625179`, EAN `3701459037612`, 9,90 EUR, cinq images, stock interne 1, `DRAFT` ;
+- Pendule hexagonal en oeil de tigre A `10357688631643`, EAN `3701459037650`, prix corrige de 12,50 a 9,90 EUR, cinq images, stock interne 1, `DRAFT` ;
+- Baguette Pyrite `10357681619291`, EAN `3701459092857`, stock zero, `DRAFT`, aucun enrichissement, absente du storefront.
+
+Les cinq produits enrichis ont `milaura.availability_mode=supplier-backed` et `milaura.supplier_status=disponible`, verifies le 2026-09-08. Le stock 1 est une notion de preparation interne autorisee par Patrice, pas une quantite physique ni une autorisation de publication. Les textes ont ete produits par Sol. Chaque galerie comporte exactement cinq images V4.1. Les nouvelles descriptions de pierre sont specifiques et pertinentes pour la seraphinite, le jaspe rouge, la pyrite, la labradorite et l'oeil de tigre.
+
+Le pipeline prive reconnait maintenant `seraphinite` dans ses cinq sources structurelles ; sauvegarde prealable et tests PASS. Preuves et rollback : `data/catalogue-batches/2026-09-08-active-oos-five-supplier-backed/` dans le pipeline prive. Checkpoint : `docs/checkpoints/2026-09-08-0950-selected-five-draft-production.md`. Aucun fichier theme n'a ete deploye. Prochaine gate : revue visuelle Patrice dans Shopify Admin, puis activation seulement sur nouveau GO explicite.
+
 ## Catalogue physique, reprise courante
 
 Cloture du 2026-09-05 a 17:35 CEST : `docs/checkpoints/2026-09-05-1735-catalogue-handoff-patrice-triage.md` remplace le mandat de 09:41. Les nouvelles fiches sont produites et importees. Patrice choisit personnellement les anciennes fiches a conserver ou retirer ; la session suivante enrichira uniquement celles qu'il retient.

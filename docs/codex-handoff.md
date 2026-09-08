@@ -1,3 +1,21 @@
+# Catalogue : cinq enrichissements en DRAFT et baguette Pyrite retiree
+
+Date : 2026-09-08 09:50 CEST. Patrice a retenu cinq anciennes fiches et a demande le retrait de la baguette Pyrite. La baguette `10357681619291` reste conservee dans Shopify mais est maintenant `DRAFT`, stock zero, `onlineStoreUrl=null` et n'apparait plus sur le storefront. Aucun enrichissement n'a ete applique a cette fiche.
+
+Les cinq produits retenus ont ete verifies disponibles chez Camille Ambiance Nature le 2026-09-08, reecrits avec Sol, equipes d'une galerie V4.1 de cinq images et appliques dans Shopify Admin. Ils restent tous `DRAFT`, `onlineStoreUrl=null`, suivis avec politique `DENY` et quantite interne de preparation egale a 1. Le marqueur `milaura.availability_mode=supplier-backed` et le statut fournisseur `disponible` servent au pilotage interne. Cette quantite ne constitue pas un stock physique et n'autorise aucune publication.
+
+Resultat relu apres production : Bracelet baroque en seraphinite AA, 12,90 EUR ; Collier en jaspe rouge 6 mm, 17,90 EUR ; Collier en pyrite 8 mm, 22,90 EUR ; Pendule hexagonal en labradorite AB, 9,90 EUR ; Pendule hexagonal en oeil de tigre A, 9,90 EUR. Le collier Jaspe rouge porte maintenant le SKU et code-barres `3701459074594`. Le pendule Oeil de tigre passe de 12,50 a 9,90 EUR conformement au prix public CAN par piece. Les cinq descriptions de pierre ont ete relues dans Shopify et decrivent la pierre, ses variations naturelles, sa symbolique lithotherapie et son expression dans le produit concerne.
+
+Le workflow accepte desormais `seraphinite` dans le schema, le quality gate, le test de contrat, le contrat produit et le prompt texte. Sauvegarde structurelle : `data/snapshots/2026-09-08-0720-seraphinite-taxonomy/` dans le pipeline prive. Tests locaux du pipeline PASS. Preuves, payloads, galeries, anciennes images et lectures Shopify : `data/catalogue-batches/2026-09-08-active-oos-five-supplier-backed/`. Checkpoint : [production des cinq DRAFT](checkpoints/2026-09-08-0950-selected-five-draft-production.md).
+
+Prochaine gate : Patrice controle les cinq DRAFT dans Shopify Admin. Ne publier aucun de ces produits sans son nouveau GO. Apres sa revue, reprendre le tri des autres anciennes fiches encore en ligne et en rupture, puis decider produit par produit entre enrichissement et retrait.
+
+## Reprise catalogue
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-08-0950-selected-five-draft-production.md. Les cinq fiches selectionnees sont enrichies dans Shopify mais restent DRAFT avec une quantite interne de preparation a 1 ; la baguette Pyrite reste DRAFT a zero et ne doit pas revenir sur le site. Commence par relire les cinq IDs et attends mon verdict visuel avant toute activation. Ensuite, audite les anciennes fiches encore ACTIVE et en rupture afin que je decide produit par produit entre enrichissement V4.1 et retrait. Preserve les IDs et handles historiques. Ne publie, ne supprime et ne modifie aucun stock par deduction.
+```
+
 # Landing Tous les bijoux : session fermee, live verifie
 
 Date : 2026-09-07 18:28 CEST. La collection publique `https://milaura.fr/collections/bijoux-pierres-naturelles` utilise maintenant `milaura-all-jewelry` sur le theme live `190430282075`, apres validation visuelle et GO live explicites de Patrice. Source `86c90ea9`, integration `91596690`, cinq fichiers pousses de facon ciblee et pullback 5/5 identique. Affectation Admin enregistree sur la collection `660994851163`, ancien template `milaura-collection`. QA publique 390/1440 px conforme, cinq cartes, H1 unique, phrase d affinage retiree, zero debordement et aucune erreur navigateur.
