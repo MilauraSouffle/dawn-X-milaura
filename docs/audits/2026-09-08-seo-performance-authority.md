@@ -38,14 +38,14 @@ Le lot a ete publie le 2026-09-08 sur le theme live `190430282075`. Le pullback 
 
 ### Mesure publique apres deploiement
 
-Le rapport PageSpeed public du 2026-09-08 a 19:03 CEST donne :
+Deux premiers runs mobiles ont expose la faiblesse du LCP froid, avec des scores `60` puis `59` et un LCP `12,5 s`. Le LCP etait l image principale du Hero, chargee tard depuis le body. Un dernier micro-correctif a donc ajoute son preload responsive dans le head, sans changer le rendu ni charger la mauvaise variante.
 
-Rapport : `https://pagespeed.web.dev/analysis/https-milaura-fr/p811h06fmc?form_factor=mobile`.
+Rapport final du 2026-09-08 a 19:31 CEST : `https://pagespeed.web.dev/analysis/https-milaura-fr/ifp1xb4wq1?form_factor=mobile`.
 
-- mobile : performance `60`, SEO `100`, FCP `5,5 s`, LCP `12,5 s`, TBT `30 ms`, CLS `0`, Speed Index `6,2 s`, poids transfere `2 764 KiB` ;
-- bureau : performance `95`, SEO `100`, FCP `0,6 s`, LCP `1,4 s`, TBT `110 ms`, CLS `0,001`, Speed Index `0,8 s`, poids transfere `2 787 KiB`.
+- mobile : performance `70`, SEO `100`, FCP `2,1 s`, LCP `7,3 s`, TBT `210 ms`, CLS `0`, Speed Index `3,2 s`, poids transfere `2 813 KiB` ;
+- bureau : performance `89`, SEO `100`, FCP `0,6 s`, LCP `1,5 s`, TBT `190 ms`, CLS `0,001`, Speed Index `1,0 s`, poids transfere `2 768 KiB`.
 
-Par rapport au laboratoire mobile releve avant le lot, le poids baisse de `143 KiB`, le TBT de `280 ms`, le blocage du rendu estime de `280 ms` et les taches longues passent de quatre a trois. Le score mobile et le LCP d une execution unique se degradent cependant de `65` a `60` et de `7,6 s` a `12,5 s`. Le detail du meme rapport attribue seulement `50 ms` au chargement de l image LCP et `2,1 s` a son delai d affichage, ce qui ne reconstitue pas le LCP global annonce. Une seconde execution est restee bloquee cote PageSpeed. La mesure mobile de laboratoire est donc non concluante, et non une preuve d amelioration globale. Les donnees reelles Shopify et Search Console restent vertes ; il faut juger l effet d acquisition froide sur une fenetre reelle, pas sur ce seul run.
+Par rapport au laboratoire mobile releve avant le lot, le score passe de `65` a `70`, le FCP de `2,7 s` a `2,1 s`, le LCP de `7,6 s` a `7,3 s`, le TBT de `310 ms` a `210 ms`, le poids de `2 907 KiB` a `2 813 KiB` et le blocage du rendu estime de `1 030 ms` a `550 ms`. Le Speed Index varie de `2,8 s` a `3,2 s`. Le lot produit donc une amelioration mesuree, mais le LCP mobile froid reste trop haut pour parler de performance terminee au sens absolu. Les prochains gains se trouvent surtout dans les images encore surdimensionnees, les `163 KiB` de JavaScript inutilise et les applications ou pixels Shopify. Les donnees reelles Shopify et Search Console restent vertes ; elles doivent rester le juge principal apres une fenetre de trafic suffisante.
 
 ### Risque residuel
 
@@ -135,7 +135,7 @@ Le lancement payant exige encore : produits choisis en stock et approuves, marge
 - PDP publique : un H1, recommandations rendues, schema Product present, panier ajoute et drawer ouvert ; panier de test ensuite vide.
 - `/blogs/infos` public : canonique correcte et `noindex,follow`.
 - Sept fichiers compares apres push et pullback du theme live : `7/7` identiques en SHA-256.
-- PageSpeed public apres deploiement : mobile `60`, bureau `95`, SEO `100` sur les deux profils ; interpretation prudente du mobile documentee ci-dessus.
+- PageSpeed public final apres preload du Hero : mobile `70`, bureau `89`, SEO `100` sur les deux profils ; score mobile `+5` et LCP `-0,3 s` face au run avant lot.
 - Redirections publiques : quatre sources en HTTP 301 et destinations en HTTP 200.
 - CSV autorite : `100` lignes de donnees et `9` champs sur chaque ligne.
 

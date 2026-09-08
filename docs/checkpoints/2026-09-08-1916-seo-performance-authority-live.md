@@ -2,6 +2,8 @@
 
 Date : 2026-09-08 19:16 CEST
 
+Derniere mise a jour : 2026-09-08 19:32 CEST
+
 Statut : `TROIS TACHES EXECUTEES ET VERIFIEES, ADS NON LANCEES`
 
 ## Resultat
@@ -34,7 +36,7 @@ Pullback final : `/private/tmp/milaura-seo-live-after-final-20260908-1855`.
 
 SHA-256 locaux et pullback identiques :
 
-- `layout/theme.liquid` : `184be5645635090c5b7f1865ba55f569de1f4f52f033ac24710d9dc49f4308b7` ;
+- `layout/theme.liquid` : `46f5b45a85e8969c008be8d35a90fcf563cfb93cf692c5fc74c545fea3b05efe` ;
 - `sections/milaura-product-hero.liquid` : `af193dab4b929375de3c7707e7770026faf9cdbcfab6f8aaf27acab69d9b5ce3` ;
 - `sections/milaura-selection-atelier.liquid` : `3e2f23510b8bf53be72a57ee15fed029c34fed1b71a7ca0426712e17cb10b410` ;
 - `sections/milaura-home-occasions.liquid` : `325dd7fdecd3faa3329e5bf093d755bb2cfef28437ec2085f1abf86edb955445` ;
@@ -59,14 +61,14 @@ Captures locales :
 
 ## PageSpeed public
 
-Rapport du 2026-09-08 a 19:03 CEST :
+Deux premiers runs mobiles apres le lot ont donne `60` puis `59`, avec un LCP `12,5 s`. Le LCP identifie etait l image du Hero Home. Le commit `56318501` ajoute son preload responsive dans le head. La preview puis le public confirment que le preload mobile correspond exactement au `currentSrc` affiche ; Theme Check reste a `0` erreur et `16` avertissements historiques. Push live cible de `layout/theme.liquid`, pullback final identique SHA-256 `46f5b45a85e8969c008be8d35a90fcf563cfb93cf692c5fc74c545fea3b05efe` sous `/private/tmp/milaura-seo-preload-live-pullback-20260908-1933`.
 
-URL : `https://pagespeed.web.dev/analysis/https-milaura-fr/p811h06fmc?form_factor=mobile`.
+Rapport final du 2026-09-08 a 19:31 CEST : `https://pagespeed.web.dev/analysis/https-milaura-fr/ifp1xb4wq1?form_factor=mobile`.
 
-- mobile : performance `60`, SEO `100`, FCP `5,5 s`, LCP `12,5 s`, TBT `30 ms`, CLS `0`, Speed Index `6,2 s`, `2 764 KiB` ;
-- bureau : performance `95`, SEO `100`, FCP `0,6 s`, LCP `1,4 s`, TBT `110 ms`, CLS `0,001`, Speed Index `0,8 s`, `2 787 KiB`.
+- mobile : performance `70`, SEO `100`, FCP `2,1 s`, LCP `7,3 s`, TBT `210 ms`, CLS `0`, Speed Index `3,2 s`, `2 813 KiB` ;
+- bureau : performance `89`, SEO `100`, FCP `0,6 s`, LCP `1,5 s`, TBT `190 ms`, CLS `0,001`, Speed Index `1,0 s`, `2 768 KiB`.
 
-Le poids mobile baisse de `143 KiB`, le TBT de `280 ms` et le blocage du rendu estime de `280 ms` par rapport au run public avant lot. Le score mobile unique baisse toutefois de `65` a `60` et son LCP de `7,6 s` a `12,5 s`. Le detail LCP du meme rapport ne reconstitue pas cette valeur et une seconde execution PageSpeed est restee bloquee. Ce run mobile est donc conserve comme preuve, sans declarer une amelioration globale. Les donnees reelles disponibles restent bonnes : Shopify LCP P75 `1 354 ms`, INP `88 ms`, CLS `0`; Search Console `35` URL mobiles bonnes, aucune a ameliorer ou mauvaise.
+Face au run mobile avant lot : score `+5`, FCP `-0,6 s`, LCP `-0,3 s`, TBT `-100 ms`, poids `-94 KiB`, blocage du rendu estime `-480 ms`; le Speed Index varie de `+0,4 s`. L amelioration est mesuree, sans pretendre que le LCP froid a `7,3 s` est satisfaisant. Les donnees reelles disponibles restent bonnes : Shopify LCP P75 `1 354 ms`, INP `88 ms`, CLS `0`; Search Console `35` URL mobiles bonnes, aucune a ameliorer ou mauvaise.
 
 ## Autorite et envois
 
@@ -84,7 +86,7 @@ Les Ads ne sont pas lancees. Restent obligatoires avant depense : selection de p
 
 ## Git et reprise
 
-Code du lot : `2fe9e0c4`, autorisation documentee : `026a5b9e`, fusion avec le canonique courant : `bbee0ef8`. La branche d integration distante contient ce lot et a continue avec les checkpoints concurrents jusqu a `1886f2f5` avant la documentation finale. Le checkout principal sale n a pas ete modifie ni nettoye.
+Code du lot : `2fe9e0c4`, autorisation documentee : `026a5b9e`, fusion avec le canonique courant : `bbee0ef8`, documentation de cloture : `97a233fa`, preload final : `56318501`. La branche d integration distante contient ce lot. Le checkout principal sale n a pas ete modifie ni nettoye.
 
 ```text
 Reprends MilAura depuis docs/checkpoints/2026-09-08-1916-seo-performance-authority-live.md. Les trois taches SEO, performance et autorite sont executees et verifiees. Ne redeploie pas les sept fichiers par deduction. Commence en lecture seule par les reponses de la vague d outreach et les donnees reelles de vitesse. FemininBio est un echec de delivrance sur ses deux adresses publiques et ne doit pas etre retente sans nouveau contact confirme. Les Ads restent interdites tant que stock, marge contributive, Purchase Pixel/CAPI et budget ne sont pas valides ensemble. Preserve la revue catalogue manuelle de Patrice et tous les travaux concurrents.
