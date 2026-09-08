@@ -2,6 +2,8 @@
 
 Date du relevé Shopify : 2026-09-07.
 
+Mise à jour finale du lot P0 : 2026-09-08.
+
 ## Résultat
 
 - Catalogue Shopify lu intégralement : 765 produits.
@@ -12,10 +14,12 @@ Date du relevé Shopify : 2026-09-07.
 
 ## Avancement de l'enrichissement P0
 
-- 15 produits sur 16 ont reçu le nouveau contenu, les métachamps, la stratégie SEO, cinq images validées et un stock interne de staging fixé à 1.
-- Les 15 contrôles Shopify finaux sont PASS : statut DRAFT, aucune URL boutique active, stock 1, cinq images et aucune erreur de pullback.
+- 16 produits sur 16 ont reçu le nouveau contenu, les métachamps, la stratégie SEO, cinq images validées et un stock interne de staging fixé à 1.
+- Les 16 contrôles Shopify finaux sont PASS : statut DRAFT, aucune URL boutique active, stock 1, cinq images et aucune erreur de pullback.
 - Celyos, EAN 3701459098057, a fait l'objet d'une correction supplémentaire : les images, la description, le texte de détail, les réponses et l'alt de la macro indiquent maintenant quatre anneaux centraux.
-- Le Pendule égyptien en jaspe rouge, EAN 3701459053872, reste DRAFT sans application du nouvel enrichissement. Sa fiche fournisseur ne publie pas de prix exploitable ni de preuve suffisante sur le lot et l'unité. Conserver le prix Shopify existant de 12,50 EUR dans un DRAFT nécessite une dérogation explicite, sans autoriser sa publication.
+- Le Pendule égyptien en jaspe rouge, EAN 3701459053872, a été finalisé le 2026-09-08 avec le prix Shopify existant de 12,50 EUR conservé à l'identique. L'exception est limitée à la revue du DRAFT : elle interdit toute mutation du prix et ne valide ni le prix fournisseur, ni le périmètre lot/unité, ni la publication.
+- Les deux vues portées du Jasper ont été corrigées après contrôle visuel : le contrepoids transparent est maintenant un cube facetté cohérent avec le produit, et non une sphère.
+- Le gate `draft_review_ready` du Jasper est PASS. Le gate `publication_ready` reste volontairement en échec tant que le prix et l'unité fournisseur, le stock physique, les délais et l'approbation de Patrice ne sont pas validés.
 - Aucune de ces 16 fiches n'a été publiée sur la boutique. Elles restent volontairement masquées pour la validation manuelle de Patrice.
 
 ## Décision recommandée
