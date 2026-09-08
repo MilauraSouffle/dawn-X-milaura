@@ -1,6 +1,6 @@
-# Catalogue et Camilla : workflow V4.2 deploye le 2026-09-08 16:26 CEST
+# Catalogue : Patrice reprend la revue manuelle le 2026-09-08 16:36 CEST
 
-Le workflow des nouveaux produits interdit maintenant les grades fournisseur dans le titre public et le SEO title, impose une vue portee en deuxieme image pour les bijoux et conserve la qualite dans les specifications et `milaura.qualite`. Les nouvelles fiches restent `DRAFT` sans canal active par un agent ; Patrice controle, active et choisit ensuite les canaux disponibles. Le quality gate, le schema, les prompts, le contrat, le skill et le SOUL Camilla ont ete mis a jour, testes, synchronises vers le VPS et verifies par SHA-256. Camilla reste exclusivement sur Sol et ne peut plus modifier plusieurs fiches existantes sans manifeste ferme et autorisation explicite. Aucun des brouillons restants n'a ete active par Codex. [Checkpoint et reprise](checkpoints/2026-09-08-1626-product-workflow-v4-2-camilla-handoff.md).
+Le workflow V4.2 est deploye sur Camilla et verifie. Patrice reprend maintenant lui-meme la revue du bracelet baroque en labradorite puis des vingt produits restants annonces : titre clair sans grade fournisseur, SEO, image portee en position 2 pour les bijoux, onglet pierre, prix, stock, marqueur interne, statut et canaux. Aucun agent ne doit intervenir sur ces fiches pendant sa revue. Les modifications Camilla du 2026-09-07, les anciennes fiches en rupture, les contenus pierre non certifies et les bougies Maison Candella restent des lots distincts a auditer en lecture seule avant action. [Handoff final](checkpoints/2026-09-08-1636-catalogue-patrice-manual-review-handoff.md).
 
 # Landing Tous les bijoux : live verifie le 2026-09-07 18:28 CEST
 

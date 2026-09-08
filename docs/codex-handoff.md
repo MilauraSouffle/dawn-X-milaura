@@ -1,14 +1,14 @@
-# Handoff catalogue : workflow V4.2 et Camilla deployes
+# Handoff catalogue : Patrice reprend la revue manuelle
 
-Date : 2026-09-08 16:26 CEST
+Date : 2026-09-08 16:36 CEST
 
-Statut : `WORKFLOW DEPLOYE, REVUE DES BROUILLONS ET AUDIT DES MODIFICATIONS CAMILLA A POURSUIVRE`
+Statut : `SESSION FERMEE, PATRICE CONTROLE ET ACTIVE LES PRODUITS UN PAR UN`
 
 ```text
-Reprends MilAura depuis docs/checkpoints/2026-09-08-1626-product-workflow-v4-2-camilla-handoff.md. Commence en lecture seule. Le workflow produit V4.2 et Camilla sont deployes : pas de grade fournisseur dans le titre ou le SEO title, image portee en position 2 pour tout nouveau bijou, stone_description strictement centree sur la pierre, Sol exclusivement, nouveaux produits uniquement en DRAFT, aucun canal active par un agent. Audite d'abord les modifications Shopify effectuees par Camilla le 2026-09-07 et fournis la liste exacte des produits et champs touches sans rien corriger. Patrice controle et active les brouillons un par un. Ne lance aucun batch, aucune publication, aucun changement de statut, prix, stock, handle, galerie, collection ou canal sans liste fermee et nouveau GO explicite.
+Reprends MilAura depuis docs/checkpoints/2026-09-08-1636-catalogue-patrice-manual-review-handoff.md. Patrice a repris lui-meme la revue et l'activation des vingt et un produits annonces, un par un. Commence exclusivement en lecture seule et demande-lui s'il a termine avant de toucher au catalogue. Ne modifie aucun produit qu'il est encore en train de controler. Ensuite, audite d'abord les modifications effectuees par Camilla le 2026-09-07 et fournis la liste exacte des produits et champs touches sans correction. Le workflow V4.2 est deploye : Sol exclusivement, aucun grade fournisseur dans titre ou SEO title, image portee en position 2 pour les bijoux, onglet pierre pertinent, nouveaux produits DRAFT et aucun canal active par un agent. Traite les anciennes fiches en rupture et les bougies dans des lots separes. Les bougies sont une collaboration Patrice et Maison Candella, jamais un produit Camille Ambiance Nature. Aucun batch, changement de statut, prix, stock, handle, galerie, collection, redirection ou canal sans nouvelle liste fermee et GO explicite.
 ```
 
-Preuve complete, sauvegardes, tests, chemins VPS et dernier etat lu du bracelet baroque en labradorite : [checkpoint V4.2](checkpoints/2026-09-08-1626-product-workflow-v4-2-camilla-handoff.md).
+Etat complet, limites, dernier etat Shopify connu du bracelet et inventaire des travaux ouverts : [handoff final du 2026-09-08](checkpoints/2026-09-08-1636-catalogue-patrice-manual-review-handoff.md). Preuves techniques V4.2 : [checkpoint Camilla](checkpoints/2026-09-08-1626-product-workflow-v4-2-camilla-handoff.md).
 
 # Catalogue : cinq enrichissements en DRAFT et baguette Pyrite retiree
 
