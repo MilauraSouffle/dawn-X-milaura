@@ -1,3 +1,27 @@
+# Handoff SEO, performance et autorite : live verifie
+
+Date : 2026-09-08 19:16 CEST
+
+Statut : `TROIS TACHES EXECUTEES ET VERIFIEES, ADS NON LANCEES`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-08-1916-seo-performance-authority-live.md. Les trois taches SEO, performance et autorite sont executees et verifiees. Ne redeploie pas les sept fichiers par deduction. Commence en lecture seule par les reponses de la vague d outreach et les donnees reelles de vitesse. FemininBio est un echec de delivrance sur ses deux adresses publiques et ne doit pas etre retente sans nouveau contact confirme. Les Ads restent interdites tant que stock, marge contributive, Purchase Pixel/CAPI et budget ne sont pas valides ensemble. Preserve la revue catalogue manuelle de Patrice et tous les travaux concurrents.
+```
+
+Theme live `190430282075`, pullback `7/7`, puis preload responsive du Hero relu identique dans `layout/theme.liquid`. QA publique 390/1440. PageSpeed final mobile `70`, bureau `89`, SEO `100`; face au run avant lot, mobile `+5`, LCP `-0,3 s`, FCP `-0,6 s`, TBT `-100 ms`. Le LCP froid reste un chantier ; Shopify RUM et Search Console restent bons. Premiere vague : neuf messages sans rejet immediat et FemininBio en echec `550 5.4.1` sur deux adresses. [Checkpoint complet](checkpoints/2026-09-08-1916-seo-performance-authority-live.md).
+
+# Handoff catalogue : Patrice reprend la revue manuelle
+
+Date : 2026-09-08 16:36 CEST
+
+Statut : `SESSION FERMEE, PATRICE CONTROLE ET ACTIVE LES PRODUITS UN PAR UN`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-08-1636-catalogue-patrice-manual-review-handoff.md. Patrice a repris lui-meme la revue et l'activation des vingt et un produits annonces, un par un. Commence exclusivement en lecture seule et demande-lui s'il a termine avant de toucher au catalogue. Ne modifie aucun produit qu'il est encore en train de controler. Ensuite, audite d'abord les modifications effectuees par Camilla le 2026-09-07 et fournis la liste exacte des produits et champs touches sans correction. Le workflow V4.2 est deploye : Sol exclusivement, aucun grade fournisseur dans titre ou SEO title, image portee en position 2 pour les bijoux, onglet pierre pertinent, nouveaux produits DRAFT et aucun canal active par un agent. Traite les anciennes fiches en rupture et les bougies dans des lots separes. Les bougies sont une collaboration Patrice et Maison Candella, jamais un produit Camille Ambiance Nature. Aucun batch, changement de statut, prix, stock, handle, galerie, collection, redirection ou canal sans nouvelle liste fermee et GO explicite.
+```
+
+Etat complet, limites, dernier etat Shopify connu du bracelet et inventaire des travaux ouverts : [handoff final du 2026-09-08](checkpoints/2026-09-08-1636-catalogue-patrice-manual-review-handoff.md). Preuves techniques V4.2 : [checkpoint Camilla](checkpoints/2026-09-08-1626-product-workflow-v4-2-camilla-handoff.md).
+
 # Catalogue : cinq enrichissements en DRAFT et baguette Pyrite retiree
 
 Date : 2026-09-08 09:50 CEST. Patrice a retenu cinq anciennes fiches et a demande le retrait de la baguette Pyrite. La baguette `10357681619291` reste conservee dans Shopify mais est maintenant `DRAFT`, stock zero, `onlineStoreUrl=null` et n'apparait plus sur le storefront. Aucun enrichissement n'a ete applique a cette fiche.

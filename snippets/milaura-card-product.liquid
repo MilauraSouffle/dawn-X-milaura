@@ -41,8 +41,9 @@
   endif
 -%}
 
-<a href="{{ card_product.url }}" class="grid__card">
-  <div class="grid__card-img">
+<div class="grid__card">
+  <a href="{{ card_product.url }}" class="grid__card-link">
+    <div class="grid__card-img">
     {%- if show_badges != false -%}
       {%- if force_bestseller_badge or card_product.metafields.milaura.is_bestseller -%}
         <span class="grid__card-badge grid__card-badge--new">{{ badge_label | default: 'Bestseller' }}</span>
@@ -150,18 +151,20 @@
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag }}
     {%- endif -%}
-  </div>
-
-  <div class="grid__card-info">
-    {%- if show_vendor and card_product.vendor != blank -%}
-      <span class="grid__card-vendor">{{ card_product.vendor }}</span>
-    {%- endif -%}
-    <h3 class="grid__card-title">{{ card_product.title }}</h3>
-    <div class="grid__card-price">
-      {%- if card_product.compare_at_price > card_product.price -%}
-        <span class="grid__card-price--compare">{{ card_product.compare_at_price | money }}</span>
-      {%- endif -%}
-      {{ card_product.price | money }}
     </div>
-  </div>
-</a>
+
+    <div class="grid__card-info">
+      {%- if show_vendor and card_product.vendor != blank -%}
+        <span class="grid__card-vendor">{{ card_product.vendor }}</span>
+      {%- endif -%}
+      <h3 class="grid__card-title">{{ card_product.title }}</h3>
+      <div class="grid__card-price">
+        {%- if card_product.compare_at_price > card_product.price -%}
+          <span class="grid__card-price--compare">{{ card_product.compare_at_price | money }}</span>
+        {%- endif -%}
+        {{ card_product.price | money }}
+      </div>
+    </div>
+  </a>
+  {% render 'milaura-favorite-button', favorite_product: card_product, favorite_placement: 'card' %}
+</div>

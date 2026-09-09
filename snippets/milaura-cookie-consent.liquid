@@ -2,7 +2,7 @@
 
 <div
   id="MilauraCookieConsent"
-  class="milaura-cookie-consent"
+  class="milaura-cookie-consent{% if compact %} milaura-cookie-consent--compact{% endif %}"
   data-milaura-cookie-consent
   hidden
 >
@@ -11,30 +11,40 @@
     aria-labelledby="MilauraCookieConsentTitle"
     aria-describedby="MilauraCookieConsentDescription"
   >
-    <div class="milaura-cookie-consent__gem" aria-hidden="true">
-      <img
-        src="{{ 'milaura-cookie-gem.webp' | asset_url }}"
-        alt=""
-        width="1000"
-        height="1000"
-        loading="eager"
-        fetchpriority="low"
-      >
-    </div>
+    {%- unless compact -%}
+      <div class="milaura-cookie-consent__gem" aria-hidden="true">
+        <img
+          src="{{ 'milaura-cookie-gem.webp' | asset_url }}"
+          alt=""
+          width="1000"
+          height="1000"
+          loading="eager"
+          fetchpriority="low"
+        >
+      </div>
+    {%- endunless -%}
 
     <div class="milaura-cookie-consent__inner">
       <div class="milaura-cookie-consent__copy">
-        <h2 id="MilauraCookieConsentTitle">Vos choix, simplement</h2>
-        <p id="MilauraCookieConsentDescription">
-          Les essentiels font fonctionner la boutique. Avec votre accord, les autres mesurent les visites et
-          personnalisent votre expérience MilAura.
-          <a href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}">En savoir plus</a>
-        </p>
+        {%- if compact -%}
+          <h2 id="MilauraCookieConsentTitle">Cookies et mesure d’audience</h2>
+          <p id="MilauraCookieConsentDescription">
+            Avec votre accord, MilAura mesure les visites et ses campagnes.
+            <a href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}">En savoir plus</a>
+          </p>
+        {%- else -%}
+          <h2 id="MilauraCookieConsentTitle">Vos choix, simplement</h2>
+          <p id="MilauraCookieConsentDescription">
+            Les essentiels font fonctionner la boutique. Avec votre accord, les autres mesurent les visites et
+            personnalisent votre expérience MilAura.
+            <a href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}">En savoir plus</a>
+          </p>
+        {%- endif -%}
       </div>
 
       <div class="milaura-cookie-consent__controls" role="group" aria-label="Choix des cookies">
         <button type="button" class="milaura-cookie-consent__action milaura-cookie-consent__action--reject" data-cookie-reject>
-          Refuser les cookies
+          {% if compact %}Refuser{% else %}Refuser les cookies{% endif %}
         </button>
         <div class="milaura-cookie-consent__actions">
           <button
@@ -43,7 +53,7 @@
             data-cookie-choose
             aria-haspopup="dialog"
           >
-            Je choisis mes cookies
+            {% if compact %}Choisir{% else %}Je choisis mes cookies{% endif %}
           </button>
           <button type="button" class="milaura-cookie-consent__action milaura-cookie-consent__action--accept" data-cookie-accept>
             J’accepte
