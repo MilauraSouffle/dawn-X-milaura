@@ -1,3 +1,15 @@
+# Handoff Hero accueil mode MilAura : mission terminee
+
+Date : 2026-09-09 13:26 CEST
+
+Statut : `VALIDE PAR PATRICE, INTEGRE, POUSSE ET LIVE VERIFIE`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-09-1326-home-hero-fashion-handoff.md. Le nouveau Hero mode est termine, valide par Patrice et live sur le theme 190430282075. Ne le redeploie pas par deduction. Commence toute future reprise en lecture seule depuis origin/codex/milaura-integration et le storefront public. Preserve les deux images Chloe validees et n utilise jamais l ancienne image mobile rejetee avec l oeil ferme. Si Patrice demande une nouvelle iteration, reserve d abord la section Hero et un theme prive, puis separe preview, validation visuelle, integration et live.
+```
+
+Release fonctionnelle `ee2d4eff`, documentation live `f2832f63`, trois fichiers Shopify relus identiques. QA publique `360/390/430/1440`, H1 sur deux lignes, yeux de Chloe degages, Dancing Script, CTA editorial de 48 px et destination collection verifies. Aucun produit, stock, prix, template, Admin ou Ads modifie. [Checkpoint complet](checkpoints/2026-09-09-1326-home-hero-fashion-handoff.md).
+
 # Handoff SEO, performance et autorite : live verifie
 
 Date : 2026-09-08 19:16 CEST
