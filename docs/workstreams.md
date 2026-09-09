@@ -1,3 +1,13 @@
+## Refonte du choix par pierre du 2026-09-09
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-09 pour remplacer la composition de `/pages/bijoux-par-pierre` par un fork visuel de la landing `/collections/bijoux-pierres-naturelles`.
+- Branche : `codex/milaura-stone-choice-v2-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-choice-v2-20260909`, base `4db95097`.
+- Perimetre reserve : nouveau composant et CSS dedies au choix par pierre, deux nouveaux assets Hero, `templates/page.milaura-bijoux-pierre.json`, tests et documentation propres au lot. Les anciens composants partages restent inchanges pour ne pas toucher aux autres pages.
+- Direction : Hero centre sur les pierres, hierarchie calquee sur la landing Tous les bijoux, grille bureau et rail natif continu sur mobile sans JavaScript de geste. Produits, collections, prix, stocks, statuts, contenus des landings pierre, autres templates et autres themes hors perimetre.
+- Theme de recette reserve : `200974958939`, ancienne preview Toutes les pierres liberee depuis le 2026-09-07. Aucun autre theme touche avant GO.
+- Gates : implementation et recette locale, preview Shopify, validation visuelle Patrice, puis integration et live uniquement sur GO explicite.
+- Etat au 2026-09-09 08:14 CEST : PREVIEW TECHNIQUE PASS. Cinq fichiers cibles pousses sur `200974958939`, pullback identique 5/5. QA 360/390/430/768/1440 px conforme, 39 cartes et 39 liens uniques, un H1, aucun debordement de page. Rail mobile natif mesure de `0` a `372 px` sans ancien script de geste. Validation visuelle Patrice et GO live en attente. [Checkpoint](checkpoints/2026-09-09-0814-stone-choice-v2-preview.md).
+
 ## Coeurs favoris PDP et catalogue du 2026-09-08
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour relier les coeurs des fiches produit et du catalogue aux favoris durables de Mon Ecrin.
