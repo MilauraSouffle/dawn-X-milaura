@@ -1,3 +1,15 @@
+# Handoff Meta Religion : reprise support humain
+
+Date : 2026-09-09, Europe/Paris. Statut : PASSATION ; dernier controle direct Meta le 2026-09-08, aucun humain ni reclassement confirme.
+
+Lire [le checkpoint prioritaire](checkpoints/2026-09-09-1615-meta-religion-human-support-handoff.md) : dossier actif `903464745887340`, PDF deja joint, dataset correct `830428425991691`, droits Shopify/Meta verifies, faux diagnostic personnel retracte, voies officielles testees, automatisation existante sur une autre tache et prompt complet. Les relances techniques sont deja autorisees. La publication du concours ou de contenu organique sera decidee par Patrice dans sa session fraiche ; cette cloture n'active rien. Le calendrier du concours a ete reporte au 9 septembre, voir son checkpoint du 2026-09-08 a 18:10.
+
+```text
+Reprends le recours Meta MilAura depuis docs/checkpoints/2026-09-09-1615-meta-religion-human-support-handoff.md. Verifie d'abord le classement actuel et les reponses du dossier 903464745887340, puis poursuis les contacts officiels pour obtenir un humain. Les relances techniques sont deja autorisees. Ne confonds pas ticket recu, IA, humain et reclassement. Verifie le suivi automatique existant avant duplication. Contenu/concours reste a choisir avec Patrice ; aucune publication, depense ou recreation d'actif par deduction.
+```
+
+Branche documentaire `codex/milaura-meta-religion-handoff-20260909` ; integration non executee, checkout principal sale preserve. Les reprises des autres chantiers ci-dessous restent leurs references propres.
+
 # Handoff Hero accueil mode MilAura : mission terminee
 
 Date : 2026-09-09 13:26 CEST

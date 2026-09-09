@@ -62,6 +62,13 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Passation Meta Religion du 2026-09-09
+
+- Proprietaire : Codex, tache `01a07a97-4d8f-7900-b84c-143b65439202`, demande explicite de handoff par Patrice.
+- Branche : `codex/milaura-meta-religion-handoff-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/meta-religion-handoff-20260909`, base distante `fcfe08fd`.
+- Perimetre documentaire reserve dans cette branche : checkpoint Meta du 2026-09-09, section Meta de `docs/project-state.md`, entree de reprise de `docs/codex-handoff.md` et ce registre. Aucun fichier fonctionnel, theme Shopify, compte Meta ou budget reserve.
+- Etat au 2026-09-09 : CLOTURE DOCUMENTAIRE, verifications PASS, aucune modification fonctionnelle. Livraison par la branche dediee nommee ci-dessus. Checkout principal sale et en retard preserve ; aucune integration automatique. Le support reste a reprendre dans le dossier `903464745887340`, dernier constat direct le 2026-09-08. Aucun suivi Meta du 2026-09-09 n'est revendique. [Checkpoint et prompt](checkpoints/2026-09-09-1615-meta-religion-human-support-handoff.md). Copie Obsidian datee ecrite et relue. Worktree conserve pour la reprise ; aucun theme ou actif externe reserve.
+
 ### Hero d accueil mode du 2026-09-08
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour auditer puis prototyper un Hero d accueil plus desirant, inspire des standards joaillerie et mode sans reprendre les assets ni l identite de tiers.
