@@ -40,7 +40,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-05 17:49 CEST
+Derniere mise a jour : 2026-09-09 09:18 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -51,6 +51,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-integration` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
 
 ## Sessions declarees
+
+### Hero d accueil mode du 2026-09-08
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour auditer puis prototyper un Hero d accueil plus desirant, inspire des standards joaillerie et mode sans reprendre les assets ni l identite de tiers.
+- Branche : `codex/milaura-home-hero-fashion-20260908`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/home-hero-fashion-20260908`, base initiale `2833fa4e`, alignee sur `origin/codex/milaura-integration` le 2026-09-09.
+- Perimetre reserve : `sections/milaura-hero-portal.liquid`, `assets/milaura-home-hero-fashion-chloe-parure-desktop-v3b.webp`, `assets/milaura-home-hero-fashion-chloe-parure-mobile-v4.webp` et documentation propre au lot.
+- Sources creatives : Content Hub MilAura, mannequin canonique Chloé en soutien et quatre bijoux varies au premier plan : collier Nuage, bracelet Eira, bague sodalite et boucles Auren. Karine reste reservee au conseil et a l expertise.
+- Etat au 2026-09-09 09:18 CEST : V3 DESKTOP, COPY HERO ET MOBILE V4 VALIDES VISUELLEMENT PAR PATRICE. Source au commit `96991f8f`. L image mobile V3 issue de `exec-8962d453-99ae-4d01-969a-33ae6c3820a0.png` est rejetee pour son oeil ferme, retiree du Hero et placee dans la Corbeille avec son derive WebP. Les autres variantes non retenues sont archivees hors du theme. Copy validee : `Bijoux en pierres naturelles`, H1 `Vos emotions ont du style.`, texte `Choisissez votre bijou, votre pierre et ses vertus.`, CTA `Voir tous les bijoux`. Theme Check sans erreur et controle copywriting PASS. Aucun push Shopify, aucune modification Admin, aucun deploiement live. Prochaine gate : integration et preview Shopify explicites ; le live reste separe.
 
 ### Landing et strategie concours 10 jours, 10 cadeaux du 2026-09-08
 
