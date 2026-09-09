@@ -40,9 +40,9 @@ Le profil Instagram compte 48 publications et trois publications épinglées. La
 
 ### Lots
 
-Le brief Camilla du 2026-09-08 contient neuf produits et une carte cadeau, pour une valeur commerciale totale de 299,90 €, hors valeur de la livraison offerte. Les neuf visuels proviennent des images principales Shopify et n'ont pas été générés. Les deux bougies sont physiquement disponibles selon le brief même si leur stock Shopify affiche zéro.
+Le brief Camilla du 2026-09-08 contient neuf produits et une carte cadeau. Décision finale de Patrice du 2026-09-09 : la valeur commerciale publique est fixée à 300 €, sans avantage de livraison associé à la carte cadeau. Les neuf visuels source proviennent des images principales Shopify. Les deux bougies sont physiquement disponibles selon le brief même si leur stock Shopify affiche zéro.
 
-Important : 299,90 € est une valeur commerciale, pas le coût réel de la campagne. Le budget de 500 € doit être calculé sur le coût de revient des lots, le coût de la carte cadeau lorsqu'elle est utilisée, l'expédition, l'emballage et le média.
+Important : 300 € est une valeur commerciale publique, pas le coût réel de la campagne. Le budget de 500 € doit être calculé sur le coût de revient des lots, le coût de la carte cadeau lorsqu'elle est utilisée, l'expédition, l'emballage et le média.
 
 ### État Meta
 
@@ -113,7 +113,7 @@ Pour participer sur le réseau choisi :
 2. aimer la publication principale ;
 3. répondre à la question en commentaire.
 
-Une participation par personne et par réseau. Une personne peut participer sur Instagram et Facebook mais ne peut gagner qu'un seul lot.
+Une participation est comptabilisee par compte et par reseau. Une personne peut jouer sur Instagram, Facebook, ou les deux, et remporter au maximum un lot.
 
 ### Répartition équitable des lots
 
@@ -121,7 +121,7 @@ La répartition suivante équilibre la valeur commerciale entre les plateformes 
 
 | Plateforme | Jours attribués | Valeur totale |
 | --- | --- | ---: |
-| Instagram | 1, 2, 4, 5 et 10 | 150,70 € + livraison offerte |
+| Instagram | 1, 2, 4, 5 et 10 | 150,80 € |
 | Facebook | 3, 6, 7, 8 et 9 | 149,20 € |
 
 Les dix tirages ont lieu après la clôture. Pour chaque lot, tirer un gagnant et trois suppléants. Si une personne a déjà gagné sur l'autre réseau, passer au premier suppléant admissible.
@@ -193,7 +193,7 @@ L'objectif publicitaire final dépendra des options réellement disponibles le j
 
 ## 5. Calendrier éditorial
 
-Fenêtre reportée explicitement par Patrice le 2026-09-08 : du mercredi 2026-09-09 à 20:00 CEST au samedi 2026-09-19 à 19:59 CEST. Tirages le 2026-09-20 à 12:00 CEST.
+Fenêtre finale validée par Patrice le 2026-09-09 : du mercredi 2026-09-09 à 20:00 CEST au vendredi 2026-09-18 à 23:59 CEST. Tirages le 2026-09-19 à 12:00 CEST.
 
 | Date | Cadeau | Contenu principal | Angle commercial utile |
 | --- | --- | --- | --- |
@@ -206,7 +206,7 @@ Fenêtre reportée explicitement par Patrice le 2026-09-08 : du mercredi 2026-09
 | 2026-09-15 à 20 h | Bougie Réconfort | Vidéo ambiance réelle | Néroli et calcédoine bleue |
 | 2026-09-16 à 20 h | Collier pampilles | Mouvement réel | Reflets argentés et pampilles |
 | 2026-09-17 à 20 h | Bracelet Horus | Reel fondateur | Un produit déjà présent sur Instagram |
-| 2026-09-18 à 20 h | Carte cadeau 30 € | Récapitulatif | Dernier cadeau, clôture le lendemain à 19 h 59 |
+| 2026-09-18 à 20 h | Carte cadeau 30 € | Récapitulatif | Dernier cadeau, clôture à 23 h 59 |
 
 Chaque jour : un Reel ou post, trois Stories maximum, un rappel du faux compte, un lien vers la landing, une réponse humaine aux commentaires. TikTok reçoit seulement les meilleures vidéos adaptées, pas un copier-coller avec watermark.
 
@@ -214,23 +214,17 @@ Chaque jour : un Reel ou post, trois Stories maximum, un rappel du faux compte, 
 
 ### Parcours
 
-1. l'utilisateur arrive sur le coffret fermé ;
-2. un toucher ou la touche Entrée ouvre le coffret ;
-3. la vraie photo du cadeau du jour apparaît avec son nom, sa valeur et un détail utile ;
-4. les deux CTA mènent aux publications principales ;
-5. les dix cadeaux sont visibles dans une grille ;
-6. le règlement complet et l'alerte anti-fraude sont accessibles sur la même page.
+1. l'utilisateur voit immédiatement le bento validé avec les dix cadeaux, les dates et la valeur totale ;
+2. l'onglet « Conditions de participation » explique les trois actions attendues et mène aux comptes officiels ;
+3. l'onglet « Règlement du jeu » donne accès au texte complet sans quitter la page ;
+4. les dix cartes produits cliquables présentent ensuite chaque cadeau ;
+5. l'alerte anti-fraude et la mention Meta restent visibles sur la landing.
 
-Le prototype local utilise la charte MilAura 2026. Van Cleef & Arpels est un niveau de retenue et de respiration, pas une identité copiée. La scène contient un seul geste animé, les photos restent dominantes, l'or souligne et ne remplit pas les surfaces.
+La landing utilise la charte MilAura 2026 et le master nacré validé par Patrice. Les photos restent dominantes, l'or souligne et ne remplit pas les surfaces. L'ancien coffret interactif et son code sont supprimés.
 
 ### Mesure
 
-Événements émis par la section :
-
-- `milaura_contest_gift_open` ;
-- `milaura_contest_social_click` avec la plateforme ;
-- `milaura_contest_rules_open` ;
-- les clics produits restent mesurables par les liens UTM à ajouter lors de la publication.
+Les clics produits restent mesurables par les liens UTM. La version simplifiée n'ajoute aucun événement JavaScript spécifique au concours.
 
 La restriction Meta actuelle rend GA4, Shopify et les UTM indispensables. Les liens des boutons sociaux doivent être remplacés par les permaliens exacts des deux publications principales dès leur publication. Jusqu’à cette mise à jour, les boutons mènent aux comptes officiels.
 
@@ -266,7 +260,7 @@ Une petite étude de 52 comptes sponsorisés a observé une forte attrition apr�
 - territoire et majorité ;
 - budget de revient réel ;
 - répartition des lots ;
-- validité de la carte cadeau et livraison offerte ;
+- validité de la carte cadeau et absence d'avantage de livraison supplémentaire ;
 - règlement complet ;
 - visuels, vidéos et textes ;
 - permaliens Instagram et Facebook.
@@ -274,8 +268,7 @@ Une petite étude de 52 comptes sponsorisés a observé une forte attrition apr�
 ### Gate technique
 
 - page Shopify créée avec le template du concours ;
-- mode aperçu désactivé ;
-- dates ISO vérifiées ;
+- dates publiques vérifiées ;
 - CTA reliés aux deux publications principales ;
 - Theme Check sans nouvelle erreur ;
 - recette 360, 390, 430 et 1440 px ;
@@ -293,11 +286,14 @@ Une petite étude de 52 comptes sponsorisés a observé une forte attrition apr�
 - capture T0 des abonnés ;
 - aucun contournement du dataset ou du compte.
 
-## 10. Décisions encore requises
+## 10. Décisions verrouillées et point encore requis
 
-1. Fenêtre reportée et confirmée du 2026-09-09 à 20 h au 2026-09-19 à 19 h 59.
-2. Donner le coût de revient total des neuf produits et le coût d'expédition estimé.
-3. Confirmer ONORA SARL comme organisateur juridique du jeu MilAura.
-4. Fixer la validité de la carte cadeau et la règle exacte de livraison offerte.
-5. Approuver l'abandon du tag obligatoire, du partage obligatoire et de la remise générale de 10 %.
-6. Donner le GO visuel après lecture de la preview privée.
+1. Nom : « Grand Jeu MilAura, 10 jours / 10 gagnants ».
+2. Fenêtre : du 2026-09-09 à 20 h au 2026-09-18 à 23 h 59 ; tirages le 2026-09-19 à 12 h.
+3. Valeur publique : 300 € de cadeaux.
+4. Carte cadeau : 30 €, sans livraison offerte en supplément.
+5. Participation : suivre, aimer la publication principale et répondre en commentaire ; partage facultatif sans chance supplémentaire.
+6. Répartition : cinq lots Instagram et cinq lots Facebook selon le règlement.
+7. Avantage : code individuel de 10 % sur demande après les résultats, selon les conditions du règlement.
+8. Création : master 16:9 nacré validé par Patrice le 2026-09-09.
+9. Point encore requis avant dépense : confirmer le coût de revient total des lots et le coût d'expédition estimé.
