@@ -8,6 +8,14 @@
 - Gates : implementation et recette locale, preview Shopify, validation visuelle Patrice, puis integration et live uniquement sur GO explicite.
 - Etat au 2026-09-09 12:17 CEST : PREVIEW TECHNIQUE PASS, PAGE ET SWIPE VALIDES PAR PATRICE, HERO V5 A VALIDER. Le socle est maintenant en oeil-de-tigre et une geode grenat translucide apporte du contraste sans nuire a la lecture. L ancien annuaire est retire localement et de la preview : section, JavaScript, template de preview et styles orphelins supprimes ; le generateur produit directement le composant final. Pullback conforme sur les fichiers actifs et absence distante confirmee pour les trois anciens fichiers. QA 390 et 1440 px conforme, 39 cartes, un H1, aucun debordement, aucune erreur navigateur ; page Aigue-marine preservee. Theme live `190430282075` intact. GO visuel Hero V5 puis integration et live en attente. [Checkpoint](checkpoints/2026-09-09-0814-stone-choice-v2-preview.md).
 
+## Correctif responsive du titre du resultat du quiz du 2026-09-09
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-09 apres observation iPhone du mot `Apaisement` coupe avant sa derniere lettre.
+- Branche : `codex/milaura-quiz-title-responsive-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/quiz-title-responsive-20260909`, base `origin/codex/milaura-integration` au commit `4db95097`.
+- Perimetre reserve : `sections/milaura-quiz.liquid`, tests et checkpoint propres au correctif. Aucun texte du quiz, profil, pierre, recommandation, Mon Ecrin, produit, catalogue, panier ou autre composant.
+- Themes : preview `201115566427`, puis live `190430282075` apres le GO integration + live explicite de Patrice du 2026-09-09. Correction generique pour les cinq profils, recette navigateur mobile `320/360/390/430` et bureau `1440`.
+- Etat au 2026-09-09 08:45 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source et integration au commit `e3832334`. Fichier unique pousse sur le live puis relu a l identique, SHA-256 `949f108d73423a90d346c04ebb070e40fbe73a05ae862adbc89cbb33f637b718`. Les cinq profils restent chacun sur une ligne aux largeurs `320/360/390/430/749/768/989/1440`, sans chevauchement ni debordement. Theme public confirme `190430282075`, journal d erreurs navigateur vide. Reservation liberee. [Checkpoint](checkpoints/2026-09-09-0813-quiz-title-responsive-preview.md).
+
 ## Coeurs favoris PDP et catalogue du 2026-09-08
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour relier les coeurs des fiches produit et du catalogue aux favoris durables de Mon Ecrin.
@@ -53,6 +61,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-integration` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
 
 ## Sessions declarees
+
+### Hero d accueil mode du 2026-09-08
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour auditer puis prototyper un Hero d accueil plus desirant, inspire des standards joaillerie et mode sans reprendre les assets ni l identite de tiers.
+- Branche : `codex/milaura-home-hero-fashion-20260908`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/home-hero-fashion-20260908`, base initiale `2833fa4e`, alignee sur `origin/codex/milaura-integration` le 2026-09-09.
+- Perimetre reserve : `sections/milaura-hero-portal.liquid`, `assets/milaura-home-hero-fashion-chloe-parure-desktop-v3b.webp`, `assets/milaura-home-hero-fashion-chloe-parure-mobile-v4.webp` et documentation propre au lot.
+- Sources creatives : Content Hub MilAura, mannequin canonique Chloé en soutien et quatre bijoux varies au premier plan : collier Nuage, bracelet Eira, bague sodalite et boucles Auren. Karine reste reservee au conseil et a l expertise.
+- Etat au 2026-09-09 12:04 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Patrice a donne le GO explicite pour le commit, l integration et le live. Le polish final `ee2d4eff` place `Vos emotions` puis `ont du style.` sur deux lignes fixes, colore le surtitre en aigue-marine, passe le texte de choix en Dancing Script et branche le CTA sur le composant editorial partage. Branche source et `codex/milaura-integration` poussees. Trois fichiers exacts deployes sur le theme public `190430282075`, pullback `3/3` identique. QA publique `360/390/430/1440`, H1, yeux de Chloe, fontes, CTA, destination, absence de debordement et journal d erreurs conformes. Reservation liberee. [Checkpoint final](checkpoints/2026-09-09-1204-home-hero-fashion-live.md). La [preuve preview](checkpoints/2026-09-09-0924-home-hero-fashion-preview.md) reste conservee.
 
 ### Landing et strategie concours 10 jours, 10 cadeaux du 2026-09-08
 
