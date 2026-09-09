@@ -1,12 +1,12 @@
-# Règlement du jeu concours MilAura « 10 jours, 10 cadeaux »
+# Règlement du « Grand Jeu MilAura, 10 jours / 10 gagnants »
 
-Version applicable du 2026-09-08
+Version applicable du 2026-09-09
 
-Statut : VALIDÉ PAR PATRICE ALLIÉ LE 2026-09-08. Texte destiné à être publié avec la landing du jeu.
+Statut : DÉCISIONS COMMERCIALES VALIDÉES PAR PATRICE ALLIÉ LE 2026-09-09. Texte destiné à être publié avec la landing du jeu.
 
 ## Article 1. Société organisatrice
 
-Le jeu concours gratuit intitulé « 10 jours, 10 cadeaux » est organisé par ONORA SARL, exploitant la marque MilAura, immatriculée au RCS de Metz sous le numéro 994 096 816, SIRET 994 096 816 00016, dont le siège est situé 92 rue de Pont-à-Mousson, 57950 Montigny-lès-Metz, ci-après « l'Organisateur ».
+Le jeu concours gratuit intitulé « Grand Jeu MilAura, 10 jours / 10 gagnants » est organisé par ONORA SARL, exploitant la marque MilAura, immatriculée au RCS de Metz sous le numéro 994 096 816, SIRET 994 096 816 00016, dont le siège est situé 92 rue de Pont-à-Mousson, 57950 Montigny-lès-Metz, ci-après « l'Organisateur ».
 
 Ces informations ont été recoupées le 2026-09-08 avec [l'Annuaire des Entreprises](https://annuaire-entreprises.data.gouv.fr/entreprise/994096816).
 
@@ -14,7 +14,7 @@ Contact relatif au jeu : contact@milaura.fr.
 
 ## Article 2. Durée
 
-Le jeu est ouvert du 2026-09-09 à 20:00, heure de Paris, au 2026-09-19 à 19:59, heure de Paris.
+Le jeu est ouvert du 2026-09-09 à 20:00, heure de Paris, au 2026-09-18 à 23:59, heure de Paris.
 
 Aucune participation reçue avant l'ouverture ou après la clôture ne sera retenue.
 
@@ -24,7 +24,7 @@ Le jeu est ouvert gratuitement à toute personne physique majeure résidant en F
 
 Sont exclues les personnes ayant participé à l'organisation du jeu et les membres de leur foyer.
 
-La participation est nominative. Une personne peut participer une fois sur Instagram et une fois sur Facebook, mais ne peut remporter qu'un seul lot sur l'ensemble du jeu.
+La participation est nominative. Une participation est comptabilisee par compte sur Instagram et une par compte sur Facebook, quel que soit le nombre de commentaires publies sur le meme reseau. Une personne peut donc participer sur les deux reseaux, mais ne peut remporter qu'un seul lot sur l'ensemble du jeu.
 
 ## Article 4. Gratuité
 
@@ -56,12 +56,12 @@ Toute participation incomplète, automatisée, frauduleuse, provenant d'un faux 
 
 ## Article 6. Lots
 
-La valeur commerciale totale des lots au 2026-09-08 est de 299,90 €, hors valeur de la livraison offerte liée au lot 10.
+La valeur commerciale totale des lots est de 300 €.
 
 | Lot | Désignation | Valeur commerciale | Réseau du tirage |
 | ---: | --- | ---: | --- |
 | 1 | Distributeur de savon en aventurine bleue brute | 65,90 € | Instagram |
-| 2 | Bague dorée réglable en sodalite | 10,90 € | Instagram |
+| 2 | Bague dorée réglable en sodalite | 11,00 € | Instagram |
 | 3 | Bougie Sérénité et améthyste | 39,90 € | Facebook |
 | 4 | Pendentif cœur en sodalite 15 mm, sans chaîne | 11,90 € | Instagram |
 | 5 | Bracelet doré en sodalite, perles de 6 mm | 32,00 € | Instagram |
@@ -69,17 +69,17 @@ La valeur commerciale totale des lots au 2026-09-08 est de 299,90 €, hors vale
 | 7 | Bougie Réconfort et calcédoine bleue | 39,90 € | Facebook |
 | 8 | Collier argenté en sodalite à pampilles | 22,00 € | Facebook |
 | 9 | Bracelet Horus doré en sodalite, perles de 6 mm | 34,90 € | Facebook |
-| 10 | Carte cadeau MilAura de 30 € et livraison offerte | 30,00 € + livraison | Instagram |
+| 10 | Carte cadeau MilAura de 30 € | 30,00 € | Instagram |
 
 Les lots sont personnels, non cessibles, non remboursables et non échangeables contre des espèces.
 
-La carte cadeau de 30 € sera valable douze mois à compter de son émission. La livraison standard offerte sera utilisable une fois, sans minimum d'achat, pour une commande livrée en France métropolitaine ou en Corse pendant cette période. Les modes express seront exclus.
+La carte cadeau de 30 € sera valable douze mois à compter de son émission. Son solde pourra être utilisé sur milaura.fr, y compris pour régler les frais de livraison compris dans le montant total de la commande. Aucun avantage de livraison supplémentaire n'est associé à ce lot.
 
 En cas d'indisponibilité justifiée d'un lot, l'Organisateur pourra le remplacer par un lot de nature et de valeur commerciale équivalentes ou supérieures, sans que sa responsabilité puisse être engagée de ce fait.
 
 ## Article 7. Désignation des gagnants
 
-Les dix tirages au sort seront réalisés le 2026-09-20 à 12:00, heure de Paris, après vérification des participations.
+Les dix tirages au sort seront réalisés le 2026-09-19 à 12:00, heure de Paris, après vérification des participations.
 
 Cinq lots sont attribués parmi les participations Instagram conformes et cinq parmi les participations Facebook conformes, selon le tableau de l'article 6.
 
@@ -93,11 +93,19 @@ Les gagnants seront contactés uniquement par message privé depuis `@milaura_mi
 
 Chaque gagnant disposera de 72 heures après l'envoi du message pour répondre et fournir les informations strictement nécessaires à la vérification de son éligibilité et à l'expédition de son lot. Sans réponse dans ce délai, le lot pourra être attribué au suppléant suivant.
 
-MilAura ne demandera jamais de paiement, de numéro de carte bancaire, de mot de passe ou de code de connexion pour remettre un lot.
+MilAura ne demandera jamais de frais de port, de frais de dossier ou de déblocage, de paiement, d'inscription sur un autre site, de coordonnées bancaires, de mot de passe ou de code de connexion pour remettre un lot. Aucun lien de paiement ne sera envoyé et aucune adresse postale ne devra être publiée dans un commentaire public.
 
 Les lots physiques seront expédiés en France métropolitaine, Corse comprise, dans un délai indicatif de dix jours ouvrés après validation des coordonnées. L'Organisateur ne pourra être tenu responsable d'une adresse erronée fournie par le gagnant ou d'un incident imputable au transporteur, sous réserve des obligations légales applicables.
 
-## Article 9. Données personnelles
+## Article 9. Avantage accordé aux participants
+
+Pendant les sept jours suivant la publication des résultats, chaque personne ayant valablement participé peut demander par message privé un code individuel de réduction de 10 % sur milaura.fr.
+
+Le code est valable jusqu'au 2027-03-19 à 23:59, sans minimum d'achat et pour plusieurs commandes. Il n'est pas cumulable avec une autre offre et s'applique aux produits, hors frais de livraison, cartes et bons cadeaux.
+
+La demande du code n'entraîne aucune inscription automatique à la newsletter et n'accorde aucune chance supplémentaire au jeu.
+
+## Article 10. Données personnelles
 
 ONORA SARL est responsable du traitement. Elle traite le nom de compte, le commentaire, le statut des actions requises et les éléments nécessaires à la vérification de la participation afin de gérer le jeu, réaliser le tirage, prévenir les fraudes et remettre les lots. Ces traitements reposent sur l'exécution du présent règlement et sur l'intérêt légitime de l'Organisateur à prévenir la fraude et défendre ses droits.
 
@@ -111,7 +119,7 @@ Les participants peuvent exercer leurs droits d'accès, de rectification, d'effa
 
 Le choix relatif aux cookies et traceurs de la landing est recueilli séparément de la participation au jeu.
 
-## Article 10. Responsabilité et fraude
+## Article 11. Responsabilité et fraude
 
 L'Organisateur ne saurait être tenu responsable d'une interruption de réseau social, d'une indisponibilité temporaire de la landing, d'un dysfonctionnement indépendant de sa volonté ou de la suppression d'un compte par la plateforme.
 
@@ -119,7 +127,7 @@ L'Organisateur peut annuler, reporter, prolonger, écourter ou modifier le jeu s
 
 La création de faux comptes, l'utilisation de robots, l'achat d'interactions ou toute tentative de manipulation entraîne l'exclusion.
 
-## Article 11. Plateformes
+## Article 12. Plateformes
 
 Ce jeu n'est ni sponsorisé, ni soutenu, ni géré par Meta, Facebook ou Instagram, et n'y est pas associé.
 
@@ -127,29 +135,30 @@ En participant, chaque personne dégage Meta, Facebook et Instagram de toute res
 
 Meta, Facebook et Instagram n'assistent pas l'Organisateur dans la gestion du jeu.
 
-## Article 12. Accès au règlement
+## Article 13. Accès au règlement
 
 Le présent règlement est accessible gratuitement pendant toute la durée du jeu sur la landing officielle MilAura à l'adresse : `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux`.
 
 Une copie peut être demandée à contact@milaura.fr.
 
-## Article 13. Droit applicable et contestations
+## Article 14. Droit applicable et contestations
 
 Le jeu et le présent règlement sont soumis au droit français.
 
 Toute question ou contestation doit être adressée à contact@milaura.fr dans les trente jours suivant la clôture. L'Organisateur recherchera d'abord une solution amiable, sans priver le participant de ses droits légaux ni de l'accès aux voies de recours compétentes.
 
-## Validation au 2026-09-08
+## Validation au 2026-09-09
 
 - [x] identité complète, RCS, SIRET et siège de l'Organisateur, recoupés le 2026-09-08 ;
 - [x] dates et heures ;
 - [x] territoire et majorité ;
 - [x] validité de la carte cadeau ;
-- [x] modalités de livraison offerte ;
+- [x] absence d'avantage de livraison associé à la carte cadeau ;
+- [x] conditions du code individuel de 10 % ;
 - [x] délai d'expédition ;
 - [x] durée de conservation ;
 - [x] délai de contestation ;
 - [ ] permaliens des deux publications principales ;
-- [x] validation explicite de Patrice le 2026-09-08 ;
+- [x] validation explicite des décisions commerciales par Patrice le 2026-09-09 ;
 - [ ] relecture Karine ;
 - [ ] relecture juridique si retenue.
