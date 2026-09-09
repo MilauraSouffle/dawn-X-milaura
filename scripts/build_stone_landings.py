@@ -216,6 +216,8 @@ def main():
             'image_url': card['image_url'], 'preview_path': preview_path})
     hub['sections']['landing'] = landing
     hub['order'] = ['landing']
+    if 'products' in hub['sections']:
+        hub['order'].append('products')
     save(ROOT / 'templates/page.milaura-bijoux-pierre.json', hub)
     covered = {id for d in manifest['destinations'] for id in d['product_ids']}
     missing = [p['title'] for p in jewellery if p['id'] not in covered]

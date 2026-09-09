@@ -1,3 +1,12 @@
+## Profondeur mobile du choix par pierre du 2026-09-09
+
+- Proprietaire : Codex, retour direct de Patrice du 2026-09-09 apres validation live de la V5.
+- Branche : `codex/milaura-stone-choice-mobile-depth-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-choice-mobile-depth-20260909`, base integration `fcfe08fd`.
+- Perimetre reserve : `sections/milaura-stone-choice-landing.liquid`, `assets/milaura-stone-choice-landing.css`, `templates/page.milaura-bijoux-pierre.json`, `scripts/build_stone_landings.py`, tests et documentation du lot. Aucun Hero, produit, collection, prix, stock, fiche pierre ou autre page.
+- Direction : sur mobile, rail limite a huit cartes illustrees puis repertoire compact de toutes les pierres ; desktop conserve les trente-neuf cartes. Une selection courte de quatre bijoux et un lien vers Tous les bijoux ferment la page avant le footer.
+- Theme de recette : preview `200974958939`. Live `190430282075` uniquement apres validation explicite de Patrice sur cette iteration.
+- Etat au 2026-09-09 16:04 CEST : PREVIEW TECHNIQUE VALIDEE. Push cible et pullback 3/3 conformes sur `200974958939`; controles 360, 390, 430, 768 et 1440 px sans debordement ni erreur navigateur. Attente de validation visuelle Patrice, aucun changement live.
+
 ## Refonte du choix par pierre du 2026-09-09
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-09 pour remplacer la composition de `/pages/bijoux-par-pierre` par un fork visuel de la landing `/collections/bijoux-pierres-naturelles`.
@@ -50,7 +59,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-09 13:30 CEST
+Derniere mise a jour : 2026-09-09 16:04 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
