@@ -4,7 +4,6 @@ Aucun acces reseau ni mutation Shopify. Les exports bruts restent hors Git.
 Les produits star sont choisis dans stone_landing_profiles.py, jamais au hasard.
 """
 import argparse
-import copy
 import html
 import json
 import re
@@ -88,14 +87,10 @@ def main():
                  # mais sa matiere ne constitue pas une pierre.
                  and p['id'] != 'gid://shopify/Product/10669859209563']
     hub = read_json(ROOT / 'templates/page.milaura-bijoux-pierre.json')
-    hub['sections']['hub']['blocks'] = {}
-    hub['sections']['hub']['block_order'] = []
-    hub['sections']['hub']['settings'] = {'destinations_anchor': 'MilauraStoneDirectory',
-                                         **hub['sections']['hub']['settings']}
-    directory = {'type': 'milaura-stone-directory', 'blocks': {}, 'block_order': [],
-                 'settings': {'eyebrow': 'Choisir votre pierre', 'heading': 'Toutes les pierres',
-                              'text': 'Couleurs, bijoux et conseils : retrouvez chaque pierre, seule ou associée à d’autres.',
-                              'preview_mode': False}}
+    landing = hub['sections']['landing']
+    landing['blocks'] = {}
+    landing['block_order'] = []
+    landing['settings']['preview_mode'] = False
     manifest = {'date': '2026-09-05', 'preview_theme_id': 200974958939, 'destinations': []}
     for profile in PROFILES + VARIANT_PROFILES:
         slug, name = profile['slug'], profile['name']
@@ -205,8 +200,8 @@ def main():
                 card['image_url'] = existing['image']['url']
                 card['image_alt'] = existing['image'].get('altText') or name
         if profile.get('directory', True):
-            directory['blocks'][slug] = {'type': 'stone', 'settings': card}
-            directory['block_order'].append(slug)
+            landing['blocks'][slug] = {'type': 'stone', 'settings': card}
+            landing['block_order'].append(slug)
         existing = collections.get(handle)
         current = {p['id'] for p in existing['products']['nodes']} if existing else set()
         manifest['destinations'].append({
@@ -219,12 +214,9 @@ def main():
             'missing_ids': [p['id'] for p in selected if p['id'] not in current],
             'aliases': profile['aliases'], 'description_html': paragraph(profile['colors']),
             'image_url': card['image_url'], 'preview_path': preview_path})
-    hub['sections']['directory'] = directory
-    hub['order'] = ['hub', 'directory']
+    hub['sections']['landing'] = landing
+    hub['order'] = ['landing']
     save(ROOT / 'templates/page.milaura-bijoux-pierre.json', hub)
-    preview = copy.deepcopy(hub)
-    preview['sections']['directory']['settings']['preview_mode'] = True
-    save(ROOT / 'templates/page.milaura-stones-preview.json', preview)
     covered = {id for d in manifest['destinations'] for id in d['product_ids']}
     missing = [p['title'] for p in jewellery if p['id'] not in covered]
     assert not missing, ('Bijoux non couverts', missing)

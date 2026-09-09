@@ -1,3 +1,13 @@
+## Refonte du choix par pierre du 2026-09-09
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-09 pour remplacer la composition de `/pages/bijoux-par-pierre` par un fork visuel de la landing `/collections/bijoux-pierres-naturelles`.
+- Branche : `codex/milaura-stone-choice-v2-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-choice-v2-20260909`, base `4db95097`.
+- Perimetre reserve : composant et CSS dedies au choix par pierre, assets Hero bureau et mobile versionnes, `templates/page.milaura-bijoux-pierre.json`, ancien annuaire remplace, generateur `scripts/build_stone_landings.py`, tests et documentation propres au lot. Les styles encore utilises par les pages pierre sont preserves.
+- Direction : Hero V5 tres clair sur fond Nacre, cinq pierres sur un socle en oeil-de-tigre, geode grenat pale et translucide derriere la copie, hierarchie calquee sur la landing Tous les bijoux, grille bureau et rail natif continu sur mobile sans JavaScript de geste. Produits, collections, prix, stocks, statuts, contenus des landings pierre, autres templates et autres themes hors perimetre.
+- Theme de recette reserve : `200974958939`, ancienne preview Toutes les pierres liberee depuis le 2026-09-07. Aucun autre theme touche avant GO.
+- Gates : implementation et recette locale, preview Shopify, validation visuelle Patrice, puis integration et live uniquement sur GO explicite.
+- Etat au 2026-09-09 12:17 CEST : PREVIEW TECHNIQUE PASS, PAGE ET SWIPE VALIDES PAR PATRICE, HERO V5 A VALIDER. Le socle est maintenant en oeil-de-tigre et une geode grenat translucide apporte du contraste sans nuire a la lecture. L ancien annuaire est retire localement et de la preview : section, JavaScript, template de preview et styles orphelins supprimes ; le generateur produit directement le composant final. Pullback conforme sur les fichiers actifs et absence distante confirmee pour les trois anciens fichiers. QA 390 et 1440 px conforme, 39 cartes, un H1, aucun debordement, aucune erreur navigateur ; page Aigue-marine preservee. Theme live `190430282075` intact. GO visuel Hero V5 puis integration et live en attente. [Checkpoint](checkpoints/2026-09-09-0814-stone-choice-v2-preview.md).
+
 ## Correctif responsive du titre du resultat du quiz du 2026-09-09
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-09 apres observation iPhone du mot `Apaisement` coupe avant sa derniere lettre.
@@ -40,7 +50,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-09 09:24 CEST
+Derniere mise a jour : 2026-09-09 12:17 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
