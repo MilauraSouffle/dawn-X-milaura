@@ -1,6 +1,7 @@
 # Bijoux par pierre : profondeur mobile et selection bijoux
 
 Date : 2026-09-09 16:04 CEST
+Derniere mise a jour : 2026-09-09 16:11 CEST
 Statut : PREVIEW TECHNIQUE VALIDEE, ATTENTE DE VALIDATION VISUELLE PATRICE
 
 ## Resultat en preview
@@ -9,7 +10,7 @@ La page `/pages/bijoux-par-pierre` conserve les trente-neuf pierres sans imposer
 
 - Mobile jusqu a 749 px : huit cartes illustrees dans le rail natif, puis un controle `Voir toutes les pierres` ouvrant les trente-neuf liens dans une liste compacte sur deux colonnes.
 - Tablette et bureau des 750 px : les trente-neuf cartes restent visibles dans la grille existante, sans controle supplementaire.
-- Apres les pierres : selection bornee de quatre produits issus de `bijoux-pierres-naturelles`, avec le titre `Tous les bijoux` et le CTA `Voir tous les bijoux`.
+- Apres les pierres : selection bornee de quatre produits issus de `bijoux-pierres-naturelles`, avec le titre `Nos plus belles créations du moment` et le CTA `Voir tous les bijoux`.
 - Aucun JavaScript ajoute et aucun nouveau composant produit cree. La selection reutilise `milaura-featured-products`.
 - Le generateur conserve maintenant la section produits lors d une regeneration du template.
 
@@ -29,6 +30,7 @@ La page `/pages/bijoux-par-pierre` conserve les trente-neuf pierres sans imposer
 - Preflight : les trois fichiers Shopify cibles correspondaient a la base avant push.
 - Push cible avec `--nodelete` et `--strict`.
 - Pullback : section, CSS et template identiques au local, trois fichiers sur trois.
+- Ajustement du titre pousse ensuite sur le seul template de preview; preflight conforme et pullback exact apres push.
 - Theme live `190430282075` non touche par ce lot.
 
 ## Verifications
@@ -44,8 +46,10 @@ La page `/pages/bijoux-par-pierre` conserve les trente-neuf pierres sans imposer
 - Preview 768 px : zero debordement global, trente-neuf cartes en trois colonnes, controle mobile masque, quatre produits.
 - Preview 1440 px : zero debordement global, trente-neuf cartes en quatre colonnes, controle mobile masque, quatre produits.
 - Ouverture et fermeture du repertoire testees; trente-neuf liens visibles une fois ouvert.
+- Microcopie corrigee apres retour de Patrice : le titre nomme la selection de quatre creations et le CTA nomme le catalogue complet.
+- Nouveau titre controle a 390 et 1440 px : retour naturel, aucun debordement, CTA et quatre produits conserves.
 - Aucune erreur navigateur observee.
-- Captures locales : `/private/tmp/milaura-stone-depth-mobile-closed-390.png`, `/private/tmp/milaura-stone-depth-mobile-open-390.png`, `/private/tmp/milaura-stone-depth-mobile-products-clean-390.png` et `/private/tmp/milaura-stone-depth-desktop-products-1440.png`.
+- Captures locales : `/private/tmp/milaura-stone-depth-mobile-closed-390.png`, `/private/tmp/milaura-stone-depth-mobile-open-390.png`, `/private/tmp/milaura-stone-depth-mobile-products-clean-390.png`, `/private/tmp/milaura-stone-depth-mobile-title-v2-390.png` et `/private/tmp/milaura-stone-depth-desktop-products-1440.png`.
 
 ## Gates et retour arriere
 
