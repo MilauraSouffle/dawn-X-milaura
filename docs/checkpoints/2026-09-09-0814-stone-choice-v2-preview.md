@@ -1,16 +1,16 @@
 # Bijoux par pierre : preview technique
 
 Date : 2026-09-09 08:14 CEST
-Derniere mise a jour : 2026-09-09 09:08 CEST
+Derniere mise a jour : 2026-09-09 09:37 CEST
 Statut : PREVIEW TECHNIQUE PASS, VALIDATION VISUELLE PATRICE EN ATTENTE
 
 ## Resultat prepare
 
 La page `/pages/bijoux-par-pierre` a ete reconstruite dans un composant dedie a partir de la hierarchie validee de `/collections/bijoux-pierres-naturelles`.
 
-- Hero neuf centre sur une faille minerale prune et plusieurs pierres naturelles, sans bijou vedette.
+- Hero V4 tres clair centre sur cinq pierres naturelles et un socle mineral unique, sans bijou vedette.
 - Composition bureau et mobile distincte, avec espace de lecture pour le H1 et le texte.
-- Navigation de page rendue claire sur fond prune, y compris lorsqu elle reste fixe au-dessus des sections claires.
+- Fond Nacre, texte prune et navigation claire conservant le comportement global du theme.
 - Bloc de reassurance conserve sous le Hero.
 - Trente-neuf cartes et trente-neuf destinations pierre conservees.
 - Bureau : grille stable, quatre colonnes a 1440 px et trois colonnes a 768 px.
@@ -21,8 +21,8 @@ La page `/pages/bijoux-par-pierre` a ete reconstruite dans un composant dedie a 
 
 - `sections/milaura-stone-choice-landing.liquid`
 - `assets/milaura-stone-choice-landing.css`
-- `assets/milaura-hero-stone-choice-v3-desktop.webp`
-- `assets/milaura-hero-stone-choice-v3-mobile.webp`
+- `assets/milaura-hero-stone-choice-v4-desktop.webp`
+- `assets/milaura-hero-stone-choice-v4-mobile.webp`
 - `templates/page.milaura-bijoux-pierre.json`
 
 Registre du lot : `docs/workstreams.md`.
@@ -30,17 +30,17 @@ Registre du lot : `docs/workstreams.md`.
 ## Preview Shopify
 
 - Theme : `200974958939`, `MilAura Toutes les pierres 2026-09-05`.
-- URL : `https://milaura.fr/pages/bijoux-par-pierre?preview_theme_id=200974958939&stone-choice=v3`
+- URL : `https://milaura.fr/pages/bijoux-par-pierre?preview_theme_id=200974958939&stone-choice=v4`
 - Push cible uniquement, avec `--nodelete` et `--strict`.
 - Pullback cible : sommes SHA-256 identiques 5/5.
 
 Sommes de reference :
 
-- CSS : `5caa84e3f41b64a58a8ce58877ff54e708b6fba3863d57924ead6308a79c31de`
-- Section : `cad923c4b7c8481529ee4a7ef8f84ebf641b166ffd44271fed05952a0f73d7b7`
-- Hero bureau : `f63a10eb29e16693677c8d6daed6b43df226c3d2c0cc9756a197cc1689449470`
-- Hero mobile : `b0dce732edfe8d0cf145717ae7fd773909c42f38387a0750758700f7f541b12c`
-- Template : `fe0a88c4665bab27623ce1aa4447708792b82a5d25fe7c0064436fa1a7339d02`
+- CSS : `13239cc3706be4b888691ec69d5a604afb134f764504a80fd14df08b4f31fa6c`
+- Section : `b8c5347d7f161106b51bb851fc81e5ff2bd17c01a6028649892293c15736f17a`
+- Hero bureau : `25489a7cdbe998d52dfdbf44c291d4c00d0b219fc13cfa4c1f69eadeff1dcec9`
+- Hero mobile : `fa9fa301db29dc9e98a18a3ecad1e259297c30e6533b9441f5ee0fb02f452f0c`
+- Template : `87f2c32df8f2abb90777c334dec34b5b0b1ae99afaa8b0464c70041e0fe5b093`
 
 ## Verifications
 
@@ -53,9 +53,10 @@ Sommes de reference :
 - Largeurs de page conformes a 360, 390, 430, 768 et 1440 px, sans debordement horizontal global.
 - Rail mobile : `overflow-x: auto`, snap natif, largeur de carte 78 vw, ancien script et attribut `data-enhanced` absents.
 - Deplacement horizontal mesure dans la preview de `0` a `372 px`.
-- Images Hero chargees aux dimensions 1942 x 810 et 941 x 1672.
-- Le texte du Hero herite bien de la couleur Nacre et la navigation de page utilise Nacre sur Prune sur mobile et bureau.
-- Les seules erreurs console observees proviennent des telemetries Shopify et de la barre de preview bloquees par le contexte navigateur. Aucun message ne pointe vers le composant du lot.
+- Images Hero chargees aux dimensions 1941 x 810 et 941 x 1672.
+- Recette visuelle reelle a 390 x 844 et 1440 x 900 : fond Nacre, texte prune, cinq pierres dans la moitie basse sur mobile et zone de lecture degagee.
+- Rail mobile mesure avec `overflow-x: auto`, snap natif, largeur de carte 304,19 px et deplacement de 0 a 302 px.
+- Aucune erreur navigateur observee. Captures locales : `/private/tmp/milaura-stone-choice-v4-mobile-390.png` et `/private/tmp/milaura-stone-choice-v4-desktop-1440.png`.
 
 ## Gates et retour arriere
 
