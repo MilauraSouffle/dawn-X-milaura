@@ -3,8 +3,8 @@
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-09 apres observation iPhone du mot `Apaisement` coupe avant sa derniere lettre.
 - Branche : `codex/milaura-quiz-title-responsive-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/quiz-title-responsive-20260909`, base `origin/codex/milaura-integration` au commit `4db95097`.
 - Perimetre reserve : `sections/milaura-quiz.liquid`, tests et checkpoint propres au correctif. Aucun texte du quiz, profil, pierre, recommandation, Mon Ecrin, produit, catalogue, panier ou autre composant.
-- Theme prive reserve : `201115566427`, copie du live liberee par le lot SEO du 2026-09-08. Correction generique pour les cinq profils, recette navigateur mobile `320/360/390/430` et bureau `1440`. Integration et live restent separes sans nouveau GO explicite.
-- Etat au 2026-09-09 08:13 CEST : PASS TECHNIQUE SUR THEME PRIVE. Les cinq profils restent chacun sur une ligne aux largeurs `320/360/390/430/749/768/989/1440`, sans chevauchement ni debordement. Pullback du fichier unique identique. GO visuel Patrice, integration et live en attente. [Checkpoint](checkpoints/2026-09-09-0813-quiz-title-responsive-preview.md).
+- Themes : preview `201115566427`, puis live `190430282075` apres le GO integration + live explicite de Patrice du 2026-09-09. Correction generique pour les cinq profils, recette navigateur mobile `320/360/390/430` et bureau `1440`.
+- Etat au 2026-09-09 08:45 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source et integration au commit `e3832334`. Fichier unique pousse sur le live puis relu a l identique, SHA-256 `949f108d73423a90d346c04ebb070e40fbe73a05ae862adbc89cbb33f637b718`. Les cinq profils restent chacun sur une ligne aux largeurs `320/360/390/430/749/768/989/1440`, sans chevauchement ni debordement. Theme public confirme `190430282075`, journal d erreurs navigateur vide. Reservation liberee. [Checkpoint](checkpoints/2026-09-09-0813-quiz-title-responsive-preview.md).
 
 ## Coeurs favoris PDP et catalogue du 2026-09-08
 

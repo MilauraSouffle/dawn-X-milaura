@@ -1,7 +1,7 @@
 # Correctif responsive du titre du resultat du quiz
 
-Date : 2026-09-09 08:13 CEST
-Statut : PASS TECHNIQUE SUR THEME PRIVE, GO VISUEL ET LIVE EN ATTENTE
+Date : 2026-09-09 08:45 CEST
+Statut : FERME, INTEGRE, POUSSE ET LIVE VERIFIE
 
 ## Defaut reproduit
 
@@ -36,6 +36,18 @@ Aucun texte, profil, pierre, recommandation, JavaScript, Mon Ecrin, produit, cat
 - Captures temporaires : `/private/tmp/milaura-quiz-title-responsive-390.png` et `/private/tmp/milaura-quiz-title-responsive-1440.png`.
 - Journal d erreurs navigateur : vide avant la recette de contenu forcee.
 
-## Gates
+## Integration et live
 
-Le correctif peut etre commit et pousse sur sa branche source. Il ne doit pas etre integre ni deploye sur le theme live `190430282075` sans nouveau GO explicite de Patrice apres lecture de la preview.
+- GO integration + live donne explicitement par Patrice le 2026-09-09.
+- Commit source et integration : `e3832334`.
+- Branche d integration distante avancee sans force-push de `4db95097` a `e3832334`.
+- Theme live : `190430282075`, `dawn-X-milaura/main`.
+- Push live cible : `sections/milaura-quiz.liquid` uniquement, sans suppression.
+- Pullback live : identique au fichier local, SHA-256 `949f108d73423a90d346c04ebb070e40fbe73a05ae862adbc89cbb33f637b718`.
+- Page publique : `https://milaura.fr/pages/diagnostic-emotionnel`.
+- Theme public confirme dans le navigateur : `190430282075`.
+- Recette publique repetee a `320`, `360`, `390`, `430`, `749`, `768`, `989` et `1440` px sur les cinq profils. Tous restent sur une ligne, dans l en-tete, sans intersection avec le visuel et sans debordement horizontal.
+- Capture publique temporaire : `/private/tmp/milaura-quiz-title-responsive-live-apaisement-390.png`.
+- Journal d erreurs navigateur public : vide.
+
+Le checkout principal sale n a pas ete modifie, remis a zero ni utilise pour le deploiement. La reservation de ce lot est liberee.
