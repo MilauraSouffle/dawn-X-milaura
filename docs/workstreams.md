@@ -1,3 +1,11 @@
+## Correctif responsive du titre du resultat du quiz du 2026-09-09
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-09 apres observation iPhone du mot `Apaisement` coupe avant sa derniere lettre.
+- Branche : `codex/milaura-quiz-title-responsive-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/quiz-title-responsive-20260909`, base `origin/codex/milaura-integration` au commit `4db95097`.
+- Perimetre reserve : `sections/milaura-quiz.liquid`, tests et checkpoint propres au correctif. Aucun texte du quiz, profil, pierre, recommandation, Mon Ecrin, produit, catalogue, panier ou autre composant.
+- Theme prive reserve : `201115566427`, copie du live liberee par le lot SEO du 2026-09-08. Correction generique pour les cinq profils, recette navigateur mobile `320/360/390/430` et bureau `1440`. Integration et live restent separes sans nouveau GO explicite.
+- Etat au 2026-09-09 08:13 CEST : PASS TECHNIQUE SUR THEME PRIVE. Les cinq profils restent chacun sur une ligne aux largeurs `320/360/390/430/749/768/989/1440`, sans chevauchement ni debordement. Pullback du fichier unique identique. GO visuel Patrice, integration et live en attente. [Checkpoint](checkpoints/2026-09-09-0813-quiz-title-responsive-preview.md).
+
 ## Coeurs favoris PDP et catalogue du 2026-09-08
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour relier les coeurs des fiches produit et du catalogue aux favoris durables de Mon Ecrin.
