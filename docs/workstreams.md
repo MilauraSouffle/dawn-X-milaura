@@ -1,3 +1,12 @@
+## Rapports fournisseur et alignement du premier palier du 2026-09-10
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-10.
+- Branche : `codex/milaura-certificates-rewards-20260910`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/certificates-rewards-20260910`, base `origin/codex/milaura-integration` au commit `2011f3a4`.
+- Perimetre reserve : `templates/product.milaura-produit.json`, `sections/milaura-cart-rewards.liquid`, inventaire sous `docs/audits/`, checkpoint propre au lot, outils de collecte et OCR ainsi que rapports sous `/Users/paesano/Documents/Agentic-Ops/milaura-automation/private-workspace/product-generation/data/supplier-certificates/camille-ambiance-nature/`. `sections/milaura-product-hero.liquid` reste exclu tant que le chantier favoris le reserve.
+- Objectif : aligner le premier palier configure de 20 a 30 euros, inventorier et recuperer les rapports d authenticite publics de Camille Ambiance Nature, puis etablir les correspondances prouvables avant toute promesse ou mise en ligne.
+- Gates : aucun texte public, fichier theme live, produit Shopify, metachamp, certificat publie ou deploiement sans validation separee. Le bandeau de preuve sociale PDP approuve reste strictement hors perimetre.
+- Etat au 2026-09-10 11:05 CEST : AUDIT TERMINE, CORRECTION DORMANTE PRETE, EN ATTENTE DU GO PREVIEW. 340 rapports sur huit pages archives sans echec, inventaires CSV et JSON produits, OCR local 340 sur 340, limites de preuve documentees. Les anciennes valeurs 20 du template MilAura et de la section panier non montee sont alignees a 30. Theme Check sans erreur. Aucun theme Shopify, produit, metachamp, collection ou media touche. `sections/milaura-product-hero.liquid` reste exclu et le bandeau de preuve sociale approuve est preserve.
+
 ## Conseils de Karine dans les bandes de reassurance du 2026-09-10
 
 - Proprietaire : Codex, GO explicite de Patrice du 2026-09-10 sur la formulation `Karine vous conseille 6j/7`.
