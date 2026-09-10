@@ -1,0 +1,44 @@
+{{ 'milaura-owned-stone-guides.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-owned-stone-guides.js' | asset_url }}" defer="defer"></script>
+
+{%- assign title_id = 'MilauraOwnedAtlasTitle-' | append: section.id -%}
+
+<div class="milaura-owned" data-owned-atlas>
+  <header class="milaura-owned__header milaura-owned__shell" aria-labelledby="{{ title_id }}">
+    <h1 id="{{ title_id }}">{{ section.settings.heading | escape }}</h1>
+    <p class="milaura-owned__intro">{{ section.settings.introduction | escape }}</p>
+    <p class="milaura-owned__notice"><strong>Limite importante :</strong> une photo aide à comparer une couleur, une transparence ou un veinage. Elle ne certifie jamais seule une pierre, un traitement ou une imitation.</p>
+  </header>
+
+  <section class="milaura-owned__section milaura-owned__shell">
+    <div class="milaura-owned-search">
+      <label for="MilauraOwnedAtlasSearch-{{ section.id }}">Rechercher dans l'atlas</label>
+      <input id="MilauraOwnedAtlasSearch-{{ section.id }}" type="search" placeholder="Exemple : sodalite" autocomplete="off" data-atlas-search>
+      <p class="milaura-owned-search__status" role="status" aria-live="polite" data-atlas-status></p>
+    </div>
+    {% render 'milaura-owned-atlas-entries' %}
+    <p class="milaura-owned__empty" hidden data-atlas-empty>Aucune fiche ne correspond à cette recherche. Essayez un nom plus court.</p>
+  </section>
+
+  <section class="milaura-owned__sources milaura-owned__shell">
+    <h2>Méthode et sources</h2>
+    <p>Les photographies montrent des pièces MilAura existantes. Certaines associent plusieurs pierres, ce que leur légende précise. Les noms d'imitation suivent la distinction CIBJO entre pierre naturelle, produit synthétique et produit qui imite l'apparence sans partager les mêmes propriétés.</p>
+    <ul>
+      <li><a href="https://www.gia.edu/gem-encyclopedia">GIA, Gem Encyclopedia</a></li>
+      <li><a href="https://cibjo.org/rrg/wp-content/uploads/2021/10/CIBJO%20RRG%20%28Full%20Guide%29.pdf">CIBJO, Retailer s Reference Guide</a></li>
+    </ul>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Atlas pierres",
+  "tag": "section",
+  "class": "section-milaura-owned-stone-atlas",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Atlas des pierres et de leurs imitations" },
+    { "type": "textarea", "id": "introduction", "label": "Introduction", "default": "Comparez les teintes, les inclusions et les veinages visibles sur de vraies pièces MilAura. Chaque fiche indique aussi les confusions fréquentes et ce qu’une photographie ne permet pas de conclure." }
+  ],
+  "presets": [{ "name": "Atlas pierres" }]
+}
+{% endschema %}

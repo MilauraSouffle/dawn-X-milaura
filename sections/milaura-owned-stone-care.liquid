@@ -1,0 +1,64 @@
+{{ 'milaura-owned-stone-guides.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-owned-stone-guides.js' | asset_url }}" defer="defer"></script>
+
+{%- assign title_id = 'MilauraOwnedCareTitle-' | append: section.id -%}
+
+<div class="milaura-owned" data-owned-care>
+  <header class="milaura-owned__header milaura-owned__shell" aria-labelledby="{{ title_id }}">
+    <h1 id="{{ title_id }}">{{ section.settings.heading | escape }}</h1>
+    <p class="milaura-owned__intro">{{ section.settings.introduction | escape }}</p>
+    <p class="milaura-owned__notice"><strong>À retenir :</strong> cette matrice protège la pierre et la monture. Pour un rituel de lithothérapie, une méthode sans contact reste le choix le plus prudent.</p>
+  </header>
+
+  <section class="milaura-owned__section milaura-owned__shell">
+    <div class="milaura-owned-search">
+      <label for="MilauraOwnedCareSearch-{{ section.id }}">Rechercher une pierre</label>
+      <input id="MilauraOwnedCareSearch-{{ section.id }}" type="search" placeholder="Exemple : améthyste" autocomplete="off" data-care-search>
+      <p class="milaura-owned-search__status" role="status" aria-live="polite" data-care-status></p>
+    </div>
+
+    <ul class="milaura-owned-care__legend" aria-label="Légende de la matrice">
+      <li><span data-status="safe" aria-hidden="true"></span> Nettoyage doux possible</li>
+      <li><span data-status="caution" aria-hidden="true"></span> Prudence</li>
+      <li><span data-status="avoid" aria-hidden="true"></span> À éviter</li>
+    </ul>
+
+    <div class="milaura-owned-care__table-wrap" tabindex="0" aria-label="Matrice d'entretien des pierres">
+      <table class="milaura-owned-care__table">
+        <thead>
+          <tr><th scope="col">Pierre</th><th scope="col">Eau</th><th scope="col">Soleil</th><th scope="col">Sel</th></tr>
+        </thead>
+        <tbody>
+          {% render 'milaura-owned-care-rows' %}
+        </tbody>
+      </table>
+    </div>
+    <p class="milaura-owned__empty" hidden data-care-empty>Aucune pierre ne correspond à cette recherche. Essayez un nom plus court.</p>
+  </section>
+
+  <section class="milaura-owned__sources milaura-owned__shell">
+    <h2>Méthode et sources</h2>
+    <p>La consigne MilAura retient toujours la précaution la plus forte entre la pierre, un traitement possible et la monture. Le sel sec et l’eau salée sont déconseillés pour tous les bijoux montés.</p>
+    <ul>
+      <li><a href="https://www.gia.edu/amethyst-care-cleaning">GIA, entretien de l'améthyste</a></li>
+      <li><a href="https://www.gia.edu/rose-quartz-care-cleaning">GIA, entretien du quartz rose</a></li>
+      <li><a href="https://www.gia.edu/gia-website/aquamarine/buyers-guide">GIA, entretien de l'aigue-marine</a></li>
+      <li><a href="https://www.gia.edu/lapis-lazuli-care-cleaning">GIA, entretien du lapis-lazuli</a></li>
+      <li><a href="https://www.mindat.org/min-3701.html">Mindat, propriétés minéralogiques de la sodalite</a></li>
+    </ul>
+    <div class="milaura-owned__related"><a class="milaura-owned-link" href="{{ routes.pages_url }}/bijoux-par-pierre">Voir les bijoux par pierre</a></div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Matrice entretien pierres",
+  "tag": "section",
+  "class": "section-milaura-owned-stone-care",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Eau, soleil, sel : entretenir vos pierres" },
+    { "type": "textarea", "id": "introduction", "label": "Introduction", "default": "Trouvez rapidement ce que votre bijou supporte et ce qu’il vaut mieux éviter. Les conseils tiennent compte de la pierre, des traitements possibles et de la monture." }
+  ],
+  "presets": [{ "name": "Matrice entretien pierres" }]
+}
+{% endschema %}
