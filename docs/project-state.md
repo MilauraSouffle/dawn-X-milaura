@@ -1,10 +1,12 @@
-# Grand Jeu MilAura : landing V2 live le 2026-09-09 16:32 CEST
+# Grand Jeu MilAura : concours et deux boosts Meta actifs au 2026-09-10 07:21 CEST
 
-Patrice a valide le master nacre, les declinaisons sociales et la landing simplifiee, puis a donne le GO commit, push et live. La page publique `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux` utilise maintenant le bento en hero, deux onglets accessibles, les dix cartes cadeaux et le reglement synchronise. Le footer annonce `GRAND JEU CONCOURS MILAURA DU 09 AU 18 SEPTEMBRE` avec le CTA `Je participe`.
+Le concours est live du 2026-09-09 a 20:00 au 2026-09-18 a 23:59, avec tirage le 2026-09-19 a 12:00. La landing publique `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux` a ete relue le 2026-09-10 : dates exactes et CTA directs vers les publications Instagram `DdE2oBrFRMe` et Facebook `122146381521071200`. Aucun correctif site n'est ouvert.
 
-Source `9fb4b44c`, integration `2e8776c4`, theme live `190430282075`. Push cible de sept fichiers, pullback 7/7 conforme, HTTP 200, deux sources hero, dix liens cadeaux, onglet reglement et absence de l'ancienne phrase restrictive verifies. Mobile 390 px conforme. Le jeu est prevu du 2026-09-09 a 20:00 au 2026-09-18 a 23:59, tirage le 2026-09-19 a 12:00. Une participation est comptabilisee par compte sur chaque reseau ; une meme personne peut participer sur Instagram et Facebook mais remporter un seul lot.
+Les deux boosts sont approuves et actifs sur `MilauraAds` `1822118148752529` : Facebook, interactions, 10 EUR par jour pendant 2 jours, plafond 20 EUR ; Instagram, visites de profil, 20 EUR par jour pendant 2 jours, plafond 40 EUR. Lecture vers 07:20 : 3,39 EUR depenses sur Facebook pour 66 interactions et 3,91 EUR sur Instagram pour 26 visites de profil. Depense totale observee 7,30 EUR. Budget media decide 200 EUR, 60 EUR engages, 140 EUR non engages.
 
-Aucune publication Instagram ou Facebook, aucun permalink et aucune depense Meta n'ont ete executes dans ce lot. Pinterest reste exclu. Camilla prend le relais pour la strategie et les textes avec Karine. Reprise Codex : produire les dix visuels organiques quotidiens, un par cadeau, en conservant la direction du master. Verifier ou aligner le prix public de la bague du jour 2 a 11 EUR et remplacer les CTA de profils par les permaliens des publications principales des qu'ils existent. [Handoff live](checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md).
+Baseline du 2026-09-08 : 36 abonnes Instagram et 76 followers Facebook, total 112. Lecture du 2026-09-10 : 59 Instagram et 81 Facebook, total 140, soit +28 nets. L'objectif reste +1 000 nets ; les premiers couts par abonne sont des proxys melant paid et organique, pas une attribution pure. Aucune reallocation ni prolongation sans nouveau GO chiffre de Patrice.
+
+Priorite du jour : produire les formats 4:5 et 9:16 du jour 2, Bague doree en sodalite, valeur 11 EUR, pour 20:00 CEST, puis preparer le jour 3. Pinterest reste exclu. Le checkpoint contient les IDs Meta, le programme des dix jours, les sources visuelles, les regles de mesure et le prompt de reprise. [Handoff courant](checkpoints/2026-09-10-0721-grand-jeu-meta-suivi-handoff.md).
 
 # Hero accueil mode MilAura : mission fermee le 2026-09-09 13:26 CEST
 

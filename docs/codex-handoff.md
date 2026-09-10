@@ -1,14 +1,20 @@
-# Grand Jeu MilAura : landing live, reprise sur les dix visuels organiques
+# Grand Jeu MilAura : reprise du suivi Meta et des visuels quotidiens
 
-Date : 2026-09-09 16:32 CEST
+Date : 2026-09-10 07:21 CEST
 
-Statut : `LANDING V2 LIVE ET VERIFIEE ; CREATIONS QUOTIDIENNES A PRODUIRE`
+Statut : `CONCOURS LIVE, DEUX BOOSTS ACTIFS, JOUR 2 A PRODUIRE`
 
 ```text
-Reprends le Grand Jeu MilAura depuis docs/checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md. La landing V2 est deja live et verifiee sur le theme 190430282075, source 9fb4b44c et integration 2e8776c4. Ne redeploie pas la page par deduction. Commence en lecture seule, puis produis avec Patrice les dix visuels organiques quotidiens, un par cadeau du jour, en conservant la direction nacre, prune et or du master valide. Camilla et Karine gerent la strategie et les textes des publications ; ne les ecrase pas. Pinterest est exclu. Les deux publications principales Meta ne sont pas encore publiees : une fois leurs permaliens disponibles, remplacer les CTA de profils de la landing par ces liens dans un lot cible. Verifier ou aligner le prix public de la bague du jour 2 a 11 EUR avant diffusion commerciale. Aucun Ads ni budget media sans GO explicite.
+Tu reprends le pilotage du Grand Jeu MilAura dans une session fraiche et dediee, du 2026-09-10 jusqu'au tirage du 2026-09-19. Commence par lire AGENTS.md, docs/checkpoints/2026-09-10-0721-grand-jeu-meta-suivi-handoff.md, docs/reference/2026-08-12-copywriting-milaura.md et docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md. Utilise les skills onora-copywriting pour les textes et imagegen pour les creations visuelles. Ne touche pas au checkout principal sale. Pars de la branche distante actuelle ou du worktree propre indique dans le checkpoint.
+
+Commence en lecture seule dans Meta. Le compte obligatoire est MilauraAds 1822118148752529 EUR, jamais Karine ZA 37390651. Relis les deux boosts actifs, leurs depenses et resultats, puis releve les abonnes actuels de @milaura_mineraux et les followers de Facebook MilAura avec une heure exacte. Compare-les a la baseline de 36 Instagram et 76 Facebook. Inscris chaque lecture dans un journal date et distingue couverture, interactions, visites de profil, commentaires valides et abonnes nets. Le budget media total est 200 EUR : 60 EUR sont deja engages, 140 EUR restent non engages. Ne prolonge rien et ne modifie aucun budget sans me presenter une recommandation chiffree et obtenir mon GO explicite.
+
+Ta priorite creative aujourd'hui est le JOUR 2, Bague doree en sodalite, valeur 11 EUR, publication cible a 20:00 CEST. Verifie d'abord qu'aucun post quotidien du jour n'existe deja. Produis deux vrais fichiers : 1080 x 1350 pour le feed Instagram/Facebook et 1080 x 1920 pour les Stories. Utilise la photo source exacte dans /Users/paesano/Downloads/concours-milaura-10-jours-10-cadeaux-2026-09-08/photos/02-bague-sodalite.png. Preserve fidelement le produit. Direction MilAura premium, nacre, prune, aigue-marine et or mat, photo dominante, aucun beige generique, aucun AI slop et aucun texte genere dans l'image. Pose les textes de facon deterministe : JOUR 2 / 10, LE CADEAU DU JOUR, Bague doree en sodalite, Valeur 11 EUR, Participez sous la publication epinglee. Montre-moi les previews avant publication.
+
+Apres validation du jour 2, prepare le jour 3 en avance et poursuis le calendrier exact du checkpoint. Chaque contenu quotidien doit ramener vers la publication principale du concours, pas ouvrir un second registre de participation. Pinterest est exclu, TikTok est organique seulement, Snapchat est hors sprint. Aucun post, Story, reponse publique, boost supplementaire ou reallocation budgetaire sans GO explicite au moment de l'action.
 ```
 
-La page publique est `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux`. Elle contient le bento responsive, les conditions, le reglement en quatorze articles, les dix cartes cliquables et le footer concours. Le live a ete controle par pullback 7/7, HTTP 200 et QA navigateur desktop/mobile. Aucune publication sociale ou depense n'a ete executee par Codex. [Checkpoint complet](checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md).
+Etat verifie le 2026-09-10 vers 07:20 : Facebook actif, 3,39 EUR depenses, 66 interactions ; Instagram actif, 3,91 EUR depenses, 26 visites de profil. Audience totale : 59 abonnes Instagram et 81 followers Facebook, soit +28 nets depuis la baseline de 112. Landing et permaliens directs verifies en production. [Checkpoint complet](checkpoints/2026-09-10-0721-grand-jeu-meta-suivi-handoff.md).
 
 # Handoff Hero accueil mode MilAura : mission terminee
 

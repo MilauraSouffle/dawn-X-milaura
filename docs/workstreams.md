@@ -1,3 +1,11 @@
+## Grand Jeu MilAura, pilotage Meta et contenus quotidiens du 2026-09-10
+
+- Proprietaire sortant : Codex, tache Grand Jeu MilAura ; reprise demandee par Patrice dans une session fraiche.
+- Branche : `codex/milaura-contest-social-links-20260909`, worktree propre `/private/tmp/milaura-contest-social-links-20260909`, base avant handoff `52e02c68`.
+- Perimetre : landing et permaliens en lecture seule, suivi des boosts Meta, journal de performance, creations feed 4:5 et Story 9:16 des dix cadeaux. Theme, produits, stocks, prix, commandes et Pinterest exclus.
+- Etat au 2026-09-10 07:21 CEST : concours live ; Facebook actif a 10 EUR par jour pendant 2 jours, plafond 20 EUR ; Instagram actif a 20 EUR par jour pendant 2 jours, plafond 40 EUR ; depense observee 7,30 EUR. Audience passee de 112 a 140 abonnes cumules, soit +28 nets. Landing relue avec les deux permaliens directs.
+- Prochaine action : produire le jour 2, Bague doree en sodalite, en 1080 x 1350 et 1080 x 1920 pour le 2026-09-10 a 20:00, puis preparer le jour 3. Aucun nouveau spend, aucune reallocation et aucune publication sans GO explicite de Patrice. [Checkpoint](checkpoints/2026-09-10-0721-grand-jeu-meta-suivi-handoff.md).
+
 ## Refonte du choix par pierre du 2026-09-09
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-09 pour remplacer la composition de `/pages/bijoux-par-pierre` par un fork visuel de la landing `/collections/bijoux-pierres-naturelles`.
@@ -50,7 +58,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-09 13:30 CEST
+Derniere mise a jour : 2026-09-10 07:21 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
