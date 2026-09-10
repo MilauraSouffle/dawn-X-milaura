@@ -1,3 +1,15 @@
+# Grand Jeu MilAura : landing live, reprise sur les dix visuels organiques
+
+Date : 2026-09-09 16:32 CEST
+
+Statut : `LANDING V2 LIVE ET VERIFIEE ; CREATIONS QUOTIDIENNES A PRODUIRE`
+
+```text
+Reprends le Grand Jeu MilAura depuis docs/checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md. La landing V2 est deja live et verifiee sur le theme 190430282075, source 9fb4b44c et integration 2e8776c4. Ne redeploie pas la page par deduction. Commence en lecture seule, puis produis avec Patrice les dix visuels organiques quotidiens, un par cadeau du jour, en conservant la direction nacre, prune et or du master valide. Camilla et Karine gerent la strategie et les textes des publications ; ne les ecrase pas. Pinterest est exclu. Les deux publications principales Meta ne sont pas encore publiees : une fois leurs permaliens disponibles, remplacer les CTA de profils de la landing par ces liens dans un lot cible. Verifier ou aligner le prix public de la bague du jour 2 a 11 EUR avant diffusion commerciale. Aucun Ads ni budget media sans GO explicite.
+```
+
+La page publique est `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux`. Elle contient le bento responsive, les conditions, le reglement en quatorze articles, les dix cartes cliquables et le footer concours. Le live a ete controle par pullback 7/7, HTTP 200 et QA navigateur desktop/mobile. Aucune publication sociale ou depense n'a ete executee par Codex. [Checkpoint complet](checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md).
+
 # Handoff Hero accueil mode MilAura : mission terminee
 
 Date : 2026-09-09 13:26 CEST

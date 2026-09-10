@@ -7,7 +7,7 @@ Responsable du traitement : ONORA SARL, 92 rue de Pont-à-Mousson, 57950 Montign
 ## Traitement
 
 - Nom : gestion du jeu concours MilAura « 10 jours, 10 cadeaux ».
-- Période opérationnelle : du 2026-09-09 à 20:00 au 2026-09-20 après les tirages et la remise des lots.
+- Période opérationnelle : du 2026-09-09 à 20:00 au 2026-09-19 après les tirages, puis jusqu’à la remise des lots et la fin de la période de demande du code participant.
 - Finalités : enregistrer et vérifier les participations, réaliser les tirages, prévenir les fraudes, contacter les gagnants, expédier les lots et traiter les contestations.
 - Personnes concernées : participants majeurs résidant en France métropolitaine, Corse comprise.
 - Bases juridiques : exécution du règlement accepté par la participation ; intérêt légitime d'ONORA SARL pour la prévention de la fraude, la preuve du tirage et la défense de ses droits.
@@ -28,7 +28,7 @@ Responsable du traitement : ONORA SARL, 92 rue de Pont-à-Mousson, 57950 Montign
 
 ## Conservation
 
-- Non-gagnants : suppression ou anonymisation trois mois après le tirage du 2026-09-20.
+- Non-gagnants : suppression ou anonymisation trois mois après le tirage du 2026-09-19.
 - Gagnants : conservation opérationnelle jusqu'à la remise du lot, puis uniquement selon les obligations légales applicables.
 - Preuves de tirage et éléments nécessaires à une contestation : conservation limitée à la durée nécessaire à la défense des droits d'ONORA SARL.
 
