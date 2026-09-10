@@ -4,8 +4,8 @@
 - Branche : `codex/milaura-stone-choice-mobile-depth-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-choice-mobile-depth-20260909`, base integration `fcfe08fd`.
 - Perimetre reserve : `sections/milaura-stone-choice-landing.liquid`, `assets/milaura-stone-choice-landing.css`, `templates/page.milaura-bijoux-pierre.json`, `scripts/build_stone_landings.py`, tests et documentation du lot. Aucun Hero, produit, collection, prix, stock, fiche pierre ou autre page.
 - Direction : sur mobile, rail limite a huit cartes illustrees puis repertoire compact de toutes les pierres ; desktop conserve les trente-neuf cartes. Une selection courte de quatre bijoux et un lien vers Tous les bijoux ferment la page avant le footer.
-- Theme de recette : preview `200974958939`. Live `190430282075` uniquement apres validation explicite de Patrice sur cette iteration.
-- Etat au 2026-09-09 16:11 CEST : PREVIEW TECHNIQUE VALIDEE. Push cible et pullback 3/3 conformes sur `200974958939`; controles 360, 390, 430, 768 et 1440 px sans debordement ni erreur navigateur. Titre de la selection produits corrige apres retour de Patrice en `Nos plus belles créations du moment`; push du seul template, pullback exact et rendu controle a 390 et 1440 px. Le CTA reste `Voir tous les bijoux`. Aucun changement live.
+- Theme de recette : preview `200974958939`. Theme public : `190430282075` apres GO explicite de Patrice le 2026-09-10.
+- Etat au 2026-09-10 08:40 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source alignee et integration canonique poussee au commit `4d7df8a3`. Trois fichiers exacts deployes sur le live avec preflight conforme et pullback `3/3` identique. Public 390 et 1440 px : huit cartes mobiles, trente-neuf liens dans le repertoire compact, trente-neuf cartes bureau, quatre creations, titre `Nos plus belles créations du moment`, CTA `Voir tous les bijoux`, zero debordement et journal navigateur vide. Reservation liberee. [Checkpoint](checkpoints/2026-09-09-1604-stone-choice-mobile-depth-preview.md).
 
 ## Refonte du choix par pierre du 2026-09-09
 
@@ -59,7 +59,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-09 16:11 CEST
+Derniere mise a jour : 2026-09-10 08:40 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 

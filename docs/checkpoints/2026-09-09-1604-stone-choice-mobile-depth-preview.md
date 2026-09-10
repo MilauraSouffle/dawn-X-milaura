@@ -1,10 +1,10 @@
 # Bijoux par pierre : profondeur mobile et selection bijoux
 
 Date : 2026-09-09 16:04 CEST
-Derniere mise a jour : 2026-09-09 16:11 CEST
-Statut : PREVIEW TECHNIQUE VALIDEE, ATTENTE DE VALIDATION VISUELLE PATRICE
+Derniere mise a jour : 2026-09-10 08:40 CEST
+Statut : FERME, INTEGRE, POUSSE ET LIVE VERIFIE
 
-## Resultat en preview
+## Resultat livre
 
 La page `/pages/bijoux-par-pierre` conserve les trente-neuf pierres sans imposer un rail mobile de trente-neuf grandes cartes.
 
@@ -31,7 +31,16 @@ La page `/pages/bijoux-par-pierre` conserve les trente-neuf pierres sans imposer
 - Push cible avec `--nodelete` et `--strict`.
 - Pullback : section, CSS et template identiques au local, trois fichiers sur trois.
 - Ajustement du titre pousse ensuite sur le seul template de preview; preflight conforme et pullback exact apres push.
-- Theme live `190430282075` non touche par ce lot.
+
+## Integration et live Shopify
+
+- Patrice a donne le GO commit, push et live le 2026-09-10.
+- Branche source poussee, puis alignee sur les quatre commits concurrents de l integration sans modifier les fichiers Shopify du lot.
+- Integration canonique poussee au commit `4d7df8a3`.
+- Preflight live : les trois fichiers du theme `190430282075` correspondaient exactement a la version de base `52e02c68`; aucune divergence concurrente.
+- Push live strict et cible de trois fichiers avec `--allow-live`, `--nodelete` et `--strict`.
+- Pullback live : trois fichiers sur trois identiques au commit integre.
+- Fichiers live et blobs confirmes : CSS `11b136a0`, section `48a52d47`, template `1e673f2c`.
 
 ## Verifications
 
@@ -48,13 +57,16 @@ La page `/pages/bijoux-par-pierre` conserve les trente-neuf pierres sans imposer
 - Ouverture et fermeture du repertoire testees; trente-neuf liens visibles une fois ouvert.
 - Microcopie corrigee apres retour de Patrice : le titre nomme la selection de quatre creations et le CTA nomme le catalogue complet.
 - Nouveau titre controle a 390 et 1440 px : retour naturel, aucun debordement, CTA et quatre produits conserves.
+- Public 390 px : theme `190430282075`, un H1, huit cartes illustrees sur trente-neuf, rail natif de 2192 px, repertoire ouvert avec trente-neuf liens, quatre produits et CTA vers `/collections/bijoux-pierres-naturelles`.
+- Public 1440 px : theme `190430282075`, trente-neuf cartes visibles en quatre colonnes, repertoire mobile masque, quatre produits et nouveau titre presents.
+- Deplacement horizontal public mesure de 0 a 302 px.
 - Aucune erreur navigateur observee.
-- Captures locales : `/private/tmp/milaura-stone-depth-mobile-closed-390.png`, `/private/tmp/milaura-stone-depth-mobile-open-390.png`, `/private/tmp/milaura-stone-depth-mobile-products-clean-390.png`, `/private/tmp/milaura-stone-depth-mobile-title-v2-390.png` et `/private/tmp/milaura-stone-depth-desktop-products-1440.png`.
+- Captures locales : `/private/tmp/milaura-stone-depth-mobile-closed-390.png`, `/private/tmp/milaura-stone-depth-mobile-open-390.png`, `/private/tmp/milaura-stone-depth-mobile-products-clean-390.png`, `/private/tmp/milaura-stone-depth-mobile-title-v2-390.png`, `/private/tmp/milaura-stone-depth-desktop-products-1440.png` et `/private/tmp/milaura-stone-depth-live-mobile-products-390.png`.
 
 ## Gates et retour arriere
 
-Implementation et preview technique : PASS.
+Implementation, preview, validation visuelle Patrice, integration et live : PASS.
 
-Validation visuelle Patrice, integration et live : OUVERTS. Aucun deploiement live avant validation explicite de cette iteration.
+Le theme public `190430282075` sert la version validee et le lot est ferme.
 
-Le retour arriere preview consiste a repousser les trois versions de base de la branche d integration. Aucun fichier mort ni script supplementaire n a ete introduit.
+Le retour arriere consiste a repousser les trois blobs de base `da731a50`, `1f0e8096` et `5d0d6b9d` sur le theme live, de facon ciblee. Aucun fichier mort ni script supplementaire n a ete introduit.

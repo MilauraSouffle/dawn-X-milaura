@@ -1,3 +1,15 @@
+# Choix par pierre : profondeur mobile live et lot ferme
+
+Date : 2026-09-10 08:40 CEST
+
+Statut : `VALIDE PAR PATRICE, INTEGRE, POUSSE ET LIVE VERIFIE`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-09-1604-stone-choice-mobile-depth-preview.md. La nouvelle profondeur mobile du choix par pierre est deja live sur le theme 190430282075 et verifiee. Ne redeploie pas ces trois fichiers par deduction. La page montre huit grandes cartes sur mobile, puis les trente-neuf pierres dans un repertoire compact, et quatre creations avant le footer. Le bureau conserve les trente-neuf cartes en grille. Toute nouvelle iteration repart en lecture seule du storefront public et de origin/codex/milaura-integration.
+```
+
+Integration fonctionnelle `4d7df8a3`, pullback Shopify `3/3` identique et QA publique 390/1440 conforme. Aucun produit, stock, prix, collection, fiche pierre, Admin ou Ads modifie. [Checkpoint complet](checkpoints/2026-09-09-1604-stone-choice-mobile-depth-preview.md).
+
 # Grand Jeu MilAura : landing live, reprise sur les dix visuels organiques
 
 Date : 2026-09-09 16:32 CEST
