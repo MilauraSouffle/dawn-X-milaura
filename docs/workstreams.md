@@ -1,3 +1,21 @@
+## Conseils de Karine dans les bandes de reassurance du 2026-09-10
+
+- Proprietaire : Codex, GO explicite de Patrice du 2026-09-10 sur la formulation `Karine vous conseille 6j/7`.
+- Branche : `codex/milaura-karine-trust-copy-20260910`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/karine-trust-copy-20260910`, base integration `2011f3a4`.
+- Perimetre reserve : `sections/milaura-all-jewelry-landing.liquid`, `sections/milaura-stone-choice-landing.liquid`, `sections/milaura-catalogue-hub.liquid`, `templates/collection.milaura-all-jewelry.json`, `templates/page.milaura-bijoux-pierre.json`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json` et documentation propre au lot. Les fiches produit restent hors perimetre.
+- Direction : remplacer les formulations generiques `Service humain...` par `Karine vous conseille 6j/7` dans les quatre hubs et dans les valeurs par defaut correspondantes.
+- Themes : preview `200974958939`, puis public `190430282075` apres GO live explicite de Patrice le 2026-09-10. Trois dependances visuelles canoniques et inchangees de la landing Tous les bijoux ont ete ajoutees uniquement au theme prive pour une recette fidele.
+- Etat au 2026-09-10 10:45 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source et integration canonique alignees au commit fonctionnel `2f3345fd`. Le preflight a detecte puis preserve le filtrage live des produits indisponibles et l onglet mariage ouvert par defaut. Sept fichiers exacts deployes sur `190430282075`, pullback `7/7` identique. QA publique sur les quatre pages a `390` et `1440` px : `Karine vous conseille 6j/7` visible une fois, ancien texte absent, theme public confirme, aucun debordement et aucune erreur navigateur. Reservation liberee. [Checkpoint](checkpoints/2026-09-10-0905-karine-trust-copy-preview.md).
+
+## Profondeur mobile du choix par pierre du 2026-09-09
+
+- Proprietaire : Codex, retour direct de Patrice du 2026-09-09 apres validation live de la V5.
+- Branche : `codex/milaura-stone-choice-mobile-depth-20260909`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/stone-choice-mobile-depth-20260909`, base integration `fcfe08fd`.
+- Perimetre reserve : `sections/milaura-stone-choice-landing.liquid`, `assets/milaura-stone-choice-landing.css`, `templates/page.milaura-bijoux-pierre.json`, `scripts/build_stone_landings.py`, tests et documentation du lot. Aucun Hero, produit, collection, prix, stock, fiche pierre ou autre page.
+- Direction : sur mobile, rail limite a huit cartes illustrees puis repertoire compact de toutes les pierres ; desktop conserve les trente-neuf cartes. Une selection courte de quatre bijoux et un lien vers Tous les bijoux ferment la page avant le footer.
+- Theme de recette : preview `200974958939`. Theme public : `190430282075` apres GO explicite de Patrice le 2026-09-10.
+- Etat au 2026-09-10 08:40 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source alignee et integration canonique poussee au commit `4d7df8a3`. Trois fichiers exacts deployes sur le live avec preflight conforme et pullback `3/3` identique. Public 390 et 1440 px : huit cartes mobiles, trente-neuf liens dans le repertoire compact, trente-neuf cartes bureau, quatre creations, titre `Nos plus belles créations du moment`, CTA `Voir tous les bijoux`, zero debordement et journal navigateur vide. Reservation liberee. [Checkpoint](checkpoints/2026-09-09-1604-stone-choice-mobile-depth-preview.md).
+
 ## Refonte du choix par pierre du 2026-09-09
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-09 pour remplacer la composition de `/pages/bijoux-par-pierre` par un fork visuel de la landing `/collections/bijoux-pierres-naturelles`.
@@ -50,7 +68,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-09 13:30 CEST
+Derniere mise a jour : 2026-09-10 08:40 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -77,6 +95,9 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 - Perimetre reserve : nouvelle section et nouveau template de page pour le concours, assets exclusivement lies au concours, variante reversible du bloc newsletter de `sections/milaura-footer.liquid`, configuration `sections/footer-group.json`, mode compact du consentement limite au template concours dans `layout/theme.liquid`, `snippets/milaura-cookie-consent.liquid` et `assets/milaura-cookie-consent.css`, strategie et reglement dates du lot.
 - Etat au 2026-09-08 a 17:55 CEST : LIVE TECHNIQUE, OUVERT POUR LES PERMALIENS SOCIAUX. GO visuel V1 et conditions commerciales confirmes explicitement par Patrice le 2026-09-08. Source et branche d'integration alignees sur `d7fcd4a3`. Dix-sept fichiers pousses de facon ciblee sur le theme live `190430282075`, puis pullback 17/17 conforme ; Shopify ajoute seulement son commentaire standard au template JSON. Page Admin visible `168261681499`, template `milaura-concours-10-jours`, URL publique `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux`. Ouverture automatique le 2026-09-08 a 20:00, fermeture le 2026-09-18 a 19:59, tirage le 2026-09-19 a 12:00. Footer live sur le mode concours et consentement compact limite a cette page. HTTP 200, theme public `190430282075`, canonical, H1, SEO, dix cadeaux, reglement complet et footer verifies ; QA visuelle publique desktop et mobile 390 px conforme. Aucune campagne Meta, depense, publication Instagram, Facebook, TikTok, Snapchat, email ou action Pinterest executee. Les deux permaliens des publications principales restent a injecter apres leur publication.
 - Etat au 2026-09-08 a 18:10 CEST : lancement reporte d'un jour sur demande explicite de Patrice. Nouvelle ouverture le 2026-09-09 a 20:00, fermeture le 2026-09-19 a 19:59, tirage le 2026-09-20 a 12:00. Aucun autre changement de campagne ou de creation autorise aujourd'hui.
+- Etat au 2026-09-09 a 15:55 CEST : chantier REOUVERT par Patrice pour simplification de la landing et declinaisons sociales. Perimetre reserve : `sections/milaura-contest-10-days.liquid`, `templates/page.milaura-concours-10-jours.json`, `snippets/milaura-contest-rules.liquid`, les deux reglages concours du footer, le reglement et les assets exclusivement lies au concours. Master 16:9 nacre valide visuellement ; exports 4:5 et 9:16 en production. Aucune publication sociale, depense Meta ou nouvelle mise en ligne executee a ce stade.
+- Etat au 2026-09-09 a 16:15 CEST : PREVIEW V2 PRETE, EN ATTENTE DU GO VISUEL DE PATRICE. Le master 16:9 et les declinaisons 4:5 et 9:16 sont finalises. La landing simplifiee, ses deux onglets, les dix cartes produits, le reglement synchronise et le footer concours ont ete pousses uniquement sur le theme prive `201111306587`. QA desktop et mobile 390 px conforme ; onglets, grille et footer verifies dans le navigateur. Pullback conforme sur 6 fichiers sur 7, le template JSON ne differant que par le commentaire standard ajoute par Shopify. Le theme live `190430282075` n'a pas ete modifie pendant cette reprise. Aucune publication sociale ni depense Meta n'a ete executee.
+- Etat au 2026-09-09 a 16:32 CEST : FERME, INTEGRE ET LIVE VERIFIE. Patrice a donne le GO explicite. Source `9fb4b44c`, integration `2e8776c4`, sept fichiers pousses de facon ciblee sur le theme live `190430282075`, pullback 7/7 conforme. Page publique HTTP 200, hero desktop/mobile, onglets, dix cadeaux, reglement et footer verifies ; ancienne phrase restrictive absente. Aucune publication sociale ni depense Meta executee. Camilla reprend la strategie et les textes avec Karine ; prochaine session Codex reservee aux dix visuels organiques quotidiens. Pinterest exclu. [Handoff live](checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md).
 
 ### Lien Pinterest du footer du 2026-09-07
 

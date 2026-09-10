@@ -1,3 +1,27 @@
+# Choix par pierre : profondeur mobile live et lot ferme
+
+Date : 2026-09-10 08:40 CEST
+
+Statut : `VALIDE PAR PATRICE, INTEGRE, POUSSE ET LIVE VERIFIE`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-09-1604-stone-choice-mobile-depth-preview.md. La nouvelle profondeur mobile du choix par pierre est deja live sur le theme 190430282075 et verifiee. Ne redeploie pas ces trois fichiers par deduction. La page montre huit grandes cartes sur mobile, puis les trente-neuf pierres dans un repertoire compact, et quatre creations avant le footer. Le bureau conserve les trente-neuf cartes en grille. Toute nouvelle iteration repart en lecture seule du storefront public et de origin/codex/milaura-integration.
+```
+
+Integration fonctionnelle `4d7df8a3`, pullback Shopify `3/3` identique et QA publique 390/1440 conforme. Aucun produit, stock, prix, collection, fiche pierre, Admin ou Ads modifie. [Checkpoint complet](checkpoints/2026-09-09-1604-stone-choice-mobile-depth-preview.md).
+
+# Grand Jeu MilAura : landing live, reprise sur les dix visuels organiques
+
+Date : 2026-09-09 16:32 CEST
+
+Statut : `LANDING V2 LIVE ET VERIFIEE ; CREATIONS QUOTIDIENNES A PRODUIRE`
+
+```text
+Reprends le Grand Jeu MilAura depuis docs/checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md. La landing V2 est deja live et verifiee sur le theme 190430282075, source 9fb4b44c et integration 2e8776c4. Ne redeploie pas la page par deduction. Commence en lecture seule, puis produis avec Patrice les dix visuels organiques quotidiens, un par cadeau du jour, en conservant la direction nacre, prune et or du master valide. Camilla et Karine gerent la strategie et les textes des publications ; ne les ecrase pas. Pinterest est exclu. Les deux publications principales Meta ne sont pas encore publiees : une fois leurs permaliens disponibles, remplacer les CTA de profils de la landing par ces liens dans un lot cible. Verifier ou aligner le prix public de la bague du jour 2 a 11 EUR avant diffusion commerciale. Aucun Ads ni budget media sans GO explicite.
+```
+
+La page publique est `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux`. Elle contient le bento responsive, les conditions, le reglement en quatorze articles, les dix cartes cliquables et le footer concours. Le live a ete controle par pullback 7/7, HTTP 200 et QA navigateur desktop/mobile. Aucune publication sociale ou depense n'a ete executee par Codex. [Checkpoint complet](checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md).
+
 # Handoff Hero accueil mode MilAura : mission terminee
 
 Date : 2026-09-09 13:26 CEST

@@ -149,21 +149,7 @@
                   {%- capture correspondence_cards -%}
                     {%- if correspondence_collection != blank and correspondence_collection.products_count > 0 -%}
                       {%- for selected_product in correspondence_collection.products -%}
-                        <div class="milaura-hub__product" role="listitem">
-                          {% render 'milaura-card-product',
-                            card_product: selected_product,
-                            img_loading: 'lazy',
-                            show_vendor: false,
-                            show_badges: section.settings.show_badges,
-                            show_secondary_image: true,
-                            force_bestseller_badge: false
-                          %}
-                          {% render 'milaura-editorial-purchase', product: selected_product %}
-                        </div>
-                      {%- endfor -%}
-                    {%- elsif correspondence_products != blank -%}
-                      {%- for selected_product in correspondence_products -%}
-                        {%- if selected_product != blank -%}
+                        {%- if selected_product.available or hub_theme != 'wedding' -%}
                           <div class="milaura-hub__product" role="listitem">
                             {% render 'milaura-card-product',
                               card_product: selected_product,
@@ -175,6 +161,24 @@
                             %}
                             {% render 'milaura-editorial-purchase', product: selected_product %}
                           </div>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- elsif correspondence_products != blank -%}
+                      {%- for selected_product in correspondence_products -%}
+                        {%- if selected_product != blank -%}
+                          {%- if selected_product.available or hub_theme != 'wedding' -%}
+                            <div class="milaura-hub__product" role="listitem">
+                              {% render 'milaura-card-product',
+                                card_product: selected_product,
+                                img_loading: 'lazy',
+                                show_vendor: false,
+                                show_badges: section.settings.show_badges,
+                                show_secondary_image: true,
+                                force_bestseller_badge: false
+                              %}
+                              {% render 'milaura-editorial-purchase', product: selected_product %}
+                            </div>
+                          {%- endif -%}
                         {%- endif -%}
                       {%- endfor -%}
                     {%- endif -%}
@@ -194,6 +198,13 @@
                       {%- if block.settings.body != blank -%}<div class="milaura-hub__panel-body rte">{{ block.settings.body }}</div>{%- endif -%}
                       {%- if correspondence_cards == blank and block.settings.link != blank and block.settings.link_label != blank -%}
                         <a class="milaura-hub__text-link" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+                      {%- elsif correspondence_cards == blank and hub_theme == 'wedding' -%}
+                        <div class="milaura-hub__empty">
+                          <p>Nous n’avons pas encore sélectionné de bijou pour ces noces.</p>
+                          <a class="milaura-hub__text-link" href="{{ routes.root_url }}pages/bijoux-par-pierre">
+                            Voir les bijoux disponibles <span aria-hidden="true">→</span>
+                          </a>
+                        </div>
                       {%- endif -%}
                     </div>
 
@@ -357,7 +368,7 @@
     {"type": "text", "id": "hero_cta_label", "label": "Action du Hero", "default": "Découvrir"},
     {"type": "text", "id": "trust_1", "label": "Engagement 1", "default": "Pierres naturelles sélectionnées"},
     {"type": "text", "id": "trust_2", "label": "Engagement 2", "default": "Préparé dans notre atelier à Metz"},
-    {"type": "text", "id": "trust_3", "label": "Engagement 3", "default": "Service humain avant et après l'achat"},
+    {"type": "text", "id": "trust_3", "label": "Engagement 3", "default": "Karine vous conseille 6j/7"},
     {"type": "text", "id": "guide_eyebrow", "label": "Signature du guide"},
     {"type": "text", "id": "guide_heading", "label": "Titre du guide"},
     {"type": "textarea", "id": "guide_text", "label": "Introduction du guide"},
