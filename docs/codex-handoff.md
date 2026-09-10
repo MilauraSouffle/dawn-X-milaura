@@ -273,3 +273,14 @@ Le checkout principal reste volontairement sale avec des changements concurrents
 - Inventaire : `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md` ; retrait legacy reversible, nouveaux IDs et DRAFT volontaires proteges.
 - Template 1 marketing : reprendre depuis `docs/checkpoints/2026-09-01-1415-template-1-marketing-live-handoff.md` uniquement sur besoin precis.
 - Mon Ecrin, Pinterest, SEO et acquisition conservent leurs propres gates et checkpoints.
+# Handoff architecture SEO commerciale : live vérifié
+
+Date : 2026-09-10 10:52 CEST
+
+Statut : `SEO COMMERCIAL LIVE VERIFIE, ACTIFS PROPRIETAIRES A OUVRIR DANS UNE SESSION DEDIEE`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-10-1052-seo-commercial-live-handoff.md. Le lot SEO commercial est terminé et live : 15 collections existantes conformes, 3 pages SEO, 4 articles, 17 occurrences de liens réparées, 2 redirections en un saut, 9 collections commerciales vérifiées et 9 liens contextuels publics depuis le guide de choix. Ne rejoue aucune mutation Shopify par déduction. Ouvre une branche et un worktree dédiés pour les actifs propriétaires. Utilise les skills frontend-design, impeccable et onora-copywriting. Commence par l'architecture et les données du sélecteur interactif de pierre et de la matrice eau, soleil, sel, puis traite le calendrier des pierres de naissance, l'atlas photographique des pierres et imitations, et enfin le protocole de l'étude annuelle. Mobile-first, photographie réelle, accessibilité, données sourcées et performance sont obligatoires. Ne touche pas aux produits, stocks, handles, prix, preuve sociale ou Ads. Sépare PASS technique, validation visuelle Patrice, intégration et live ; ne publie rien sans nouveau GO explicite.
+```
+
+[Checkpoint complet](checkpoints/2026-09-10-1052-seo-commercial-live-handoff.md).

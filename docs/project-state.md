@@ -656,3 +656,6 @@ Deploiement homepage du 2026-08-12 : `templates/index.json` uniquement sur le th
 - `docs/prompts/2026-08-14-hero-destination-da-reprise.md`
 - `docs/reference/MILAURA-DIRECTION-ARTISTIQUE-2026.md`
 - `docs/superpowers/specs/2026-08-12-milaura-bandeau-hero-immersif.md`
+# Architecture SEO commerciale : live vérifié le 2026-09-10 10:52 CEST
+
+Le lot SEO commercial est live dans Shopify. Quinze collections existantes correspondent au manifeste, trois pages et quatre articles sont enregistrés, les 17 occurrences de liens mal encodées ont disparu, la redirection Sauge ne fait plus qu'un saut, et neuf nouvelles collections `type x pierre` répondent en `200` avec canonical, H1, contenu distinct et assortiment public vérifiés. L'ancienne page Bracelet Améthyste est masquée, absente du sitemap pages et redirigée en une `301` vers la nouvelle collection. Le guide de choix apporte un lien public vers chacune des neuf cellules. Les décisions produit historiques et le maillage visuel depuis certains templates parents restent séparés. Aucun produit, stock, prix, média, preuve sociale ou Ads modifié. [Checkpoint et prompt de reprise](checkpoints/2026-09-10-1052-seo-commercial-live-handoff.md).
