@@ -89,7 +89,7 @@
           -%}
 
           {%- if stone_link != blank and block.settings.image_url != blank and block.settings.heading != blank -%}
-            <li class="milaura-stone-choice__item" {{ block.shopify_attributes }}>
+            <li class="milaura-stone-choice__item{% if forloop.index > section.settings.mobile_featured_count %} is-mobile-secondary{% endif %}" {{ block.shopify_attributes }}>
               <a class="milaura-stone-choice__card" href="{{ stone_link }}">
                 <div class="milaura-stone-choice__card-media">
                   {% # theme-check-disable RemoteAsset %}
@@ -119,14 +119,33 @@
         {%- endfor -%}
       </ul>
 
-      {%- if section.settings.jewelry_link != blank and section.settings.jewelry_link_label != blank -%}
-        <div class="milaura-stone-choice__jewelry-path">
-          <span>{{ section.settings.jewelry_link_intro | escape }}</span>
-          <a class="milaura-stone-choice__text-link" href="{{ section.settings.jewelry_link }}">
-            {{ section.settings.jewelry_link_label | escape }}
-          </a>
-        </div>
-      {%- endif -%}
+      <details class="milaura-stone-choice__all-stones">
+        <summary>
+          <span>{{ section.settings.all_stones_label | escape }}</span>
+          <span class="milaura-stone-choice__all-stones-count">{{ section.blocks.size }} pierres</span>
+        </summary>
+
+        <ul class="milaura-stone-choice__all-stones-list" aria-label="Toutes les pierres">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign stone_collection = block.settings.collection
+              assign stone_link = block.settings.link
+              if stone_link == blank and stone_collection != blank
+                assign stone_link = stone_collection.url
+              endif
+              if section.settings.preview_mode and block.settings.preview_link != blank
+                assign stone_link = block.settings.preview_link
+              endif
+            -%}
+
+            {%- if stone_link != blank and block.settings.heading != blank -%}
+              <li>
+                <a href="{{ stone_link }}">{{ block.settings.heading | escape }}</a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </details>
     </div>
   </section>
 </div>
@@ -150,9 +169,8 @@
     { "type": "text", "id": "trust_3", "label": "Engagement 3", "default": "Service humain 6j/7" },
     { "type": "text", "id": "stones_heading", "label": "Titre des pierres", "default": "Choisissez votre pierre" },
     { "type": "text", "id": "stones_text", "label": "Introduction des pierres", "default": "Choisissez votre bijou ou votre accessoire en commençant par la pierre que vous recherchez. À moins que ce soit elle qui vous recherche…" },
-    { "type": "text", "id": "jewelry_link_intro", "label": "Introduction du lien bijoux", "default": "Vous préférez commencer par un bijou ?" },
-    { "type": "text", "id": "jewelry_link_label", "label": "Lien bijoux", "default": "Choisir par bijou" },
-    { "type": "url", "id": "jewelry_link", "label": "Destination bijoux" },
+    { "type": "range", "id": "mobile_featured_count", "label": "Cartes visibles sur mobile", "min": 4, "max": 12, "step": 1, "default": 8 },
+    { "type": "text", "id": "all_stones_label", "label": "Accès à toutes les pierres", "default": "Voir toutes les pierres" },
     { "type": "checkbox", "id": "preview_mode", "label": "Utiliser les liens de recette privée", "default": false }
   ],
   "blocks": [
