@@ -1,3 +1,12 @@
+## Acces aux trois guides pierre du 2026-09-12
+
+- Proprietaire : Codex, choix direct de Patrice le 2026-09-12 de regrouper les trois nouvelles pages dans le menu `Guides`.
+- Branche : `codex/milaura-owned-assets-20260910`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/owned-assets-20260910`, base source et integration `e43c0636`.
+- Perimetre reserve : `snippets/milaura-nav-curated-links.liquid` et documentation propre au correctif. Le menu `Guides` desktop et mobile partage ce snippet.
+- Direction validee : ajouter `Trouver votre pierre`, `Entretien des pierres` et `Atlas des pierres` ensemble dans `Guides`, sans remplacer le diagnostic existant ni modifier les autres menus, le footer, les pages, les produits ou les Ads.
+- Theme public : `190430282075`, deploiement cible du seul snippet apres controles locaux, puis pullback et QA publique desktop/mobile.
+- Etat au 2026-09-12 19:23 CEST : OUVERT. Reservation du fichier enregistree avant edition.
+
 ## Actifs proprietaires pierre du 2026-09-10
 
 - Proprietaire : Codex, session de reprise demandee par Patrice le 2026-09-10 depuis le handoff SEO commercial ferme.
