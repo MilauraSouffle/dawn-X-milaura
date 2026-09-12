@@ -5,7 +5,7 @@
 - Perimetre reserve : `snippets/milaura-nav-curated-links.liquid` et documentation propre au correctif. Le menu `Guides` desktop et mobile partage ce snippet.
 - Direction validee : ajouter `Trouver votre pierre`, `Entretien des pierres` et `Atlas des pierres` ensemble dans `Guides`, sans remplacer le diagnostic existant ni modifier les autres menus, le footer, les pages, les produits ou les Ads.
 - Theme public : `190430282075`, deploiement cible du seul snippet apres controles locaux, puis pullback et QA publique desktop/mobile.
-- Etat au 2026-09-12 19:23 CEST : OUVERT. Reservation du fichier enregistree avant edition.
+- Etat au 2026-09-12 19:29 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Les trois liens ouvrent les bonnes pages depuis `Guides` sur desktop et mobile. Commit fonctionnel `9acd623a`, push cible du seul snippet sur `190430282075`, pullback identique et journal navigateur vide. Footer, diagnostic, autres menus, pages et Ads inchanges. [Checkpoint](checkpoints/2026-09-12-1929-guides-menu-stone-pages-live.md).
 
 ## Actifs proprietaires pierre du 2026-09-10
 
@@ -87,7 +87,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-12 19:12 CEST
+Derniere mise a jour : 2026-09-12 19:29 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
