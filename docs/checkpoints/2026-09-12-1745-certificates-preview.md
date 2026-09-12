@@ -2,7 +2,7 @@
 
 Date : 2026-09-12 17:45 CEST
 
-Statut : preview privee techniquement validee. Revue de finition terminee avec verdict `ship`. Les gates visuelle et editoriale, Shopify Admin, integration Git et publication live restent distinctes et ouvertes.
+Statut : preview privee techniquement validee. Bandeau valide par Patrice le 2026-09-12 apres correction rose. Le GO final de la landing, Shopify Admin, l'integration Git et la publication live restent distincts et ouverts.
 
 ## Objectif et portee
 
@@ -21,7 +21,7 @@ Statut : preview privee techniquement validee. Revue de finition terminee avec v
 ## Etat Git et Shopify
 
 - Branche : `codex/milaura-certificates-rewards-20260910`.
-- Commits du lot : `7d8dffee`, `d77c0e46` et `d7f00856`.
+- Commits du lot avant la correction du 2026-09-12 a 18:02 CEST : `7d8dffee`, `d77c0e46`, `d7f00856` et `caac2604`.
 - Les finitions finales issues de la revue et le commentaire standard ajoute par Shopify au template JSON sont commites dans `d7f00856`.
 - Theme prive : `201115566427`.
 - URL temporaire de preview : `/pages/contact-milaura?view=milaura-certificats`.
@@ -54,12 +54,13 @@ Le push est reste cible sur le theme prive. Le pullback confirme la parite des d
 - Non-regression : accueil et PDP controles en mobile et desktop. La preuve sociale PDP est inchangee.
 - La revue de finition a detecte un effet de `ghost-card` autour du rapport principal. Le fond et l'ombre du cadre ont ete retires, puis le H1 mobile a ete corrige pour eviter la cassure d'un mot.
 - Apres correction et seconde lecture mobile et desktop, verdict final : `ship` pour la preview privee.
+- Retour Patrice du 2026-09-12 a 18:02 CEST : bandeau valide, fond passe de l'aigue-marine au quartz rose poudre canonique. Le texte public nomme maintenant `l'un de nos fournisseurs` sans exposer son nom commercial a l'ouverture. Push prive cible et pullback 2 sur 2 identique. Controle a 390 px : H1 sur deux lignes et aucun debordement.
 
 Captures : `output/playwright/certificates-preview-2026-09-12/`.
 
 ## Gates et risques restants
 
-1. GO visuel et editorial explicite de Patrice.
+1. GO visuel et editorial final de la landing par Patrice ; le bandeau est deja valide.
 2. Gate Shopify Admin pour la destination permanente.
 3. Integration du lot et commit des finitions finales.
 4. GO live explicite avant toute publication sur le theme public.
