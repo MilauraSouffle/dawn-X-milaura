@@ -2,7 +2,7 @@
 
 Date : 2026-09-12 17:45 CEST
 
-Statut : preview privee techniquement validee apres protection des documents. Bandeau valide par Patrice le 2026-09-12 apres correction rose. A 18:44 CEST, les quatre documents ont ete remplaces par des apercus definitivement floutes a la demande du fournisseur. Le GO final de la landing, Shopify Admin, l'integration Git et la publication live restent distincts et ouverts.
+Statut : preview privee techniquement validee apres protection des documents. Bandeau valide par Patrice le 2026-09-12 apres correction rose. A 18:44 CEST, les quatre documents ont ete remplaces par des apercus definitivement floutes a la demande du fournisseur. La page et le theme prive ne servent plus les scans lisibles. La purge de l'ancien commit sur la branche GitHub publique exige cependant un GO destructif distinct. Le GO final de la landing, Shopify Admin, l'integration Git et la publication live restent distincts et ouverts.
 
 ## Objectif et portee
 
@@ -69,6 +69,7 @@ Captures : `output/playwright/certificates-preview-2026-09-12/`.
 
 Risques non leves :
 
+- le depot GitHub est public et l'ancien commit `d77c0e46` de la seule branche `codex/milaura-certificates-rewards-20260910` contient encore les quatre scans lisibles dans son historique. Une reecriture ciblee de cette branche distante est necessaire avant de declarer leur exposition publique totalement traitee ;
 - la landing floutee doit recevoir le GO visuel final de Patrice avant toute integration ;
 - l'absence de mapping entre les rapports, les lots fournisseurs et les produits MilAura interdit toute attribution individuelle.
 
