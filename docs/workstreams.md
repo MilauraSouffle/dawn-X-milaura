@@ -1,11 +1,11 @@
-## Conseils de Karine dans les bandes de reassurance du 2026-09-10
+## Conseils de Karine dans les bandes de reassurance, cloture du 2026-09-12
 
 - Proprietaire : Codex, GO explicite de Patrice du 2026-09-10 sur la formulation `Karine vous conseille 6j/7`.
 - Branche : `codex/milaura-karine-trust-copy-20260910`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/karine-trust-copy-20260910`, base integration `2011f3a4`.
 - Perimetre reserve : `sections/milaura-all-jewelry-landing.liquid`, `sections/milaura-stone-choice-landing.liquid`, `sections/milaura-catalogue-hub.liquid`, `templates/collection.milaura-all-jewelry.json`, `templates/page.milaura-bijoux-pierre.json`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json` et documentation propre au lot. Les fiches produit restent hors perimetre.
 - Direction : remplacer les formulations generiques `Service humain...` par `Karine vous conseille 6j/7` dans les quatre hubs et dans les valeurs par defaut correspondantes.
 - Themes : preview `200974958939`, puis public `190430282075` apres GO live explicite de Patrice le 2026-09-10. Trois dependances visuelles canoniques et inchangees de la landing Tous les bijoux ont ete ajoutees uniquement au theme prive pour une recette fidele.
-- Etat au 2026-09-10 10:45 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source et integration canonique alignees au commit fonctionnel `2f3345fd`. Le preflight a detecte puis preserve le filtrage live des produits indisponibles et l onglet mariage ouvert par defaut. Sept fichiers exacts deployes sur `190430282075`, pullback `7/7` identique. QA publique sur les quatre pages a `390` et `1440` px : `Karine vous conseille 6j/7` visible une fois, ancien texte absent, theme public confirme, aucun debordement et aucune erreur navigateur. Reservation liberee. [Checkpoint](checkpoints/2026-09-10-0905-karine-trust-copy-preview.md).
+- Etat au 2026-09-12 18:02 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source et integration canonique alignees au commit fonctionnel `2f3345fd`, cloture initiale `a41129e0`. Le preflight a detecte puis preserve le filtrage live des produits indisponibles et l onglet mariage ouvert par defaut. Sept fichiers exacts deployes sur `190430282075`, pullback `7/7` identique. QA publique sur les quatre pages a `390` et `1440` px : `Karine vous conseille 6j/7` visible une fois, ancien texte absent, theme public confirme, aucun debordement et aucune erreur navigateur. Relecture HTML publique renouvelee le 2026-09-12 avec le meme resultat. Reservation theme liberee. [Handoff final](checkpoints/2026-09-12-1802-karine-trust-copy-live-handoff.md).
 
 ## Profondeur mobile du choix par pierre du 2026-09-09
 
@@ -68,7 +68,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-10 08:40 CEST
+Derniere mise a jour : 2026-09-12 18:02 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -79,6 +79,13 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-integration` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
 
 ## Sessions declarees
+
+### Handoff final des conseils de Karine du 2026-09-12
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-12 pour fermer et documenter le lot `Karine vous conseille 6j/7` deja live.
+- Branche : `codex/milaura-karine-trust-handoff-20260912`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/karine-trust-handoff-20260912`, base `origin/codex/milaura-integration` au commit `bf009caf`.
+- Perimetre reserve : `docs/checkpoints/2026-09-12-1802-karine-trust-copy-live-handoff.md`, `docs/project-state.md`, `docs/codex-handoff.md`, `docs/workstreams.md` et note Obsidian de cloture. Aucun fichier theme, produit, Shopify Admin, theme prive ou theme public.
+- Etat au 2026-09-12 18:02 CEST : FERME. Checkpoint, etat projet, handoff courant et note Obsidian ecrits puis verifies. Aucun fichier theme ou Shopify modifie ; reservation documentaire liberee apres integration. Le checkout principal sale reste intouche.
 
 ### Dates publiques du Grand Jeu MilAura du 2026-09-12
 
