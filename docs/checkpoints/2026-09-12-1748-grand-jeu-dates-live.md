@@ -59,4 +59,3 @@ SHA-256 du pullback :
 - base : `origin/codex/milaura-integration` au commit `a41129e0` ;
 - le checkout principal sale n a pas ete modifie ;
 - aucune publication sociale, Story, commentaire, publicite, budget, produit, prix ou stock modifie.
-
