@@ -1,4 +1,4 @@
-> Grand Jeu MilAura, 2026-09-12 17:48 CEST : correction live terminee. Heros, texte alternatif, periode visible et footer affichent `09 au 19 septembre`. Les participations restent closes le 18 a 23 h 59 et le tirage reste le 19 a 12 h, ce qui est explicite sur la landing. Six fichiers cibles publies sur `190430282075`, pullback et HTTP publics conformes. Aucun reseau social ni budget modifie. Source `75410371` sur `codex/milaura-contest-date-20260912`. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
+> Grand Jeu MilAura, 2026-09-12 17:48 CEST : correction live terminee. Heros, texte alternatif, periode visible et footer affichent `09 au 19 septembre`. Les participations restent closes le 18 a 23 h 59 et le tirage reste le 19 a 12 h, ce qui est explicite sur la landing. Six fichiers cibles publies sur `190430282075`, pullback et HTTP publics conformes. Aucun reseau social ni budget modifie. Source fonctionnelle `75410371`, integration distante `e3ccc0aa`. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
 
 # Choix par pierre : profondeur mobile live et lot ferme
 

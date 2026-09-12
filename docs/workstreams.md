@@ -86,7 +86,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 - Branche : `codex/milaura-contest-date-20260912`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/contest-date-20260912`, base `origin/codex/milaura-integration` au commit `a41129e0`.
 - Perimetre reserve : `assets/milaura-grand-jeu-2026-hero-desktop.webp`, `assets/milaura-grand-jeu-2026-hero-mobile.webp`, `sections/milaura-contest-10-days.liquid`, `templates/page.milaura-concours-10-jours.json`, `sections/milaura-footer.liquid`, `sections/footer-group.json` et documentation propre au lot.
 - Regle de coherence : periode generale affichee du 9 au 19 septembre ; participations toujours fermees le 18 septembre a 23 h 59 ; tirage toujours le 19 septembre a 12 h. Le reglement ne change donc pas.
-- Etat au 2026-09-12 17:48 CEST : LIVE VERIFIE sur `190430282075`. Six fichiers cibles publies puis relus par pullback ; page publique et deux heros CDN conformes. Source `75410371` poussee. Checkout principal sale preserve. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
+- Etat au 2026-09-12 17:48 CEST : LIVE VERIFIE sur `190430282075`. Six fichiers cibles publies puis relus par pullback ; page publique et deux heros CDN conformes. Source fonctionnelle `75410371`, integration distante alignee sur `e3ccc0aa`. Checkout principal sale preserve. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
 
 ### Hero d accueil mode du 2026-09-08
 
