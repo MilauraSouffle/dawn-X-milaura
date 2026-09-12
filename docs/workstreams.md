@@ -3,10 +3,10 @@
 - Proprietaire : Codex, session de reprise demandee par Patrice le 2026-09-10 depuis le handoff SEO commercial ferme.
 - Branche : `codex/milaura-owned-assets-20260910`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/owned-assets-20260910`, base `58f3c14f` alignee sur `origin/codex/milaura-integration` par merge `ca3173f0`.
 - Perimetre reserve : selecteur interactif de pierre, matrice eau/soleil/sel, atlas photographique et reperes sur les imitations ; nouveaux fichiers `data/milaura-owned-stones.json`, `scripts/build_owned_stone_assets.py`, `assets/milaura-owned-stone-guides.*`, `assets/milaura-hero-editorial-owned-*.webp`, `sections/milaura-owned-*`, `snippets/milaura-owned-*`, `templates/page.milaura-*.json`, `PRODUCT.md`, tests et documentation propres au lot. Extension autorisee le 2026-09-12 aux deux assets existants `assets/milaura-hero-editorial-hub-birthstone-*.webp` afin de conserver le Hero valide sur la page publique canonique `/pages/pierres-de-naissance`.
-- Exclusions : produits, stocks, handles, prix, medias Shopify existants, preuve sociale, catalogue en revue, Ads, pages ou collections Admin et fichiers reserves par les autres sessions. Les photographies Shopify existantes sont reutilisees en lecture seule ; Karine reste conseil et expertise, jamais mannequin.
-- Theme de recette réservé : `200974958939`, thème non publié anciennement consacré à Toutes les pierres et libéré par les lots fermés. Le live `190430282075` reste interdit sans nouveau GO explicite.
+- Exclusions : produits, stocks, prix, medias Shopify existants, preuve sociale, catalogue en revue, Ads, toute autre page ou collection Admin et fichiers reserves par les autres sessions. Les trois pages Admin du lot ont ete creees sur GO explicite. Les photographies Shopify existantes sont reutilisees en lecture seule ; Karine reste conseil et expertise, jamais mannequin.
+- Theme de recette : `200974958939`, theme non publie. Theme public : `190430282075` apres GO integration et live explicite de Patrice le 2026-09-12.
 - Gates : architecture et sources, implementation locale, PASS technique, preview Shopify privee, validation visuelle Patrice, integration puis live sur GO explicites distincts. Aucun deploiement public par deduction.
-- Etat au 2026-09-12 18:52 CEST : OUVERT, PASS TECHNIQUE ET PREVIEW PRIVEE CORRIGEE. La nouvelle page Pierres de naissance et la page Etude annuelle restent retirees. Apres retour visuel de Patrice, le Hero de la page canonique montre maintenant trois bracelets MilAura distincts sur desktop et dans une recomposition mobile dediee. Pullback des deux assets corriges : 2 sur 2 identiques. QA navigateur 390 et 1440 px conforme, H1 unique, douze mois, aucun debordement. Le reste du lot est explicitement conserve. Theme live `190430282075` intact ; GO visuel final, Admin, integration et live restent separes. [Correctif Hero](checkpoints/2026-09-12-1852-birthstone-hero-three-bracelets-private-preview.md). [Périmètre final](checkpoints/2026-09-12-1838-owned-stone-scope-final-private-preview.md).
+- Etat au 2026-09-12 19:12 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Trois pages visibles creees avec leurs handles et templates, Hero canonique Pierres de naissance a trois bracelets, 20 fichiers cibles sur `190430282075`, pullback `20/20` identique. QA publique 390 et 1440 px : quatre URL `200`, Heroes responsive, H1 uniques, huit pierres dans chaque outil, douze mois, interactions, sitemap, absence de debordement et journal navigateur conformes. La page dupliquee Pierres de naissance et Etude annuelle restent retirees ; le quiz Ads lead-gen reste un chantier distinct. [Checkpoint live](checkpoints/2026-09-12-1912-owned-stone-assets-live.md).
 
 ## Conseils de Karine dans les bandes de reassurance, cloture du 2026-09-12
 
@@ -78,7 +78,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-12 18:02 CEST
+Derniere mise a jour : 2026-09-12 19:12 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
