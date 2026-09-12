@@ -1,3 +1,5 @@
+> Grand Jeu MilAura, 2026-09-12 17:48 CEST : les surfaces marketing de la landing et du footer affichent maintenant la periode generale du 9 au 19 septembre. La phrase visible precise que les participations ferment le 18 a 23 h 59 avant le tirage du 19 a 12 h. Six fichiers cibles sont live sur `190430282075`, pullback conforme et CDN bureau/mobile relu. Source `75410371` poussee sur `codex/milaura-contest-date-20260912`. Checkout principal sale preserve. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
+
 # Grand Jeu MilAura : landing V2 live le 2026-09-09 16:32 CEST
 
 Patrice a valide le master nacre, les declinaisons sociales et la landing simplifiee, puis a donne le GO commit, push et live. La page publique `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux` utilise maintenant le bento en hero, deux onglets accessibles, les dix cartes cadeaux et le reglement synchronise. Le footer annonce `GRAND JEU CONCOURS MILAURA DU 09 AU 18 SEPTEMBRE` avec le CTA `Je participe`.
