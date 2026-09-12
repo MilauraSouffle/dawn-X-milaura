@@ -56,7 +56,7 @@ SHA-256 du pullback :
 - worktree : `/Users/paesano/Documents/MilAura website/_worktrees/contest-date-20260912` ;
 - branche : `codex/milaura-contest-date-20260912` ;
 - commit fonctionnel pousse : `75410371` ;
-- integration distante alignee par fast-forward sur `codex/milaura-integration` au commit documentaire `e3ccc0aa` ;
+- integration distante alignee par fast-forward sur `codex/milaura-integration` ;
 - base : `origin/codex/milaura-integration` au commit `a41129e0` ;
 - le checkout principal sale n a pas ete modifie ;
 - aucune publication sociale, Story, commentaire, publicite, budget, produit, prix ou stock modifie.
