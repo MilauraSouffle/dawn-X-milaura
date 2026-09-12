@@ -1,0 +1,97 @@
+{{ 'milaura-owned-stone-guides.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-owned-stone-guides.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign title_id = 'MilauraOwnedSelectorTitle-' | append: section.id
+  assign form_id = 'MilauraOwnedSelectorForm-' | append: section.id
+-%}
+
+<div class="milaura-owned" data-owned-selector>
+  {% render 'milaura-owned-hero',
+    variant: 'stone-finder',
+    title_id: title_id,
+    heading: section.settings.heading,
+    introduction: section.settings.introduction,
+    note_label: 'Le conseil de Karine :',
+    note_text: section.settings.expert_note,
+    cta_label: 'Choisir mes critères',
+    cta_target: form_id
+  %}
+
+  <section class="milaura-owned__section milaura-owned__shell" aria-label="Sélectionner et comparer les pierres">
+    <div class="milaura-owned-selector__workspace">
+      <form id="{{ form_id }}" class="milaura-owned-selector__form" data-stone-form>
+        <fieldset>
+          <legend>Quelle intention vous accompagne ?</legend>
+          <div class="milaura-owned-selector__choices">
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-all" type="radio" name="intention" value="" checked><label for="{{ form_id }}-intention-all">Sans préférence</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-apaisement" type="radio" name="intention" value="apaisement"><label for="{{ form_id }}-intention-apaisement">Apaisement</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-protection" type="radio" name="intention" value="protection"><label for="{{ form_id }}-intention-protection">Protection</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-confiance" type="radio" name="intention" value="confiance"><label for="{{ form_id }}-intention-confiance">Confiance</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-amour" type="radio" name="intention" value="amour"><label for="{{ form_id }}-intention-amour">Amour et douceur</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-energie" type="radio" name="intention" value="energie"><label for="{{ form_id }}-intention-energie">Énergie</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-expression" type="radio" name="intention" value="expression"><label for="{{ form_id }}-intention-expression">Expression</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-ancrage" type="radio" name="intention" value="ancrage"><label for="{{ form_id }}-intention-ancrage">Ancrage</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-intention-intuition" type="radio" name="intention" value="intuition"><label for="{{ form_id }}-intention-intuition">Intuition</label></span>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Quelle couleur vous attire ?</legend>
+          <div class="milaura-owned-selector__choices">
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-color-all" type="radio" name="color" value="" checked><label for="{{ form_id }}-color-all">Toutes</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-color-violet" type="radio" name="color" value="violet"><label for="{{ form_id }}-color-violet">Violet</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-color-rose" type="radio" name="color" value="rose"><label for="{{ form_id }}-color-rose">Rose</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-color-bleu-clair" type="radio" name="color" value="bleu-clair"><label for="{{ form_id }}-color-bleu-clair">Bleu clair</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-color-bleu-profond" type="radio" name="color" value="bleu-profond"><label for="{{ form_id }}-color-bleu-profond">Bleu profond</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-color-vert" type="radio" name="color" value="vert"><label for="{{ form_id }}-color-vert">Vert</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-color-orange" type="radio" name="color" value="orange"><label for="{{ form_id }}-color-orange">Orange</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-color-noir" type="radio" name="color" value="noir"><label for="{{ form_id }}-color-noir">Noir</label></span>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Quel niveau d'entretien vous convient ?</legend>
+          <div class="milaura-owned-selector__choices">
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-care-all" type="radio" name="care" value="" checked><label for="{{ form_id }}-care-all">Sans préférence</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-care-easy" type="radio" name="care" value="easy"><label for="{{ form_id }}-care-easy">Peu contraignant</label></span>
+            <span class="milaura-owned-selector__choice"><input id="{{ form_id }}-care-delicate" type="radio" name="care" value="delicate"><label for="{{ form_id }}-care-delicate">Plus de précautions</label></span>
+          </div>
+        </fieldset>
+
+        <button class="milaura-owned-selector__reset" type="button" data-stone-reset>Recommencer</button>
+        <noscript><p>Les huit pierres restent consultables sans JavaScript. Le classement interactif nécessite JavaScript.</p></noscript>
+      </form>
+
+      <div class="milaura-owned-selector__results-wrap">
+        <p class="milaura-owned-selector__status" role="status" aria-live="polite" data-stone-status>Toutes les pierres sont affichées.</p>
+        {% render 'milaura-owned-selector-cards' %}
+      </div>
+    </div>
+  </section>
+
+  <section class="milaura-owned__section milaura-owned__shell">
+    <div class="milaura-owned__section-heading">
+      <h2>Comparer sans enfermer votre choix</h2>
+      <p>Les associations proposées appartiennent au territoire de la lithothérapie. Elles donnent des repères, pas un diagnostic. Une couleur, une forme ou un bijou peuvent aussi guider votre choix.</p>
+    </div>
+    <div class="milaura-owned__related">
+      <a class="milaura-owned-link" href="{{ routes.pages_url }}/diagnostic-emotionnel">Faire le diagnostic émotionnel complet</a>
+      <a class="milaura-owned-link" href="{{ routes.pages_url }}/bijoux-par-pierre">Voir toutes les pierres</a>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Sélecteur de pierre",
+  "tag": "section",
+  "class": "section-milaura-owned-stone-selector",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Trouver votre pierre" },
+    { "type": "textarea", "id": "introduction", "label": "Introduction", "default": "Choisissez une intention, une couleur ou un niveau d’entretien. Le sélecteur compare les pierres et vous conduit vers les bijoux disponibles." },
+    { "type": "textarea", "id": "expert_note", "label": "Conseil de Karine", "default": "une pierre peut vous attirer par sa couleur avant sa symbolique. Comparez les deux, puis regardez celle que vous avez envie de porter." }
+  ],
+  "presets": [{ "name": "Sélecteur de pierre" }]
+}
+{% endschema %}

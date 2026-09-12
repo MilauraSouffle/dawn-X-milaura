@@ -1,3 +1,15 @@
+> Grand Jeu MilAura, 2026-09-12 17:48 CEST : correction live terminee. Heros, texte alternatif, periode visible et footer affichent `09 au 19 septembre`. Les participations restent closes le 18 a 23 h 59 et le tirage reste le 19 a 12 h, ce qui est explicite sur la landing. Six fichiers cibles publies sur `190430282075`, pullback et HTTP publics conformes. Aucun reseau social ni budget modifie. Source fonctionnelle `75410371`, integration distante alignee par fast-forward. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
+
+# Handoff final : hubs de choix et conseils de Karine
+
+Date : 2026-09-12 18:02 CEST
+
+Statut : `VALIDE PAR PATRICE, INTEGRE, POUSSE ET LIVE VERIFIE`
+
+La refonte de `/pages/bijoux-par-pierre` est fermee. Le Hero V5 clair, la profondeur mobile limitee a huit cartes, le repertoire compact des trente-neuf pierres et la selection finale de quatre bijoux sont live sur `190430282075`. Les quatre hubs affichent `Karine vous conseille 6j/7` ; une relecture publique du 2026-09-12 confirme la phrase exacte une fois par page, l ancien `Service humain` absent et le theme public attendu. Les fiches produit restent volontairement hors perimetre avec `Équipe disponible 6j/7`.
+
+Reprise uniquement sur regression reproduite ou nouvelle demande explicite. Ne redeployer aucun fichier par deduction et ne reprendre aucun changement du checkout principal sale. Le checkpoint final contient le perimetre, les commits, les preuves, les limites et le prompt de reprise : [2026-09-12-1802-karine-trust-copy-live-handoff.md](checkpoints/2026-09-12-1802-karine-trust-copy-live-handoff.md).
+
 # Choix par pierre : profondeur mobile live et lot ferme
 
 Date : 2026-09-10 08:40 CEST
@@ -297,3 +309,14 @@ Le checkout principal reste volontairement sale avec des changements concurrents
 - Inventaire : `docs/checkpoints/2026-09-04-1738-inventory-legacy-retirement-handoff.md` ; retrait legacy reversible, nouveaux IDs et DRAFT volontaires proteges.
 - Template 1 marketing : reprendre depuis `docs/checkpoints/2026-09-01-1415-template-1-marketing-live-handoff.md` uniquement sur besoin precis.
 - Mon Ecrin, Pinterest, SEO et acquisition conservent leurs propres gates et checkpoints.
+# Handoff architecture SEO commerciale : live vérifié
+
+Date : 2026-09-10 10:52 CEST
+
+Statut : `SEO COMMERCIAL LIVE VERIFIE, ACTIFS PROPRIETAIRES A OUVRIR DANS UNE SESSION DEDIEE`
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-10-1052-seo-commercial-live-handoff.md. Le lot SEO commercial est terminé et live : 15 collections existantes conformes, 3 pages SEO, 4 articles, 17 occurrences de liens réparées, 2 redirections en un saut, 9 collections commerciales vérifiées et 9 liens contextuels publics depuis le guide de choix. Ne rejoue aucune mutation Shopify par déduction. Ouvre une branche et un worktree dédiés pour les actifs propriétaires. Utilise les skills frontend-design, impeccable et onora-copywriting. Commence par l'architecture et les données du sélecteur interactif de pierre et de la matrice eau, soleil, sel, puis traite le calendrier des pierres de naissance, l'atlas photographique des pierres et imitations, et enfin le protocole de l'étude annuelle. Mobile-first, photographie réelle, accessibilité, données sourcées et performance sont obligatoires. Ne touche pas aux produits, stocks, handles, prix, preuve sociale ou Ads. Sépare PASS technique, validation visuelle Patrice, intégration et live ; ne publie rien sans nouveau GO explicite.
+```
+
+[Checkpoint complet](checkpoints/2026-09-10-1052-seo-commercial-live-handoff.md).
