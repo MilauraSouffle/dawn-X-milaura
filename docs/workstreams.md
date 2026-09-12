@@ -8,14 +8,14 @@
 - Gates : architecture et sources, implementation locale, PASS technique, preview Shopify privee, validation visuelle Patrice, integration puis live sur GO explicites distincts. Aucun deploiement public par deduction.
 - Etat au 2026-09-12 18:11 CEST : OUVERT, PASS TECHNIQUE PREVIEW PRIVEE, GO VISUEL PATRICE TOUJOURS PARTIEL A 80 %. Cinq Hero editoriaux distincts et leurs cinq recompositions mobiles sont en recette sur le theme prive `200974958939`. Pullback final `17/17` identique, QA navigateur 390 et 1440 px conforme. Les mentions importantes restent sous la photographie afin de ne masquer aucun bijou. Revue visuelle Patrice des nouveaux Hero attendue avant toute page Admin, integration ou publication live. [Checkpoint](checkpoints/2026-09-12-1811-owned-stone-heroes-private-preview.md).
 
-## Conseils de Karine dans les bandes de reassurance du 2026-09-10
+## Conseils de Karine dans les bandes de reassurance, cloture du 2026-09-12
 
 - Proprietaire : Codex, GO explicite de Patrice du 2026-09-10 sur la formulation `Karine vous conseille 6j/7`.
 - Branche : `codex/milaura-karine-trust-copy-20260910`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/karine-trust-copy-20260910`, base integration `2011f3a4`.
 - Perimetre reserve : `sections/milaura-all-jewelry-landing.liquid`, `sections/milaura-stone-choice-landing.liquid`, `sections/milaura-catalogue-hub.liquid`, `templates/collection.milaura-all-jewelry.json`, `templates/page.milaura-bijoux-pierre.json`, `templates/page.milaura-cadeaux-mariage.json`, `templates/page.milaura-pierres-naissance.json` et documentation propre au lot. Les fiches produit restent hors perimetre.
 - Direction : remplacer les formulations generiques `Service humain...` par `Karine vous conseille 6j/7` dans les quatre hubs et dans les valeurs par defaut correspondantes.
 - Themes : preview `200974958939`, puis public `190430282075` apres GO live explicite de Patrice le 2026-09-10. Trois dependances visuelles canoniques et inchangees de la landing Tous les bijoux ont ete ajoutees uniquement au theme prive pour une recette fidele.
-- Etat au 2026-09-10 10:45 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source et integration canonique alignees au commit fonctionnel `2f3345fd`. Le preflight a detecte puis preserve le filtrage live des produits indisponibles et l onglet mariage ouvert par defaut. Sept fichiers exacts deployes sur `190430282075`, pullback `7/7` identique. QA publique sur les quatre pages a `390` et `1440` px : `Karine vous conseille 6j/7` visible une fois, ancien texte absent, theme public confirme, aucun debordement et aucune erreur navigateur. Reservation liberee. [Checkpoint](checkpoints/2026-09-10-0905-karine-trust-copy-preview.md).
+- Etat au 2026-09-12 18:02 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Source et integration canonique alignees au commit fonctionnel `2f3345fd`, cloture initiale `a41129e0`. Le preflight a detecte puis preserve le filtrage live des produits indisponibles et l onglet mariage ouvert par defaut. Sept fichiers exacts deployes sur `190430282075`, pullback `7/7` identique. QA publique sur les quatre pages a `390` et `1440` px : `Karine vous conseille 6j/7` visible une fois, ancien texte absent, theme public confirme, aucun debordement et aucune erreur navigateur. Relecture HTML publique renouvelee le 2026-09-12 avec le meme resultat. Reservation theme liberee. [Handoff final](checkpoints/2026-09-12-1802-karine-trust-copy-live-handoff.md).
 
 ## Profondeur mobile du choix par pierre du 2026-09-09
 
@@ -78,7 +78,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-10 08:40 CEST
+Derniere mise a jour : 2026-09-12 18:02 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -89,6 +89,21 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-integration` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
 
 ## Sessions declarees
+
+### Handoff final des conseils de Karine du 2026-09-12
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-12 pour fermer et documenter le lot `Karine vous conseille 6j/7` deja live.
+- Branche : `codex/milaura-karine-trust-handoff-20260912`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/karine-trust-handoff-20260912`, base `origin/codex/milaura-integration` au commit `bf009caf`.
+- Perimetre reserve : `docs/checkpoints/2026-09-12-1802-karine-trust-copy-live-handoff.md`, `docs/project-state.md`, `docs/codex-handoff.md`, `docs/workstreams.md` et note Obsidian de cloture. Aucun fichier theme, produit, Shopify Admin, theme prive ou theme public.
+- Etat au 2026-09-12 18:02 CEST : FERME. Checkpoint, etat projet, handoff courant et note Obsidian ecrits puis verifies. Aucun fichier theme ou Shopify modifie ; reservation documentaire liberee apres integration. Le checkout principal sale reste intouche.
+
+### Dates publiques du Grand Jeu MilAura du 2026-09-12
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-12 pour afficher la periode generale du Grand Jeu du 09 au 19 septembre, sans toucher au checkout principal sale.
+- Branche : `codex/milaura-contest-date-20260912`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/contest-date-20260912`, base `origin/codex/milaura-integration` au commit `a41129e0`.
+- Perimetre reserve : `assets/milaura-grand-jeu-2026-hero-desktop.webp`, `assets/milaura-grand-jeu-2026-hero-mobile.webp`, `sections/milaura-contest-10-days.liquid`, `templates/page.milaura-concours-10-jours.json`, `sections/milaura-footer.liquid`, `sections/footer-group.json` et documentation propre au lot.
+- Regle de coherence : periode generale affichee du 9 au 19 septembre ; participations toujours fermees le 18 septembre a 23 h 59 ; tirage toujours le 19 septembre a 12 h. Le reglement ne change donc pas.
+- Etat au 2026-09-12 17:48 CEST : LIVE VERIFIE sur `190430282075`. Six fichiers cibles publies puis relus par pullback ; page publique et deux heros CDN conformes. Source fonctionnelle `75410371`, integration distante alignee par fast-forward. Checkout principal sale preserve. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
 
 ### Hero d accueil mode du 2026-09-08
 

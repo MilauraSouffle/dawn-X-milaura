@@ -1,3 +1,5 @@
+> Grand Jeu MilAura, 2026-09-12 17:48 CEST : les surfaces marketing de la landing et du footer affichent maintenant la periode generale du 9 au 19 septembre. La phrase visible precise que les participations ferment le 18 a 23 h 59 avant le tirage du 19 a 12 h. Six fichiers cibles sont live sur `190430282075`, pullback conforme et CDN bureau/mobile relu. Source fonctionnelle `75410371`, integration distante alignee par fast-forward. Checkout principal sale preserve. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
+
 # Grand Jeu MilAura : landing V2 live le 2026-09-09 16:32 CEST
 
 Patrice a valide le master nacre, les declinaisons sociales et la landing simplifiee, puis a donne le GO commit, push et live. La page publique `https://milaura.fr/pages/jeu-concours-10-jours-10-cadeaux` utilise maintenant le bento en hero, deux onglets accessibles, les dix cartes cadeaux et le reglement synchronise. Le footer annonce `GRAND JEU CONCOURS MILAURA DU 09 AU 18 SEPTEMBRE` avec le CTA `Je participe`.
@@ -6,9 +8,11 @@ Source `9fb4b44c`, integration `2e8776c4`, theme live `190430282075`. Push cible
 
 Aucune publication Instagram ou Facebook, aucun permalink et aucune depense Meta n'ont ete executes dans ce lot. Pinterest reste exclu. Camilla prend le relais pour la strategie et les textes avec Karine. Reprise Codex : produire les dix visuels organiques quotidiens, un par cadeau, en conservant la direction du master. Verifier ou aligner le prix public de la bague du jour 2 a 11 EUR et remplacer les CTA de profils par les permaliens des publications principales des qu'ils existent. [Handoff live](checkpoints/2026-09-09-1632-grand-jeu-live-handoff.md).
 
-# Choix par pierre : profondeur mobile live le 2026-09-10 08:40 CEST
+# Hubs de choix : profondeur mobile et conseils de Karine live au 2026-09-12 18:02 CEST
 
 La page publique `/pages/bijoux-par-pierre` conserve les trente-neuf pierres sans imposer leur rail complet sur mobile. Huit grandes cartes sont suivies de `Voir toutes les pierres`, qui ouvre les trente-neuf liens en liste compacte. La fin de page presente quatre produits sous `Nos plus belles créations du moment`, avec le CTA `Voir tous les bijoux`. Le bureau conserve les trente-neuf cartes en grille. Source et integration `4d7df8a3`, trois fichiers live sur `190430282075`, pullback `3/3` identique et QA publique 390/1440 sans debordement ni erreur. [Checkpoint live](checkpoints/2026-09-09-1604-stone-choice-mobile-depth-preview.md).
+
+Depuis le 2026-09-10, les bandes de reassurance des hubs choix par pierre, tous les bijoux, pierres de naissance et cadeaux de mariage affichent `Karine vous conseille 6j/7`. Sept fichiers cibles ont ete publies sur `190430282075` puis relus a l identique. Le controle public renouvele le 2026-09-12 confirme la phrase exacte une fois sur chacune des quatre pages, l ancien `Service humain` absent et le theme public attendu. Les fiches produit restent hors perimetre et conservent `Équipe disponible 6j/7`. [Handoff final](checkpoints/2026-09-12-1802-karine-trust-copy-live-handoff.md).
 
 # Hero accueil mode MilAura : mission fermee le 2026-09-09 13:26 CEST
 

@@ -1,3 +1,15 @@
+> Grand Jeu MilAura, 2026-09-12 17:48 CEST : correction live terminee. Heros, texte alternatif, periode visible et footer affichent `09 au 19 septembre`. Les participations restent closes le 18 a 23 h 59 et le tirage reste le 19 a 12 h, ce qui est explicite sur la landing. Six fichiers cibles publies sur `190430282075`, pullback et HTTP publics conformes. Aucun reseau social ni budget modifie. Source fonctionnelle `75410371`, integration distante alignee par fast-forward. [Checkpoint](checkpoints/2026-09-12-1748-grand-jeu-dates-live.md).
+
+# Handoff final : hubs de choix et conseils de Karine
+
+Date : 2026-09-12 18:02 CEST
+
+Statut : `VALIDE PAR PATRICE, INTEGRE, POUSSE ET LIVE VERIFIE`
+
+La refonte de `/pages/bijoux-par-pierre` est fermee. Le Hero V5 clair, la profondeur mobile limitee a huit cartes, le repertoire compact des trente-neuf pierres et la selection finale de quatre bijoux sont live sur `190430282075`. Les quatre hubs affichent `Karine vous conseille 6j/7` ; une relecture publique du 2026-09-12 confirme la phrase exacte une fois par page, l ancien `Service humain` absent et le theme public attendu. Les fiches produit restent volontairement hors perimetre avec `Équipe disponible 6j/7`.
+
+Reprise uniquement sur regression reproduite ou nouvelle demande explicite. Ne redeployer aucun fichier par deduction et ne reprendre aucun changement du checkout principal sale. Le checkpoint final contient le perimetre, les commits, les preuves, les limites et le prompt de reprise : [2026-09-12-1802-karine-trust-copy-live-handoff.md](checkpoints/2026-09-12-1802-karine-trust-copy-live-handoff.md).
+
 # Choix par pierre : profondeur mobile live et lot ferme
 
 Date : 2026-09-10 08:40 CEST
