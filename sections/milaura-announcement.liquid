@@ -1,12 +1,8 @@
 {%- liquid
   assign proof_interval = section.settings.rotation_speed | default: 6 | times: 1000
-  assign certificate_url = section.settings.certificate_link
   assign karine_url = section.settings.karine_link
   assign rewards_url = section.settings.rewards_link
 
-  if certificate_url == blank
-    assign certificate_url = '/pages/certificats-des-pierres-naturelles'
-  endif
   if karine_url == blank
     assign karine_url = '/collections/selection-de-karine'
   endif
@@ -192,22 +188,18 @@
 >
   <div class="milaura-trust-ticker__inner">
     <div class="milaura-trust-ticker__stage" data-trust-stage>
-      <a
+      <div
         class="milaura-trust-ticker__slide is-active"
-        href="{{ certificate_url }}"
         data-trust-slide
         aria-hidden="false"
       >
         <span class="milaura-trust-ticker__copy milaura-trust-ticker__copy--desktop">
-          Rapports d’authenticité LFG disponibles · Voir les analyses
+          340 rapports d’analyse fournisseur conservés par MilAura
         </span>
         <span class="milaura-trust-ticker__copy milaura-trust-ticker__copy--mobile">
-          Rapports LFG disponibles · Voir les analyses
+          340 rapports d’analyse conservés par MilAura
         </span>
-        <svg class="milaura-trust-ticker__link-icon" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M3 8h9M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
-        </svg>
-      </a>
+      </div>
 
       <a
         class="milaura-trust-ticker__slide"
@@ -285,7 +277,11 @@
         const isActive = slideIndex === activeIndex;
         slide.classList.toggle('is-active', isActive);
         slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
-        slide.tabIndex = isActive ? 0 : -1;
+        if (slide.matches('a, button')) {
+          slide.tabIndex = isActive ? 0 : -1;
+        } else {
+          slide.removeAttribute('tabindex');
+        }
       });
     };
 
@@ -367,11 +363,6 @@
       "step": 1,
       "unit": "s",
       "default": 6
-    },
-    {
-      "type": "url",
-      "id": "certificate_link",
-      "label": "Destination des rapports"
     },
     {
       "type": "url",
