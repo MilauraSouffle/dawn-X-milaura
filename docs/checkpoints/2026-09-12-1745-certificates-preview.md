@@ -21,8 +21,8 @@ Statut : preview privee techniquement validee. Revue de finition terminee avec v
 ## Etat Git et Shopify
 
 - Branche : `codex/milaura-certificates-rewards-20260910`.
-- Commits existants : `7d8dffee` et `d77c0e46`.
-- Les finitions finales issues de la revue et le commentaire standard ajoute par Shopify au template JSON sont prets pour le commit de cloture.
+- Commits du lot : `7d8dffee`, `d77c0e46` et `d7f00856`.
+- Les finitions finales issues de la revue et le commentaire standard ajoute par Shopify au template JSON sont commites dans `d7f00856`.
 - Theme prive : `201115566427`.
 - URL temporaire de preview : `/pages/contact-milaura?view=milaura-certificats`.
 - Destination permanente prevue : `/pages/nos-pierres-et-leurs-certificats`. Son affectation reste derriere la gate Shopify Admin.
