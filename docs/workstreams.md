@@ -6,7 +6,7 @@
 - Objectif : aligner le premier palier configure de 20 a 30 euros, presenter avec leur limite quatre rapports d authenticite fournisseur, puis remplacer la vitrine haute par trois messages compacts, tournants et cliquables.
 - Theme de recette reserve : preview privee `201115566427`. Le theme public `190430282075`, les produits, pages, collections, medias Shopify et metachamps restent hors perimetre sans GO separe.
 - Gates : PASS technique et preview, puis GO visuel et editorial de Patrice. La creation de `/pages/nos-pierres-et-leurs-certificats`, l integration et le live restent des actions distinctes non autorisees a ce stade.
-- Etat au 2026-09-12 : GO PREVIEW CERTIFICATS RECU, IMPLEMENTATION EN COURS. Preflight 6 sur 6 identique entre la source et `201115566427`. Les 340 rapports et l OCR restent archives ; quatre scans representatifs seront montres comme rapports fournisseur sur echantillons, sans rattachement individuel a un produit MilAura.
+- Etat au 2026-09-12 17:45 CEST : PREVIEW TECHNIQUE PRETE, GO VISUEL ET EDITORIAL EN ATTENTE. Dix fichiers theme cibles sont presents sur `201115566427` avec pullback 10 sur 10, dont l alignement du premier palier de 20 a 30 euros. Recette 360, 390, 430 et 1440 px sans debordement, liens en reponse 200, focus et mouvement reduit conformes. Theme Check sans erreur, copywriting PASS et revue Impeccable finale `ship`. Les 340 rapports et l OCR restent archives ; quatre scans representatifs sont montres comme rapports fournisseur sur echantillons, sans rattachement individuel a un produit MilAura. Aucun Admin, theme public ou module de preuve sociale PDP touche.
 
 ## Conseils de Karine dans les bandes de reassurance du 2026-09-10
 
