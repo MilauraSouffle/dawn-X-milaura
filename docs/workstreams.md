@@ -80,6 +80,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Dates publiques du Grand Jeu MilAura du 2026-09-12
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-12 pour afficher la periode generale du Grand Jeu du 09 au 19 septembre, sans toucher au checkout principal sale.
+- Branche : `codex/milaura-contest-date-20260912`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/contest-date-20260912`, base `origin/codex/milaura-integration` au commit `a41129e0`.
+- Perimetre reserve : `assets/milaura-grand-jeu-2026-hero-desktop.webp`, `assets/milaura-grand-jeu-2026-hero-mobile.webp`, `sections/milaura-contest-10-days.liquid`, `templates/page.milaura-concours-10-jours.json`, `sections/milaura-footer.liquid`, `sections/footer-group.json` et documentation propre au lot.
+- Regle de coherence : periode generale affichee du 9 au 19 septembre ; participations toujours fermees le 18 septembre a 23 h 59 ; tirage toujours le 19 septembre a 12 h. Le reglement ne change donc pas.
+- Theme : aucune publication ni modification du live `190430282075` sans GO explicite. Etat au 2026-09-12 17:40 CEST : EN COURS, correction locale uniquement.
+
 ### Hero d accueil mode du 2026-09-08
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-08 pour auditer puis prototyper un Hero d accueil plus desirant, inspire des standards joaillerie et mode sans reprendre les assets ni l identite de tiers.
