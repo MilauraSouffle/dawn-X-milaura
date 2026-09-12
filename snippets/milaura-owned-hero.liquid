@@ -1,0 +1,45 @@
+{%- liquid
+  assign hero_desktop = 'milaura-hero-editorial-owned-' | append: variant | append: '-desktop.webp'
+  assign hero_mobile = 'milaura-hero-editorial-owned-' | append: variant | append: '-mobile.webp'
+-%}
+
+<header class="milaura-owned__hero milaura-owned__hero--{{ variant }}" aria-labelledby="{{ title_id }}">
+  <picture class="milaura-owned__hero-art" aria-hidden="true">
+    <source media="(max-width: 749px)" srcset="{{ hero_mobile | asset_url }}">
+    <img
+      class="milaura-owned__hero-image"
+      src="{{ hero_desktop | asset_url }}"
+      alt=""
+      width="1536"
+      height="1024"
+      loading="eager"
+      fetchpriority="high"
+    >
+  </picture>
+
+  <div class="milaura-owned__hero-inner">
+    <div class="milaura-owned__hero-copy">
+      <h1 id="{{ title_id }}">{{ heading | escape }}</h1>
+      <p class="milaura-owned__hero-intro">{{ introduction | escape }}</p>
+
+      {%- if cta_label != blank and cta_target != blank -%}
+        <a class="milaura-owned__hero-link" href="#{{ cta_target }}">{{ cta_label | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</header>
+
+{%- if status_text != blank -%}
+  <div class="milaura-owned__hero-status-band">
+    <p class="milaura-owned__hero-status milaura-owned__shell">{{ status_text | escape }}</p>
+  </div>
+{%- endif -%}
+
+{%- if note_text != blank -%}
+  <div class="milaura-owned__hero-note-band">
+    <p class="milaura-owned__hero-note milaura-owned__shell">
+      {%- if note_label != blank -%}<strong>{{ note_label | escape }}</strong> {% endif -%}
+      {{- note_text | escape -}}
+    </p>
+  </div>
+{%- endif -%}

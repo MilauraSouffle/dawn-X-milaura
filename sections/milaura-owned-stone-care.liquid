@@ -1,16 +1,25 @@
 {{ 'milaura-owned-stone-guides.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'milaura-owned-stone-guides.js' | asset_url }}" defer="defer"></script>
 
-{%- assign title_id = 'MilauraOwnedCareTitle-' | append: section.id -%}
+{%- liquid
+  assign title_id = 'MilauraOwnedCareTitle-' | append: section.id
+  assign matrix_id = 'MilauraOwnedCareMatrix-' | append: section.id
+  assign care_note = 'Cette matrice protège la pierre et la monture. Pour un rituel de lithothérapie, une méthode sans contact reste le choix le plus prudent.'
+-%}
 
 <div class="milaura-owned" data-owned-care>
-  <header class="milaura-owned__header milaura-owned__shell" aria-labelledby="{{ title_id }}">
-    <h1 id="{{ title_id }}">{{ section.settings.heading | escape }}</h1>
-    <p class="milaura-owned__intro">{{ section.settings.introduction | escape }}</p>
-    <p class="milaura-owned__notice"><strong>À retenir :</strong> cette matrice protège la pierre et la monture. Pour un rituel de lithothérapie, une méthode sans contact reste le choix le plus prudent.</p>
-  </header>
+  {% render 'milaura-owned-hero',
+    variant: 'stone-care',
+    title_id: title_id,
+    heading: section.settings.heading,
+    introduction: section.settings.introduction,
+    note_label: 'À retenir :',
+    note_text: care_note,
+    cta_label: 'Consulter la matrice',
+    cta_target: matrix_id
+  %}
 
-  <section class="milaura-owned__section milaura-owned__shell">
+  <section id="{{ matrix_id }}" class="milaura-owned__section milaura-owned__shell">
     <div class="milaura-owned-search">
       <label for="MilauraOwnedCareSearch-{{ section.id }}">Rechercher une pierre</label>
       <input id="MilauraOwnedCareSearch-{{ section.id }}" type="search" placeholder="Exemple : améthyste" autocomplete="off" data-care-search>

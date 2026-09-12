@@ -34,6 +34,13 @@ const sectionFiles = [
   'sections/milaura-owned-study.liquid'
 ];
 
+const heroSnippet = 'snippets/milaura-owned-hero.liquid';
+const heroVariants = ['stone-finder', 'stone-care', 'birthstones', 'stone-atlas', 'study'];
+const heroAssets = heroVariants.flatMap((variant) => [
+  `assets/milaura-hero-editorial-owned-${variant}-desktop.webp`,
+  `assets/milaura-hero-editorial-owned-${variant}-mobile.webp`
+]);
+
 test('dataset covers the eight commercial stones and every birth month', () => {
   assert.equal(data.stones.length, 8);
   assert.deepEqual(data.birthstones.map((item) => item.month), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
@@ -67,11 +74,17 @@ test('generated snippets keep the useful content in indexable HTML', () => {
 });
 
 test('sections are semantic, accessible and do not persist selector answers', () => {
-  for (const file of sectionFiles) {
+  for (const [index, file] of sectionFiles.entries()) {
     const source = read(file);
-    assert.match(source, /<h1/);
     assert.match(source, /milaura-owned-stone-guides\.css/);
+    assert.match(source, /render 'milaura-owned-hero'/);
+    assert.match(source, new RegExp(`variant: '${heroVariants[index]}'`));
   }
+  const hero = read(heroSnippet);
+  assert.match(hero, /<h1/);
+  assert.match(hero, /<picture/);
+  assert.match(hero, /fetchpriority="high"/);
+  for (const file of heroAssets) assert.ok(fs.statSync(path.join(root, file)).size > 100000, `${file} is missing or unexpectedly small`);
   const selector = read(sectionFiles[0]);
   assert.match(selector, /<fieldset>/);
   assert.match(selector, /aria-live="polite"/);
@@ -91,6 +104,7 @@ test('study cannot display invented results by default', () => {
 test('new UI files contain no hard-coded hex color and no em dash', () => {
   const files = [
     ...generatedFiles,
+    heroSnippet,
     ...sectionFiles,
     'assets/milaura-owned-stone-guides.css',
     'assets/milaura-owned-stone-guides.js',

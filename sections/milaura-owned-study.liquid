@@ -1,13 +1,25 @@
 {{ 'milaura-owned-stone-guides.css' | asset_url | stylesheet_tag }}
 
-{%- assign title_id = 'MilauraOwnedStudyTitle-' | append: section.id -%}
+{%- liquid
+  assign title_id = 'MilauraOwnedStudyTitle-' | append: section.id
+  assign protocol_id = 'MilauraOwnedStudyProtocol-' | append: section.id
+  capture study_status
+    echo 'Édition '
+    echo section.settings.edition
+    echo ' en préparation'
+  endcapture
+-%}
 
 <div class="milaura-owned">
-  <header class="milaura-owned__header milaura-owned__shell" aria-labelledby="{{ title_id }}">
-    <h1 id="{{ title_id }}">{{ section.settings.heading | escape }}</h1>
-    <p class="milaura-owned__intro">{{ section.settings.introduction | escape }}</p>
-    <p class="milaura-owned-study__status">Édition {{ section.settings.edition | escape }} en préparation</p>
-  </header>
+  {% render 'milaura-owned-hero',
+    variant: 'study',
+    title_id: title_id,
+    heading: section.settings.heading,
+    introduction: section.settings.introduction,
+    status_text: study_status,
+    cta_label: 'Lire le protocole',
+    cta_target: protocol_id
+  %}
 
   {%- if section.settings.results_ready -%}
     <section class="milaura-owned__section milaura-owned__shell">
@@ -30,7 +42,7 @@
     </section>
   {%- endif -%}
 
-  <section class="milaura-owned__section milaura-owned__shell">
+  <section id="{{ protocol_id }}" class="milaura-owned__section milaura-owned__shell">
     <div class="milaura-owned__section-heading">
       <h2>Le protocole annoncé avant la collecte</h2>
       <p>Cette méthode pourra encore être auditée avant le terrain. Toute modification sera datée dans la restitution finale.</p>

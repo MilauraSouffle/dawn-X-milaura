@@ -1,16 +1,25 @@
 {{ 'milaura-owned-stone-guides.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'milaura-owned-stone-guides.js' | asset_url }}" defer="defer"></script>
 
-{%- assign title_id = 'MilauraOwnedAtlasTitle-' | append: section.id -%}
+{%- liquid
+  assign title_id = 'MilauraOwnedAtlasTitle-' | append: section.id
+  assign atlas_id = 'MilauraOwnedAtlasEntries-' | append: section.id
+  assign atlas_note = 'Une photo aide à comparer une couleur, une transparence ou un veinage. Elle ne certifie jamais seule une pierre, un traitement ou une imitation.'
+-%}
 
 <div class="milaura-owned" data-owned-atlas>
-  <header class="milaura-owned__header milaura-owned__shell" aria-labelledby="{{ title_id }}">
-    <h1 id="{{ title_id }}">{{ section.settings.heading | escape }}</h1>
-    <p class="milaura-owned__intro">{{ section.settings.introduction | escape }}</p>
-    <p class="milaura-owned__notice"><strong>Limite importante :</strong> une photo aide à comparer une couleur, une transparence ou un veinage. Elle ne certifie jamais seule une pierre, un traitement ou une imitation.</p>
-  </header>
+  {% render 'milaura-owned-hero',
+    variant: 'stone-atlas',
+    title_id: title_id,
+    heading: section.settings.heading,
+    introduction: section.settings.introduction,
+    note_label: 'Limite importante :',
+    note_text: atlas_note,
+    cta_label: 'Observer les pierres',
+    cta_target: atlas_id
+  %}
 
-  <section class="milaura-owned__section milaura-owned__shell">
+  <section id="{{ atlas_id }}" class="milaura-owned__section milaura-owned__shell">
     <div class="milaura-owned-search">
       <label for="MilauraOwnedAtlasSearch-{{ section.id }}">Rechercher dans l'atlas</label>
       <input id="MilauraOwnedAtlasSearch-{{ section.id }}" type="search" placeholder="Exemple : sodalite" autocomplete="off" data-atlas-search>

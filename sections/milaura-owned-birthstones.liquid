@@ -1,15 +1,24 @@
 {{ 'milaura-owned-stone-guides.css' | asset_url | stylesheet_tag }}
 
-{%- assign title_id = 'MilauraOwnedBirthstonesTitle-' | append: section.id -%}
+{%- liquid
+  assign title_id = 'MilauraOwnedBirthstonesTitle-' | append: section.id
+  assign calendar_id = 'MilauraOwnedBirthstoneCalendar-' | append: section.id
+  assign calendar_note = 'Chaque mois reprend la liste moderne publiée par le GIA. Les traditions peuvent varier selon les pays et les époques.'
+-%}
 
 <div class="milaura-owned">
-  <header class="milaura-owned__header milaura-owned__shell" aria-labelledby="{{ title_id }}">
-    <h1 id="{{ title_id }}">{{ section.settings.heading | escape }}</h1>
-    <p class="milaura-owned__intro">{{ section.settings.introduction | escape }}</p>
-    <p class="milaura-owned__notice"><strong>Comment lire ce calendrier :</strong> chaque mois reprend la liste moderne publiée par le GIA. Les traditions peuvent varier selon les pays et les époques.</p>
-  </header>
+  {% render 'milaura-owned-hero',
+    variant: 'birthstones',
+    title_id: title_id,
+    heading: section.settings.heading,
+    introduction: section.settings.introduction,
+    note_label: 'Comment lire ce calendrier :',
+    note_text: calendar_note,
+    cta_label: 'Voir les douze mois',
+    cta_target: calendar_id
+  %}
 
-  <section class="milaura-owned__section milaura-owned__shell" aria-label="Les douze mois et leurs pierres">
+  <section id="{{ calendar_id }}" class="milaura-owned__section milaura-owned__shell" aria-label="Les douze mois et leurs pierres">
     {% render 'milaura-owned-birth-months' %}
   </section>
 
