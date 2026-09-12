@@ -1,0 +1,246 @@
+{{ 'milaura-collections-index.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign section_title = section.settings.title | default: 'Toutes les collections'
+  assign section_intro = section.settings.intro | default: 'Bijoux, pierres, minéraux, bougies et senteurs : choisissez ce que vous souhaitez découvrir.'
+-%}
+
+<section
+  id="MilauraCollectionsIndex-{{ section.id }}"
+  class="milaura-collections-index"
+  aria-labelledby="MilauraCollectionsIndexTitle-{{ section.id }}"
+>
+  <div class="milaura-collections-index__shell page-width">
+    <header class="milaura-collections-index__header">
+      <h1 id="MilauraCollectionsIndexTitle-{{ section.id }}" class="milaura-collections-index__title">
+        {{ section_title | escape }}
+      </h1>
+      <p class="milaura-collections-index__intro">{{ section_intro | escape }}</p>
+    </header>
+
+    <div class="milaura-collections-index__primary" aria-label="Univers MilAura">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'collection' -%}
+          {%- liquid
+            assign card_collection = block.settings.collection
+            assign card_image = block.settings.image
+            if card_image == blank and card_collection != blank
+              assign card_image = card_collection.image
+            endif
+            if card_image == blank and card_collection != blank and card_collection.products.first.featured_image != blank
+              assign card_image = card_collection.products.first.featured_image
+            endif
+
+            assign card_title = block.settings.title
+            if card_title == blank and card_collection != blank
+              assign card_title = card_collection.title
+            endif
+
+            assign card_description = block.settings.description
+            assign card_url = block.settings.link
+            if card_url == blank and card_collection != blank
+              assign card_url = card_collection.url
+            endif
+
+            assign image_loading = 'lazy'
+            if forloop.first
+              assign image_loading = 'eager'
+            endif
+          -%}
+
+          {%- if card_url != blank and card_title != blank -%}
+            <article
+              class="milaura-collections-index__card{% if block.settings.featured %} milaura-collections-index__card--featured{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <a class="milaura-collections-index__card-link" href="{{ card_url }}">
+                <div class="milaura-collections-index__media">
+                  {%- if card_image != blank -%}
+                    {{
+                      card_image
+                      | image_url: width: 1800
+                      | image_tag:
+                        loading: image_loading,
+                        widths: '480, 720, 960, 1200, 1500, 1800',
+                        sizes: '(max-width: 749px) calc(100vw - 36px), (max-width: 1099px) calc(50vw - 36px), 58vw',
+                        class: 'milaura-collections-index__image',
+                        alt: card_title
+                    }}
+                  {%- else -%}
+                    {{ 'collection-1' | placeholder_svg_tag: 'milaura-collections-index__placeholder' }}
+                  {%- endif -%}
+                </div>
+                <div class="milaura-collections-index__caption">
+                  <div>
+                    <h2 class="milaura-collections-index__card-title">{{ card_title | escape }}</h2>
+                    {%- if card_description != blank -%}
+                      <p class="milaura-collections-index__card-description">{{ card_description | escape }}</p>
+                    {%- endif -%}
+                  </div>
+                  <span class="milaura-collections-index__arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            </article>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="milaura-collections-index__shortcuts">
+      <h2 class="milaura-collections-index__shortcuts-title">
+        {{ section.settings.shortcuts_title | default: 'Accéder directement à' | escape }}
+      </h2>
+      <nav aria-label="Accès direct aux collections">
+        <ul class="milaura-collections-index__shortcut-list" role="list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'link' and block.settings.label != blank and block.settings.link != blank -%}
+              <li {{ block.shopify_attributes }}>
+                <a class="milaura-collections-index__shortcut" href="{{ block.settings.link }}">
+                  <span>{{ block.settings.label | escape }}</span>
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+
+    {%- if section.settings.guide_title != blank -%}
+      <aside class="milaura-collections-index__guide" aria-labelledby="MilauraCollectionsGuideTitle-{{ section.id }}">
+        <div class="milaura-collections-index__guide-copy">
+          <h2 id="MilauraCollectionsGuideTitle-{{ section.id }}" class="milaura-collections-index__guide-title">
+            {{ section.settings.guide_title | escape }}
+          </h2>
+          {%- if section.settings.guide_text != blank -%}
+            <p>{{ section.settings.guide_text | escape }}</p>
+          {%- endif -%}
+        </div>
+        {%- if section.settings.guide_link != blank and section.settings.guide_label != blank -%}
+          <a class="milaura-action milaura-action--editorial milaura-collections-index__guide-link" href="{{ section.settings.guide_link }}">
+            {{ section.settings.guide_label | escape }}
+          </a>
+        {%- endif -%}
+      </aside>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Index des collections",
+  "tag": "section",
+  "class": "section-milaura-collections-index",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Toutes les collections"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Introduction",
+      "default": "Bijoux, pierres, minéraux, bougies et senteurs : choisissez ce que vous souhaitez découvrir."
+    },
+    {
+      "type": "text",
+      "id": "shortcuts_title",
+      "label": "Titre des accès directs",
+      "default": "Accéder directement à"
+    },
+    {
+      "type": "text",
+      "id": "guide_title",
+      "label": "Titre du guide",
+      "default": "Vous hésitez entre plusieurs pierres ?"
+    },
+    {
+      "type": "textarea",
+      "id": "guide_text",
+      "label": "Texte du guide",
+      "default": "Répondez à cinq questions pour trouver les pierres qui correspondent à vos envies du moment."
+    },
+    {
+      "type": "text",
+      "id": "guide_label",
+      "label": "Libellé du lien",
+      "default": "Trouver ma pierre"
+    },
+    {
+      "type": "url",
+      "id": "guide_link",
+      "label": "Lien du guide"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Univers principal",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image personnalisée"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre personnalisé"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien personnalisé"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Grand format sur ordinateur",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Accès direct",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Libellé"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Index des collections"
+    }
+  ]
+}
+{% endschema %}

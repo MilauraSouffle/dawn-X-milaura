@@ -1,3 +1,13 @@
+## Reprise UX urgente collections, PDP et Hero mobile du 2026-09-12
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-12 apres validation du bandeau de confiance.
+- Branche : `codex/milaura-urgent-ux-20260912`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/urgent-ux-20260912`, base `origin/codex/milaura-integration` au commit `8e9e1350`.
+- Perimetre reserve : nouveau composant et nouvel asset dedies a `/collections`, `templates/list-collections.json`, `sections/milaura-hero-portal.liquid`, la phrase de clarification dans `sections/milaura-product-hero.liquid`, tests et documentation propres au lot.
+- Direction : remplacer l ancienne page Collections par une entree editoriale mobile-first sans compteur artificiel ni badges generiques ; garder le visage du mannequin libre sur le Hero mobile en separant photographie et copie ; clarifier que le client recoit le modele presente tout en conservant le caractere unique de chaque pierre.
+- Checkout : audit et valeurs de personnalisation uniquement. Aucun enregistrement Shopify Admin, paiement, commande, prix, produit, stock, application ou theme public sans GO distinct.
+- Theme : preview privee uniquement, sans modification du live `190430282075`. Gates : recette technique, preview visuelle Patrice, puis integration et live seulement sur GO explicite.
+- Etat au 2026-09-12 18:21 CEST : PREVIEW PRIVEE PRETE sur `201115566427`. Page Collections reconstruite, phrase PDP clarifiee et Hero mobile separe en photographie puis panneau de contenu. JSON, copywriting et Theme Check passent ; pullback cinq sur cinq identique ; recette 390 et 1440 conforme. Aucun live ni enregistrement Checkout Admin. GO visuel Patrice attendu. [Checkpoint](checkpoints/2026-09-12-1821-urgent-ux-preview.md).
+
 ## Conseils de Karine dans les bandes de reassurance, cloture du 2026-09-12
 
 - Proprietaire : Codex, GO explicite de Patrice du 2026-09-10 sur la formulation `Karine vous conseille 6j/7`.
@@ -41,7 +51,7 @@
 - Backend : branche `codex/milaura-favorite-hearts-backend-20260908`, worktree `/Users/paesano/Documents/_worktrees/agentic-ops-milaura-favorite-hearts-20260908`, base Mon Ecrin V9 `1d25384`. Fichiers reserves dans `docs/milaura/shopify-apps/customer-accounts-release-candidate/` : `server/src/app-rc.mjs`, `server/src/shopify-diagnostic-store.mjs`, nouveau contrat favoris serveur, `scripts/check-release-candidate.mjs`, tests cibles et documentation de release du lot.
 - Cibles reservees apres validation technique : backend `milaura-mon-ecrin-backend` puis theme live `190430282075`, avec deploiements atomiques et retours arriere coordonnes. Aucun changement de bundle Customer Account, aucun nouveau scope, secret ou paquet. Les favoris restent lies au compte Shopify authentifie, avec ecriture CAS ; aucun faux etat local persistant.
 - Direction : coeur fin, discret, sans pastille massive, cible tactile 44 px, photographie prioritaire. Etat invite : connexion puis reprise du choix explicite. Etat connecte : lecture initiale, ajout/retrait optimiste avec rollback et synchronisation de tous les exemplaires du meme produit.
-- Etat au 2026-09-08 18:51 CEST : LIVE, PASS TECHNIQUE, RECETTE VISUELLE PATRICE EN ATTENTE. Backend `2026-09-08-bbeb6f9` healthy. Theme source `7d439f61`, integration poussee et sept fichiers cibles verifies par pullback sur le live `190430282075`. Le fichier PDP concurrent `sections/milaura-product-hero.liquid` est reste hors du deploiement et sa note photo live est preservee. Worktrees conserves pour l iteration visuelle. [Checkpoint](checkpoints/2026-09-08-1851-favorite-hearts-live.md).
+- Etat au 2026-09-08 18:51 CEST : LIVE, PASS TECHNIQUE, RECETTE VISUELLE PATRICE EN ATTENTE. Backend `2026-09-08-bbeb6f9` healthy. Theme source `7d439f61`, integration poussee et sept fichiers cibles verifies par pullback sur le live `190430282075`. Le fichier PDP concurrent `sections/milaura-product-hero.liquid` est reste hors du deploiement et sa note photo live est preservee. Worktrees conserves pour l iteration visuelle. Au 2026-09-12 18:11 CEST, ce fichier est identique a l integration et sa reservation est liberee pour le lot UX urgent ; aucun changement Favoris n y est a reprendre. [Checkpoint](checkpoints/2026-09-08-1851-favorite-hearts-live.md).
 
 ## Landing Tous les bijoux du 2026-09-07
 
@@ -79,6 +89,13 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Integration, documentation et deploiement | `/Users/paesano/Documents/MilAura website/dawn-X-milaura` | `codex/milaura-integration` | live `190430282075`, developpement `199421952347` | reserve au proprietaire d'integration |
 
 ## Sessions declarees
+
+### Reprise UX urgente collections, PDP et Hero mobile du 2026-09-12
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-12.
+- Branche : `codex/milaura-urgent-ux-20260912`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/urgent-ux-20260912`, base `8e9e1350`.
+- Fichiers reserves : `sections/milaura-collections-index.liquid`, `assets/milaura-collections-index.css`, `templates/list-collections.json`, `sections/milaura-hero-portal.liquid`, `sections/milaura-product-hero.liquid`, tests et documentation propres au lot.
+- Etat au 2026-09-12 18:21 CEST : PREVIEW PRIVEE PRETE sur `201115566427`, GO visuel Patrice attendu. Aucun live ni enregistrement Checkout Admin autorise dans ce lot. [Checkpoint](checkpoints/2026-09-12-1821-urgent-ux-preview.md).
 
 ### Handoff final des conseils de Karine du 2026-09-12
 
