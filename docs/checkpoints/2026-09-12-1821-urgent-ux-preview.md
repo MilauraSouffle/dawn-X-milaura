@@ -2,7 +2,7 @@
 
 ## Statut
 
-PRÉVERSION PRIVÉE PRÊTE. Aucun fichier n'a été publié sur le thème live `190430282075` et aucun réglage du checkout n'a été enregistré dans Shopify Admin.
+GO VISUEL PREVIEW UX DONNÉ PAR PATRICE LE 2026-09-12. Aucun fichier n'a été publié sur le thème live `190430282075` et aucun réglage du checkout n'a été enregistré dans Shopify Admin.
 
 - Branche : `codex/milaura-urgent-ux-20260912`
 - Worktree : `/Users/paesano/Documents/MilAura website/_worktrees/urgent-ux-20260912`
@@ -26,7 +26,7 @@ PRÉVERSION PRIVÉE PRÊTE. Aucun fichier n'a été publié sur le thème live `
 
 La phrase contestée devient :
 
-> Vous recevrez le modèle présenté sur cette fiche.
+> Ce modèle en photo est unique. Chaque pierre est différente.
 
 Le paragraphe validé sur les nuances, le veinage et la forme de chaque pierre reste inchangé.
 
@@ -67,11 +67,11 @@ Un vrai lien texte `Retour au catalogue` injecté dans les étapes du checkout d
 - recette réelle : Collections à 390 et 1440 px, Hero à 390 x 844 et 1440 x 1000 px, fiche produit active à 390 px ;
 - aucun débordement horizontal visible et aucun texte devant le visage sur le Hero mobile ;
 - phrase PDP vérifiée sur `Bougie Réconfort - Calcédoine bleue` ;
+- correction exacte du 2026-09-12 à 18:44 CEST poussée sur le thème privé, pullback un sur un identique et texte visible à 390 px ;
 - routes publiques des collections principales et de la Sélection de Karine vérifiées en HTTP 200.
 
 ## Gates restantes
 
-1. GO visuel de Patrice sur la préversion.
-2. Intégration Git ciblée.
-3. GO live explicite avant tout push sur `190430282075`.
-4. Pour le checkout, vérification du forfait et des moyens de paiement dans Shopify Admin, puis GO distinct immédiatement avant l'enregistrement.
+1. Intégration Git ciblée, sur GO distinct.
+2. GO live explicite avant tout push sur `190430282075`.
+3. Pour le checkout, vérification du forfait et des moyens de paiement dans Shopify Admin, puis GO distinct immédiatement avant l'enregistrement.
