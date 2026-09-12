@@ -2,7 +2,7 @@
 
 Date : 2026-09-12 17:45 CEST
 
-Statut : preview privee techniquement validee apres protection des documents. Bandeau valide par Patrice le 2026-09-12 apres correction rose. A 18:44 CEST, les quatre documents ont ete remplaces par des apercus definitivement floutes a la demande du fournisseur. La page et le theme prive ne servent plus les scans lisibles. La purge de l'ancien commit sur la branche GitHub publique exige cependant un GO destructif distinct. Le GO final de la landing, Shopify Admin, l'integration Git et la publication live restent distincts et ouverts.
+Statut : preview privee techniquement validee apres protection des documents. Bandeau valide par Patrice le 2026-09-12 apres correction rose. A 18:54 CEST, le flou integral juge trop fort par Patrice a ete remplace par un masquage localise : structure du rapport, logo LFG et illustration de la pierre visibles ; informations et filigrane fournisseur illisibles. La page et le theme prive ne servent plus les scans lisibles. La purge de l'ancien commit sur la branche GitHub publique exige cependant un GO destructif distinct. Le GO final de la landing, Shopify Admin, l'integration Git et la publication live restent distincts et ouverts.
 
 ## Objectif et portee
 
@@ -57,6 +57,8 @@ Le push est reste cible sur le theme prive. Les deux derniers fichiers alignent 
 - Retour Patrice du 2026-09-12 a 18:02 CEST : bandeau valide, fond passe de l'aigue-marine au quartz rose poudre canonique. Le texte public nomme maintenant `l'un de nos fournisseurs` sans exposer son nom commercial a l'ouverture. Push prive cible et pullback 2 sur 2 identique. Controle a 390 px : H1 sur deux lignes et aucun debordement.
 - Retour Patrice du 2026-09-12 a 18:39 CEST : les documents complets ne doivent pas etre accessibles publiquement. Le floutage est integre dans les pixels des quatre images ; la page n'utilise donc pas un simple filtre CSS reversible.
 - Push cible de six fichiers sur le theme prive `201115566427`, puis pullback six sur six identique. Controle reel a 390 px et en bureau : cinq apercus proteges affiches, zero lien vers un scan, zero lien vers le portail fournisseur et aucun debordement horizontal.
+- Retour Patrice du 2026-09-12 a 18:54 CEST : flou integral refuse. Les quatre apercus utilisent maintenant un masquage localise plus leger. Push cible de quatre fichiers, pullback quatre sur quatre identique et nouvelle recette mobile 390 px conforme.
+- Inventaire prive confirme : 340 rapports recuperes sur 8 pages, 340 traites par OCR et 0 echec de telechargement. La landing montre quatre exemples seulement ; les 336 autres restent dans l archive de travail privee.
 
 Captures : `output/playwright/certificates-preview-2026-09-12/`.
 
