@@ -85,17 +85,6 @@ def validate(data: dict) -> None:
             if not care.get("label") or not care.get("detail"):
                 errors.append(f"{stone_id}: incomplete {medium} guidance")
 
-    birthstones = data.get("birthstones", [])
-    months = [item.get("month") for item in birthstones]
-    if months != list(range(1, 13)):
-        errors.append("birthstones must contain months 1 through 12 in order")
-
-    study = data.get("study", {})
-    if study.get("status") != "protocol_ready_no_results":
-        errors.append("study must remain in protocol_ready_no_results until real results exist")
-    if set(study.get("source_ids", [])) - set(source_ids):
-        errors.append("study contains unknown source ids")
-
     if errors:
         raise ValueError("\n".join(errors))
 
@@ -155,30 +144,6 @@ def render_care(data: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def render_birthstones(data: dict) -> str:
-    lines = [GENERATED_HEADER.rstrip(), '<div class="milaura-owned-birthstones__grid">']
-    for item in data["birthstones"]:
-        has_image = bool(item["image_url"])
-        lines.append(f'  <article class="milaura-owned-birthstones__month" data-month="{item["month"]}">')
-        lines.append('    <div class="milaura-owned-birthstones__month-heading">')
-        lines.append(f'      <span aria-hidden="true">{item["month"]:02d}</span>')
-        lines.append(f'      <h2>{esc(item["month_name"])}</h2>')
-        lines.append("    </div>")
-        if has_image:
-            lines.append('    <div class="milaura-owned-birthstones__media">')
-            lines.extend(f"      {line}" for line in remote_image(item["image_url"], item["image_alt"], "milaura-owned-birthstones__image", "(max-width: 749px) 42vw, 18vw"))
-            lines.append("    </div>")
-        else:
-            lines.append('    <div class="milaura-owned-birthstones__media is-empty" aria-hidden="true"><span>MilAura</span></div>')
-        lines.append(f'    <p class="milaura-owned-birthstones__names">{esc(" · ".join(item["stones"]))}</p>')
-        lines.append(f'    <p class="milaura-owned-birthstones__availability">{esc(item["availability_note"])}</p>')
-        if item["collection_url"]:
-            lines.append(f'    <a class="milaura-owned-link" href="{liquid_route(item["collection_url"])}">Voir la sélection</a>')
-        lines.append("  </article>")
-    lines.append("</div>")
-    return "\n".join(lines) + "\n"
-
-
 def render_atlas(data: dict) -> str:
     lines = [GENERATED_HEADER.rstrip(), '<div class="milaura-owned-atlas__list">']
     for stone in data["stones"]:
@@ -210,7 +175,6 @@ def build_outputs(data: dict) -> dict[Path, str]:
     return {
         ROOT / "snippets" / "milaura-owned-selector-cards.liquid": render_selector(data),
         ROOT / "snippets" / "milaura-owned-care-rows.liquid": render_care(data),
-        ROOT / "snippets" / "milaura-owned-birth-months.liquid": render_birthstones(data),
         ROOT / "snippets" / "milaura-owned-atlas-entries.liquid": render_atlas(data),
     }
 
@@ -228,7 +192,7 @@ def main() -> int:
         stale = [str(path.relative_to(ROOT)) for path, content in outputs.items() if not path.exists() or path.read_text(encoding="utf-8") != content]
         if stale:
             raise SystemExit("Generated files are missing or stale:\n" + "\n".join(stale))
-        print(f"PASS: {len(data['stones'])} stones, 12 months, {len(outputs)} generated snippets")
+        print(f"PASS: {len(data['stones'])} stones, {len(outputs)} generated snippets")
         return 0
 
     for path, content in outputs.items():

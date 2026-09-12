@@ -6,13 +6,13 @@ Statut : preview privée, PASS technique et GO visuel Patrice en attente
 
 ## Périmètre
 
-Ce lot crée cinq surfaces indépendantes :
+Ce lot crée trois surfaces indépendantes :
 
 1. sélecteur interactif de pierre ;
 2. matrice eau, soleil et sel ;
-3. calendrier des pierres de naissance ;
-4. atlas photographique et repères sur les imitations ;
-5. page de restitution de l'étude annuelle.
+3. atlas photographique et repères sur les imitations.
+
+La page publique `/pages/pierres-de-naissance` couvre deja le calendrier et le parcours cadeau. La version privee ajoutee dans ce lot a ete retiree le 2026-09-12 pour eviter un doublon. Son Hero desktop et mobile est conserve sur la destination canonique. La piste d une landing Ads avec questionnaire, avantage et collecte email est differee dans un chantier distinct.
 
 Les produits, stocks, prix, médias Shopify, handles et contenus Admin restent inchangés. Les photographies sont relues depuis le template `Bijoux par pierre` et réutilisées sans retouche.
 
@@ -24,7 +24,7 @@ Les produits, stocks, prix, médias Shopify, handles et contenus Admin restent i
 - Interface : `assets/milaura-owned-stone-guides.css` et `assets/milaura-owned-stone-guides.js`.
 - Pages : `sections/milaura-owned-*.liquid` et `templates/page.milaura-*.json`.
 
-Toute modification d'une pierre commence dans le JSON. Le générateur valide les identifiants, les sources, les douze mois, les routes de collection, les photographies Shopify et les trois statuts d'entretien. `python3 scripts/build_owned_stone_assets.py --check` détecte ensuite un snippet absent ou périmé.
+Toute modification d'une pierre commence dans le JSON. Le générateur valide les identifiants, les sources, les routes de collection, les photographies Shopify et les trois statuts d'entretien. `python3 scripts/build_owned_stone_assets.py --check` détecte ensuite un snippet absent ou périmé.
 
 ## Contrat de données
 
@@ -60,7 +60,7 @@ Le sel sec et l'eau salée restent déconseillés pour tous les bijoux montés. 
 
 ## Direction d'interface
 
-Mode principal : `Operate` pour le sélecteur et la matrice, `Read` pour le calendrier, l'atlas et l'étude.
+Mode principal : `Operate` pour le sélecteur et la matrice, `Read` pour l'atlas.
 
 Le lot étend la direction MilAura existante. Il ne crée ni nouvelle palette, ni nouvelle police, ni nouveau symbole.
 
@@ -123,18 +123,15 @@ Le plateau partagé est propre à ce besoin : le visiteur garde ses critères so
 
 - `page.milaura-stone-finder.json`
 - `page.milaura-stone-care.json`
-- `page.milaura-birthstones.json`
 - `page.milaura-stone-atlas.json`
-- `page.milaura-study.json`
 
 Avant création de pages Shopify Admin, les previews utilisent une page existante avec un paramètre `view`. Les handles publics, titles SEO, metas et navigation seront décidés dans un gate Admin séparé après validation visuelle.
 
 ## Sources retenues
 
-- Gemological Institute of America pour l'entretien et les pierres de naissance.
+- Gemological Institute of America pour l'entretien.
 - CIBJO pour la distinction entre pierre naturelle, produit synthétique et imitation.
 - Mindat pour les propriétés minéralogiques de la sodalite.
-- CNIL, Insee et ICC/ESOMAR pour le protocole de l'étude.
 
 La date de consultation est conservée dans le JSON. Une révision de source ne modifie jamais silencieusement un contenu live.
 

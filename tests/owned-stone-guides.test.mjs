@@ -22,28 +22,28 @@ const expectedCollections = new Set([
 const generatedFiles = [
   'snippets/milaura-owned-selector-cards.liquid',
   'snippets/milaura-owned-care-rows.liquid',
-  'snippets/milaura-owned-birth-months.liquid',
   'snippets/milaura-owned-atlas-entries.liquid'
 ];
 
 const sectionFiles = [
   'sections/milaura-owned-stone-selector.liquid',
   'sections/milaura-owned-stone-care.liquid',
-  'sections/milaura-owned-birthstones.liquid',
-  'sections/milaura-owned-stone-atlas.liquid',
-  'sections/milaura-owned-study.liquid'
+  'sections/milaura-owned-stone-atlas.liquid'
 ];
 
 const heroSnippet = 'snippets/milaura-owned-hero.liquid';
-const heroVariants = ['stone-finder', 'stone-care', 'birthstones', 'stone-atlas', 'study'];
+const heroVariants = ['stone-finder', 'stone-care', 'stone-atlas'];
 const heroAssets = heroVariants.flatMap((variant) => [
   `assets/milaura-hero-editorial-owned-${variant}-desktop.webp`,
   `assets/milaura-hero-editorial-owned-${variant}-mobile.webp`
 ]);
+const canonicalBirthstoneHeroAssets = [
+  'assets/milaura-hero-editorial-hub-birthstone-desktop.webp',
+  'assets/milaura-hero-editorial-hub-birthstone-mobile.webp'
+];
 
-test('dataset covers the eight commercial stones and every birth month', () => {
+test('dataset covers the eight commercial stones', () => {
   assert.equal(data.stones.length, 8);
-  assert.deepEqual(data.birthstones.map((item) => item.month), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
   assert.deepEqual(new Set(data.stones.map((stone) => stone.primary_collection_url)), expectedCollections);
 });
 
@@ -69,8 +69,7 @@ test('generated snippets keep the useful content in indexable HTML', () => {
   }
   assert.equal((read(generatedFiles[0]).match(/data-stone-id=/g) || []).length, 8);
   assert.equal((read(generatedFiles[1]).match(/data-care-row/g) || []).length, 8);
-  assert.equal((read(generatedFiles[2]).match(/data-month=/g) || []).length, 12);
-  assert.equal((read(generatedFiles[3]).match(/data-atlas-entry/g) || []).length, 8);
+  assert.equal((read(generatedFiles[2]).match(/data-atlas-entry/g) || []).length, 8);
 });
 
 test('sections are semantic, accessible and do not persist selector answers', () => {
@@ -93,12 +92,21 @@ test('sections are semantic, accessible and do not persist selector answers', ()
   assert.doesNotMatch(script, /localStorage|sessionStorage|document\.cookie/);
 });
 
-test('study cannot display invented results by default', () => {
-  assert.equal(data.study.status, 'protocol_ready_no_results');
-  const template = JSON.parse(read('templates/page.milaura-study.json'));
-  assert.equal(template.sections.main.settings.results_ready, false);
-  const section = read('sections/milaura-owned-study.liquid');
-  assert.match(section, /Aucun résultat n'est publié à ce stade/);
+test('canonical birthstone page keeps the approved hero and duplicate routes stay retired', () => {
+  const templateSource = read('templates/page.milaura-pierres-naissance.json');
+  const template = JSON.parse(templateSource.slice(templateSource.indexOf('{')));
+  assert.equal(template.sections.hub.settings.theme, 'birthstone');
+  for (const file of canonicalBirthstoneHeroAssets) {
+    assert.ok(fs.statSync(path.join(root, file)).size > 100000, `${file} is missing or unexpectedly small`);
+  }
+  for (const file of [
+    'templates/page.milaura-birthstones.json',
+    'templates/page.milaura-study.json',
+    'sections/milaura-owned-birthstones.liquid',
+    'sections/milaura-owned-study.liquid'
+  ]) {
+    assert.equal(fs.existsSync(path.join(root, file)), false, `${file} must stay retired`);
+  }
 });
 
 test('new UI files contain no hard-coded hex color and no em dash', () => {
