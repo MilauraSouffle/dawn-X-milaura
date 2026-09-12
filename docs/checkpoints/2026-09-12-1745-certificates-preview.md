@@ -2,7 +2,7 @@
 
 Date : 2026-09-12 17:45 CEST
 
-Statut : preview privee techniquement validee. Bandeau valide par Patrice le 2026-09-12 apres correction rose. Le GO final de la landing, Shopify Admin, l'integration Git et la publication live restent distincts et ouverts.
+Statut : preview privee techniquement validee apres protection des documents. Bandeau valide par Patrice le 2026-09-12 apres correction rose. A 18:44 CEST, les quatre documents ont ete remplaces par des apercus definitivement floutes a la demande du fournisseur. Le GO final de la landing, Shopify Admin, l'integration Git et la publication live restent distincts et ouverts.
 
 ## Objectif et portee
 
@@ -13,8 +13,8 @@ Statut : preview privee techniquement validee. Bandeau valide par Patrice le 202
 
 ## Source et limite de preuve
 
-- Source inventoriee le 2026-09-10 : 340 rapports publics issus du portail de Camille Ambiance Nature.
-- La preview montre quatre rapports reels : amethyste 8 mm, quartz rose 8 mm, aigue-marine 8 mm et sodalite 6 mm.
+- Source inventoriee le 2026-09-10 : 340 rapports issus du portail fournisseur, conserves uniquement dans l'archive de travail privee.
+- La preview montre quatre apercus definitivement floutes : amethyste 8 mm, quartz rose 8 mm, aigue-marine 8 mm et sodalite 6 mm. Les informations utiles sont resumees en texte sans donner acces aux documents complets.
 - Ces documents portent sur des echantillons selectionnes dans des lots. Ils ne constituent pas un certificat individuel pour chaque bijou ou mineral MilAura.
 - Aucun rattachement individuel entre ces rapports et un produit, un EAN ou un lot MilAura n'est etabli. Aucun affichage PDP par produit ne peut etre deduit de cette preview.
 
@@ -41,7 +41,7 @@ Statut : preview privee techniquement validee. Bandeau valide par Patrice le 202
 9. `templates/product.milaura-produit.json`
 10. `sections/milaura-cart-rewards.liquid`
 
-Le push est reste cible sur le theme prive. Le pullback confirme la parite des dix fichiers sur dix. Les deux derniers fichiers alignent le premier palier technique de 20 a 30 euros, en coherence avec les textes et les deux autres paliers de 50 et 80 euros.
+Le push est reste cible sur le theme prive. Les deux derniers fichiers alignent le premier palier technique de 20 a 30 euros, en coherence avec les textes et les deux autres paliers de 50 et 80 euros. La correction du 2026-09-12 a 18:39 CEST remplace les quatre fichiers de scans par leurs versions floutees sous les memes noms, afin que les anciennes URL du theme prive ne servent plus les originaux lisibles.
 
 ## Revue Impeccable et validation
 
@@ -49,12 +49,14 @@ Le push est reste cible sur le theme prive. Le pullback confirme la parite des d
 - Controle copywriting : PASS sur 340 fichiers.
 - Recette navigateur : 360, 390, 430 et 1440 px, sans debordement horizontal.
 - Structure : un seul H1 et quatre rapports affiches.
-- Liens des rapports et destinations controles avec reponses HTTP 200.
+- Aucun lien d'ouverture des rapports, aucune consigne d'agrandissement et aucun lien vers le portail fournisseur ne subsistent dans la page.
 - Bandeau : rotation, navigation manuelle, focus clavier et `prefers-reduced-motion` conformes.
 - Non-regression : accueil et PDP controles en mobile et desktop. La preuve sociale PDP est inchangee.
 - La revue de finition a detecte un effet de `ghost-card` autour du rapport principal. Le fond et l'ombre du cadre ont ete retires, puis le H1 mobile a ete corrige pour eviter la cassure d'un mot.
 - Apres correction et seconde lecture mobile et desktop, verdict final : `ship` pour la preview privee.
 - Retour Patrice du 2026-09-12 a 18:02 CEST : bandeau valide, fond passe de l'aigue-marine au quartz rose poudre canonique. Le texte public nomme maintenant `l'un de nos fournisseurs` sans exposer son nom commercial a l'ouverture. Push prive cible et pullback 2 sur 2 identique. Controle a 390 px : H1 sur deux lignes et aucun debordement.
+- Retour Patrice du 2026-09-12 a 18:39 CEST : les documents complets ne doivent pas etre accessibles publiquement. Le floutage est integre dans les pixels des quatre images ; la page n'utilise donc pas un simple filtre CSS reversible.
+- Push cible de six fichiers sur le theme prive `201115566427`, puis pullback six sur six identique. Controle reel a 390 px et en bureau : cinq apercus proteges affiches, zero lien vers un scan, zero lien vers le portail fournisseur et aucun debordement horizontal.
 
 Captures : `output/playwright/certificates-preview-2026-09-12/`.
 
@@ -67,7 +69,7 @@ Captures : `output/playwright/certificates-preview-2026-09-12/`.
 
 Risques non leves :
 
-- le droit de republication commerciale des scans doit etre confirme avant le live ;
+- la landing floutee doit recevoir le GO visuel final de Patrice avant toute integration ;
 - l'absence de mapping entre les rapports, les lots fournisseurs et les produits MilAura interdit toute attribution individuelle.
 
 Aucun live et aucun Shopify Admin n'ont ete touches par ce lot.
