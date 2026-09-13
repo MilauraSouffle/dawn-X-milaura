@@ -1,3 +1,12 @@
+## Correctif CTA multilignes du 2026-09-13
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-13 apres constat visuel sur `/pages/trouver-votre-pierre`.
+- Branche : `codex/milaura-cta-wrap-20260913`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/cta-wrap-20260913`, base `origin/codex/milaura-integration` au commit `ba9773cb`.
+- Perimetre reserve : `assets/milaura-owned-stone-guides.css`, `tests/owned-stone-guides.test.mjs` et documentation propre au lot. L audit confirme que `assets/milaura-actions.css` utilise deja une bordure unique et reste hors modification.
+- Direction : conserver la famille d action editoriale prune avec filet or, mais n afficher qu un seul filet propre sous le bloc complet lorsqu un libelle occupe deux lignes. Cible tactile, lisibilite et rythme vertical controles a 360, 390, 430 et 1028 px, puis non-regression sur les CTA sur une ligne.
+- Themes : preview `200974958939`, puis theme public `190430282075` apres PASS technique et visuel conforme a la demande de correction live.
+- Etat au 2026-09-13 : ACTIF. Diagnostic CSS et inventaire des surfaces en cours. Aucun fichier de theme ni theme Shopify modifie a ce stade.
+
 ## Acces aux trois guides pierre du 2026-09-12
 
 - Proprietaire : Codex, choix direct de Patrice le 2026-09-12 de regrouper les trois nouvelles pages dans le menu `Guides`.

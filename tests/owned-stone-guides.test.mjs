@@ -124,3 +124,12 @@ test('new UI files contain no hard-coded hex color and no em dash', () => {
     assert.doesNotMatch(source, /\u2014/, `${file} contains an em dash`);
   }
 });
+
+test('owned guide CTAs use one block underline when labels wrap', () => {
+  const source = read('assets/milaura-owned-stone-guides.css');
+  const rule = source.match(/\.milaura-owned-link\s*\{(?<declarations>[^}]*)\}/)?.groups?.declarations;
+  assert.ok(rule, 'the shared owned guide CTA rule is missing');
+  assert.match(rule, /border-bottom:\s*var\(--milaura-filet-action\)/);
+  assert.match(rule, /text-decoration:\s*none/);
+  assert.doesNotMatch(rule, /text-decoration-line:\s*underline/);
+});
