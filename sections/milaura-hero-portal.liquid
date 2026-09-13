@@ -293,15 +293,21 @@
 
     #MilauraPortal-{{ section.id }} {
       min-height: calc(100svh - var(--milaura-announcement-height, 52px));
+      background: var(--milaura-aigue-profonde);
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__veil {
+      right: 34%;
       background: linear-gradient(
-        135deg,
-        color-mix(in srgb, var(--milaura-aigue-profonde) 58%, transparent) 0%,
-        color-mix(in srgb, var(--milaura-aigue-profonde) 32%, transparent) 38%,
-        transparent 62%
+        90deg,
+        color-mix(in srgb, var(--milaura-aigue-profonde) 72%, transparent) 0%,
+        color-mix(in srgb, var(--milaura-aigue-profonde) 48%, transparent) 58%,
+        transparent 100%
       );
+      -webkit-backdrop-filter: blur(5px) saturate(94%);
+      backdrop-filter: blur(5px) saturate(94%);
+      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 58%, transparent 100%);
+      mask-image: linear-gradient(90deg, #000 0%, #000 58%, transparent 100%);
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__image {
@@ -309,12 +315,11 @@
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__copy {
-      width: min(420px, calc(100vw - 44px));
+      width: min(188px, calc(56vw - 18px));
       min-height: auto;
       justify-content: flex-start;
-      padding-top: 92px;
-      padding-bottom: 40px;
-      margin: 0 22px;
+      padding: 92px 0 40px;
+      margin: 0 0 0 22px;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__identity {
@@ -327,22 +332,63 @@
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__title {
-      max-width: 330px;
-      font-size: clamp(43px, 12.3vw, 50px);
+      max-width: 188px;
+      color: var(--milaura-nacre);
+      font-size: 42px;
       letter-spacing: -0.04em;
-      line-height: 0.94;
+      line-height: 0.89;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__title-line {
+      white-space: normal;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__title-word {
+      display: block;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__title-word--aigue {
+      color: var(--milaura-aigue-pierre);
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__title-word--or {
+      color: var(--milaura-or-clair);
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__body {
-      width: auto;
-      max-width: 330px;
+      width: 188px;
+      max-width: 100%;
       margin-top: 14px;
-      font-size: clamp(28px, 7.2vw, 31px);
-      line-height: 1.08;
+      color: var(--milaura-nacre);
+      font-size: 25px;
+      line-height: 1.04;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__cta {
-      margin-top: var(--milaura-esp-md);
+      width: max-content;
+      max-width: 100%;
+      flex-direction: column;
+      align-items: flex-start !important;
+      align-self: flex-start;
+      justify-content: center !important;
+      gap: 0 !important;
+      padding: 2px 8px 3px 2px !important;
+      margin-top: 20px;
+      border: 0 !important;
+      border-bottom: var(--milaura-filet-action) !important;
+      color: var(--milaura-nacre) !important;
+      background: transparent !important;
+      text-align: left;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__cta:hover {
+      border-color: var(--milaura-aigue-pierre) !important;
+      color: var(--milaura-aigue-ecume) !important;
+      background: transparent !important;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__cta-line {
+      display: block;
     }
 
     #MainContent > .shopify-section.milaura-hero-homepage + .section-milaura-selection-atelier .milaura-season__shell {
@@ -387,23 +433,24 @@
     #MainContent > .shopify-section.milaura-hero-homepage {
       margin-top: -74px !important;
     }
-
-    #MilauraPortal-{{ section.id }} .portal-hero__title {
-      font-size: 43px;
-    }
   }
 
   @media screen and (max-width: 360px) {
     #MilauraPortal-{{ section.id }} .portal-hero__copy {
-      width: calc(100vw - 36px);
+      width: min(182px, calc(56vw - 18px));
       padding-top: 92px;
-      margin-right: 18px;
+      margin-right: 0;
       margin-left: 18px;
     }
 
+    #MilauraPortal-{{ section.id }} .portal-hero__title {
+      max-width: 182px;
+      font-size: 40px;
+    }
+
     #MilauraPortal-{{ section.id }} .portal-hero__body {
-      max-width: 310px;
-      font-size: 28px;
+      width: 182px;
+      font-size: 24px;
     }
 
     [id^='MilauraNav-'].milaura-home-hero-nav .nav-logo-link {
@@ -466,12 +513,34 @@
       <p class="portal-hero__eyebrow">{{ hero_eyebrow | escape }}</p>
     </div>
     <h1 class="portal-hero__title" id="MilauraPortalTitle-{{ section.id }}">
-      <span class="portal-hero__title-line">{{ hero_title_first | escape }}</span>
-      <span class="portal-hero__title-line">{{ hero_title_second | escape }}</span>
+      {%- if hero_title_first == 'Vos émotions' and hero_title_second == 'ont du style.' -%}
+        <span class="portal-hero__title-line">
+          <span class="portal-hero__title-word">Vos</span>
+          <span class="portal-hero__title-word portal-hero__title-word--aigue">émotions</span>
+        </span>
+        <span class="portal-hero__title-line">
+          <span class="portal-hero__title-word">ont du</span>
+          <span class="portal-hero__title-word portal-hero__title-word--or">style.</span>
+        </span>
+      {%- else -%}
+        <span class="portal-hero__title-line">{{ hero_title_first | escape }}</span>
+        <span class="portal-hero__title-line">{{ hero_title_second | escape }}</span>
+      {%- endif -%}
     </h1>
     <p class="portal-hero__body">{{ hero_body | escape }}</p>
     {%- if hero_cta_label != blank -%}
-      <a class="milaura-action milaura-action--editorial portal-hero__cta" href="{{ hero_cta_link }}">{{ hero_cta_label | escape }}</a>
+      <a
+        class="milaura-action milaura-action--editorial portal-hero__cta"
+        href="{{ hero_cta_link }}"
+        aria-label="{{ hero_cta_label | escape }}"
+      >
+        {%- if hero_cta_label == 'Voir tous les bijoux' -%}
+          <span class="portal-hero__cta-line" aria-hidden="true">Voir tous</span>
+          <span class="portal-hero__cta-line" aria-hidden="true">les bijoux</span>
+        {%- else -%}
+          {{ hero_cta_label | escape }}
+        {%- endif -%}
+      </a>
     {%- endif -%}
   </div>
 
