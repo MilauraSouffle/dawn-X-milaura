@@ -1,3 +1,13 @@
+## Bandeau avantages MilAura du 2026-09-13
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-13.
+- Branche et worktree : `codex/milaura-certificates-rewards-20260910`, `/Users/paesano/Documents/MilAura website/_worktrees/certificates-rewards-20260910`.
+- Perimetre reserve : `sections/milaura-announcement.liquid`, tests et documentation propres au lot.
+- Direction validee : le bandeau superieur est reserve aux trois avantages panier `30 / 50 / 80`. Les messages Karine, atelier et rapports quittent ce bandeau et sont conserves pour une future bande de reassurance sous le Hero.
+- Exclusions : e-mails, checkout Shopify, Hero, produits, prix, stocks, promotions Admin et tout autre fichier theme.
+- Theme de recette : preview privee `200974958939`. Le live `190430282075` reste interdit sans GO visuel puis GO live explicites.
+- Etat au 2026-09-13 08:08 CEST : PREVIEW PRIVEE PRETE. Push cible et pullback identique sur `200974958939`, controles `360 / 390 / 430 / 1440` conformes. GO visuel de Patrice attendu avant toute integration ou publication live.
+
 ## Rapports fournisseur, landing et bandeau compact du 2026-09-10
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-10, GO live explicite du 2026-09-12.
