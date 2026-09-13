@@ -5,7 +5,7 @@
 - Perimetre reserve : `assets/milaura-owned-stone-guides.css`, `tests/owned-stone-guides.test.mjs` et documentation propre au lot. L audit confirme que `assets/milaura-actions.css` utilise deja une bordure unique et reste hors modification.
 - Direction : conserver la famille d action editoriale prune avec filet or, mais n afficher qu un seul filet propre sous le bloc complet lorsqu un libelle occupe deux lignes. Cible tactile, lisibilite et rythme vertical controles a 360, 390, 430 et 1028 px, puis non-regression sur les CTA sur une ligne.
 - Themes : preview `200974958939`, puis theme public `190430282075` apres PASS technique et visuel conforme a la demande de correction live.
-- Etat au 2026-09-13 : ACTIF. Diagnostic CSS et inventaire des surfaces en cours. Aucun fichier de theme ni theme Shopify modifie a ce stade.
+- Etat au 2026-09-13 08:15 CEST : FERME, INTEGRE, POUSSE ET LIVE VERIFIE. Commit fonctionnel `725cf31e`, fichier CSS unique publie sur `190430282075`, pullback identique SHA-256 `bc3811ea7dae56912179ecf5f3f5c3823f92cb87c3995086a7c76059f44f2ef5`. QA publique sur les trois guides et deux surfaces produits globales sans double trait, debordement ni erreur. Reservation liberee. [Checkpoint](checkpoints/2026-09-13-0815-multiline-guide-cta-live.md).
 
 ## Acces aux trois guides pierre du 2026-09-12
 
@@ -96,7 +96,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-12 19:29 CEST
+Derniere mise a jour : 2026-09-13 08:15 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
