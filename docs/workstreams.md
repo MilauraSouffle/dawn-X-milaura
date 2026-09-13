@@ -5,8 +5,8 @@
 - Perimetre reserve : `sections/milaura-announcement.liquid`, tests et documentation propres au lot.
 - Direction validee : le bandeau superieur est reserve aux trois avantages panier `30 / 50 / 80`. Les messages Karine, atelier et rapports quittent ce bandeau et sont conserves pour une future bande de reassurance sous le Hero.
 - Exclusions : e-mails, checkout Shopify, Hero, produits, prix, stocks, promotions Admin et tout autre fichier theme.
-- Theme de recette : preview privee `200974958939`. Le live `190430282075` reste interdit sans GO visuel puis GO live explicites.
-- Etat au 2026-09-13 08:08 CEST : PREVIEW PRIVEE PRETE. Push cible et pullback identique sur `200974958939`, controles `360 / 390 / 430 / 1440` conformes. GO visuel de Patrice attendu avant toute integration ou publication live.
+- Theme de recette : preview privee `201311519067`, reconstruite le 2026-09-13 depuis le theme live courant `190430282075` afin d inclure le Hero actuel. Le live reste interdit sans GO visuel puis GO live explicites.
+- Etat au 2026-09-13 08:24 CEST : PREVIEW PRIVEE PRETE. Le repere fonctionnel `AVANTAGE MILAURA` en aigue-marine precede les trois benefices. Push cible et pullback identique sur `201311519067`, controles `360 / 390 / 430 / 1440` conformes, Hero actuel confirme et console navigateur vide. GO visuel de Patrice attendu avant toute integration ou publication live.
 
 ## Rapports fournisseur, landing et bandeau compact du 2026-09-10
 
