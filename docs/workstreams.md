@@ -1,3 +1,11 @@
+## Cloture certificats, checkout et Hero du 2026-09-13
+
+- Proprietaire : Codex, session arretee sur demande explicite de Patrice le 2026-09-13 a 11:56 CEST.
+- Branches : source `codex/milaura-urgent-ux-20260912` au commit `cd7e83aa` ; release Hero `codex/milaura-hero-mobile-release-20260913` ; integration distante au commit fonctionnel `19fbc918` avant la cloture documentaire.
+- Perimetre ferme : page certificats deja live, bandeau rose des avantages deja live, phrase PDP deja live, profil checkout actif conserve et Hero mobile final publie. Aucun nouveau changement storefront ou Admin autorise pendant la cloture.
+- Theme public : `190430282075`. Profil checkout actif : `MilAura Checkout UX 2026-09-13`, ID `9395241307`.
+- Etat : SESSION FERMEE. Hero integre, pousse, pullback identique et QA publique 430/1440 conforme. Checkout transfere a une future session dediee qui doit commencer en lecture seule et attendre un GO exact avant toute sauvegarde. Le checkout principal local tres sale reste intouche. Le lot certificats live doit encore etre reconcilie dans Git sans staging global ni reecriture destructive de l historique. Reservation fonctionnelle liberee. [Checkpoint](checkpoints/2026-09-13-1156-certificats-checkout-hero-handoff.md).
+
 ## Correctif CTA multilignes du 2026-09-13
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-13 apres constat visuel sur `/pages/trouver-votre-pierre`.
