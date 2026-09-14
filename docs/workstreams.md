@@ -400,6 +400,14 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 - Theme public cible : `190430282075`, apres controle local, push cible du snippet, pullback et verification publique. Le checkout d integration reste strictement exclu.
 - Etat au 2026-09-14 16:31 CEST : FERME, LIVE VERIFIE. Le seul snippet a ete pousse sur `190430282075` sans suppression, puis relu a l identique par pullback SHA-256 `aba4a76b4ec12ce1087c0ebaa64529ce78847dab6cf7b725267159ae016588a4`. Le HTML public contient le lien natif exact vers Mon Ecrin et aucun attribut `data-milaura-c1-skip-save` sur ce CTA. [Checkpoint](checkpoints/2026-09-14-1631-quiz-guest-mon-ecrin-live.md).
 
+## Rehabilitation controlee du depot du 2026-09-14
+
+- Proprietaire : Codex, GO explicite de Patrice du 2026-09-14 apres le rollback live evite puis corrige.
+- Branche : `codex/milaura-repo-rehabilitation-20260914`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/repo-rehabilitation-20260914`, base canonique live `89b7f83f`.
+- Perimetre reserve : inventaire Git et worktrees, references de securite, documentation de reprise, stabilisation de la branche d integration et retrait ulterieur des seuls worktrees et artefacts explicitement qualifies. Theme Shopify, produits, contenu Admin, assets publics et checkout d integration ancien restent exclus de toute modification directe.
+- Gates : aucune suppression, reset, purge Git, reecriture d historique, merge global ou mutation Shopify sans inventaire, preservation nominative et decision de Patrice. Le checkout ancien reste en quarantaine tant que son WIP n est pas archive.
+- Etat au 2026-09-14 : PHASE 1 FERMEE. Branche d integration distante canonique `89b7f83f`, refs et archives de surete verifiees, inventaire ecrit dans `docs/audits/2026-09-14-repo-rehabilitation-inventory.md`. Aucune suppression ni bascule du checkout historique executee ; gates A a C attendent les GO nominaux de Patrice.
+
 ## Regles du registre
 
 1. Le proprietaire inscrit sa ligne avant la premiere modification.
