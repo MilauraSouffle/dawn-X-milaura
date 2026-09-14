@@ -443,3 +443,11 @@ Procedure detaillee : `docs/reference/2026-08-12-repository-workflow.md`.
 - Perimetre exclusif : restauration du thème public `190430282075` depuis le source complet, plus les trois correctifs quiz locaux `1112551a`, `9967239b` et `88b86d1d`. Produits, stocks, commandes, données clients, Flow Shopify et réglages Admin hors thème restent inchangés.
 - Preuves avant écriture distante : snapshot du live dégradé `/private/tmp/milaura-live-rollback-audit-20260914` à 2026-09-14 15:29 CEST ; Theme Check sans erreur, 16 avertissements historiques ; `git diff --check` conforme.
 - Gate : pousser d abord vers `MilAura — Prévisualisation Dev` `201359720795`, comparer la prévisualisation, puis restaurer le live uniquement avec `--nodelete`, pullback ciblé et QA publique. Etat : PREVIEW EN PREPARATION, aucun nouveau push live par ce worktree à cette étape.
+## Parcours resultat du quiz, CTA visiteur et polish premium du 2026-09-14
+
+- Proprietaire : Codex, GO explicite de Patrice le 2026-09-14.
+- Branche : `codex/milaura-quiz-result-premium-20260914`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/quiz-result-premium-20260914`, base `adf905d1`.
+- Perimetre reserve : `sections/milaura-quiz.liquid`, `snippets/milaura-quiz-account-save.liquid`, styles et tests directement requis par le parcours resultat. Aucun produit, stock, prix, media Shopify, Flow email, checkout, Mon Ecrin Customer Accounts, configuration Admin ou autre page.
+- Direction : le resultat revele d abord le profil et la pierre, puis une selection reelle associee. Le message d actualisation de stock devient factuel et discret. Le compte devient une proposition secondaire, clairement reservee a la conservation du resultat, sans faux parcours visiteur ni redirection vers l authentification. Aucun nouveau "Mon Ecrin visiteur" n est simule.
+- Themes : travail local puis preview dediee. Theme public `190430282075` seulement apres PASS technique, recette mobile et bureau, GO visuel explicite de Patrice et GO live distinct.
+- Etat au 2026-09-14 : IMPLEMENTATION ET RECETTE EN COURS. Le CTA `Continuer sans compte` est autorise a etre retire ; aucun push Shopify execute a cette etape.

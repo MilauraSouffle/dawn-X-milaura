@@ -56,8 +56,7 @@ function browser({loggedIn = false, storage = new Map(), blocked = false, respon
     window, storage, requests, redirects, status, button, link, emit,
     store: window.MilauraAccountSaveIntent,
     loadBridge: () => vm.runInContext(bridgeCode, context),
-    click: () => events.get('document:click')[0]({target: {closest: (s) => s.includes('skip-save') ? null : button}, preventDefault() {}}),
-    skip: () => events.get('document:click')[0]({target: {closest: (s) => s.includes('skip-save') ? {} : null}, preventDefault() {}}),
+    click: () => events.get('document:click')[0]({target: {closest: () => button}, preventDefault() {}}),
   };
 }
 
@@ -182,17 +181,6 @@ test('une panne de vérification de purge ne laisse pas envoyer un résultat', a
   assert.match(b.status.textContent, /vérification/);
 });
 
-test('continuer sans enregistrer efface la demande temporaire et n’envoie rien', async () => {
-  const b = browser();
-  b.store.prepare(diagnostic);
-  b.loadBridge();
-  b.skip();
-  await tick();
-  assert.equal(b.storage.size, 0);
-  assert.equal(b.requests.length, 0);
-  assert.match(b.status.textContent, /sans enregistrer/);
-});
-
 test('ne transfère pas à un autre compte une demande déjà liée à un client', async () => {
   const b = browser({loggedIn: true});
   b.store.prepare(diagnostic, 'another-customer');
@@ -312,5 +300,5 @@ test('une session expirée propose la connexion sans annoncer un enregistrement'
   await tick();
   assert.equal(b.status.dataset.state, 'login-required');
   assert.equal(b.link.hidden, true);
-  assert.match(b.button.textContent, /Se connecter/);
+  assert.match(b.button.textContent, /Conserver dans Mon Écrin/);
 });
