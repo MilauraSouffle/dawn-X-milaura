@@ -300,5 +300,5 @@ test('une session expirée propose la connexion sans annoncer un enregistrement'
   await tick();
   assert.equal(b.status.dataset.state, 'login-required');
   assert.equal(b.link.hidden, true);
-  assert.match(b.button.textContent, /Conserver dans Mon Écrin/);
+  assert.match(b.button.textContent, /Créer mon Écrin/);
 });

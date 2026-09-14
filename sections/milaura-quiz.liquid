@@ -1591,7 +1591,10 @@
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-card {
     position: relative;
+    isolation: isolate;
+    min-height: clamp(31rem, 42vw, 39rem);
     padding: var(--milaura-esp-xl) 0;
+    overflow: hidden;
     text-align: left;
   }
 
@@ -1600,15 +1603,14 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-heading {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(150px, 0.72fr);
-    column-gap: var(--milaura-esp-md);
-    row-gap: 0;
-    align-items: start;
+    position: relative;
+    z-index: 1;
+    display: block;
+    max-width: 58ch;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-heading-copy {
-    display: contents;
+    display: block;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-question {
@@ -1623,8 +1625,6 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-profile-name {
-    grid-column: 1 / -1;
-    grid-row: 1;
     min-width: 0;
     max-width: 100%;
     margin: 0 0 var(--milaura-esp-lg);
@@ -1641,14 +1641,10 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-question {
-    grid-column: 1;
-    grid-row: 2;
     align-self: end;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-stone-title {
-    grid-column: 1;
-    grid-row: 3;
     align-self: start;
     margin: var(--milaura-esp-3xs) 0 0;
     color: var(--milaura-aigue-profonde);
@@ -1660,14 +1656,15 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-stone-media {
-    grid-column: 2;
-    grid-row: 2 / span 2;
-    align-self: center;
-    width: 100%;
-    max-width: 240px;
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    right: clamp(-3rem, -2vw, -1rem);
+    width: clamp(25rem, 42vw, 40rem);
+    max-width: none;
     aspect-ratio: 1;
     min-height: 0;
-    margin: 0 0 0 auto;
+    margin: 0;
     overflow: visible;
     border: 0;
     border-radius: var(--milaura-rayon-net);
@@ -1682,12 +1679,15 @@
     display: block;
     object-fit: contain;
     object-position: center;
+    opacity: 0.7;
     filter: drop-shadow(var(--milaura-ombre-portee));
     transform: none;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-summary {
-    max-width: 48ch;
+    position: relative;
+    z-index: 1;
+    max-width: 58ch;
     margin: var(--milaura-esp-md) 0 0;
     padding-top: var(--milaura-esp-md);
     border-top: var(--milaura-filet-or);
@@ -1697,43 +1697,67 @@
     line-height: var(--milaura-lh-corps);
   }
 
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-summary p {
+    margin: 0;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-summary p + p {
+    margin-top: var(--milaura-esp-xs);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-stone-explanation {
+    color: var(--milaura-encre-secondaire);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
   #MilauraQuiz-{{ section.id }} .quiz-reveal-summary strong {
     color: var(--milaura-prune);
     font-weight: 650;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits {
-    max-width: none;
+    position: relative;
+    z-index: 1;
+    max-width: 64rem;
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--milaura-esp-sm);
     margin: var(--milaura-esp-md) 0 0;
     padding: 0;
-    border-bottom: var(--milaura-filet);
+    border-bottom: 0;
     list-style: none;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-benefit {
     position: relative;
     margin: 0;
-    padding: var(--milaura-esp-xs) 0 var(--milaura-esp-xs) var(--milaura-esp-sm);
+    padding: var(--milaura-esp-sm) 0 0;
     border-top: var(--milaura-filet);
     color: var(--milaura-encre-secondaire);
     font-family: var(--milaura-font-texte);
     font-size: var(--milaura-t-petit);
-    font-weight: 600;
+    font-weight: 400;
     line-height: var(--milaura-lh-petit);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-benefit::before {
-    content: '';
-    width: var(--milaura-esp-3xs);
-    height: var(--milaura-esp-3xs);
-    position: absolute;
-    top: calc(50% - var(--milaura-esp-3xs) / 2);
-    left: 0;
-    border-radius: var(--milaura-rayon-pastille);
-    background: var(--milaura-or);
+    content: none;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefit strong,
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefit span {
+    display: block;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefit strong {
+    color: var(--milaura-prune);
+    font-size: var(--milaura-t-petit);
+    font-weight: 700;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-benefit span {
+    margin-top: var(--milaura-esp-3xs);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-selection {
@@ -1794,7 +1818,7 @@
 
   #MilauraQuiz-{{ section.id }} .milaura-recommendations--diagnostic .milaura-recommendations__products {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--milaura-esp-md);
     margin: 0;
     padding: 0;
@@ -1820,8 +1844,8 @@
   #MilauraQuiz-{{ section.id }} .milaura-recommendations--diagnostic .milaura-recommendation-card--focal .grid__card-img,
   #MilauraQuiz-{{ section.id }} .milaura-recommendations--diagnostic .milaura-recommendation-card--secondary .grid__card-img {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1;
+    height: clamp(13rem, 18vw, 18rem);
+    aspect-ratio: auto;
     overflow: hidden;
     border: var(--milaura-filet-mineral);
     border-radius: var(--milaura-rayon-sm);
@@ -1842,6 +1866,9 @@
   #MilauraQuiz-{{ section.id }} .milaura-recommendations--diagnostic .milaura-recommendation-card__reason {
     min-height: 0;
     margin: var(--milaura-esp-3xs) var(--milaura-esp-xs) 0;
+    color: var(--milaura-prune);
+    font-size: var(--milaura-t-petit);
+    font-weight: 700;
   }
 
   #MilauraQuiz-{{ section.id }} .milaura-recommendations--diagnostic .milaura-editorial-purchase {
@@ -1855,7 +1882,7 @@
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-follow-up {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 0.55fr);
     gap: var(--milaura-esp-xl);
     align-items: start;
     padding: var(--milaura-esp-lg) 0;
@@ -1866,8 +1893,9 @@
   #MilauraQuiz-{{ section.id }} .quiz-reveal-email-consent {
     display: block;
     margin: 0;
-    padding: 0;
+    padding: 0 0 0 var(--milaura-esp-xl);
     border: 0;
+    border-left: var(--milaura-filet-mineral);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-email-consent__intro {
@@ -1984,14 +2012,20 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-invite {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(14rem, 0.9fr);
+    gap: var(--milaura-esp-lg);
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+    border-left: 0;
+    text-align: left;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-content {
     display: flex;
     flex-direction: column;
-    gap: var(--milaura-esp-xs);
     align-items: flex-start;
-    margin: 0;
-    padding: 0 0 0 var(--milaura-esp-xl);
-    border-left: var(--milaura-filet-mineral);
-    text-align: left;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-title {
@@ -2001,6 +2035,15 @@
     font-size: var(--milaura-t-h3);
     font-weight: 400;
     line-height: var(--milaura-lh-h3);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-intro {
+    max-width: 42ch;
+    margin: var(--milaura-esp-xs) 0 0;
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-corps);
+    line-height: var(--milaura-lh-corps);
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-save,
@@ -2021,14 +2064,13 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-save {
-    margin: 0;
+    margin: var(--milaura-esp-md) 0 0;
     padding: var(--milaura-esp-2xs) 0;
-    order: 3;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-status,
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-text {
-    margin: 0;
+    margin: var(--milaura-esp-xs) 0 0;
     color: var(--milaura-encre-secondaire);
     font-family: var(--milaura-font-texte);
     font-size: var(--milaura-t-petit);
@@ -2036,7 +2078,59 @@
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-account-link {
+    margin-top: var(--milaura-esp-md);
     padding: var(--milaura-esp-2xs) 0;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 13rem;
+    padding: var(--milaura-esp-md);
+    border: var(--milaura-filet-mineral);
+    border-radius: var(--milaura-rayon-sm);
+    background: var(--milaura-surface-haute);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview-title {
+    margin: 0;
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-h4);
+    line-height: var(--milaura-lh-h4);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview dl {
+    display: grid;
+    gap: var(--milaura-esp-xs);
+    margin: var(--milaura-esp-sm) 0;
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview dl > div {
+    display: grid;
+    gap: var(--milaura-esp-3xs);
+    padding-top: var(--milaura-esp-xs);
+    border-top: var(--milaura-filet-mineral);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview dt,
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview dd,
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview-advice {
+    margin: 0;
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview dt,
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview-advice {
+    color: var(--milaura-encre-secondaire);
+  }
+
+  #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview dd {
+    color: var(--milaura-prune);
+    font-weight: 700;
   }
 
   #MilauraQuiz-{{ section.id }} .quiz-reveal-restart {
@@ -2239,6 +2333,74 @@
     }
   }
 
+  /* RESULTAT V4 - la lecture du résultat conduit le reste de la page. */
+  @media screen and (min-width: 990px) {
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-heading {
+      display: block;
+      max-width: 58ch;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-stone-media {
+      max-width: none;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-card {
+      min-height: 0;
+      padding: var(--milaura-esp-lg) 0;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-heading {
+      display: block;
+      max-width: 70%;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-profile-name {
+      margin: 0 0 var(--milaura-esp-md);
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-stone-media {
+      top: 0;
+      right: calc(-1 * var(--milaura-esp-md));
+      width: min(72vw, 19rem);
+      max-width: none;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-summary {
+      max-width: 100%;
+      padding-right: 0;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-benefits {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--milaura-esp-xs);
+    }
+
+    #MilauraQuiz-{{ section.id }} .milaura-recommendations--diagnostic .grid__card-img,
+    #MilauraQuiz-{{ section.id }} .milaura-recommendations--diagnostic .milaura-recommendation-card--focal .grid__card-img,
+    #MilauraQuiz-{{ section.id }} .milaura-recommendations--diagnostic .milaura-recommendation-card--secondary .grid__card-img {
+      height: min(70vw, 17rem);
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-email-consent {
+      padding: var(--milaura-esp-lg) 0 0;
+      border-top: var(--milaura-filet-mineral);
+      border-left: 0;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-account-invite {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--milaura-esp-md);
+      padding: 0;
+      border: 0;
+    }
+
+    #MilauraQuiz-{{ section.id }} .quiz-reveal-account-preview {
+      min-height: 0;
+    }
+  }
+
   /* ============================================
      PERFORMANCE OPTIMIZATIONS
      ============================================ */
@@ -2423,7 +2585,7 @@
                 </div>
               </div>
 
-              <p class="quiz-reveal-summary" id="quiz-reveal-summary-{{ section.id }}"></p>
+              <div class="quiz-reveal-summary" id="quiz-reveal-summary-{{ section.id }}"></div>
 
               <ul
                 class="quiz-reveal-benefits"
@@ -2439,7 +2601,7 @@
                 source_product_ids: blank,
                 excluded_product_ids: blank,
                 recommendation_intents: 'curated',
-                recommendation_limit: 2,
+                recommendation_limit: 3,
                 recommendation_minimum: 1,
                 recommendation_requires_filter: true,
                 eyebrow: blank,
@@ -2452,8 +2614,8 @@
               %}
 
               <div class="quiz-reveal-follow-up">
-                {% render 'milaura-quiz-email-consent', section_id: section.id %}
                 {% render 'milaura-quiz-account-save', section_id: section.id %}
+                {% render 'milaura-quiz-email-consent', section_id: section.id %}
               </div>
               <div class="quiz-reveal-footer">
                 <button type="button" class="quiz-reveal-restart" id="quiz-restart-btn-{{ section.id }}">
@@ -2506,11 +2668,11 @@
       apaisement: {
         label: "Apaisement",
         displayName: "Apaisement",
-        moodLabel: "Système nerveux en surchauffe",
-        dashboardTitle: "Votre système nerveux a besoin de douceur.",
-        hookTitle: "Laisser la pression redescendre",
-        description: "Vous êtes la personne qui tient, qui gère, qui avance. De l’extérieur, tout semble encore en place. Mais à l’intérieur, la tension s’accumule. Le corps se crispe, le souffle se raccourcit, le repos ne suffit plus vraiment. Votre besoin du moment n’est pas d’en faire plus, mais de relâcher ce que vous portez depuis trop longtemps.",
-        solution: "<strong>La Calcédoine bleue</strong> devient votre rappel physique de ralentir, de respirer et de revenir à vous avant la surcharge.",
+        moodLabel: "Sous pression",
+        dashboardTitle: "Vous avez besoin de ralentir.",
+        hookTitle: "Faire redescendre la pression",
+        description: "Vous gérez beaucoup, souvent sans le montrer. Vous avancez parce qu’il faut avancer, même quand la fatigue prend de la place. Ce résultat ne vous demande pas d’en faire plus. Il vous invite à alléger votre journée, à vous donner du temps et à arrêter de tout porter seule ou seul.",
+        solution: "<strong>La Calcédoine bleue</strong> accompagne vos moments de pause et vous rappelle de ralentir.",
         bullets: "<ul><li>Apaisement immédiat du système nerveux</li><li>Douceur émotionnelle et lâcher-prise</li><li>Sensation de cocon réparateur</li></ul>",
         ritual: "1. " + {{ section.settings.profile_apaisement_ritual_1 | default: "Portez votre pierre. Fermez les yeux, inspirez 3 fois." | json }} + "\n2. " + {{ section.settings.profile_apaisement_ritual_2 | default: "Autorisez-vous à être vulnérable, juste 10 minutes." | json }} + "\n3. " + {{ section.settings.profile_apaisement_ritual_3 | default: "Dites-vous : « Je peux déposer les armes. »" | json }},
         mantra: {{ section.settings.profile_apaisement_mantra | default: "Je peux relâcher la pression." | json }},
@@ -2522,27 +2684,27 @@
         colorAccentRgb: "107, 163, 199",
         benefits: [
           {
-            title: "Relâche la pression",
-            text: "Vous tenez tout, tout le temps. La Calcédoine marque le point où vous avez le droit de poser."
+            title: "Relâcher la pression",
+            text: "Choisissez aujourd’hui un moment de dix minutes sans message, sans tâche et sans explication à donner."
           },
           {
-            title: "Calmer l'exigence",
-            text: "Votre exigence intérieure est plus dure que celle de votre entourage. Cette pierre ramène une voix plus juste."
+            title: "Arrêter de vous en demander trop",
+            text: "Repérez une chose que vous pouvez remettre à demain sans conséquence. Vous n’avez pas à tout finir aujourd’hui."
           },
           {
-            title: "Invite au lâcher-prise",
-            text: "Le contrôle permanent épuise. La Calcédoine rappelle au corps qu'il peut relâcher avant de craquer."
+            title: "Vous accorder une vraie pause",
+            text: "Gardez votre pierre près de vous pour vous rappeler de fermer la journée avant de repartir dans une nouvelle obligation."
           }
         ]
       },
       protection: {
         label: "Protection",
         displayName: "Protection",
-        moodLabel: "Énergie envahie",
+        moodLabel: "Trop sollicitée",
         dashboardTitle: "Votre énergie mérite d’être préservée.",
         hookTitle: "Reprendre votre espace",
-        description: "Vous ressentez vite les ambiances, les tensions, les intentions. Ce que d’autres laissent glisser, vous le captez immédiatement. C’est une sensibilité précieuse, mais en ce moment, elle vous pèse : vous vous laissez envahir plus facilement. Vous finissez parfois vos journées vidé(e), non pas à cause de ce que vous faites, mais à cause de tout ce que vous absorbez. Votre besoin du moment est de retrouver des limites claires et un espace intérieur plus protégé.",
-        solution: "<strong>L’Obsidienne noire</strong> vous aide à poser une limite visible, comme un ancrage protecteur que vous portez sur vous.",
+        description: "Vous remarquez vite les tensions, les attentes et les humeurs autour de vous. Cette attention aux autres peut finir par vous prendre toute la place. Votre besoin du moment est de remettre des limites simples, de prendre de la distance quand il le faut et de préserver du temps qui n’appartient qu’à vous.",
+        solution: "<strong>L’Obsidienne noire</strong> accompagne vos repères personnels quand vous avez besoin de prendre de la distance.",
         bullets: "<ul><li>Bouclier énergétique</li><li>Frontières plus nettes</li><li>Sensation de protection intérieure</li></ul>",
         ritual: "1. " + {{ section.settings.profile_protection_ritual_1 | default: "Portez votre pierre en rentrant chez vous." | json }} + "\n2. " + {{ section.settings.profile_protection_ritual_2 | default: "Imaginez un mur invisible se lever." | json }} + "\n3. " + {{ section.settings.profile_protection_ritual_3 | default: "Dites-vous : « Ici, c'est mon sanctuaire. »" | json }},
         mantra: {{ section.settings.profile_protection_mantra | default: "Je protège mon énergie." | json }},
@@ -2555,26 +2717,26 @@
         benefits: [
           {
             title: "Poser une limite",
-            text: "Vous captez les humeurs des autres comme une éponge. L'Obsidienne pose la frontière que vous ne savez pas tracer."
+            text: "Avant de dire oui, demandez-vous si vous avez vraiment la place. Un délai ou un non clair est parfois la bonne réponse."
           },
           {
-            title: "Ramène à l’ancrage",
-            text: "Quand le mental tourne sur une tension, la pierre vous ramène dans votre corps, hors de la boucle."
+            title: "Prendre de la distance",
+            text: "Quand un échange vous pèse, sortez quelques minutes de la situation avant de décider quoi répondre."
           },
           {
-            title: "Protège votre énergie",
-            text: "Vous finissez vidé(e) sans savoir pourquoi. L'Obsidienne filtre ce qui n'est pas à vous."
+            title: "Préserver votre énergie",
+            text: "Réservez un moment qui ne sert ni à répondre, ni à aider, ni à organiser pour les autres."
           }
         ]
       },
       serenite: {
         label: "Sérénité",
         displayName: "Sérénité",
-        moodLabel: "Mental en sur-contrôle",
+        moodLabel: "Trop de choses en tête",
         dashboardTitle: "Votre esprit a besoin d’espace.",
         hookTitle: "Faire taire le bruit mental",
-        description: "Ce n’est pas la vie qui vous épuise le plus en ce moment, c’est tout ce que votre mental essaie de gérer en même temps. Vous analysez, vous anticipez, vous gardez trop d’onglets ouverts à l’intérieur. À force de vouloir tout contenir, la clarté s’éloigne. Votre besoin du moment est simple : ralentir le flux, revenir à l’essentiel et retrouver un peu de silence en vous.",
-        solution: "<strong>L’Améthyste</strong> devient votre signal de clarté, le geste qui vous aide à revenir au présent.",
+        description: "Vous avez beaucoup de choses en tête et vous essayez de ne rien oublier. À force d’anticiper, de comparer et de prévoir, vos priorités se mélangent. Votre besoin du moment est de faire moins à la fois, de retrouver de la clarté et de vous laisser un peu d’espace.",
+        solution: "<strong>L’Améthyste</strong> accompagne vos moments où vous voulez revenir à l’essentiel.",
         bullets: "<ul><li>Déconnexion mentale en douceur</li><li>Clarté et recentrage</li><li>Retour au calme intérieur</li></ul>",
         ritual: "1. " + {{ section.settings.profile_serenite_ritual_1 | default: "Eteignez votre telephone. Portez votre pierre." | json }} + "\n2. " + {{ section.settings.profile_serenite_ritual_2 | default: "Profitez des bienfaits de votre pierre, fermez les yeux." | json }} + "\n3. " + {{ section.settings.profile_serenite_ritual_3 | default: "Laissez les pensées passer sans vous y accrocher." | json }},
         mantra: {{ section.settings.profile_serenite_mantra | default: "Je reviens à l’essentiel." | json }},
@@ -2586,27 +2748,27 @@
         colorAccentRgb: "155, 126, 200",
         benefits: [
           {
-            title: "Calmer son mental",
-            text: "Votre tête tourne plus vite que vos journées. L'Améthyste devient le geste qui ralentit le flux."
+            title: "Faire de la place dans votre tête",
+            text: "Écrivez les trois choses qui comptent aujourd’hui. Le reste peut attendre une autre liste."
           },
           {
-            title: "Favoriser l'intuition",
-            text: "À force d'analyser, vous n'entendez plus ce que vous savez déjà. La pierre crée le silence où votre instinct reparle."
+            title: "Retrouver une priorité claire",
+            text: "Choisissez une seule décision à prendre maintenant au lieu de garder toutes les options ouvertes."
           },
           {
-            title: "Préparer le sommeil",
-            text: "Votre cerveau ne sait plus s'arrêter le soir. Poser l'Améthyste, c'est le signal qu'il peut éteindre."
+            title: "Fermer la journée",
+            text: "Le soir, éloignez votre téléphone quelques minutes avant de passer à autre chose ou d’aller dormir."
           }
         ]
       },
       amour: {
         label: "Amour",
         displayName: "Amour",
-        moodLabel: "Carence de bienveillance envers soi",
+        moodLabel: "Vous passez après les autres",
         dashboardTitle: "Vous avez besoin de recevoir autant que vous donnez.",
         hookTitle: "Recevoir autant que vous donnez",
-        description: "Vous êtes souvent celle ou celui qui soutient, rassure, accompagne. Vous donnez beaucoup, parfois sans compter. Mais à force de tourner votre attention vers les autres, vous oubliez votre propre besoin de douceur. Votre cœur n’a pas besoin de plus d’efforts, il a besoin de tendresse, de réconfort et de bienveillance envers vous-même. Votre besoin du moment est de vous remettre, vous aussi, au centre du soin.",
-        solution: "<strong>Le Quartz rose</strong> remet la douceur au centre, comme une présence apaisante que vous pouvez garder près de vous.",
+        description: "Vous êtes disponible pour les autres, vous soutenez et vous rassurez. Mais quand est-ce que vous vous demandez ce dont vous avez besoin ? Ce résultat vous invite à vous remettre dans l’équation, à demander autant que vous donnez et à garder un temps pour vous sans culpabiliser.",
+        solution: "<strong>Le Quartz rose</strong> accompagne les moments où vous choisissez de vous remettre au centre.",
         bullets: "<ul><li>Douceur émotionnelle</li><li>Réconfort du cœur</li><li>Bienveillance envers soi</li></ul>",
         ritual: "1. " + {{ section.settings.profile_amour_ritual_1 | default: "Portez votre pierre. Main sur le coeur." | json }} + "\n2. " + {{ section.settings.profile_amour_ritual_2 | default: "Dites-vous les mots que vous aimeriez entendre de quelqu'un d'autre." | json }} + "\n3. " + {{ section.settings.profile_amour_ritual_3 | default: "Dites-vous : « Je mérite la douceur que je donne aux autres. »" | json }},
         mantra: {{ section.settings.profile_amour_mantra | default: "Je mérite la douceur que je donne aux autres." | json }},
@@ -2618,27 +2780,27 @@
         colorAccentRgb: "212, 131, 158",
         benefits: [
           {
-            title: "Apaiser son cœur",
-            text: "Quand l'émotion reste serrée dans la gorge, cette pierre soutient le geste qui dénoue."
+            title: "Vous remettre au centre",
+            text: "Avant de répondre aux autres, prenez deux minutes pour nommer ce dont vous avez besoin maintenant."
           },
           {
-            title: "Se recentrer",
-            text: "Vous donnez ce que vous ne recevez pas. Le Quartz rose remet de la tendresse là où vous l'avez coupée."
+            title: "Recevoir autant que vous donnez",
+            text: "Demandez une aide concrète au lieu de tout absorber. Cela peut être simple et très précis."
           },
           {
-            title: "Penser à soi",
-            text: "Vous méritez la même attention que celle que vous offrez aux autres. Le Quartz rose la rappelle, chaque jour."
+            title: "Garder un moment pour vous",
+            text: "Bloquez dans votre journée un moment qui vous appartient, même court, et tenez-le comme un rendez-vous."
           }
         ]
       },
       chance: {
         label: "Chance",
         displayName: "Chance",
-        moodLabel: "En attente d'un déclic",
-        dashboardTitle: "Un nouvel élan cherche à émerger.",
-        hookTitle: "Relancer ce qui s’est figé",
-        description: "Vous sentez qu’un cycle arrive à sa fin. Quelque chose en vous veut avancer, changer, s’ouvrir à autre chose. Pourtant, le mouvement ne se fait pas encore pleinement. Ce n’est pas un manque de désir, c’est plutôt un élan qui cherche sa porte d’entrée. Votre besoin du moment est de retrouver la confiance, l’ouverture et ce petit feu intérieur qui aide à passer à l’action.",
-        solution: "<strong>L’Aventurine verte</strong> devient votre feu vert personnel, un rappel discret que le mouvement peut commencer en douceur.",
+        moodLabel: "Prête à avancer",
+        dashboardTitle: "Vous avez besoin de passer au premier pas.",
+        hookTitle: "Remettre du mouvement",
+        description: "Vous sentez qu’une étape doit bouger, mais vous attendez peut-être encore le bon moment ou la bonne certitude. Votre résultat ne vous demande pas de tout changer. Il vous invite à choisir un premier geste réaliste, à le faire sans attendre d’être prête à cent pour cent et à voir ce qu’il ouvre ensuite.",
+        solution: "<strong>L’Aventurine verte</strong> accompagne les moments où vous choisissez de faire un premier pas.",
         bullets: "<ul><li>Ouverture aux opportunités</li><li>Élan et confiance</li><li>Mouvement intérieur retrouvé</li></ul>",
         ritual: "1. " + {{ section.settings.profile_chance_ritual_1 | default: "Portez votre pierre." | json }} + "\n2. " + {{ section.settings.profile_chance_ritual_2 | default: "Visualisez votre objectif comme s'il était déjà réalisé." | json }} + "\n3. " + {{ section.settings.profile_chance_ritual_3 | default: "Souriez. L'énergie suit l'intention." | json }},
         mantra: {{ section.settings.profile_chance_mantra | default: "J’avance avec confiance." | json }},
@@ -2650,16 +2812,16 @@
         colorAccentRgb: "107, 175, 123",
         benefits: [
           {
-            title: "Faire le 1er geste",
-            text: "Vous savez ce que vous voulez. Il manque juste le premier geste. L'Aventurine est ce feu vert."
+            title: "Faire le premier pas",
+            text: "Choisissez une action qui prend moins de quinze minutes et faites-la aujourd’hui, sans attendre le plan parfait."
           },
           {
-            title: "Se laisser une chance",
-            text: "L'opportunité n'arrive pas avant l'action, elle apparaît dedans. Cette pierre vous remet en mouvement."
+            title: "Vous donner une chance",
+            text: "Envoyez le message, demandez l’information ou réservez le créneau qui peut faire avancer votre idée."
           },
           {
-            title: "Renforcer la confiance",
-            text: "Vous attendez d'être sûr(e). L'Aventurine soutient ce qui se décide sans tout maîtriser."
+            title: "Avancer sans tout maîtriser",
+            text: "Ne cherchez pas à sécuriser toutes les étapes. Le premier mouvement suffit pour savoir quelle sera la suivante."
           }
         ]
       }
@@ -3055,7 +3217,10 @@
       if (stoneTitleEl) stoneTitleEl.textContent = profile.stone || '';
 
       const summaryEl = container.querySelector('#quiz-reveal-summary-' + sectionId);
-      if (summaryEl) summaryEl.innerHTML = profile.solution || '';
+      if (summaryEl) {
+        summaryEl.innerHTML = '<p><strong>Ce que votre résultat met en lumière.</strong> ' + (profile.description || '') + '</p>'
+          + '<p class="quiz-reveal-stone-explanation"><strong>' + (profile.stone || 'Votre pierre') + '</strong> est la pierre que nous avons associée à ce besoin, comme un repère concret dans vos moments de pause.</p>';
+      }
 
       const stoneImageEl = container.querySelector('#quiz-reveal-stone-image-' + sectionId);
       if (stoneImageEl && profile.stoneImage) {
@@ -3075,10 +3240,22 @@
         benefits.forEach(function(benefit) {
           const item = document.createElement('li');
           item.className = 'quiz-reveal-benefit';
-          item.textContent = benefit.title || '';
+          const title = document.createElement('strong');
+          title.textContent = benefit.title || '';
+          const text = document.createElement('span');
+          text.textContent = benefit.text || '';
+          item.append(title, text);
           benefitsEl.appendChild(item);
         });
       }
+
+      const previewProfileEl = container.querySelector('[data-milaura-ecrin-profile]');
+      const previewStoneEl = container.querySelector('[data-milaura-ecrin-stone]');
+      const previewAdviceEl = container.querySelector('[data-milaura-ecrin-advice]');
+      const firstAdvice = Array.isArray(profile.benefits) ? profile.benefits[0] : null;
+      if (previewProfileEl) previewProfileEl.textContent = profile.displayName || profile.label || 'Votre résultat';
+      if (previewStoneEl) previewStoneEl.textContent = profile.stone || 'Votre pierre';
+      if (previewAdviceEl) previewAdviceEl.textContent = firstAdvice?.text || 'Vos conseils restent à portée de main.';
 
       const monEcrinAccountUrl = {{ settings.milaura_c1_mon_ecrin_url | default: routes.account_url | json }};
       // === INVITATION COMPTE ===

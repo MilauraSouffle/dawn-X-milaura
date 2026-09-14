@@ -15,7 +15,7 @@ test('the visitor result has no false guest-account CTA', () => {
   assert.doesNotMatch(section, /Continuer sans compte/);
   assert.doesNotMatch(accountSave, /data-milaura-c1-skip-save/);
   assert.doesNotMatch(accountBridge, /data-milaura-c1-skip-save/);
-  assert.match(accountSave, /Conserver dans Mon Écrin/);
+  assert.match(accountSave, /Créer mon Écrin/);
   assert.match(accountSave, /Créez ou ouvrez votre compte/);
 });
 
@@ -27,6 +27,14 @@ test('the result presents the recommendation before optional follow-up', () => {
   assert.ok(selection >= 0, 'the recommendation title must remain present');
   assert.ok(followUp > selection, 'account and email follow-up must come after recommendations');
   assert.equal(emailConsent, 1, 'the email consent surface must render once');
+  assert.match(section, /recommendation_limit: 3/);
+});
+
+test('the result makes the reading and Mon Écrin preview visible', () => {
+  assert.match(section, /Ce que votre résultat met en lumière/);
+  assert.match(section, /data-milaura-ecrin-profile/);
+  assert.match(section, /Relâcher la pression/);
+  assert.doesNotMatch(section, /Calmer l'exigence/);
 });
 
 test('the transition states the real recommendation promise', () => {

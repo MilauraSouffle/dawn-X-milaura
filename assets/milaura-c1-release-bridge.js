@@ -121,7 +121,7 @@
         setStatus(button, 'Vous avez supprimé votre résultat. Refaites le quiz pour en conserver un nouveau.', 'error');
       } else if (error.status === 401 || error.status === 403) {
         loggedIn = false;
-        button.textContent = 'Conserver dans Mon Écrin';
+        button.textContent = 'Créer mon Écrin';
         setStatus(button, 'Votre session a expiré. Reconnectez-vous pour conserver ce résultat.', 'login-required');
       } else {
         setStatus(button, error.name === 'AbortError'
