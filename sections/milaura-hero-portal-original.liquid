@@ -1,12 +1,31 @@
 {%- liquid
-  assign hero_eyebrow = section.settings.eyebrow | default: 'La beauté des minéraux et leurs vertus'
-  assign hero_title = section.settings.title | default: 'L’harmonie parfaite.'
-  assign hero_desktop_asset = section.settings.desktop_asset | default: 'milaura-home-hero-harmonie-desktop-20260914.webp'
-  assign hero_mobile_asset = section.settings.mobile_asset | default: 'milaura-home-hero-harmonie-mobile-20260914.webp'
-  assign hero_image_alt = section.settings.image_alt | default: 'Collier en obsidienne noire, boucles en sodalite et bracelet en nacre MilAura sur fond aigue-marine'
-  assign hero_cta_label = section.settings.cta_label | default: 'Découvrir nos bijoux'
+  assign hero_eyebrow = section.settings.eyebrow | default: 'Bijoux en pierres naturelles'
+  assign hero_title_first = section.settings.title_first | default: 'Vos émotions'
+  assign hero_title_second = section.settings.title_second | default: 'ont du style.'
+  assign hero_body_standard = 'Choisissez votre bijou, votre pierre et ses vertus.'
+  assign hero_body = section.settings.body | default: hero_body_standard
+  assign hero_desktop_asset = section.settings.desktop_asset | default: 'milaura-home-hero-fashion-chloe-parure-desktop-v3b.webp'
+  assign hero_mobile_asset = section.settings.mobile_asset | default: 'milaura-home-hero-fashion-chloe-parure-mobile-v4.webp'
+  assign hero_image_alt = section.settings.image_alt | default: 'Chloé porte un collier en aigue-marine, un bracelet en améthyste, une bague en sodalite et des boucles en agate'
+  assign hero_cta_label = section.settings.cta_label | default: 'Voir tous les bijoux'
   assign hero_default_link = routes.collections_url | append: '/bijoux-pierres-naturelles'
   assign hero_cta_link = section.settings.cta_link | default: hero_default_link
+
+  if hero_eyebrow == 'Bijoux & émotions'
+    assign hero_eyebrow = 'Bijoux en pierres naturelles'
+  endif
+
+  if hero_title_first == 'La beauté des bijoux' or hero_title_first == 'La lithothérapie' or hero_title_first == 'Vos émotions ont'
+    assign hero_title_first = 'Vos émotions'
+  endif
+
+  if hero_title_second == blank or hero_title_second == 'du style.' or hero_title_second == 'se porte.' or hero_title_second == 'rencontre la lithothérapie.' or hero_title_second == 'rencontre les vertus des minéraux'
+    assign hero_title_second = 'ont du style.'
+  endif
+
+  if hero_body == blank or hero_body == 'Bracelets, colliers, bagues et boucles d’oreilles : choisissez le style et la pierre que vous voulez porter.' or hero_body == 'Bagues, bracelets, colliers et boucles d’oreilles en pierres naturelles, choisis pour leur beauté, leur qualité et leur symbolique en lithothérapie.' or hero_body == 'Des pierres naturelles choisies avec exigence pour leur beauté, leur qualité et leur symbolique en lithothérapie.'
+    assign hero_body = hero_body_standard
+  endif
 -%}
 
 {%- style -%}
@@ -27,8 +46,8 @@
     min-height: calc(100svh - var(--milaura-announcement-height, 48px));
     overflow: hidden;
     isolation: isolate;
-    color: var(--milaura-prune);
-    background: var(--milaura-aigue-ecume);
+    color: var(--milaura-nacre);
+    background: var(--milaura-aigue-profonde);
     font-family: var(--milaura-font-texte);
   }
 
@@ -69,12 +88,17 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center 25%;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__veil {
     z-index: 1;
-    background: transparent;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--milaura-aigue-profonde) 48%, transparent) 0%,
+      color-mix(in srgb, var(--milaura-aigue-profonde) 24%, transparent) 34%,
+      transparent 58%
+    );
     pointer-events: none;
   }
 
@@ -82,7 +106,7 @@
     position: relative;
     z-index: 2;
     display: flex;
-    width: min(540px, 40vw);
+    width: min(590px, 42vw);
     min-height: inherit;
     flex-direction: column;
     align-items: flex-start;
@@ -92,25 +116,24 @@
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__identity {
-    margin: 0 0 var(--milaura-esp-sm);
+    margin: 0 0 var(--milaura-esp-md);
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__eyebrow {
     margin: 0;
-    color: var(--milaura-prune);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.13em;
+    color: var(--milaura-aigue-pierre);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     line-height: 1.4;
-    text-transform: uppercase;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__title {
-    max-width: 540px;
+    max-width: 590px;
     margin: 0;
-    color: var(--milaura-or);
+    color: var(--milaura-nacre);
     font-family: var(--milaura-font-display);
-    font-size: clamp(58px, 5.1vw, 78px);
+    font-size: clamp(58px, 5.35vw, 82px);
     font-weight: 400;
     font-synthesis: none;
     letter-spacing: -0.04em;
@@ -120,11 +143,45 @@
 
   #MilauraPortal-{{ section.id }} .portal-hero__title-line {
     display: block;
-    white-space: normal;
+    white-space: nowrap;
+  }
+
+  /* Le Hero bureau garde une seule idee, une silhouette mode et une action. */
+  @media screen and (min-width: 1101px) {
+    #MilauraPortal-{{ section.id }} .portal-hero__copy {
+      width: min(620px, 42vw);
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__title {
+      max-width: 620px;
+    }
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__body {
+    max-width: 470px;
+    margin: var(--milaura-esp-md) 0 0;
+    color: var(--milaura-nacre);
+    font-family: var(--milaura-font-signature);
+    font-size: clamp(34px, 2.5vw, 42px);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.1;
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__cta {
     margin-top: var(--milaura-esp-lg);
+    border-bottom-color: var(--milaura-or) !important;
+    color: var(--milaura-nacre) !important;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__cta:hover {
+    border-bottom-color: var(--milaura-aigue-pierre) !important;
+    color: var(--milaura-aigue-ecume) !important;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__cta:focus-visible {
+    outline: 2px solid var(--milaura-nacre);
+    outline-offset: 5px;
   }
 
   /* La navigation conserve ses liens et ses fonctions. Seule sa surface
@@ -172,7 +229,7 @@
   [id^='MilauraNav-'].milaura-home-hero-nav .nav-burger,
   [id^='MilauraNav-'].milaura-home-hero-nav .nav-icon,
   [id^='MilauraNav-'].milaura-home-hero-nav .nav-quiz-badge {
-    color: var(--milaura-prune) !important;
+    color: var(--milaura-nacre) !important;
   }
 
   [id^='MilauraNav-'].milaura-home-hero-nav .nav-link {
@@ -205,8 +262,8 @@
   }
 
   [id^='MilauraNav-'].milaura-home-hero-nav.is-home-hero-scrolled .nav-inner {
-    background: color-mix(in srgb, var(--milaura-aigue-ecume) 92%, transparent) !important;
-    box-shadow: 0 1px 0 color-mix(in srgb, var(--milaura-prune) 14%, transparent) !important;
+    background: color-mix(in srgb, var(--milaura-aigue-profonde) 88%, transparent) !important;
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--milaura-nacre) 18%, transparent) !important;
     backdrop-filter: blur(12px) saturate(112%) !important;
     -webkit-backdrop-filter: blur(12px) saturate(112%) !important;
   }
@@ -220,7 +277,7 @@
   [id^='MilauraNav-'].milaura-home-hero-nav.is-home-hero-scrolled .nav-burger,
   [id^='MilauraNav-'].milaura-home-hero-nav.is-home-hero-scrolled .nav-icon,
   [id^='MilauraNav-'].milaura-home-hero-nav.is-home-hero-scrolled .nav-quiz-badge {
-    color: var(--milaura-prune) !important;
+    color: var(--milaura-nacre) !important;
   }
 
   @media screen and (max-width: 1100px) {
@@ -236,21 +293,33 @@
 
     #MilauraPortal-{{ section.id }} {
       min-height: calc(100svh - var(--milaura-announcement-height, 52px));
-      background: var(--milaura-aigue-ecume);
+      background: var(--milaura-aigue-profonde);
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__veil {
+      right: 34%;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--milaura-aigue-profonde) 72%, transparent) 0%,
+        color-mix(in srgb, var(--milaura-aigue-profonde) 48%, transparent) 58%,
+        transparent 100%
+      );
+      -webkit-backdrop-filter: blur(5px) saturate(94%);
+      backdrop-filter: blur(5px) saturate(94%);
+      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 58%, transparent 100%);
+      mask-image: linear-gradient(90deg, #000 0%, #000 58%, transparent 100%);
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__image {
-      object-position: center;
+      object-position: center 65%;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__copy {
-      width: min(calc(100% - 44px), 340px);
+      width: min(188px, calc(56vw - 18px));
       min-height: auto;
       justify-content: flex-start;
-      align-items: center;
       padding: 92px 0 40px;
-      margin: 0 auto;
-      text-align: center;
+      margin: 0 0 0 22px;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__identity {
@@ -258,27 +327,68 @@
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__eyebrow {
-      max-width: 100%;
-      font-size: 10px;
-      letter-spacing: 0.1em;
+      font-size: 12px;
+      letter-spacing: 0.01em;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__title {
-      max-width: 100%;
-      color: var(--milaura-or);
-      font-size: clamp(40px, 11vw, 46px);
+      max-width: 188px;
+      color: var(--milaura-nacre);
+      font-size: 42px;
       letter-spacing: -0.04em;
-      line-height: 0.96;
+      line-height: 0.89;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__title-line {
       white-space: normal;
     }
 
+    #MilauraPortal-{{ section.id }} .portal-hero__title-word {
+      display: block;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__title-word--aigue {
+      color: var(--milaura-aigue-pierre);
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__title-word--or {
+      color: var(--milaura-or-clair);
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__body {
+      width: 188px;
+      max-width: 100%;
+      margin-top: 14px;
+      color: var(--milaura-nacre);
+      font-size: 25px;
+      line-height: 1.04;
+    }
+
     #MilauraPortal-{{ section.id }} .portal-hero__cta {
-      align-self: center;
-      position: relative;
-      left: 22px;
+      width: max-content;
+      max-width: 100%;
+      flex-direction: column;
+      align-items: flex-start !important;
+      align-self: flex-start;
+      justify-content: center !important;
+      gap: 0 !important;
+      padding: 2px 8px 3px 2px !important;
+      margin-top: 20px;
+      border: 0 !important;
+      border-bottom: var(--milaura-filet-action) !important;
+      color: var(--milaura-nacre) !important;
+      background: transparent !important;
+      text-align: left;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__cta:hover {
+      border-color: var(--milaura-aigue-pierre) !important;
+      color: var(--milaura-aigue-ecume) !important;
+      background: transparent !important;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__cta-line {
+      display: block;
     }
 
     #MainContent > .shopify-section.milaura-hero-homepage + .section-milaura-selection-atelier .milaura-season__shell {
@@ -327,14 +437,20 @@
 
   @media screen and (max-width: 360px) {
     #MilauraPortal-{{ section.id }} .portal-hero__copy {
-      width: calc(100% - 36px);
+      width: min(182px, calc(56vw - 18px));
       padding-top: 92px;
-      margin: 0 auto;
+      margin-right: 0;
+      margin-left: 18px;
     }
 
     #MilauraPortal-{{ section.id }} .portal-hero__title {
-      max-width: 300px;
+      max-width: 182px;
       font-size: 40px;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__body {
+      width: 182px;
+      font-size: 24px;
     }
 
     [id^='MilauraNav-'].milaura-home-hero-nav .nav-logo-link {
@@ -397,16 +513,33 @@
       <p class="portal-hero__eyebrow">{{ hero_eyebrow | escape }}</p>
     </div>
     <h1 class="portal-hero__title" id="MilauraPortalTitle-{{ section.id }}">
-      <span class="portal-hero__title-line">{{ hero_title | escape }}</span>
+      {%- if hero_title_first == 'Vos émotions' and hero_title_second == 'ont du style.' -%}
+        <span class="portal-hero__title-line">
+          <span class="portal-hero__title-word">Vos</span>
+          <span class="portal-hero__title-word portal-hero__title-word--aigue">émotions</span>
+        </span>
+        <span class="portal-hero__title-line">
+          <span class="portal-hero__title-word">ont du</span>
+          <span class="portal-hero__title-word portal-hero__title-word--or">style.</span>
+        </span>
+      {%- else -%}
+        <span class="portal-hero__title-line">{{ hero_title_first | escape }}</span>
+        <span class="portal-hero__title-line">{{ hero_title_second | escape }}</span>
+      {%- endif -%}
     </h1>
+    <p class="portal-hero__body">{{ hero_body | escape }}</p>
     {%- if hero_cta_label != blank -%}
       <a
         class="milaura-action milaura-action--editorial portal-hero__cta"
         href="{{ hero_cta_link }}"
         aria-label="{{ hero_cta_label | escape }}"
       >
-        <span>{{ hero_cta_label | escape }}</span>
-        {% render 'milaura-action-icon' %}
+        {%- if hero_cta_label == 'Voir tous les bijoux' -%}
+          <span class="portal-hero__cta-line" aria-hidden="true">Voir tous</span>
+          <span class="portal-hero__cta-line" aria-hidden="true">les bijoux</span>
+        {%- else -%}
+          {{ hero_cta_label | escape }}
+        {%- endif -%}
       </a>
     {%- endif -%}
   </div>
@@ -460,7 +593,7 @@
 
 {% schema %}
 {
-  "name": "Hero de marque MilAura",
+  "name": "Ancien hero MilAura",
   "tag": "section",
   "class": "milaura-hero-homepage",
   "settings": [
@@ -472,19 +605,31 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Slogan",
-      "default": "La beauté des minéraux et leurs vertus"
+      "default": "Bijoux en pierres naturelles"
     },
     {
       "type": "text",
-      "id": "title",
-      "label": "Titre principal",
-      "default": "L’harmonie parfaite."
+      "id": "title_first",
+      "label": "Titre, première ligne",
+      "default": "Vos émotions"
+    },
+    {
+      "type": "text",
+      "id": "title_second",
+      "label": "Titre, seconde ligne",
+      "default": "ont du style."
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Texte",
+      "default": "Choisissez votre bijou, votre pierre et ses vertus."
     },
     {
       "type": "text",
       "id": "cta_label",
       "label": "Action",
-      "default": "Découvrir nos bijoux"
+      "default": "Voir tous les bijoux"
     },
     {
       "type": "url",
@@ -499,24 +644,24 @@
       "type": "text",
       "id": "desktop_asset",
       "label": "Asset bureau",
-      "default": "milaura-home-hero-harmonie-desktop-20260914.webp"
+      "default": "milaura-home-hero-fashion-chloe-parure-desktop-v3b.webp"
     },
     {
       "type": "text",
       "id": "mobile_asset",
       "label": "Asset mobile",
-      "default": "milaura-home-hero-harmonie-mobile-20260914.webp"
+      "default": "milaura-home-hero-fashion-chloe-parure-mobile-v4.webp"
     },
     {
       "type": "text",
       "id": "image_alt",
       "label": "Description de l image",
-      "default": "Collier en obsidienne noire, boucles en sodalite et bracelet en nacre MilAura sur fond aigue-marine"
+      "default": "Chloé porte un collier en aigue-marine, un bracelet en améthyste, une bague en sodalite et des boucles en agate"
     }
   ],
   "presets": [
     {
-      "name": "Hero de marque MilAura"
+      "name": "Ancien hero MilAura"
     }
   ]
 }

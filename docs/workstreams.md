@@ -116,6 +116,13 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Hero aigue-marine, previsualisation privee du 2026-09-14
+
+- Proprietaire : Codex, GO de Patrice du 2026-09-14 pour une previsualisation privee uniquement.
+- Branche et worktree : `codex/milaura-aqua-hero-preview-20260914`, `/Users/paesano/Documents/MilAura website/_worktrees/aqua-hero-preview-20260914`, base `5e4f80be` alignee sur `origin/codex/milaura-integration`.
+- Perimetre exclusif : `sections/milaura-hero-portal.liquid`, `sections/milaura-hero-portal-original.liquid`, `templates/index.json`, les deux assets `milaura-home-hero-harmonie-*-20260914.webp` et cette entree de registre. L ancien hero est preserve comme section reutilisable dans l editeur Shopify sous le nom `Ancien hero MilAura`. Le checkout d integration, le theme live `190430282075`, Shopify Admin, catalogue, navigation hors hero et toutes les autres sections sont preserves.
+- Etat : GO VISUEL, INTEGRATION ET LIVE EXPLICITES de Patrice le 2026-09-14. Publication ciblee en cours, suivie d un pullback des seuls fichiers Hero et d une QA publique desktop/mobile.
+
 ### Handoff final des conseils de Karine du 2026-09-12
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-12 pour fermer et documenter le lot `Karine vous conseille 6j/7` deja live.
