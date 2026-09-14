@@ -57,7 +57,39 @@ Les 3 commits de l ancien checkout restent recuperables par la branche d archive
 
 ### Gate B - retrait lot A
 
-Action proposee : retirer seulement des worktrees propres, clos et confirmes par Patrice, un chemin a la fois avec `git worktree remove`. Les branches et les tags restent en place. Les worktrees associes a la recuperation live du 2026-09-14, au Hero, aux certificats et a Mon Ecrin restent en attente pendant la premiere revue.
+GO `RETRAIT LOT A` donne par Patrice le 2026-09-14. Les 27 worktrees ci-dessous ont ete verifies juste avant retrait : statut propre et branche amont existante sur `origin`. Ils sont des copies physiques de sessions closes, pas des versions ou des commits a effacer. Les branches et tags restent en place.
+
+- `/Users/paesano/Documents/MilAura website/_worktrees/atelier-emotions-20260816`
+- `/Users/paesano/Documents/MilAura website/_worktrees/c1-idempotence-fix-20260824`
+- `/Users/paesano/Documents/MilAura website/_worktrees/c1-release-candidate-theme-20260823`
+- `/Users/paesano/Documents/MilAura website/_worktrees/campaign-landing-polish3-20260902`
+- `/Users/paesano/Documents/MilAura website/_worktrees/cart-rewards-visibility-20260905`
+- `/Users/paesano/Documents/MilAura website/_worktrees/cookie-consent-persistence-20260821`
+- `/Users/paesano/Documents/MilAura website/_worktrees/home-separators-polish4-20260903`
+- `/Users/paesano/Documents/MilAura website/_worktrees/journal-polish-20260907`
+- `/Users/paesano/Documents/MilAura website/_worktrees/mariage-default-20260907`
+- `/Users/paesano/Documents/MilAura website/_worktrees/mon-ecrin-account-hub-20260830`
+- `/Users/paesano/Documents/MilAura website/_worktrees/mon-ecrin-aftercare-20260907`
+- `/Users/paesano/Documents/MilAura website/_worktrees/mon-ecrin-finish-20260905`
+- `/Users/paesano/Documents/MilAura website/_worktrees/pdp-empty-state-20260907`
+- `/Users/paesano/Documents/MilAura website/_worktrees/pdp-mobile-hierarchy-20260829`
+- `/Users/paesano/Documents/MilAura website/_worktrees/rentree-sodalite-20260821`
+- `/Users/paesano/Documents/MilAura website/_worktrees/rentree-sodalite-gap-hotfix-20260829`
+- `/Users/paesano/Documents/MilAura website/_worktrees/rentree-sodalite-polish-20260828`
+- `/Users/paesano/Documents/MilAura website/_worktrees/rentree-sodalite-release-20260829`
+- `/Users/paesano/Documents/MilAura website/_worktrees/seo-aeo-geo-lot1-20260907`
+- `/Users/paesano/Documents/MilAura website/_worktrees/sodalite-home-copy-hotfix-20260830`
+- `/Users/paesano/Documents/MilAura website/_worktrees/sodalite-home-polish-20260831`
+- `/Users/paesano/Documents/MilAura website/_worktrees/sodalite-landing-hero-polish-20260901`
+- `/Users/paesano/Documents/MilAura website/_worktrees/sodalite-landing-polish-20260831`
+- `/Users/paesano/Documents/MilAura website/_worktrees/sodalite-media-safari-20260901`
+- `/Users/paesano/Documents/MilAura website/_worktrees/sodalite-private-release-20260830`
+- `/Users/paesano/Documents/MilAura website/_worktrees/sodalite-star-bento-20260902`
+- `/Users/paesano/Documents/MilAura website/_worktrees/stone-tab-content-20260907`
+
+Retrait execute sans erreur le 2026-09-14. Le nombre de worktrees Git est passe de 49 a 22 et le dossier gere `_worktrees` de 1,8 Go a 822 Mo, soit environ 1,0 Go libere. Les repertoires de controle sont absents apres retrait. Les branches distantes representatives `atelier-emotions`, `c1-idempotence-fix` et `stone-tab-content` ont ete relues sur `origin` apres le retrait.
+
+Les worktrees associes a la recuperation live du 2026-09-14, au Hero, aux certificats et a Mon Ecrin recent restent en attente pendant la premiere revue.
 
 ### Gate C - sorties et templates de preview
 
