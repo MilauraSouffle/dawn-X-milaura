@@ -443,3 +443,11 @@ Procedure detaillee : `docs/reference/2026-08-12-repository-workflow.md`.
 - Perimetre exclusif : restauration du thème public `190430282075` depuis le source complet, plus les trois correctifs quiz locaux `1112551a`, `9967239b` et `88b86d1d`. Produits, stocks, commandes, données clients, Flow Shopify et réglages Admin hors thème restent inchangés.
 - Preuves avant écriture distante : snapshot du live dégradé `/private/tmp/milaura-live-rollback-audit-20260914` à 2026-09-14 15:29 CEST ; Theme Check sans erreur, 16 avertissements historiques ; `git diff --check` conforme.
 - Gate : pousser d abord vers `MilAura — Prévisualisation Dev` `201359720795`, comparer la prévisualisation, puis restaurer le live uniquement avec `--nodelete`, pullback ciblé et QA publique. Etat : PREVIEW EN PREPARATION, aucun nouveau push live par ce worktree à cette étape.
+## Navigation Bracelets par destinataire du 2026-09-14
+
+- Proprietaire : Codex, demande explicite de Patrice le 2026-09-14.
+- Branche : `codex/milaura-bracelet-audience-20260914`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/bracelet-audience-20260914`.
+- Perimetre reserve : `sections/milaura-collection-filters.liquid`, `sections/milaura-collection-grid.liquid` et documentation propre au lot.
+- Direction : reutiliser exclusivement le metafield existant `milaura.recipient_handles` pour exposer `Femme`, `Homme` et `Mixte` sur les bracelets. Aucun renommage, migration ou remplacement de metafield, collection, produit, URL, tag, maillage interne, cross-sell, prix, stock, media, statut ou Ads.
+- Gates : audit Shopify en lecture seule des valeurs et des quatre champs eventuellement vides, preview privee, validation visuelle Patrice, integration puis live sur GO explicites distincts. La pagination HTML reste crawlable.
+- Etat au 2026-09-14 : PREVIEW TECHNIQUE VALIDEE. Search & Discovery utilise le metafield existant sous le libelle `Pour qui ?`; les quatre valeurs vides ont ete completees uniquement depuis les tags d audience existants. Theme prive `MilAura Bracelets Audience Preview 2026-09-14` `201381216603` : desktop et mobile controles, 24 cartes en premiere page, pagination HTML pages 2 a 4, filtre Homme a 13 produits. Aucun push live, merge d integration ou autre ecriture catalogue.

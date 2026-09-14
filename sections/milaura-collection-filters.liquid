@@ -16,6 +16,51 @@
     padding: 8px 0;
   }
 
+  #MilauraFilters-{{ section.id }} .filters__audience {
+    display: flex;
+    align-items: baseline;
+    gap: var(--milaura-esp-sm);
+    padding: var(--milaura-esp-xs) 0;
+    border-bottom: var(--milaura-filet);
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__audience-label {
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-petit);
+    font-weight: 600;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__audience-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--milaura-esp-sm);
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__audience-link {
+    min-height: var(--milaura-cible-tactile);
+    display: inline-flex;
+    align-items: center;
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-label);
+    font-weight: 600;
+    text-decoration: none;
+    text-underline-offset: 5px;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__audience-link:hover,
+  #MilauraFilters-{{ section.id }} .filters__audience-link[aria-current='true'] {
+    color: var(--milaura-aigue-profonde);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+  }
+
+  #MilauraFilters-{{ section.id }} .filters__audience-link:focus-visible {
+    outline: var(--milaura-focus);
+    outline-offset: var(--milaura-focus-offset);
+  }
+
   /* Bouton Filtres - CACHÉ */
   #MilauraFilters-{{ section.id }} .filters__trigger {
     display: none !important;
@@ -269,6 +314,16 @@
 
   /* Mobile adjustments */
   @media screen and (max-width: 768px) {
+    #MilauraFilters-{{ section.id }} .filters__audience {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    #MilauraFilters-{{ section.id }} .filters__audience-links {
+      gap: var(--milaura-esp-md);
+    }
+
     #MilauraFilters-{{ section.id }} .filters__bar {
       padding: 6px 0;
     }
@@ -305,6 +360,35 @@
   data-section-id="{{ section.id }}"
 >
   <div class="page-width">
+    {%- if collection.handle == 'bracelets-pierres' -%}
+      {%- assign recipient_filter = nil -%}
+      {%- for filter in collection.filters -%}
+        {%- if filter.param_name == 'filter.p.m.milaura.recipient_handles' -%}
+          {%- assign recipient_filter = filter -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if recipient_filter != blank -%}
+        <nav class="filters__audience" aria-label="Choisir un bracelet">
+          <span class="filters__audience-label">Pour qui ?</span>
+          <div class="filters__audience-links">
+            {%- for value in recipient_filter.values -%}
+              {%- if value.value == 'femme' or value.value == 'homme' or value.value == 'mixte' -%}
+                <a
+                  href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+                  class="filters__audience-link"
+                  {% if value.active %}aria-current="true"{% endif %}
+                >
+                  {{ value.label | capitalize }}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </nav>
+      {%- endif -%}
+    {%- endif -%}
+
     <div class="filters__bar">
 
       {%- comment -%} Bouton Filtres {%- endcomment -%}
