@@ -1,5 +1,7 @@
 # Hero aigue-marine et HERO CHLOE, cloture live
 
+> Remplace le 2026-09-14 15:20 CEST : Patrice a demande le retrait definitif de `HERO CHLOE`. Ce checkpoint conserve l etat historique de 15:03 CEST, il ne doit plus servir d instruction de reprise.
+
 Date : 2026-09-14 15:03 CEST.
 
 ## Etat livre
