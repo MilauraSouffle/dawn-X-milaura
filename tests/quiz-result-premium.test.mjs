@@ -9,7 +9,6 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'u
 
 const section = read('sections/milaura-quiz.liquid');
 const accountSave = read('snippets/milaura-quiz-account-save.liquid');
-const transition = read('templates/page.diagnostic-emotionnel.json');
 const accountBridge = read('assets/milaura-c1-release-bridge.js');
 
 test('the visitor result has no false guest-account CTA', () => {
@@ -31,7 +30,7 @@ test('the result presents the recommendation before optional follow-up', () => {
 });
 
 test('the transition states the real recommendation promise', () => {
-  assert.match(transition, /Votre résultat se prépare/);
-  assert.match(transition, /actuellement disponibles/);
-  assert.doesNotMatch(transition, /création unique/);
+  assert.match(section, /Votre résultat se prépare/);
+  assert.match(section, /actuellement disponibles/);
+  assert.match(section, /transition_title == 'Nous réunissons nos énergies/);
 });

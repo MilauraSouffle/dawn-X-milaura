@@ -2356,16 +2356,34 @@
     <!-- ÉTAT 3 : TRANSITION -->
     <div class="quiz-state quiz-state-transition" data-state="transition" style="display: none;">
       <div class="quiz-transition-card">
-        {% if section.settings.transition_title != blank %}
-          <h2 class="quiz-transition-title milaura-heading">{{ section.settings.transition_title }}</h2>
+        {%- liquid
+          assign transition_title = section.settings.transition_title
+          assign transition_subtitle = section.settings.transition_subtitle
+          assign transition_body = section.settings.transition_body
+
+          if transition_title == blank or transition_title == 'Nous réunissons nos énergies pour révéler ta création unique...'
+            assign transition_title = 'Votre résultat se prépare'
+          endif
+
+          if transition_subtitle == blank or transition_subtitle == "Ce n'est pas un quiz. C'est un miroir émotionnel."
+            assign transition_subtitle = 'Nous relions vos réponses à votre besoin du moment.'
+          endif
+
+          if transition_body == blank or transition_body contains "Nous relions tes réponses à une intention précise"
+            assign transition_body = '<p>Votre résultat associe une intention, une pierre et des créations MilAura actuellement disponibles.</p>'
+          endif
+        -%}
+
+        {% if transition_title != blank %}
+          <h2 class="quiz-transition-title milaura-heading">{{ transition_title }}</h2>
         {% endif %}
 
-        {% if section.settings.transition_subtitle != blank %}
-          <div class="quiz-transition-subtitle milaura-heading-script">{{ section.settings.transition_subtitle }}</div>
+        {% if transition_subtitle != blank %}
+          <div class="quiz-transition-subtitle milaura-heading-script">{{ transition_subtitle }}</div>
         {% endif %}
 
-        {% if section.settings.transition_body != blank %}
-          <div class="quiz-transition-body milaura-text">{{ section.settings.transition_body }}</div>
+        {% if transition_body != blank %}
+          <div class="quiz-transition-body milaura-text">{{ transition_body }}</div>
         {% endif %}
 
         <div class="quiz-loader">
