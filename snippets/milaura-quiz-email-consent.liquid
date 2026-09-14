@@ -1,0 +1,55 @@
+{%- liquid
+  assign quiz_email_consent_id = 'MilauraQuizEmailConsent-' | append: section_id
+-%}
+
+<section
+  id="{{ quiz_email_consent_id }}"
+  class="quiz-reveal-email-consent"
+  aria-labelledby="{{ quiz_email_consent_id }}-title"
+>
+  <div class="quiz-reveal-email-consent__intro">
+    <p class="quiz-reveal-email-consent__eyebrow">Si vous le souhaitez</p>
+    <h3 id="{{ quiz_email_consent_id }}-title">Recevoir mes conseils par e-mail</h3>
+    <p>Votre résultat reste accessible ici, avec ou sans inscription.</p>
+  </div>
+
+  {% form 'customer', return_to: '/pages/diagnostic-emotionnel?show=result&email_consent=success', id: quiz_email_consent_id | append: '-form', class: 'quiz-reveal-email-consent__form' %}
+    <input type="hidden" name="contact[tags]" value="newsletter, quiz-result">
+
+    <div class="quiz-reveal-email-consent__field">
+      <label for="{{ quiz_email_consent_id }}-email">Adresse e-mail</label>
+      <input
+        id="{{ quiz_email_consent_id }}-email"
+        type="email"
+        name="contact[email]"
+        value="{{ form.email }}"
+        autocorrect="off"
+        autocapitalize="off"
+        autocomplete="email"
+        inputmode="email"
+        required
+      >
+    </div>
+
+    <div class="quiz-reveal-email-consent__choice">
+      <input
+        id="{{ quiz_email_consent_id }}-marketing"
+        type="checkbox"
+        required
+      >
+      <label for="{{ quiz_email_consent_id }}-marketing">
+        Je souhaite recevoir les conseils de Karine, les nouveautés et les offres MilAura par e-mail. Je peux me désinscrire à tout moment.
+      </label>
+    </div>
+
+    <button type="submit" class="quiz-reveal-email-consent__submit">Recevoir mes conseils</button>
+
+    {%- if form.posted_successfully? -%}
+      <p class="quiz-reveal-email-consent__message" tabindex="-1">Merci, votre inscription est enregistrée.</p>
+    {%- elsif form.errors -%}
+      <p class="quiz-reveal-email-consent__message quiz-reveal-email-consent__message--error" role="alert">
+        {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+      </p>
+    {%- endif -%}
+  {% endform %}
+</section>
