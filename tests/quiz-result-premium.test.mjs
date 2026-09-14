@@ -30,10 +30,15 @@ test('the result presents the recommendation before optional follow-up', () => {
   assert.match(section, /recommendation_limit: 3/);
 });
 
-test('the result makes the reading and Mon Écrin preview visible', () => {
-  assert.match(section, /Ce que votre résultat met en lumière/);
+test('the result states the need and stone before the personal reading', () => {
+  assert.match(section, /Votre besoin du moment :/);
+  assert.match(section, /Votre pierre :/);
+  assert.match(section, /Vous captez les tensions et les demandes autour de vous/);
+  assert.match(section, /Nous avons associé <strong>/);
+  assert.match(section, /--profile-accent-rgb/);
+  assert.match(section, /background: rgba\(var\(--profile-accent-rgb/);
   assert.match(section, /data-milaura-ecrin-profile/);
-  assert.match(section, /Relâcher la pression/);
+  assert.match(section, /Couper dix minutes/);
   assert.doesNotMatch(section, /Calmer l'exigence/);
 });
 
