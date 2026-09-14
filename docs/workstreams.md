@@ -1,3 +1,11 @@
+## Retablissement cible du bandeau avantages du 2026-09-14
+
+- Proprietaire : Codex, reprise urgente apres constat visuel de Patrice.
+- Branche : `codex/milaura-banner-live-recovery-20260914`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/banner-live-recovery-20260914`.
+- Fichier reserve : `sections/milaura-announcement.liquid` uniquement, depuis le commit valide en preview `449cabc1` du 2026-09-13.
+- Theme : preview `201359720795`, puis live `190430282075` seulement apres pullback et controle visuel du bandeau.
+- Etat au 2026-09-14 16:03 CEST : FERME, POUSSE ET LIVE VERIFIE. Le fichier unique a ete recupere depuis `449cabc1`, valide sur preview, pousse sur le live avec `--nodelete`, puis relu a l identique. QA publique 390/1440, rotation des trois avantages et journal navigateur conformes. Aucun autre composant, reglages, produit, checkout, Flow ou fichier de theme n a ete modifie. [Checkpoint](checkpoints/2026-09-14-1603-announcement-banner-live-recovery.md).
+
 ## Recuperation controlee du theme live du 2026-09-14
 
 - Proprietaire : Codex, reprise urgente demandee par Patrice le 2026-09-14.
