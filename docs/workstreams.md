@@ -1,3 +1,11 @@
+## Recuperation controlee du theme live du 2026-09-14
+
+- Proprietaire : Codex, reprise urgente demandee par Patrice le 2026-09-14.
+- Branche : `codex/milaura-live-recovery-20260914`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/live-recovery-20260914`.
+- Source : `7d279bcc` avec les correctifs quiz `1112551a`, `9967239b` et `88b86d1d`. Le checkout d integration `00406d5a` est volontairement exclu car il est sale et en retard.
+- Theme : public `190430282075`, preview `201359720795` pour la recette.
+- Etat au 2026-09-14 15:51 CEST : FERME, RESTAURE ET LIVE VERIFIE. Snapshot avant reprise conserve, preview validee, push `--nodelete`, pullback live conforme et QA publique 390/1440, diagnostic et collection bijoux sans erreur navigateur. [Checkpoint](checkpoints/2026-09-14-1551-controlled-live-recovery.md).
+
 ## Cloture certificats, checkout et Hero du 2026-09-13
 
 - Proprietaire : Codex, session arretee sur demande explicite de Patrice le 2026-09-13 a 11:56 CEST.
