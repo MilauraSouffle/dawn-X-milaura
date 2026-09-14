@@ -11,7 +11,7 @@ Cette phase ne supprime aucun worktree, aucune branche, aucun historique, aucun 
 - La branche distante d integration `origin/codex/milaura-integration` a ete avancee par fast-forward de `7d279bcc` a `89b7f83f` le 2026-09-14.
 - `89b7f83f` est la source Git de la derniere correction live verifiee du CTA visiteur du quiz. Le theme public reste `190430282075`.
 - Aucun historique distant n a ete reecrit et aucun push de theme global n a ete execute pendant cette rehabilitation.
-- Le checkout d integration historique reste sur `00406d5a`, avec 3 commits propres a lui et 82 commits de retard par rapport a la branche distante apres le retablissement. Il ne doit plus servir a un `shopify theme push`.
+- L ancien checkout d integration etait sur `00406d5a`, avec 3 commits propres a lui et 82 commits de retard par rapport a la branche distante apres le retablissement. Le checkout principal a ete bascule sur `89b7f83f` et ne doit plus servir depuis une copie ancienne.
 
 ## Filets de securite verifies
 
@@ -49,11 +49,11 @@ Les trois archives sur `/private/tmp` sont des filets immediats, pas un stockage
 
 ## Prochains gates, sans ambiguite
 
-### Gate A - bascule du checkout principal
+### Gate A - bascule du checkout principal - FERME
 
-Action proposee : mettre a l abri le WIP deja archive, puis realigner le checkout principal sur `origin/codex/milaura-integration` et verifier son statut propre. Aucun fichier client ne sera supprime : les archives et refs ci-dessus permettent un retour cible.
+Le WIP a ete place dans la stash nommee `safety: legacy integration WIP before rehabilitation 2026-09-14`, en plus des archives deja verifiees. Le checkout principal est maintenant sur `codex/milaura-integration` au commit `89b7f83f`, exactement aligne sur `origin/codex/milaura-integration` (`0` commit d avance, `0` commit de retard) et avec un statut Git propre.
 
-Cette action ne doit pas etre confondue avec le retrait des worktrees.
+Les 3 commits de l ancien checkout restent recuperables par la branche d archive et le tag de surete. Cette bascule ne supprime ni worktree ni branche.
 
 ### Gate B - retrait lot A
 

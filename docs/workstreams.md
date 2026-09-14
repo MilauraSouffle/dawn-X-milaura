@@ -406,7 +406,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 - Branche : `codex/milaura-repo-rehabilitation-20260914`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/repo-rehabilitation-20260914`, base canonique live `89b7f83f`.
 - Perimetre reserve : inventaire Git et worktrees, references de securite, documentation de reprise, stabilisation de la branche d integration et retrait ulterieur des seuls worktrees et artefacts explicitement qualifies. Theme Shopify, produits, contenu Admin, assets publics et checkout d integration ancien restent exclus de toute modification directe.
 - Gates : aucune suppression, reset, purge Git, reecriture d historique, merge global ou mutation Shopify sans inventaire, preservation nominative et decision de Patrice. Le checkout ancien reste en quarantaine tant que son WIP n est pas archive.
-- Etat au 2026-09-14 : PHASE 1 FERMEE. Branche d integration distante canonique `89b7f83f`, refs et archives de surete verifiees, inventaire ecrit dans `docs/audits/2026-09-14-repo-rehabilitation-inventory.md`. Aucune suppression ni bascule du checkout historique executee ; gates A a C attendent les GO nominaux de Patrice.
+- Etat au 2026-09-14 : PHASE 2 FERMEE. Branche d integration distante canonique `89b7f83f`, refs et archives de surete verifiees, inventaire ecrit dans `docs/audits/2026-09-14-repo-rehabilitation-inventory.md`. Le checkout principal est aligne et propre ; son WIP historique reste disponible via stash, patch, archive et refs. Aucune suppression de worktree, de branche ou de preview n a ete executee. Les gates B et C attendent les GO nominaux de Patrice.
 
 ## Regles du registre
 
