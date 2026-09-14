@@ -391,6 +391,15 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 | Capsule de titre des collections, variante aigue-marine | Codex, tache `Definir la voix editoriale MilAura` | `codex/milaura-collection-pill-aqua-20260812` | retire apres integration | `sections/milaura-collection-hero.liquid`, `docs/checkpoints/2026-08-12-1927-collection-pill-aqua.md` | live `190430282075`, push cible et pullback valides | ferme | 2026-08-12 19:37 CEST |
 | Resultat du diagnostic : selection catalogue dynamique et composition joaillerie | Codex, tache fermee `quiz-result-dynamic-20260908` ; checkout integration proprietaire du live | `codex/milaura-quiz-result-dynamic-20260908`, source `c6d0bc4c`, integration `ba66b131` | `/Users/paesano/Documents/MilAura website/_worktrees/quiz-result-dynamic-20260908` | exclusif : `assets/milaura-recommendations.js`, `sections/milaura-quiz.liquid`, `tests/diagnostic-recommendations.test.mjs`, `docs/checkpoints/2026-09-08-1637-quiz-result-dynamic.md` ; Ruban PDP, panier, catalogue, produits, Admin et tout autre fichier exclus | live `190430282075` : push cible sans suppression puis pullback 2/2 identique | `FERME` : selection dynamique par pierre et intention, associations manuelles retirees, deux cartes egales desktop, rail tactile mobile, Mon Ecrin apres les produits, direction Van Cleef-like par retenue et photographie sans copie ; controle visuel reserve a Patrice | 2026-09-08 16:41 CEST |
 
+## Correctif du CTA visiteur du resultat quiz du 2026-09-14
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-14 apres verification visuelle du resultat quiz public.
+- Branche : `codex/milaura-quiz-guest-mon-ecrin-20260914`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/quiz-guest-mon-ecrin-20260914`, base live recuperee `811f9ee4`.
+- Perimetre reserve : `snippets/milaura-quiz-account-save.liquid` et checkpoint dedie. Aucun profil du quiz, consentement e-mail, compte client, bridge C1, produit, panier, configuration ou autre theme n est modifie.
+- Direction : pour un visiteur, `Continuer sans compte` ouvre directement l URL Mon Ecrin configuree, sans envoyer ni conserver le diagnostic. Le CTA cesse de modifier seulement le message local.
+- Theme public cible : `190430282075`, apres controle local, push cible du snippet, pullback et verification publique. Le checkout d integration reste strictement exclu.
+- Etat au 2026-09-14 : EN COURS, source live preflight identique a la base `811f9ee4`; aucune ecriture Shopify effectuee.
+
 ## Regles du registre
 
 1. Le proprietaire inscrit sa ligne avant la premiere modification.
