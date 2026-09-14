@@ -121,7 +121,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 - Proprietaire : Codex, GO de Patrice du 2026-09-14 pour une previsualisation privee uniquement.
 - Branche et worktree : `codex/milaura-aqua-hero-preview-20260914`, `/Users/paesano/Documents/MilAura website/_worktrees/aqua-hero-preview-20260914`, base `5e4f80be` alignee sur `origin/codex/milaura-integration`.
 - Perimetre exclusif : `sections/milaura-hero-portal.liquid`, `sections/milaura-hero-portal-original.liquid`, `templates/index.json`, les deux assets `milaura-home-hero-harmonie-*-20260914.webp` et cette entree de registre. L ancien hero est preserve comme section reutilisable dans l editeur Shopify sous le nom `Ancien hero MilAura`. Le checkout d integration, le theme live `190430282075`, Shopify Admin, catalogue, navigation hors hero et toutes les autres sections sont preserves.
-- Etat : GO VISUEL, INTEGRATION ET LIVE EXPLICITES de Patrice le 2026-09-14. Publication ciblee en cours, suivie d un pullback des seuls fichiers Hero et d une QA publique desktop/mobile.
+- Etat au 2026-09-14 : FERME, INTEGRE ET LIVE. Commits `509ed8e2` et `c29ae504` pousses sur la branche source et sur `codex/milaura-integration`. Les deux assets, les deux sections et le template d accueil ont ete publies de facon ciblee sur le theme live `190430282075`, puis relus a l identique par pullback. La QA publique confirme le H1, le CTA et le hero aigue-marine. L ancien hero Chloé reste disponible dans l editeur Shopify sous `Ancien hero MilAura`, pret a etre ajoute a une autre page. Les deux selections produit live du template ont ete preservees.
 
 ### Handoff final des conseils de Karine du 2026-09-12
 
