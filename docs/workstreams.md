@@ -398,7 +398,7 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 - Perimetre reserve : `snippets/milaura-quiz-account-save.liquid` et checkpoint dedie. Aucun profil du quiz, consentement e-mail, compte client, bridge C1, produit, panier, configuration ou autre theme n est modifie.
 - Direction : pour un visiteur, `Continuer sans compte` ouvre directement l URL Mon Ecrin configuree, sans envoyer ni conserver le diagnostic. Le CTA cesse de modifier seulement le message local.
 - Theme public cible : `190430282075`, apres controle local, push cible du snippet, pullback et verification publique. Le checkout d integration reste strictement exclu.
-- Etat au 2026-09-14 : EN COURS, source live preflight identique a la base `811f9ee4`; aucune ecriture Shopify effectuee.
+- Etat au 2026-09-14 16:31 CEST : FERME, LIVE VERIFIE. Le seul snippet a ete pousse sur `190430282075` sans suppression, puis relu a l identique par pullback SHA-256 `aba4a76b4ec12ce1087c0ebaa64529ce78847dab6cf7b725267159ae016588a4`. Le HTML public contient le lien natif exact vers Mon Ecrin et aucun attribut `data-milaura-c1-skip-save` sur ce CTA. [Checkpoint](checkpoints/2026-09-14-1631-quiz-guest-mon-ecrin-live.md).
 
 ## Regles du registre
 
