@@ -1,44 +1,45 @@
-{% comment %}2026-09-14: Mon Écrin requires a customer account; visitors keep their quiz result on this page without a false guest link.{% endcomment %}
+{% comment %}2026-09-15: Mon Écrin requires a customer account; visitors keep their quiz result on this page without a false guest link.{% endcomment %}
+{%- liquid
+  assign mon_ecrin_url = settings.milaura_c1_mon_ecrin_url | default: routes.account_url
+-%}
 <section
   class="quiz-reveal-account-invite"
   id="quiz-reveal-account-invite-{{ section_id }}"
   aria-labelledby="quiz-reveal-account-title-{{ section_id }}"
 >
   <div class="quiz-reveal-account-content">
-    <h3 id="quiz-reveal-account-title-{{ section_id }}" class="quiz-reveal-account-title">Votre espace personnel</h3>
-    <p class="quiz-reveal-account-intro">Mon Écrin rassemble votre résultat, votre pierre et vos conseils pour les retrouver à chaque visite.</p>
+    <h3 id="quiz-reveal-account-title-{{ section_id }}" class="quiz-reveal-account-title">Votre Écrin, votre espace personnel</h3>
+    <p class="quiz-reveal-account-intro">Votre Écrin est votre espace personnel MilAura. Retrouvez les résultats de vos diagnostics émotionnels, vos favoris, votre pierre du moment, l’historique de vos achats et les minéraux qui ont retenu votre attention.</p>
 
     {%- if settings.milaura_c1_release_candidate_enabled -%}
+      <p id="quiz-reveal-account-status-{{ section_id }}" class="quiz-reveal-account-status" aria-live="polite">
+        {% if customer %}Ajoutez ce diagnostic à votre Écrin pour le retrouver à chaque visite.{% else %}Créez votre Écrin pour sauvegarder ce diagnostic émotionnel.{% endif %}
+      </p>
       <button
         type="button"
         class="quiz-reveal-account-save"
         data-milaura-c1-save-diagnostic
         aria-describedby="quiz-reveal-account-status-{{ section_id }}"
       >
-        {% if customer %}Ajouter ce résultat à Mon Écrin{% else %}Créer mon Écrin{% endif %}
+        {% if customer %}Ajouter ce diagnostic à votre Écrin{% else %}Créer votre Écrin{% endif %}
       </button>
-      <p id="quiz-reveal-account-status-{{ section_id }}" class="quiz-reveal-account-status" aria-live="polite">
-        {% if customer %}Votre résultat sera enregistré dans votre espace personnel.{% else %}Créez ou ouvrez votre compte pour conserver ce résultat sur tous vos appareils.{% endif %}
-      </p>
-      <a href="{{ settings.milaura_c1_mon_ecrin_url | escape }}" class="quiz-reveal-account-link" data-milaura-c1-saved-link hidden>Ouvrir Mon Écrin</a>
+      <a href="{{ mon_ecrin_url | escape }}" class="quiz-reveal-account-link" data-milaura-c1-saved-link data-milaura-c1-open-account hidden>Ouvrir votre Écrin</a>
     {%- else -%}
-      <a href="{{ routes.account_register_url }}" class="quiz-reveal-account-link">Créer mon Écrin</a>
-      <p class="quiz-reveal-account-text">Créez votre compte pour retrouver ce résultat sur tous vos appareils.</p>
+      <p class="quiz-reveal-account-text">Créez votre Écrin pour sauvegarder ce diagnostic émotionnel.</p>
+      <a href="{{ routes.account_register_url }}" class="quiz-reveal-account-link">Créer votre Écrin</a>
     {%- endif -%}
   </div>
 
   <aside class="quiz-reveal-account-preview" aria-label="Aperçu de Mon Écrin">
-    <p class="quiz-reveal-account-preview-title">Aperçu de Mon Écrin</p>
-    <dl>
-      <div>
-        <dt>Votre résultat</dt>
-        <dd data-milaura-ecrin-profile>Votre résultat</dd>
-      </div>
-      <div>
-        <dt>Votre pierre</dt>
-        <dd data-milaura-ecrin-stone>Votre pierre</dd>
-      </div>
-    </dl>
-    <p class="quiz-reveal-account-preview-advice" data-milaura-ecrin-advice>Vos conseils restent à portée de main.</p>
+    <p class="quiz-reveal-account-preview-title">Aperçu de votre Écrin</p>
+    <figure class="quiz-reveal-account-preview-media">
+      <img
+        src="{{ 'milaura-mon-ecrin-preview-anonymized-20260915.png' | asset_url }}"
+        alt="Aperçu de l’espace Mon Écrin avec un diagnostic émotionnel enregistré"
+        width="1798"
+        height="875"
+        loading="lazy"
+      >
+    </figure>
   </aside>
 </section>

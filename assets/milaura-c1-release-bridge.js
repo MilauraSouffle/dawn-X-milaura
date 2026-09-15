@@ -159,6 +159,13 @@
     event.preventDefault();
     saveDiagnostic(button);
   });
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest('[data-milaura-c1-open-account]');
+    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (!/^https:\/\/shopify\.com\//i.test(accountUrl)) return;
+    event.preventDefault();
+    window.location.assign(accountUrl);
+  });
   window.addEventListener('milaura:quiz-result', function () {
     var button = document.querySelector('[data-milaura-c1-save-diagnostic]');
     if (!button) return;

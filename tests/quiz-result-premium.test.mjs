@@ -15,8 +15,12 @@ test('the visitor result has no false guest-account CTA', () => {
   assert.doesNotMatch(section, /Continuer sans compte/);
   assert.doesNotMatch(accountSave, /data-milaura-c1-skip-save/);
   assert.doesNotMatch(accountBridge, /data-milaura-c1-skip-save/);
-  assert.match(accountSave, /Créer mon Écrin/);
-  assert.match(accountSave, /Créez ou ouvrez votre compte/);
+  assert.match(accountSave, /Créer votre Écrin/);
+  assert.match(accountSave, /Créez votre Écrin pour sauvegarder ce diagnostic émotionnel/);
+  assert.match(accountSave, /milaura-mon-ecrin-preview-anonymized-20260915\.png/);
+  assert.doesNotMatch(accountSave, /data-milaura-ecrin-profile/);
+  assert.match(accountBridge, /data-milaura-c1-open-account/);
+  assert.match(accountBridge, /window\.location\.assign\(accountUrl\)/);
 });
 
 test('the result presents the recommendation before optional follow-up', () => {
