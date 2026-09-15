@@ -1,19 +1,19 @@
 # Handoff Codex MilAura
 
-Date : 2026-09-15 10:45 CEST
+Date : 2026-09-15 17:56 CEST
 
-Statut : `THEME LIVE STABLE, RESULTAT DU QUIZ PREMIUM FERME`
+Statut : `CORRECTIFS SAFARI COOKIES ET BRACELETS FERME, LIVE VERIFIE`
 
-Le theme public Shopify est `190430282075`. Le lot resultat du quiz et Mon Ecrin a ete accepte par Patrice, merge par `646486df`, puis publie en sept fichiers strictement cibles. Le pullback est bit a bit identique, le storefront renvoie HTTP 200 et les textes, CTA, image Ecrin et consentement e-mail publies sont verifies. Tests `31/31 PASS`, Theme Check `0 erreur` et `16 avertissements historiques`.
+Le theme public Shopify est `190430282075`. Deux regressions Safari apres rollback sont fermees sans toucher au catalogue : `assets/milaura-cookie-consent.js` conserve une decision de consentement apres callback Shopify par cookie first-party et stockage local ; `sections/milaura-collection-filters.liquid` utilise des classes `milaura-recipient-*` non masquees afin de rendre `Pour qui ?`, `Femme`, `Homme` et `Mixte`. Les deux pushes live etaient cibles avec `--nodelete`, et leurs pullbacks sont bit a bit identiques. Safari live affiche les trois liens ; Homme conserve son URL de filtre et ses 13 modeles. Theme Check : `0 erreur`, `16 avertissements historiques`.
 
-La branche `codex/milaura-integration` est propre et alignee avec origin au HEAD observe `27eb516f`. Les integrations Safari cookies et filtre bracelets qui suivent sont independantes et restent preservees. Ne jamais reemployer le checkout `00406d5a`, ni effectuer de push Shopify global.
+La branche `codex/milaura-integration` est propre et alignee avec origin au HEAD observe `c7c97980` avant ce handoff. Les worktrees sources cookies et filtre sont propres, integres et conserves. Ne jamais reemployer le checkout `00406d5a`, ni effectuer de push Shopify global.
 
-`HERO CHLOE` reste explicitement interdit de reutilisation. Les anciennes notes qui invitent a le conserver ou a le reutiliser sont historiques et ne valent pas une nouvelle autorisation.
+`HERO CHLOE` reste explicitement interdit de reutilisation. La proposition de collection automatique `Bracelets homme en pierres naturelles` est uniquement une recommandation strategique : aucune collection, metafield ou navigation n a ete creee dans ce lot.
 
 ## Prompt de reprise
 
 ```text
-Reprends MilAura depuis docs/checkpoints/2026-09-15-1045-quiz-result-premium-live-handoff.md. Commence en lecture seule par AGENTS.md, docs/project-state.md, docs/codex-handoff.md, git status --short --branch -uall et le storefront public. Le resultat du quiz premium est deja live sur 190430282075 : ne redeploie aucun de ses sept fichiers par deduction. Si Patrice signale une regression, reproduis-la avec un compte de test autorise si le compte est concerne, puis reserve un lot minimal et separe preview, validation visuelle, integration et live. Preserve les correctifs Safari, les travaux concurrents, les produits, le checkout, les Flows et l Admin.
+Reprends MilAura depuis docs/checkpoints/2026-09-15-1756-safari-cookies-bracelet-filter-live-handoff.md. Commence en lecture seule par AGENTS.md, docs/project-state.md, docs/codex-handoff.md, git status --short --branch -uall et le storefront public. Les correctifs Safari sont deja live sur 190430282075 : ne redeploie aucun de leurs deux fichiers par deduction. Si Patrice demande la collection Bracelets homme, re-audite d abord l assortiment et le metafield existant puis ouvre un lot Shopify separe. Preserve les correctifs Safari, les travaux concurrents, les produits, le checkout, les Flows et l Admin.
 ```
 
 ## Historique de passation
