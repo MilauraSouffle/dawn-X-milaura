@@ -23,6 +23,33 @@
     amour: Object.freeze(['amour', 'douceur']),
     chance: Object.freeze(['confiance', 'energie']),
   });
+  const DIAGNOSTIC_PRODUCT_HOOKS = Object.freeze({
+    apaisement: Object.freeze([
+      'Pour relâcher la pression.',
+      'Pour arrêter de vous en demander trop.',
+      'Pour vous accorder une vraie pause.',
+    ]),
+    protection: Object.freeze([
+      'Pour poser une limite.',
+      'Pour prendre de la distance.',
+      'Pour préserver votre énergie.',
+    ]),
+    serenite: Object.freeze([
+      'Pour faire de la place dans votre tête.',
+      'Pour retrouver une priorité claire.',
+      'Pour fermer la journée.',
+    ]),
+    amour: Object.freeze([
+      'Pour vous remettre au centre.',
+      'Pour recevoir autant que vous donnez.',
+      'Pour garder un moment pour vous.',
+    ]),
+    chance: Object.freeze([
+      'Pour faire le premier pas.',
+      'Pour vous donner une chance.',
+      'Pour avancer sans tout maîtriser.',
+    ]),
+  });
   const DIAGNOSTIC_TYPE_PRIORITY = Object.freeze({
     collier: 120,
     bracelet: 115,
@@ -210,6 +237,11 @@
     if (signal === 'stone' || signal === 'stone-family') return `Sélection en ${stone || 'votre pierre'}.`;
     if (signal === 'intention') return 'Sélectionnée pour accompagner votre intention.';
     return 'Une création MilAura disponible maintenant.';
+  }
+
+  function diagnosticProductReason(diagnostic, index, signal) {
+    const hooks = DIAGNOSTIC_PRODUCT_HOOKS[diagnostic?.profileId] || [];
+    return hooks[index] || diagnosticReason(signal, diagnostic?.stone);
   }
 
   function selectDiverseDiagnosticCards(records, limit) {
@@ -764,14 +796,17 @@
           return true;
         })
         .map(({ candidate, card }) => {
-          const reasonElement = card.querySelector('.milaura-recommendation-card__reason');
-          if (reasonElement) reasonElement.textContent = diagnosticReason(candidate.signal, diagnostic.stone);
           card.dataset.recommendationSignal = candidate.signal;
           card.dataset.recommendationGate = candidate.signal;
           card.dataset.recommendationScore = String(candidate.score);
-          return { card, productType: candidate.productType };
+          return { card, productType: candidate.productType, signal: candidate.signal };
         });
-      const selected = selectDiverseDiagnosticCards(records, this.limit).map((record) => record.card);
+      const selectedRecords = selectDiverseDiagnosticCards(records, this.limit);
+      selectedRecords.forEach((record, index) => {
+        const reasonElement = record.card.querySelector('.milaura-recommendation-card__reason');
+        if (reasonElement) reasonElement.textContent = diagnosticProductReason(diagnostic, index, record.signal);
+      });
+      const selected = selectedRecords.map((record) => record.card);
       if (!selected.length) {
         this.setState('empty');
         return;
@@ -1189,6 +1224,7 @@
     diagnosticIntentHandles,
     rankDiagnosticMatches,
     rankDiagnosticProducts,
+    diagnosticProductReason,
     selectDiverseDiagnosticCards,
     rankPdpCards,
   });

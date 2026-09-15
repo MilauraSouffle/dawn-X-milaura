@@ -39,6 +39,7 @@ const {
   rankDiagnosticMatches,
   rankDiagnosticProducts,
   selectDiverseDiagnosticCards,
+  diagnosticProductReason,
 } = window.MilauraRecommendations;
 
 function product(id, handle, type, tags, overrides = {}) {
@@ -125,5 +126,13 @@ const selected = selectDiverseDiagnosticCards(
   2
 );
 assert.deepEqual(selected.map((candidate) => candidate.card.id), ['a', 'c']);
+assert.deepEqual(
+  [0, 1, 2].map((index) => diagnosticProductReason({profileId: 'apaisement', stone: 'Calcédoine bleue'}, index, 'stone')),
+  [
+    'Pour relâcher la pression.',
+    'Pour arrêter de vous en demander trop.',
+    'Pour vous accorder une vraie pause.',
+  ]
+);
 
 console.log('PASS diagnostic dynamique: pierre, intention, exclusions et diversite');

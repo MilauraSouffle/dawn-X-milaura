@@ -121,7 +121,7 @@
         setStatus(button, 'Vous avez supprimé votre résultat. Refaites le quiz pour en conserver un nouveau.', 'error');
       } else if (error.status === 401 || error.status === 403) {
         loggedIn = false;
-        button.textContent = 'Se connecter pour retrouver ma pierre';
+        button.textContent = 'Créer mon Écrin';
         setStatus(button, 'Votre session a expiré. Reconnectez-vous pour conserver ce résultat.', 'login-required');
       } else {
         setStatus(button, error.name === 'AbortError'
@@ -154,22 +154,17 @@
   }
 
   document.addEventListener('click', function (event) {
-    var skip = event.target.closest('[data-milaura-c1-skip-save]');
-    if (skip) {
-      event.preventDefault();
-      var saveButton = document.querySelector('[data-milaura-c1-save-diagnostic]');
-      if (saveButton && saveButton.disabled) return;
-      intentStore.clear();
-      var url = new URL(window.location.href);
-      url.searchParams.delete('save');
-      window.history.replaceState(null, '', url.pathname + url.search + url.hash);
-      if (saveButton) setStatus(saveButton, 'Vous pouvez poursuivre votre découverte sans enregistrer ce résultat dans votre compte.', 'skipped');
-      return;
-    }
     var button = event.target.closest('[data-milaura-c1-save-diagnostic]');
     if (!button) return;
     event.preventDefault();
     saveDiagnostic(button);
+  });
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest('[data-milaura-c1-open-account]');
+    if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (!/^https:\/\/shopify\.com\//i.test(accountUrl)) return;
+    event.preventDefault();
+    window.location.assign(accountUrl);
   });
   window.addEventListener('milaura:quiz-result', function () {
     var button = document.querySelector('[data-milaura-c1-save-diagnostic]');
