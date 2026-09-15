@@ -1,3 +1,23 @@
+# Handoff Codex MilAura
+
+Date : 2026-09-15 10:45 CEST
+
+Statut : `THEME LIVE STABLE, RESULTAT DU QUIZ PREMIUM FERME`
+
+Le theme public Shopify est `190430282075`. Le lot resultat du quiz et Mon Ecrin a ete accepte par Patrice, merge par `646486df`, puis publie en sept fichiers strictement cibles. Le pullback est bit a bit identique, le storefront renvoie HTTP 200 et les textes, CTA, image Ecrin et consentement e-mail publies sont verifies. Tests `31/31 PASS`, Theme Check `0 erreur` et `16 avertissements historiques`.
+
+La branche `codex/milaura-integration` est propre et alignee avec origin au HEAD observe `27eb516f`. Les integrations Safari cookies et filtre bracelets qui suivent sont independantes et restent preservees. Ne jamais reemployer le checkout `00406d5a`, ni effectuer de push Shopify global.
+
+`HERO CHLOE` reste explicitement interdit de reutilisation. Les anciennes notes qui invitent a le conserver ou a le reutiliser sont historiques et ne valent pas une nouvelle autorisation.
+
+## Prompt de reprise
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-15-1045-quiz-result-premium-live-handoff.md. Commence en lecture seule par AGENTS.md, docs/project-state.md, docs/codex-handoff.md, git status --short --branch -uall et le storefront public. Le resultat du quiz premium est deja live sur 190430282075 : ne redeploie aucun de ses sept fichiers par deduction. Si Patrice signale une regression, reproduis-la avec un compte de test autorise si le compte est concerne, puis reserve un lot minimal et separe preview, validation visuelle, integration et live. Preserve les correctifs Safari, les travaux concurrents, les produits, le checkout, les Flows et l Admin.
+```
+
+## Historique de passation
+
 > Bandeau fixe des avantages, 2026-09-14 16:03 CEST : LIVE VERIFIE. Le bandeau rose recent a trois avantages de `449cabc1` a ete restaure apres la recuperation globale : un seul fichier `sections/milaura-announcement.liquid`, recette preview, push live cible `--nodelete` et pullback identique SHA-256 `ba461da8938441708afbf558b8b5af11ce89e39eb757fde315505870d13c56a5`. Accueil public relu a 390 et 1440 px, fleche et compteur `1/3` a `3/3` fonctionnels, sans erreur navigateur. [Checkpoint](checkpoints/2026-09-14-1603-announcement-banner-live-recovery.md).
 
 > Reprise prioritaire, 2026-09-14 15:51 CEST : RECUPERATION LIVE TERMINEE. Le theme `190430282075` a ete restaure depuis `7d279bcc`, avec les trois correctifs quiz plus recents conserves. Le pullback final, les verifications publique mobile et desktop, le diagnostic et la collection bijoux sont conformes. La branche de secours `codex/milaura-live-recovery-20260914` contient la source de cette reprise. Ne pas pousser depuis le checkout local `00406d5a`, qui est en retard et sale. [Checkpoint](checkpoints/2026-09-14-1551-controlled-live-recovery.md).

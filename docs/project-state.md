@@ -1,3 +1,15 @@
+# Etat actuel du theme MilAura
+
+> Cloture Codex, 2026-09-15 10:45 CEST : le theme public `190430282075` est stable et le resultat du quiz premium est LIVE VERIFIE. Le lot approuve par Patrice a ete integre par `646486df`, documente par `b82bc98c`, publie uniquement sur sept fichiers avec `--nodelete` et pullback bit a bit identique. QA CDN : `HTTP 200` sur `/pages/diagnostic-emotionnel`, titre Ecrin, CTA, image anonymisee et consentement e-mail attendus. Tests `31/31 PASS`, Theme Check `0 erreur` et `16 avertissements historiques`. [Checkpoint courant](checkpoints/2026-09-15-1045-quiz-result-premium-live-handoff.md).
+
+> Etat Git : `codex/milaura-integration` est propre et alignee avec origin au HEAD observe `27eb516f`. Les integrations Safari cookies et filtres bracelets qui suivent le lot quiz sont independantes et preservees. Le worktree source quiz est propre, integre et conserve. Aucun nettoyage de branche ou worktree n est autorise sans GO distinct de Patrice.
+
+> Regle de reprise : ne pas pousser depuis le checkout ancien `00406d5a`, ni faire de push Shopify global. Toute correction part d une reproduction lecture seule, d un lot reserve et d un push cible avec pullback. Aucun lot theme, catalogue, checkout, Flow ou Admin n est ouvert automatiquement.
+
+> Direction Hero conservee : `HERO CHLOE` ne doit pas etre reutilise. Les mentions historiques qui suggerent de le remettre dans l editeur Shopify ne rouvrent pas cette decision.
+
+## Historique recent
+
 > Bandeau fixe des avantages, 2026-09-14 16:03 CEST : LIVE VERIFIE. Le bandeau rose recent a trois avantages de `449cabc1` a ete restaure apres la recuperation globale : un seul fichier `sections/milaura-announcement.liquid`, recette preview, push live cible `--nodelete` et pullback identique SHA-256 `ba461da8938441708afbf558b8b5af11ce89e39eb757fde315505870d13c56a5`. Accueil public relu a 390 et 1440 px, fleche et compteur `1/3` a `3/3` fonctionnels, sans erreur navigateur. [Checkpoint](checkpoints/2026-09-14-1603-announcement-banner-live-recovery.md).
 
 > Recuperation controlee du theme live, 2026-09-14 15:51 CEST : LIVE RESTAURE ET VERIFIE. Un rollback hybride a ete remplace par la source canonique `7d279bcc`, avec les trois correctifs quiz conserves. Le theme public `190430282075` a ete pousse avec `--nodelete`, puis relu depuis Shopify : accueil, Hero aigue-marine, quiz, consentement e-mail et catalogue sont conformes. Le checkout local `00406d5a`, tres en retard et sale, reste intouche. [Checkpoint](checkpoints/2026-09-14-1551-controlled-live-recovery.md).
