@@ -16,6 +16,7 @@
   var previousFocus = null;
   var leaveTimer = null;
   var decisionCookieName = 'milaura_cookie_choice';
+  var decisionStorageKey = 'milaura_cookie_choice';
   var decisionCookieVersion = 'v1';
   var decisionCookieMaxAge = 15552000;
 
@@ -66,13 +67,23 @@
 
   function hasDecisionMarker() {
     var expected = decisionCookieName + '=' + decisionCookieVersion;
-    return document.cookie.split(';').some(function (cookie) {
+    var hasCookie = document.cookie.split(';').some(function (cookie) {
       return cookie.trim() === expected;
     });
+
+    if (hasCookie) return true;
+
+    try {
+      return window.localStorage.getItem(decisionStorageKey) === decisionCookieVersion;
+    } catch (error) {
+      return false;
+    }
   }
 
   function rememberDecision() {
     var secure = window.location.protocol === 'https:' ? '; Secure' : '';
+    var hostname = window.location.hostname || '';
+    var domain = /(^|\.)milaura\.fr$/i.test(hostname) ? '; Domain=.milaura.fr' : '';
     document.cookie =
       decisionCookieName +
       '=' +
@@ -80,7 +91,14 @@
       '; Max-Age=' +
       decisionCookieMaxAge +
       '; Path=/; SameSite=Lax' +
+      domain +
       secure;
+
+    try {
+      window.localStorage.setItem(decisionStorageKey, decisionCookieVersion);
+    } catch (error) {
+      /* The first-party cookie remains the durable fallback. */
+    }
   }
 
   function showBanner() {
