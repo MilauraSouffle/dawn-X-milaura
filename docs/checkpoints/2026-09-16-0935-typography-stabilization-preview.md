@@ -32,6 +32,7 @@ Accueil sur le theme non publie `201359720795` :
 
 ## Verification
 
+- Commit fonctionnel : `f083f816`, pousse sur `origin/codex/milaura-typography-stabilization-20260916`.
 - `node --test tests/typography-contract.test.mjs` : 4 tests, 4 PASS.
 - `shopify theme check` : 0 erreur, 16 avertissements historiques hors lot.
 - `git diff --check` : PASS.
