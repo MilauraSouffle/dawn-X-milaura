@@ -1,3 +1,13 @@
+## Stabilisation typographique sitewide du 2026-09-16
+
+- Proprietaire : Codex, tache `Stabiliser la typographie MilAura`, ouverte sur demande directe de Patrice.
+- Branche : `codex/milaura-typography-stabilization-20260916`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/typography-stabilization-20260916`, base `codex/milaura-integration` au commit `a30844b1` aligne sur origin apres fetch.
+- Perimetre reserve : `assets/milaura-tokens.css`, `assets/milaura.css`, `sections/milaura-hero-portal.liquid`, `sections/milaura-hero-editorial.liquid`, `sections/milaura-selection-atelier.liquid`, `assets/milaura-home-paths.css`, `assets/milaura-home-occasions.css`, `assets/milaura-choice-doors.css`, `assets/milaura-cart.css`, `sections/milaura-cart-items.liquid`, `sections/milaura-cart-summary.liquid`, `assets/milaura-cart-drawer-v3.css`, nouveau test `tests/typography-contract.test.mjs` et documentation propre au lot. Audit en lecture seule autorise sur les autres surfaces actives ; tout autre fichier devra etre ajoute ici avant edition.
+- Direction : conserver Gloock 400, Instrument Sans 400 a 700 et Dancing Script 500 ou 600 ; supprimer les faux graissages et faux italiques, clarifier la hierarchie et assurer une lecture mobile stable sans modifier les textes ni la structure des pages.
+- Exclusions : refonte PDP, structure Liquid, images et workflow mannequins, landing Automne, produits, prix, stocks, contenus commerciaux, Admin Shopify et theme public `190430282075`.
+- Gates : audit source, correctifs limites, Theme Check, recette responsive sur le theme non publie `201359720795`, puis validation visuelle de Patrice. L ancien theme de developpement `199421952347` est absent de la liste Shopify au 2026-09-16. Aucun live sans GO explicite separe.
+- Etat au 2026-09-16 09:35 CEST : PREVIEW TECHNIQUE PRETE, GO VISUEL PATRICE EN ATTENTE. Theme Check 0 erreur et 16 avertissements historiques ; test typographique 4 sur 4 ; accueil controle a 360, 390, 430 et 1440 px, panier a 390 px, polices chargees, aucun debordement racine ni erreur navigateur. Les douze fichiers theme ont ete relus depuis le theme non publie `201359720795` et correspondent exactement a la branche ; public `190430282075` intact. La PDP et `layout/theme.liquid` restent hors edition. [Checkpoint](checkpoints/2026-09-16-0935-typography-stabilization-preview.md).
+
 ## Retablissement cible du bandeau avantages du 2026-09-14
 
 - Proprietaire : Codex, reprise urgente apres constat visuel de Patrice.
