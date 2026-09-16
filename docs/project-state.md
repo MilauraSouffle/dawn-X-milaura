@@ -1,12 +1,10 @@
 # Etat actuel du theme MilAura
 
-> Cloture Codex, 2026-09-15 17:56 CEST : les regressions Safari causees par le rollback theme sont fermees et live verifiees sur le theme public `190430282075`. Le consentement utilise maintenant le callback Shopify, un marqueur first-party `.milaura.fr` et un secours local ; les liens `Pour qui ?`, `Femme`, `Homme`, `Mixte` sont de nouveau visibles sur `/collections/bracelets-pierres`. Les pushes ont ete strictement limites a `assets/milaura-cookie-consent.js` puis `sections/milaura-collection-filters.liquid`, chacun avec pullback bit a bit identique. Theme Check : `0 erreur`, `16 avertissements historiques`. [Checkpoint courant](checkpoints/2026-09-15-1756-safari-cookies-bracelet-filter-live-handoff.md).
+> Cloture Meta, 2026-09-16 07:24 CEST : `milaura.fr`, relie au dataset Meta `milaurashopify` `830428425991691`, a ete decouvert classe `Religion`. Toutes les demarches accessibles ont ete tentees. L examen a ete refuse, le bouton `Demander un examen` reste desactive et Meta Support n a pas resolu le probleme. [Checkpoint courant](checkpoints/2026-09-16-0724-meta-religion-pause-handoff.md).
 
-> Etat Git : `codex/milaura-integration` etait propre et alignee avec origin au HEAD observe `c7c97980` avant la documentation de cette cloture. Les worktrees `cookie-safari-20260915` et `bracelet-filter-safari-20260915` sont propres et integres ; ils restent conserves. Aucun nettoyage de branche ou worktree n est autorise sans GO distinct de Patrice.
+> Meta Verified a ete souscrit pour la page Facebook MilAura afin d obtenir la mise en relation humaine normalement annoncee avec ce service. Au 2026-09-16, aucune mise en relation avec un humain n a eu lieu. Meta indique que la restriction concernant l Europe doit entrer en vigueur dans trois jours.
 
-> Regle de reprise : ne pas pousser depuis le checkout ancien `00406d5a`, ni faire de push Shopify global. Toute correction part d une reproduction lecture seule, d un lot reserve et d un push cible avec pullback. La collection automatique `Bracelets homme en pierres naturelles` est une recommandation, non un chantier autorise. Aucun lot theme, catalogue, checkout, Flow ou Admin n est ouvert automatiquement.
-
-> Direction Hero conservee : `HERO CHLOE` ne doit pas etre reutilise. Les mentions historiques qui suggerent de le remettre dans l editeur Shopify ne rouvrent pas cette decision.
+> L automatisation Codex `suivi-examen-meta-milaura` est en pause depuis le 2026-09-16 a 07:24 CEST. Aucun fichier theme, produit, checkout, Flow ou Admin n a ete modifie dans cette session. La branche `codex/milaura-integration` etait propre et alignee avec origin au HEAD observe `f2fb825209dae5ad5a64a27938bd7f73963c9592` avant cette documentation.
 
 ## Historique recent
 

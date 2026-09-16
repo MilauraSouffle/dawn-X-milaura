@@ -1,19 +1,23 @@
 # Handoff Codex MilAura
 
-Date : 2026-09-15 17:56 CEST
+Date : 2026-09-16 07:24 CEST
 
-Statut : `CORRECTIFS SAFARI COOKIES ET BRACELETS FERME, LIVE VERIFIE`
+Statut : `CLASSIFICATION RELIGION NON RESOLUE, SUIVI AUTOMATIQUE EN PAUSE`
 
-Le theme public Shopify est `190430282075`. Deux regressions Safari apres rollback sont fermees sans toucher au catalogue : `assets/milaura-cookie-consent.js` conserve une decision de consentement apres callback Shopify par cookie first-party et stockage local ; `sections/milaura-collection-filters.liquid` utilise des classes `milaura-recipient-*` non masquees afin de rendre `Pour qui ?`, `Femme`, `Homme` et `Mixte`. Les deux pushes live etaient cibles avec `--nodelete`, et leurs pullbacks sont bit a bit identiques. Safari live affiche les trois liens ; Homme conserve son URL de filtre et ses 13 modeles. Theme Check : `0 erreur`, `16 avertissements historiques`.
+Le site `milaura.fr`, relie au dataset Meta `milaurashopify` ID `830428425991691`, a ete decouvert classe dans la categorie `Religion`.
 
-La branche `codex/milaura-integration` est propre et alignee avec origin au HEAD observe `c7c97980` avant ce handoff. Les worktrees sources cookies et filtre sont propres, integres et conserves. Ne jamais reemployer le checkout `00406d5a`, ni effectuer de push Shopify global.
+Au 2026-09-16, toutes les demarches accessibles ont ete tentees pour faire corriger cette classification. L examen a ete refuse. Le bouton `Demander un examen` est affiche mais reste desactive. Les echanges avec Meta Support n ont pas permis de resoudre le probleme.
 
-`HERO CHLOE` reste explicitement interdit de reutilisation. La proposition de collection automatique `Bracelets homme en pierres naturelles` est uniquement une recommandation strategique : aucune collection, metafield ou navigation n a ete creee dans ce lot.
+Meta Verified a ete souscrit pour la page Facebook MilAura afin d obtenir la mise en relation humaine normalement annoncee avec ce service. Au 2026-09-16, aucune mise en relation avec un humain n a eu lieu.
+
+Au 2026-09-16, aucune autre solution accessible n a permis de faire modifier la classification. Meta indique que la restriction concernant l Europe doit entrer en vigueur dans trois jours.
+
+L automatisation Codex `Suivi examen Meta MilAura`, ID `suivi-examen-meta-milaura`, est en pause depuis le 2026-09-16 a 07:24 CEST.
 
 ## Prompt de reprise
 
 ```text
-Reprends MilAura depuis docs/checkpoints/2026-09-15-1756-safari-cookies-bracelet-filter-live-handoff.md. Commence en lecture seule par AGENTS.md, docs/project-state.md, docs/codex-handoff.md, git status --short --branch -uall et le storefront public. Les correctifs Safari sont deja live sur 190430282075 : ne redeploie aucun de leurs deux fichiers par deduction. Si Patrice demande la collection Bracelets homme, re-audite d abord l assortiment et le metafield existant puis ouvre un lot Shopify separe. Preserve les correctifs Safari, les travaux concurrents, les produits, le checkout, les Flows et l Admin.
+Reprends le dossier Meta MilAura depuis docs/checkpoints/2026-09-16-0724-meta-religion-pause-handoff.md. Le site milaura.fr, relie au dataset milaurashopify 830428425991691, a ete decouvert classe Religion. Au 2026-09-16, toutes les demarches accessibles ont ete tentees, l examen a ete refuse, le bouton Demander un examen reste desactive et Meta Support n a pas resolu le probleme. Meta Verified a ete souscrit pour la page Facebook MilAura afin d obtenir la mise en relation humaine normalement annoncee, mais aucune mise en relation avec un humain n a eu lieu. Meta indique que la restriction concernant l Europe doit entrer en vigueur dans trois jours. L automatisation suivi-examen-meta-milaura est en pause depuis le 2026-09-16 a 07:24 CEST.
 ```
 
 ## Historique de passation
