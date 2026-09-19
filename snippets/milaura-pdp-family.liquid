@@ -1,0 +1,30 @@
+{%- comment -%}
+  Resolves the canonical PDP family from milaura.catalogue_family.
+  product_type_handle and product.type are compatibility fallbacks only.
+{%- endcomment -%}
+
+{%- liquid
+  assign resolved_family = product.metafields.milaura.catalogue_family.value | default: product.metafields.milaura.catalogue_family
+  assign resolved_type = product.metafields.milaura.product_type_handle.value | default: product.metafields.milaura.product_type_handle | default: product.type | handleize
+
+  if resolved_family == blank
+    case resolved_type
+      when 'bijou', 'bracelet', 'collier', 'bague', 'pendentif', 'boucles-d-oreilles', 'chaine', 'fil-de-perles'
+        assign resolved_family = 'bijou'
+      when 'pierre', 'mineral', 'pierre-roulee', 'cabochon', 'sphere', 'pointe-minerale', 'forme-minerale', 'orgonite', 'plaque-de-rechargement', 'arbre-mineral', 'flacon-roll-on', 'distributeur-de-savon', 'rouleau-de-massage', 'accessoire-mineral'
+        assign resolved_family = 'pierre-mineral'
+      when 'bougie'
+        assign resolved_family = 'bougie-senteur'
+      when 'sauge', 'baton-de-sauge', 'baton-de-fumigation', 'encens', 'pendule', 'bol-chantant', 'cymbales', 'coffret', 'coffret-bien-etre', 'chapelet'
+        assign resolved_family = 'rituel'
+      when 'savon', 'soin'
+        assign resolved_family = 'soin'
+      when 'accessoire', 'porte-cles'
+        assign resolved_family = 'accessoire'
+      else
+        assign resolved_family = 'produit'
+    endcase
+  endif
+
+  echo resolved_family
+-%}

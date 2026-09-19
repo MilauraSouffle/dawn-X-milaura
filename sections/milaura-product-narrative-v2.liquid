@@ -1,14 +1,27 @@
 {{ 'milaura-product-pdp-v2.css' | asset_url | stylesheet_tag }}
 
+{%- capture pdp_family -%}{%- render 'milaura-pdp-family', product: product -%}{%- endcapture -%}
+{%- assign pdp_family = pdp_family | strip -%}
+
 {%- liquid
+  assign media_manifest = product.metafields.milaura.pdp_media_manifest.value
+  assign manifest_narrative_slots = media_manifest.groups.narrative_blocks
+  assign use_media_manifest = false
+  if media_manifest.slots.size == 9 and manifest_narrative_slots.size == 3
+    assign use_media_manifest = true
+  endif
+
+  assign e02_slot = blank
   assign e02_media = blank
-  for media in product.media
-    assign slot_alt = media.alt | upcase
-    if slot_alt contains '[MILAURA:E02]'
-      assign e02_media = media
-    endif
-  endfor
-  if e02_media == blank
+  if use_media_manifest
+    assign e02_slot_id = manifest_narrative_slots[1]
+    for candidate_slot in media_manifest.slots
+      if candidate_slot.slot_id == e02_slot_id
+        assign e02_slot = candidate_slot
+        break
+      endif
+    endfor
+  else
     assign e02_media = product.media[7] | default: product.media[4] | default: product.featured_media
   endif
 
@@ -18,37 +31,62 @@
   assign gem_origin = product.metafields.milaura.gem_origin.value
   assign gem_treatments = product.metafields.milaura.gem_treatments.value
   assign certificate_file = product.metafields.milaura.certificate_file.value
-  assign certificate_lab = product.metafields.milaura.certificate_lab.value | default: 'LFG Paris'
+  assign certificate_lab = product.metafields.milaura.certificate_lab.value
   assign certificate_reference = product.metafields.milaura.certificate_reference.value
   assign certificate_url = certificate_file.url
+
+  assign technical_eyebrow = 'Caractéristiques'
+  assign technical_title = 'Matières, dimensions et usage'
+  case pdp_family
+    when 'bijou'
+      assign technical_eyebrow = 'Détails de fabrication'
+      assign technical_title = 'Fermoir, matières et finitions'
+    when 'pierre-mineral'
+      assign technical_eyebrow = 'Caractéristiques'
+      assign technical_title = 'Forme, dimensions et origine'
+    when 'bougie-senteur'
+      assign technical_eyebrow = 'Composition et usage'
+      assign technical_title = 'Cire, mèche et combustion'
+    when 'rituel'
+      assign technical_eyebrow = 'Composition et usage'
+      assign technical_title = 'Composition, dimensions et usage'
+    when 'soin'
+      assign technical_eyebrow = 'Composition et usage'
+      assign technical_title = 'Composition et conseils d’utilisation'
+    when 'accessoire'
+      assign technical_eyebrow = 'Caractéristiques'
+      assign technical_title = 'Matières, dimensions et usage'
+  endcase
 -%}
 
 <section
   id="MilauraPdpNarrative-{{ section.id }}"
   class="milaura-pdp-narrative milaura-pdp-technical-v2"
   aria-labelledby="MilauraPdpNarrativeTitle-{{ section.id }}"
+  data-pdp-family="{{ pdp_family | escape }}"
 >
   <div class="milaura-pdp-technical-v2__inner">
     <div class="milaura-pdp-technical-v2__media">
-      {%- if e02_media != blank and e02_media.media_type == 'image' -%}
-        {%- assign e02_alt = e02_media.alt | remove: '[MILAURA:E02]' | strip | default: product.title -%}
-        {{- e02_media
-          | image_url: width: 1600
-          | image_tag:
-            class: 'milaura-pdp-technical-v2__image',
-            widths: '480, 720, 960, 1200, 1600',
-            sizes: '(max-width: 749px) 100vw, 50vw',
-            loading: 'lazy',
-            alt: e02_alt
-        -}}
+      {%- if e02_slot != blank or e02_media != blank -%}
+        {%- render 'milaura-pdp-manifest-image',
+          manifest_slot: e02_slot,
+          product_media: product.media,
+          fallback_media: e02_media,
+          image_class: 'milaura-pdp-technical-v2__image',
+          image_widths: '480, 720, 960, 1200, 1600',
+          image_sizes: '(max-width: 749px) 100vw, 50vw',
+          image_max_width: 1600,
+          image_loading: 'lazy',
+          fallback_alt: product.title
+        -%}
       {%- else -%}
         {{ 'product-2' | placeholder_svg_tag: 'milaura-pdp-technical-v2__placeholder' }}
       {%- endif -%}
     </div>
 
     <div class="milaura-pdp-technical-v2__content">
-      <p class="milaura-pdp-technical-v2__eyebrow milaura-label">Détails de fabrication</p>
-      <h2 id="MilauraPdpNarrativeTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+      <p class="milaura-pdp-technical-v2__eyebrow milaura-label">{{ technical_eyebrow }}</p>
+      <h2 id="MilauraPdpNarrativeTitle-{{ section.id }}">{{ technical_title | default: section.settings.title | escape }}</h2>
 
       {%- if materials != blank or specifications != blank or gem_treatments != blank -%}
         <dl class="milaura-pdp-specs">
@@ -75,7 +113,7 @@
           {%- if product_provenance != blank or gem_origin != blank -%}
             <div>
               <dt>Origine documentée</dt>
-              <dd>{{ product_provenance | default: gem_origin | escape }}</dd>
+              <dd>{{ gem_origin | default: product_provenance | escape }}</dd>
             </div>
           {%- endif -%}
         </dl>
@@ -83,7 +121,7 @@
 
       {%- if certificate_url != blank -%}
         <a class="milaura-pdp-text-link" href="{{ certificate_url }}" target="_blank" rel="noopener">
-          Voir le certificat {{ certificate_lab | escape }}{% if certificate_reference != blank %} {{ certificate_reference | escape }}{% endif %}
+          Voir le certificat{% if certificate_lab != blank %} {{ certificate_lab | escape }}{% endif %}{% if certificate_reference != blank %} {{ certificate_reference | escape }}{% endif %}
           <span aria-hidden="true">↗</span>
         </a>
       {%- endif -%}
@@ -101,7 +139,7 @@
       "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Fermoir, matières et finitions"
+      "default": "Matières, dimensions et usage"
     }
   ],
   "presets": [

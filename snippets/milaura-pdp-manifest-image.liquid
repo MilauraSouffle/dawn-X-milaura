@@ -1,0 +1,58 @@
+{%- comment -%}
+  Renders one PDP image from milaura.pdp_media_manifest.
+
+  Expected inputs:
+  - manifest_slot: JSON slot from the product metafield
+  - product_media: product.media
+  - fallback_media: optional positional compatibility image
+  - image_class, image_sizes, image_widths, image_max_width
+  - image_loading, image_fetchpriority, fallback_alt
+{%- endcomment -%}
+
+{%- liquid
+  assign resolved_media = blank
+  assign target_image_id = manifest_slot.shopify_image_id | append: ''
+
+  if manifest_slot != blank and target_image_id != blank
+    for candidate_media in product_media
+      assign candidate_id = candidate_media.id | append: ''
+      if candidate_media.media_type == 'image' and candidate_id == target_image_id
+        assign resolved_media = candidate_media
+        break
+      endif
+    endfor
+  endif
+
+  if resolved_media == blank and manifest_slot.shopify_position != blank
+    assign manifest_position_index = manifest_slot.shopify_position | minus: 1
+    assign positional_media = product_media[manifest_position_index]
+    if positional_media.media_type == 'image'
+      assign resolved_media = positional_media
+    endif
+  endif
+
+  if resolved_media == blank and manifest_slot == blank
+    assign resolved_media = fallback_media
+  endif
+
+  assign public_alt = manifest_slot.alt_text | default: resolved_media.alt | default: fallback_alt
+  assign public_alt = public_alt | remove: '[MILAURA:H01]' | remove: '[MILAURA:H02]' | remove: '[MILAURA:H03]' | remove: '[MILAURA:H04]' | remove: '[MILAURA:H05]' | remove: '[MILAURA:H06]' | remove: '[MILAURA:E01]' | remove: '[MILAURA:E02]' | remove: '[MILAURA:E03]' | strip
+  assign rendered_loading = image_loading | default: 'lazy'
+  assign rendered_fetchpriority = image_fetchpriority | default: 'auto'
+  assign rendered_max_width = image_max_width | default: 1600
+  assign rendered_widths = image_widths | default: '480, 720, 960, 1200, 1600'
+  assign rendered_sizes = image_sizes | default: '100vw'
+-%}
+
+{%- if resolved_media != blank and resolved_media.media_type == 'image' -%}
+  {{- resolved_media
+    | image_url: width: rendered_max_width
+    | image_tag:
+      class: image_class,
+      widths: rendered_widths,
+      sizes: rendered_sizes,
+      loading: rendered_loading,
+      fetchpriority: rendered_fetchpriority,
+      alt: public_alt
+  -}}
+{%- endif -%}

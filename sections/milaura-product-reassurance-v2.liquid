@@ -10,12 +10,17 @@
   assign product_virtues = product.metafields.milaura.vertus.value | default: product.metafields.milaura.vertus
   assign product_provenance = product.metafields.milaura.provenance.value | default: product.metafields.milaura.provenance
   assign certificate_file = product.metafields.milaura.certificate_file.value
-  assign certificate_lab = product.metafields.milaura.certificate_lab.value | default: 'LFG Paris'
+  assign certificate_lab = product.metafields.milaura.certificate_lab.value
   assign certificate_url = certificate_file.url
 
   assign facts_serialized = ''
   assign quality_values = product_quality | replace: ';', ',' | split: ','
-  assign quality_value = quality_values.first | strip | replace: 'Qualité ', 'Grade ' | replace: 'Qualite ', 'Grade '
+  assign quality_value = quality_values.first | strip
+  assign has_stone = false
+  if stone_name != blank
+    assign has_stone = true
+    assign quality_value = quality_value | replace: 'Qualité ', 'Grade ' | replace: 'Qualite ', 'Grade '
+  endif
   if quality_value != blank
     assign facts_serialized = facts_serialized | append: 'quality::' | append: quality_value | append: '|||'
   endif
@@ -40,11 +45,6 @@
     endunless
   endfor
   assign product_facts = facts_serialized | split: '|||'
-
-  assign has_stone = false
-  if stone_name != blank
-    assign has_stone = true
-  endif
 
   assign payment_whitelist = 'visa,master,american_express,apple_pay,shop_pay,shopify_pay,klarna,cartes_bancaires,carte_bleue,cb' | split: ','
   assign payment_count = 0
@@ -98,7 +98,7 @@
               <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
               <span class="milaura-pdp-reassurance__copy">
                 <span class="milaura-pdp-reassurance__title">
-                  {%- if certificate_url != blank -%}Certificat {{ certificate_lab | escape }}{%- else -%}Certificats produits{%- endif -%}
+                  {%- if certificate_url != blank and certificate_lab != blank -%}Certificat {{ certificate_lab | escape }}{%- elsif certificate_url != blank -%}Certificat disponible{%- else -%}Certificats produits{%- endif -%}
                 </span>
                 <span class="milaura-pdp-reassurance__text">
                   {%- if certificate_url != blank -%}Disponible pour cette pièce{%- else -%}Indiqués lorsqu’ils sont disponibles{%- endif -%}

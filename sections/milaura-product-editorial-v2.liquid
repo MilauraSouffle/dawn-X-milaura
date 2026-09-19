@@ -1,0 +1,52 @@
+{{ 'milaura-product-pdp-v2.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign media_manifest = product.metafields.milaura.pdp_media_manifest.value
+  assign editorial_group = media_manifest.groups.editorial_projection
+  assign h06_slot = blank
+
+  if media_manifest.slots.size == 9 and editorial_group.size == 1
+    for candidate_slot in media_manifest.slots
+      if candidate_slot.slot_id == editorial_group.first and candidate_slot.destination == 'pdp_editorial_projection'
+        assign h06_slot = candidate_slot
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if h06_slot != blank -%}
+  <section
+    id="MilauraProductEditorialV2-{{ section.id }}"
+    class="milaura-pdp-editorial-v2"
+    aria-label="{{ h06_slot.alt_text | default: product.title | escape }}"
+    data-media-slot="{{ h06_slot.slot_id | escape }}"
+  >
+    <figure class="milaura-pdp-editorial-v2__figure">
+      {%- render 'milaura-pdp-manifest-image',
+        manifest_slot: h06_slot,
+        product_media: product.media,
+        image_class: 'milaura-pdp-editorial-v2__image',
+        image_widths: '600, 900, 1200, 1600, 2048',
+        image_sizes: '(max-width: 749px) 100vw, 58vw',
+        image_max_width: 2048,
+        image_loading: 'lazy',
+        fallback_alt: product.title
+      -%}
+    </figure>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "MilAura projection V2",
+  "tag": "section",
+  "class": "section-milaura-product-editorial-v2",
+  "settings": [],
+  "presets": [
+    {
+      "name": "MilAura projection V2"
+    }
+  ]
+}
+{% endschema %}

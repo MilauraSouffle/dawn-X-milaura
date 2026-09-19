@@ -2,6 +2,9 @@
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'milaura-product-pdp-v2.js' | asset_url }}" defer="defer"></script>
 
+{%- capture pdp_family -%}{%- render 'milaura-pdp-family', product: product -%}{%- endcapture -%}
+{%- assign pdp_family = pdp_family | strip -%}
+
 {%- liquid
   assign selected_variant = product.selected_or_first_available_variant
   assign product_form_id = 'MilauraPdpForm-' | append: section.id
@@ -12,54 +15,26 @@
   assign hero_stone_handle = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
   assign hero_materials = product.metafields.milaura.materials.value
   assign hero_specifications = product.metafields.milaura.specifications.value
-
-  assign h01_media = blank
-  assign h02_media = blank
-  assign h03_media = blank
-  assign h04_media = blank
-  assign h05_media = blank
-  assign h06_media = blank
-
-  for media in product.media
-    assign slot_alt = media.alt | upcase
-    if slot_alt contains '[MILAURA:H01]'
-      assign h01_media = media
-    elsif slot_alt contains '[MILAURA:H02]'
-      assign h02_media = media
-    elsif slot_alt contains '[MILAURA:H03]'
-      assign h03_media = media
-    elsif slot_alt contains '[MILAURA:H04]'
-      assign h04_media = media
-    elsif slot_alt contains '[MILAURA:H05]'
-      assign h05_media = media
-    elsif slot_alt contains '[MILAURA:H06]'
-      assign h06_media = media
-    endif
-  endfor
-
-  assign tagged_hero_count = 0
-  if h01_media != blank
-    assign tagged_hero_count = tagged_hero_count | plus: 1
+  assign social_subject = 'ce produit'
+  case pdp_family
+    when 'bijou'
+      assign social_subject = 'cette pièce'
+    when 'pierre-mineral'
+      assign social_subject = 'ce minéral'
+    when 'bougie-senteur'
+      assign social_subject = 'cette bougie'
+    when 'soin'
+      assign social_subject = 'ce soin'
+  endcase
+  assign has_natural_stone = false
+  if hero_stone_name != blank or hero_stone_handle != blank
+    assign has_natural_stone = true
   endif
-  if h02_media != blank
-    assign tagged_hero_count = tagged_hero_count | plus: 1
-  endif
-  if h03_media != blank
-    assign tagged_hero_count = tagged_hero_count | plus: 1
-  endif
-  if h04_media != blank
-    assign tagged_hero_count = tagged_hero_count | plus: 1
-  endif
-  if h05_media != blank
-    assign tagged_hero_count = tagged_hero_count | plus: 1
-  endif
-  if h06_media != blank
-    assign tagged_hero_count = tagged_hero_count | plus: 1
-  endif
-
-  assign use_tagged_gallery = false
-  if tagged_hero_count == 6
-    assign use_tagged_gallery = true
+  assign media_manifest = product.metafields.milaura.pdp_media_manifest.value
+  assign manifest_gallery_slots = media_manifest.groups.commercial_gallery
+  assign use_media_manifest = false
+  if media_manifest.slots.size == 9 and manifest_gallery_slots.size == 5
+    assign use_media_manifest = true
   endif
 -%}
 
@@ -69,48 +44,28 @@
   data-milaura-pdp-root
   data-section-id="{{ section.id }}"
   data-money-format="{{ shop.money_format | escape }}"
+  data-pdp-family="{{ pdp_family | escape }}"
 >
   <div class="milaura-pdp-hero__layout">
     <div class="milaura-pdp-gallery" data-pdp-gallery>
-      <div class="milaura-pdp-gallery__track" data-pdp-gallery-track>
+      <div
+        class="milaura-pdp-gallery__track"
+        data-pdp-gallery-track
+        data-media-contract-source="{% if use_media_manifest %}manifest{% else %}legacy-position{% endif %}"
+      >
         {%- assign rendered_hero_count = 0 -%}
-        {%- for slot_number in (1..6) -%}
-          {%- liquid
-            assign slot_media = blank
-            assign slot_id = blank
-            case slot_number
-              when 1
-                assign slot_id = 'H01'
-                assign slot_media = h01_media
-              when 2
-                assign slot_id = 'H02'
-                assign slot_media = h02_media
-              when 3
-                assign slot_id = 'H03'
-                assign slot_media = h03_media
-              when 4
-                assign slot_id = 'H04'
-                assign slot_media = h04_media
-              when 5
-                assign slot_id = 'H05'
-                assign slot_media = h05_media
-              when 6
-                assign slot_id = 'H06'
-                assign slot_media = h06_media
-            endcase
-
-            unless use_tagged_gallery
-              assign fallback_index = slot_number | minus: 1
-              assign slot_media = product.media[fallback_index]
-            endunless
-          -%}
-
-          {%- if slot_media != blank and slot_media.media_type == 'image' -%}
+        {%- if use_media_manifest -%}
+          {%- for gallery_slot_id in manifest_gallery_slots limit: 5 -%}
             {%- liquid
-              assign rendered_hero_count = rendered_hero_count | plus: 1
-              assign media_alt = slot_media.alt | remove: '[MILAURA:H01]' | remove: '[MILAURA:H02]' | remove: '[MILAURA:H03]' | remove: '[MILAURA:H04]' | remove: '[MILAURA:H05]' | remove: '[MILAURA:H06]' | strip
-              if media_alt == blank
-                assign media_alt = product.title
+              assign manifest_slot = blank
+              for candidate_slot in media_manifest.slots
+                if candidate_slot.slot_id == gallery_slot_id
+                  assign manifest_slot = candidate_slot
+                  break
+                endif
+              endfor
+              if manifest_slot != blank
+                assign rendered_hero_count = rendered_hero_count | plus: 1
               endif
               assign image_loading = 'lazy'
               assign image_fetchpriority = 'auto'
@@ -119,25 +74,61 @@
                 assign image_fetchpriority = 'high'
               endif
             -%}
-            <figure
-              id="MilauraPdpSlide-{{ section.id }}-{{ rendered_hero_count }}"
-              class="milaura-pdp-gallery__slide"
-              data-pdp-slide
-              data-media-slot="{{ slot_id }}"
-            >
-              {{- slot_media
-                | image_url: width: 2048
-                | image_tag:
-                  class: 'milaura-pdp-gallery__image',
-                  widths: '480, 720, 960, 1280, 1600, 2048',
-                  sizes: '(max-width: 989px) 100vw, 38vw',
-                  loading: image_loading,
-                  fetchpriority: image_fetchpriority,
-                  alt: media_alt
-              -}}
-            </figure>
-          {%- endif -%}
-        {%- endfor -%}
+            {%- if manifest_slot != blank -%}
+              <figure
+                id="MilauraPdpSlide-{{ section.id }}-{{ rendered_hero_count }}"
+                class="milaura-pdp-gallery__slide"
+                data-pdp-slide
+                data-media-slot="{{ manifest_slot.slot_id | escape }}"
+              >
+                {%- render 'milaura-pdp-manifest-image',
+                  manifest_slot: manifest_slot,
+                  product_media: product.media,
+                  image_class: 'milaura-pdp-gallery__image',
+                  image_widths: '480, 720, 960, 1280, 1600, 2048',
+                  image_sizes: '(max-width: 989px) 100vw, 38vw',
+                  image_max_width: 2048,
+                  image_loading: image_loading,
+                  image_fetchpriority: image_fetchpriority,
+                  fallback_alt: product.title
+                -%}
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for legacy_media in product.media limit: 5 -%}
+            {%- if legacy_media.media_type == 'image' -%}
+              {%- liquid
+                assign rendered_hero_count = rendered_hero_count | plus: 1
+                assign legacy_slot_id = 'H0' | append: rendered_hero_count
+                assign image_loading = 'lazy'
+                assign image_fetchpriority = 'auto'
+                if rendered_hero_count == 1
+                  assign image_loading = 'eager'
+                  assign image_fetchpriority = 'high'
+                endif
+              -%}
+              <figure
+                id="MilauraPdpSlide-{{ section.id }}-{{ rendered_hero_count }}"
+                class="milaura-pdp-gallery__slide"
+                data-pdp-slide
+                data-media-slot="{{ legacy_slot_id }}"
+              >
+                {%- render 'milaura-pdp-manifest-image',
+                  product_media: product.media,
+                  fallback_media: legacy_media,
+                  image_class: 'milaura-pdp-gallery__image',
+                  image_widths: '480, 720, 960, 1280, 1600, 2048',
+                  image_sizes: '(max-width: 989px) 100vw, 38vw',
+                  image_max_width: 2048,
+                  image_loading: image_loading,
+                  image_fetchpriority: image_fetchpriority,
+                  fallback_alt: product.title
+                -%}
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       </div>
 
       {%- if rendered_hero_count > 1 -%}
@@ -161,13 +152,15 @@
         </nav>
       {%- endif -%}
 
-      <aside class="milaura-pdp-variation-note" aria-label="Information sur les photos et les variations naturelles">
-        <span class="milaura-pdp-variation-note__icon" aria-hidden="true">i</span>
-        <p class="milaura-pdp-variation-note__text">
-          Chaque pierre naturelle possède ses propres nuances, son veinage et parfois une forme légèrement
-          différente. C’est ce qui donne à chaque pièce son caractère.
-        </p>
-      </aside>
+      {%- if has_natural_stone -%}
+        <aside class="milaura-pdp-variation-note" aria-label="Information sur les variations naturelles">
+          <span class="milaura-pdp-variation-note__icon" aria-hidden="true">i</span>
+          <p class="milaura-pdp-variation-note__text">
+            Chaque pierre naturelle possède ses propres nuances, son veinage et parfois une forme légèrement
+            différente. C’est ce qui donne à chaque pièce son caractère.
+          </p>
+        </aside>
+      {%- endif -%}
     </div>
 
     <div class="milaura-pdp-buy" data-pdp-buy-panel>
@@ -290,7 +283,7 @@
       {%- if section.settings.show_social_proof -%}
         <div class="milaura-pdp-social" aria-label="Preuve sociale MilAura">
           <span class="milaura-pdp-social__stars" aria-hidden="true">★★★★★</span>
-          <p>Plus de <strong>{{ social_count }}</strong> clientes et clients ont déjà choisi cette pièce.</p>
+          <p>Plus de <strong>{{ social_count }}</strong> clientes et clients ont déjà choisi {{ social_subject }}.</p>
         </div>
       {%- endif -%}
 
