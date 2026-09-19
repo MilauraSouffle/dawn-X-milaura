@@ -53,12 +53,14 @@ test('the hero consumes H01 to H06 and keeps long copy below the separator', asy
 
 test('the guide keeps the proven two-tab layout without service questions', async () => {
   const guide = await source('sections/milaura-product-guide-v2.liquid');
+  const css = await source('assets/milaura-product-pdp-v2.css');
 
   for (const slot of ['E01', 'E03']) {
     assert.match(guide, new RegExp(`\\[MILAURA:${slot}\\]`));
   }
   assert.match(guide, /product\.description/);
   assert.match(guide, /Produit et matières/);
+  assert.match(css, /\.milaura-product-guide-v2 \.milaura-product-guide__tab\s*\{[^}]*border:\s*var\(--milaura-filet\)/s);
   assert.match(guide, /milaura-product-panel__description-disclosure/);
   assert.match(guide, /Lire toute la description/);
   assert.match(guide, /Masquer la description/);
