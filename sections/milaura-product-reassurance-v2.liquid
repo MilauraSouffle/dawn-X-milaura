@@ -55,8 +55,8 @@
   endfor
 -%}
 
-<section class="milaura-pdp-reassurance" aria-label="Caractéristiques, services et engagements MilAura">
-  {%- if facts_serialized != blank -%}
+<section class="milaura-pdp-reassurance milaura-pdp-reassurance--{{ section.settings.display_mode }}" aria-label="Caractéristiques, services et engagements MilAura">
+  {%- if section.settings.display_mode == 'facts' and facts_serialized != blank -%}
     <div class="milaura-pdp-fact-rail" aria-label="Caractéristiques du produit">
       <div class="milaura-pdp-fact-rail__track">
         {%- for track_copy in (1..2) -%}
@@ -77,53 +77,55 @@
     </div>
   {%- endif -%}
 
-  <div class="milaura-pdp-reassurance__track">
-    {%- for track_copy in (1..2) -%}
-      <div class="milaura-pdp-reassurance__group"{% if track_copy == 2 %} aria-hidden="true"{% endif %}>
-        {%- for block in section.blocks -%}
-          <div class="milaura-pdp-reassurance__item" {{ block.shopify_attributes }}>
-            <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
-            <span class="milaura-pdp-reassurance__copy">
-              <span class="milaura-pdp-reassurance__title">{{ block.settings.title | escape }}</span>
-              {%- if block.settings.text != blank -%}
-                <span class="milaura-pdp-reassurance__text">{{ block.settings.text | escape }}</span>
-              {%- endif -%}
-            </span>
-          </div>
-        {%- endfor -%}
-
-        {%- if has_stone -%}
-          <div class="milaura-pdp-reassurance__item">
-            <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
-            <span class="milaura-pdp-reassurance__copy">
-              <span class="milaura-pdp-reassurance__title">
-                {%- if certificate_url != blank -%}Certificat {{ certificate_lab | escape }}{%- else -%}Certificats produits{%- endif -%}
+  {%- if section.settings.display_mode == 'services' -%}
+    <div class="milaura-pdp-reassurance__track">
+      {%- for track_copy in (1..2) -%}
+        <div class="milaura-pdp-reassurance__group"{% if track_copy == 2 %} aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <div class="milaura-pdp-reassurance__item" {{ block.shopify_attributes }}>
+              <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
+              <span class="milaura-pdp-reassurance__copy">
+                <span class="milaura-pdp-reassurance__title">{{ block.settings.title | escape }}</span>
+                {%- if block.settings.text != blank -%}
+                  <span class="milaura-pdp-reassurance__text">{{ block.settings.text | escape }}</span>
+                {%- endif -%}
               </span>
-              <span class="milaura-pdp-reassurance__text">
-                {%- if certificate_url != blank -%}Disponible pour cette pièce{%- else -%}Indiqués lorsqu’ils sont disponibles{%- endif -%}
-              </span>
-            </span>
-          </div>
-        {%- endif -%}
+            </div>
+          {%- endfor -%}
 
-        {%- if payment_count > 0 -%}
-          <div class="milaura-pdp-reassurance__item milaura-pdp-reassurance__item--payments">
-            <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
-            <span class="milaura-pdp-reassurance__copy">
-              <span class="milaura-pdp-reassurance__title">Paiements acceptés</span>
-              <ul class="milaura-pdp-reassurance__payments" aria-label="Moyens de paiement acceptés">
-                {%- for type in shop.enabled_payment_types -%}
-                  {%- if payment_whitelist contains type -%}
-                    <li>{{ type | payment_type_svg_tag }}</li>
-                  {%- endif -%}
-                {%- endfor -%}
-              </ul>
-            </span>
-          </div>
-        {%- endif -%}
-      </div>
-    {%- endfor -%}
-  </div>
+          {%- if has_stone -%}
+            <div class="milaura-pdp-reassurance__item">
+              <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
+              <span class="milaura-pdp-reassurance__copy">
+                <span class="milaura-pdp-reassurance__title">
+                  {%- if certificate_url != blank -%}Certificat {{ certificate_lab | escape }}{%- else -%}Certificats produits{%- endif -%}
+                </span>
+                <span class="milaura-pdp-reassurance__text">
+                  {%- if certificate_url != blank -%}Disponible pour cette pièce{%- else -%}Indiqués lorsqu’ils sont disponibles{%- endif -%}
+                </span>
+              </span>
+            </div>
+          {%- endif -%}
+
+          {%- if payment_count > 0 -%}
+            <div class="milaura-pdp-reassurance__item milaura-pdp-reassurance__item--payments">
+              <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
+              <span class="milaura-pdp-reassurance__copy">
+                <span class="milaura-pdp-reassurance__title">Paiements acceptés</span>
+                <ul class="milaura-pdp-reassurance__payments" aria-label="Moyens de paiement acceptés">
+                  {%- for type in shop.enabled_payment_types -%}
+                    {%- if payment_whitelist contains type -%}
+                      <li>{{ type | payment_type_svg_tag }}</li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </span>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -132,6 +134,24 @@
   "tag": "section",
   "class": "section-milaura-pdp-reassurance-v2",
   "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "display_mode",
+      "label": "Contenu affiché",
+      "options": [
+        {
+          "value": "facts",
+          "label": "Caractéristiques produit"
+        },
+        {
+          "value": "services",
+          "label": "Services et engagements"
+        }
+      ],
+      "default": "services"
+    }
+  ],
   "blocks": [
     {
       "type": "item",

@@ -22,11 +22,14 @@ test('the alternate template keeps the approved conversion order', async () => {
     'narrative_v2',
     'recommendations',
     'advisor',
+    'reassurance_bottom',
     'sticky_v2',
   ]);
   assert.equal(template.sections.hero_v2.type, 'milaura-product-hero-v2');
   assert.equal(template.sections.guide_v2.type, 'milaura-product-guide-v2');
   assert.equal(template.sections.narrative_v2.type, 'milaura-product-narrative-v2');
+  assert.equal(template.sections.reassurance_v2.settings.display_mode, 'facts');
+  assert.equal(template.sections.reassurance_bottom.settings.display_mode, 'services');
 });
 
 test('the hero consumes H01 to H06 and keeps long copy below the separator', async () => {
@@ -39,6 +42,8 @@ test('the hero consumes H01 to H06 and keeps long copy below the separator', asy
   assert.match(hero, /data-pdp-gallery/);
   assert.match(hero, /data-pdp-submit/);
   assert.match(hero, /show_social_proof/);
+  assert.ok(hero.indexOf('data-pdp-submit') < hero.indexOf('milaura-pdp-social'));
+  assert.ok(hero.indexOf('milaura-pdp-social') < hero.indexOf('milaura-pdp-buy__essentials'));
 });
 
 test('the guide keeps the proven two-tab layout without service questions', async () => {
@@ -60,6 +65,7 @@ test('the technical section consumes E02 without generic care copy', async () =>
   assert.match(narrative, /\[MILAURA:E02\]/);
   assert.match(narrative, /Fermoir, matières et finitions/);
   assert.doesNotMatch(narrative, /évitez le contact prolongé/i);
+  assert.doesNotMatch(narrative, /milaura-pdp-quality-callout/);
 });
 
 test('the reassurance separator carries product facts, certificates and payments', async () => {
@@ -69,6 +75,8 @@ test('the reassurance separator carries product facts, certificates and payments
   assert.match(reassurance, /certificate_file/);
   assert.match(reassurance, /payment_type_svg_tag/);
   assert.match(reassurance, /shop\.enabled_payment_types/);
+  assert.match(reassurance, /section\.settings\.display_mode == 'facts'/);
+  assert.match(reassurance, /section\.settings\.display_mode == 'services'/);
 });
 
 test('new PDP styles use the MilAura token system', async () => {
