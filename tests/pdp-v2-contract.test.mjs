@@ -22,12 +22,14 @@ test('the alternate template keeps the approved conversion order', async () => {
     'narrative_v2',
     'recommendations',
     'advisor',
+    'services_v2',
     'reassurance_bottom',
     'sticky_v2',
   ]);
   assert.equal(template.sections.hero_v2.type, 'milaura-product-hero-v2');
   assert.equal(template.sections.guide_v2.type, 'milaura-product-guide-v2');
   assert.equal(template.sections.narrative_v2.type, 'milaura-product-narrative-v2');
+  assert.equal(template.sections.services_v2.type, 'milaura-product-services-v2');
   assert.equal(template.sections.reassurance_v2.settings.display_mode, 'facts');
   assert.equal(template.sections.reassurance_bottom.settings.display_mode, 'services');
 });
@@ -42,6 +44,8 @@ test('the hero consumes H01 to H06 and keeps long copy below the separator', asy
   assert.match(hero, /data-pdp-gallery/);
   assert.match(hero, /data-pdp-submit/);
   assert.match(hero, /show_social_proof/);
+  assert.match(hero, /Les photos présentent le modèle que vous choisissez/);
+  assert.match(hero, /Chaque pierre naturelle possède ses propres nuances/);
   assert.ok(hero.indexOf('data-pdp-submit') < hero.indexOf('milaura-pdp-social'));
   assert.ok(hero.indexOf('milaura-pdp-social') < hero.indexOf('milaura-pdp-buy__essentials'));
 });
@@ -54,9 +58,24 @@ test('the guide keeps the proven two-tab layout without service questions', asyn
   }
   assert.match(guide, /product\.description/);
   assert.match(guide, /Produit et matières/);
+  assert.match(guide, /milaura-product-panel__description-disclosure/);
+  assert.match(guide, /Lire toute la description/);
+  assert.match(guide, /Masquer la description/);
   assert.match(guide, /milaura-pdp-quality-callout/);
   assert.doesNotMatch(guide, /Questions fréquentes/);
   assert.doesNotMatch(guide, /Services & réponses/);
+});
+
+test('services and answers return as a dedicated section at the bottom', async () => {
+  const services = await source('sections/milaura-product-services-v2.liquid');
+
+  assert.match(services, /Services & réponses/);
+  assert.match(services, /product\.metafields\.milaura\.faq_json/);
+  assert.match(services, /Questions fréquentes/);
+  assert.match(services, /Expédition & livraison/);
+  assert.match(services, /Retours/);
+  assert.match(services, /Paiements/);
+  assert.match(services, /FAQPage/);
 });
 
 test('the technical section consumes E02 without generic care copy', async () => {
@@ -95,6 +114,7 @@ test('new PDP files contain no em dash', async () => {
     'sections/milaura-product-reassurance-v2.liquid',
     'sections/milaura-product-narrative-v2.liquid',
     'sections/milaura-product-guide-v2.liquid',
+    'sections/milaura-product-services-v2.liquid',
     'sections/milaura-product-sticky-v2.liquid',
     'assets/milaura-product-pdp-v2.css',
     'assets/milaura-product-pdp-v2.js',
