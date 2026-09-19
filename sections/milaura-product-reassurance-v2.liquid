@@ -1,18 +1,126 @@
 {{ 'milaura-product-pdp-v2.css' | asset_url | stylesheet_tag }}
 
-<section class="milaura-pdp-reassurance" aria-label="Services et engagements MilAura">
+{%- liquid
+  assign product_quality = product.metafields.milaura.qualite.value | default: product.metafields.milaura.qualite
+  assign product_intention = product.metafields.milaura.primary_intention.value | default: product.metafields.milaura.energy_handle.value | default: product.metafields.milaura.energy_handle
+  assign stone_name = product.metafields.milaura.stone_name.value | default: product.metafields.milaura.stone_name
+  if stone_name == blank
+    assign stone_name = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle | replace: '-', ' ' | capitalize
+  endif
+  assign product_virtues = product.metafields.milaura.vertus.value | default: product.metafields.milaura.vertus
+  assign product_provenance = product.metafields.milaura.provenance.value | default: product.metafields.milaura.provenance
+  assign certificate_file = product.metafields.milaura.certificate_file.value
+  assign certificate_lab = product.metafields.milaura.certificate_lab.value | default: 'LFG Paris'
+  assign certificate_url = certificate_file.url
+
+  assign facts_serialized = ''
+  assign quality_values = product_quality | replace: ';', ',' | split: ','
+  assign quality_value = quality_values.first | strip | replace: 'Qualité ', 'Grade ' | replace: 'Qualite ', 'Grade '
+  if quality_value != blank
+    assign facts_serialized = facts_serialized | append: 'quality::' | append: quality_value | append: '|||'
+  endif
+  if product_intention != blank
+    assign intention_value = product_intention | replace: '-', ' ' | replace: 'serenite', 'sérénité' | replace: 'clarte', 'clarté' | replace: 'energie', 'énergie' | capitalize
+    assign facts_serialized = facts_serialized | append: 'intention::' | append: intention_value | append: '|||'
+  endif
+  if stone_name != blank
+    assign facts_serialized = facts_serialized | append: 'stone::' | append: stone_name | append: '|||'
+  endif
+  if product_provenance != blank
+    assign facts_serialized = facts_serialized | append: 'provenance::' | append: product_provenance | append: '|||'
+  endif
+
+  assign virtues_clean = product_virtues | strip_html | replace: 'selon les usages traditionnels de la lithothérapie.', '' | replace: 'selon les usages traditionnels de la lithothérapie', '' | replace: 'Selon les usages traditionnels de la lithothérapie.', '' | replace: 'Selon les usages traditionnels de la lithothérapie', '' | replace: ';', ','
+  assign virtue_values = virtues_clean | split: ','
+  for virtue_value in virtue_values limit: 3
+    assign virtue_value = virtue_value | strip
+    assign virtue_key = virtue_value | downcase
+    unless virtue_value == blank or virtue_key contains 'lithoth' or virtue_key contains 'usage traditionnel'
+      assign facts_serialized = facts_serialized | append: 'virtue::' | append: virtue_value | append: '|||'
+    endunless
+  endfor
+  assign product_facts = facts_serialized | split: '|||'
+
+  assign has_stone = false
+  if stone_name != blank
+    assign has_stone = true
+  endif
+
+  assign payment_whitelist = 'visa,master,american_express,apple_pay,shop_pay,shopify_pay,klarna,cartes_bancaires,carte_bleue,cb' | split: ','
+  assign payment_count = 0
+  for type in shop.enabled_payment_types
+    if payment_whitelist contains type
+      assign payment_count = payment_count | plus: 1
+    endif
+  endfor
+-%}
+
+<section class="milaura-pdp-reassurance" aria-label="Caractéristiques, services et engagements MilAura">
+  {%- if facts_serialized != blank -%}
+    <div class="milaura-pdp-fact-rail" aria-label="Caractéristiques du produit">
+      <div class="milaura-pdp-fact-rail__track">
+        {%- for track_copy in (1..2) -%}
+          <div class="milaura-pdp-fact-rail__group"{% if track_copy == 2 %} aria-hidden="true"{% endif %}>
+            {%- for product_fact in product_facts -%}
+              {%- assign fact_parts = product_fact | split: '::' -%}
+              {%- assign fact_kind = fact_parts[0] | strip -%}
+              {%- assign fact_value = fact_parts[1] | strip -%}
+              {%- if fact_value != blank -%}
+                <span class="milaura-pdp-fact-rail__item milaura-pdp-fact-rail__item--{{ fact_kind | escape }}">
+                  <span aria-hidden="true"></span>{{ fact_value | escape }}
+                </span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
   <div class="milaura-pdp-reassurance__track">
     {%- for track_copy in (1..2) -%}
       <div class="milaura-pdp-reassurance__group"{% if track_copy == 2 %} aria-hidden="true"{% endif %}>
         {%- for block in section.blocks -%}
           <div class="milaura-pdp-reassurance__item" {{ block.shopify_attributes }}>
             <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
-            <span class="milaura-pdp-reassurance__title">{{ block.settings.title | escape }}</span>
-            {%- if block.settings.text != blank -%}
-              <span class="milaura-pdp-reassurance__text">{{ block.settings.text | escape }}</span>
-            {%- endif -%}
+            <span class="milaura-pdp-reassurance__copy">
+              <span class="milaura-pdp-reassurance__title">{{ block.settings.title | escape }}</span>
+              {%- if block.settings.text != blank -%}
+                <span class="milaura-pdp-reassurance__text">{{ block.settings.text | escape }}</span>
+              {%- endif -%}
+            </span>
           </div>
         {%- endfor -%}
+
+        {%- if has_stone -%}
+          <div class="milaura-pdp-reassurance__item">
+            <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
+            <span class="milaura-pdp-reassurance__copy">
+              <span class="milaura-pdp-reassurance__title">
+                {%- if certificate_url != blank -%}Certificat {{ certificate_lab | escape }}{%- else -%}Certificats produits{%- endif -%}
+              </span>
+              <span class="milaura-pdp-reassurance__text">
+                {%- if certificate_url != blank -%}Disponible pour cette pièce{%- else -%}Indiqués lorsqu’ils sont disponibles{%- endif -%}
+              </span>
+            </span>
+          </div>
+        {%- endif -%}
+
+        {%- if payment_count > 0 -%}
+          <div class="milaura-pdp-reassurance__item milaura-pdp-reassurance__item--payments">
+            <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
+            <span class="milaura-pdp-reassurance__copy">
+              <span class="milaura-pdp-reassurance__title">Paiements acceptés</span>
+              <ul class="milaura-pdp-reassurance__payments" aria-label="Moyens de paiement acceptés">
+                {%- for type in shop.enabled_payment_types -%}
+                  {%- if payment_whitelist contains type -%}
+                    <li>{{ type | payment_type_svg_tag }}</li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </span>
+          </div>
+        {%- endif -%}
       </div>
     {%- endfor -%}
   </div>
@@ -51,8 +159,7 @@
         { "type": "item", "settings": { "title": "Préparé à Metz", "text": "par l’équipe MilAura" } },
         { "type": "item", "settings": { "title": "Expédié sous 24 h", "text": "du lundi au vendredi" } },
         { "type": "item", "settings": { "title": "Retours sous 14 jours", "text": "pour les articles éligibles" } },
-        { "type": "item", "settings": { "title": "Paiement sécurisé", "text": "Cartes, Apple Pay et Shop Pay" } },
-        { "type": "item", "settings": { "title": "Besoin d’un conseil ?", "text": "une réponse humaine avant l’achat" } }
+        { "type": "item", "settings": { "title": "Conseil avant achat", "text": "équipe disponible 6j/7" } }
       ]
     }
   ]

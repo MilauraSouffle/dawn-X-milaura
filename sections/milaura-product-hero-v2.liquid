@@ -8,6 +8,10 @@
   assign installment_form_id = 'MilauraPdpInstallment-' | append: section.id
   assign social_count_raw = product.id | default: 0 | modulo: 130
   assign social_count = social_count_raw | plus: 12
+  assign hero_stone_name = product.metafields.milaura.stone_name.value
+  assign hero_stone_handle = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
+  assign hero_materials = product.metafields.milaura.materials.value
+  assign hero_specifications = product.metafields.milaura.specifications.value
 
   assign h01_media = blank
   assign h02_media = blank
@@ -184,6 +188,31 @@
             {%- if selected_variant.available -%}Disponible{%- else -%}Épuisé{%- endif -%}
           </span>
         </p>
+
+        {%- if hero_stone_name != blank or hero_stone_handle != blank or hero_materials != blank or hero_specifications != blank -%}
+          <dl class="milaura-pdp-buy__essentials" aria-label="Caractéristiques principales">
+            {%- if hero_stone_name != blank or hero_stone_handle != blank -%}
+              <div>
+                <dt>Pierres</dt>
+                <dd>{{ hero_stone_name | default: hero_stone_handle | replace: '-', ' ' | capitalize }}</dd>
+              </div>
+            {%- endif -%}
+            {%- if hero_materials != blank -%}
+              <div>
+                <dt>Matières</dt>
+                <dd>{{ hero_materials | join: ', ' | replace: '-', ' ' }}</dd>
+              </div>
+            {%- endif -%}
+            {%- for spec in hero_specifications limit: 2 -%}
+              {%- if spec.label != blank and spec.value != blank -%}
+                <div>
+                  <dt>{{ spec.label | escape }}</dt>
+                  <dd>{{ spec.value | escape }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </dl>
+        {%- endif -%}
       </div>
 
       <product-form class="milaura-pdp-form" data-pdp-product-form>
@@ -277,7 +306,7 @@
       {%- if section.settings.show_social_proof -%}
         <div class="milaura-pdp-social" aria-label="Preuve sociale MilAura">
           <span class="milaura-pdp-social__stars" aria-hidden="true">★★★★★</span>
-          <p>Déjà choisi par plus de <strong>{{ social_count }}</strong> clientes et clients</p>
+          <p>Plus de <strong>{{ social_count }}</strong> clientes et clients ont déjà choisi cette pièce.</p>
         </div>
       {%- endif -%}
     </div>

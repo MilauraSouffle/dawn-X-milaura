@@ -1,323 +1,120 @@
 {{ 'milaura-product-pdp-v2.css' | asset_url | stylesheet_tag }}
 
 {%- liquid
-  assign e01_media = blank
   assign e02_media = blank
-  assign e03_media = blank
-
   for media in product.media
     assign slot_alt = media.alt | upcase
-    if slot_alt contains '[MILAURA:E01]'
-      assign e01_media = media
-    elsif slot_alt contains '[MILAURA:E02]'
+    if slot_alt contains '[MILAURA:E02]'
       assign e02_media = media
-    elsif slot_alt contains '[MILAURA:E03]'
-      assign e03_media = media
     endif
   endfor
-
-  if e01_media == blank
-    assign e01_media = product.media[6] | default: product.media[3]
-  endif
   if e02_media == blank
-    assign e02_media = product.media[7] | default: product.media[4]
-  endif
-  if e03_media == blank
-    assign e03_media = product.media[8] | default: product.media[5]
+    assign e02_media = product.media[7] | default: product.media[4] | default: product.featured_media
   endif
 
   assign specifications = product.metafields.milaura.specifications.value
   assign materials = product.metafields.milaura.materials.value
-  assign stone_name = product.metafields.milaura.stone_name.value
-  assign stone_handle = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
-  assign stone_description = product.metafields.milaura.stone_description.value
-  assign stone_benefits = product.metafields.milaura.stone_benefits.value
-  assign story_text = product.metafields.milaura.story_text.value
   assign product_quality = product.metafields.milaura.qualite.value
   assign product_provenance = product.metafields.milaura.provenance.value
   assign gem_origin = product.metafields.milaura.gem_origin.value
   assign gem_treatments = product.metafields.milaura.gem_treatments.value
   assign certificate_file = product.metafields.milaura.certificate_file.value
   assign certificate_lab = product.metafields.milaura.certificate_lab.value | default: 'LFG Paris'
+  assign certificate_reference = product.metafields.milaura.certificate_reference.value
   assign certificate_url = certificate_file.url
-
-  assign has_stone_content = false
-  if stone_name != blank or stone_handle != blank or stone_description != blank or stone_benefits != blank
-    assign has_stone_content = true
-  endif
 -%}
 
 <section
   id="MilauraPdpNarrative-{{ section.id }}"
-  class="milaura-pdp-narrative"
+  class="milaura-pdp-narrative milaura-pdp-technical-v2"
   aria-labelledby="MilauraPdpNarrativeTitle-{{ section.id }}"
 >
-  <header class="milaura-pdp-narrative__header">
-    <p class="milaura-pdp-narrative__eyebrow milaura-label">{{ section.settings.eyebrow | escape }}</p>
-    <h2 id="MilauraPdpNarrativeTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>
-    {%- if section.settings.lead != blank -%}
-      <p>{{ section.settings.lead | escape }}</p>
-    {%- endif -%}
-  </header>
+  <div class="milaura-pdp-technical-v2__inner">
+    <div class="milaura-pdp-technical-v2__media">
+      {%- if e02_media != blank and e02_media.media_type == 'image' -%}
+        {%- assign e02_alt = e02_media.alt | remove: '[MILAURA:E02]' | strip | default: product.title -%}
+        {{- e02_media
+          | image_url: width: 1600
+          | image_tag:
+            class: 'milaura-pdp-technical-v2__image',
+            widths: '480, 720, 960, 1200, 1600',
+            sizes: '(max-width: 749px) 100vw, 50vw',
+            loading: 'lazy',
+            alt: e02_alt
+        -}}
+      {%- else -%}
+        {{ 'product-2' | placeholder_svg_tag: 'milaura-pdp-technical-v2__placeholder' }}
+      {%- endif -%}
+    </div>
 
-  <div class="milaura-pdp-chapters">
-    <article class="milaura-pdp-chapter milaura-pdp-chapter--detail">
-      <div class="milaura-pdp-chapter__media milaura-pdp-chapter__media--square">
-        {%- if e01_media != blank and e01_media.media_type == 'image' -%}
-          {%- assign e01_alt = e01_media.alt | remove: '[MILAURA:E01]' | strip | default: product.title -%}
-          {{- e01_media
-            | image_url: width: 1600
-            | image_tag:
-              class: 'milaura-pdp-chapter__image',
-              widths: '480, 720, 960, 1200, 1600',
-              sizes: '(max-width: 749px) 100vw, 50vw',
-              loading: 'lazy',
-              alt: e01_alt
-          -}}
-        {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'milaura-pdp-chapter__placeholder' }}
-        {%- endif -%}
-      </div>
-      <div class="milaura-pdp-chapter__content">
-        <p class="milaura-pdp-chapter__index" aria-hidden="true">01</p>
-        <p class="milaura-pdp-chapter__eyebrow milaura-label">Produit et matière</p>
-        <h3>{{ section.settings.detail_title | escape }}</h3>
-        {%- if product.description != blank -%}
-          <div class="milaura-pdp-chapter__body rte">{{ product.description }}</div>
-        {%- endif -%}
+    <div class="milaura-pdp-technical-v2__content">
+      <p class="milaura-pdp-technical-v2__eyebrow milaura-label">Détails de fabrication</p>
+      <h2 id="MilauraPdpNarrativeTitle-{{ section.id }}">{{ section.settings.title | escape }}</h2>
 
-        {%- if product_quality != blank or product_provenance != blank -%}
-          <dl class="milaura-pdp-facts">
-            {%- if product_quality != blank -%}
-              <div>
-                <dt>Sélection</dt>
-                <dd>{{ product_quality | escape }}</dd>
-              </div>
-            {%- endif -%}
-            {%- if product_provenance != blank -%}
-              <div>
-                <dt>Provenance indiquée</dt>
-                <dd>{{ product_provenance | escape }}</dd>
-              </div>
-            {%- endif -%}
-          </dl>
-        {%- endif -%}
-      </div>
-    </article>
-
-    <article class="milaura-pdp-chapter milaura-pdp-chapter--technical">
-      <div class="milaura-pdp-chapter__media milaura-pdp-chapter__media--square">
-        {%- if e02_media != blank and e02_media.media_type == 'image' -%}
-          {%- assign e02_alt = e02_media.alt | remove: '[MILAURA:E02]' | strip | default: product.title -%}
-          {{- e02_media
-            | image_url: width: 1600
-            | image_tag:
-              class: 'milaura-pdp-chapter__image',
-              widths: '480, 720, 960, 1200, 1600',
-              sizes: '(max-width: 749px) 100vw, 50vw',
-              loading: 'lazy',
-              alt: e02_alt
-          -}}
-        {%- else -%}
-          {{ 'product-2' | placeholder_svg_tag: 'milaura-pdp-chapter__placeholder' }}
-        {%- endif -%}
-      </div>
-      <div class="milaura-pdp-chapter__content">
-        <p class="milaura-pdp-chapter__index" aria-hidden="true">02</p>
-        <p class="milaura-pdp-chapter__eyebrow milaura-label">Construction</p>
-        <h3>{{ section.settings.technical_title | escape }}</h3>
-
-        {%- if materials != blank or specifications != blank or gem_treatments != blank -%}
-          <dl class="milaura-pdp-specs">
-            {%- if materials != blank -%}
-              <div>
-                <dt>Matières</dt>
-                <dd>{{ materials | join: ', ' | replace: '-', ' ' }}</dd>
-              </div>
-            {%- endif -%}
-            {%- for spec in specifications limit: 10 -%}
-              {%- if spec.label != blank and spec.value != blank -%}
-                <div>
-                  <dt>{{ spec.label | escape }}</dt>
-                  <dd>{{ spec.value | escape }}</dd>
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
-            {%- if gem_treatments != blank -%}
-              <div>
-                <dt>Traitements déclarés</dt>
-                <dd>{{ gem_treatments | escape }}</dd>
-              </div>
-            {%- endif -%}
-          </dl>
-        {%- endif -%}
-
-        {%- if section.settings.care_text != blank -%}
-          <p class="milaura-pdp-chapter__care">{{ section.settings.care_text | escape }}</p>
-        {%- endif -%}
-
-        {%- if certificate_url != blank -%}
-          <a class="milaura-pdp-text-link" href="{{ certificate_url }}" target="_blank" rel="noopener">
-            Voir le certificat {{ certificate_lab | escape }} <span aria-hidden="true">↗</span>
-          </a>
-        {%- endif -%}
-      </div>
-    </article>
-
-    <article class="milaura-pdp-chapter milaura-pdp-chapter--story">
-      <div class="milaura-pdp-chapter__media milaura-pdp-chapter__media--portrait">
-        {%- if e03_media != blank and e03_media.media_type == 'image' -%}
-          {%- assign e03_alt = e03_media.alt | remove: '[MILAURA:E03]' | strip | default: product.title -%}
-          {{- e03_media
-            | image_url: width: 1600
-            | image_tag:
-              class: 'milaura-pdp-chapter__image',
-              widths: '480, 720, 960, 1200, 1600',
-              sizes: '(max-width: 749px) 100vw, 50vw',
-              loading: 'lazy',
-              alt: e03_alt
-          -}}
-        {%- else -%}
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'milaura-pdp-chapter__placeholder' }}
-        {%- endif -%}
-      </div>
-      <div class="milaura-pdp-chapter__content">
-        <p class="milaura-pdp-chapter__index" aria-hidden="true">03</p>
-        <p class="milaura-pdp-chapter__eyebrow milaura-label">
-          {%- if has_stone_content -%}Pierres et intention{%- else -%}Au quotidien{%- endif -%}
-        </p>
-        <h3>
-          {%- if has_stone_content -%}
-            {{ section.settings.stone_title | escape }}
-          {%- else -%}
-            {{ section.settings.story_title | escape }}
+      {%- if materials != blank or specifications != blank or gem_treatments != blank -%}
+        <dl class="milaura-pdp-specs">
+          {%- if materials != blank -%}
+            <div>
+              <dt>Matières</dt>
+              <dd>{{ materials | join: ', ' | replace: '-', ' ' }}</dd>
+            </div>
           {%- endif -%}
-        </h3>
-
-        {%- if stone_description != blank -%}
-          <div class="milaura-pdp-chapter__body rte">{{ stone_description | newline_to_br }}</div>
-        {%- elsif story_text != blank -%}
-          <div class="milaura-pdp-chapter__body rte">{{ story_text | newline_to_br }}</div>
-        {%- endif -%}
-
-        {%- if stone_name != blank or stone_handle != blank or stone_benefits != blank or gem_origin != blank -%}
-          <dl class="milaura-pdp-facts">
-            {%- if stone_name != blank or stone_handle != blank -%}
+          {%- for spec in specifications limit: 10 -%}
+            {%- if spec.label != blank and spec.value != blank -%}
               <div>
-                <dt>Pierre</dt>
-                <dd>{{ stone_name | default: stone_handle | replace: '-', ' ' | capitalize }}</dd>
+                <dt>{{ spec.label | escape }}</dt>
+                <dd>{{ spec.value | escape }}</dd>
               </div>
             {%- endif -%}
-            {%- if stone_benefits != blank -%}
-              <div>
-                <dt>Bienfaits en lithothérapie</dt>
-                <dd>{{ stone_benefits | escape }}</dd>
-              </div>
-            {%- endif -%}
-            {%- if gem_origin != blank -%}
-              <div>
-                <dt>Origine documentée</dt>
-                <dd>{{ gem_origin | escape }}</dd>
-              </div>
-            {%- endif -%}
-          </dl>
-        {%- endif -%}
-      </div>
-    </article>
-  </div>
+          {%- endfor -%}
+          {%- if gem_treatments != blank -%}
+            <div>
+              <dt>Traitements déclarés</dt>
+              <dd>{{ gem_treatments | escape }}</dd>
+            </div>
+          {%- endif -%}
+          {%- if product_provenance != blank or gem_origin != blank -%}
+            <div>
+              <dt>Origine documentée</dt>
+              <dd>{{ product_provenance | default: gem_origin | escape }}</dd>
+            </div>
+          {%- endif -%}
+        </dl>
+      {%- endif -%}
 
-  <div class="milaura-pdp-services" aria-label="Informations avant achat">
-    <div>
-      <p class="milaura-pdp-services__title">Expédition</p>
-      <p>{{ section.settings.shipping_text | escape }}</p>
-    </div>
-    <div>
-      <p class="milaura-pdp-services__title">Retours</p>
-      <p>{{ section.settings.returns_text | escape }}</p>
-    </div>
-    <div>
-      <p class="milaura-pdp-services__title">Conseil</p>
-      <p>{{ section.settings.advice_text | escape }}</p>
+      {%- if product_quality != blank -%}
+        <div class="milaura-pdp-quality-callout">
+          <span>Sélection</span>
+          <strong>{{ product_quality | escape }}</strong>
+        </div>
+      {%- endif -%}
+
+      {%- if certificate_url != blank -%}
+        <a class="milaura-pdp-text-link" href="{{ certificate_url }}" target="_blank" rel="noopener">
+          Voir le certificat {{ certificate_lab | escape }}{% if certificate_reference != blank %} {{ certificate_reference | escape }}{% endif %}
+          <span aria-hidden="true">↗</span>
+        </a>
+      {%- endif -%}
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "MilAura récit produit V2",
+  "name": "MilAura technique V2",
   "tag": "section",
   "class": "section-milaura-product-narrative-v2",
   "settings": [
     {
       "type": "text",
-      "id": "eyebrow",
-      "label": "Surtitre",
-      "default": "Tout voir avant de choisir"
-    },
-    {
-      "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Le bijou en détail"
-    },
-    {
-      "type": "text",
-      "id": "lead",
-      "label": "Introduction",
-      "default": "Matières, proportions, fermeture et pierres : les informations utiles sont visibles sans onglet caché."
-    },
-    {
-      "type": "text",
-      "id": "detail_title",
-      "label": "Titre du détail produit",
-      "default": "Ce que vous recevrez"
-    },
-    {
-      "type": "text",
-      "id": "technical_title",
-      "label": "Titre du détail technique",
-      "default": "Taille, fermoir et finitions"
-    },
-    {
-      "type": "text",
-      "id": "stone_title",
-      "label": "Titre du chapitre pierres",
-      "default": "Les pierres, portées au quotidien"
-    },
-    {
-      "type": "text",
-      "id": "story_title",
-      "label": "Titre du chapitre histoire",
-      "default": "Pensé pour être porté au quotidien"
-    },
-    {
-      "type": "text",
-      "id": "care_text",
-      "label": "Conseil d’entretien",
-      "default": "Pour préserver la pièce, évitez le contact prolongé avec l’eau, les parfums et les produits ménagers."
-    },
-    {
-      "type": "text",
-      "id": "shipping_text",
-      "label": "Texte expédition",
-      "default": "Préparation à Metz sous 24 h du lundi au vendredi."
-    },
-    {
-      "type": "text",
-      "id": "returns_text",
-      "label": "Texte retours",
-      "default": "Retour possible sous 14 jours pour les articles éligibles."
-    },
-    {
-      "type": "text",
-      "id": "advice_text",
-      "label": "Texte conseil",
-      "default": "L’équipe MilAura répond à vos questions sur la taille, la pierre ou le modèle."
+      "default": "Fermoir, matières et finitions"
     }
   ],
   "presets": [
     {
-      "name": "MilAura récit produit V2"
+      "name": "MilAura technique V2"
     }
   ]
 }
