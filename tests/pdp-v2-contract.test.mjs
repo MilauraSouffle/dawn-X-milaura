@@ -121,6 +121,8 @@ test('the V2 page uses a white canvas, aqua highlights and no section divider ru
   assert.match(css, /\.milaura-product-guide-v2 \.milaura-product-panel__layout\s*\{[^}]*border-top:\s*0[^}]*border-bottom:\s*0/s);
   assert.match(css, /\.milaura-product-guide-v2 \.milaura-product-specs\s*\{[^}]*border-top:\s*var\(--milaura-filet\)/s);
   assert.match(css, /\.milaura-pdp-facts > div,[\s\S]*?border-bottom:\s*var\(--milaura-filet\)/);
+  assert.match(css, /\.milaura-pdp-services-v2__fact\s*\{[^}]*border-top:\s*var\(--milaura-filet\)/s);
+  assert.match(css, /\.milaura-pdp-services-v2__faq\s*\{[^}]*border-top:\s*var\(--milaura-filet-mineral\)/s);
   assert.match(css, /\.milaura-pdp-services-v2__question\s*\{[^}]*border-top:\s*var\(--milaura-filet\)/s);
   assert.match(css, /body:has\(\.milaura-pdp-hero\) \.milaura-product-advisor\s*\{[^}]*background:\s*var\(--milaura-aigue-ecume\)/s);
   assert.match(css, /\.milaura-pdp-services-v2\s*\{[^}]*background:\s*var\(--milaura-surface-blanche\)/s);
