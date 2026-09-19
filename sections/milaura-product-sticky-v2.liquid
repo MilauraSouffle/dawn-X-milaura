@@ -1,0 +1,77 @@
+{{ 'milaura-product-pdp-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign selected_variant = product.selected_or_first_available_variant
+  assign sticky_form_id = 'MilauraPdpStickyForm-' | append: section.id
+-%}
+
+<aside class="milaura-pdp-sticky" data-pdp-sticky aria-label="Achat rapide" aria-hidden="true">
+  <div class="milaura-pdp-sticky__inner">
+    <div class="milaura-pdp-sticky__identity">
+      {%- if product.featured_image != blank -%}
+        {{- product.featured_image
+          | image_url: width: 144
+          | image_tag:
+            class: 'milaura-pdp-sticky__image',
+            widths: '72, 108, 144',
+            sizes: '56px',
+            loading: 'lazy',
+            alt: product.title
+        -}}
+      {%- endif -%}
+      <div>
+        <p class="milaura-pdp-sticky__title">{{ product.title | escape }}</p>
+        <p class="milaura-pdp-sticky__price" data-pdp-sticky-price>{{ selected_variant.price | money }}</p>
+      </div>
+    </div>
+
+    <product-form class="milaura-pdp-sticky__form">
+      <div class="product-form__error-message-wrapper" role="alert" hidden>
+        <span class="product-form__error-message"></span>
+      </div>
+      {%- form 'product',
+        product,
+        id: sticky_form_id,
+        class: 'milaura-pdp-sticky__product-form',
+        novalidate: 'novalidate',
+        data-type: 'add-to-cart-form'
+      -%}
+        <input
+          type="hidden"
+          name="id"
+          value="{{ selected_variant.id }}"
+          class="product-variant-id"
+          data-pdp-variant-input
+        >
+        <input type="hidden" name="quantity" value="1">
+        <button
+          type="submit"
+          name="add"
+          class="milaura-pdp-sticky__submit"
+          data-pdp-submit
+          {% unless selected_variant.available %}disabled{% endunless %}
+        >
+          <span data-pdp-submit-text>
+            {%- if selected_variant.available -%}Ajouter{%- else -%}Épuisé{%- endif -%}
+          </span>
+          {%- render 'loading-spinner' -%}
+        </button>
+      {%- endform -%}
+    </product-form>
+  </div>
+</aside>
+
+{% schema %}
+{
+  "name": "MilAura achat rapide V2",
+  "tag": "section",
+  "class": "section-milaura-product-sticky-v2",
+  "settings": [],
+  "presets": [
+    {
+      "name": "MilAura achat rapide V2"
+    }
+  ]
+}
+{% endschema %}
