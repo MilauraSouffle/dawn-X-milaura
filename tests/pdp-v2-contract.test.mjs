@@ -109,14 +109,19 @@ test('new PDP styles use the MilAura token system', async () => {
   assert.match(css, /prefers-reduced-motion/);
 });
 
-test('the V2 page uses surfaces instead of section divider rules', async () => {
+test('the V2 page uses a white canvas, aqua highlights and no section divider rules', async () => {
   const css = await source('assets/milaura-product-pdp-v2.css');
+  const tokens = await source('assets/milaura-tokens.css');
 
+  assert.match(tokens, /--milaura-surface-blanche:\s*var\(--milaura-blanc\)/);
+  assert.match(css, /\.milaura-pdp-hero\s*\{[^}]*background:\s*var\(--milaura-surface-blanche\)/s);
   assert.match(css, /\.milaura-pdp-gallery__pagination\s*\{[^}]*border-bottom:\s*0/s);
   assert.match(css, /\.milaura-pdp-fact-rail\s*\{[^}]*border-top:\s*0[^}]*border-bottom:\s*0/s);
+  assert.match(css, /\.milaura-product-guide-v2\s*\{[^}]*background:\s*var\(--milaura-surface-blanche\)/s);
   assert.match(css, /\.milaura-product-guide-v2 \.milaura-product-panel__layout\s*\{[^}]*border-top:\s*0[^}]*border-bottom:\s*0/s);
   assert.match(css, /body:has\(\.milaura-pdp-hero\) \.milaura-product-advisor\s*\{[^}]*background:\s*var\(--milaura-aigue-ecume\)/s);
-  assert.match(css, /\.milaura-pdp-services-v2\s*\{[^}]*background:\s*var\(--milaura-surface-haute\)/s);
+  assert.match(css, /\.milaura-pdp-services-v2\s*\{[^}]*background:\s*var\(--milaura-surface-blanche\)/s);
+  assert.match(css, /\.milaura-pdp-submit:hover,[\s\S]*?background:\s*var\(--milaura-aigue\)/);
 });
 
 test('new PDP files contain no em dash', async () => {
