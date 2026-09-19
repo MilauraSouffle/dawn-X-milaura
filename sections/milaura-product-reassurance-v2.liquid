@@ -1,0 +1,60 @@
+{{ 'milaura-product-pdp-v2.css' | asset_url | stylesheet_tag }}
+
+<section class="milaura-pdp-reassurance" aria-label="Services et engagements MilAura">
+  <div class="milaura-pdp-reassurance__track">
+    {%- for track_copy in (1..2) -%}
+      <div class="milaura-pdp-reassurance__group"{% if track_copy == 2 %} aria-hidden="true"{% endif %}>
+        {%- for block in section.blocks -%}
+          <div class="milaura-pdp-reassurance__item" {{ block.shopify_attributes }}>
+            <span class="milaura-pdp-reassurance__marker" aria-hidden="true"></span>
+            <span class="milaura-pdp-reassurance__title">{{ block.settings.title | escape }}</span>
+            {%- if block.settings.text != blank -%}
+              <span class="milaura-pdp-reassurance__text">{{ block.settings.text | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MilAura réassurance V2",
+  "tag": "section",
+  "class": "section-milaura-pdp-reassurance-v2",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Engagement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Préparé à Metz"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Précision",
+          "default": "par l’équipe MilAura"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura réassurance V2",
+      "blocks": [
+        { "type": "item", "settings": { "title": "Préparé à Metz", "text": "par l’équipe MilAura" } },
+        { "type": "item", "settings": { "title": "Expédié sous 24 h", "text": "du lundi au vendredi" } },
+        { "type": "item", "settings": { "title": "Retours sous 14 jours", "text": "pour les articles éligibles" } },
+        { "type": "item", "settings": { "title": "Paiement sécurisé", "text": "Cartes, Apple Pay et Shop Pay" } },
+        { "type": "item", "settings": { "title": "Besoin d’un conseil ?", "text": "une réponse humaine avant l’achat" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

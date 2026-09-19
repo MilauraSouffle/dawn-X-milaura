@@ -1,3 +1,13 @@
+## Refonte PDP V2 mobile-first du 2026-09-19
+
+- Proprietaire : Codex, tache `Refondre la PDP MilAura`, ouverte sur demande directe de Patrice apres validation des neuf masters Iris V3.
+- Branche : `codex/milaura-pdp-v2-20260919`, worktree `/Users/paesano/Documents/MilAura website/_worktrees/pdp-v2-20260919`, base `codex/milaura-integration` au commit `a30844b1`.
+- Perimetre reserve : nouveaux fichiers `sections/milaura-product-hero-v2.liquid`, `sections/milaura-product-reassurance-v2.liquid`, `sections/milaura-product-narrative-v2.liquid`, `sections/milaura-product-sticky-v2.liquid`, `assets/milaura-product-pdp-v2.css`, `assets/milaura-product-pdp-v2.js`, `templates/product.milaura-pdp-v2.json`, test et documentation propres au lot. Les sections PDP historiques restent en lecture seule pendant le prototype.
+- Direction : galerie H01 a H06 en 4:5, informations d achat resserrees, preuve sociale discrete, rail de reassurance comme separation, puis E01, E02 et E03 dans trois chapitres ouverts. Le media reste le sujet, le mannequin son support.
+- Contrat media : manifeste Iris V3 du 2026-09-19, neuf masters en `PDP_MEDIA_TECHNICAL_PASS` et `PDP_MEDIA_VISUAL_GO`. Le raccord a `product_enrichment.json` reste au workstream creatif et ne vaut pas integration Shopify.
+- Themes et gates : theme non publie dedie `MilAura PDP V2 Preview 2026-09-19` `201381216603`, reaffecte apres fermeture du workstream Bracelets Audience. Aucun Admin, aucune affectation de template, aucun push live `190430282075` sans GO explicite distinct. PASS technique, GO visuel Patrice, integration, release et live restent separes.
+- Etat au 2026-09-19 17:08 CEST : PREVIEW TECHNIQUE PRETE, GO VISUEL PATRICE EN ATTENTE. Sept fichiers de theme verifies par pullback, tests de contrat `5/5`, Theme Check sans erreur et QA navigateur `390 x 844` puis `1440 x 900` conformes. Le theme public `190430282075`, les produits Admin et leurs medias sont restes intouches. La preview Iris utilise temporairement les medias existants par fallback tant que le pipeline V3 n a pas charge et balise les neuf masters. [Checkpoint](checkpoints/2026-09-19-1708-milaura-pdp-v2-preview.md).
+
 ## Retablissement cible du bandeau avantages du 2026-09-14
 
 - Proprietaire : Codex, reprise urgente apres constat visuel de Patrice.

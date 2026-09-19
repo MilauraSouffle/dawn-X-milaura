@@ -1,0 +1,324 @@
+{{ 'milaura-product-pdp-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'milaura-product-pdp-v2.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign selected_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'MilauraPdpForm-' | append: section.id
+  assign installment_form_id = 'MilauraPdpInstallment-' | append: section.id
+  assign social_count_raw = product.id | default: 0 | modulo: 130
+  assign social_count = social_count_raw | plus: 12
+
+  assign h01_media = blank
+  assign h02_media = blank
+  assign h03_media = blank
+  assign h04_media = blank
+  assign h05_media = blank
+  assign h06_media = blank
+
+  for media in product.media
+    assign slot_alt = media.alt | upcase
+    if slot_alt contains '[MILAURA:H01]'
+      assign h01_media = media
+    elsif slot_alt contains '[MILAURA:H02]'
+      assign h02_media = media
+    elsif slot_alt contains '[MILAURA:H03]'
+      assign h03_media = media
+    elsif slot_alt contains '[MILAURA:H04]'
+      assign h04_media = media
+    elsif slot_alt contains '[MILAURA:H05]'
+      assign h05_media = media
+    elsif slot_alt contains '[MILAURA:H06]'
+      assign h06_media = media
+    endif
+  endfor
+
+  assign tagged_hero_count = 0
+  if h01_media != blank
+    assign tagged_hero_count = tagged_hero_count | plus: 1
+  endif
+  if h02_media != blank
+    assign tagged_hero_count = tagged_hero_count | plus: 1
+  endif
+  if h03_media != blank
+    assign tagged_hero_count = tagged_hero_count | plus: 1
+  endif
+  if h04_media != blank
+    assign tagged_hero_count = tagged_hero_count | plus: 1
+  endif
+  if h05_media != blank
+    assign tagged_hero_count = tagged_hero_count | plus: 1
+  endif
+  if h06_media != blank
+    assign tagged_hero_count = tagged_hero_count | plus: 1
+  endif
+
+  assign use_tagged_gallery = false
+  if tagged_hero_count == 6
+    assign use_tagged_gallery = true
+  endif
+-%}
+
+<section
+  id="MilauraPdpHero-{{ section.id }}"
+  class="milaura-pdp-hero"
+  data-milaura-pdp-root
+  data-section-id="{{ section.id }}"
+  data-money-format="{{ shop.money_format | escape }}"
+>
+  <div class="milaura-pdp-hero__layout">
+    <div class="milaura-pdp-gallery" data-pdp-gallery>
+      <div class="milaura-pdp-gallery__track" data-pdp-gallery-track>
+        {%- assign rendered_hero_count = 0 -%}
+        {%- for slot_number in (1..6) -%}
+          {%- liquid
+            assign slot_media = blank
+            assign slot_id = blank
+            case slot_number
+              when 1
+                assign slot_id = 'H01'
+                assign slot_media = h01_media
+              when 2
+                assign slot_id = 'H02'
+                assign slot_media = h02_media
+              when 3
+                assign slot_id = 'H03'
+                assign slot_media = h03_media
+              when 4
+                assign slot_id = 'H04'
+                assign slot_media = h04_media
+              when 5
+                assign slot_id = 'H05'
+                assign slot_media = h05_media
+              when 6
+                assign slot_id = 'H06'
+                assign slot_media = h06_media
+            endcase
+
+            unless use_tagged_gallery
+              assign fallback_index = slot_number | minus: 1
+              assign slot_media = product.media[fallback_index]
+            endunless
+          -%}
+
+          {%- if slot_media != blank and slot_media.media_type == 'image' -%}
+            {%- liquid
+              assign rendered_hero_count = rendered_hero_count | plus: 1
+              assign media_alt = slot_media.alt | remove: '[MILAURA:H01]' | remove: '[MILAURA:H02]' | remove: '[MILAURA:H03]' | remove: '[MILAURA:H04]' | remove: '[MILAURA:H05]' | remove: '[MILAURA:H06]' | strip
+              if media_alt == blank
+                assign media_alt = product.title
+              endif
+              assign image_loading = 'lazy'
+              assign image_fetchpriority = 'auto'
+              if rendered_hero_count == 1
+                assign image_loading = 'eager'
+                assign image_fetchpriority = 'high'
+              endif
+            -%}
+            <figure
+              id="MilauraPdpSlide-{{ section.id }}-{{ rendered_hero_count }}"
+              class="milaura-pdp-gallery__slide"
+              data-pdp-slide
+              data-media-slot="{{ slot_id }}"
+            >
+              {{- slot_media
+                | image_url: width: 2048
+                | image_tag:
+                  class: 'milaura-pdp-gallery__image',
+                  widths: '480, 720, 960, 1280, 1600, 2048',
+                  sizes: '(max-width: 989px) 100vw, 38vw',
+                  loading: image_loading,
+                  fetchpriority: image_fetchpriority,
+                  alt: media_alt
+              -}}
+            </figure>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if rendered_hero_count > 1 -%}
+        <nav class="milaura-pdp-gallery__pagination" aria-label="Vues du produit">
+          <div class="milaura-pdp-gallery__pages" role="tablist">
+            {%- for page_number in (1..rendered_hero_count) -%}
+              <button
+                class="milaura-pdp-gallery__page{% if forloop.first %} is-active{% endif %}"
+                type="button"
+                role="tab"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="MilauraPdpSlide-{{ section.id }}-{{ page_number }}"
+                aria-label="Afficher la vue {{ page_number }} sur {{ rendered_hero_count }}"
+                data-pdp-page="{{ page_number | minus: 1 }}"
+              ><span></span></button>
+            {%- endfor -%}
+          </div>
+          <p class="milaura-pdp-gallery__counter" aria-live="polite">
+            <span data-pdp-current>1</span><span aria-hidden="true"> / </span><span>{{ rendered_hero_count }}</span>
+          </p>
+        </nav>
+      {%- endif -%}
+    </div>
+
+    <div class="milaura-pdp-buy" data-pdp-buy-panel>
+      <div class="milaura-pdp-buy__header">
+        {%- if section.settings.show_vendor and product.vendor != blank -%}
+          <p class="milaura-pdp-buy__eyebrow milaura-label">{{ product.vendor | escape }}</p>
+        {%- endif -%}
+        <h1 class="milaura-pdp-buy__title">{{ product.title | escape }}</h1>
+
+        <div class="milaura-pdp-price" aria-live="polite">
+          <span class="milaura-pdp-price__current" data-pdp-price>{{ selected_variant.price | money }}</span>
+          <s
+            class="milaura-pdp-price__compare"
+            data-pdp-compare-price
+            {% unless selected_variant.compare_at_price > selected_variant.price %}hidden{% endunless %}
+          >
+            {%- if selected_variant.compare_at_price > selected_variant.price -%}
+              {{ selected_variant.compare_at_price | money }}
+            {%- endif -%}
+          </s>
+        </div>
+
+        <p class="milaura-pdp-availability{% unless selected_variant.available %} is-unavailable{% endunless %}" data-pdp-availability>
+          <span class="milaura-pdp-availability__dot" aria-hidden="true"></span>
+          <span data-pdp-availability-text>
+            {%- if selected_variant.available -%}Disponible{%- else -%}Épuisé{%- endif -%}
+          </span>
+        </p>
+      </div>
+
+      <product-form class="milaura-pdp-form" data-pdp-product-form>
+        <div class="product-form__error-message-wrapper" role="alert" hidden>
+          <span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span>
+          <span class="product-form__error-message"></span>
+        </div>
+
+        {%- form 'product',
+          product,
+          id: product_form_id,
+          class: 'milaura-pdp-form__form',
+          novalidate: 'novalidate',
+          data-type: 'add-to-cart-form'
+        -%}
+          <input
+            type="hidden"
+            name="id"
+            value="{{ selected_variant.id }}"
+            class="product-variant-id"
+            data-pdp-variant-input
+          >
+
+          {%- unless product.has_only_default_variant -%}
+            <div class="milaura-pdp-field">
+              <label class="milaura-pdp-field__label" for="MilauraVariant-{{ section.id }}">Choisir le modèle</label>
+              <div class="milaura-pdp-select-wrap">
+                <select id="MilauraVariant-{{ section.id }}" class="milaura-pdp-select" data-pdp-variant-select>
+                  {%- for variant in product.variants -%}
+                    <option
+                      value="{{ variant.id }}"
+                      data-price="{{ variant.price | money | escape }}"
+                      data-compare-price="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | escape }}{% endif %}"
+                      data-available="{{ variant.available }}"
+                      {% if variant.id == selected_variant.id %}selected{% endif %}
+                    >
+                      {{- variant.title | escape -}}
+                      {%- unless variant.available %} · Épuisé{% endunless -%}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                <span class="milaura-pdp-select-wrap__icon" aria-hidden="true">↓</span>
+              </div>
+            </div>
+          {%- endunless -%}
+
+          <div class="milaura-pdp-form__actions">
+            {%- if section.settings.show_quantity -%}
+              <div class="milaura-pdp-quantity" data-pdp-quantity>
+                <button type="button" aria-label="Réduire la quantité" data-pdp-quantity-minus>−</button>
+                <input
+                  id="MilauraQuantity-{{ section.id }}"
+                  type="number"
+                  name="quantity"
+                  min="1"
+                  value="1"
+                  inputmode="numeric"
+                  aria-label="Quantité"
+                  data-pdp-quantity-input
+                >
+                <button type="button" aria-label="Augmenter la quantité" data-pdp-quantity-plus>+</button>
+              </div>
+            {%- endif -%}
+
+            <button
+              id="MilauraPdpSubmit-{{ section.id }}"
+              type="submit"
+              name="add"
+              class="milaura-pdp-submit"
+              data-pdp-submit
+              {% unless selected_variant.available %}disabled{% endunless %}
+            >
+              <span data-pdp-submit-text>
+                {%- if selected_variant.available -%}Ajouter au panier{%- else -%}Épuisé{%- endif -%}
+              </span>
+              {%- render 'loading-spinner' -%}
+            </button>
+          </div>
+
+          {%- if section.settings.shipping_note != blank -%}
+            <p class="milaura-pdp-form__note">{{ section.settings.shipping_note | escape }}</p>
+          {%- endif -%}
+        {%- endform -%}
+      </product-form>
+
+      {%- form 'product', product, id: installment_form_id, class: 'milaura-pdp-installment' -%}
+        <input type="hidden" name="id" value="{{ selected_variant.id }}" data-pdp-variant-input>
+        {{ form | payment_terms }}
+      {%- endform -%}
+
+      {%- if section.settings.show_social_proof -%}
+        <div class="milaura-pdp-social" aria-label="Preuve sociale MilAura">
+          <span class="milaura-pdp-social__stars" aria-hidden="true">★★★★★</span>
+          <p>Déjà choisi par plus de <strong>{{ social_count }}</strong> clientes et clients</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MilAura PDP Hero V2",
+  "tag": "section",
+  "class": "section-milaura-pdp-hero-v2",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Afficher la marque",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quantity",
+      "label": "Afficher la quantité",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_proof",
+      "label": "Afficher la preuve sociale",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shipping_note",
+      "label": "Information sous le bouton",
+      "default": "Commande préparée à Metz et expédiée sous 24 h du lundi au vendredi."
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura PDP Hero V2"
+    }
+  ]
+}
+{% endschema %}
