@@ -109,6 +109,16 @@ test('new PDP styles use the MilAura token system', async () => {
   assert.match(css, /prefers-reduced-motion/);
 });
 
+test('the V2 page uses surfaces instead of section divider rules', async () => {
+  const css = await source('assets/milaura-product-pdp-v2.css');
+
+  assert.match(css, /\.milaura-pdp-gallery__pagination\s*\{[^}]*border-bottom:\s*0/s);
+  assert.match(css, /\.milaura-pdp-fact-rail\s*\{[^}]*border-top:\s*0[^}]*border-bottom:\s*0/s);
+  assert.match(css, /\.milaura-product-guide-v2 \.milaura-product-panel__layout\s*\{[^}]*border-top:\s*0[^}]*border-bottom:\s*0/s);
+  assert.match(css, /body:has\(\.milaura-pdp-hero\) \.milaura-product-advisor\s*\{[^}]*background:\s*var\(--milaura-aigue-ecume\)/s);
+  assert.match(css, /\.milaura-pdp-services-v2\s*\{[^}]*background:\s*var\(--milaura-surface-haute\)/s);
+});
+
 test('new PDP files contain no em dash', async () => {
   const files = [
     'sections/milaura-product-hero-v2.liquid',
