@@ -1,23 +1,27 @@
 # Handoff Codex MilAura
 
-Date : 2026-09-16 07:24 CEST
+Date : 2026-09-19 21:39 CEST
 
-Statut : `CLASSIFICATION RELIGION NON RESOLUE, SUIVI AUTOMATIQUE EN PAUSE`
+Statut : `PDP V2 ADAPTATIVE FERMEE, INTEGREE, POUSSEE ET LIVE VERIFIEE`
 
-Le site `milaura.fr`, relie au dataset Meta `milaurashopify` ID `830428425991691`, a ete decouvert classe dans la categorie `Religion`.
+Patrice a donne le GO exact `GO LIVE PDP V2 ADAPTATIVE`. La nouvelle page produit est live sur le theme public `190430282075` et utilise une architecture unique qui adapte ses libelles et ses contenus aux familles bijou, pierre/mineral, bougie/senteur, rituel, soin et accessoire.
 
-Au 2026-09-16, toutes les demarches accessibles ont ete tentees pour faire corriger cette classification. L examen a ete refuse. Le bouton `Demander un examen` est affiche mais reste desactive. Les echanges avec Meta Support n ont pas permis de resoudre le probleme.
+Les templates canoniques `templates/product.json` et `templates/product.milaura-produit.json` partagent la meme V2. Le catalogue audite de 219 produits actifs passe donc sur la nouvelle PDP sans reaffectation Shopify Admin. Les nouveaux produits utilisent aussi la V2 par defaut. Les produits non encore enrichis restent fonctionnels grace au fallback sur leurs images et donnees existantes.
 
-Meta Verified a ete souscrit pour la page Facebook MilAura afin d obtenir la mise en relation humaine normalement annoncee avec ce service. Au 2026-09-16, aucune mise en relation avec un humain n a eu lieu.
+Le contrat media definitif est documente dans `docs/reference/2026-09-19-pdp-v2-data-contract.md` : H01 a H05 pour la galerie commerciale, H06 pour la projection editoriale hors galerie et E01 a E03 pour les blocs narratifs. Le theme consomme `milaura.pdp_media_manifest`; les ALT publics restent descriptifs. Le workflow creatif peut maintenant produire et publier progressivement les medias et metachamps sans attendre une autre refonte PDP.
 
-Au 2026-09-16, aucune autre solution accessible n a permis de faire modifier la classification. Meta indique que la restriction concernant l Europe doit entrer en vigueur dans trois jours.
+Source fonctionnelle `26aeee70`, integration `a14d55d4`, documentation live `bf85bba7`. Quatorze fichiers exacts ont ete deployes avec `--allow-live --nodelete --strict`, puis verifies par pullback `14/14` identique. Tests de contrat `12/12`, JavaScript valide, Theme Check a 0 erreur et 16 avertissements historiques hors lot. QA publique validee a `390 x 844` et `1440 x 900` sur six produits representant les six familles : aucun debordement, aucune image cassee, CTA present, onglets fonctionnels et mise en page technique texte a gauche, photo a droite sur desktop.
 
-L automatisation Codex `Suivi examen Meta MilAura`, ID `suivi-examen-meta-milaura`, est en pause depuis le 2026-09-16 a 07:24 CEST.
+Aucun produit, prix, stock, collection, canal ou media Shopify Admin n a ete modifie pendant le deploiement theme. Le theme prive `201381216603` reste disponible comme preuve de preview. Les deux fichiers doublons non suivis `sections/milaura-product-narrative-v2 2.liquid` et `sections/milaura-product-reassurance-v2 2.liquid` sont preserves, mais restent hors Git et hors live.
+
+Le checkout principal contient des modifications concurrentes dans `AGENTS.md`, `docs/project-state.md`, quatre fichiers de campagne et `docs/project-state-ledger.md`. Elles sont preservees et n appartiennent pas au lot PDP. `docs/project-state.md` n est donc pas reecrit dans cette cloture.
+
+Checkpoint final : `docs/checkpoints/2026-09-19-2139-pdp-v2-adaptive-live-handoff.md`.
 
 ## Prompt de reprise
 
 ```text
-Reprends le dossier Meta MilAura depuis docs/checkpoints/2026-09-16-0724-meta-religion-pause-handoff.md. Le site milaura.fr, relie au dataset milaurashopify 830428425991691, a ete decouvert classe Religion. Au 2026-09-16, toutes les demarches accessibles ont ete tentees, l examen a ete refuse, le bouton Demander un examen reste desactive et Meta Support n a pas resolu le probleme. Meta Verified a ete souscrit pour la page Facebook MilAura afin d obtenir la mise en relation humaine normalement annoncee, mais aucune mise en relation avec un humain n a eu lieu. Meta indique que la restriction concernant l Europe doit entrer en vigueur dans trois jours. L automatisation suivi-examen-meta-milaura est en pause depuis le 2026-09-16 a 07:24 CEST.
+Reprends MilAura depuis docs/checkpoints/2026-09-19-2139-pdp-v2-adaptive-live-handoff.md. La PDP V2 adaptative est fermee, integree et live sur le theme 190430282075. Les templates product.json et product.milaura-produit.json partagent la meme V2 et couvrent les six familles bijou, pierre/mineral, bougie/senteur, rituel, soin et accessoire. Ne redeploie rien par deduction. Le workflow creatif peut maintenant enrichir les produits avec milaura.pdp_media_manifest selon le contrat H01 a H06 et E01 a E03. Pour tout nouveau produit, verifie seulement le rendu public de ses vrais medias, textes et metachamps sur mobile et desktop. Preserve les modifications concurrentes du checkout principal et les deux doublons non suivis * 2.liquid.
 ```
 
 ## Historique de passation
