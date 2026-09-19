@@ -81,11 +81,14 @@ test('services and answers return as a dedicated section at the bottom', async (
 
 test('the technical section consumes E02 without generic care copy', async () => {
   const narrative = await source('sections/milaura-product-narrative-v2.liquid');
+  const css = await source('assets/milaura-product-pdp-v2.css');
 
   assert.match(narrative, /\[MILAURA:E02\]/);
   assert.match(narrative, /Fermoir, matières et finitions/);
   assert.doesNotMatch(narrative, /évitez le contact prolongé/i);
   assert.doesNotMatch(narrative, /milaura-pdp-quality-callout/);
+  assert.match(css, /@media screen and \(min-width: 990px\)[\s\S]*?\.milaura-pdp-technical-v2__media\s*\{[^}]*grid-column:\s*2[^}]*grid-row:\s*1/s);
+  assert.match(css, /@media screen and \(min-width: 990px\)[\s\S]*?\.milaura-pdp-technical-v2__content\s*\{[^}]*grid-column:\s*1[^}]*grid-row:\s*1/s);
 });
 
 test('the reassurance separator carries product facts, certificates and payments', async () => {
