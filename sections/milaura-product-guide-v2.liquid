@@ -1,0 +1,398 @@
+{{ 'milaura-product-experience.css' | asset_url | stylesheet_tag }}
+{{ 'milaura-product-pdp-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-product-experience.js' | asset_url }}" defer="defer"></script>
+
+{%- capture pdp_family -%}{%- render 'milaura-pdp-family', product: product -%}{%- endcapture -%}
+{%- assign pdp_family = pdp_family | strip -%}
+
+{%- liquid
+  assign media_manifest = product.metafields.milaura.pdp_media_manifest.value
+  assign manifest_narrative_slots = media_manifest.groups.narrative_blocks
+  assign use_media_manifest = false
+  if media_manifest.slots.size == 9 and manifest_narrative_slots.size == 3
+    assign use_media_manifest = true
+  endif
+
+  assign e01_slot = blank
+  assign e03_slot = blank
+  assign e01_media = blank
+  assign e03_media = blank
+
+  if use_media_manifest
+    assign e01_slot_id = manifest_narrative_slots[0]
+    assign e03_slot_id = manifest_narrative_slots[2]
+    for candidate_slot in media_manifest.slots
+      if candidate_slot.slot_id == e01_slot_id
+        assign e01_slot = candidate_slot
+      elsif candidate_slot.slot_id == e03_slot_id
+        assign e03_slot = candidate_slot
+      endif
+    endfor
+  else
+    assign e01_media = product.media[6] | default: product.media[3] | default: product.featured_media
+    assign e03_media = product.media[8] | default: product.media[5] | default: e01_media
+  endif
+
+  assign specifications = product.metafields.milaura.specifications.value
+  assign materials = product.metafields.milaura.materials.value
+  assign stone_name = product.metafields.milaura.stone_name.value
+  assign stone_handle = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
+  assign stone_description = product.metafields.milaura.stone_description.value
+  assign stone_benefits = product.metafields.milaura.stone_benefits.value
+  assign product_quality = product.metafields.milaura.qualite.value
+  assign product_provenance = product.metafields.milaura.provenance.value
+  assign gem_origin = product.metafields.milaura.gem_origin.value
+  assign certificate_file = product.metafields.milaura.certificate_file.value
+  assign certificate_lab = product.metafields.milaura.certificate_lab.value
+  assign certificate_reference = product.metafields.milaura.certificate_reference.value
+  assign certificate_url = certificate_file.url
+  assign scent_handle = product.metafields.milaura.scent_handle.value | default: product.metafields.milaura.scent_handle
+  assign scent_notes = product.metafields.milaura.scent_notes.value
+  assign ritual_steps = product.metafields.milaura.ritual_steps.value
+
+  assign has_stone = false
+  if stone_name != blank or stone_handle != blank
+    assign has_stone = true
+  endif
+  assign has_stone_facts = false
+  if stone_name != blank or stone_handle != blank or stone_benefits != blank or product_provenance != blank or gem_origin != blank
+    assign has_stone_facts = true
+  endif
+
+  assign guide_title = 'Le produit en détail'
+  assign guide_aria_label = 'Informations sur le produit'
+  assign first_tab_label = 'Le produit'
+  assign second_tab_label = 'Son usage'
+  assign first_panel_title = 'Produit et matières'
+  assign second_panel_eyebrow = 'Usage'
+  assign second_panel_title = 'Conseils d’utilisation'
+  assign technical_label = 'Caractéristiques'
+  assign show_stone_panel = false
+
+  case pdp_family
+    when 'bijou'
+      assign guide_title = 'Le bijou en détail'
+      assign guide_aria_label = 'Informations sur le bijou'
+      assign first_tab_label = 'Le bijou'
+      assign second_tab_label = 'Les pierres'
+      assign first_panel_title = 'Produit et matières'
+      assign second_panel_eyebrow = 'Pierres et intention'
+      assign second_panel_title = 'Les pierres, au quotidien'
+      assign technical_label = 'Description complète'
+      assign show_stone_panel = true
+    when 'pierre-mineral'
+      assign guide_title = 'Le minéral en détail'
+      assign guide_aria_label = 'Informations sur le minéral'
+      assign first_tab_label = 'Le minéral'
+      assign second_tab_label = 'La pierre'
+      assign first_panel_title = 'Minéral et caractéristiques'
+      assign second_panel_eyebrow = 'Pierre et intention'
+      assign second_panel_title = 'La pierre et ses particularités'
+      assign technical_label = 'Description complète'
+      assign show_stone_panel = true
+    when 'bougie-senteur'
+      assign guide_title = 'La bougie en détail'
+      assign guide_aria_label = 'Informations sur la bougie'
+      assign first_tab_label = 'La bougie'
+      assign second_tab_label = 'La senteur'
+      assign first_panel_title = 'Bougie et composition'
+      assign second_panel_eyebrow = 'Composition olfactive'
+      assign second_panel_title = 'Notes et ambiance'
+      assign technical_label = 'Description complète'
+    when 'rituel'
+      assign guide_title = 'Le produit en détail'
+      assign first_tab_label = 'Le produit'
+      assign second_tab_label = 'Son usage'
+      assign first_panel_title = 'Produit et composition'
+      assign second_panel_eyebrow = 'Mode d’emploi'
+      assign second_panel_title = 'Comment l’utiliser'
+      assign technical_label = 'Description complète'
+    when 'soin'
+      assign guide_title = 'Le soin en détail'
+      assign guide_aria_label = 'Informations sur le soin'
+      assign first_tab_label = 'Le soin'
+      assign second_tab_label = 'Son usage'
+      assign first_panel_title = 'Soin et composition'
+      assign second_panel_eyebrow = 'Mode d’emploi'
+      assign second_panel_title = 'Conseils d’utilisation'
+      assign technical_label = 'Description complète'
+    when 'accessoire'
+      assign guide_title = 'Le produit en détail'
+      assign first_panel_title = 'Produit et matières'
+      if has_stone
+        assign second_tab_label = 'La pierre'
+        assign second_panel_eyebrow = 'Pierre et intention'
+        assign second_panel_title = 'La pierre et ses particularités'
+        assign show_stone_panel = true
+      else
+        assign second_tab_label = 'Son usage'
+        assign second_panel_eyebrow = 'Usage'
+        assign second_panel_title = 'Usage et entretien'
+      endif
+  endcase
+-%}
+
+<section
+  id="MilauraProductGuideV2-{{ section.id }}"
+  class="milaura-product-guide milaura-product-guide-v2"
+  aria-labelledby="MilauraProductGuideV2Title-{{ section.id }}"
+  data-milaura-product-guide
+  data-pdp-family="{{ pdp_family | escape }}"
+>
+  <div class="milaura-product-guide__inner">
+    <header class="milaura-product-guide__header">
+      <h2 id="MilauraProductGuideV2Title-{{ section.id }}" class="milaura-product-guide__title">
+        {{ guide_title | default: section.settings.title | escape }}
+      </h2>
+    </header>
+
+    <div class="milaura-product-guide__tabs" role="tablist" aria-label="{{ guide_aria_label | escape }}">
+      <button
+        id="MilauraProductGuideV2Tab-{{ section.id }}-product"
+        class="milaura-product-guide__tab"
+        type="button"
+        role="tab"
+        aria-controls="MilauraProductGuideV2Panel-{{ section.id }}-product"
+        aria-selected="true"
+        tabindex="0"
+        data-product-guide-tab
+        data-product-guide-key="details-product"
+      >
+        <span>{{ first_tab_label }}</span><span class="milaura-product-guide__tab-marker" aria-hidden="true">↗</span>
+      </button>
+      <button
+        id="MilauraProductGuideV2Tab-{{ section.id }}-stone"
+        class="milaura-product-guide__tab"
+        type="button"
+        role="tab"
+        aria-controls="MilauraProductGuideV2Panel-{{ section.id }}-stone"
+        aria-selected="false"
+        tabindex="-1"
+        data-product-guide-tab
+        data-product-guide-key="details-stone"
+      >
+        <span>{{ second_tab_label }}</span><span class="milaura-product-guide__tab-marker" aria-hidden="true">↗</span>
+      </button>
+    </div>
+
+    <div class="milaura-product-guide__panels">
+      <article
+        id="MilauraProductGuideV2Panel-{{ section.id }}-product"
+        class="milaura-product-panel"
+        role="tabpanel"
+        aria-labelledby="MilauraProductGuideV2Tab-{{ section.id }}-product"
+        tabindex="0"
+        data-product-guide-panel
+      >
+        <div class="milaura-product-panel__layout">
+          <div class="milaura-product-panel__media milaura-product-panel__media--product-v2">
+            {%- if e01_slot != blank or e01_media != blank -%}
+              {%- render 'milaura-pdp-manifest-image',
+                manifest_slot: e01_slot,
+                product_media: product.media,
+                fallback_media: e01_media,
+                image_class: 'milaura-product-panel__image',
+                image_widths: '420, 620, 840, 1000, 1200, 1400',
+                image_sizes: '(max-width: 749px) calc(100vw - 64px), 42vw',
+                image_max_width: 1400,
+                image_loading: 'lazy',
+                fallback_alt: product.title
+              -%}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
+            {%- endif -%}
+          </div>
+          <div class="milaura-product-panel__content">
+            <p class="milaura-product-panel__eyebrow">{{ technical_label }}</p>
+            <h3 class="milaura-product-panel__title">{{ first_panel_title }}</h3>
+
+            {%- if product.description != blank -%}
+              <details class="milaura-product-panel__disclosure milaura-product-panel__description-disclosure">
+                <summary>
+                  <span class="milaura-product-panel__description-label milaura-product-panel__description-label--closed">
+                    Lire toute la description
+                  </span>
+                  <span class="milaura-product-panel__description-label milaura-product-panel__description-label--open">
+                    Masquer la description
+                  </span>
+                </summary>
+                <div class="milaura-product-panel__body milaura-product-panel__full-description rte">
+                  {{ product.description }}
+                </div>
+              </details>
+            {%- endif -%}
+
+            {%- if specifications != blank or materials != blank -%}
+              <div class="milaura-product-specs">
+                {%- if materials != blank -%}
+                  <div class="milaura-product-specs__item">
+                    <span class="milaura-product-specs__label">Matières</span>
+                    <span class="milaura-product-specs__value">{{ materials | join: ', ' | replace: '-', ' ' }}</span>
+                  </div>
+                {%- endif -%}
+                {%- for spec in specifications limit: 8 -%}
+                  {%- if spec.label != blank and spec.value != blank -%}
+                    <div class="milaura-product-specs__item">
+                      <span class="milaura-product-specs__label">{{ spec.label | escape }}</span>
+                      <span class="milaura-product-specs__value">{{ spec.value | escape }}</span>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </article>
+
+      <article
+        id="MilauraProductGuideV2Panel-{{ section.id }}-stone"
+        class="milaura-product-panel"
+        role="tabpanel"
+        aria-labelledby="MilauraProductGuideV2Tab-{{ section.id }}-stone"
+        tabindex="0"
+        data-product-guide-panel
+        hidden
+      >
+        <div class="milaura-product-panel__layout">
+          <div class="milaura-product-panel__media milaura-product-panel__media--stone-v2">
+            {%- if e03_slot != blank or e03_media != blank -%}
+              {%- render 'milaura-pdp-manifest-image',
+                manifest_slot: e03_slot,
+                product_media: product.media,
+                fallback_media: e03_media,
+                image_class: 'milaura-product-panel__image',
+                image_widths: '420, 620, 840, 1000, 1200, 1400',
+                image_sizes: '(max-width: 749px) calc(100vw - 64px), 42vw',
+                image_max_width: 1400,
+                image_loading: 'lazy',
+                fallback_alt: product.title
+              -%}
+            {%- else -%}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'milaura-product-panel__placeholder' }}
+            {%- endif -%}
+          </div>
+          <div class="milaura-product-panel__content">
+            <p class="milaura-product-panel__eyebrow">{{ second_panel_eyebrow }}</p>
+            <h3 class="milaura-product-panel__title">{{ second_panel_title }}</h3>
+
+            {%- if show_stone_panel and stone_description != blank -%}
+              <div class="milaura-product-panel__story rte">{{ stone_description | newline_to_br }}</div>
+            {%- endif -%}
+
+            {%- if pdp_family == 'bougie-senteur' -%}
+              {%- if scent_notes != blank or scent_handle != blank -%}
+                <div class="milaura-product-stone-facts milaura-product-scent-facts">
+                  {%- if scent_notes.top != blank -%}
+                    <div class="milaura-product-stone-fact">
+                      <span class="milaura-product-stone-fact__label">Notes de tête</span>
+                      <p class="milaura-product-stone-fact__text">{{ scent_notes.top | join: ', ' | escape }}</p>
+                    </div>
+                  {%- endif -%}
+                  {%- if scent_notes.heart != blank -%}
+                    <div class="milaura-product-stone-fact">
+                      <span class="milaura-product-stone-fact__label">Notes de cœur</span>
+                      <p class="milaura-product-stone-fact__text">{{ scent_notes.heart | join: ', ' | escape }}</p>
+                    </div>
+                  {%- endif -%}
+                  {%- if scent_notes.base != blank -%}
+                    <div class="milaura-product-stone-fact">
+                      <span class="milaura-product-stone-fact__label">Notes de fond</span>
+                      <p class="milaura-product-stone-fact__text">{{ scent_notes.base | join: ', ' | escape }}</p>
+                    </div>
+                  {%- endif -%}
+                  {%- if scent_notes == blank and scent_handle != blank -%}
+                    <div class="milaura-product-stone-fact">
+                      <span class="milaura-product-stone-fact__label">Senteur</span>
+                      <p class="milaura-product-stone-fact__text">{{ scent_handle | replace: '-', ' ' | capitalize }}</p>
+                    </div>
+                  {%- endif -%}
+                  {%- if has_stone -%}
+                    <div class="milaura-product-stone-fact">
+                      <span class="milaura-product-stone-fact__label">Pierre associée</span>
+                      <p class="milaura-product-stone-fact__text">{{ stone_name | default: stone_handle | replace: '-', ' ' | capitalize }}</p>
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- elsif show_stone_panel and has_stone_facts -%}
+              <div class="milaura-product-stone-facts">
+                {%- if stone_name != blank or stone_handle != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">{% if pdp_family == 'bijou' %}Pierres{% else %}Pierre{% endif %}</span>
+                    <p class="milaura-product-stone-fact__text">{{ stone_name | default: stone_handle | replace: '-', ' ' | capitalize }}</p>
+                  </div>
+                {%- endif -%}
+                {%- if stone_benefits != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">Bienfaits en lithothérapie</span>
+                    <p class="milaura-product-stone-fact__text">{{ stone_benefits | escape }}</p>
+                  </div>
+                {%- endif -%}
+                {%- if product_provenance != blank or gem_origin != blank -%}
+                  <div class="milaura-product-stone-fact">
+                    <span class="milaura-product-stone-fact__label">Origine documentée</span>
+                    <p class="milaura-product-stone-fact__text">{{ gem_origin | default: product_provenance | escape }}</p>
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- elsif ritual_steps != blank and ritual_steps.size > 0 -%}
+              <ol class="milaura-product-usage-steps">
+                {%- for step in ritual_steps limit: 4 -%}
+                  {%- if step.text != blank -%}
+                    <li>
+                      <span aria-hidden="true">{{ forloop.index }}</span>
+                      <p>{{ step.text | escape }}</p>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ol>
+            {%- endif -%}
+
+            {%- if product_quality != blank -%}
+              <div class="milaura-pdp-quality-callout">
+                <span>Sélection</span>
+                <strong>{{ product_quality | escape }}</strong>
+              </div>
+            {%- endif -%}
+
+            {%- if certificate_url != blank -%}
+              <a class="milaura-product-panel__action" href="{{ certificate_url }}" target="_blank" rel="noopener">
+                Voir le certificat{% if certificate_lab != blank %} {{ certificate_lab | escape }}{% endif %}{% if certificate_reference != blank %} {{ certificate_reference | escape }}{% endif %}
+                <span aria-hidden="true">↗</span>
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <noscript>
+      <style>
+        #MilauraProductGuideV2-{{ section.id }} .milaura-product-guide__tabs { display: none; }
+        #MilauraProductGuideV2-{{ section.id }} .milaura-product-panel[hidden] { display: block !important; }
+        #MilauraProductGuideV2-{{ section.id }} .milaura-product-panel + .milaura-product-panel { margin-top: var(--milaura-esp-lg); }
+      </style>
+    </noscript>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "MilAura guide produit V2",
+  "tag": "section",
+  "class": "section-milaura-product-guide-v2",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Le produit en détail"
+    }
+  ],
+  "presets": [
+    {
+      "name": "MilAura guide produit V2"
+    }
+  ]
+}
+{% endschema %}
