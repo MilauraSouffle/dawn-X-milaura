@@ -44,8 +44,9 @@ test('the hero consumes H01 to H06 and keeps long copy below the separator', asy
   assert.match(hero, /data-pdp-gallery/);
   assert.match(hero, /data-pdp-submit/);
   assert.match(hero, /show_social_proof/);
-  assert.match(hero, /Les photos présentent le modèle que vous choisissez/);
-  assert.match(hero, /Chaque pierre naturelle possède ses propres nuances/);
+  assert.doesNotMatch(hero, /Les photos présentent le modèle que vous choisissez/);
+  assert.match(hero, /Chaque pierre naturelle possède ses propres nuances, son veinage et parfois une forme légèrement/);
+  assert.doesNotMatch(hero, /milaura-pdp-variation-note__disclosure/);
   assert.ok(hero.indexOf('data-pdp-submit') < hero.indexOf('milaura-pdp-social'));
   assert.ok(hero.indexOf('milaura-pdp-social') < hero.indexOf('milaura-pdp-buy__essentials'));
 });
