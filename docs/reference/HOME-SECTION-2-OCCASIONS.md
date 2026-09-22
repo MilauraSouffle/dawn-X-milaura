@@ -135,15 +135,17 @@ La landing publique est l archive utile pour le client. Git et le manifeste sont
 
 ## Contrat technique cible
 
-Les noms ci-dessous sont la cible. Ils ne prouvent pas que l implementation existe deja.
+Les noms ci-dessous distinguent la cible durable et l implementation actuellement validee.
 
 - section home conservee : `sections/milaura-selection-atelier.liquid`, role public `Home Occasion` ;
-- section landing : `sections/milaura-occasion-landing.liquid` ;
-- template partage : `templates/collection.milaura-occasion.json` ;
+- moteur landing actuellement reutilise et generalise : `sections/milaura-sodalite-landing.liquid` ;
+- template Automne : `templates/collection.selection-automne.json` ;
 - section pierre : adaptation explicite de `sections/milaura-hero-editorial.liquid`, role public `Pierre du moment` ;
 - registre machine : `docs/reference/milaura-home-occasion-registry.json`.
 
-Le contrat doit eviter de dupliquer une nouvelle section Liquid pour chaque fete. Les donnees propres a une occasion vivent dans la collection Shopify, ses metafields ou son manifeste, pas dans un fork complet du composant.
+Le nom historique `milaura-sodalite-landing` est technique. Son schema public est maintenant `Landing de selection` et tous les libelles de campagne, medias, reperes et titres de catalogue sont configurables. Il ne doit pas etre duplique pour chaque fete. Une future migration de nom de fichier n apporte aucun gain SEO et ne doit etre faite que dans un lot technique dedie.
+
+Les donnees propres a une occasion vivent dans le template, la collection Shopify, ses metafields ou son manifeste, pas dans un fork complet du composant.
 
 L ancre historique `MilauraSelectionAtelier` est conservee pour compatibilite. Elle n est pas un nom public.
 
@@ -185,7 +187,9 @@ L ancre historique `MilauraSelectionAtelier` est conservee pour compatibilite. E
 
 Le moteur existant reste la base. Il conserve en premier une recommandation exacte de la meme pierre lorsqu elle existe. Apres activation des produits et validation du perimetre de landing, Shopify Search and Discovery doit recevoir des produits complementaires reciproques entre grenat et cornaline pour la campagne. La cible visible par PDP est : une proposition de la meme pierre, une proposition complementaire de l autre pierre de campagne et une proposition d un type de bijou compatible. Chaque endpoint public `intent=complementary` et chaque rendu PDP doivent etre controles avant le live.
 
-La derniere phrase de la demande du 2026-09-22 cite `grenat et aigue-marine` apres avoir defini toute la campagne comme `grenat et cornaline`. La home privee suit la direction claire grenat et cornaline. La landing, la collection et les recommandations Admin restent bloquees jusqu a confirmation de ce seul point.
+Le GO de Patrice du 2026-09-22 pour avancer sur la landing, donne apres validation de la composition `Grenat & cornaline`, clot l ambiguite creee par la mention isolee `grenat et aigue-marine`. Le perimetre canonique de la campagne Automne est `Grenat & cornaline`. Le bracelet Iris peut rester le produit star parce qu il relie le grenat et la cornaline ; son aigue-marine est decrite sans transformer la campagne en selection Aigue-marine.
+
+La landing est implementee sur le theme prive avec dix produits publics verifies. `bracelet-en-grenat-rouge-8-mm` et `boucles-d-oreilles-puces-en-grenat-rouge-8-mm` restent exclus tant que leurs routes publiques renvoient `404`. La collection permanente `/collections/selection-automne`, son title SEO, sa meta description, son canonical et son apparition dans le sitemap restent une gate Shopify Admin distincte.
 
 ## Prompt de reprise canonique
 
