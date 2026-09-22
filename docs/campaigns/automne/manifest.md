@@ -2,7 +2,7 @@
 
 Date : 2026-09-22
 
-Statut : `DRAFT, LANDING PRIVEE QA PASS, COLLECTION ADMIN A CREER`
+Statut : `DRAFT, LANDING PRIVEE QA PASS, GO VISUEL PATRICE APPROUVE, COLLECTION ADMIN A CREER`
 
 ## Destination permanente
 
@@ -76,7 +76,7 @@ Avant activation publique :
 3. Verifier HTTP 200, canonical auto-referent, sitemap, H1 unique et schema.
 4. Verifier stocks, prix, disponibilite, panier et tracking Purchase avec valeur et devise.
 5. Configurer les produits complementaires reciproques Grenat et Cornaline dans Search and Discovery.
-6. Obtenir le GO visuel landing, le GO Admin, puis le GO live distinct.
+6. GO visuel landing obtenu le 2026-09-22 a 19:53 CEST. Obtenir maintenant le GO Admin, puis le GO live distinct.
 7. Apres mise en ligne verifiee, transmettre la nouvelle destination a la session Pinterest et aux proprietaires Ads.
 
 ## Preuves preview du 2026-09-22
@@ -89,6 +89,6 @@ Avant activation publique :
 - Console : aucune erreur navigateur
 - Theme Check : zero erreur, seize avertissements historiques hors lot
 - Pullback : section landing, template Automne et dependance guide pierre identiques au depot
+- GO visuel landing : Patrice, 2026-09-22 19:53 CEST, retour exact `go visuel tout est parfait`
 - Live `190430282075` : non modifie
 - Shopify Admin : non modifie
-
