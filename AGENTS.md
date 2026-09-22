@@ -10,6 +10,14 @@ This repository contains the Milaura Shopify theme (based on Dawn 15.4.0). Follo
 - Docs du repo (ranges 2026-07-09) : `docs/project-state.md` (etat), `docs/codex-handoff.md` (handoff), `docs/checkpoints/` (handovers de session), `docs/audits/` (SEO), `docs/playbooks/` (Higgsfield, campagnes, workflows IA), `docs/reference/` (metafields, product mapping, blog API, legal), `docs/archive-2026/` (perime).
 - Copywriting public MilAura : lire obligatoirement `docs/reference/2026-08-12-copywriting-milaura.md` avant toute creation ou modification de titre, texte commercial, CTA, navigation, page catalogue, fiche produit, email ou contenu SEO.
 
+## Home Occasion et Pierre du moment (decision 2026-09-22)
+
+- Pour toute demande concernant `section 2`, `selection saisonniere`, `occasion recurrente`, Automne, Noel, Saint-Valentin, Fete des Meres ou `Pierre du moment`, lire d abord `docs/reference/HOME-SECTION-2-OCCASIONS.md` puis `docs/reference/milaura-home-occasion-registry.json`.
+- La section 2 est le slot commercial recurrent `Home Occasion`. Le fichier technique historique `sections/milaura-selection-atelier.liquid` reste son composant canonique et son nom n a aucun effet SEO.
+- Chaque grande occasion conserve sa propre URL publique permanente et passe de `DRAFT` a `ACTIVE`, puis `OFF_SEASON`. Ne jamais creer une nouvelle URL datee a chaque edition et ne jamais rendre une ancienne occasion orpheline par deduction.
+- La section editoriale Aigue-marine devient le slot distinct `Pierre du moment` et pointe toujours vers une page pierre permanente `/collections/par-pierre-...`.
+- Aucun dossier public `Archives` : les occasions hors saison restent accessibles depuis le hub client `Selections saisonnieres et idees cadeaux`. Git et les manifestes de campagne conservent l historique technique.
+
 ## Identite visuelle (source unique, maj 2026-08-13)
 
 - La charte validee a 100 % par Patrice le 2026-08-04 vit dans `~/Documents/Agentic-Ops/MILAURA-BRAND-SYSTEM-2026/`. Elle est la seule reference : `MILAURA-BRAND-GUIDE-V1-2026-08-04.md`, `COLORWAY-V2-2026-08-04.md`, `TYPOGRAPHY-V2-2026-08-04.md`.

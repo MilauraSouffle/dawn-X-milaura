@@ -1,5 +1,23 @@
 # Handoff Codex MilAura
 
+## Chantier actif : Home Occasion et Pierre du moment
+
+Date de decision : 2026-09-22
+
+Patrice a valide l architecture durable de la section 2. La section 2 devient `Home Occasion`, un slot commercial recurrent pour Automne, Noel, Saint-Valentin, Fete des Meres, soldes et autres temps forts valides. Chaque grande occasion conserve sa propre URL permanente et passe de `DRAFT` a `ACTIVE`, puis `OFF_SEASON`. Une page hors saison reste utile, en HTTP 200, indexable et reliee depuis le futur hub `Selections saisonnieres et idees cadeaux`. Aucun dossier public `Archives` n est cree.
+
+La section Aigue-marine plus basse devient `Pierre du moment`. Elle change de pierre mais pointe toujours vers une page pierre permanente `/collections/par-pierre-...`. Elle ne doit pas etre confondue avec Home Occasion.
+
+Contrat canonique : `docs/reference/HOME-SECTION-2-OCCASIONS.md`.
+Registre machine : `docs/reference/milaura-home-occasion-registry.json`.
+Workstream : `codex/milaura-seasonal-occasion-system-20260922` dans `/Users/paesano/Documents/MilAura website/_worktrees/seasonal-occasion-system-20260922`.
+
+Etat : documentation canonique ecrite, aucune implementation theme, Admin, collection, redirection, live, Ads ou Pinterest. La reservation de `sections/milaura-selection-atelier.liquid` et `templates/index.json` a ete transferee le 2026-09-22 apres verification du worktree Aigue-marine propre et de l absence de diff sur ces deux fichiers face a l integration.
+
+```text
+Reprends le systeme Home Occasion de MilAura. Lis AGENTS.md, docs/reference/HOME-SECTION-2-OCCASIONS.md, docs/reference/milaura-home-occasion-registry.json et docs/workstreams.md. La section 2 est le slot commercial recurrent et ne doit jamais etre confondue avec Pierre du moment. Chaque grande occasion conserve une URL permanente et passe de DRAFT a ACTIVE puis OFF_SEASON sans perdre son indexation. Verifie le live, les reservations et les liens externes avant toute edition. Commence sur un worktree dedie et un theme prive. Aucun Admin, live, Ads ou reseau social sans gate explicite.
+```
+
 Date : 2026-09-19 21:39 CEST
 
 Statut : `PDP V2 ADAPTATIVE FERMEE, INTEGREE, POUSSEE ET LIVE VERIFIEE`

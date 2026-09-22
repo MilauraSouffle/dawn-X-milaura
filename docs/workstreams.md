@@ -133,7 +133,7 @@
 
 # Registre des sessions MilAura
 
-Derniere mise a jour : 2026-09-13 08:15 CEST
+Derniere mise a jour : 2026-09-22 09:02 CEST
 
 Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne par session active et une trace des lots fermes recents, aucune exception.
 
@@ -145,12 +145,22 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Systeme durable Home Occasion et Pierre du moment du 2026-09-22
+
+- Proprietaire : Codex, demande directe de Patrice du 2026-09-22 apres validation de l architecture commerciale recurrente.
+- Branche et worktree : `codex/milaura-seasonal-occasion-system-20260922`, `/Users/paesano/Documents/MilAura website/_worktrees/seasonal-occasion-system-20260922`, base `dffeb226` alignee sur `origin/codex/milaura-integration`.
+- Perimetre documentation reserve : `AGENTS.md` pour un pointeur court apres sauvegarde datee, `docs/reference/HOME-SECTION-2-OCCASIONS.md`, `docs/reference/milaura-home-occasion-registry.json`, `docs/codex-handoff.md`, `docs/workstreams.md` et futurs checkpoints propres au lot.
+- Perimetre theme transfere apres verification : `sections/milaura-selection-atelier.liquid`, `templates/index.json`, la future section Landing Occasion, son template collection, les medias Automne exacts et le lien de navigation `En ce moment`. Le 2026-09-22, l ancien worktree Aigue-marine etait propre et ces deux fichiers etaient identiques a `origin/codex/milaura-integration` ; leur reservation est donc transferee a ce lot. Les fichiers Hero et leur nettoyage distant restent hors perimetre.
+- Shopify : aucun theme, Admin, collection, URL, redirection, produit, stock, prix, canal, Ads ou Pinterest ne peut etre modifie pendant la phase de contrat. Toute implementation passera d abord par un theme prive et un GO visuel distinct.
+- Etat au 2026-09-22 09:02 CEST : `CONTRAT DOCUMENTAIRE PASS, IMPLEMENTATION AUTOMNE A OUVRIR`. Decision approuvee : la section 2 devient le slot commercial recurrent Home Occasion ; chaque grande occasion reutilise sa propre URL permanente ; la section Aigue-marine devient le slot Pierre du moment ; aucune page publique ne porte le nom technique `selection-atelier`. Contrat, registre machine, pointeur AGENTS et checkpoint ecrits puis verifies. Aucun theme, Admin, URL, live, Ads ou Pinterest modifie.
+
 ### Hero aigue-marine, previsualisation privee du 2026-09-14
 
 - Proprietaire : Codex, GO de Patrice du 2026-09-14 pour une previsualisation privee uniquement.
 - Branche et worktree : `codex/milaura-aqua-hero-preview-20260914`, `/Users/paesano/Documents/MilAura website/_worktrees/aqua-hero-preview-20260914`, base `5e4f80be` alignee sur `origin/codex/milaura-integration`.
 - Perimetre exclusif : `sections/milaura-hero-portal.liquid`, `templates/index.json`, `sections/milaura-selection-atelier.liquid`, les deux assets `milaura-hero-bijoux-pierres-naturelles-obsidienne-sodalite-*.webp` et cette entree de registre. Sur instruction directe de Patrice, `HERO CHLOE`, ses assets et les precedents assets Hero sont retires du source. Le checkout d integration, Shopify Admin, catalogue, navigation hors hero et toutes les autres sections sont preserves.
 - Etat au 2026-09-14 15:20 CEST : HERO RESTAURE ET SEO POLI SUR LE LIVE `190430282075`. Le HTML public confirme le nouveau nom d asset, l alt, le CTA, le H1 `L harmonie parfaite.` et le H2 Sodalite. Les derniers anciens fichiers distants ne sont plus references mais doivent etre retires un par un dans Shopify Admin : la commande Shopify CLI disponible ne garantit pas cette suppression ciblee sans risque pour le theme entier.
+- Transfert du 2026-09-22 : le worktree est propre et `sections/milaura-selection-atelier.liquid` avec `templates/index.json` sont identiques a `origin/codex/milaura-integration`. Leur reservation est liberee au profit du lot `Systeme durable Home Occasion et Pierre du moment`. `sections/milaura-hero-portal.liquid` et le nettoyage distant de ses anciens assets restent dans le perimetre historique Aigue-marine.
 
 ### Handoff final des conseils de Karine du 2026-09-12
 
