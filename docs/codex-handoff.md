@@ -22,12 +22,18 @@ Le moteur PDP existant n est pas remplace. Apres activation des trois produits g
 
 Blocage exact avant la landing : tout le brief parle de grenat et cornaline, mais sa derniere phrase demande grenat et aigue-marine. La home privee suit grenat et cornaline ; collection, landing et pool de recommandations attendent la confirmation de Patrice. Checkpoint : `docs/checkpoints/2026-09-22-1657-autumn-garnet-carnelian-preview.md`.
 
+Etat au 2026-09-22 17:17 CEST : le montage par photos separees a ete refuse puis remplace. La section utilise maintenant une composition transparente unique par breakpoint, generee nativement a partir des quatre references produit : `assets/milaura-automne-2026-composition-bijoux-desktop-v2.webp` et `assets/milaura-automne-2026-composition-bijoux-mobile-v2.webp`. Aucun mannequin, fond, texte ou feuille n est integre dans ces assets : la video reste le fond et les bijoux sont le sujet. QA privee PASS a `390 x 844` et `1440 x 900`, sans rectangle parasite ni overflow. Pullback exact de la section et des deux WebP ; bloc `bestsellers` conforme. Le live et Shopify Admin restent intacts. Checkpoint : `docs/checkpoints/2026-09-22-1717-autumn-transparent-composition.md`.
+
 ```text
 Reprends le systeme Home Occasion de MilAura depuis docs/checkpoints/2026-09-22-1411-autumn-home-preview.md. Lis AGENTS.md, docs/reference/HOME-SECTION-2-OCCASIONS.md, docs/reference/milaura-home-occasion-registry.json et docs/workstreams.md. La preview Automne est sur le theme prive 200259043675 et attend le GO visuel de Patrice. Ne pousse rien sur le live. Apres GO, verifie que les neuf produits voulus sont ACTIVE et accessibles, puis cree ou configure la collection permanente /collections/selection-automne et sa landing avant de demander un GO Admin puis un GO live. La section 2 reste le slot commercial recurrent et ne doit jamais etre confondue avec Pierre du moment. Aucun Ads ou reseau social avant release publique verifiee.
 ```
 
 ```text
 Reprends le systeme Home Occasion depuis docs/checkpoints/2026-09-22-1657-autumn-garnet-carnelian-preview.md. La preview privee 200259043675 affiche Grenat & cornaline sans mannequin et attend le GO visuel de Patrice. Commence par lui faire confirmer si la landing doit couvrir grenat plus cornaline ou grenat plus aigue-marine, car sa derniere phrase contredit le reste du brief. Ne cree ni collection ni landing et ne modifie aucun produit complementaire avant cette confirmation. Les trois references grenat 10745886835035, 10745961644379 et 10746009944411 sont DRAFT au controle du 2026-09-22 ; verifier leur etat courant avant tout lien. Aucun live, Ads, Pinterest ou reseau social par deduction.
+```
+
+```text
+Reprends la correction visuelle Automne depuis docs/checkpoints/2026-09-22-1717-autumn-transparent-composition.md. Le theme prive 200259043675 utilise une composition transparente native desktop et mobile avec collier grenat, boucles grenat, bracelet grenat et bracelet cornaline, sans mannequin. Le rendu a passe la QA 390 x 844 et 1440 x 900, mais attend le GO visuel de Patrice. Ne reviens jamais au montage de photos rectangulaires. Aucun live ni Admin par deduction. La landing reste bloquee tant que Patrice n a pas tranche la contradiction grenat plus cornaline contre grenat plus aigue-marine.
 ```
 
 Date : 2026-09-19 21:39 CEST

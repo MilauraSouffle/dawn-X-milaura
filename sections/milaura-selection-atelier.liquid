@@ -7,13 +7,15 @@
   assign campaign_video_mobile = section.settings.campaign_video_mobile | default: campaign_video_desktop
   assign campaign_poster_desktop = section.settings.campaign_poster
   assign campaign_poster_mobile = section.settings.campaign_poster_mobile | default: campaign_poster_desktop
+  assign campaign_art_composite = section.settings.campaign_art_composite
+  assign campaign_art_composite_mobile = section.settings.campaign_art_composite_mobile | default: campaign_art_composite
   assign campaign_art_primary = section.settings.campaign_art_primary
   assign campaign_art_secondary = section.settings.campaign_art_secondary
   assign campaign_art_tertiary = section.settings.campaign_art_tertiary
   assign campaign_art_quaternary = section.settings.campaign_art_quaternary
   assign campaign_has_art = false
 
-  if campaign_art_primary != blank or campaign_art_secondary != blank or campaign_art_tertiary != blank or campaign_art_quaternary != blank
+  if campaign_art_composite != blank or campaign_art_primary != blank or campaign_art_secondary != blank or campaign_art_tertiary != blank or campaign_art_quaternary != blank
     assign campaign_has_art = true
   endif
 
@@ -88,6 +90,26 @@
     overflow: hidden;
     mix-blend-mode: multiply;
     pointer-events: none;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__product-art--composite {
+    mix-blend-mode: normal;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__product-art-composite {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__product-art-composite-image {
+    position: absolute;
+    top: 1%;
+    right: -2%;
+    width: min(68vw, 1080px);
+    height: auto;
+    display: block;
+    filter: saturate(1.02) contrast(1.02);
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__product-art-item {
@@ -524,6 +546,12 @@
       margin-top: var(--milaura-esp-md);
     }
 
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-composite-image {
+      top: 1%;
+      right: -8%;
+      width: 92%;
+    }
+
     #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--primary {
       top: -10%;
       right: 19%;
@@ -641,6 +669,16 @@
 
     #MilauraSelection-{{ section.id }} .milaura-season__product-art-item {
       z-index: 1;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-composite-image {
+      z-index: 1;
+      top: -5%;
+      left: 2%;
+      right: auto;
+      width: 96%;
+      max-width: none;
+      filter: saturate(1.02) contrast(1.02);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--primary {
@@ -840,8 +878,21 @@
       </figure>
 
       {%- if campaign_has_art -%}
-        <div class="milaura-season__product-art" aria-hidden="true">
-          {%- if campaign_art_primary != blank -%}
+        <div class="milaura-season__product-art{% if campaign_art_composite != blank %} milaura-season__product-art--composite{% endif %}" aria-hidden="true">
+          {%- if campaign_art_composite != blank -%}
+            <picture class="milaura-season__product-art-composite">
+              <source media="(max-width: 749px)" srcset="{{ campaign_art_composite_mobile | asset_url }}">
+              <img
+                class="milaura-season__product-art-composite-image"
+                src="{{ campaign_art_composite | asset_url }}"
+                alt=""
+                width="1536"
+                height="1024"
+                loading="lazy"
+                decoding="async"
+              >
+            </picture>
+          {%- elsif campaign_art_primary != blank -%}
             <img
               class="milaura-season__product-art-item milaura-season__product-art-item--primary"
               src="{{ campaign_art_primary | asset_url }}"
@@ -1005,6 +1056,16 @@
       "id": "campaign_media_description",
       "label": "Description accessible du média",
       "default": "Présentation portée du produit vedette de la sélection"
+    },
+    {
+      "type": "text",
+      "id": "campaign_art_composite",
+      "label": "Composition bijoux desktop dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_art_composite_mobile",
+      "label": "Composition bijoux mobile dans les assets"
     },
     {
       "type": "text",
