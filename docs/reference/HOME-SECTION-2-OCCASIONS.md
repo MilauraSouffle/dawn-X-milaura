@@ -1,7 +1,7 @@
 # Home MilAura : section 2, occasions recurrentes et pierre du moment
 
 Date de decision : 2026-09-22
-Statut : architecture validee par Patrice, implementation Automne non commencee
+Statut : architecture validee par Patrice, preview Automne grenat et cornaline prete sur theme prive, landing non creee
 Proprietaire de la validation visuelle et commerciale : Patrice Allie
 
 ## Objet de ce document
@@ -170,6 +170,22 @@ L ancre historique `MilauraSelectionAtelier` est conservee pour compatibilite. E
 - l ancienne destination `/collections/selection-de-karine` fera l objet d un audit de ses liens Pinterest et SEO avant redirection vers la Sodalite permanente ;
 - la section Aigue-marine plus basse deviendra le premier etat de `Pierre du moment` ;
 - aucune mutation live, Admin, Ads ou Pinterest n est incluse dans la seule validation de cette architecture.
+
+### Direction visuelle de la home au 2026-09-22
+
+- le theme visuel de la section 2 est `Grenat & cornaline` ;
+- le fond reste la video de feuilles animees fournie par Patrice ;
+- aucun mannequin n est ajoute dans la home : l animation et les bijoux portent deja la scene ;
+- desktop : collier grenat 6 mm, boucles pendantes grenat 12 mm, bracelet grenat 8 mm et bracelet cornaline 10 mm ;
+- mobile : collier grenat 6 mm, boucles pendantes grenat 12 mm et bracelet cornaline 10 mm ; le bracelet grenat 8 mm est masque pour eviter une composition surchargee ;
+- un mannequin peut soutenir le bijou dans le Hero de landing, mais le bijou reste le sujet et sa fidelite produit doit etre validee avant publication ;
+- le bracelet Iris aigue-marine, cornaline et grenat est un candidat de landing, pas un visuel de home, car son aigue-marine brouillerait la lecture bicolore de la section 2.
+
+### Regle de recommandations PDP pour une occasion multi-pierres
+
+Le moteur existant reste la base. Il conserve en premier une recommandation exacte de la meme pierre lorsqu elle existe. Apres activation des produits et validation du perimetre de landing, Shopify Search and Discovery doit recevoir des produits complementaires reciproques entre grenat et cornaline pour la campagne. La cible visible par PDP est : une proposition de la meme pierre, une proposition complementaire de l autre pierre de campagne et une proposition d un type de bijou compatible. Chaque endpoint public `intent=complementary` et chaque rendu PDP doivent etre controles avant le live.
+
+La derniere phrase de la demande du 2026-09-22 cite `grenat et aigue-marine` apres avoir defini toute la campagne comme `grenat et cornaline`. La home privee suit la direction claire grenat et cornaline. La landing, la collection et les recommandations Admin restent bloquees jusqu a confirmation de ce seul point.
 
 ## Prompt de reprise canonique
 

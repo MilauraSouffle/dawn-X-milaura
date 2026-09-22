@@ -16,8 +16,18 @@ Etat au 2026-09-22 14:11 CEST : preview Automne prete sur le theme prive `200259
 
 La QA navigateur confirme le rendu mobile `390 x 844`, le rendu responsive desktop, les bons medias selon le breakpoint, l absence de debordement et une console vide. La section et les sept medias sont identiques apres pullback. Shopify a normalise dans le theme de preview six reglages Hero inconnus de son ancien schema ; le bloc `bestsellers` reste conforme et le theme live n est pas touche. Theme Check reste a 0 erreur avec 16 avertissements historiques hors lot. Checkpoint : `docs/checkpoints/2026-09-22-1411-autumn-home-preview.md`.
 
+Etat au 2026-09-22 16:57 CEST : preview recadree en `Grenat & cornaline` sur le meme theme prive. La home n utilise aucun mannequin. Desktop presente le collier grenat 6 mm, les boucles pendantes grenat 12 mm, le bracelet grenat 8 mm et le bracelet cornaline 10 mm ; mobile masque le bracelet grenat 8 mm et conserve trois sujets lisibles. QA mobile `390 x 844` : largeur document 390, aucun overflow, video 8 secondes `readyState=4`, trois images visibles chargees, CTA et titre visibles, console vide. Le live et Shopify Admin restent intacts.
+
+Le moteur PDP existant n est pas remplace. Apres activation des trois produits grenat en DRAFT et validation du perimetre, la campagne utilisera des produits complementaires reciproques Search and Discovery : meme pierre prioritaire, une proposition de l autre pierre de campagne, puis un type de bijou compatible. Aucune configuration Admin n est executee dans ce lot.
+
+Blocage exact avant la landing : tout le brief parle de grenat et cornaline, mais sa derniere phrase demande grenat et aigue-marine. La home privee suit grenat et cornaline ; collection, landing et pool de recommandations attendent la confirmation de Patrice. Checkpoint : `docs/checkpoints/2026-09-22-1657-autumn-garnet-carnelian-preview.md`.
+
 ```text
 Reprends le systeme Home Occasion de MilAura depuis docs/checkpoints/2026-09-22-1411-autumn-home-preview.md. Lis AGENTS.md, docs/reference/HOME-SECTION-2-OCCASIONS.md, docs/reference/milaura-home-occasion-registry.json et docs/workstreams.md. La preview Automne est sur le theme prive 200259043675 et attend le GO visuel de Patrice. Ne pousse rien sur le live. Apres GO, verifie que les neuf produits voulus sont ACTIVE et accessibles, puis cree ou configure la collection permanente /collections/selection-automne et sa landing avant de demander un GO Admin puis un GO live. La section 2 reste le slot commercial recurrent et ne doit jamais etre confondue avec Pierre du moment. Aucun Ads ou reseau social avant release publique verifiee.
+```
+
+```text
+Reprends le systeme Home Occasion depuis docs/checkpoints/2026-09-22-1657-autumn-garnet-carnelian-preview.md. La preview privee 200259043675 affiche Grenat & cornaline sans mannequin et attend le GO visuel de Patrice. Commence par lui faire confirmer si la landing doit couvrir grenat plus cornaline ou grenat plus aigue-marine, car sa derniere phrase contredit le reste du brief. Ne cree ni collection ni landing et ne modifie aucun produit complementaire avant cette confirmation. Les trois references grenat 10745886835035, 10745961644379 et 10746009944411 sont DRAFT au controle du 2026-09-22 ; verifier leur etat courant avant tout lien. Aucun live, Ads, Pinterest ou reseau social par deduction.
 ```
 
 Date : 2026-09-19 21:39 CEST
