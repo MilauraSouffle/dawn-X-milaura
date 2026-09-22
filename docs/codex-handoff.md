@@ -26,6 +26,8 @@ Etat au 2026-09-22 17:17 CEST : le montage par photos separees a ete refuse puis
 
 Etat au 2026-09-22 17:27 CEST : Patrice a refuse la V2, qui gardait un collier entier centre et des boucles flottantes. La V3 est reconstruite avec le collier place haut et coupe par le bord du cadre, les bracelets entrelaces conserves, et les boucles suspendues a une branche fine visible. Les assets actifs sont `assets/milaura-automne-2026-composition-bijoux-desktop-v3.webp` et `assets/milaura-automne-2026-composition-bijoux-mobile-v3.webp`. QA privee PASS a `390 x 844` et `1440 x 900`, video 8 secondes chargee, aucun overflow ni erreur media. Pullback exact. Le live et Shopify Admin restent intacts. Checkpoint : `docs/checkpoints/2026-09-22-1727-autumn-composition-v3.md`.
 
+GO visuel du 2026-09-22 17:30 CEST : Patrice valide explicitement la V3 avec `magnifique j'adore`. Cette composition est maintenant la reference visuelle approuvee. Cela n autorise ni push live ni mutation Admin. La landing et les recommandations restent bloquees par la contradiction de perimetre et par les produits DRAFT.
+
 ```text
 Reprends le systeme Home Occasion de MilAura depuis docs/checkpoints/2026-09-22-1411-autumn-home-preview.md. Lis AGENTS.md, docs/reference/HOME-SECTION-2-OCCASIONS.md, docs/reference/milaura-home-occasion-registry.json et docs/workstreams.md. La preview Automne est sur le theme prive 200259043675 et attend le GO visuel de Patrice. Ne pousse rien sur le live. Apres GO, verifie que les neuf produits voulus sont ACTIVE et accessibles, puis cree ou configure la collection permanente /collections/selection-automne et sa landing avant de demander un GO Admin puis un GO live. La section 2 reste le slot commercial recurrent et ne doit jamais etre confondue avec Pierre du moment. Aucun Ads ou reseau social avant release publique verifiee.
 ```
@@ -39,7 +41,7 @@ Reprends la correction visuelle Automne depuis docs/checkpoints/2026-09-22-1717-
 ```
 
 ```text
-Reprends la composition Automne V3 depuis docs/checkpoints/2026-09-22-1727-autumn-composition-v3.md. La preview privee 200259043675 montre le collier haut et coupe, les deux bracelets entrelaces et les boucles suspendues a une branche fine. La QA technique mobile et desktop est PASS, mais le nouveau GO visuel de Patrice reste obligatoire. Ne reutilise pas la V2 rejetee. Aucun live ni Admin par deduction.
+Reprends la composition Automne V3 depuis docs/checkpoints/2026-09-22-1727-autumn-composition-v3.md. La preview privee 200259043675 montre le collier haut et coupe, les deux bracelets entrelaces et les boucles suspendues a une branche fine. La QA technique mobile et desktop est PASS et Patrice a donne son GO visuel le 2026-09-22 a 17:30 CEST. Ne reutilise pas la V2 rejetee. Aucun live ni Admin par deduction. La suite exige encore de trancher la landing grenat plus cornaline contre grenat plus aigue-marine et de verifier les produits DRAFT avant publication.
 ```
 
 Date : 2026-09-19 21:39 CEST

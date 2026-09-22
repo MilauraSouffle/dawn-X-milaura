@@ -2,7 +2,7 @@
 
 Date : 2026-09-22 17:27 CEST
 
-Statut : `QA PRIVEE PASS, NOUVEAU GO VISUEL PATRICE EN ATTENTE, LIVE FERME`
+Statut : `QA PRIVEE PASS, GO VISUEL PATRICE APPROUVE LE 2026-09-22 A 17:30 CEST, LIVE FERME`
 
 ## Retour traite
 
@@ -38,4 +38,5 @@ Prompt final resume : composition e-commerce premium asymetrique, collier fortem
 - Les deux WebP relus depuis le theme prive sont strictement identiques aux sources locales, SHA-256 ci-dessus.
 - Le bloc `sections.bestsellers` de `templates/index.json` est identique apres pullback.
 - Aucun push live, aucune mutation Shopify Admin, produit, stock, collection, prix, Ads, Pinterest ou reseau social.
-- Le nouveau GO visuel de Patrice reste obligatoire avant toute suite.
+- Patrice valide la V3 le 2026-09-22 a 17:30 CEST avec le retour exact `magnifique j'adore`.
+- Ce GO visuel ne vaut ni GO live ni GO Admin.
