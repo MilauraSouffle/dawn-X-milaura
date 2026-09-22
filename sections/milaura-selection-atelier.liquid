@@ -7,6 +7,14 @@
   assign campaign_video_mobile = section.settings.campaign_video_mobile | default: campaign_video_desktop
   assign campaign_poster_desktop = section.settings.campaign_poster
   assign campaign_poster_mobile = section.settings.campaign_poster_mobile | default: campaign_poster_desktop
+  assign campaign_art_primary = section.settings.campaign_art_primary
+  assign campaign_art_secondary = section.settings.campaign_art_secondary
+  assign campaign_art_tertiary = section.settings.campaign_art_tertiary
+  assign campaign_has_art = false
+
+  if campaign_art_primary != blank or campaign_art_secondary != blank or campaign_art_tertiary != blank
+    assign campaign_has_art = true
+  endif
 
   for block in section.blocks
     assign block_product = block.settings.product
@@ -70,6 +78,23 @@
     aspect-ratio: 16 / 9;
     overflow: hidden;
     background: var(--milaura-nacre-ombre);
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__product-art {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    overflow: hidden;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  #MilauraSelection-{{ section.id }} .milaura-season__product-art-item {
+    position: absolute;
+    display: block;
+    height: auto;
+    filter: saturate(1.06) contrast(1.04);
+    transform-origin: center;
   }
 
   #MilauraSelection-{{ section.id }} .milaura-season__media-frame::before {
@@ -432,6 +457,28 @@
       right: clamp(18px, 2vw, 32px);
       bottom: clamp(18px, 2vw, 32px);
     }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--primary {
+      right: clamp(38px, 5vw, 86px);
+      bottom: clamp(-74px, -4.5vw, -38px);
+      width: min(34vw, 520px);
+      transform: rotate(-8deg);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--secondary {
+      top: clamp(-94px, -5vw, -50px);
+      right: clamp(170px, 15vw, 260px);
+      width: min(30vw, 430px);
+      opacity: 0.82;
+      transform: rotate(-7deg);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--tertiary {
+      top: clamp(58px, 7vw, 104px);
+      right: clamp(-34px, -1vw, -10px);
+      width: min(15vw, 220px);
+      transform: rotate(7deg);
+    }
   }
 
   @media screen and (max-width: 989px) {
@@ -467,6 +514,28 @@
 
     #MilauraSelection-{{ section.id }} .milaura-season__featured {
       margin-top: var(--milaura-esp-md);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--primary {
+      right: 5%;
+      bottom: -8%;
+      width: 42%;
+      transform: rotate(-7deg);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--secondary {
+      top: -12%;
+      right: 21%;
+      width: 38%;
+      opacity: 0.82;
+      transform: rotate(-7deg);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--tertiary {
+      top: 9%;
+      right: -2%;
+      width: 19%;
+      transform: rotate(7deg);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__actions {
@@ -528,7 +597,7 @@
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 9 / 16;
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media-frame::before {
@@ -540,6 +609,42 @@
         color-mix(in srgb, var(--milaura-nacre) 28%, transparent) 76%,
         transparent 100%
       );
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art::after {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      inset: auto 0 0;
+      height: 44%;
+      background: linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--milaura-nacre) 96%, transparent) 0%,
+        color-mix(in srgb, var(--milaura-nacre) 66%, transparent) 48%,
+        transparent 100%
+      );
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item {
+      z-index: 1;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--primary {
+      top: 28%;
+      left: 9%;
+      width: 72%;
+      transform: rotate(-6deg);
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--secondary {
+      display: none;
+    }
+
+    #MilauraSelection-{{ section.id }} .milaura-season__product-art-item--tertiary {
+      top: 13%;
+      right: 4%;
+      width: 32%;
+      transform: rotate(8deg);
     }
 
     #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
@@ -712,6 +817,44 @@
         {%- endif -%}
       </figure>
 
+      {%- if campaign_has_art -%}
+        <div class="milaura-season__product-art" aria-hidden="true">
+          {%- if campaign_art_primary != blank -%}
+            <img
+              class="milaura-season__product-art-item milaura-season__product-art-item--primary"
+              src="{{ campaign_art_primary | asset_url }}"
+              alt=""
+              width="900"
+              height="899"
+              loading="lazy"
+              decoding="async"
+            >
+          {%- endif -%}
+          {%- if campaign_art_secondary != blank -%}
+            <img
+              class="milaura-season__product-art-item milaura-season__product-art-item--secondary"
+              src="{{ campaign_art_secondary | asset_url }}"
+              alt=""
+              width="1000"
+              height="1250"
+              loading="lazy"
+              decoding="async"
+            >
+          {%- endif -%}
+          {%- if campaign_art_tertiary != blank -%}
+            <img
+              class="milaura-season__product-art-item milaura-season__product-art-item--tertiary"
+              src="{{ campaign_art_tertiary | asset_url }}"
+              alt=""
+              width="1000"
+              height="1250"
+              loading="lazy"
+              decoding="async"
+            >
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
       <div class="milaura-season__copy">
         <div class="milaura-season__lead">
           {%- if section.settings.campaign_eyebrow != blank -%}
@@ -829,6 +972,21 @@
       "id": "campaign_media_description",
       "label": "Description accessible du média",
       "default": "Présentation portée du produit vedette de la sélection"
+    },
+    {
+      "type": "text",
+      "id": "campaign_art_primary",
+      "label": "Produit principal dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_art_secondary",
+      "label": "Produit secondaire dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_art_tertiary",
+      "label": "Troisième produit dans les assets"
     },
     {
       "type": "text",
