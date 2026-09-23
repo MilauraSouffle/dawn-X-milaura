@@ -23,6 +23,9 @@ SECTION_FILES = {
     ROOT / "sections/milaura-home-karine-selection.liquid": "milaura-home-karine-selection.css",
 }
 
+HERO_PORTAL = ROOT / "sections/milaura-hero-portal.liquid"
+SEASONAL_CROSS_SURFACE_SELECTOR = "section-milaura-selection-atelier .milaura-season__shell"
+
 HEX_COLOR = re.compile(r"#[0-9a-fA-F]{3,8}\b")
 FONT_DECLARATION = re.compile(r"font-family\s*:\s*([^;]+);")
 
@@ -81,6 +84,12 @@ def main() -> int:
             errors.append(f"{path.relative_to(ROOT)}: fichier absent")
             continue
         errors.extend(check_section(path, expected_asset))
+
+    hero_text = HERO_PORTAL.read_text(encoding="utf-8")
+    if SEASONAL_CROSS_SURFACE_SELECTOR in hero_text:
+        errors.append(
+            f"{HERO_PORTAL.relative_to(ROOT)}: le hero ne doit pas imposer l espacement de la campagne saisonniere"
+        )
 
     if errors:
         print("CSS_CONTRACT_FAILED")
