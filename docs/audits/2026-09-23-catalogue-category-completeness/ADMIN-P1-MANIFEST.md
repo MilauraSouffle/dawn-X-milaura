@@ -6,6 +6,19 @@ Base de contrôle : extraction Admin et storefront du 2026-09-23 à 08:47 CEST, 
 
 Autorisation : Patrice confirme que les 7 produits concernés restent `ACTIVE` et autorise le démarrage du plan P1. Aucun statut produit ne doit changer.
 
+Exécution : terminée et contrôlée le 2026-09-23 à 11:17 CEST.
+
+Résultat :
+
+- 42 rattachements ajoutés dans les 18 collections manuelles ;
+- 21 produits balisés ;
+- `pierre-de-lave` ajouté à `milaura.stone_handles` sur le bracelet Howlite sans retirer `howlite` ;
+- 0 statut, prix, stock, publication ou média modifié ;
+- 0 rattachement pierre manquant ;
+- 0 rattachement commercial manquant ;
+- 0 divergence restante entre `stone_handles` et les tags `pierre:*` ;
+- Grenat public à 10 produits et Sodalite publique à 12 produits.
+
 ## Contrat idempotent
 
 - Ne jamais supprimer un tag, un metafield, un produit ou un rattachement dans ce lot.

@@ -6,31 +6,40 @@ Base Git contrôlée : `d48f4bbc9178a6868418873e1e8e1b3c0a9a2f7e`
 
 Thème public contrôlé : `190430282075`
 
-Statut initial : réaudit terminé en lecture seule à 08:47 CEST. Depuis le GO de Patrice, le P1 thème a été préparé et validé sur le thème privé `200259043675`. Le thème live `190430282075` et le catalogue Admin restent inchangés. Le manifeste d'écriture Admin est prêt, mais non exécuté.
+Mise à jour post-P1 : 2026-09-23 11:17 CEST.
+
+Le lot Admin autorisé a été exécuté. Le P1 thème reste validé uniquement sur le thème privé `200259043675`. Le thème live `190430282075` n'a pas été modifié.
 
 ## Verdict actuel
 
-Les releases Automne, Sodalite permanente, Sélection de Karine et Sélections saisonnières sont bien en ligne. Elles ont amélioré les destinations saisonnières et le maillage de Sodalite, mais elles n'ont pas corrigé la distribution taxonomique des produits.
-
-Le delta important est ailleurs : les 7 produits encore `DRAFT` dans l'audit du 2026-09-22 sont maintenant `ACTIVE` et publics. Le handoff de 08:27 CEST est donc déjà dépassé sur ce point précis.
+La distribution catalogue P1 est corrigée dans Shopify Admin et déjà reflétée sur le storefront. Les 7 produits signalés à tort comme brouillons dans le handoff restent `ACTIVE`, conformément à la décision de Patrice.
 
 - 787 produits Admin contrôlés : 241 actifs, 531 brouillons et 15 archivés.
 - 241 produits actifs présents au sitemap et répondant tous en HTTP 200.
 - 70 collections publiques, contre 69 dans l'audit précédent.
 - 337 vraies URLs de pages dans les sitemaps, toutes en HTTP 200.
 - 22 produits créés depuis le 2026-09-21, désormais tous actifs.
-- 41 rattachements actifs manquent dans 17 landings par pierre.
-- 9 rattachements actifs manquent dans 4 collections commerciales automatiques.
+- 0 rattachement actif manque dans les 40 landings par pierre auditées.
+- 0 rattachement actif manque dans les 4 collections commerciales automatiques ciblées.
 - 1 exception de taxonomie reste à arbitrer pour la chaîne dorée.
-- 46 produits actifs présentent au moins un écart.
-- 20 produits actifs ont des pierres déclarées dans `milaura.stone_handles` sans tous les tags `pierre:*` correspondants.
-- L'annuaire A à Z contient toujours 49 entrées. Il possède maintenant 10 liens vers les 40 landings pierre, grâce à Sodalite. Trente landings restent non reliées.
-- Grenat reste absent de l'annuaire.
-- `par-pierre-grenat` affiche 1 produit sur 10 attendus.
-- `par-pierre-sodalite` affiche toujours 9 produits sur 12 attendus.
+- 50 des 51 écarts initiaux sont résolus. Le seul restant est l'arbitrage de la chaîne dorée.
+- 0 produit actif présente encore un tag `pierre:*` manquant par rapport à `milaura.stone_handles`.
+- Le storefront public affiche Grenat à 10 produits et Sodalite à 12 produits.
+- Le bracelet Howlite et Pierre de lave appartient aux deux landings, porte les deux tags et conserve les deux valeurs dans `milaura.stone_handles`.
+- L'annuaire A à Z du thème privé contient 50 entrées et relie les 40 landings pierre, dont Grenat sous G. Le live conserve encore l'ancienne version tant que le GO live distinct n'est pas donné.
 - `Bols chantants` reste la seule collection publique vide.
-- Les 2 liens racine en 404 du premier audit sont toujours présents.
-- Les 241 PDP actives sont toujours dépourvues de JSON-LD `Product`.
+- Les 2 liens racine en 404 sont corrigés sur le thème privé uniquement.
+- Le JSON-LD `Product` unique est ajouté et validé sur le thème privé uniquement. Les 241 PDP live restent inchangées tant que ce lot thème n'est pas déployé.
+
+## Résultat du lot Admin P1
+
+- 42 ajouts de rattachement dans 18 collections manuelles.
+- 21 produits balisés, sans suppression de tag.
+- 1 metafield modifié : ajout de `pierre-de-lave` à `milaura.stone_handles` en conservant `howlite`.
+- 0 changement de statut, prix, stock, publication ou média.
+- 241 produits actifs publics après écriture.
+- 70 collections publiques réextraites. Les 63 endpoints JSON accessibles ont été lus directement et les 7 réponses protégées par Cloudflare ont été relues dans un vrai navigateur, sans reprise d'une donnée périmée.
+- 6 matrices régénérées. Elles indiquent 0 manque landing pierre, 0 manque commercial et 0 divergence metafield-tag.
 
 ## Delta par rapport au rapport du 2026-09-22
 
@@ -62,61 +71,23 @@ Ces produits ont été publiés entre 19:45 et 19:47 CEST le 2026-09-22. Ils ré
 6. Bracelet en grenat rouge 8 mm
 7. Boucles d'oreilles puces en grenat rouge 8 mm
 
-Aucune action automatique de retour en brouillon n'est recommandée. Avant toute mutation catalogue, Patrice doit confirmer l'une des deux décisions :
-
-- ces 7 produits restent actifs et rejoignent le lot de distribution P1 ;
-- ces 7 produits doivent revenir en brouillon, avec un GO Admin explicite distinct car cela les retire du storefront.
-
-En attendant cette décision, le présent audit les traite selon leur état réel : `ACTIVE`.
+Patrice a confirmé que ces 7 produits restent actifs. Le lot P1 n'a modifié aucun statut et les 7 URLs restent présentes dans l'extraction publique des 241 produits actifs.
 
 ## Grenat
 
-Grenat est maintenant le défaut le plus visible.
-
-- La lettre G et l'entrée Grenat sont absentes de l'annuaire A à Z.
-- La landing Grenat est publique en HTTP 200, mais ne contient qu'un produit.
-- Dix bijoux actifs déclarent le Grenat.
-- Neuf bijoux actifs manquent donc dans `par-pierre-grenat`.
-
-Les 9 produits à rattacher sont :
-
-1. Boucles d'oreilles pendantes en grenat rouge 12 mm
-2. Boucles d'oreilles puces en grenat rouge 8 mm
-3. Bracelet doré en grenat rhodolite 3 mm
-4. Bracelet en grenat rouge 4 mm
-5. Bracelet en grenat rouge 6 mm
-6. Bracelet en grenat rouge 8 mm
-7. Bracelet facetté en grenat rouge 4 mm
-8. Collier en grenat rouge 4 mm - 45 cm
-9. Collier en grenat rouge 6 mm - 45 cm
-
-La collection saisonnière `selection-automne` contient bien 10 produits publics, dont plusieurs Grenat. Elle ne remplace pas la landing taxonomique Grenat et ne réduit pas cette dette.
-
-Entrée A à Z proposée, soumise au GO copywriting de Patrice :
-
-- Lettre : `G`
-- Titre : `Grenat`
-- Résumé : `Bracelets, colliers et boucles d'oreilles en grenat.`
-- Lien : `shopify://collections/par-pierre-grenat`
-- Action : `Voir les bijoux`
+- La landing Grenat affiche maintenant les 10 bijoux actifs attendus.
+- Les 9 rattachements manquants ont été ajoutés.
+- L'entrée G / Grenat et son lien vers `par-pierre-grenat` sont prêts sur le thème privé.
+- La collection saisonnière `selection-automne` reste distincte et contient toujours 10 produits publics.
 
 ## Sodalite
 
-Le volet éditorial est maintenant correct :
+- Sodalite reste permanente et publique.
+- La landing affiche maintenant les 12 produits actifs attendus.
+- Les 3 rattachements manquants ont été ajoutés.
+- Aucun ancien template Karine ni média Sodalite supprimé n'a été restauré.
 
-- Sodalite est permanente et publique ;
-- l'annuaire A à Z pointe vers `par-pierre-sodalite` ;
-- la page ne contient plus de mention saisonnière Rentrée ou Septembre 2026 ;
-- les médias `landing-v2` conservés sont servis ;
-- aucun ancien template Karine ni média Sodalite supprimé ne doit être restauré.
-
-Le volet catalogue reste incomplet. La landing contient 9 produits uniques sur 12 attendus. Les 3 rattachements encore manquants sont :
-
-1. Bracelet doré en sodalite 6 mm
-2. Bracelet doré en sodalite, perles de 6 mm
-3. Collier argenté en sodalite à pampilles
-
-## Les 41 rattachements pierre manquants
+## Les 41 rattachements pierre initiaux
 
 | Landing | Manquants |
 | --- | ---: |
@@ -138,13 +109,11 @@ Le volet catalogue reste incomplet. La landing contient 9 produits uniques sur 1
 | Sodalite | 3 |
 | Tourmaline | 1 |
 
-La liste exhaustive avec produit, handle, URL produit et URL collection est dans `active-product-category-gaps.csv`.
+Cette table décrit le baseline de 08:47 CEST. Les 41 rattachements ont été ajoutés. La matrice actuelle indique 0 produit attendu manquant dans les 40 landings auditées.
 
 ### Mode de correction Shopify
 
-Douze des 17 landings concernées sont confirmées comme collections manuelles par l'API Admin. Elles représentent 32 des 41 rattachements actuels.
-
-Les 5 landings publiques suivantes ne sont pas exposées par le jeton Admin utilisé. Elles représentent 9 rattachements et doivent être inspectées dans l'Admin avant toute écriture :
+Les 5 landings qui n'étaient pas exposées par le jeton Admin initial ont été retrouvées et confirmées manuelles dans l'interface Shopify avant écriture :
 
 - Aigue-marine
 - Aventurine
@@ -152,36 +121,22 @@ Les 5 landings publiques suivantes ne sont pas exposées par le jeton Admin util
 - Oeil de tigre
 - Quartz rose
 
-Cette limite API n'est pas une preuve que les collections sont absentes ou supprimées. Elles sont publiques et répondent en HTTP 200.
+## Howlite et Pierre de lave
 
-## Défaut actif Howlite et Pierre de lave
+Le défaut est résolu sans perte de donnée :
 
-`Bracelet doré en howlite et pierre de lave 6 mm` est maintenant actif. Ses données sont incohérentes :
-
-- le titre mentionne Howlite et Pierre de lave ;
-- `milaura.materials` contient `howlite` et `pierre-de-lave` ;
-- `milaura.stone_handles` ne contient que `howlite` ;
-- le seul tag pierre est `pierre:howlite` ;
-- le produit n'est ni dans la landing Howlite, ni dans la landing Pierre de lave.
-
-Après validation de la vérité produit, la correction complète doit ajouter `pierre-de-lave` au metafield et au tag, puis rattacher le produit aux deux landings. Cela ajoute un rattachement Pierre de lave implicite qui n'apparaît pas dans le total actuel de 41, car le metafield erroné le masque.
+- `milaura.stone_handles` contient `howlite` et `pierre-de-lave` ;
+- les tags contiennent `pierre:howlite` et `pierre:pierre-de-lave` ;
+- le produit appartient aux landings Howlite et Pierre de lave ;
+- son statut reste `ACTIVE`.
 
 ## Collections commerciales automatiques
 
-Neuf écarts restent ouverts :
-
-- `bracelets-aigue-marine` : 1
-- `bracelets-cornaline` : 1
-- `bracelets-lapis-lazuli` : 1
-- `bracelets-onyx` : 6
-
-Ces quatre collections sont automatiques avec une règle `type:bracelet` ET `pierre:<pierre>`. La correction doit donc passer par les tags produits, pas par un rattachement manuel forcé.
-
-Vingt produits actifs présentent au moins un décalage entre `stone_handles` et les tags `pierre:*`. Les 9 écarts commerciaux sont la conséquence directement visible d'une partie de ces décalages. Les 20 lignes doivent être relues sur la base de la composition produit avant ajout de tags.
+Les 9 écarts initiaux sont résolus par les tags produits. Les collections `bracelets-aigue-marine`, `bracelets-cornaline`, `bracelets-lapis-lazuli` et `bracelets-onyx` se sont recalculées et aucun manque ne reste dans la matrice.
 
 ## Pierres de A à Z
 
-État public confirmé sur `/pages/bijoux-par-pierre?view=milaura-guide-pierres` :
+État live actuel sur `/pages/bijoux-par-pierre?view=milaura-guide-pierres` :
 
 - 49 entrées ;
 - 10 entrées reliées à une collection ;
@@ -191,7 +146,7 @@ Vingt produits actifs présentent au moins un décalage entre `stone_handles` et
 - lettres utiles encore absentes pour le catalogue actif : G, N et Z ;
 - 30 des 40 landings pierre publiques ne sont pas reliées.
 
-Le résultat parfait n'est pas d'ajouter seulement Grenat. Chaque landing pierre existante et utile doit être accessible depuis A à Z. Le fichier `guide-a-z-entries.csv` permet de distinguer les entrées existantes à relier des nouvelles entrées à créer.
+État du thème privé `200259043675` : 50 entrées, Grenat sous G et 40 liens sur 40 landings publiques. Le fichier `guide-a-z-entries.csv` représente ce nouvel état prêt à publier.
 
 Nacre et Zoïsite ont des produits actifs mais aucune landing dédiée et aucune entrée A à Z. Elles doivent être traitées dans le lot de taxonomie, sans créer automatiquement des pages minces.
 
@@ -205,7 +160,7 @@ Nacre et Zoïsite ont des produits actifs mais aucune landing dédiée et aucune
 
 Ces surfaces sont conformes au contrat saisonnier et ne doivent pas être utilisées comme substituts aux landings pierre.
 
-## Défauts techniques toujours ouverts
+## Défauts techniques corrigés en preview, encore ouverts sur le live
 
 ### Deux liens internes en 404
 
@@ -219,11 +174,11 @@ Fichiers concernés :
 - `sections/milaura-owned-stone-care.liquid`
 - `sections/milaura-owned-stone-selector.liquid`
 
-### JSON-LD Product absent
+### JSON-LD Product absent du live
 
 Les 241 pages produit actives répondent en HTTP 200, sont présentes au sitemap, mais aucune ne rend de schéma `Product`.
 
-Le correctif doit être isolé dans un lot SEO technique sur `sections/milaura-product-hero-v2.liquid`, avec exactement un schéma Product par PDP et sans duplication dans les templates.
+Le correctif est isolé dans `sections/milaura-product-hero-v2.liquid` sur le thème privé, avec exactement un schéma Product par PDP et sans duplication dans les templates. Sa publication reste soumise au GO live distinct.
 
 ### Collection vide
 
@@ -244,13 +199,13 @@ Ces points ne doivent pas être corrigés par suppression automatique. Ils exige
 
 Huit pierres actives n'ont toujours pas de landing dédiée : Aventurine bleue, Aventurine rouge, Nacre, Pyrite, Quartz fumé, Séraphinite, Spinelle et Zoïsite.
 
-## Lot P1 borné proposé
+## État d'exécution du lot P1
 
 ### Gate 0 : statut des 7 produits
 
 Décision Patrice du 2026-09-23 : conserver les 7 produits `ACTIVE`. Le gate est levé. Aucun lot ne doit changer leur statut par effet de bord.
 
-### P1-A : vérité produit et distribution Admin
+### P1-A : vérité produit et distribution Admin - exécuté et vérifié
 
 Périmètre : produits, metafields, tags et rattachements uniquement. Aucun fichier thème.
 
@@ -263,9 +218,9 @@ Périmètre : produits, metafields, tags et rattachements uniquement. Aucun fich
 7. Ne modifier aucun statut produit pendant ce lot.
 8. Réextraire Admin et storefront. Cible : 0 rattachement pierre manquant et 0 rattachement commercial manquant, hors arbitrages explicitement documentés.
 
-Gate : `GO ADMIN CATALOGUE P1` explicite avant toute écriture.
+Résultat : 42 rattachements ajoutés, 21 produits balisés, 1 metafield complété, 0 statut modifié, 0 manque pierre et 0 manque commercial.
 
-### P1-B : annuaire A à Z complet
+### P1-B : annuaire A à Z complet - PASS preview
 
 Périmètre : `templates/page.milaura-guide-pierres.json` uniquement, plus son checkpoint.
 
@@ -276,15 +231,15 @@ Périmètre : `templates/page.milaura-guide-pierres.json` uniquement, plus son c
 5. Ne pas restaurer l'ancien template Karine ni les anciens médias Sodalite.
 6. Passer le copywriting par validation Patrice, puis preview privée mobile et bureau.
 
-Gate : PASS technique, GO copywriting/visuel Patrice, puis GO live distinct.
+État : PASS technique sur le thème privé `200259043675`. Le GO live distinct reste requis.
 
-### P1-C : réparer les deux 404 internes
+### P1-C : réparer les deux 404 internes - PASS preview
 
-Périmètre : les deux sections identifiées uniquement. Corriger les URLs racine, exécuter Theme Check, crawl privé, push ciblé et pullback.
+Les deux URLs sont corrigées et relues identiques sur le thème privé. Le live reste inchangé.
 
-### P1-D : restaurer le schéma Product
+### P1-D : restaurer le schéma Product - PASS preview
 
-Périmètre technique séparé. Ajouter un JSON-LD Product unique sur les PDP V2, tester plusieurs familles produit, prix, disponibilité, variantes et données visibles, puis valider avec le test des résultats enrichis.
+Un JSON-LD `Product` unique est rendu sur les six familles PDP testées dans le thème privé. Le live reste inchangé.
 
 ## Polish complet après P1
 
@@ -329,17 +284,19 @@ Périmètre technique séparé. Ajouter un JSON-LD Product unique sur les PDP V2
 
 ## Fichiers de preuve
 
-- `active-product-category-gaps.csv` : 51 écarts actuels, dont 41 pierre, 9 commerciaux et 1 arbitrage.
+- `active-product-category-gaps.csv` : 1 arbitrage restant, la chaîne dorée.
 - `new-products.csv` : les 22 nouveaux produits, tous actifs au moment du constat.
 - `stone-landing-matrix.csv` : les 40 landings et leur couverture réelle.
-- `guide-a-z-entries.csv` : les 49 entrées et leurs 10 liens actuels.
+- `guide-a-z-entries.csv` : les 50 entrées et les 40 liens du thème privé prêt à publier.
 - `public-collections.csv` : les 70 collections publiques et leurs produits visibles.
-- `stone-metafield-tag-gaps.csv` : les 20 produits avec des tags pierre incomplets.
+- `stone-metafield-tag-gaps.csv` : en-tête seul, donc 0 divergence restante.
+- `POST-P1-VERIFICATION.json` : synthèse chiffrée du lot et séparation preview/live.
+- `storefront-browser-memberships.json` : les 7 collections relues dans le navigateur lorsque Cloudflare a protégé leurs endpoints JSON.
 
 ## Méthode et limites
 
-Sources croisées le 2026-09-23 : Shopify Admin GraphQL en lecture seule, règles de collections, endpoints publics des collections, sitemaps, crawl HTTP, HTML live, templates de `d48f4bbc`, rapport du 2026-09-22, handoff post-saisonnier et checkpoints live.
+Sources croisées le 2026-09-23 : snapshot Admin GraphQL de 08:47 CEST, inspection et écriture contrôlée dans Shopify Admin, export public frais des 241 produits, endpoints publics frais de 63 collections, lecture navigateur fraîche des 7 collections protégées par Cloudflare, HTML live, thème privé `200259043675`, rapport du 2026-09-22 et handoff post-saisonnier.
 
-L'API Admin expose 64 collections alors que le storefront en expose 70. Les 70 destinations publiques ont été contrôlées indépendamment. Les cinq landings P1 non exposées par ce jeton doivent être inspectées dans l'Admin avant toute mutation.
+L'API Admin initiale expose 64 collections alors que le storefront en expose 70. Les 70 destinations publiques ont été contrôlées indépendamment. Les cinq landings P1 non exposées par ce jeton ont été inspectées dans l'Admin avant mutation et confirmées manuelles.
 
-Le présent rapport n'autorise aucune écriture Admin, activation, désactivation, publication, déploiement ou modification de la session de polish visuel.
+Le GO Admin reçu couvre le lot désormais exécuté. Il n'autorise pas le déploiement du thème privé sur le live, la suppression de `Bols chantants` ni les arbitrages P2.
