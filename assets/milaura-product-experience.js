@@ -44,6 +44,22 @@
       const panels = Array.from(root.querySelectorAll('[data-product-guide-panel]'));
       if (!tabs.length || tabs.length !== panels.length) return;
 
+      const warmHiddenPanelImages = () => {
+        if (root.dataset.productGuideImagesWarmed === 'true') return;
+
+        panels.forEach((panel) => {
+          if (!panel.hidden) return;
+
+          panel.querySelectorAll('img[loading="lazy"]').forEach((image) => {
+            image.fetchPriority = 'low';
+            image.loading = 'eager';
+            image.decode?.().catch(() => {});
+          });
+        });
+
+        root.dataset.productGuideImagesWarmed = 'true';
+      };
+
       const activate = (index, moveFocus = false) => {
         tabs.forEach((tab, tabIndex) => {
           const isActive = tabIndex === index;
@@ -56,7 +72,12 @@
       };
 
       tabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => activate(index));
+        tab.addEventListener('click', () => {
+          warmHiddenPanelImages();
+          activate(index);
+        });
+        tab.addEventListener('pointerenter', warmHiddenPanelImages, { once: true });
+        tab.addEventListener('focus', warmHiddenPanelImages, { once: true });
         tab.addEventListener('keydown', (event) => {
           let nextIndex = index;
 
@@ -79,6 +100,15 @@
 
       root.dataset.productGuideReady = 'true';
       activate(initialIndex);
+
+      if ('IntersectionObserver' in window) {
+        root.milauraProductGuideObserver = new IntersectionObserver((entries, observer) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          warmHiddenPanelImages();
+          observer.disconnect();
+        }, { rootMargin: '600px 0px' });
+        root.milauraProductGuideObserver.observe(root);
+      }
     });
   };
 
@@ -92,6 +122,9 @@
   document.addEventListener('shopify:section:unload', (event) => {
     event.target.querySelectorAll('[data-milaura-product-proof]').forEach((root) => {
       root.milauraProofResizeObserver?.disconnect();
+    });
+    event.target.querySelectorAll('[data-milaura-product-guide]').forEach((root) => {
+      root.milauraProductGuideObserver?.disconnect();
     });
   });
 })();

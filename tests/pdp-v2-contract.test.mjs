@@ -48,6 +48,7 @@ test('the hero consumes the five manifest gallery slots and keeps long copy belo
   assert.match(hero, /product\.metafields\.milaura\.pdp_media_manifest\.value/);
   assert.match(hero, /media_manifest\.groups\.commercial_gallery/);
   assert.match(hero, /for gallery_slot_id in manifest_gallery_slots limit: 5/);
+  assert.match(hero, /rendition_surface: 'pdp_gallery'/);
   assert.doesNotMatch(hero, /slot_alt/);
   assert.doesNotMatch(hero, /contains '\[MILAURA:/);
   assert.doesNotMatch(hero, /product\.description/);
@@ -65,13 +66,26 @@ test('the hero consumes the five manifest gallery slots and keeps long copy belo
   assert.ok(hero.indexOf('milaura-pdp-social') < hero.indexOf('milaura-pdp-buy__essentials'));
 });
 
+test('the manifest resolver prefers a surface rendition and keeps the master fallback', async () => {
+  const resolver = await source('snippets/milaura-pdp-manifest-image.liquid');
+
+  assert.match(resolver, /manifest_slot\.display_renditions\[rendition_surface\]/);
+  assert.match(resolver, /selected_rendition\.shopify_image_id/);
+  assert.match(resolver, /assign target_image_id = manifest_slot\.shopify_image_id/);
+});
+
 test('the guide keeps the proven two-tab layout and adapts it to every family', async () => {
   const guide = await source('sections/milaura-product-guide-v2.liquid');
   const css = await source('assets/milaura-product-pdp-v2.css');
+  const guideScript = await source('assets/milaura-product-experience.js');
 
   assert.match(guide, /product\.metafields\.milaura\.pdp_media_manifest\.value/);
   assert.match(guide, /e01_slot_id = manifest_narrative_slots\[0\]/);
   assert.match(guide, /e03_slot_id = manifest_narrative_slots\[2\]/);
+  assert.match(guide, /if pdp_family == 'bijou'[\s\S]*?product_panel_slot = e03_slot/);
+  assert.match(guide, /if pdp_family == 'bijou'[\s\S]*?secondary_panel_slot = e01_slot/);
+  assert.match(guide, /manifest_slot: product_panel_slot/);
+  assert.match(guide, /manifest_slot: secondary_panel_slot/);
   assert.doesNotMatch(guide, /slot_alt/);
   assert.match(guide, /product\.description/);
   assert.match(guide, /Produit et matières/);
@@ -90,6 +104,11 @@ test('the guide keeps the proven two-tab layout and adapts it to every family', 
   assert.match(guide, /milaura-pdp-quality-callout/);
   assert.doesNotMatch(guide, /Questions fréquentes/);
   assert.doesNotMatch(guide, /Services & réponses/);
+  assert.match(guideScript, /warmHiddenPanelImages/);
+  assert.match(guideScript, /new IntersectionObserver/);
+  assert.match(guideScript, /rootMargin: '600px 0px'/);
+  assert.match(guideScript, /image\.fetchPriority = 'low'/);
+  assert.match(guideScript, /image\.decode\?\.\(\)\.catch/);
 });
 
 test('services and answers return as a dedicated section at the bottom', async () => {

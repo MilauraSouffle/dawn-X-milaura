@@ -136,6 +136,8 @@ Le metafield `milaura.pdp_media_manifest` doit être de type `json` et contenir 
 - `slots` avec exactement neuf objets ;
 - pour chaque slot : `slot_id`, `destination`, `presentation_class`, `shopify_image_id`, `shopify_position`, `url`, `alt_text`, `width_px`, `height_px`, `canonical_ratio`, `crop_profiles` et les données de preuve déjà prévues par le workflow.
 
+Depuis le 2026-09-23, un slot peut aussi déclarer `display_renditions`. La clé de surface `pdp_gallery` peut fournir un `shopify_image_id` distinct du master. Le thème résout d'abord cette rendition pour la galerie PDP, puis retombe sur `shopify_image_id` du master. Le master reste immuable et la rendition ne compte jamais comme un master. Pour H01 V6.4, le master reste carré `1:1`; une rendition PDP `4:5` doit provenir d'une extension déterministe du fond, sans recadrer ni régénérer le produit.
+
 La PDP résout d'abord l'image par `shopify_image_id`, puis par `shopify_position` si nécessaire. Elle ne lit jamais le slot depuis l'ALT. `alt_text` est utilisé uniquement comme texte alternatif public.
 
 ## Textes statiques du template

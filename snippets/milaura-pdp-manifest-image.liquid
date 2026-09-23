@@ -3,6 +3,7 @@
 
   Expected inputs:
   - manifest_slot: JSON slot from the product metafield
+  - rendition_surface: optional display rendition key, for example pdp_gallery
   - product_media: product.media
   - fallback_media: optional positional compatibility image
   - image_class, image_sizes, image_widths, image_max_width
@@ -12,6 +13,14 @@
 {%- liquid
   assign resolved_media = blank
   assign target_image_id = manifest_slot.shopify_image_id | append: ''
+
+  if manifest_slot != blank and rendition_surface != blank and manifest_slot.display_renditions != blank
+    assign selected_rendition = manifest_slot.display_renditions[rendition_surface]
+    assign rendition_image_id = selected_rendition.shopify_image_id | append: ''
+    if rendition_image_id != blank
+      assign target_image_id = rendition_image_id
+    endif
+  endif
 
   if manifest_slot != blank and target_image_id != blank
     for candidate_media in product_media

@@ -33,6 +33,18 @@
     assign e03_media = product.media[8] | default: product.media[5] | default: e01_media
   endif
 
+  assign product_panel_slot = e01_slot
+  assign product_panel_media = e01_media
+  assign secondary_panel_slot = e03_slot
+  assign secondary_panel_media = e03_media
+
+  if pdp_family == 'bijou'
+    assign product_panel_slot = e03_slot
+    assign product_panel_media = e03_media
+    assign secondary_panel_slot = e01_slot
+    assign secondary_panel_media = e01_media
+  endif
+
   assign specifications = product.metafields.milaura.specifications.value
   assign materials = product.metafields.milaura.materials.value
   assign stone_name = product.metafields.milaura.stone_name.value
@@ -186,11 +198,11 @@
       >
         <div class="milaura-product-panel__layout">
           <div class="milaura-product-panel__media milaura-product-panel__media--product-v2">
-            {%- if e01_slot != blank or e01_media != blank -%}
+            {%- if product_panel_slot != blank or product_panel_media != blank -%}
               {%- render 'milaura-pdp-manifest-image',
-                manifest_slot: e01_slot,
+                manifest_slot: product_panel_slot,
                 product_media: product.media,
-                fallback_media: e01_media,
+                fallback_media: product_panel_media,
                 image_class: 'milaura-product-panel__image',
                 image_widths: '420, 620, 840, 1000, 1200, 1400',
                 image_sizes: '(max-width: 749px) calc(100vw - 64px), 42vw',
@@ -255,11 +267,11 @@
       >
         <div class="milaura-product-panel__layout">
           <div class="milaura-product-panel__media milaura-product-panel__media--stone-v2">
-            {%- if e03_slot != blank or e03_media != blank -%}
+            {%- if secondary_panel_slot != blank or secondary_panel_media != blank -%}
               {%- render 'milaura-pdp-manifest-image',
-                manifest_slot: e03_slot,
+                manifest_slot: secondary_panel_slot,
                 product_media: product.media,
-                fallback_media: e03_media,
+                fallback_media: secondary_panel_media,
                 image_class: 'milaura-product-panel__image',
                 image_widths: '420, 620, 840, 1000, 1200, 1400',
                 image_sizes: '(max-width: 749px) calc(100vw - 64px), 42vw',
