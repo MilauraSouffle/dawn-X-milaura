@@ -8,6 +8,7 @@ Date : 2026-09-23 08:07 CEST
 
 - Branche source : `codex/milaura-seasonal-library-20260923`
 - Commit source : `f58e66a92bb65fc16a343c0eaeea0595e948a707`
+- Worktree source : propre puis retire apres integration ; branche distante conservee
 - Branche d integration : `codex/milaura-integration`
 - Commit d integration : `2ab64ef1711eebf49f1ddc67ce5811cfd19689e3`
 - Theme public : `190430282075`, `dawn-X-milaura/main`
