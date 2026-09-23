@@ -1,8 +1,9 @@
 # Manifeste Selection d automne
 
 Date : 2026-09-22
+Mise a jour : 2026-09-23
 
-Statut : `DRAFT, LANDING PRIVEE QA PASS, GO VISUEL PATRICE APPROUVE, COLLECTION ADMIN CREEE NON PUBLIEE`
+Statut : `ACTIVE, LIVE ET VERIFIEE`
 
 ## Destination permanente
 
@@ -10,13 +11,13 @@ Statut : `DRAFT, LANDING PRIVEE QA PASS, GO VISUEL PATRICE APPROUVE, COLLECTION 
 - Reutilisation annuelle : oui
 - Template : `templates/collection.selection-automne.json`
 - Moteur : `sections/milaura-sodalite-landing.liquid`, schema public `Landing de selection`
-- Cycle suivant : `ACTIVE`, puis `OFF_SEASON`, sans changement de handle
+- Cycle courant : `ACTIVE`, puis `OFF_SEASON` au remplacement par la prochaine occasion, sans changement de handle
 - Collection Shopify Admin : `681359311195`
 - Handle Admin : `selection-automne`
-- Disponibilite : `0 canal`, donc non publiee
-- Modele Admin actuel : `Collection par defaut`
+- Disponibilite : canal `Boutique en ligne`
+- Modele Admin actuel : `selection-automne`
 
-La route cible renvoie encore `404` au 2026-09-22 a 19:59 CEST parce que la collection est volontairement non publiee. La preview utilise temporairement `/collections/selection-de-karine?view=selection-automne` sur le theme prive `200259043675`. Ce porteur de preview ne devient pas la destination publique de la campagne.
+La route permanente `/collections/selection-automne` repond HTTP `200` depuis la release du 2026-09-23. Le porteur de preview historique `/collections/selection-de-karine?view=selection-automne` n est pas la destination publique de la campagne.
 
 ## Positionnement valide
 
@@ -73,22 +74,21 @@ Titre catalogue : `Les bijoux de la selection d automne`
 
 Les produits et leurs actions d achat apparaissent avant les contenus longs. Les guides Grenat et Cornaline restent apres la grille pour apporter du contexte indexable sans retarder l acces aux produits.
 
-Termine dans Shopify Admin le 2026-09-22 a 19:59 CEST apres le `GO Admin` de Patrice :
+Prepare dans Shopify Admin le 2026-09-22 a 19:59 CEST apres le `GO Admin` de Patrice :
 
 1. Collection manuelle `selection-automne` creee avec dix produits verifies.
 2. Titre SEO : `Bijoux grenat et cornaline : sélection d’automne | MilAura`.
 3. Meta description : `Découvrez la sélection d’automne MilAura : bracelets, colliers et boucles d’oreilles en grenat et en cornaline, dans des tons rouge profond et orange.`
-4. Publication maintenue a `0 canal`.
+4. Publication maintenue a `0 canal` jusqu au GO live distinct.
 
-Avant activation publique :
+Release executee le 2026-09-23 apres le GO live distinct :
 
-1. Pousser le template `selection-automne` sur le theme public uniquement apres GO live, puis l affecter a la collection. Il ne peut pas etre selectionne dans l Admin tant qu il existe seulement sur le theme prive.
-2. Publier la collection sur les canaux retenus seulement pendant la release autorisee.
-3. Verifier HTTP 200, canonical auto-referent, sitemap, H1 unique et schema.
-4. Verifier stocks, prix, disponibilite, panier et tracking Purchase avec valeur et devise.
-5. Configurer et verifier les produits complementaires reciproques Grenat et Cornaline dans Search and Discovery dans un lot autorise distinct, car ces recommandations affectent les PDP publiques.
-6. GO visuel landing obtenu le 2026-09-22 a 19:53 CEST et GO Admin obtenu puis execute le 2026-09-22 a 19:59 CEST. Le GO live reste distinct.
-7. Apres mise en ligne verifiee, transmettre la nouvelle destination a la session Pinterest et aux proprietaires Ads.
+1. Dix fichiers cibles pousses sur le theme public `190430282075` et pullback `10/10` identique.
+2. Template `selection-automne` affecte a la collection `681359311195`.
+3. Publication activee uniquement sur le canal `Boutique en ligne`.
+4. Accueil et landing HTTP `200`, canonical, title, meta, H1 unique, sitemap, dix produits et deux guides verifies.
+5. Aucun ordre de test, Ads, Search and Discovery ou Pinterest execute dans cette release.
+6. Au remplacement par la prochaine occasion, passer Automne en `OFF_SEASON`, retirer les messages perimes et conserver son lien depuis `/pages/selections-saisonnieres`.
 
 ## Preuves preview du 2026-09-22
 
@@ -101,6 +101,6 @@ Avant activation publique :
 - Theme Check : zero erreur, seize avertissements historiques hors lot
 - Pullback : section landing, template Automne et dependance guide pierre identiques au depot
 - GO visuel landing : Patrice, 2026-09-22 19:53 CEST, retour exact `go visuel tout est parfait`
-- Live `190430282075` : non modifie
-- Shopify Admin : collection `681359311195` creee avec dix produits, URL `selection-automne`, title SEO et meta description ; publication `0 canal` ; modele `Collection par defaut` en attente du template live
-- Route publique a 19:59 CEST : HTTP `404`, conforme au statut non publie
+- Live `190430282075` : actif et verifie le 2026-09-23
+- Shopify Admin : collection `681359311195`, URL `selection-automne`, title SEO et meta description ; publication `Boutique en ligne` ; modele `selection-automne`
+- Route publique : HTTP `200`, canonical et sitemap verifies

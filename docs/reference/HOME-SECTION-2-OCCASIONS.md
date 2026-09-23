@@ -1,23 +1,24 @@
-# Home MilAura : section 2, occasions recurrentes et pierre du moment
+# Home MilAura : Home Occasion, sélections saisonnières et Sélection de Karine
 
 Date de decision : 2026-09-22
-Statut : architecture validee par Patrice, preview Automne grenat et cornaline prete sur theme prive, landing non creee
+Mise a jour : 2026-09-23
+Statut : Automne live, architecture durable corrigee par la decision Sélection de Karine
 Proprietaire de la validation visuelle et commerciale : Patrice Allie
 
 ## Objet de ce document
 
-Ce fichier est le contrat canonique pour reprendre la section 2 de la home MilAura, sa landing d occasion recurrente et la section Pierre du moment.
+Ce fichier est le contrat canonique pour reprendre la section 2 de la home MilAura, ses landings d occasion recurrentes, le hub `Sélections saisonnières` et le module `Sélection de Karine`.
 
-Toute IA ou session qui recoit une demande comme `reprends la section 2`, `change le theme commercial du moment`, `prepare la prochaine occasion` ou `change la pierre du moment` doit lire ce document puis `docs/reference/milaura-home-occasion-registry.json` avant toute modification.
+Toute IA ou session qui recoit une demande comme `reprends la section 2`, `change le theme commercial du moment`, `prepare la prochaine occasion` ou `mets a jour la Selection de Karine` doit lire ce document puis `docs/reference/milaura-home-occasion-registry.json` avant toute modification.
 
 ## Decision centrale
 
 La home contient deux mecanismes differents.
 
 1. `Home Occasion` est la section 2. Elle met en avant l opportunite commerciale active : Automne, Noel, Saint-Valentin, Fete des Meres, soldes ou autre temps fort valide.
-2. `Pierre du moment` est une section editoriale plus basse. Elle zoome sur une pierre et pointe vers la page SEO permanente de cette pierre.
+2. `Sélection de Karine` est une section editoriale permanente plus basse. Elle suit la collection `/collections/selection-de-karine` et ses produits disponibles.
 
-Ces deux mecanismes ne doivent jamais etre fusionnes.
+Ces deux mecanismes ne doivent jamais etre fusionnes. Les pages pierre restent permanentes et accessibles depuis `Bijoux par pierre` et `Pierres de A a Z`; elles ne deviennent pas un slot tournant de la home.
 
 ## Ce que Google indexe
 
@@ -46,10 +47,10 @@ HOME
 |  |- un CTA principal
 |  `- landing permanente de cette occasion
 |
-`- Pierre du moment
-   |- une pierre active
-   |- un contenu editorial court
-   `- page permanente /collections/par-pierre-...
+`- Selection de Karine
+   |- collection editoriale evolutive
+   |- produits disponibles au moment de la visite
+   `- /collections/selection-de-karine
 ```
 
 ### Exemples d URL Occasion
@@ -62,13 +63,13 @@ HOME
 
 Les handles publies deviennent immuables. Une nouvelle edition annuelle reutilise la meme URL.
 
-### Exemples d URL Pierre du moment
+### Pages pierre permanentes
 
 - Aigue-marine : `/collections/par-pierre-aigue-marine`
 - Sodalite : `/collections/par-pierre-sodalite`
 - Amethyste : `/collections/par-pierre-amethyste`
 
-Une section Pierre du moment peut changer de pierre sans changer, fusionner ou detourner les pages permanentes des autres pierres.
+Une page pierre reste utile, indexable et maillée depuis les guides même lorsqu elle n est plus mise en avant sur la home.
 
 ## Cycle de vie obligatoire d une landing Occasion
 
@@ -84,7 +85,7 @@ Une section Pierre du moment peut changer de pierre sans changer, fusionner ou d
 - HTTP `200`, indexable et canonical auto-referent ;
 - lien principal depuis la section 2 ;
 - lien temporaire `En ce moment` dans la navigation si valide ;
-- lien permanent depuis le hub `Selections saisonnieres et idees cadeaux` ;
+- lien permanent depuis le hub `Sélections saisonnières` ;
 - offre, prix, disponibilite et dates visibles conformes ;
 - Ads autorisees seulement apres les gates stock, marge, tracking et GO budget.
 
@@ -113,8 +114,8 @@ Il ne faut pas creer un footer public nomme `Archives`. Ce mot presente les page
 
 La solution canonique est un hub public et utile :
 
-- URL proposee : `/pages/selections-saisonnieres`
-- H1 propose : `Selections saisonnieres et idees cadeaux`
+- URL validee : `/pages/selections-saisonnieres`
+- H1 valide : `Sélections saisonnières`
 - lien permanent depuis le footer, sous `Choisir` ou `Explorer` ;
 - cartes vers Automne, Noel, Saint-Valentin, Fete des Meres et les autres occasions réellement maintenues ;
 - aucune carte vers une page vide, trompeuse ou sans assortiment utile.
@@ -140,7 +141,8 @@ Les noms ci-dessous distinguent la cible durable et l implementation actuellemen
 - section home conservee : `sections/milaura-selection-atelier.liquid`, role public `Home Occasion` ;
 - moteur landing actuellement reutilise et generalise : `sections/milaura-sodalite-landing.liquid` ;
 - template Automne : `templates/collection.selection-automne.json` ;
-- section pierre : adaptation explicite de `sections/milaura-hero-editorial.liquid`, role public `Pierre du moment` ;
+- section `Sélection de Karine` : `sections/milaura-home-karine-selection.liquid` ;
+- hub public : `sections/milaura-seasonal-library.liquid` et `templates/page.selections-saisonnieres.json` ;
 - registre machine : `docs/reference/milaura-home-occasion-registry.json`.
 
 Le nom historique `milaura-sodalite-landing` est technique. Son schema public est maintenant `Landing de selection` et tous les libelles de campagne, medias, reperes et titres de catalogue sont configurables. Il ne doit pas etre duplique pour chaque fete. Une future migration de nom de fichier n apporte aucun gain SEO et ne doit etre faite que dans un lot technique dedie.
@@ -170,7 +172,7 @@ L ancre historique `MilauraSelectionAtelier` est conservee pour compatibilite. E
 - cette landing reunira plusieurs produits et plusieurs pierres ;
 - la page `/collections/par-pierre-sodalite` deviendra la reference permanente Sodalite avec un H1 intemporel ;
 - l ancienne destination `/collections/selection-de-karine` fera l objet d un audit de ses liens Pinterest et SEO avant redirection vers la Sodalite permanente ;
-- la section Aigue-marine plus basse deviendra le premier etat de `Pierre du moment` ;
+- la section Aigue-marine plus basse est remplacee par `Sélection de Karine` dans un lot visuel separe ;
 - aucune mutation live, Admin, Ads ou Pinterest n est incluse dans la seule validation de cette architecture.
 
 ### Direction visuelle de la home au 2026-09-22
@@ -194,5 +196,5 @@ La landing est implementee sur le theme prive avec dix produits publics verifies
 ## Prompt de reprise canonique
 
 ```text
-Reprends le systeme Home Occasion de MilAura. Lis AGENTS.md, docs/reference/HOME-SECTION-2-OCCASIONS.md, docs/reference/milaura-home-occasion-registry.json et docs/workstreams.md. La section 2 est le slot commercial recurrent et ne doit jamais etre confondue avec Pierre du moment. Chaque grande occasion conserve une URL permanente et passe de DRAFT a ACTIVE puis OFF_SEASON sans perdre son indexation. Verifie le live, les reservations et les liens externes avant toute edition. Commence sur un worktree dedie et un theme prive. Aucun Admin, live, Ads ou reseau social sans gate explicite.
+Reprends le systeme Home Occasion de MilAura. Lis AGENTS.md, docs/reference/HOME-SECTION-2-OCCASIONS.md, docs/reference/milaura-home-occasion-registry.json et docs/workstreams.md. La section 2 est le slot commercial recurrent. Sélection de Karine est une collection editoriale permanente distincte. Les pages pierre restent permanentes et maillées depuis les guides. Chaque grande occasion conserve une URL stable et passe de DRAFT a ACTIVE puis OFF_SEASON sans perdre son indexation. Verifie le live, les reservations et les liens externes avant toute edition. Commence sur un worktree dedie et un theme prive. Aucun Admin, live, Ads ou reseau social sans gate explicite.
 ```

@@ -145,6 +145,17 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Bibliotheque saisonniere, Sodalite permanente et Selection de Karine du 2026-09-23
+
+- Proprietaire : Codex, reprise directe demandee par Patrice le 2026-09-23 depuis le handoff `docs/checkpoints/2026-09-23-0723-selections-saisonnieres-handoff.md`.
+- Branche et worktree : `codex/milaura-seasonal-library-20260923`, `/Users/paesano/Documents/MilAura website/_worktrees/seasonal-library-20260923`, base `3b861497` issue du lot Automne live.
+- Perimetre documentation reserve : `docs/workstreams.md`, `docs/reference/HOME-SECTION-2-OCCASIONS.md`, `docs/reference/milaura-home-occasion-registry.json`, les manifestes saisonniers, le futur checkpoint du lot et la documentation propre au hub public `Selections saisonnieres`.
+- Premier lot theme reserve : `snippets/milaura-nav-curated-links.liquid`, `templates/page.milaura-guide-pierres.json`, `templates/collection.milaura-pierre-sodalite.json`, le composant et le template du futur hub, et uniquement les anciens medias Home Sodalite dont l absence de reference locale et distante sera prouvee. Les medias `milaura-rentree-sodalite-landing-v2-*` restent exclus de toute suppression.
+- Chantier visuel reserve mais separe : `templates/index.json`, `templates/collection.selection-de-karine.json` et l adaptation strictement necessaire de la section editoriale utilisee par l ancienne mise en avant Aigue-marine. Aucun remplacement Home ne sera integre sans GO visuel Patrice.
+- Navigation validee : dans `Cadeaux`, remplacer `Rentree en Sodalite` par `Selection de Karine` vers `/collections/selection-de-karine`. Dans le guide A a Z, rendre Sodalite cliquable vers `/collections/par-pierre-sodalite`.
+- Themes : audit du live `190430282075` en lecture seule ; implementation et QA d abord sur le theme prive `200259043675`. Shopify Admin, integration, release et live restent des gates separees.
+- Etat au 2026-09-23 07:51 CEST : `PREVIEW PRIVEE PASS TECHNIQUE, GO VISUEL PATRICE REQUIS`. Le checkout principal sale et le theme live `190430282075` sont preserves. Huit fichiers cibles sont controles sur le theme prive `200259043675`. Le footer, la suppression distante des medias, Shopify Admin, l integration et le live ne sont pas executes. Les medias Landing Sodalite `landing-v2` restent conserves ; douze anciens medias Home prouves orphelins sont supprimes uniquement dans la branche, donc recuperables par Git.
+
 ### Systeme durable Home Occasion et Pierre du moment du 2026-09-22
 
 - Proprietaire : Codex, demande directe de Patrice du 2026-09-22 apres validation de l architecture commerciale recurrente.

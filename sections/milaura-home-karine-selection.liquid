@@ -1,0 +1,326 @@
+{%- liquid
+  assign featured_collection = section.settings.collection
+  assign product_limit = section.settings.products_to_show | default: 3
+-%}
+
+{%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+  <section
+    id="MilauraKarineSelection-{{ section.id }}"
+    class="milaura-karine-selection"
+    aria-labelledby="MilauraKarineSelectionTitle-{{ section.id }}"
+  >
+    <div class="milaura-karine-selection__inner">
+      <div class="milaura-karine-selection__intro">
+        {%- if section.settings.label != blank -%}
+          <p class="milaura-karine-selection__label">{{ section.settings.label | escape }}</p>
+        {%- endif -%}
+        <h2 id="MilauraKarineSelectionTitle-{{ section.id }}" class="milaura-karine-selection__title">
+          {{ section.settings.title | escape }}
+        </h2>
+        {%- if section.settings.text != blank -%}
+          <p class="milaura-karine-selection__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.portrait != blank or section.settings.portrait_asset != blank or section.settings.note != blank -%}
+          <div class="milaura-karine-selection__signature">
+            {%- if section.settings.portrait != blank -%}
+              {{- section.settings.portrait
+                | image_url: width: 180
+                | image_tag:
+                  class: 'milaura-karine-selection__portrait',
+                  widths: '96, 144, 180',
+                  sizes: '72px',
+                  loading: 'lazy',
+                  alt: section.settings.portrait_alt
+              -}}
+            {%- elsif section.settings.portrait_asset != blank -%}
+              <img
+                class="milaura-karine-selection__portrait"
+                src="{{ section.settings.portrait_asset | asset_url }}"
+                alt="{{ section.settings.portrait_alt | escape }}"
+                width="144"
+                height="144"
+                loading="lazy"
+              >
+            {%- endif -%}
+            {%- if section.settings.note != blank -%}
+              <p>{{ section.settings.note | escape }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <a
+          class="milaura-karine-selection__cta milaura-action milaura-action--editorial"
+          href="{{ section.settings.cta_link | default: featured_collection.url }}"
+        >
+          <span>{{ section.settings.cta_label | escape }}</span>
+          {% render 'milaura-action-icon' %}
+        </a>
+      </div>
+
+      <div class="milaura-karine-selection__products milaura-cards" role="list" aria-label="Produits de la sélection de Karine">
+        {%- for product in featured_collection.products limit: product_limit -%}
+          <div class="milaura-karine-selection__product" role="listitem">
+            {% render 'milaura-product-card',
+              product: product,
+              img_loading: 'lazy',
+              show_vendor: false,
+              show_badges: section.settings.show_badges,
+              show_secondary_image: true,
+              force_bestseller_badge: false,
+              nested_list_item: false
+            %}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{%- style -%}
+  #MilauraKarineSelection-{{ section.id }},
+  #MilauraKarineSelection-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #MilauraKarineSelection-{{ section.id }} {
+    padding: var(--milaura-esp-3xl) 0;
+    color: var(--milaura-encre);
+    background: var(--milaura-surface-mineral);
+    border-top: var(--milaura-filet-mineral);
+    border-bottom: var(--milaura-filet-mineral);
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__inner {
+    width: min(1320px, calc(100% - clamp(32px, 7vw, 112px)));
+    display: grid;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(48px, 7vw, 112px);
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__intro {
+    max-width: 500px;
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__label {
+    width: fit-content;
+    margin: 0 0 var(--milaura-esp-md);
+    padding-bottom: var(--milaura-esp-2xs);
+    color: var(--milaura-aigue-profonde);
+    border-bottom: var(--milaura-filet-or);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-petit);
+    font-weight: 650;
+    line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__title {
+    max-width: 11ch;
+    margin: 0;
+    color: var(--milaura-prune);
+    font-family: var(--milaura-font-display);
+    font-size: var(--milaura-t-display);
+    font-weight: 400;
+    letter-spacing: var(--milaura-ls-display);
+    line-height: var(--milaura-lh-display);
+    text-wrap: balance;
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__text {
+    max-width: 44ch;
+    margin: var(--milaura-esp-md) 0 0;
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-corps-large);
+    line-height: var(--milaura-lh-corps);
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__signature {
+    display: flex;
+    gap: var(--milaura-esp-sm);
+    align-items: center;
+    margin-top: var(--milaura-esp-lg);
+    padding-top: var(--milaura-esp-md);
+    border-top: var(--milaura-filet);
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__portrait {
+    width: 72px;
+    height: 72px;
+    flex: 0 0 72px;
+    display: block;
+    border-radius: var(--milaura-rayon-pastille);
+    object-fit: cover;
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__signature p {
+    max-width: 32ch;
+    margin: 0;
+    color: var(--milaura-encre-secondaire);
+    font-family: var(--milaura-font-texte);
+    font-size: var(--milaura-t-petit);
+    line-height: var(--milaura-lh-petit);
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__cta {
+    width: fit-content;
+    margin-top: var(--milaura-esp-lg);
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__cta:focus-visible {
+    outline: var(--milaura-focus);
+    outline-offset: var(--milaura-focus-offset);
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__products {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat({{ product_limit }}, minmax(0, 1fr));
+    gap: var(--milaura-esp-md);
+    align-items: stretch;
+  }
+
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__product,
+  #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__product .milaura-product-card {
+    min-width: 0;
+    height: 100%;
+  }
+
+  @media screen and (max-width: 989px) {
+    #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__inner {
+      grid-template-columns: 1fr;
+      gap: var(--milaura-esp-xl);
+    }
+
+    #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__intro {
+      max-width: 680px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #MilauraKarineSelection-{{ section.id }} {
+      padding: var(--milaura-esp-2xl) 0;
+      overflow: hidden;
+    }
+
+    #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__inner {
+      width: 100%;
+    }
+
+    #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__intro {
+      width: calc(100% - 32px);
+      margin: 0 auto;
+    }
+
+    #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__text {
+      font-size: var(--milaura-t-corps);
+    }
+
+    #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__products {
+      display: flex;
+      gap: var(--milaura-esp-sm);
+      overflow-x: auto;
+      padding: 0 16px var(--milaura-esp-sm);
+      scroll-padding-inline: 16px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__products::-webkit-scrollbar {
+      display: none;
+    }
+
+    #MilauraKarineSelection-{{ section.id }} .milaura-karine-selection__product {
+      flex: 0 0 min(78vw, 310px);
+      width: min(78vw, 310px);
+      scroll-snap-align: start;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Sélection de Karine",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Repère",
+      "default": "Le choix de Karine"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "La sélection de Karine"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texte",
+      "default": "Des bijoux et objets en pierres choisis parmi les pièces disponibles en ce moment."
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note",
+      "default": "La sélection évolue au fil des découvertes de Karine et des pièces disponibles."
+    },
+    {
+      "type": "image_picker",
+      "id": "portrait",
+      "label": "Portrait de Karine"
+    },
+    {
+      "type": "text",
+      "id": "portrait_asset",
+      "label": "Asset portrait de repli"
+    },
+    {
+      "type": "text",
+      "id": "portrait_alt",
+      "label": "Texte alternatif",
+      "default": "Karine, fondatrice de MilAura"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Produits à afficher",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Afficher les badges",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Action",
+      "default": "Voir la sélection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Lien"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sélection de Karine"
+    }
+  ]
+}
+{% endschema %}
