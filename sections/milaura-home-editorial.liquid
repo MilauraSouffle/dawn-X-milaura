@@ -2,99 +2,41 @@
 
 {%- liquid
   assign journal_blog = blogs[section.settings.blog_handle]
-  assign journal_article = journal_blog.articles.first
   assign journal_url = journal_blog.url | default: '/blogs/journal'
-  assign portrait_alt = section.settings.portrait_alt | default: 'Bijoux en pierres naturelles observés à la loupe sur des socles minéraux'
 -%}
 
-{% render 'milaura-home-transition', tone: 'nacre' %}
 <section
   class="milaura-home-editorial"
   aria-labelledby="MilauraHomeEditorialTitle-{{ section.id }}"
 >
   <div class="milaura-home-editorial__inner">
-    <div class="milaura-home-editorial__layout">
-      <div class="milaura-home-editorial__intro">
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="milaura-home-editorial__eyebrow milaura-section-label">{{ section.settings.eyebrow | escape }}</p>
-        {%- endif -%}
-        <h2 id="MilauraHomeEditorialTitle-{{ section.id }}" class="milaura-home-editorial__title milaura-section-title">
-          {{ section.settings.title | escape }}
-        </h2>
-        {%- if section.settings.text != blank -%}
-          <p class="milaura-home-editorial__text">{{ section.settings.text | escape }}</p>
-        {%- endif -%}
-        <div class="milaura-home-editorial__links">
-          <a class="milaura-home-editorial__link milaura-action milaura-action--editorial" href="{{ journal_url }}">
-            <span>{{ section.settings.journal_label | escape }}</span>
-            {% render 'milaura-action-icon' %}
-          </a>
-          {%- if section.settings.story_link != blank and section.settings.story_label != blank -%}
-            <a class="milaura-home-editorial__link milaura-action milaura-action--editorial" href="{{ section.settings.story_link }}">
-              <span>{{ section.settings.story_label | escape }}</span>
-              {% render 'milaura-action-icon' %}
-            </a>
-          {%- endif -%}
-        </div>
-      </div>
+    <div class="milaura-home-editorial__heading">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="milaura-home-editorial__eyebrow milaura-section-label">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 id="MilauraHomeEditorialTitle-{{ section.id }}" class="milaura-home-editorial__title milaura-section-title">
+        {{ section.settings.title | escape }}
+      </h2>
+    </div>
 
-      <div class="milaura-home-editorial__portrait">
-        {%- if section.settings.portrait != blank -%}
-          {{- section.settings.portrait
-            | image_url: width: 1200
-            | image_tag:
-              class: 'milaura-home-editorial__portrait-image',
-              widths: '420, 640, 840, 1000, 1200',
-              sizes: '(max-width: 989px) calc(100vw - 32px), 38vw',
-              loading: 'lazy',
-              alt: portrait_alt
-          -}}
-        {%- elsif section.settings.portrait_asset != blank -%}
-          <picture>
-            {%- if section.settings.portrait_asset_mobile != blank -%}
-              <source media="(max-width: 749px)" srcset="{{ section.settings.portrait_asset_mobile | asset_url }}">
-            {%- endif -%}
-            <img
-              class="milaura-home-editorial__portrait-image"
-              src="{{ section.settings.portrait_asset | asset_url }}"
-              alt="{{ portrait_alt | escape }}"
-              width="1536"
-              height="1024"
-              loading="lazy"
-            >
-          </picture>
-        {%- endif -%}
-      </div>
-
-      {%- if journal_article != blank -%}
-        <a class="milaura-home-editorial__article" href="{{ journal_article.url }}">
-          <span class="milaura-home-editorial__article-media">
-            {%- if journal_article.image != blank -%}
-              {{- journal_article.image
-                | image_url: width: 900
-                | image_tag:
-                  class: 'milaura-home-editorial__article-image',
-                  widths: '320, 480, 680, 900',
-                  sizes: '(max-width: 749px) calc(100vw - 32px), 30vw',
-                  loading: 'lazy',
-                  alt: journal_article.image.alt
-              -}}
-            {%- endif -%}
-          </span>
-          <span class="milaura-home-editorial__article-copy">
-            <span class="milaura-home-editorial__article-label">{{ section.settings.article_label | escape }}</span>
-            <span class="milaura-home-editorial__article-title">{{ journal_article.title | escape }}</span>
-            <span class="milaura-home-editorial__article-meta">{{ section.settings.article_action | escape }} ↗</span>
-          </span>
+    <nav class="milaura-home-editorial__links" aria-label="Guides et histoire MilAura">
+      <a class="milaura-home-editorial__link milaura-action milaura-action--editorial" href="{{ journal_url }}">
+        <span>{{ section.settings.journal_label | escape }}</span>
+        {% render 'milaura-action-icon' %}
+      </a>
+      {%- if section.settings.story_link != blank and section.settings.story_label != blank -%}
+        <a class="milaura-home-editorial__link milaura-action milaura-action--editorial" href="{{ section.settings.story_link }}">
+          <span>{{ section.settings.story_label | escape }}</span>
+          {% render 'milaura-action-icon' %}
         </a>
       {%- endif -%}
-    </div>
+    </nav>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "MilAura Guides et Journal",
+  "name": "MilAura Bandeau guides",
   "settings": [
     {
       "type": "text",
@@ -109,35 +51,6 @@
       "default": "Choisir avec des repères simples."
     },
     {
-      "type": "textarea",
-      "id": "text",
-      "label": "Texte",
-      "default": "Des guides pour comprendre les pierres, choisir un bijou et entretenir les pièces que vous portez."
-    },
-    {
-      "type": "image_picker",
-      "id": "portrait",
-      "label": "Image éditoriale"
-    },
-    {
-      "type": "text",
-      "id": "portrait_asset",
-      "label": "Asset éditorial desktop",
-      "default": "milaura-hero-editorial-owned-stone-atlas-desktop.webp"
-    },
-    {
-      "type": "text",
-      "id": "portrait_asset_mobile",
-      "label": "Asset éditorial mobile",
-      "default": "milaura-hero-editorial-owned-stone-atlas-mobile.webp"
-    },
-    {
-      "type": "text",
-      "id": "portrait_alt",
-      "label": "Texte alternatif",
-      "default": "Bracelets en lapis-lazuli et sodalite observés à la loupe sur des socles minéraux"
-    },
-    {
       "type": "text",
       "id": "blog_handle",
       "label": "Handle du Journal",
@@ -148,18 +61,6 @@
       "id": "journal_label",
       "label": "Lien Journal",
       "default": "Lire le Journal"
-    },
-    {
-      "type": "text",
-      "id": "article_label",
-      "label": "Repère article",
-      "default": "À lire"
-    },
-    {
-      "type": "text",
-      "id": "article_action",
-      "label": "Action article",
-      "default": "Lire l’article"
     },
     {
       "type": "url",
@@ -175,7 +76,7 @@
   ],
   "presets": [
     {
-      "name": "MilAura Guides et Journal"
+      "name": "MilAura Bandeau guides"
     }
   ]
 }
