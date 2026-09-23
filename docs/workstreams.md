@@ -4,7 +4,7 @@
 - Branche : `codex/milaura-product-media-polish-20260923`, worktree `/Users/paesano/.codex/worktrees/milaura-product-media-polish/dawn-X-milaura`, base `codex/milaura-integration`.
 - Perimetre reserve : `sections/milaura-product-guide-v2.liquid`, `sections/milaura-product-hero-v2.liquid`, `snippets/milaura-pdp-manifest-image.liquid`, `assets/milaura-product-experience.js`, tests PDP concernes et documentation propre au lot. Le workflow creatif V6 reste traite dans son worktree dedie sans ecraser ses modifications paralleles.
 - Direction : pour la famille `bijou`, afficher E03 dans `Le bijou` et E01 dans `Les pierres`; precharger a basse priorite l image du panneau cache quand le guide approche du viewport; conserver le WebP automatique Shopify et ne pas convertir le catalogue en masse.
-- Themes et gates : recette locale puis theme prive a choisir. Theme public `190430282075`, produits, medias Shopify et catalogue restent intacts sans GO live distinct.
+- Themes et gates : theme de developpement personnel `201797534043` reserve pour la recette ciblee. Theme public `190430282075`, produits, medias Shopify et catalogue restent intacts sans GO live distinct.
 - Etat au 2026-09-23 : IMPLEMENTATION LOCALE PRETE. Les onglets bijou sont corriges, le panneau cache est rechauffe a basse priorite et la galerie accepte une rendition `pdp_gallery` distincte avec fallback sur le master. Tests Node `13/13`, JavaScript valide, Theme Check sans erreur nouvelle avec 16 avertissements historiques hors lot. Aucun theme, produit ou media Shopify modifie. Recette visuelle sur theme prive et GO live encore separes.
 
 ## Refonte PDP V2 mobile-first du 2026-09-19
