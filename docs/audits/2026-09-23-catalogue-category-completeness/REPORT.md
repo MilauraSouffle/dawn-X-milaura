@@ -6,7 +6,7 @@ Base Git contrôlée : `d48f4bbc9178a6868418873e1e8e1b3c0a9a2f7e`
 
 Thème public contrôlé : `190430282075`
 
-Statut : réaudit terminé en lecture seule. Aucun produit, statut, tag, metafield, rattachement, collection, navigation, fichier de thème ou thème Shopify n'a été modifié.
+Statut initial : réaudit terminé en lecture seule à 08:47 CEST. Depuis le GO de Patrice, le P1 thème a été préparé et validé sur le thème privé `200259043675`. Le thème live `190430282075` et le catalogue Admin restent inchangés. Le manifeste d'écriture Admin est prêt, mais non exécuté.
 
 ## Verdict actuel
 
@@ -248,7 +248,7 @@ Huit pierres actives n'ont toujours pas de landing dédiée : Aventurine bleue, 
 
 ### Gate 0 : statut des 7 produits
 
-Décision Patrice requise avant mutation : conserver les 7 produits actifs ou les repasser en brouillon. Aucun autre lot ne doit changer leur statut par effet de bord.
+Décision Patrice du 2026-09-23 : conserver les 7 produits `ACTIVE`. Le gate est levé. Aucun lot ne doit changer leur statut par effet de bord.
 
 ### P1-A : vérité produit et distribution Admin
 
@@ -298,8 +298,8 @@ Périmètre technique séparé. Ajouter un JSON-LD Product unique sur les PDP V2
 
 ### P2-B : collection vide
 
-- Alimenter `Bols chantants` avec une offre réelle, ou la dépublier proprement.
-- Vérifier ensuite sitemap, navigation, liens et indexabilité.
+- Décision Patrice du 2026-09-23 : ne pas alimenter `Bols chantants`; Patrice supprimera lui-même cette destination, faute de stock et de réassort prévu.
+- Après sa suppression, vérifier sitemap, navigation, liens et indexabilité.
 
 ### P2-C : QA finale de distribution et accessibilité
 
