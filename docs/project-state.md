@@ -1,10 +1,10 @@
 # Etat actuel du theme MilAura
 
-> Cloture Meta, 2026-09-16 07:24 CEST : `milaura.fr`, relie au dataset Meta `milaurashopify` `830428425991691`, a ete decouvert classe `Religion`. Toutes les demarches accessibles ont ete tentees. L examen a ete refuse, le bouton `Demander un examen` reste desactive et Meta Support n a pas resolu le probleme. [Checkpoint courant](checkpoints/2026-09-16-0724-meta-religion-pause-handoff.md).
+> Etat courant, 2026-09-23 07:23 CEST : la selection Automne et sa landing `/collections/selection-automne` sont live et verifiees sur le theme `190430282075`. La cloture courante est documentaire et n a modifie ni theme, ni Shopify Admin, ni produit, ni canal. [Checkpoint live Automne](checkpoints/2026-09-23-0646-autumn-live.md).
 
-> Meta Verified a ete souscrit pour la page Facebook MilAura afin d obtenir la mise en relation humaine normalement annoncee avec ce service. Au 2026-09-16, aucune mise en relation avec un humain n a eu lieu. Meta indique que la restriction concernant l Europe doit entrer en vigueur dans trois jours.
+> Architecture validee par Patrice : la section 2 reste `Home Occasion`; le futur hub footer s appelle exactement `Sélections saisonnières`; les pages pierre restent permanentes; la section Aigue-marine de la home sera remplacee, dans un chantier visuel distinct, par `Sélection de Karine`. Premier lot de reprise : retirer `Cadeaux > Rentrée en Sodalite`, neutraliser la landing Sodalite et rendre Sodalite cliquable dans le guide A a Z. [Handoff courant](checkpoints/2026-09-23-0723-selections-saisonnieres-handoff.md).
 
-> L automatisation Codex `suivi-examen-meta-milaura` est en pause depuis le 2026-09-16 a 07:24 CEST. Aucun fichier theme, produit, checkout, Flow ou Admin n a ete modifie dans cette session. La branche `codex/milaura-integration` etait propre et alignee avec origin au HEAD observe `f2fb825209dae5ad5a64a27938bd7f73963c9592` avant cette documentation.
+> Le defaut du guide A a Z est confirme en production : l entree Sodalite est statique car son champ `link` est vide. Les medias Sodalite `landing-v2` restent actifs et doivent etre preserves ; seuls les anciens medias home confirmes inutilises pourront etre supprimes. Le checkout principal est sale avec des changements concurrents et ne doit pas servir a la reprise.
 
 ## Historique recent
 

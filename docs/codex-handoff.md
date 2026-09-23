@@ -1,5 +1,21 @@
 # Handoff Codex MilAura
 
+## Reprise prioritaire : Sélections saisonnières, Sodalite et Sélection de Karine
+
+Date : 2026-09-23 07:23 CEST
+
+Statut : `DECISIONS VALIDÉES, HANDOFF ÉCRIT, AUCUNE NOUVELLE MUTATION LIVE`
+
+La session suivante doit reprendre depuis `docs/checkpoints/2026-09-23-0723-selections-saisonnieres-handoff.md`. Le libelle public valide du futur hub footer est exactement `Sélections saisonnières`. La section 2 reste `Home Occasion`. Les pages pierre restent permanentes et accessibles depuis `Bijoux par pierre`. La section Aigue-marine de la home sera remplacee, dans un chantier visuel distinct, par `Sélection de Karine` pointant vers `/collections/selection-de-karine`.
+
+Premier lot de correction : retirer `Cadeaux > Rentrée en Sodalite`, rendre `/collections/par-pierre-sodalite` intemporelle et relier l entree Sodalite du guide A a Z a cette landing. Le defaut A a Z est confirme en production : `templates/page.milaura-guide-pierres.json` laisse le champ `link` vide, donc le theme rend un `span` statique. Les videos et posters `landing-v2` Sodalite restent utilises et doivent etre preserves. Les anciens medias `hero-v4` de la home sont des candidats a une suppression ciblee seulement apres audit local et distant.
+
+La landing Automne `/collections/selection-automne` reste live sur le theme `190430282075`. Aucun fichier theme, Admin Shopify, collection, produit, canal, Ads ou Pinterest n a ete modifie pendant cette cloture documentaire. Le checkout principal est sale avec des changements concurrents et ne doit pas etre utilise pour reprendre ce chantier.
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-23-0723-selections-saisonnieres-handoff.md. Commence en lecture seule et dans un worktree dedie. Premier lot : retire Cadeaux > Rentrée en Sodalite, rends la landing /collections/par-pierre-sodalite intemporelle et rends Sodalite cliquable dans le guide A-Z. Preserve les medias landing-v2. Le futur hub footer s appelle exactement « Sélections saisonnières ». Le remplacement de la section Aigue-marine par « Sélection de Karine » est un chantier visuel distinct. Aucun push live par deduction.
+```
+
 ## Chantier actif : Home Occasion et Pierre du moment
 
 Date de decision : 2026-09-22
