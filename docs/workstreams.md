@@ -145,6 +145,15 @@ Ce fichier est le registre obligatoire avant toute edition parallele. Une ligne 
 
 ## Sessions declarees
 
+### Reaudit catalogue et categories apres releases saisonnieres du 2026-09-23
+
+- Proprietaire : Codex, reprise directe demandee par Patrice le 2026-09-23 depuis `docs/checkpoints/2026-09-23-0827-catalogue-audit-post-seasonal-handoff.md`.
+- Branche et worktree : `codex/milaura-catalogue-reaudit-20260923`, `/Users/paesano/Documents/MilAura website/_worktrees/catalogue-reaudit-20260923`, base exacte `d48f4bbc`.
+- Perimetre reserve : nouveau rapport et six matrices sous `docs/audits/2026-09-23-catalogue-category-completeness/`, le checkpoint propre au reaudit et cette entree de registre.
+- Phase courante : lecture seule Shopify Admin, storefront public, sitemap, collections, annuaire A a Z et comparaison avec l audit du 2026-09-22. Aucun produit, tag, metafield, rattachement, statut, stock, collection, navigation, fichier theme, theme Shopify ou canal ne peut etre modifie dans cette phase.
+- Exclusions absolues : ne jamais restaurer `templates/collection.selection-de-karine.json` ni les anciens medias Sodalite supprimes ; ne pas reprendre les fichiers de la session de polish visuel ; conserver les 7 brouillons en statut `DRAFT` ; ne pas merger ou rebaser le commit documentaire `c5a41ff0` par-dessus l integration.
+- Etat au 2026-09-23 08:56 CEST : `REAUDIT TERMINE EN LECTURE SEULE, PLAN P1 PRET`. Les six matrices et le rapport sont ecrits sous `docs/audits/2026-09-23-catalogue-category-completeness/`. Etat courant : 241 actifs, 531 brouillons, 70 collections publiques, 41 lacunes landing pierre, 9 lacunes commerciales, 30 landings non reliees depuis A a Z, 2 liens internes 404 et 241 PDP sans schema Product. Les 7 anciens brouillons sont deja actifs et publics ; aucune action de statut n a ete executee. Aucun produit, tag, metafield, rattachement, collection, navigation, fichier theme ou theme Shopify modifie. Checkpoint : `docs/checkpoints/2026-09-23-0856-catalogue-reaudit-plan.md`.
+
 ### Bibliotheque saisonniere, Sodalite permanente et Selection de Karine du 2026-09-23
 
 - Proprietaire : Codex, reprise directe demandee par Patrice le 2026-09-23 depuis le handoff `docs/checkpoints/2026-09-23-0723-selections-saisonnieres-handoff.md`.
