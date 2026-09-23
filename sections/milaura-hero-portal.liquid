@@ -7,13 +7,21 @@
   assign hero_cta_label = section.settings.cta_label | default: 'Découvrir nos bijoux'
   assign hero_default_link = routes.collections_url | append: '/bijoux-pierres-naturelles'
   assign hero_cta_link = section.settings.cta_link | default: hero_default_link
+  assign hero_heading_tag = section.settings.heading_level | default: 'h1'
+  assign hero_image_loading = 'eager'
+  assign hero_image_priority = 'high'
+
+  if hero_heading_tag == 'h2'
+    assign hero_image_loading = 'lazy'
+    assign hero_image_priority = 'auto'
+  endif
 -%}
 
 {%- style -%}
   #MainContent > .shopify-section.milaura-hero-homepage {
     position: relative;
     z-index: 2;
-    margin-top: calc(var(--header-height-desktop, 110px) * -1) !important;
+    margin-top: 0 !important;
     overflow: visible;
     background: var(--milaura-aigue-profonde);
   }
@@ -27,6 +35,12 @@
     background: var(--milaura-aigue-ecume);
     font-family: var(--milaura-font-texte);
   }
+
+  {%- if hero_heading_tag == 'h2' -%}
+    #MilauraPortal-{{ section.id }} {
+      min-height: clamp(560px, 72svh, 720px);
+    }
+  {%- endif -%}
 
   #MilauraPortal-{{ section.id }} * {
     box-sizing: border-box;
@@ -219,21 +233,17 @@
     color: var(--milaura-prune) !important;
   }
 
-  @media screen and (max-width: 1100px) {
-    #MainContent > .shopify-section.milaura-hero-homepage {
-      margin-top: calc(var(--header-height-tablet, 88px) * -1) !important;
-    }
-  }
-
   @media screen and (max-width: 820px) {
-    #MainContent > .shopify-section.milaura-hero-homepage {
-      margin-top: calc(var(--header-height-mobile, 80px) * -1) !important;
-    }
-
     #MilauraPortal-{{ section.id }} {
       min-height: calc(100svh - var(--milaura-announcement-height, 52px));
       background: var(--milaura-aigue-ecume);
     }
+
+    {%- if hero_heading_tag == 'h2' -%}
+      #MilauraPortal-{{ section.id }} {
+        min-height: clamp(560px, 76svh, 680px);
+      }
+    {%- endif -%}
 
     #MilauraPortal-{{ section.id }} .portal-hero__image {
       object-position: center;
@@ -311,12 +321,6 @@
     }
   }
 
-  @media screen and (max-width: 480px) {
-    #MainContent > .shopify-section.milaura-hero-homepage {
-      margin-top: -74px !important;
-    }
-  }
-
   @media screen and (max-width: 360px) {
     #MilauraPortal-{{ section.id }} .portal-hero__copy {
       width: calc(100% - 36px);
@@ -374,8 +378,8 @@
         width="1672"
         height="941"
         alt="{{ hero_image_alt | escape }}"
-        loading="eager"
-        fetchpriority="high"
+        loading="{{ hero_image_loading }}"
+        fetchpriority="{{ hero_image_priority }}"
         decoding="async"
       >
     </picture>
@@ -388,9 +392,9 @@
     <div class="portal-hero__identity">
       <p class="portal-hero__eyebrow">{{ hero_eyebrow | escape }}</p>
     </div>
-    <h1 class="portal-hero__title" id="MilauraPortalTitle-{{ section.id }}">
+    <{{ hero_heading_tag }} class="portal-hero__title" id="MilauraPortalTitle-{{ section.id }}">
       <span class="portal-hero__title-line">{{ hero_title | escape }}</span>
-    </h1>
+    </{{ hero_heading_tag }}>
     {%- if hero_cta_label != blank -%}
       <a
         class="milaura-action milaura-action--editorial portal-hero__cta"
@@ -426,7 +430,6 @@
     };
 
     if (header) {
-      header.classList.add('milaura-home-hero-nav');
       updateHeader();
       window.addEventListener('scroll', scheduleHeaderUpdate, {
         passive: true,
@@ -442,7 +445,7 @@
         controller.abort();
         if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
         if (header) {
-          header.classList.remove('milaura-home-hero-nav', 'is-home-hero-scrolled');
+          header.classList.remove('is-home-hero-scrolled');
         }
       },
       { signal: controller.signal }
@@ -456,6 +459,16 @@
   "tag": "section",
   "class": "milaura-hero-homepage",
   "settings": [
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Niveau du titre",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" }
+      ],
+      "default": "h1"
+    },
     {
       "type": "header",
       "content": "Message de marque"

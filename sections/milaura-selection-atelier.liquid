@@ -15,6 +15,15 @@
   assign campaign_art_tertiary = section.settings.campaign_art_tertiary
   assign campaign_art_quaternary = section.settings.campaign_art_quaternary
   assign campaign_has_art = false
+  assign campaign_heading_tag = 'h2'
+  assign campaign_image_loading = 'lazy'
+  assign campaign_image_priority = 'auto'
+
+  if section.settings.homepage_hero
+    assign campaign_heading_tag = 'h1'
+    assign campaign_image_loading = 'eager'
+    assign campaign_image_priority = 'high'
+  endif
 
   if campaign_art_composite != blank or campaign_art_primary != blank or campaign_art_secondary != blank or campaign_art_tertiary != blank or campaign_art_quaternary != blank
     assign campaign_has_art = true
@@ -36,11 +45,59 @@
   <script src="{{ 'milaura-home-seasonal-media.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
+{%- if section.settings.homepage_hero -%}
+  {%- style -%}
+    #shopify-section-{{ section.id }} {
+      position: relative;
+      z-index: 2;
+      margin-top: calc(var(--header-height-desktop, 110px) * -1) !important;
+      overflow: visible;
+    }
 
-{% render 'milaura-home-transition', tone: 'nacre' %}
+    @media screen and (min-width: 990px) {
+      #MilauraSelection-{{ section.id }} .milaura-season__campaign,
+      #MilauraSelection-{{ section.id }} .milaura-season__media,
+      #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
+        min-height: calc(100svh - var(--milaura-announcement-height, 48px));
+      }
+
+      #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
+        aspect-ratio: auto;
+      }
+    }
+
+    @media screen and (max-width: 1100px) {
+      #shopify-section-{{ section.id }} {
+        margin-top: calc(var(--header-height-tablet, 88px) * -1) !important;
+      }
+    }
+
+    @media screen and (max-width: 820px) {
+      #shopify-section-{{ section.id }} {
+        margin-top: calc(var(--header-height-mobile, 80px) * -1) !important;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
+        top: calc(var(--header-height-mobile, 80px) + var(--milaura-esp-xs));
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      #shopify-section-{{ section.id }} {
+        margin-top: -74px !important;
+      }
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
+{%- unless section.settings.homepage_hero -%}
+  {% render 'milaura-home-transition', tone: 'nacre' %}
+{%- endunless -%}
 <section
   id="MilauraSelection-{{ section.id }}"
-  class="milaura-season{% if selected_count > 0 %} milaura-season--has-products{% endif %}"
+  class="milaura-season{% if selected_count > 0 %} milaura-season--has-products{% endif %}{% if section.settings.homepage_hero %} milaura-season--homepage-hero{% endif %}"
   aria-labelledby="{{ selection_title_id }}"
   {% if section.settings.homepage_selection_anchor %}data-homepage-selection-anchor{% endif %}
 >
@@ -59,7 +116,8 @@
                 width="1280"
                 height="720"
                 alt=""
-                loading="lazy"
+                loading="{{ campaign_image_loading }}"
+                fetchpriority="{{ campaign_image_priority }}"
                 decoding="async"
               >
             </picture>
@@ -94,7 +152,8 @@
                 width="1672"
                 height="941"
                 alt="{{ section.settings.campaign_media_description | escape }}"
-                loading="lazy"
+                loading="{{ campaign_image_loading }}"
+                fetchpriority="{{ campaign_image_priority }}"
                 decoding="async"
               >
             </picture>
@@ -118,7 +177,8 @@
                 alt=""
                 width="1536"
                 height="1024"
-                loading="lazy"
+                loading="{{ campaign_image_loading }}"
+                fetchpriority="{{ campaign_image_priority }}"
                 decoding="async"
               >
             </picture>
@@ -129,7 +189,8 @@
               alt=""
               width="1000"
               height="1250"
-              loading="lazy"
+              loading="{{ campaign_image_loading }}"
+              fetchpriority="{{ campaign_image_priority }}"
               decoding="async"
             >
           {%- endif -%}
@@ -140,7 +201,8 @@
               alt=""
               width="1000"
               height="1250"
-              loading="lazy"
+              loading="{{ campaign_image_loading }}"
+              fetchpriority="{{ campaign_image_priority }}"
               decoding="async"
             >
           {%- endif -%}
@@ -151,7 +213,8 @@
               alt=""
               width="1000"
               height="1250"
-              loading="lazy"
+              loading="{{ campaign_image_loading }}"
+              fetchpriority="{{ campaign_image_priority }}"
               decoding="async"
             >
           {%- endif -%}
@@ -162,7 +225,8 @@
               alt=""
               width="1000"
               height="1000"
-              loading="lazy"
+              loading="{{ campaign_image_loading }}"
+              fetchpriority="{{ campaign_image_priority }}"
               decoding="async"
             >
           {%- endif -%}
@@ -175,12 +239,12 @@
             <p class="milaura-season__eyebrow milaura-section-label">{{ section.settings.campaign_eyebrow | escape }}</p>
           {%- endif -%}
 
-          <h2 id="{{ selection_title_id }}" class="milaura-season__title milaura-section-title">
+          <{{ campaign_heading_tag }} id="{{ selection_title_id }}" class="milaura-season__title milaura-section-title">
             <span class="milaura-season__title-main">{{ section.settings.campaign_title | escape }}</span>
             {%- if section.settings.campaign_title_secondary != blank -%}
               <span class="milaura-season__title-secondary">{{ section.settings.campaign_title_secondary | escape }}</span>
             {%- endif -%}
-          </h2>
+          </{{ campaign_heading_tag }}>
         </div>
 
         {%- if section.settings.campaign_description != blank -%}
@@ -236,6 +300,12 @@
       "id": "homepage_selection_anchor",
       "label": "Cible du CTA de la page d'accueil",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "homepage_hero",
+      "label": "Utiliser comme hero de la page d'accueil",
+      "default": false
     },
     {
       "type": "text",
