@@ -16,7 +16,9 @@ La landing Automne `/collections/selection-automne` reste live sur le theme `190
 Reprends MilAura depuis docs/checkpoints/2026-09-23-0723-selections-saisonnieres-handoff.md. Commence en lecture seule et dans un worktree dedie. Premier lot : retire Cadeaux > Rentrée en Sodalite, rends la landing /collections/par-pierre-sodalite intemporelle et rends Sodalite cliquable dans le guide A-Z. Preserve les medias landing-v2. Le futur hub footer s appelle exactement « Sélections saisonnières ». Le remplacement de la section Aigue-marine par « Sélection de Karine » est un chantier visuel distinct. Aucun push live par deduction.
 ```
 
-## Chantier actif : Home Occasion et Pierre du moment
+## Historique : ancienne decision Home Occasion et Pierre du moment
+
+Le bloc courant ci-dessus et le checkpoint du 2026-09-23 remplacent les instructions de reprise de cet historique. En particulier, ne pas remettre en place `Pierre du moment` sur la home : la decision la plus recente est de remplacer la section Aigue-marine par `Sélection de Karine`. Le contrat et le registre encore bases sur `Pierre du moment` doivent etre corriges dans le prochain worktree avant toute implementation.
 
 Date de decision : 2026-09-22
 
