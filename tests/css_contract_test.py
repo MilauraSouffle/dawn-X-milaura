@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CSS_FILES = (
     ROOT / "assets/milaura-destination-landing.css",
     ROOT / "assets/milaura-home-seasonal.css",
+    ROOT / "assets/milaura-home-transitions.css",
     ROOT / "assets/milaura-home-karine-selection.css",
 )
 
