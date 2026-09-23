@@ -11,7 +11,7 @@ La rehabilitation CSS, le polish des landings Sodalite et Automne et la restruct
 - Theme public : `190430282075`.
 - Theme prive de recette : `201797534043`.
 - Source fonctionnelle : `fdf7f19d`.
-- Integration et documentation : `63b78efd`, poussee sur `origin/codex/milaura-integration`.
+- Integration de release et documentation : `63b78efd`. Le present handoff est pousse ensuite sur `origin/codex/milaura-integration`.
 - Branche fonctionnelle : `codex/milaura-css-foundations-20260923`, propre et alignee sur origin a `fdf7f19d`.
 - Preuve de release : `docs/checkpoints/2026-09-23-1748-homepage-restructure-live.md`.
 
@@ -44,7 +44,7 @@ Aucun produit, prix, stock, collection, media produit, Shopify Admin, Search and
 
 ## Etat Git et reprise
 
-Le checkout d integration est aligne sur `origin/codex/milaura-integration` a `63b78efd`, mais reste sale avec des modifications documentaires et exports concurrents anterieurs ou paralleles. Ils sont preserves et ne doivent pas etre nettoyes, reinitialises ou stages globalement.
+Le checkout d integration est aligne sur `origin/codex/milaura-integration`, mais reste sale avec des modifications documentaires et exports concurrents anterieurs ou paralleles. Ils sont preserves et ne doivent pas etre nettoyes, reinitialises ou stages globalement.
 
 La refonte est fermee. Ne redeployer aucun fichier par deduction. Une future retouche repart en lecture seule du storefront public et de la branche d integration distante, dans un nouveau worktree et une preview privee. Les anciennes previews peuvent etre en retard sur le live.
 
