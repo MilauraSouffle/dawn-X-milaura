@@ -554,3 +554,11 @@ Procedure detaillee : `docs/reference/2026-08-12-repository-workflow.md`.
 - Perimetre actif V8 : `assets/milaura-home-seasonal-media.js`, `assets/milaura-home-seasonal.css`, `sections/milaura-selection-atelier.liquid`, `templates/index.json`, quatre actifs branche et flaque V6, plus documentation associee.
 - Direction : conserver la branche et les deux bracelets suspendus valides, placer la flaque et les boucles au bord inferieur, adapter cette composition au mobile, puis appliquer le hook valide `L automne vous va si bien`.
 - Etat au 2026-09-24 11:34 CEST : `FERME, INTEGRE, LIVE ET VERIFIE`. Commit `9ed6cee2` integre et pousse sur `codex/milaura-integration`. Huit fichiers publies par push cible sur le theme public `190430282075`, pullback `8/8` identique. QA publique sans preview en `390 x 844` et `1440 x 900` : aucun debordement, nouveau hook et quatre actifs responsive charges, video active et boucle confirmee apres plus de huit secondes. Deux essais Higgsfield Kling ont coute 32 credits ; aucun rendu Higgsfield n est actif dans le template. Aucun produit, prix, stock, media produit, Shopify Admin ou Ads modifie. [Checkpoint](checkpoints/2026-09-24-1130-autumn-home-hero-v8-release.md).
+
+## Hotfix Hero Home Automne mobile du 2026-09-24
+
+- Proprietaire : Codex, correction immediate demandee par Patrice apres controle du live mobile.
+- Branche et worktree : `codex/milaura-autumn-mobile-live-hotfix-20260924`, `/Users/paesano/Documents/MilAura website/_worktrees/autumn-hero-v4-20260924`.
+- Perimetre reserve : `assets/milaura-home-seasonal.css`, `sections/milaura-selection-atelier.liquid`, documentation et checkpoint du hotfix. Le desktop valide reste strictement inchange.
+- Direction : un seul hero mobile bord a bord ; texte, description et CTA superposes dans la composition ; flaque agrandie jusqu aux bords ; commande video remplacee par un bouton iconique discret de 44px.
+- Etat au 2026-09-24 11:43 CEST : `PREVIEW MOBILE PASS, HOTFIX LIVE AUTORISE`. Theme prive `201797534043`, hero unique de `920px`, fond et calques bord a bord, copie complete superposee, CTA de `48px`, controle iconique de `44px`, aucun debordement a `390 x 844`. Desktop `1440 x 900` inchange. Theme Check sans erreur avec seize avertissements historiques hors lot ; contrat CSS PASS. [Checkpoint](checkpoints/2026-09-24-1143-autumn-home-mobile-hotfix.md).
