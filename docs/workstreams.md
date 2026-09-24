@@ -1,3 +1,15 @@
+## Conversion Automne et reprise Pinterest du 2026-09-24
+
+- Proprietaire : Codex, apres GO exact de Patrice `GO CORRECTIONS AUTOMNE + PROGRAMMATION FP03-FP06 + PREPARATION ADS`.
+- Branche et worktree : `codex/milaura-autumn-conversion-pinterest-20260924`, `/Users/paesano/.codex/worktrees/autumn-conversion-pinterest/dawn-X-milaura`, base `356d22c4` alignee sur `origin/codex/milaura-integration`.
+- Perimetre theme reserve : `sections/milaura-sodalite-landing.liquid`, `assets/milaura-destination-landing.css`, `templates/collection.selection-automne.json`, `sections/footer-group.json`, tests et documentation propres au lot.
+- Direction : rendre l acces au catalogue visible dans le hero mobile, placer prix et action Iris avant le texte long, et retirer du footer public le concours termine le 2026-09-19 en revenant au module newsletter deja configure.
+- Pinterest : programmer uniquement FP03 Quartz rose, FP06 Labradorite, FP04 Sodalite et FP05 Aigue-marine sur `Fiches pierres : vertus & bienfaits`, sans recreer FP01 ou FP02, apres controle des produits, medias, liens UTM et horaires futurs.
+- Ads : preparation uniquement. Aucune activation, aucun budget et aucune nouvelle depense sans GO Ads distinct apres validation Purchase, stock, marge et landing.
+- Theme de recette : developpement `201797534043`, libere par les lots Automne precedents. Theme public `190430282075` exclu jusqu a PASS technique, GO visuel Patrice et GO live distinct.
+- Etat initial : `EN COURS`. Checkout principal sale preserve ; aucun fichier reserve par le Hero Home Automne V8 n est modifie.
+- Etat au 2026-09-24 18:13 CEST : `PREVIEW TECHNIQUE PASS, PINTEREST PROGRAMME, ADS PREPAREES, GO LIVE EN ATTENTE`. Le hero landing expose maintenant `Voir les bijoux` dans le premier ecran mobile, le prix et le CTA Iris precedent le texte long, et le footer revient au module newsletter configure. Theme prive `201797534043` : QA `390 x 844` et `1440 x 900` sans debordement, pullback `4/4` identique, test de contrat et test CSS PASS, Theme Check sans erreur avec 16 avertissements historiques hors lot. FP03, FP06, FP04 et FP05 sont verifies dans la file Pinterest aux 2026-09-25 09:00, 14:00, 20:30 puis 2026-09-26 09:00, heure de Paris. La campagne Ads est documentee mais non creee, non active et sans budget. Theme public `190430282075` intact. [Checkpoint](checkpoints/2026-09-24-1813-autumn-conversion-pinterest-scheduled.md).
+
 ## Recomposition du hero Automne du 2026-09-24
 
 - Proprietaire : Codex, demande directe de Patrice apres revue du hero public sur la Home.
