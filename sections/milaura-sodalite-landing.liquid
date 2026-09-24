@@ -15,6 +15,8 @@
   assign campaign_poster_mobile = section.settings.campaign_poster_mobile | default: campaign_poster_desktop
   assign campaign_art_composite = section.settings.campaign_art_composite
   assign campaign_art_composite_mobile = section.settings.campaign_art_composite_mobile | default: campaign_art_composite
+  assign campaign_art_accent = section.settings.campaign_art_accent
+  assign campaign_art_accent_mobile = section.settings.campaign_art_accent_mobile | default: campaign_art_accent
   assign star_image_media = featured_product.media | where: 'media_type', 'image'
   assign star_primary_media = star_image_media[0] | default: featured_product.featured_media
   assign star_secondary_media = star_image_media[1]
@@ -42,7 +44,7 @@
 
 <div
   id="MilauraSeasonalCollection-{{ section.id }}"
-  class="milaura-sodalite-landing milaura-destination-landing"
+  class="milaura-sodalite-landing milaura-destination-landing{% if campaign_art_accent != blank %} milaura-destination-landing--split-art{% endif %}{% if section.settings.compact_featured %} milaura-destination-landing--star-compact{% endif %}{% if section.settings.white_background %} milaura-destination-landing--white{% endif %}"
   {% if section.settings.star_material_asset != blank %}
     style="--milaura-destination-star-material: url('{{ section.settings.star_material_asset | asset_url }}');"
   {% endif %}
@@ -55,7 +57,12 @@
         {%- endif -%}
 
         <h1 id="{{ seasonal_title_id }}" class="milaura-sodalite-intro__title">
-          <span class="milaura-sodalite-intro__title-main">{{ section.settings.campaign_title | escape }}<span aria-hidden="true">,</span></span>
+          {%- if section.settings.campaign_title != blank -%}
+            <span class="milaura-sodalite-intro__title-main">
+              {{- section.settings.campaign_title | escape -}}
+              {%- if section.settings.campaign_title_secondary != blank -%}<span aria-hidden="true">,</span>{%- endif -%}
+            </span>
+          {%- endif -%}
           {%- if section.settings.campaign_title_secondary != blank -%}
             <span class="milaura-sodalite-intro__title-secondary">{{ section.settings.campaign_title_secondary | escape }}</span>
           {%- endif -%}
@@ -65,6 +72,19 @@
       <figure class="milaura-sodalite-intro__media">
         <div class="milaura-sodalite-intro__media-frame"{% if campaign_video_desktop != blank %} data-milaura-sodalite-landing-media{% endif %}>
           {%- if campaign_video_desktop != blank -%}
+            <picture class="milaura-sodalite-intro__picture milaura-sodalite-intro__fallback" aria-hidden="true">
+              <source media="(max-width: 749px)" srcset="{{ campaign_poster_mobile | asset_url }}">
+              <img
+                class="milaura-sodalite-intro__image"
+                src="{{ campaign_poster_desktop | asset_url }}"
+                width="1280"
+                height="720"
+                alt=""
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              >
+            </picture>
             <video
               class="milaura-sodalite-intro__video"
               poster="{{ campaign_poster_desktop | asset_url }}"
@@ -88,6 +108,13 @@
               data-milaura-sodalite-landing-toggle
             >
               <span data-milaura-sodalite-landing-toggle-label>Lire</span>
+              <svg class="milaura-sodalite-intro__media-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path class="milaura-sodalite-intro__media-toggle-play" d="M8.5 6.6v10.8L17 12 8.5 6.6Z" fill="currentColor"/>
+                <g class="milaura-sodalite-intro__media-toggle-pause" fill="currentColor">
+                  <rect x="7" y="6" width="3.5" height="12" rx="0.8"/>
+                  <rect x="13.5" y="6" width="3.5" height="12" rx="0.8"/>
+                </g>
+              </svg>
             </button>
           {%- else -%}
             <picture class="milaura-sodalite-intro__picture">
@@ -104,20 +131,55 @@
             </picture>
           {%- endif -%}
           {%- if campaign_art_composite != blank -%}
-            <picture class="milaura-sodalite-intro__product-art" aria-hidden="true">
-              {%- if campaign_art_composite_mobile != blank -%}
-                <source media="(max-width: 749px)" srcset="{{ campaign_art_composite_mobile | asset_url }}">
+            <div class="milaura-sodalite-intro__product-art" aria-hidden="true">
+              <picture class="milaura-sodalite-intro__product-art-composite">
+                {%- if campaign_art_composite_mobile != blank -%}
+                  <source media="(max-width: 749px)" srcset="{{ campaign_art_composite_mobile | asset_url }}">
+                {%- endif -%}
+                <img
+                  class="milaura-sodalite-intro__product-art-image"
+                  src="{{ campaign_art_composite | asset_url }}"
+                  width="1536"
+                  height="1024"
+                  alt=""
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                >
+              </picture>
+              {%- if campaign_art_accent != blank -%}
+                <picture class="milaura-sodalite-intro__product-art-water">
+                  {%- if campaign_art_composite_mobile != blank -%}
+                    <source media="(max-width: 749px)" srcset="{{ campaign_art_composite_mobile | asset_url }}">
+                  {%- endif -%}
+                  <img
+                    class="milaura-sodalite-intro__product-art-water-image"
+                    src="{{ campaign_art_composite | asset_url }}"
+                    width="1536"
+                    height="1024"
+                    alt=""
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                  >
+                </picture>
+                <picture class="milaura-sodalite-intro__product-art-accent">
+                  {%- if campaign_art_accent_mobile != blank -%}
+                    <source media="(max-width: 749px)" srcset="{{ campaign_art_accent_mobile | asset_url }}">
+                  {%- endif -%}
+                  <img
+                    class="milaura-sodalite-intro__product-art-accent-image"
+                    src="{{ campaign_art_accent | asset_url }}"
+                    width="1536"
+                    height="1024"
+                    alt=""
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                  >
+                </picture>
               {%- endif -%}
-              <img
-                class="milaura-sodalite-intro__product-art-image"
-                src="{{ campaign_art_composite | asset_url }}"
-                width="1536"
-                height="1024"
-                alt=""
-                loading="eager"
-                fetchpriority="high"
-              >
-            </picture>
+            </div>
           {%- endif -%}
         </div>
         {%- if campaign_video_desktop != blank -%}
@@ -132,32 +194,36 @@
           <div class="milaura-sodalite-intro__text">{{ section.settings.campaign_text }}</div>
         {%- endif -%}
 
-        <div class="milaura-sodalite-intro__meta" aria-label="Repères de la sélection">
-          {%- if section.settings.edition_label != blank -%}
-            <span>{{ section.settings.edition_label | escape }}</span>
-          {%- endif -%}
-          {%- if section.settings.meta_label_1 != blank -%}
-            <span>{{ section.settings.meta_label_1 | escape }}</span>
-          {%- endif -%}
-          {%- if section.settings.meta_label_2 != blank -%}
-            <span>{{ section.settings.meta_label_2 | escape }}</span>
-          {%- endif -%}
-        </div>
+        {%- if section.settings.edition_label != blank or section.settings.meta_label_1 != blank or section.settings.meta_label_2 != blank -%}
+          <div class="milaura-sodalite-intro__meta" aria-label="Repères de la sélection">
+            {%- if section.settings.edition_label != blank -%}
+              <span>{{ section.settings.edition_label | escape }}</span>
+            {%- endif -%}
+            {%- if section.settings.meta_label_1 != blank -%}
+              <span>{{ section.settings.meta_label_1 | escape }}</span>
+            {%- endif -%}
+            {%- if section.settings.meta_label_2 != blank -%}
+              <span>{{ section.settings.meta_label_2 | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </section>
 
   {%- if featured_product != blank -%}
     <section class="milaura-sodalite-star" aria-labelledby="{{ star_title_id }}">
-      <header class="milaura-sodalite-star__heading">
-        {%- if section.settings.star_label != blank -%}
-          <p class="milaura-sodalite-star__eyebrow">{{ section.settings.star_label | escape }}</p>
-        {%- endif -%}
+      {%- unless section.settings.star_heading_in_copy -%}
+        <header class="milaura-sodalite-star__heading">
+          {%- if section.settings.star_label != blank -%}
+            <p class="milaura-sodalite-star__eyebrow">{{ section.settings.star_label | escape }}</p>
+          {%- endif -%}
 
-        <h2 id="{{ star_title_id }}" class="milaura-sodalite-star__title">
-          {{ featured_heading | escape }}
-        </h2>
-      </header>
+          <h2 id="{{ star_title_id }}" class="milaura-sodalite-star__title">
+            {{ featured_heading | escape }}
+          </h2>
+        </header>
+      {%- endunless -%}
 
       <div class="milaura-sodalite-star__shell">
         <a
@@ -212,6 +278,18 @@
         </a>
 
         <div class="milaura-sodalite-star__copy">
+          {%- if section.settings.star_heading_in_copy -%}
+            <header class="milaura-sodalite-star__heading milaura-sodalite-star__heading--in-copy">
+              {%- if section.settings.star_label != blank -%}
+                <p class="milaura-sodalite-star__eyebrow">{{ section.settings.star_label | escape }}</p>
+              {%- endif -%}
+
+              <h2 id="{{ star_title_id }}" class="milaura-sodalite-star__title">
+                {{ featured_heading | escape }}
+              </h2>
+            </header>
+          {%- endif -%}
+
           {%- if section.settings.star_text != blank -%}
             <div class="milaura-sodalite-star__text">{{ section.settings.star_text }}</div>
           {%- endif -%}
@@ -227,7 +305,7 @@
     </section>
   {%- endif -%}
 
-  <section class="milaura-sodalite-catalogue" aria-labelledby="{{ catalogue_title_id }}">
+  <section id="MilauraSeasonalCatalogue" class="milaura-sodalite-catalogue" aria-labelledby="{{ catalogue_title_id }}">
     <div class="milaura-sodalite-catalogue__shell">
       <header class="milaura-sodalite-catalogue__head">
         <div>
@@ -316,6 +394,16 @@
     },
     {
       "type": "text",
+      "id": "campaign_art_accent",
+      "label": "Accent suspendu desktop"
+    },
+    {
+      "type": "text",
+      "id": "campaign_art_accent_mobile",
+      "label": "Accent suspendu mobile"
+    },
+    {
+      "type": "text",
       "id": "campaign_media_alt",
       "label": "Description du rappel visuel"
     },
@@ -387,6 +475,24 @@
       "id": "star_cta_label",
       "label": "CTA du produit star",
       "default": "Découvrir le bracelet"
+    },
+    {
+      "type": "checkbox",
+      "id": "star_heading_in_copy",
+      "label": "Placer le titre dans le bloc de conversion",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "compact_featured",
+      "label": "Compacter le produit star",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "white_background",
+      "label": "Utiliser un fond blanc pur",
+      "default": false
     },
     {
       "type": "checkbox",
