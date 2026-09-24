@@ -119,7 +119,8 @@ QA preview : theme prive `201797534043`, bureau `1440 x 900` et mobile `390 x 84
 - CTA : `DECOUVRIR LA SELECTION`.
 - Mobile : branche et deux bracelets dans la moitie haute, flaque et boucles au bord inferieur, puis copie sous le media. Aucun bijou ne masque le texte.
 - QA privee `390 x 844` et `1440 x 900` : aucun debordement, video en lecture et boucle automatique confirmee apres plus de huit secondes.
-- Pullback prive `8/8` identique. Le theme public reste intact avant la release ciblee.
+- Pullback prive `8/8` identique.
+- Release live a 11:34 CEST : commit `9ed6cee2`, push cible de huit fichiers sur `190430282075`, pullback live `8/8` identique et QA publique sans preview en `390 x 844` puis `1440 x 900`.
 - Preuve : [checkpoint V8](../../checkpoints/2026-09-24-1130-autumn-home-hero-v8-release.md).
 
 ## Produits rendus dans la landing

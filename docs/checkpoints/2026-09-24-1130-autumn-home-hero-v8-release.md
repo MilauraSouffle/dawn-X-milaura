@@ -2,7 +2,7 @@
 
 Date : 2026-09-24 11:30 CEST
 
-Statut : `GO VISUEL PATRICE RECU, PREVIEW RESPONSIVE PASS, RELEASE LIVE AUTORISEE`
+Statut : `FERME, INTEGRE, LIVE ET VERIFIE`
 
 ## Direction validee
 
@@ -48,6 +48,14 @@ Le theme conserve les apostrophes et accents francais dans le texte public ; ils
 
 Patrice a valide le hook, demande la version mobile, puis autorise explicitement le commit, le push et le deploiement live le 2026-09-24.
 
-## Suite
+## Release live
 
-Commit et push de la branche, integration dans `codex/milaura-integration`, push cible `--allow-live --nodelete --strict`, pullback exact et QA publique mobile et desktop. Le statut LIVE sera ajoute apres ces preuves.
+- Commit de fonctionnalite : `9ed6cee2`.
+- Branche `codex/milaura-autumn-hero-v4-20260924` poussee, puis integration en avance rapide dans `codex/milaura-integration` et push origin.
+- Theme public : `190430282075`.
+- Push cible de huit fichiers avec `--allow-live --nodelete --strict`.
+- Snapshot avant remplacement des quatre fichiers existants : `/private/tmp/milaura-autumn-live-before-8JFgPj`.
+- Pullback apres deploiement : `/private/tmp/milaura-autumn-live-pullback-Ar6ia5`, `8/8` identique.
+- QA publique sans barre de preview a `390 x 844` et `1440 x 900` : aucun debordement, H1 et medias servis, quatre actifs responsive charges, video active avec `loop=true`.
+- Boucle publique confirmee apres `8,5s` : temps video passe de `0,35s` a `0,86s`, lecture toujours active.
+- Aucun produit, prix, stock, media produit, Shopify Admin ou Ads modifie.
