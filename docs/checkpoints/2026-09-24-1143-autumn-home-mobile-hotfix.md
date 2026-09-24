@@ -2,7 +2,7 @@
 
 Date : 2026-09-24 11:43 CEST
 
-Statut : `PREVIEW MOBILE PASS, HOTFIX LIVE AUTORISE`
+Statut : `FERME, INTEGRE, LIVE ET VERIFIE`
 
 ## Retour corrige
 
@@ -32,6 +32,25 @@ Statut : `PREVIEW MOBILE PASS, HOTFIX LIVE AUTORISE`
 - `git diff --check` : PASS.
 - Theme Check : zero erreur et seize avertissements historiques hors lot.
 
+## Integration et release live
+
+- Commit theme : `317e6214` (`fix: unify autumn hero on mobile`).
+- Branche hotfix poussee : `codex/milaura-autumn-mobile-live-hotfix-20260924`.
+- Integration fast-forward et push sur `codex/milaura-integration`.
+- Theme public : `190430282075`.
+- Push cible sans suppression : `assets/milaura-home-seasonal.css` et `sections/milaura-selection-atelier.liquid` uniquement.
+- Pullback live : `/private/tmp/milaura-autumn-mobile-live-pullback-sihBpX`, `2/2` fichiers identiques.
+
+## QA publique apres release
+
+- Route publique : `https://milaura.fr/`, sans parametre de preview.
+- Mobile `390 x 844` : largeur document `390px`, hero `390 x 920px`, aucun debordement horizontal.
+- Copie mobile : largeur `358px`, CTA `273 x 48px`, bas du CTA a `766px`, donc au-dessus du dock fixe.
+- Controle video mobile : `44 x 44px`, pictogramme pause visible, `aria-pressed=true` et libelle accessible `Mettre la video en pause`.
+- Video mobile : lecture active et `loop=true`.
+- Desktop `1440 x 900` : largeur document `1440px`, hero `1440 x 848px`, composition conservee, pictogramme mobile masque et libelle texte `Pause` maintenu.
+- Aucun bandeau de preview detecte dans le contenu de la page.
+
 ## Gate
 
-Patrice demande explicitement la correction rapide du live. Commit, integration, push cible des deux fichiers de theme, pullback et QA publique sont autorises dans ce perimetre.
+Patrice a demande explicitement la correction rapide du live. Le hotfix a ete limite aux deux fichiers de theme nommes, puis valide par pullback et QA publique responsive.
