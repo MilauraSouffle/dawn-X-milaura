@@ -14,6 +14,12 @@
   background: var(--milaura-nacre);
 }
 
+.milaura-season.milaura-season--homepage-hero {
+  z-index: 2;
+  margin-top: calc(var(--header-height-desktop, 110px) * -1);
+  overflow: visible;
+}
+
 .milaura-season .milaura-season__shell {
   width: 100%;
   margin: 0 auto;
@@ -54,20 +60,31 @@
   mix-blend-mode: normal;
 }
 
-.milaura-season .milaura-season__product-art-composite {
+.milaura-season .milaura-season__product-art-composite,
+.milaura-season .milaura-season__product-art-accent {
   position: absolute;
   inset: 0;
   display: block;
 }
 
-.milaura-season .milaura-season__product-art-composite-image {
+.milaura-season .milaura-season__product-art-composite-image,
+.milaura-season .milaura-season__product-art-accent-image {
   position: absolute;
-  top: 1%;
-  right: -2%;
-  width: min(68vw, 1080px);
-  height: auto;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   display: block;
+  object-fit: contain;
+  object-position: right center;
   filter: saturate(1.02) contrast(1.02);
+}
+
+.milaura-season .milaura-season__product-art-composite {
+  z-index: 1;
+}
+
+.milaura-season .milaura-season__product-art-accent {
+  z-index: 4;
 }
 
 .milaura-season .milaura-season__product-art-item {
@@ -78,15 +95,16 @@
   transform-origin: center;
 }
 
-.milaura-season .milaura-season__media-frame::before {
-  content: '';
-  position: absolute;
+.milaura-season .milaura-season__product-art-item--primary {
   z-index: 2;
-  inset-block: 0;
-  left: 0;
-  width: clamp(48px, 9vw, 136px);
-  background: linear-gradient(90deg, var(--milaura-nacre-ombre) 0%, transparent 100%);
-  pointer-events: none;
+}
+
+.milaura-season .milaura-season__product-art-item--secondary {
+  z-index: 3;
+}
+
+.milaura-season .milaura-season__media-frame::before {
+  display: none;
 }
 
 .milaura-season .milaura-season__picture,
@@ -121,6 +139,7 @@
 }
 
 .milaura-season .milaura-season__media-frame[data-media-state='playing'] .milaura-season__video,
+.milaura-season .milaura-season__media-frame[data-media-state='paused'] .milaura-season__video,
 .milaura-season .milaura-season__media-frame[data-media-state='ended'] .milaura-season__video {
   opacity: 1;
 }
@@ -132,7 +151,7 @@
   bottom: clamp(16px, 3vw, 44px);
   min-width: 58px;
   min-height: 44px;
-  display: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: var(--milaura-esp-2xs) var(--milaura-esp-xs);
@@ -363,6 +382,16 @@
 }
 
 @media screen and (min-width: 990px) {
+  .milaura-season--homepage-hero .milaura-season__campaign,
+  .milaura-season--homepage-hero .milaura-season__media,
+  .milaura-season--homepage-hero .milaura-season__media-frame {
+    min-height: calc(100svh - var(--milaura-announcement-height, 48px));
+  }
+
+  .milaura-season--homepage-hero .milaura-season__media-frame {
+    aspect-ratio: auto;
+  }
+
   .milaura-season .milaura-season__campaign {
     min-height: min(56.25vw, 900px);
     background: var(--milaura-nacre-ombre);
@@ -382,14 +411,7 @@
   }
 
   .milaura-season .milaura-season__media-frame::before {
-    width: min(58vw, 900px);
-    background: linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--milaura-nacre-ombre) 98%, transparent) 0%,
-      color-mix(in srgb, var(--milaura-nacre-ombre) 88%, transparent) 48%,
-      color-mix(in srgb, var(--milaura-nacre-ombre) 44%, transparent) 76%,
-      transparent 100%
-    );
+    display: none;
   }
 
   .milaura-season .milaura-season__video,
@@ -402,12 +424,12 @@
     position: absolute;
     z-index: 3;
     inset: 0 auto 0 0;
-    width: min(48vw, 740px);
+    width: min(37vw, 560px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: 0;
-    padding: clamp(44px, 5vw, 76px) clamp(34px, 4vw, 64px) clamp(44px, 5vw, 76px) max(clamp(40px, 6vw, 88px), calc((100vw - 1440px) / 2));
+    padding: calc(var(--header-height-desktop, 110px) + clamp(24px, 3vw, 46px)) clamp(24px, 2.6vw, 42px) clamp(40px, 5vw, 72px) max(clamp(34px, 5vw, 72px), calc((100vw - 1440px) / 2));
     background: transparent;
   }
 
@@ -420,7 +442,7 @@
   }
 
   .milaura-season .milaura-season__description {
-    max-width: 36ch;
+    max-width: 32ch;
   }
 
   .milaura-season .milaura-season__featured {
@@ -436,6 +458,33 @@
   .milaura-season .milaura-season__media-toggle {
     right: clamp(18px, 2vw, 32px);
     bottom: clamp(18px, 2vw, 32px);
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-composite-image {
+    transform: translate(12%, 1%) scale(0.72);
+    transform-origin: right bottom;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-accent-image {
+    transform: translateY(4%) scale(0.8);
+    transform-origin: right top;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-item--primary {
+    top: 12%;
+    right: auto;
+    left: clamp(-228px, -13vw, -164px);
+    width: min(31vw, 470px);
+    opacity: 1;
+    transform: none;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-item--secondary {
+    top: auto;
+    right: clamp(22px, 3vw, 52px);
+    bottom: clamp(-56px, -3vw, -34px);
+    width: min(24vw, 348px);
+    transform: none;
   }
 
   .milaura-season .milaura-season__product-art-item--primary {
@@ -465,6 +514,12 @@
     bottom: clamp(-44px, -2vw, -24px);
     width: min(24vw, 350px);
     transform: rotate(8deg);
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .milaura-season.milaura-season--homepage-hero {
+    margin-top: calc(var(--header-height-tablet, 88px) * -1);
   }
 }
 
@@ -503,10 +558,39 @@
     margin-top: var(--milaura-esp-md);
   }
 
-  .milaura-season .milaura-season__product-art-composite-image {
-    top: 1%;
-    right: -8%;
-    width: 92%;
+  .milaura-season .milaura-season__product-art-composite-image,
+  .milaura-season .milaura-season__product-art-accent-image {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-position: center;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-composite-image {
+    transform: translateY(16%) scale(1.06);
+    transform-origin: center bottom;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-accent-image {
+    transform: translateY(4%) scale(0.86);
+    transform-origin: right top;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-item--primary {
+    top: 8%;
+    right: auto;
+    left: -22%;
+    width: 50%;
+    opacity: 1;
+    transform: none;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-item--secondary {
+    top: auto;
+    right: 1%;
+    bottom: -7%;
+    width: 38%;
+    transform: none;
   }
 
   .milaura-season .milaura-season__product-art-item--primary {
@@ -572,6 +656,12 @@
   }
 }
 
+@media screen and (max-width: 820px) {
+  .milaura-season.milaura-season--homepage-hero {
+    margin-top: calc(var(--header-height-mobile, 80px) * -1);
+  }
+}
+
 @media screen and (max-width: 749px) {
   .milaura-season .milaura-season__shell {
     width: 100%;
@@ -584,7 +674,7 @@
   .milaura-season .milaura-season__campaign {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto auto auto;
     color: var(--milaura-encre);
     background: var(--milaura-nacre);
   }
@@ -596,12 +686,12 @@
   }
 
   .milaura-season .milaura-season__media-frame {
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 3 / 4;
   }
 
   .milaura-season .milaura-season__product-art {
     inset: 0 0 auto;
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 3 / 4;
   }
 
   .milaura-season .milaura-season__media-frame::before {
@@ -615,32 +705,51 @@
     );
   }
 
-  .milaura-season .milaura-season__product-art::after {
-    content: '';
-    position: absolute;
-    z-index: 2;
-    inset: auto 0 0;
-    height: 44%;
-    background: linear-gradient(
-      0deg,
-      color-mix(in srgb, var(--milaura-nacre) 96%, transparent) 0%,
-      color-mix(in srgb, var(--milaura-nacre) 66%, transparent) 48%,
-      transparent 100%
-    );
-  }
-
   .milaura-season .milaura-season__product-art-item {
     z-index: 1;
   }
 
-  .milaura-season .milaura-season__product-art-composite-image {
+  .milaura-season .milaura-season__product-art-composite-image,
+  .milaura-season .milaura-season__product-art-accent-image {
     z-index: 1;
-    top: -5%;
-    left: 2%;
-    right: auto;
-    width: 96%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     max-width: none;
+    object-fit: contain;
+    object-position: center;
     filter: saturate(1.02) contrast(1.02);
+  }
+
+  .milaura-season .milaura-season__product-art-accent-image {
+    z-index: 2;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-composite-image {
+    transform: translateY(18%) scale(1.08);
+    transform-origin: center bottom;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-accent-image {
+    transform: translateY(5%) scale(0.86);
+    transform-origin: right top;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-item--primary {
+    top: 15%;
+    right: auto;
+    left: -31%;
+    width: 88%;
+    opacity: 1;
+    transform: none;
+  }
+
+  .milaura-season .milaura-season__product-art--composite .milaura-season__product-art-item--secondary {
+    top: auto;
+    right: -2%;
+    bottom: -6%;
+    width: 50%;
+    transform: none;
   }
 
   .milaura-season .milaura-season__product-art-item--primary {
@@ -671,7 +780,7 @@
 
   .milaura-season .milaura-season__media-toggle {
     right: var(--milaura-esp-xs);
-    top: var(--milaura-esp-xs);
+    top: calc(var(--header-height-mobile, 80px) + var(--milaura-esp-xs));
     bottom: auto;
   }
 
@@ -682,12 +791,12 @@
   .milaura-season .milaura-season__lead {
     z-index: 3;
     grid-column: 1;
-    grid-row: 1;
-    align-self: end;
+    grid-row: 2;
+    align-self: start;
     display: block;
     min-width: 0;
-    padding: 0 16px 36px;
-    pointer-events: none;
+    padding: 28px 16px 0;
+    pointer-events: auto;
   }
 
   .milaura-season .milaura-season__eyebrow {
@@ -702,10 +811,10 @@
 
   .milaura-season .milaura-season__description {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
     width: calc(100% - 32px);
     margin: 0 auto;
-    padding-top: 26px;
+    padding-top: 18px;
     color: var(--milaura-encre);
     opacity: 1;
   }
@@ -738,7 +847,7 @@
   .milaura-season .milaura-season__actions {
     z-index: 4;
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 4;
     align-self: start;
     justify-self: start;
     display: grid;
@@ -758,6 +867,12 @@
 
   .milaura-season .milaura-season__more-title {
     padding-inline: 18px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .milaura-season.milaura-season--homepage-hero {
+    margin-top: -74px;
   }
 }
 

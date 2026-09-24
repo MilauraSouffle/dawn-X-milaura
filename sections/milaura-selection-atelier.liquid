@@ -10,6 +10,8 @@
   assign campaign_poster_mobile = section.settings.campaign_poster_mobile | default: campaign_poster_desktop
   assign campaign_art_composite = section.settings.campaign_art_composite
   assign campaign_art_composite_mobile = section.settings.campaign_art_composite_mobile | default: campaign_art_composite
+  assign campaign_art_accent = section.settings.campaign_art_accent
+  assign campaign_art_accent_mobile = section.settings.campaign_art_accent_mobile | default: campaign_art_accent
   assign campaign_art_primary = section.settings.campaign_art_primary
   assign campaign_art_secondary = section.settings.campaign_art_secondary
   assign campaign_art_tertiary = section.settings.campaign_art_tertiary
@@ -25,7 +27,7 @@
     assign campaign_image_priority = 'high'
   endif
 
-  if campaign_art_composite != blank or campaign_art_primary != blank or campaign_art_secondary != blank or campaign_art_tertiary != blank or campaign_art_quaternary != blank
+  if campaign_art_composite != blank or campaign_art_accent != blank or campaign_art_primary != blank or campaign_art_secondary != blank or campaign_art_tertiary != blank or campaign_art_quaternary != blank
     assign campaign_has_art = true
   endif
 
@@ -43,53 +45,6 @@
 
 {%- if campaign_video_desktop != blank -%}
   <script src="{{ 'milaura-home-seasonal-media.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-
-{%- if section.settings.homepage_hero -%}
-  {%- style -%}
-    #shopify-section-{{ section.id }} {
-      position: relative;
-      z-index: 2;
-      margin-top: calc(var(--header-height-desktop, 110px) * -1) !important;
-      overflow: visible;
-    }
-
-    @media screen and (min-width: 990px) {
-      #MilauraSelection-{{ section.id }} .milaura-season__campaign,
-      #MilauraSelection-{{ section.id }} .milaura-season__media,
-      #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
-        min-height: calc(100svh - var(--milaura-announcement-height, 48px));
-      }
-
-      #MilauraSelection-{{ section.id }} .milaura-season__media-frame {
-        aspect-ratio: auto;
-      }
-    }
-
-    @media screen and (max-width: 1100px) {
-      #shopify-section-{{ section.id }} {
-        margin-top: calc(var(--header-height-tablet, 88px) * -1) !important;
-      }
-    }
-
-    @media screen and (max-width: 820px) {
-      #shopify-section-{{ section.id }} {
-        margin-top: calc(var(--header-height-mobile, 80px) * -1) !important;
-      }
-    }
-
-    @media screen and (max-width: 749px) {
-      #MilauraSelection-{{ section.id }} .milaura-season__media-toggle {
-        top: calc(var(--header-height-mobile, 80px) + var(--milaura-esp-xs));
-      }
-    }
-
-    @media screen and (max-width: 480px) {
-      #shopify-section-{{ section.id }} {
-        margin-top: -74px !important;
-      }
-    }
-  {%- endstyle -%}
 {%- endif -%}
 
 {%- unless section.settings.homepage_hero -%}
@@ -126,6 +81,7 @@
               poster="{{ campaign_poster_desktop | asset_url }}"
               preload="none"
               muted
+              loop
               playsinline
               disablepictureinpicture
               aria-describedby="{{ media_description_id }}"
@@ -138,10 +94,11 @@
             <button
               class="milaura-season__media-toggle"
               type="button"
-              aria-label="Rejouer la vidéo"
+              aria-label="Lire la vidéo"
+              aria-pressed="false"
               data-milaura-home-seasonal-replay
             >
-              <span data-milaura-home-seasonal-replay-label>Rejouer</span>
+              <span data-milaura-home-seasonal-replay-label>Lire</span>
             </button>
           {%- else -%}
             <picture class="milaura-season__picture">
@@ -182,25 +139,43 @@
                 decoding="async"
               >
             </picture>
-          {%- elsif campaign_art_primary != blank -%}
+          {%- endif -%}
+          {%- if campaign_art_primary != blank -%}
             <img
               class="milaura-season__product-art-item milaura-season__product-art-item--primary"
               src="{{ campaign_art_primary | asset_url }}"
               alt=""
-              width="1000"
-              height="1250"
+              width="1024"
+              height="1536"
               loading="{{ campaign_image_loading }}"
               fetchpriority="{{ campaign_image_priority }}"
               decoding="async"
             >
+          {%- endif -%}
+          {%- if campaign_art_accent != blank -%}
+            <picture class="milaura-season__product-art-accent">
+              {%- if campaign_art_accent_mobile != blank -%}
+                <source media="(max-width: 749px)" srcset="{{ campaign_art_accent_mobile | asset_url }}">
+              {%- endif -%}
+              <img
+                class="milaura-season__product-art-accent-image"
+                src="{{ campaign_art_accent | asset_url }}"
+                alt=""
+                width="1536"
+                height="1024"
+                loading="{{ campaign_image_loading }}"
+                fetchpriority="{{ campaign_image_priority }}"
+                decoding="async"
+              >
+            </picture>
           {%- endif -%}
           {%- if campaign_art_secondary != blank -%}
             <img
               class="milaura-season__product-art-item milaura-season__product-art-item--secondary"
               src="{{ campaign_art_secondary | asset_url }}"
               alt=""
-              width="1000"
-              height="1250"
+              width="1254"
+              height="1254"
               loading="{{ campaign_image_loading }}"
               fetchpriority="{{ campaign_image_priority }}"
               decoding="async"
@@ -366,6 +341,16 @@
       "type": "text",
       "id": "campaign_art_composite_mobile",
       "label": "Composition bijoux mobile dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_art_accent",
+      "label": "Accent suspendu desktop dans les assets"
+    },
+    {
+      "type": "text",
+      "id": "campaign_art_accent_mobile",
+      "label": "Accent suspendu mobile dans les assets"
     },
     {
       "type": "text",
