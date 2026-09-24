@@ -27,7 +27,7 @@
 
       const setToggleState = () => {
         const paused = video.paused;
-        media.dataset.mediaState = paused ? 'paused' : 'playing';
+        media.dataset.mediaState = sourceLoaded ? (paused ? 'paused' : 'playing') : 'fallback';
         toggle.setAttribute('aria-pressed', String(!paused));
         toggle.setAttribute('aria-label', paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause');
         label.textContent = paused ? 'Lire' : 'Pause';
@@ -48,6 +48,7 @@
         activeSource = source;
         sourceLoaded = true;
         video.src = source;
+        video.loop = true;
         video.load();
         return true;
       };
@@ -56,6 +57,8 @@
         if ((!force && (reducedMotion.matches || saveData)) || userPaused) return;
         if (!loadSource(force)) return;
 
+        video.muted = true;
+        video.defaultMuted = true;
         video.play().catch(setToggleState);
       };
 
@@ -70,6 +73,7 @@
         video.pause();
         activeSource = nextSource;
         video.src = nextSource;
+        video.loop = true;
         video.load();
 
         video.addEventListener(
@@ -108,6 +112,7 @@
 
       video.addEventListener('play', setToggleState);
       video.addEventListener('pause', setToggleState);
+      video.addEventListener('error', setToggleState);
       mobileViewport.addEventListener('change', updateVariant);
       reducedMotion.addEventListener('change', () => {
         if (reducedMotion.matches) {
