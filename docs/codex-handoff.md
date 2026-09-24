@@ -1,28 +1,28 @@
 # Handoff Codex MilAura
 
-Date : 2026-09-19 21:39 CEST
+Date : 2026-09-24 17:48 CEST
 
-Statut : `PDP V2 ADAPTATIVE FERMEE, INTEGREE, POUSSEE ET LIVE VERIFIEE`
+Statut : `LANDING AUTOMNE SUBLIME, INTEGREE, POUSSEE ET LIVE VERIFIEE`
 
-Patrice a donne le GO exact `GO LIVE PDP V2 ADAPTATIVE`. La nouvelle page produit est live sur le theme public `190430282075` et utilise une architecture unique qui adapte ses libelles et ses contenus aux familles bijou, pierre/mineral, bougie/senteur, rituel, soin et accessoire.
+Le checkpoint canonique est `docs/checkpoints/2026-09-24-1748-autumn-landing-polish-live-handoff.md`.
 
-Les templates canoniques `templates/product.json` et `templates/product.milaura-produit.json` partagent la meme V2. Le catalogue audite de 219 produits actifs passe donc sur la nouvelle PDP sans reaffectation Shopify Admin. Les nouveaux produits utilisent aussi la V2 par defaut. Les produits non encore enrichis restent fonctionnels grace au fallback sur leurs images et donnees existantes.
+Patrice valide la landing `/collections/selection-automne` comme une tres belle reussite et demande qu elle serve d exemple et de template a toutes les futures landings du site. La reference ne se limite pas a ses medias saisonniers : elle fixe la hierarchie, le rythme, la densite, la place du produit, la compacite des guides, la qualite responsive et le niveau de finition attendu.
 
-Le contrat media definitif est documente dans `docs/reference/2026-09-19-pdp-v2-data-contract.md` : H01 a H05 pour la galerie commerciale, H06 pour la projection editoriale hors galerie et E01 a E03 pour les blocs narratifs. Le theme consomme `milaura.pdp_media_manifest`; les ALT publics restent descriptifs. Le workflow creatif peut maintenant produire et publier progressivement les medias et metachamps sans attendre une autre refonte PDP.
+La page livre un Hero immersif avec `Automne 2026` et `Grenat & cornaline`, une transition courte, le bracelet Iris comme produit phare, vingt produits visibles rapidement, deux guides pierre compacts, un corps blanc pur et un bloc final Quartz rose `Alors, quel bijou vous accompagnera cet automne ?`.
 
-Source fonctionnelle `26aeee70`, integration `a14d55d4`, documentation live `bf85bba7`. Quatorze fichiers exacts ont ete deployes avec `--allow-live --nodelete --strict`, puis verifies par pullback `14/14` identique. Tests de contrat `12/12`, JavaScript valide, Theme Check a 0 erreur et 16 avertissements historiques hors lot. QA publique validee a `390 x 844` et `1440 x 900` sur six produits representant les six familles : aucun debordement, aucune image cassee, CTA present, onglets fonctionnels et mise en page technique texte a gauche, photo a droite sur desktop.
+La source fonctionnelle finale est `3634c70e`. Les cinq commits du lot ont ete integres par fast-forward dans `codex/milaura-integration`, puis pousses sur origin. Sept fichiers exacts ont ete publies sur le theme live `190430282075` avec `--allow-live --nodelete --strict`. Le pullback est identique `7/7`.
 
-Aucun produit, prix, stock, collection, canal ou media Shopify Admin n a ete modifie pendant le deploiement theme. Le theme prive `201381216603` reste disponible comme preuve de preview. Les deux fichiers doublons non suivis `sections/milaura-product-narrative-v2 2.liquid` et `sections/milaura-product-reassurance-v2 2.liquid` sont preserves, mais restent hors Git et hors live.
+La QA publique sans preview bar est conforme en `390 x 844` et `1440 x 900` : un seul H1, aucun overflow, video en lecture avec `loop=true`, fond blanc, CTA Quartz rose, guides a environ `598px` sur desktop et aucune erreur console. Theme Check retourne 0 erreur et 16 avertissements historiques hors lot. Aucun produit, prix, stock, media produit, Shopify Admin, commande ou Ads n a ete modifie.
 
-Le checkout principal contient des modifications concurrentes dans `AGENTS.md`, `docs/project-state.md`, quatre fichiers de campagne et `docs/project-state-ledger.md`. Elles sont preservees et n appartiennent pas au lot PDP. `docs/project-state.md` n est donc pas reecrit dans cette cloture.
-
-Checkpoint final : `docs/checkpoints/2026-09-19-2139-pdp-v2-adaptive-live-handoff.md`.
+Le checkout d integration conserve des changements concurrents dans `AGENTS.md`, des exports CSV de campagne, le handoff Pinterest et le ledger. Ils sont preserves. Ne jamais nettoyer, reinitialiser ou ajouter globalement ces fichiers.
 
 ## Prompt de reprise
 
 ```text
-Reprends MilAura depuis docs/checkpoints/2026-09-19-2139-pdp-v2-adaptive-live-handoff.md. La PDP V2 adaptative est fermee, integree et live sur le theme 190430282075. Les templates product.json et product.milaura-produit.json partagent la meme V2 et couvrent les six familles bijou, pierre/mineral, bougie/senteur, rituel, soin et accessoire. Ne redeploie rien par deduction. Le workflow creatif peut maintenant enrichir les produits avec milaura.pdp_media_manifest selon le contrat H01 a H06 et E01 a E03. Pour tout nouveau produit, verifie seulement le rendu public de ses vrais medias, textes et metachamps sur mobile et desktop. Preserve les modifications concurrentes du checkout principal et les deux doublons non suivis * 2.liquid.
+Reprends MilAura depuis docs/checkpoints/2026-09-24-1748-autumn-landing-polish-live-handoff.md. La landing Automne est validee par Patrice, integree, poussee et live sur le theme 190430282075. Elle devient la reference de design pour toutes les autres landings MilAura : meme hierarchie, meme rythme, meme densite, meme niveau de finition et meme exigence mobile, avec des contenus et medias propres a chaque destination. Commence par les deux ou trois retouches rapides demandees sur la Home dans un nouveau worktree et une preview privee. Puis inventorie les landings et propose des lots de migration. Preserve le checkout principal sale et separe toujours PASS technique, GO visuel Patrice et GO live.
 ```
+
+Le handoff Pinterest du 2026-09-22 reste actif et distinct dans `docs/checkpoints/2026-09-22-1726-pinterest-organic-scheduling-handoff.md`. Le handoff PDP V2 du 2026-09-19 reste ferme et historique dans `docs/checkpoints/2026-09-19-2139-pdp-v2-adaptive-live-handoff.md`.
 
 ## Historique de passation
 
