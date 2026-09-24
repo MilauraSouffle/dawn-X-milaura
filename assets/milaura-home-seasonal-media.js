@@ -7,9 +7,9 @@
       media.dataset.homeMediaReady = 'true';
 
       const video = media.querySelector('[data-milaura-home-seasonal-video]');
-      const replay = media.querySelector('[data-milaura-home-seasonal-replay]');
-      if (!video || !replay) return;
-      const replayLabel = replay.querySelector('[data-milaura-home-seasonal-replay-label]');
+      const toggle = media.querySelector('[data-milaura-home-seasonal-replay]');
+      const label = toggle?.querySelector('[data-milaura-home-seasonal-replay-label]');
+      if (!video || !toggle || !label) return;
 
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       const mobileViewport = window.matchMedia('(max-width: 749px)');
@@ -17,10 +17,7 @@
       let activeSource = '';
       let sourceLoaded = false;
       let inView = false;
-      let hasStarted = false;
-      let hasCompleted = false;
-      let hasVisiblePlayback = false;
-      let switchingVariant = false;
+      let userPaused = false;
 
       const currentVariant = () => (mobileViewport.matches ? 'Mobile' : 'Desktop');
       const currentMediaUrl = (kind) => {
@@ -28,18 +25,12 @@
         return variantUrl || video.dataset[`${kind}Desktop`] || '';
       };
 
-      const setReplayVisibility = (visible, mode = 'replay') => {
-        replay.hidden = !visible;
-        replay.style.display = visible ? 'inline-flex' : 'none';
-        if (!visible) {
-          media.dataset.mediaState = hasVisiblePlayback ? 'playing' : 'fallback';
-          return;
-        }
-
-        const isBlocked = mode === 'blocked';
-        replay.setAttribute('aria-label', isBlocked ? 'Lire l’animation' : 'Rejouer la vidéo');
-        if (replayLabel) replayLabel.textContent = isBlocked ? 'Lire' : 'Rejouer';
-        media.dataset.mediaState = isBlocked ? 'blocked' : 'ended';
+      const setToggleState = () => {
+        const paused = video.paused;
+        media.dataset.mediaState = sourceLoaded ? (paused ? 'paused' : 'playing') : 'fallback';
+        toggle.setAttribute('aria-pressed', String(!paused));
+        toggle.setAttribute('aria-label', paused ? 'Lire la vidéo' : 'Mettre la vidéo en pause');
+        label.textContent = paused ? 'Lire' : 'Pause';
       };
 
       const setPoster = () => {
@@ -47,7 +38,9 @@
         if (poster && video.poster !== poster) video.poster = poster;
       };
 
-      const loadSource = () => {
+      const loadSource = (force = false) => {
+        if (!force && (reducedMotion.matches || saveData)) return false;
+
         const source = currentMediaUrl('src');
         if (!source) return false;
         if (sourceLoaded && activeSource === source) return true;
@@ -55,71 +48,47 @@
         activeSource = source;
         sourceLoaded = true;
         video.src = source;
+        video.loop = true;
         video.load();
         return true;
       };
 
-      const playCurrent = (force = false) => {
-        if (hasCompleted) return;
-        if (!force && (reducedMotion.matches || saveData)) {
-          setReplayVisibility(true, 'blocked');
+      const playVideo = (force = false) => {
+        if ((!force && (reducedMotion.matches || saveData)) || userPaused) {
+          setToggleState();
           return;
         }
-        if (!loadSource()) return;
+        if (!loadSource(force)) {
+          setToggleState();
+          return;
+        }
 
         video.muted = true;
         video.defaultMuted = true;
-        hasStarted = true;
-        setReplayVisibility(false);
-        if (!hasVisiblePlayback) media.dataset.mediaState = 'loading';
-        const playbackStartTime = video.currentTime;
-        video.play().catch(() => {
-          hasVisiblePlayback = false;
-          setReplayVisibility(true, 'blocked');
-        });
-        window.setTimeout(() => {
-          if (
-            inView &&
-            !hasCompleted &&
-            video.currentTime <= playbackStartTime + 0.05
-          ) {
-            hasVisiblePlayback = false;
-            setReplayVisibility(true, 'blocked');
-          }
-        }, 1200);
+        video.play().catch(setToggleState);
       };
 
       const updateVariant = () => {
         const nextSource = currentMediaUrl('src');
-        const wasPlaying = !video.paused;
+        const wasPlaying = !video.paused && !userPaused;
         const progress = video.duration > 0 ? video.currentTime / video.duration : 0;
         setPoster();
 
         if (!sourceLoaded || !nextSource || nextSource === activeSource) return;
 
-        switchingVariant = true;
         video.pause();
         activeSource = nextSource;
         video.src = nextSource;
-        hasVisiblePlayback = false;
-        setReplayVisibility(false);
+        video.loop = true;
         video.load();
 
         video.addEventListener(
           'loadedmetadata',
           () => {
-            switchingVariant = false;
-            if (hasCompleted) {
-              video.currentTime = Math.max(0, video.duration - 0.04);
-              hasVisiblePlayback = true;
-              setReplayVisibility(true);
-              return;
-            }
-
-            if (hasStarted && progress > 0) {
+            if (progress > 0) {
               video.currentTime = Math.min(video.duration * progress, Math.max(0, video.duration - 0.04));
             }
-            if (wasPlaying && inView) playCurrent();
+            if (wasPlaying && inView) playVideo(true);
           },
           { once: true }
         );
@@ -129,79 +98,41 @@
         ([entry]) => {
           inView = entry.isIntersecting;
           if (inView) {
-            playCurrent();
-          } else if (!video.paused && !hasCompleted) {
+            playVideo();
+          } else if (!video.paused) {
             video.pause();
           }
+          setToggleState();
         },
         { threshold: 0.25 }
       );
 
-      replay.addEventListener('click', () => {
-        if (!loadSource()) return;
-        hasCompleted = false;
-        hasStarted = true;
-        hasVisiblePlayback = false;
-        video.currentTime = 0;
-        playCurrent(true);
-      });
-
-      video.addEventListener('play', () => {
-        hasStarted = true;
-      });
-
-      video.addEventListener('timeupdate', () => {
-        if (!video.paused && !hasCompleted && video.currentTime > 0.05) {
-          hasVisiblePlayback = true;
-          setReplayVisibility(false);
+      toggle.addEventListener('click', () => {
+        if (video.paused) {
+          userPaused = false;
+          playVideo(true);
+        } else {
+          userPaused = true;
+          video.pause();
         }
+        setToggleState();
       });
 
-      video.addEventListener('pause', () => {
-        if (!inView || !hasStarted || hasCompleted || switchingVariant) return;
-        window.setTimeout(() => {
-          if (inView && video.paused && !video.ended && !hasCompleted) {
-            hasVisiblePlayback = false;
-            setReplayVisibility(true, 'blocked');
-          }
-        }, 120);
-      });
-
-      video.addEventListener('ended', () => {
-        hasCompleted = true;
-        hasVisiblePlayback = true;
-        setReplayVisibility(true, 'replay');
-      });
-
-      video.addEventListener('error', () => {
-        if (!hasCompleted) {
-          hasVisiblePlayback = false;
-          setReplayVisibility(true, 'blocked');
-        }
-      });
-
-      video.addEventListener('stalled', () => {
-        if (inView && !hasCompleted) {
-          hasVisiblePlayback = false;
-          setReplayVisibility(true, 'blocked');
-        }
-      });
-
+      video.addEventListener('play', setToggleState);
+      video.addEventListener('pause', setToggleState);
+      video.addEventListener('error', setToggleState);
       mobileViewport.addEventListener('change', updateVariant);
       reducedMotion.addEventListener('change', () => {
         if (reducedMotion.matches) {
           video.pause();
-          if (!hasCompleted) {
-            hasVisiblePlayback = false;
-            setReplayVisibility(true, 'blocked');
-          }
-          return;
+        } else if (!userPaused && inView) {
+          playVideo();
         }
-        if (inView && !hasCompleted) playCurrent();
+        setToggleState();
       });
 
       setPoster();
-      setReplayVisibility(false);
+      setToggleState();
       observer.observe(media);
     });
   };
