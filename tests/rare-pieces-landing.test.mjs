@@ -16,7 +16,7 @@ test('the rare-pieces collection template uses the verified geode handle', () =>
   assert.equal(template.sections.rare_pieces.type, 'milaura-rare-pieces-landing');
   assert.equal(settings.heading, 'Pièces rares & de collection');
   assert.equal(settings.featured_product, 'geode-cathedrale-en-amethyste-19-9-kg');
-  assert.equal(settings.star_section_heading, 'La pièce phare');
+  assert.equal(settings.star_label, 'Le produit star');
   assert.equal(settings.star_title, 'Géode cathédrale d’améthyste n°0256');
   assert.equal(settings.star_origin, 'Brésil');
   assert.equal(settings.star_weight, '19,9 kg');
@@ -69,8 +69,9 @@ test('the geode contract is explicit in the implementation', () => {
   assert.match(section, /Photographies de la pièce vendue/);
   assert.match(section, /section\.settings\.featured_product/);
   assert.match(section, /featured_product\.media \| where: 'media_type', 'image'/);
-  assert.match(section, /section\.settings\.star_section_heading/);
-  assert.match(section, /milaura-rare-pieces__star-product-title/);
+  assert.match(section, /section\.settings\.star_label/);
+  assert.match(section, /milaura-rare-pieces__star-eyebrow/);
+  assert.doesNotMatch(section, /milaura-rare-pieces__star-product-title/);
   assert.doesNotMatch(section, /génér(?:ée|ation) par IA/i);
 });
 
