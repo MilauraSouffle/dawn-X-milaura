@@ -1,3 +1,11 @@
+## Fond rose Cadeaux et bandeau Journal Home du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice apres validation des cartes Naissance et Mariage.
+- Branche et checkout : `codex/milaura-integration`, checkout d integration. La creation du worktree dedie a ete interrompue par le systeme pendant la copie Git ; aucun worktree incomplet n est enregistre.
+- Perimetre reserve : `assets/milaura-home-occasions.css`, `assets/milaura-home-editorial.css`, `sections/milaura-home-editorial.liquid`, les seuls reglages `home_editorial` de `templates/index.json`, la presente entree et le checkpoint du lot. Aucun produit, prix, stock, collection, Shopify Admin, Ads ou page Notre histoire.
+- Direction validee : surface quartz rose sur toute la section Naissance et Mariage, cartes blanches conservees. Le bandeau final devient une entree explicite vers le Journal avec le surtitre `Le Journal MilAura`, le titre `Les pierres n’auront bientôt plus de secrets pour vous.`, la description validee, le CTA principal `Je file lire le Journal` et le lien secondaire `L’histoire de MilAura`.
+- Etat au 2026-09-25 18:17 CEST : `OUVERT, IMPLEMENTATION LOCALE`.
+
 ## Refonte en cartes de la section Cadeaux Home du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres validation de la section Nouveautes.
