@@ -119,3 +119,14 @@ test('the compact visual contract keeps the hero, bento, and page surface under 
   assert.doesNotMatch(css, /\.milaura-rare-pieces__star-tile[^}]*position: absolute/);
   assert.doesNotMatch(css, /\.milaura-rare-pieces__star-tile[^}]*box-shadow/);
 });
+
+test('the mobile hero keeps its copy over the photograph without an artificial dark band', () => {
+  const css = read('assets/milaura-rare-pieces-landing.css');
+
+  assert.match(css, /height: clamp\(520px, 72svh, 560px\)/);
+  assert.match(css, /object-position: center 46%/);
+  assert.match(css, /transform: none/);
+  assert.match(css, /transparent 0 46%/);
+  assert.match(css, /var\(--milaura-encre\) 72%, transparent\) 100%/);
+  assert.doesNotMatch(css, /scale\(1\.18\) translateY/);
+});
