@@ -1,3 +1,14 @@
+## Fiche produit geode amethyste et raccord Pieces rares du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice pour creer la fiche complete de la geode amethyste physique reference fournisseur `GC0256` au prix public impose de `1299 EUR`.
+- Branche et worktree : `codex/milaura-geode-amethyste-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/geode-amethyste-20260925`, base `ebf75ae4` alignee sur `origin/codex/milaura-integration`.
+- Perimetre reserve dans le theme : `docs/visuals/2026-09-25-geode-amethyste/`, la presente entree et la documentation de handoff propre au produit. Aucun fichier fonctionnel de la landing ou de la collection `pieces-rares` n est reserve ici.
+- Sources produit : les photographies reelles de `/Users/paesano/Documents/MilAura website/photo geode/` font seules autorite visuelle. La fiche Camille Ambiance Nature fournie par Patrice sert uniquement aux faits textuels et techniques. Aucun visuel fournisseur ne sera telecharge ni publie.
+- Coordination : une session concurrente travaille dans `/Users/paesano/Documents/MilAura website/_worktrees/rare-pieces-landing-20260925`. Son handoff est requis avant tout raccord a la collection. Aucun chevauchement de fichiers ou mutation distante par deduction.
+- Gates : Product Truth Pack, neuf masters contractuels `1:1`, enrichissement texte et controles locaux, puis brouillon Shopify uniquement si les gates passent. Activation, stock final, collection, publication et live restent des validations distinctes de Patrice.
+- Etat au 2026-09-25 : `OUVERT, AUDIT LECTURE SEULE`. Le dossier fourni contient actuellement sept fichiers, pas neuf. Les deux medias manquants ou leur remplacement contractuel restent a resoudre avant un brouillon Shopify complet.
+- Etat au 2026-09-25 : `COPY DRAFT PREPAREE, SHOPIFY NON MUTE`. Memo visuel et brouillon commercial ecrits sous `docs/visuals/2026-09-25-geode-amethyste/`. Le contrat texte temporaire ne conserve plus que deux echecs locaux : cout rendu HT positif non fourni et type canonique `geode` absent du pipeline, qui refuse a juste titre de degrader le H1 en `Forme minerale`. Les medias restent bloques a sept sources, avec etiquettes fournisseur visibles sur les vues face. Aucun produit, prix, stock, media, collection ou canal Shopify modifie.
+
 ## Refonte en cartes des trois chemins Home du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres revue du live et des captures du 2026-09-25.
