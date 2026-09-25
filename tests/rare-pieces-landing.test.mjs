@@ -24,14 +24,17 @@ test('the launch manifest contains the six approved products and the verified ge
   const manifest = JSON.parse(read('docs/reference/2026-09-25-pieces-rares-manifest.json'));
 
   assert.equal(manifest.collection.handle, 'pieces-rares');
+  assert.equal(manifest.collection.status, 'published_online_store');
+  assert.equal(manifest.collection.sales_channels, 1);
   assert.equal(manifest.launch_products.length, 6);
   assert.equal(new Set(manifest.launch_products).size, 6);
   assert.equal(manifest.featured_product.handle, 'geode-cathedrale-en-amethyste-19-9-kg');
-  assert.equal(manifest.featured_product.status, 'active_pending_collection_publication');
+  assert.equal(manifest.featured_product.status, 'active_live');
   assert.equal(manifest.featured_product.media_count, 9);
   assert.equal(manifest.featured_product.supplier_reference, 'GC0256');
   assert.equal(manifest.featured_product.weight_g, 19900);
-  assert.deepEqual(manifest.featured_product.dimensions_mm, [395, 230]);
+  assert.deepEqual(manifest.featured_product.dimensions_mm, [395, 230, 140]);
+  assert.equal(manifest.live_verification.collection_template_suffix, 'milaura-pieces-rares');
   assert.equal(manifest.photography_contract.ai_generation_allowed, false);
   assert.equal(manifest.photography_contract.source_files.length, 7);
 });
