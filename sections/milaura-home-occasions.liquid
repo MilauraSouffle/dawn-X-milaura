@@ -41,6 +41,7 @@
           {%- if block.type == 'occasion' -%}
             {%- liquid
               assign card_index = card_index | plus: 1
+              assign card_number = card_index | prepend: '0' | slice: -2, 2
               assign loading_mode = 'lazy'
               if card_index == 1
                 assign loading_mode = 'eager'
@@ -52,6 +53,10 @@
               {{ block.shopify_attributes }}
             >
               <a class="milaura-home-occasions__card-link" href="{{ block.settings.link }}">
+                <span class="milaura-home-occasions__card-heading">
+                  <span class="milaura-home-occasions__card-number" aria-hidden="true">{{ card_number }}</span>
+                  <h3 class="milaura-home-occasions__card-title">{{ block.settings.title | escape }}</h3>
+                </span>
                 <span class="milaura-home-occasions__card-media">
                   {%- if block.settings.image != blank -%}
                     {{- block.settings.image
@@ -72,24 +77,15 @@
                         class="milaura-home-occasions__card-image"
                         src="{{ block.settings.desktop_asset | asset_url }}"
                         alt="{{ block.settings.image_alt | escape }}"
-                        width="1280"
-                        height="781"
+                        width="1254"
+                        height="1254"
                         loading="{{ loading_mode }}"
                         decoding="async"
                       >
                     </picture>
                   {%- endif -%}
                 </span>
-                <span class="milaura-home-occasions__card-body">
-                  <span class="milaura-home-occasions__card-copy">
-                    {%- if block.settings.label != blank -%}
-                      <span class="milaura-home-occasions__label">{{ block.settings.label | escape }}</span>
-                    {%- endif -%}
-                    <h3 class="milaura-home-occasions__card-title">{{ block.settings.title | escape }}</h3>
-                    {%- if block.settings.text != blank -%}
-                      <span class="milaura-home-occasions__text">{{ block.settings.text | escape }}</span>
-                    {%- endif -%}
-                  </span>
+                <span class="milaura-home-occasions__card-footer">
                   <span class="milaura-home-occasions__action milaura-action milaura-action--editorial">
                     <span>{{ block.settings.action | escape }}</span>
                     {% render 'milaura-action-icon' %}
@@ -135,21 +131,9 @@
       "settings": [
         {
           "type": "text",
-          "id": "label",
-          "label": "Repère",
-          "default": "Pierre de naissance"
-        },
-        {
-          "type": "text",
           "id": "title",
           "label": "Titre",
           "default": "Choisir selon le mois"
-        },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "Texte",
-          "default": "Retrouvez les correspondances et uniquement les bijoux réellement disponibles."
         },
         {
           "type": "text",
