@@ -102,3 +102,12 @@ test('the catalogue count excludes the featured product', () => {
   assert.match(section, /\{\{ visible_products \}\}/);
   assert.doesNotMatch(section, /\{\{ collection\.products_count \}\}/);
 });
+
+test('the compact visual contract keeps the hero, bento, and page surface under control', () => {
+  const css = read('assets/milaura-rare-pieces-landing.css');
+
+  assert.match(css, /\.milaura-rare-pieces \{[\s\S]*?background: var\(--milaura-surface-blanche\)/);
+  assert.match(css, /\.milaura-rare-pieces__hero \{[\s\S]*?min-height: clamp\(500px, 42vw, 600px\)/);
+  assert.match(css, /\.milaura-rare-pieces__star-gallery \{[\s\S]*?min-height: clamp\(420px, 34vw, 480px\)/);
+  assert.match(css, /\.milaura-rare-pieces__star-layout \{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+});
