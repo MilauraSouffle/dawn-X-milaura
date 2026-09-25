@@ -12,7 +12,7 @@
 - Branche et checkout : `codex/milaura-integration`, checkout d integration. Travail cible sur une route hors du perimetre de la session Pieces rares concurrente.
 - Perimetre reserve : `sections/milaura-notre-histoire.liquid`, nouveau `assets/milaura-notre-histoire.css`, `templates/page.milaura-notre-histoire.json`, la presente entree et le checkpoint du lot. Aucun produit, prix, stock, navigation, autre template, Shopify Admin ou Ads.
 - Direction validee : hero produit et Karine, recit court, methode de selection en trois criteres, trois portes vers Bijoux, Mineraux et Bien-etre, puis diagnostic. Les affirmations non documentees sur certification, gemmologue, tracabilite, fabrication et composition des bougies sont retirees.
-- Etat au 2026-09-25 : `OUVERT, IMPLEMENTATION LOCALE`.
+- Etat au 2026-09-25 18:56 CEST : `FERME, LIVE VERIFIE`. Commit `0e7ef73c`, push Git confirme, deploiement cible sur le theme public `190430282075`, pullback identique pour la section et le CSS, template identique apres retrait du commentaire auto-genere Shopify. QA publique passee a 1440 x 900 et 390 x 844, sans debordement horizontal ni erreur Liquid. [Checkpoint](checkpoints/2026-09-25-1856-notre-histoire-live.md).
 
 ## Fond rose Cadeaux et bandeau Journal Home du 2026-09-25
 
