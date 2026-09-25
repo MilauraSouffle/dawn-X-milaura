@@ -1,3 +1,14 @@
+## Copy de la section Best-sellers Home du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice apres validation de la section Karine.
+- Branche et worktree : `codex/milaura-home-bestsellers-copy-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/home-bestsellers-copy-20260925`, base `f54e35f4` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : les seuls reglages `home_bestsellers` dans `templates/index.json`, la presente entree et le checkpoint eventuel du lot. Les cartes produit, la collection, le CTA, le nombre de produits, les autres sections Home, Shopify Admin, prix, stocks, medias, Ads et theme live restent exclus.
+- Direction finale validee : conserver la hierarchie visuelle du surtitre avec `Les incontournables`, garder `Les best-sellers MilAura` et remplacer la phrase generique par une invitation concrete qui nomme les familles de produits MilAura.
+- Publication : GO explicite de Patrice recu pour commit, push et deploiement live apres cette correction finale.
+- Etat au 2026-09-25 : `OUVERT, COPY EN IMPLEMENTATION LOCALE`.
+- Etat au 2026-09-25 : `COPY LOCALE PRETE, GO PATRICE REQUIS`. Le surtitre redondant est vide, le titre reste inchange et le nouveau sous-titre nomme les trois familles de produits avant d inviter a decouvrir les references les plus choisies. JSON Shopify, `git diff --check`, contrat CSS et Theme Check valides ; seize avertissements historiques hors lot. Aucun theme Shopify modifie.
+- Decision Patrice du 2026-09-25 : le surtitre fait partie de la hierarchie visuelle commune du site et doit rester. Formulation finale `Les incontournables`. Sous-titre final corrige pour l accord masculin pluriel de `produits` : `Découvrez les bijoux, les minéraux et les produits bien-être les plus choisis chez MilAura.` GO live confirme.
+
 ## Polish de la selection de Karine sur la Home du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice pour resserrer la section et renforcer son angle commercial.
