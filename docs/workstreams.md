@@ -1,3 +1,11 @@
+# Landing Pieces rares et de collection du 2026-09-25
+
+- Proprietaire : Codex, direction visuelle et GO live explicites de Patrice.
+- Branche et worktree : `codex/milaura-rare-pieces-live-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/rare-pieces-live-20260925`, base `6576f9e6` alignee sur `codex/milaura-integration`.
+- Perimetre : `assets/milaura-rare-pieces-landing.css`, `sections/milaura-rare-pieces-landing.liquid`, `templates/collection.milaura-pieces-rares.json`, le lien `Pieces rares` de `snippets/milaura-nav-curated-links.liquid`, le test, le manifeste et les checkpoints du lot. Produits, prix, stocks, Shopify Admin, Ads et autres pages exclus.
+- Direction finale : hero desktop conserve a `480px`; hero mobile centre sur le collier, avec le mannequin comme support et le collier comme sujet; trois reperes visibles sous le hero; page blanche; bloc produit star compact pour la geode; six pieces dans la selection.
+- Etat au 2026-09-25 19:54 CEST : `FERME, INTEGRE, POUSSE ET LIVE VERIFIE`. Commit fonctionnel `1cdb2433` pousse sur la branche de release puis en fast-forward sur `codex/milaura-integration`. Trois fichiers de theme differents ont ete publies de facon ciblee sur le live `190430282075`; le lien de navigation etait deja identique et n a pas ete repousse. Pullback strictement identique `3/3`. QA publique sans preview en `390 x 844`, `527 x 683` et `1440 x 900` : hero `680/620/480px`, cadrage collier valide, trois reperes, trois images de geode chargees, six cartes, aucun debordement ni erreur navigateur. [Checkpoint](checkpoints/2026-09-25-1954-pieces-rares-final-live.md).
+
 # Copy de la section Cadeaux Home du 2026-09-25
 
 - Proprietaire : Codex, texte valide et GO direct de Patrice.
