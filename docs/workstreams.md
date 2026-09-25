@@ -1,3 +1,15 @@
+## Polish de la selection de Karine sur la Home du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice pour resserrer la section et renforcer son angle commercial.
+- Branche et worktree : `codex/milaura-karine-selection-polish-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/karine-selection-polish-20260925`, base `5d4c6f05` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : `assets/milaura-home-karine-selection.css`, les seuls reglages `creation_moment` dans `templates/index.json`, la presente entree et le checkpoint du lot. La section et la collection `Pieces rares & de collection`, les autres sections Home, Shopify Admin, produits, prix, stocks, navigation, Ads et theme live restent exclus.
+- Direction : reduire les espaces verticaux de la section avec les tokens existants ; conserver le surtitre `Le choix de Karine` ; remplacer le titre, le texte et le CTA par la formulation validee dans la demande du 2026-09-25 ; preserver la collection, le portrait, les trois cartes produit et leurs interactions.
+- Theme : preview de developpement `201797534043` reservee pour les deux fichiers du lot ; theme public `190430282075` strictement exclu sans nouveau GO explicite.
+- Gates : implementation locale, controle copywriting, validation CSS et JSON, preview privee, QA mobile et bureau, PASS technique, puis GO visuel Patrice avant toute integration ou publication.
+- Etat au 2026-09-25 : `IMPLEMENTATION LOCALE PASS, PREVIEW A PREPARER`. CSS contractuel, JSON, `git diff --check` et Theme Check valides ; seize avertissements historiques hors lot. Checkout d integration sale preserve ; aucun theme Shopify modifie.
+- Etat au 2026-09-25 : `PREVIEW PRIVEE PRETE, GO VISUEL PATRICE REQUIS`. Les deux fichiers cibles ont ete pousses sur `201797534043`, puis relus par pullback `2/2` strictement identique. QA navigateur sur `390 x 844` et `1440 x 900` : padding vertical ramene a `40px` sur mobile et `64px` sur bureau, aucun debordement horizontal, CTA sur une ligne a `390px`, images chargees et console sans erreur ni avertissement. Le theme public `190430282075` reste intact.
+- Decision Patrice du 2026-09-25 : le CTA precedent est refuse et remplace par `Oh la la, je veux voir ca`. GO explicite recu pour commit, push, integration et deploiement direct sur le theme public `190430282075`, sans nouvelle etape de preview.
+
 ## Refonte en cartes des trois chemins Home du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres revue du live et des captures du 2026-09-25.
