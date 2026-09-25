@@ -8,6 +8,7 @@
 - Gates : implementation locale, controle copywriting, validation CSS et JSON, preview privee, QA mobile et bureau, PASS technique, puis GO visuel Patrice avant toute integration ou publication.
 - Etat au 2026-09-25 : `IMPLEMENTATION LOCALE PASS, PREVIEW A PREPARER`. CSS contractuel, JSON, `git diff --check` et Theme Check valides ; seize avertissements historiques hors lot. Checkout d integration sale preserve ; aucun theme Shopify modifie.
 - Etat au 2026-09-25 : `PREVIEW PRIVEE PRETE, GO VISUEL PATRICE REQUIS`. Les deux fichiers cibles ont ete pousses sur `201797534043`, puis relus par pullback `2/2` strictement identique. QA navigateur sur `390 x 844` et `1440 x 900` : padding vertical ramene a `40px` sur mobile et `64px` sur bureau, aucun debordement horizontal, CTA sur une ligne a `390px`, images chargees et console sans erreur ni avertissement. Le theme public `190430282075` reste intact.
+- Decision Patrice du 2026-09-25 : le CTA precedent est refuse et remplace par `Oh la la, je veux voir ca`. GO explicite recu pour commit, push, integration et deploiement direct sur le theme public `190430282075`, sans nouvelle etape de preview.
 
 ## Refonte en cartes des trois chemins Home du 2026-09-25
 
