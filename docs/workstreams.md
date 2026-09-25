@@ -1,3 +1,13 @@
+## Refonte en cartes des trois chemins Home du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice apres revue du live et des captures du 2026-09-25.
+- Branche et worktree : `codex/milaura-home-paths-cards-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/home-paths-cards-20260925`, base `ad018584` alignee sur `origin/codex/milaura-integration`.
+- Perimetre reserve : `assets/milaura-home-paths.css`, `assets/milaura-home-paths.js`, `sections/milaura-home-paths.liquid`, `templates/index.json`, la presente entree et le checkpoint final du lot.
+- Direction validee : conserver `Trois facons de choisir` en turquoise a droite ; reprendre le titre et le texte commercial long deja valides ; montrer les trois parcours sous forme de cartes completes cote a cote sur bureau ; utiliser les trois compositions existantes ; estomper legerement les cartes non actives sans les rendre illisibles ; proposer un carrousel tactile natif avec apercu de la carte suivante sur mobile.
+- Publication : GO explicite pour commit, integration et deploiement direct sur le theme live `190430282075`, sans preview. QA publique mobile et bureau obligatoire apres pullback cible. Shopify Admin, catalogue, produits, prix, stocks, navigation, Ads et autres sections restent exclus.
+- Etat au 2026-09-25 : `OUVERT, IMPLEMENTATION LOCALE`. Baseline publique controlee en lecture seule : trois onglets, un seul panneau visible et large zone vide ; texte court live confirme. Checkout d integration sale preserve.
+- Etat au 2026-09-25 : `IMPLEMENTATION LOCALE PASS, GO LIVE DIRECT DEJA RECU`. Trois cartes completes rendent les trois parcours simultanement sur bureau. La premiere est active par defaut ; survol, focus clavier et swipe mettent a jour l emphase sans masquer les autres destinations. Sous `750px`, le rail utilise le defilement natif et `scroll-snap`, avec apercu de la carte suivante. Le titre et le texte commercial valides sont restaures, tandis que le repere turquoise reste dans la colonne droite. `git diff --check`, JavaScript, JSON Shopify et Theme Check valides ; 16 avertissements historiques hors lot.
+
 ## Reprise polish Home et migration des landings du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice depuis le handoff final Automne du 2026-09-24.

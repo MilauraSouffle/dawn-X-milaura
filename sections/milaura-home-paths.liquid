@@ -20,64 +20,43 @@
   >
     <div class="milaura-home-paths__inner">
       <header class="milaura-home-paths__header milaura-section-intro">
+        <h2 id="MilauraHomePathsTitle-{{ section.id }}" class="milaura-home-paths__title milaura-section-title">
+          {{ section.settings.title | escape }}
+        </h2>
         <div class="milaura-home-paths__intro-copy">
-          <h2 id="MilauraHomePathsTitle-{{ section.id }}" class="milaura-home-paths__title milaura-section-title">
-            {{ section.settings.title | escape }}
-          </h2>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="milaura-home-paths__eyebrow milaura-section-label">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
           {%- if section.settings.lead != blank -%}
             <p class="milaura-home-paths__lead">{{ section.settings.lead | escape }}</p>
           {%- endif -%}
         </div>
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="milaura-home-paths__eyebrow milaura-section-label">{{ section.settings.eyebrow | escape }}</p>
-        {%- endif -%}
       </header>
 
-      <div class="milaura-home-paths__tabs" role="tablist" aria-label="Choisir un point de départ">
-        {%- assign tab_index = 0 -%}
+      <div
+        class="milaura-home-paths__cards"
+        role="list"
+        aria-label="{{ section.settings.eyebrow | default: 'Trois façons de choisir' | escape }}"
+        data-home-path-carousel
+      >
+        {%- assign card_index = 0 -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'path' -%}
             {%- liquid
-              assign tab_index = tab_index | plus: 1
+              assign card_index = card_index | plus: 1
               assign path_variant = block.settings.variant | default: 'jewelry'
-              assign tab_label = block.settings.tab_label
-              if tab_label == blank
+              assign card_label = block.settings.tab_label
+              if card_label == blank
                 case path_variant
                   when 'stone'
-                    assign tab_label = 'Choisir par pierre'
+                    assign card_label = 'Choisir par pierre'
                   when 'guided'
-                    assign tab_label = 'Me laisser guider'
+                    assign card_label = 'Me laisser guider'
                   else
-                    assign tab_label = 'Choisir par bijou'
+                    assign card_label = 'Choisir par bijou'
                 endcase
               endif
-              assign tab_number = tab_index | prepend: '0' | slice: -2, 2
-            -%}
-            <button
-              id="MilauraHomePathTab-{{ section.id }}-{{ block.id }}"
-              class="milaura-home-paths__tab"
-              type="button"
-              role="tab"
-              aria-controls="MilauraHomePathPanel-{{ section.id }}-{{ block.id }}"
-              aria-selected="{% if tab_index == 1 %}true{% else %}false{% endif %}"
-              tabindex="{% if tab_index == 1 %}0{% else %}-1{% endif %}"
-              data-home-path-tab
-              {{ block.shopify_attributes }}
-            >
-              <span class="milaura-home-paths__tab-number" aria-hidden="true">{{ tab_number }}</span>
-              <span class="milaura-home-paths__tab-label">{{ tab_label | escape }}</span>
-              <span class="milaura-home-paths__tab-arrow" aria-hidden="true">↗</span>
-            </button>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-
-      <div class="milaura-home-paths__panels">
-        {%- assign panel_index = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- if block.type == 'path' -%}
-            {%- liquid
-              assign panel_index = panel_index | plus: 1
+              assign card_number = card_index | prepend: '0' | slice: -2, 2
               assign path_image = block.settings.image
               if path_image == blank and block.settings.product != blank
                 assign path_image = block.settings.product.featured_image
@@ -97,30 +76,32 @@
                 assign path_url = routes.all_products_collection_url
               endif
 
-              assign path_variant = block.settings.variant | default: 'jewelry'
               assign loading_mode = 'lazy'
-              if panel_index == 1
+              if card_index == 1
                 assign loading_mode = 'eager'
               endif
             -%}
             <article
-              id="MilauraHomePathPanel-{{ section.id }}-{{ block.id }}"
-              class="milaura-home-paths__panel milaura-home-paths__panel--{{ path_variant }}"
-              role="tabpanel"
-              aria-labelledby="MilauraHomePathTab-{{ section.id }}-{{ block.id }}"
-              tabindex="0"
-              data-home-path-panel
-              {% unless panel_index == 1 %}hidden{% endunless %}
+              class="milaura-home-paths__card milaura-home-paths__card--{{ path_variant }}"
+              role="listitem"
+              data-home-path-card
+              data-active="{% if card_index == 1 %}true{% else %}false{% endif %}"
+              {{ block.shopify_attributes }}
             >
-              <a class="milaura-home-paths__panel-link" href="{{ path_url }}">
-                <span class="milaura-home-paths__panel-media">
+              <a class="milaura-home-paths__card-link" href="{{ path_url }}">
+                <span class="milaura-home-paths__card-heading">
+                  <span class="milaura-home-paths__card-number" aria-hidden="true">{{ card_number }}</span>
+                  <span class="milaura-home-paths__card-label">{{ card_label | escape }}</span>
+                  <span class="milaura-home-paths__card-arrow">{% render 'milaura-action-icon' %}</span>
+                </span>
+                <span class="milaura-home-paths__card-media">
                   {%- if path_image != blank -%}
                     {{- path_image
                       | image_url: width: 1600
                       | image_tag:
-                        class: 'milaura-home-paths__panel-image',
+                        class: 'milaura-home-paths__card-image',
                         widths: '420, 620, 840, 1100, 1400, 1600',
-                        sizes: '(max-width: 749px) calc(100vw - 64px), (max-width: 989px) 42vw, 36vw',
+                        sizes: '(max-width: 749px) calc(100vw - 68px), (max-width: 989px) 42vw, 30vw',
                         loading: loading_mode,
                         alt: block.settings.image_alt
                     -}}
@@ -130,18 +111,18 @@
                         <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_asset_name | asset_url }}">
                       {%- endif -%}
                       <img
-                        class="milaura-home-paths__panel-image"
+                        class="milaura-home-paths__card-image"
                         src="{{ block.settings.asset_name | asset_url }}"
                         alt="{{ block.settings.image_alt | escape }}"
-                        width="1600"
-                        height="1067"
+                        width="1254"
+                        height="1254"
                         loading="{{ loading_mode }}"
                       >
                     </picture>
                   {%- endif -%}
                 </span>
-                <span class="milaura-home-paths__panel-copy">
-                  <span class="milaura-home-paths__panel-action milaura-action milaura-action--editorial">
+                <span class="milaura-home-paths__card-footer">
+                  <span class="milaura-home-paths__card-action milaura-action milaura-action--editorial">
                     <span>{{ block.settings.action | escape }}</span>
                     {% render 'milaura-action-icon' %}
                   </span>
@@ -151,12 +132,6 @@
           {%- endif -%}
         {%- endfor -%}
       </div>
-
-      <noscript>
-        <style>
-          #MilauraHomePaths-{{ section.id }} .milaura-home-paths__panel[hidden] { display: block !important; }
-        </style>
-      </noscript>
     </div>
   </section>
 {%- endif -%}
@@ -176,13 +151,13 @@
       "type": "text",
       "id": "title",
       "label": "Titre",
-      "default": "Comment souhaitez-vous choisir votre bijou ?"
+      "default": "Vous cherchez un bijou, une pierre précise ou vous avez besoin de conseils pour choisir ?"
     },
     {
       "type": "textarea",
       "id": "lead",
       "label": "Introduction",
-      "default": "Choisissez par type de bijou, par pierre ou laissez Karine vous guider."
+      "default": "Les pierres et leurs vertus sont passionnantes, mais le choix peut vite devenir complexe. MilAura vous aide à trouver plus facilement le bijou et la pierre qui correspondent à vos goûts et à votre besoin du moment."
     }
   ],
   "blocks": [
@@ -204,7 +179,7 @@
         {
           "type": "text",
           "id": "tab_label",
-          "label": "Libellé de l’onglet"
+          "label": "Titre de la carte"
         },
         {
           "type": "text",
