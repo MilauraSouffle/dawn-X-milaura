@@ -1,5 +1,23 @@
 # Handoff Codex MilAura
 
+## Cloture polish Automne et section 2 de la Home
+
+Date : 2026-09-25 11:08 CEST
+
+Statut : `SESSION FERMEE, INTEGREE, POUSSEE ET LIVE VERIFIEE`
+
+Le checkpoint canonique est `docs/checkpoints/2026-09-25-1108-home-paths-polish-live-handoff.md`.
+
+La landing Automne et la section 2 de la Home sont live sur le theme `190430282075`. Le Hero de destination Automne est plus court et les reperes saisonniers precedent son texte. La section 2 de la Home affiche le titre `Comment souhaitez-vous choisir votre bijou ?`, une introduction courte, le repere turquoise `Trois facons de choisir`, trois visuels transparents et un CTA seul par parcours. La composition Bijou V3 est la version approuvee.
+
+Le dernier lot est integre par `318138ee`, avec preuve de release `27f0ec34`. Pullback live `3/3` identique, QA publique `390 x 844` et `1440 x 900`, aucun debordement ni erreur console. Theme Check : 0 erreur et 16 avertissements historiques hors lot.
+
+Regle de reprise : brainstormer et faire valider le premier jet avec Patrice avant toute modification de copywriting ou de visuel. Ne pas deduire un GO live. Si Patrice demande explicitement un live direct, ne pas ajouter une preview intermediaire.
+
+```text
+Reprends le polish visuel et commercial MilAura depuis docs/checkpoints/2026-09-25-1108-home-paths-polish-live-handoff.md. Lis AGENTS.md, docs/project-state.md et docs/workstreams.md, puis controle le live en lecture seule. La landing Automne et la section 2 de la Home sont live et verifiees sur le theme 190430282075. Ne redeploie rien par deduction. Demande a Patrice la prochaine section a polir, brainstorme ici le texte et la direction visuelle, attends sa validation du premier jet, puis implemente seulement le perimetre approuve. Si Patrice demande explicitement un live direct, ne passe pas par une preview. Preserve tous les fichiers concurrents du checkout sale et stage uniquement les fichiers nommes.
+```
+
 ## Cloture Pinterest
 
 Date : 2026-09-25 09:09 CEST
