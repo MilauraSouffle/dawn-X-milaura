@@ -1,3 +1,22 @@
+## Refonte en cartes de la section Cadeaux Home du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice apres validation de la section Nouveautes.
+- Branche et worktree : `codex/milaura-home-gift-cards-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/home-gift-cards-20260925`, base `5956faf4` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : `sections/milaura-home-occasions.liquid`, `assets/milaura-home-occasions.css`, `assets/milaura-home-occasions.js` si necessaire, la presente entree et le checkpoint du lot. Les textes, images, destinations, autres sections Home, Shopify Admin, produits, prix, stocks, navigation, Ads et theme live restent exclus.
+- Direction : remplacer les deux onglets Naissance et Mariage par deux vraies cartes de destination visibles simultanement sur bureau, dans le langage visuel de la section `Trois facons de choisir`. Chaque carte integre son image, son contenu et son CTA ; sur mobile, le rail tactile laisse apercevoir la carte suivante.
+- Publication : implementation isolee et preview privee uniquement. Le theme public `190430282075` reste exclu sans GO visuel puis GO live explicites de Patrice.
+- Etat au 2026-09-25 : `OUVERT, IMPLEMENTATION LOCALE`. Les worktrees historiques susceptibles de toucher cette section sont propres et sans diff sur les fichiers cibles. Le checkout d integration sale est preserve.
+
+### Direction contract
+
+- THESIS : les cadeaux deviennent deux destinations visibles et desirables, jamais un choix abstrait cache derriere des onglets.
+- OWN-WORLD : fond quartz rose, photographies produit prioritaires, filets or mats, Gloock pour les titres et Instrument Sans pour les reperes et actions, uniquement avec les tokens MilAura existants.
+- STORY : la visiteuse comprend immediatement les deux occasions, compare les univers Naissance et Mariage, puis ouvre le guide adapte depuis toute la carte.
+- FIRST VIEWPORT : apres le titre de section, deux cartes de meme poids occupent la largeur sur bureau ; chacune montre son image, son repere, son titre, son texte et son CTA. Sur mobile, une carte presque pleine largeur laisse entrevoir la suivante dans un rail tactile.
+- FORM : extension locale de la section `Trois facons de choisir`, choisie explicitement par Patrice ; aucun concept aleatoire ni nouvelle identite visuelle.
+- FINISH : unreviewed and undocumented is unfinished; ce lot se termine par une revue de finition indépendante, un verdict explicite et un checkpoint daté. Aucun actif raster n'est créé ni modifié dans ce lot.
+- Etat au 2026-09-25 17:35 CEST : `PREVIEW PRIVEE PRETE, GO VISUEL PATRICE REQUIS`. Les onglets sont remplacés par deux cartes de destination entièrement cliquables. Bureau : grille équilibrée de deux cartes. Mobile : rail tactile de cartes de `290px` avec aperçu de la suivante. Les titres de cartes sont des `h3`, le JavaScript d'onglets et son réglage de schéma devenu inutile sont supprimés. Contrat CSS, `git diff --check` et Theme Check sont conformes ; les seize avertissements Theme Check restent historiques et hors lot. QA sur le thème privé `201797534043` en `390 x 844` et `1440 x 900` sans débordement, images responsive chargées et liens exacts. Pullback Shopify strictement identique `2/2`. La revue de finition indépendante est `PASS` après résolution de ses quatre constats. Le texte existant est volontairement conservé pour la prochaine passe et le thème public `190430282075` reste intact. [Checkpoint](checkpoints/2026-09-25-1735-home-gift-cards-preview.md).
+
 ## Copy de la section Nouveautes Home du 2026-09-25
 
 - Proprietaire : Codex, texte valide et GO direct de Patrice apres la section Best-sellers.
