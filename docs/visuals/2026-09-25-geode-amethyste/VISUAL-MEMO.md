@@ -72,6 +72,13 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 - A trancher par Patrice : conserver les etiquettes visibles, les retirer physiquement et refaire les vues principales, ou autoriser leur retouche locale sans alteration de la pierre.
 - A valider par Patrice : `PDP_MEDIA_VISUAL_GO` sur la planche des neuf masters. Le PASS technique ne vaut pas validation visuelle.
 
+## Pilotes de retouche native rejetes le 2026-09-25
+
+- Pilote studio H01 : `exec-dc3ebada-aabd-42d7-beb1-17ea25ff5c94.png`, SHA-256 `38a3323fa98dd34e10ec665354ec113af9595fa113e4770190c92c680fdae967`, `1254 x 1254`, sans alpha. Statut `REJECTED_PRODUCT_DRIFT` : numero d etiquette transforme, cristaux et relief mineral reinterpretes, contraste et couleur trop modifies.
+- Pilote detourage strict H01 : `exec-c6c858b1-4996-4049-b57e-23961d0f75da.png`, SHA-256 `713f87bf578564cf5edfc6c6ecc070d57cba3c7333ca036c46b398a9c9ca9b29`, `1254 x 1254`, alpha present. Statut `REJECTED_PRODUCT_DRIFT` : numero d etiquette transforme et details cristallins reinterpretes malgre la consigne de preservation pixel.
+- Decision : aucun de ces deux pilotes ne rejoint le dossier produit, le manifeste, Shopify ou la collection. Ne pas lancer les huit autres vues avec l editeur generatif.
+- Alternative recommandee : detourage local non generatif avec conservation des pixels produit, puis correction colorimetrique globale bornee et composition sur fond nacre. Cette voie exige une autorisation explicite de Patrice car elle remplace le chemin image natif apres son echec de fidelite.
+
 ## Interdit de reouvrir
 
 - `/Users/paesano/Documents/MilAura website/photo geode/IMG_2576.JPG`
