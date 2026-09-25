@@ -1,11 +1,12 @@
 # MilAura theme: etat courant
 
-Derniere validation: 2026-09-24
+Derniere validation: 2026-09-25
 Fichier slim. Historique : `docs/project-state-ledger.md` (interdit au boot, 700 lignes).
 Theme live : `190430282075`. Copy : `docs/reference/2026-08-12-copywriting-milaura.md`.
 
 ## Maintenant
 
+- Creatifs Meta Automne et Higgsfield : session close le 2026-09-25. Huit dossiers locaux inventories sous `/Users/paesano/.codex/visualizations/2026/09/23/01a0ceff-a86c-7493-89e8-eeee051cff6d`. Le lot statique V2, trois pilotes animes, leur Reel et l extraction du Hero mobile sont la matiere prioritaire. Les premiers animatics et montages lourds sont rejetes. Le pilote unboxing geode AA+ de 12 secondes reste uniquement chez Higgsfield, sans GO visuel final. Aucune publication Meta, campagne Ads, modification de budget ou mutation Shopify. Handoff : `docs/checkpoints/2026-09-25-0803-meta-creative-higgsfield-handoff.md`.
 - Landing Automne : polish final valide par Patrice, integre, pousse et live sur le theme `190430282075`. Hero immersif, produit phare Iris, vingt produits, guides Grenat et Cornaline compacts, corps blanc pur et CTA final Quartz rose. Pullback live `7/7`, QA publique `390 x 844` et `1440 x 900`, aucune erreur console. Source fonctionnelle `3634c70e`. Cette page devient la reference de design et de structure pour la refonte de toutes les autres landings MilAura. Handoff : `docs/checkpoints/2026-09-24-1748-autumn-landing-polish-live-handoff.md`.
 - Homepage : refonte visuelle live et validee. Une nouvelle session doit commencer par deux ou trois retouches rapides demandees par Patrice, puis inventorier et migrer les autres landings vers le modele Automne. Toujours utiliser un worktree et une preview privee avant GO visuel puis GO live.
 - Pinterest organique : GO programmation recu pour FP01 a FP06 a trois Pins par jour. FP01 Ametyste est programmee le 2026-09-23 a 09:00 et FP02 Cornaline a 14:00. FP03, FP06, FP04 et FP05 restent a programmer. Reprise par import CSV natif Pinterest, sans doublonner les deux premiers. Ads : dernier fait confirme au 2026-09-20, 41,51 EUR et 0 achat ; pause toujours soumise au GO Patrice. Checkpoint : `docs/checkpoints/2026-09-22-1726-pinterest-organic-scheduling-handoff.md`.

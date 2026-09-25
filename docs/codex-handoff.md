@@ -1,28 +1,24 @@
 # Handoff Codex MilAura
 
-Date : 2026-09-24 17:48 CEST
+Date : 2026-09-25 08:03 CEST
 
-Statut : `LANDING AUTOMNE SUBLIME, INTEGREE, POUSSEE ET LIVE VERIFIEE`
+Statut : `SESSION CREATIVE META CLOSE, NIVEAU MOYEN, METHODE HIGGSFIELD A DURCIR`
 
-Le checkpoint canonique est `docs/checkpoints/2026-09-24-1748-autumn-landing-polish-live-handoff.md`.
+Le checkpoint canonique est `docs/checkpoints/2026-09-25-0803-meta-creative-higgsfield-handoff.md`.
 
-Patrice valide la landing `/collections/selection-automne` comme une tres belle reussite et demande qu elle serve d exemple et de template a toutes les futures landings du site. La reference ne se limite pas a ses medias saisonniers : elle fixe la hierarchie, le rythme, la densite, la place du produit, la compacite des guides, la qualite responsive et le niveau de finition attendu.
+Huit dossiers locaux contiennent la strategie, les sources, les tests, les statiques, les pilotes animes, le Hero mobile et l unboxing geode. Le lot statique V2, les trois pilotes animes, leur Reel et l extraction du Hero mobile sont les principales matieres locales a conserver. Les premiers animatics, les montages `final-meta`, le master quinze secondes et les deux montages locaux geode sont rejetes comme masters.
 
-La page livre un Hero immersif avec `Automne 2026` et `Grenat & cornaline`, une transition courte, le bracelet Iris comme produit phare, vingt produits visibles rapidement, deux guides pierre compacts, un corps blanc pur et un bloc final Quartz rose `Alors, quel bijou vous accompagnera cet automne ?`.
+Le dernier pilote unboxing geode AA+ a ete genere dans Higgsfield Marketing Studio avec quatre references, dont une photo beaute contractuelle. Duree douze secondes, 9:16, 1080p, sans audio, 120 credits. La QA a deux images par seconde est techniquement encourageante, mais Patrice n a pas encore donne de GO visuel final. Ce fichier reste uniquement sur Higgsfield.
 
-La source fonctionnelle finale est `3634c70e`. Les cinq commits du lot ont ete integres par fast-forward dans `codex/milaura-integration`, puis pousses sur origin. Sept fichiers exacts ont ete publies sur le theme live `190430282075` avec `--allow-live --nodelete --strict`. Le pullback est identique `7/7`.
-
-La QA publique sans preview bar est conforme en `390 x 844` et `1440 x 900` : un seul H1, aucun overflow, video en lecture avec `loop=true`, fond blanc, CTA Quartz rose, guides a environ `598px` sur desktop et aucune erreur console. Theme Check retourne 0 erreur et 16 avertissements historiques hors lot. Aucun produit, prix, stock, media produit, Shopify Admin, commande ou Ads n a ete modifie.
-
-Le checkout d integration conserve des changements concurrents dans `AGENTS.md`, des exports CSV de campagne, le handoff Pinterest et le ledger. Ils sont preserves. Ne jamais nettoyer, reinitialiser ou ajouter globalement ces fichiers.
+Aucune publication Meta, campagne Ads, modification de budget ou mutation Shopify dans cette session creative.
 
 ## Prompt de reprise
 
 ```text
-Reprends MilAura depuis docs/checkpoints/2026-09-24-1748-autumn-landing-polish-live-handoff.md. La landing Automne est validee par Patrice, integree, poussee et live sur le theme 190430282075. Elle devient la reference de design pour toutes les autres landings MilAura : meme hierarchie, meme rythme, meme densite, meme niveau de finition et meme exigence mobile, avec des contenus et medias propres a chaque destination. Commence par les deux ou trois retouches rapides demandees sur la Home dans un nouveau worktree et une preview privee. Puis inventorie les landings et propose des lots de migration. Preserve le checkout principal sale et separe toujours PASS technique, GO visuel Patrice et GO live.
+Reprends la creation Meta MilAura depuis docs/checkpoints/2026-09-25-0803-meta-creative-higgsfield-handoff.md. Le bilan creatif est moyen. Commence par les meilleurs presets Higgsfield, trois a cinq references fortes et une verite produit contractuelle. Estime le cout et attends le GO avant chaque pilote payant. Genere un seul master brut, controle toutes les frames, puis attends le GO visuel Patrice avant tout hook, logo ou montage. N utilise pas les premiers essais rejetes comme masters. Priorite : faire valider l unboxing geode brut, puis appliquer une postproduction minimale. Aucun Ads, budget, publication Meta, Shopify ou credit creatif sans GO exact.
 ```
 
-Le handoff Pinterest du 2026-09-22 reste actif et distinct dans `docs/checkpoints/2026-09-22-1726-pinterest-organic-scheduling-handoff.md`. Le handoff PDP V2 du 2026-09-19 reste ferme et historique dans `docs/checkpoints/2026-09-19-2139-pdp-v2-adaptive-live-handoff.md`.
+La landing Automne reste live et validee depuis `docs/checkpoints/2026-09-24-1748-autumn-landing-polish-live-handoff.md`. Le handoff Pinterest du 2026-09-22 reste actif et distinct dans `docs/checkpoints/2026-09-22-1726-pinterest-organic-scheduling-handoff.md`. Le handoff PDP V2 du 2026-09-19 reste ferme et historique dans `docs/checkpoints/2026-09-19-2139-pdp-v2-adaptive-live-handoff.md`.
 
 ## Historique de passation
 
