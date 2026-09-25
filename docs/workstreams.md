@@ -7,6 +7,7 @@
 - Publication : GO explicite pour commit, push et deploiement cible sur le theme public `190430282075` apres controle de la base live.
 - Etat au 2026-09-25 : `OUVERT, COPY EN IMPLEMENTATION LOCALE`.
 - Etat au 2026-09-25 : `COPY LOCALE PASS, GO LIVE DEJA RECU`. Le surtitre, le titre conserve et le sous-titre valide sont presents uniquement dans le bloc `featured_products`. JSON Shopify, `git diff --check`, contrat CSS et Theme Check valides ; seize avertissements historiques hors lot. Aucun theme Shopify modifie a ce stade.
+- Etat au 2026-09-25 17:12 CEST : `FERME, INTEGRE, POUSSE ET LIVE VERIFIE`. Commit source `f109c61b`, merge d integration `75519554`. La base du template live etait strictement identique a l integration avant deploiement. Seul `templates/index.json` a ete pousse sur le theme public `190430282075` avec `--allow-live --nodelete --strict`, puis relu identique `1/1`, SHA-256 `e35d71c1f6efe799c94215587c0cbbfead44fe160248a67c80d3da6c53c085dc`. QA live en `390 x 844` et `1440 x 900` : surtitre, titre et sous-titre exacts, aucun debordement horizontal, console vide. Lecture HTTP publique hors cookie de preview conforme. Les changements concurrents, dont `docs/visuals/`, sont preserves. [Checkpoint](checkpoints/2026-09-25-1712-home-new-arrivals-copy-live.md).
 
 ## Copy de la section Best-sellers Home du 2026-09-25
 
