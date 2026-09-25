@@ -1,3 +1,13 @@
+## Refonte visuelle Pieces rares du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice le 2026-09-25 apres audit visuel du storefront public.
+- Branche et worktree : `codex/milaura-rare-pieces-landing-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/rare-pieces-landing-20260925`.
+- Perimetre reserve : `sections/milaura-rare-pieces-landing.liquid`, `assets/milaura-rare-pieces-landing.css`, `templates/collection.milaura-pieces-rares.json`, `tests/rare-pieces-landing.test.mjs` et la presente entree. Les assets Home `milaura-hero-pieces-rares-lapis.webp` et `milaura-hero-pieces-rares-lapis-mobile.webp` sont reutilises en lecture seule.
+- Direction : hero media-first inspire de la section turquoise de la Home, H1 HTML simple, preuves compactes, bento geode a trois images sur mobile et bureau, puis catalogue. La geode exacte, ses medias contractuels, ses dimensions, son poids, son origine et son prix restent inchanges.
+- Exclusions : theme public `190430282075`, Shopify Admin, produits, prix, stocks, medias produit, collection, navigation, Home, Ads et autres landings. Aucun live avant PASS technique, preview privee, QA mobile et bureau, puis GO visuel explicite de Patrice.
+- Etat au 2026-09-25 18:21 CEST : `OUVERT, IMPLEMENTATION LOCALE`. Audit public effectue en `390 x 844` et bureau. Le hero actuel repete la geode, le bloc de criteres coupe le rythme et le bento masque ses deux images secondaires sous `989px`. Aucun fichier distant ni theme Shopify modifie.
+- Etat au 2026-09-25 18:31 CEST : `V1 EN PREVIEW, PASS TECHNIQUE, GO VISUEL PATRICE REQUIS`. Le hero reprend les deux crops lapis valides de la Home avec image prioritaire sur mobile et texte HTML separe. Les reperes sont compactes. La geode utilise trois photographies produit exactes sur bureau et mobile, puis des faits lisibles avant le prix et l action. Le catalogue affiche six pieces apres exclusion de la geode vedette. Tests Node `7/7`, `git diff --check` et Theme Check valides ; seize avertissements historiques hors lot. Push cible de cinq fichiers sur le theme de developpement `201797534043`, pullback `5/5` identique. QA navigateur `1440 x 900` et `390 x 844` : aucun debordement, aucune image cassee, trois vues visibles, console vide. Theme public `190430282075` intact. [Checkpoint](checkpoints/2026-09-25-1831-pieces-rares-landing-preview.md).
+
 ## Destination Pieces rares et de collection du 2026-09-25
 
 - Proprietaire : Codex, GO explicite de Patrice apres validation de la nouvelle section 2 de la Home.

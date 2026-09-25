@@ -3,12 +3,11 @@
 
 {%- liquid
   assign featured_product = section.settings.featured_product
-  assign hero_index = section.settings.hero_image_index | minus: 1
-  assign hero_image = featured_product.images[hero_index] | default: featured_product.featured_image
+  assign hero_desktop_asset = section.settings.hero_desktop_asset | default: 'milaura-hero-pieces-rares-lapis.webp'
+  assign hero_mobile_asset = section.settings.hero_mobile_asset | default: 'milaura-hero-pieces-rares-lapis-mobile.webp'
   assign hero_title_id = 'MilauraRarePiecesTitle-' | append: section.id
   assign star_title_id = 'MilauraRarePiecesStarTitle-' | append: section.id
   assign catalogue_title_id = 'MilauraRarePiecesCatalogueTitle-' | append: section.id
-  assign criteria_title_id = 'MilauraRarePiecesCriteriaTitle-' | append: section.id
   assign visible_products = 0
 
   for listed_product in collection.products
@@ -20,54 +19,39 @@
 
 <div class="milaura-rare-pieces">
   <section class="milaura-rare-pieces__hero" aria-labelledby="{{ hero_title_id }}">
-    <div class="milaura-rare-pieces__hero-shell">
-      <div class="milaura-rare-pieces__hero-copy">
-        <h1 id="{{ hero_title_id }}" class="milaura-rare-pieces__title">
-          {{ section.settings.heading | default: collection.title | escape }}
-        </h1>
+    <picture class="milaura-rare-pieces__hero-media">
+      <source media="(max-width: 749px)" srcset="{{ hero_mobile_asset | asset_url }}">
+      <img
+        class="milaura-rare-pieces__hero-image"
+        src="{{ hero_desktop_asset | asset_url }}"
+        alt="{{ section.settings.hero_image_alt | escape }}"
+        width="1672"
+        height="941"
+        loading="eager"
+        fetchpriority="high"
+      >
+    </picture>
 
-        {%- if section.settings.introduction != blank -%}
-          <div class="milaura-rare-pieces__introduction rte">{{ section.settings.introduction }}</div>
-        {%- endif -%}
+    <div class="milaura-rare-pieces__hero-copy">
+      <h1 id="{{ hero_title_id }}" class="milaura-rare-pieces__title">
+        {{ section.settings.heading | default: collection.title | escape }}
+      </h1>
 
-        {%- if section.settings.hero_cta_label != blank -%}
-          <a class="milaura-rare-pieces__text-link" href="#MilauraRarePiecesCatalogue-{{ section.id }}">
-            {{ section.settings.hero_cta_label | escape }}
-          </a>
-        {%- endif -%}
-      </div>
+      {%- if section.settings.introduction != blank -%}
+        <div class="milaura-rare-pieces__introduction rte">{{ section.settings.introduction }}</div>
+      {%- endif -%}
 
-      <figure class="milaura-rare-pieces__hero-media">
-        {%- if hero_image != blank -%}
-          {{ hero_image
-            | image_url: width: 1800
-            | image_tag:
-              widths: '480, 720, 960, 1280, 1600, 1800',
-              sizes: '(max-width: 749px) 100vw, 58vw',
-              loading: 'eager',
-              fetchpriority: 'high',
-              class: 'milaura-rare-pieces__hero-image',
-              alt: section.settings.hero_image_alt
-          }}
-        {%- else -%}
-          <div class="milaura-rare-pieces__hero-placeholder" aria-hidden="true"></div>
-        {%- endif -%}
-
-        {%- if featured_product != blank and section.settings.contract_photo_label != blank -%}
-          <figcaption class="milaura-rare-pieces__contract-label">
-            {{ section.settings.contract_photo_label | escape }}
-          </figcaption>
-        {%- endif -%}
-      </figure>
+      {%- if section.settings.hero_cta_label != blank -%}
+        <a class="milaura-action milaura-action--editorial" href="#MilauraRarePiecesCatalogue-{{ section.id }}">
+          <span>{{ section.settings.hero_cta_label | escape }}</span>
+          {% render 'milaura-action-icon' %}
+        </a>
+      {%- endif -%}
     </div>
   </section>
 
-  <section class="milaura-rare-pieces__criteria" aria-labelledby="{{ criteria_title_id }}">
+  <section class="milaura-rare-pieces__criteria" aria-label="Repères de sélection">
     <div class="milaura-rare-pieces__shell">
-      <h2 id="{{ criteria_title_id }}" class="milaura-rare-pieces__criteria-title">
-        {{ section.settings.criteria_heading | escape }}
-      </h2>
-
       <dl class="milaura-rare-pieces__criteria-list">
         <div>
           <dt>{{ section.settings.criterion_1_title | escape }}</dt>
@@ -87,65 +71,110 @@
 
   {%- if featured_product != blank -%}
     {%- liquid
-      assign star_primary = featured_product.images[0] | default: featured_product.featured_image
-      assign star_secondary = featured_product.images[1]
-      assign star_tertiary = featured_product.images[2]
+      assign featured_images = featured_product.media | where: 'media_type', 'image'
+      assign star_primary_index = section.settings.star_primary_image_index | minus: 1
+      assign star_secondary_index = section.settings.star_secondary_image_index | minus: 1
+      assign star_tertiary_index = section.settings.star_tertiary_image_index | minus: 1
+      assign star_primary = featured_images[star_primary_index] | default: featured_product.featured_image
+      assign star_secondary = featured_images[star_secondary_index] | default: featured_images[1]
+      assign star_tertiary = featured_images[star_tertiary_index] | default: featured_images[2]
     -%}
     <section class="milaura-rare-pieces__star" aria-labelledby="{{ star_title_id }}">
-      <div class="milaura-rare-pieces__shell milaura-rare-pieces__star-layout">
-        <div class="milaura-rare-pieces__star-gallery">
-          {%- if star_primary != blank -%}
-            {{ star_primary
-              | image_url: width: 1400
-              | image_tag:
-                widths: '480, 720, 960, 1200, 1400',
-                sizes: '(max-width: 749px) 100vw, 46vw',
-                loading: 'lazy',
-                class: 'milaura-rare-pieces__star-image milaura-rare-pieces__star-image--primary',
-                alt: featured_product.title
-            }}
-          {%- endif -%}
-
-          {%- if star_secondary != blank -%}
-            {{ star_secondary
-              | image_url: width: 800
-              | image_tag:
-                widths: '320, 480, 640, 800',
-                sizes: '(max-width: 749px) 44vw, 20vw',
-                loading: 'lazy',
-                class: 'milaura-rare-pieces__star-image milaura-rare-pieces__star-image--secondary',
-                alt: ''
-            }}
-          {%- endif -%}
-
-          {%- if star_tertiary != blank -%}
-            {{ star_tertiary
-              | image_url: width: 800
-              | image_tag:
-                widths: '320, 480, 640, 800',
-                sizes: '(max-width: 749px) 44vw, 20vw',
-                loading: 'lazy',
-                class: 'milaura-rare-pieces__star-image milaura-rare-pieces__star-image--tertiary',
-                alt: ''
-            }}
-          {%- endif -%}
-        </div>
-
-        <div class="milaura-rare-pieces__star-copy">
-          <p class="milaura-rare-pieces__star-label">{{ section.settings.star_label | escape }}</p>
+      <div class="milaura-rare-pieces__shell">
+        <header class="milaura-rare-pieces__star-head">
           <h2 id="{{ star_title_id }}" class="milaura-rare-pieces__star-title">
             {{ section.settings.star_title | default: featured_product.title | escape }}
           </h2>
+        </header>
 
-          {%- if section.settings.star_text != blank -%}
-            <div class="milaura-rare-pieces__star-text rte">{{ section.settings.star_text }}</div>
-          {%- endif -%}
+        <div class="milaura-rare-pieces__star-layout">
+          <a
+            class="milaura-rare-pieces__star-gallery"
+            href="{{ featured_product.url }}"
+            aria-label="Voir {{ featured_product.title | escape }}"
+          >
+            {%- if star_primary != blank -%}
+              <span class="milaura-rare-pieces__star-tile milaura-rare-pieces__star-tile--primary">
+                {{ star_primary
+                  | image_url: width: 1600
+                  | image_tag:
+                    widths: '480, 720, 960, 1200, 1400, 1600',
+                    sizes: '(max-width: 749px) 100vw, 58vw',
+                    loading: 'lazy',
+                    class: 'milaura-rare-pieces__star-image',
+                    alt: featured_product.title
+                }}
+              </span>
+            {%- endif -%}
 
-          <p class="milaura-rare-pieces__star-price">{{ featured_product.price | money }}</p>
+            {%- if star_secondary != blank -%}
+              <span class="milaura-rare-pieces__star-tile milaura-rare-pieces__star-tile--secondary">
+                {{ star_secondary
+                  | image_url: width: 900
+                  | image_tag:
+                    widths: '320, 480, 640, 800, 900',
+                    sizes: '(max-width: 749px) 50vw, 25vw',
+                    loading: 'lazy',
+                    class: 'milaura-rare-pieces__star-image',
+                    alt: ''
+                }}
+              </span>
+            {%- endif -%}
 
-          <a class="milaura-rare-pieces__text-link" href="{{ featured_product.url }}">
-            {{ section.settings.star_cta_label | escape }}
+            {%- if star_tertiary != blank -%}
+              <span class="milaura-rare-pieces__star-tile milaura-rare-pieces__star-tile--tertiary">
+                {{ star_tertiary
+                  | image_url: width: 900
+                  | image_tag:
+                    widths: '320, 480, 640, 800, 900',
+                    sizes: '(max-width: 749px) 50vw, 25vw',
+                    loading: 'lazy',
+                    class: 'milaura-rare-pieces__star-image',
+                    alt: ''
+                }}
+              </span>
+            {%- endif -%}
           </a>
+
+          <div class="milaura-rare-pieces__star-copy">
+            {%- if section.settings.star_text != blank -%}
+              <div class="milaura-rare-pieces__star-text rte">{{ section.settings.star_text }}</div>
+            {%- endif -%}
+
+            <dl class="milaura-rare-pieces__star-facts">
+              {%- if section.settings.star_origin != blank -%}
+                <div>
+                  <dt>Origine</dt>
+                  <dd>{{ section.settings.star_origin | escape }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if section.settings.star_weight != blank -%}
+                <div>
+                  <dt>Poids</dt>
+                  <dd>{{ section.settings.star_weight | escape }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if section.settings.star_dimensions != blank -%}
+                <div>
+                  <dt>Dimensions</dt>
+                  <dd>{{ section.settings.star_dimensions | escape }}</dd>
+                </div>
+              {%- endif -%}
+            </dl>
+
+            <p class="milaura-rare-pieces__star-price">{{ featured_product.price | money }}</p>
+
+            <a class="milaura-action milaura-action--editorial" href="{{ featured_product.url }}">
+              <span>{{ section.settings.star_cta_label | escape }}</span>
+              {% render 'milaura-action-icon' %}
+            </a>
+
+            {%- if section.settings.contract_photo_label != blank -%}
+              <p class="milaura-rare-pieces__contract-label">
+                {{ section.settings.contract_photo_label | escape }}
+              </p>
+            {%- endif -%}
+          </div>
         </div>
       </div>
     </section>
@@ -164,9 +193,9 @@
             <p>{{ section.settings.catalogue_text | escape }}</p>
           {%- endif -%}
         </div>
-        {%- if collection.products_count > 0 -%}
+        {%- if visible_products > 0 -%}
           <p class="milaura-rare-pieces__count">
-            {{ collection.products_count }} {% if collection.products_count > 1 %}pièces{% else %}pièce{% endif %}
+            {{ visible_products }} {% if visible_products > 1 %}pièces{% else %}pièce{% endif %}
           </p>
         {%- endif -%}
       </header>
@@ -202,26 +231,31 @@
     { "type": "text", "id": "heading", "label": "Titre H1", "default": "Pièces rares & de collection" },
     { "type": "richtext", "id": "introduction", "label": "Introduction", "default": "<p>Géodes, objets minéraux et bijoux choisis pour leur pierre, leur format ou leur provenance documentée. Pour les pièces uniques, les photographies montrent exactement l’article proposé.</p>" },
     { "type": "text", "id": "hero_cta_label", "label": "Action du Hero", "default": "Voir la sélection" },
-    { "type": "product", "id": "featured_product", "label": "Pièce vedette" },
-    { "type": "range", "id": "hero_image_index", "label": "Photographie Hero", "min": 1, "max": 8, "step": 1, "default": 1 },
-    { "type": "text", "id": "hero_image_alt", "label": "Description de la photographie", "default": "Géode cathédrale MilAura photographiée de face" },
-    { "type": "text", "id": "contract_photo_label", "label": "Mention photographie contractuelle", "default": "Photographie de la pièce vendue" },
-    { "type": "header", "content": "Critères de sélection" },
-    { "type": "text", "id": "criteria_heading", "label": "Titre", "default": "Ce qui distingue la sélection" },
-    { "type": "text", "id": "criterion_1_title", "label": "Critère 1", "default": "La pièce" },
+    { "type": "text", "id": "hero_desktop_asset", "label": "Fichier Hero desktop", "default": "milaura-hero-pieces-rares-lapis.webp" },
+    { "type": "text", "id": "hero_mobile_asset", "label": "Fichier Hero mobile", "default": "milaura-hero-pieces-rares-lapis-mobile.webp" },
+    { "type": "text", "id": "hero_image_alt", "label": "Description du Hero", "default": "Collier en lapis-lazuli MilAura porté sur un fond turquoise" },
+    { "type": "header", "content": "Repères de sélection" },
+    { "type": "text", "id": "criterion_1_title", "label": "Repère 1", "default": "Pièces uniques" },
     { "type": "text", "id": "criterion_1_text", "label": "Texte 1", "default": "La photographie montre l’article réellement proposé lorsqu’il s’agit d’une pièce unique." },
-    { "type": "text", "id": "criterion_2_title", "label": "Critère 2", "default": "Les informations" },
+    { "type": "text", "id": "criterion_2_title", "label": "Repère 2", "default": "Informations précises" },
     { "type": "text", "id": "criterion_2_text", "label": "Texte 2", "default": "La pierre, les dimensions, le poids et la provenance disponible sont précisés sur la fiche." },
-    { "type": "text", "id": "criterion_3_title", "label": "Critère 3", "default": "La livraison" },
+    { "type": "text", "id": "criterion_3_title", "label": "Repère 3", "default": "Livraison adaptée" },
     { "type": "text", "id": "criterion_3_text", "label": "Texte 3", "default": "Les modalités particulières sont indiquées lorsque le format ou le poids l’exige." },
     { "type": "header", "content": "Pièce vedette" },
-    { "type": "text", "id": "star_label", "label": "Repère", "default": "La pièce vedette" },
+    { "type": "product", "id": "featured_product", "label": "Pièce vedette" },
     { "type": "text", "id": "star_title", "label": "Titre éditorial" },
-    { "type": "richtext", "id": "star_text", "label": "Présentation", "default": "<p>Pour une pièce unique, indiquez ici son poids, ses dimensions, son origine documentée et le fait que les photographies montrent exactement l’article proposé.</p>" },
+    { "type": "richtext", "id": "star_text", "label": "Présentation", "default": "<p>Cette géode cathédrale en améthyste est une pièce unique. Les photographies montrent exactement la pièce proposée.</p>" },
+    { "type": "text", "id": "star_origin", "label": "Origine", "default": "Brésil" },
+    { "type": "text", "id": "star_weight", "label": "Poids", "default": "19,9 kg" },
+    { "type": "text", "id": "star_dimensions", "label": "Dimensions", "default": "39,5 × 23 × 14 cm" },
     { "type": "text", "id": "star_cta_label", "label": "Action", "default": "Voir la géode en détail" },
+    { "type": "text", "id": "contract_photo_label", "label": "Mention photographie", "default": "Photographies de la pièce vendue" },
+    { "type": "range", "id": "star_primary_image_index", "label": "Vue principale", "min": 1, "max": 9, "step": 1, "default": 1 },
+    { "type": "range", "id": "star_secondary_image_index", "label": "Vue secondaire", "min": 1, "max": 9, "step": 1, "default": 2 },
+    { "type": "range", "id": "star_tertiary_image_index", "label": "Vue de détail", "min": 1, "max": 9, "step": 1, "default": 3 },
     { "type": "header", "content": "Sélection" },
-    { "type": "text", "id": "catalogue_heading", "label": "Titre", "default": "La sélection" },
-    { "type": "text", "id": "catalogue_text", "label": "Introduction", "default": "Bijoux et objets minéraux retenus pour la pierre, le format, la provenance documentée ou la disponibilité limitée." },
+    { "type": "text", "id": "catalogue_heading", "label": "Titre", "default": "Les pièces de la sélection" },
+    { "type": "text", "id": "catalogue_text", "label": "Introduction", "default": "Bijoux et objets minéraux retenus pour leur pierre, leur format, leur provenance documentée ou leur disponibilité limitée." },
     { "type": "text", "id": "empty_message", "label": "Message vide", "default": "La sélection est en préparation." }
   ],
   "presets": [{ "name": "Landing pièces rares" }]

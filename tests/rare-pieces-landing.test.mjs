@@ -11,13 +11,17 @@ const stripShopifyHeader = (source) => source.replace(/^\/\*[\s\S]*?\*\//, '').t
 
 test('the rare-pieces collection template uses the verified geode handle', () => {
   const template = JSON.parse(stripShopifyHeader(read('templates/collection.milaura-pieces-rares.json')));
+  const settings = template.sections.rare_pieces.settings;
 
   assert.equal(template.sections.rare_pieces.type, 'milaura-rare-pieces-landing');
-  assert.equal(template.sections.rare_pieces.settings.heading, 'Pièces rares & de collection');
-  assert.equal(
-    template.sections.rare_pieces.settings.featured_product,
-    'geode-cathedrale-en-amethyste-19-9-kg',
-  );
+  assert.equal(settings.heading, 'Pièces rares & de collection');
+  assert.equal(settings.featured_product, 'geode-cathedrale-en-amethyste-19-9-kg');
+  assert.equal(settings.star_origin, 'Brésil');
+  assert.equal(settings.star_weight, '19,9 kg');
+  assert.equal(settings.star_dimensions, '39,5 × 23 × 14 cm');
+  assert.equal(settings.star_primary_image_index, 1);
+  assert.equal(settings.star_secondary_image_index, 2);
+  assert.equal(settings.star_tertiary_image_index, 3);
 });
 
 test('the launch manifest contains the six approved products and the verified geode', () => {
@@ -60,7 +64,41 @@ test('homepage and navigation point to the rare-pieces collection route', () => 
 test('the geode contract is explicit in the implementation', () => {
   const section = read('sections/milaura-rare-pieces-landing.liquid');
 
-  assert.match(section, /Photographie de la pièce vendue/);
+  assert.match(section, /Photographies de la pièce vendue/);
   assert.match(section, /section\.settings\.featured_product/);
+  assert.match(section, /featured_product\.media \| where: 'media_type', 'image'/);
   assert.doesNotMatch(section, /génér(?:ée|ation) par IA/i);
+});
+
+test('the landing reuses the approved lapis hero in dedicated desktop and mobile crops', () => {
+  const template = JSON.parse(stripShopifyHeader(read('templates/collection.milaura-pieces-rares.json')));
+  const section = read('sections/milaura-rare-pieces-landing.liquid');
+  const settings = template.sections.rare_pieces.settings;
+
+  assert.equal(settings.hero_desktop_asset, 'milaura-hero-pieces-rares-lapis.webp');
+  assert.equal(settings.hero_mobile_asset, 'milaura-hero-pieces-rares-lapis-mobile.webp');
+  assert.match(section, /<picture class="milaura-rare-pieces__hero-media">/);
+  assert.match(section, /<source media="\(max-width: 749px\)"/);
+  assert.match(section, /fetchpriority="high"/);
+});
+
+test('all three star-product views remain visible on mobile', () => {
+  const section = read('sections/milaura-rare-pieces-landing.liquid');
+  const css = read('assets/milaura-rare-pieces-landing.css');
+
+  assert.match(section, /milaura-rare-pieces__star-tile--primary/);
+  assert.match(section, /milaura-rare-pieces__star-tile--secondary/);
+  assert.match(section, /milaura-rare-pieces__star-tile--tertiary/);
+  assert.doesNotMatch(
+    css,
+    /milaura-rare-pieces__star-(?:tile|image)--(?:secondary|tertiary)[\s\S]{0,180}display:\s*none/,
+  );
+});
+
+test('the catalogue count excludes the featured product', () => {
+  const section = read('sections/milaura-rare-pieces-landing.liquid');
+
+  assert.match(section, /assign visible_products = 0/);
+  assert.match(section, /\{\{ visible_products \}\}/);
+  assert.doesNotMatch(section, /\{\{ collection\.products_count \}\}/);
 });
