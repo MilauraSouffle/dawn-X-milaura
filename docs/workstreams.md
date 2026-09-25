@@ -1,3 +1,11 @@
+# Copy de la section Cadeaux Home du 2026-09-25
+
+- Proprietaire : Codex, texte valide et GO direct de Patrice.
+- Branche et checkout : `codex/milaura-integration`, checkout d integration.
+- Perimetre reserve : les reglages `home_occasions` de `templates/index.json`, les valeurs par defaut correspondantes de `sections/milaura-home-occasions.liquid`, presente entree et checkpoint du lot. Design, images, destinations, produits, prix, stocks, Shopify Admin et autres sections Home exclus.
+- Texte valide : surtitre `Pierres de naissance & de mariage`, titre `À chaque date, sa pierre.`, description validée et cartes `Choisir votre bijou de naissance` / `Choisir votre pierre d’anniversaire de mariage` avec les actions `Trouver votre mois` / `Trouver votre année`.
+- Etat au 2026-09-25 : `OUVERT, COPY EN IMPLEMENTATION LOCALE`.
+
 # Ajustement visuel Notre histoire du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice.
