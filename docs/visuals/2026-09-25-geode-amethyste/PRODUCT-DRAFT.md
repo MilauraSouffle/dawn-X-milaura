@@ -1,7 +1,7 @@
 # Brouillon fiche produit - Geode cathedrale en amethyste
 
 Date : 2026-09-25
-Statut : `COPY_DRAFT, PATRICE_GO_REQUIRED`
+Statut : `COPY_DRAFT, PDP_MEDIA_VISUAL_GO, SHOPIFY_DRAFT_BLOCKED_COST_AND_TYPE`
 Reference source : `GC0256`
 
 ## Identite commerciale
@@ -147,12 +147,12 @@ Les sept fichiers fournis restent les seules sources produit. Aucun visuel Camil
 
 Les neuf masters finaux `2048 x 2048` sont disponibles dans `/Users/paesano/Documents/MilAura website/photo geode/exports-v6-2026-09-25/`. Les deux gros plans sont de simples recadrages des fichiers haute definition. Aucun element du produit n'a ete genere, reconstruit ou supprime. Pour une galerie encore plus aboutie, une nouvelle prise principale sans etiquette reste souhaitable mais n'est plus un blocage technique.
 
-Une seconde serie studio locale non generative est disponible dans `/Users/paesano/Documents/MilAura website/photo geode/exports-studio-local-2026-09-25/`. Sept vues completes sont detourees sur fond nacre avec une ombre de contact legere. H04 et E01 restent des details plein cadre. Les PNG transparents conservent exactement les pixels RGB des masters sources; les versions studio appliquent uniquement une correction bornee de luminosite, contraste, couleur et nettete. Statut : `LOCAL_TECHNICAL_PASS_PATRICE_VISUAL_GO_REQUIRED`.
+Une seconde serie studio locale non generative est disponible dans `/Users/paesano/Documents/MilAura website/photo geode/exports-studio-local-2026-09-25/`. Sept vues completes sont detourees sur fond nacre avec une ombre de contact legere. H04 et E01 restent des details plein cadre. Les PNG transparents conservent exactement les pixels RGB des masters sources; les versions studio appliquent uniquement une correction bornee de luminosite, contraste, couleur et nettete. Statut : `LOCAL_VISUAL_GO_INTEGRATION_PENDING`, valide par Patrice le 2026-09-25 avec l instruction `GO VISUEL GÉODE`.
 
 ## Blocages avant Shopify
 
-1. Etiquettes fournisseur visibles sur plusieurs vues face, acceptees techniquement mais a valider visuellement.
-2. `PDP_MEDIA_VISUAL_GO` de Patrice requis sur la nouvelle planche studio avant raccord du manifeste et creation Shopify.
-3. Le cout d'achat rendu HT de la geode n'est pas encore renseigne dans le pipeline de marge. Les `59,90 EUR` correspondent aux frais de livraison client, pas au cout d'achat produit.
+1. Le cout d'achat rendu HT de la geode n'est pas encore renseigne dans le pipeline de marge. Les `59,90 EUR` correspondent aux frais de livraison client, pas au cout d'achat produit.
+2. Le type canonique `geode` doit etre ajoute au pipeline sans degrader le H1 public en `Forme minerale`.
+3. Les neuf rendus studio valides doivent etre raccordes au manifeste final avant creation Shopify.
 4. Le forfait de livraison privee `59,90 EUR` doit etre configure et teste dans Shopify avant activation.
 5. Activation, ajout effectif a la collection, publication et mise en avant restent des GO distincts.

@@ -4,7 +4,7 @@ slug: geode-amethyste
 chantier: fiche produit MilAura Pieces rares
 session_a: codex
 session_b: codex
-status: LOCAL_STUDIO_TECHNICAL_PASS_PATRICE_VISUAL_GO_REQUIRED
+status: LOCAL_VISUAL_GO_SHOPIFY_DRAFT_BLOCKED_COST_AND_TYPE
 ---
 
 # VISUAL-MEMO - geode-amethyste
@@ -72,7 +72,7 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 - NO-GO : ne pas presenter les sept sources comme neuf photographies distinctes.
 - NO-GO : ne pas inventer l origine geographique, les traitements, un certificat ou une echelle humaine.
 - A trancher par Patrice : conserver les etiquettes visibles, les retirer physiquement et refaire les vues principales, ou autoriser leur retouche locale sans alteration de la pierre.
-- A valider par Patrice : `PDP_MEDIA_VISUAL_GO` sur la planche des neuf masters. Le PASS technique ne vaut pas validation visuelle.
+- GO visuel Patrice 2026-09-25 : instruction exacte `GO VISUEL GÉODE` pour la planche des neuf rendus studio locaux non generatifs. Cette validation ne vaut ni creation Shopify, ni activation, ni publication.
 
 ## Pilotes de retouche native rejetes le 2026-09-25
 
@@ -88,7 +88,7 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 - Deux details H04 et E01 : plein cadre conserve, sans masque de silhouette, avec correction de lumiere bornee uniquement.
 - Reglages reproductibles : luminosite `1.07`, contraste `1.08`, couleur `1.03`, nettete `1.18`; occupation cible `84 pour cent` pour les vues completes initialement trop petites.
 - Validation automatisee : neuf sources et trente-six derives `2048 x 2048`, RGB des neuf cutouts identique aux sources, hashes et bboxes consignes dans `local-retouch/LOCAL-RETOUCH-MANIFEST.json`.
-- Statut : `LOCAL_TECHNICAL_PASS_PATRICE_VISUAL_GO_REQUIRED`. Les rendus studio ne remplacent pas encore les masters contractuels dans le manifeste Shopify.
+- Statut : `LOCAL_VISUAL_GO_INTEGRATION_PENDING`. Patrice a valide les neuf rendus studio par l instruction exacte `GO VISUEL GÉODE`. Le raccord au manifeste Shopify reste une etape separee.
 
 ## Interdit de reouvrir
 
@@ -107,6 +107,7 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 
 - Premier fichier a relire : ce memo, jamais les originaux.
 - Integrer le handoff de la session `rare-pieces-landing-20260925` avant tout raccord a la collection.
-- Attendre le `PDP_MEDIA_VISUAL_GO` de Patrice sur les neuf candidats studio locaux.
-- Finaliser l enrichissement `pierre-mineral`, appliquer l override prix Patrice a `1299 EUR`, la profondeur `140 mm` et la livraison privee `59,90 EUR`, puis executer les gates locaux avant toute creation Shopify `DRAFT`.
+- Renseigner le cout d achat rendu HT de la geode, distinct du forfait client de `59,90 EUR`.
+- Ajouter `geode` au type canonique du pipeline sans degrader le H1 public, puis relancer les gates locaux.
+- Raccorder les neuf rendus studio valides au manifeste final avant toute creation Shopify `DRAFT`.
 - Hors scope sans GO separe : activation, publication, stock final, ajout a une collection, navigation et live.
