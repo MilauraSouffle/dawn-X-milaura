@@ -1,3 +1,15 @@
+## Destination Pieces rares et de collection du 2026-09-25
+
+- Proprietaire : Codex, GO explicite de Patrice apres validation de la nouvelle section 2 de la Home.
+- Branche et worktree : `codex/milaura-rare-pieces-landing-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/rare-pieces-landing-20260925`, base integration `ebf75ae4`.
+- Perimetre reserve : nouvelle section `sections/milaura-rare-pieces-landing.liquid`, nouveau style `assets/milaura-rare-pieces-landing.css`, nouveau template `templates/collection.milaura-pieces-rares.json`, adaptation compatible de `sections/milaura-hero-portal.liquid`, `templates/index.json`, `snippets/milaura-nav-curated-links.liquid`, manifeste `docs/reference/2026-09-25-pieces-rares-manifest.json`, tests et documentation propres au lot.
+- Direction validee : creer la collection `Pieces rares & de collection`, garder le fond turquoise du portail Home, remplacer son visuel par la vraie geode cathedrale, faire de la geode le produit star de la landing et lancer la selection avec six produits existants nommes par Patrice. Les produits futurs doivent remonter depuis la collection sans maintenance du template.
+- Contrat photographique : aucune creation IA de la geode. Seules les photographies de la piece exacte vendue sont autorisees. Detourage, correction du fond, exposition, balance des blancs et nettete sont admis sans modifier la forme, la couleur, les cristaux, les inclusions, les dimensions ni l etat reel de la piece.
+- Dependances externes : la session produit parallele de Patrice cree la fiche geode, ses medias contractuels et son handle. Ce lot ne modifie aucun produit, prix, stock ou media produit. La collection Admin, le menu et le portail Home ne seront publies qu une fois la fiche geode et la route de collection disponibles.
+- Publication : Patrice demande commit, integration et deploiement direct sur le theme public `190430282075`, sans preview. Le lot doit tout de meme passer les controles locaux, le push cible sans suppression, le pullback et la QA publique mobile et bureau. Aucun lien mort ni collection vide ne doit etre mis en ligne.
+- Etat au 2026-09-25 : `OUVERT, IMPLEMENTATION LOCALE`. Les six fiches existantes sont publiques et disponibles ; leurs prix publics verifies vont de 38,90 EUR a 71,90 EUR. La geode et son handle restent attendus de la session produit parallele.
+- Etat Admin au 2026-09-25 : collection manuelle `682086859099` creee avec le handle exact `pieces-rares`, les six produits valides et zero canal de vente. Title SEO `Pieces rares & de collection | MilAura` et meta description enregistres. La collection reste volontairement hors ligne, sur le template par defaut, jusqu au deploiement du nouveau template et a l arrivee de la geode.
+
 ## Refonte en cartes des trois chemins Home du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres revue du live et des captures du 2026-09-25.

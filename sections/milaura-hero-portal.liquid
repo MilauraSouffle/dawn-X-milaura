@@ -4,6 +4,9 @@
   assign hero_desktop_asset = section.settings.desktop_asset | default: 'milaura-hero-bijoux-pierres-naturelles-obsidienne-sodalite-desktop.webp'
   assign hero_mobile_asset = section.settings.mobile_asset | default: 'milaura-hero-bijoux-pierres-naturelles-obsidienne-sodalite-mobile.webp'
   assign hero_image_alt = section.settings.image_alt | default: 'Collier en obsidienne noire, boucles en sodalite et bracelet en nacre MilAura sur fond aigue-marine'
+  assign hero_product = section.settings.featured_product
+  assign hero_product_image_index = section.settings.product_media_index | minus: 1
+  assign hero_product_image = hero_product.images[hero_product_image_index] | default: hero_product.featured_image
   assign hero_cta_label = section.settings.cta_label | default: 'Découvrir nos bijoux'
   assign hero_default_link = routes.collections_url | append: '/bijoux-pierres-naturelles'
   assign hero_cta_link = section.settings.cta_link | default: hero_default_link
@@ -74,12 +77,22 @@
     transition-delay: 0s;
   }
 
+  #MilauraPortal-{{ section.id }} .portal-hero__media--product {
+    inset: 0 0 0 42%;
+  }
+
   #MilauraPortal-{{ section.id }} .portal-hero__image {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
+  }
+
+  #MilauraPortal-{{ section.id }} .portal-hero__image--product {
+    object-fit: contain;
+    object-position: center bottom;
+    padding: clamp(48px, 6vw, 92px) clamp(24px, 4vw, 64px) clamp(24px, 3vw, 48px);
   }
 
   #MilauraPortal-{{ section.id }} .portal-hero__veil {
@@ -249,6 +262,15 @@
       object-position: center;
     }
 
+    #MilauraPortal-{{ section.id }} .portal-hero__media--product {
+      inset: 34% 0 0;
+    }
+
+    #MilauraPortal-{{ section.id }} .portal-hero__image--product {
+      object-position: center bottom;
+      padding: 12px 20px 20px;
+    }
+
     #MilauraPortal-{{ section.id }} .portal-hero__copy {
       width: min(calc(100% - 44px), 340px);
       min-height: auto;
@@ -367,22 +389,37 @@
   data-milaura-home-hero
 >
   <div class="portal-hero__slides">
-    <picture class="portal-hero__media portal-hero__media--stone is-active">
-      <source
-        media="(max-width: 820px)"
-        srcset="{{ hero_mobile_asset | asset_url }}"
-      >
-      <img
-        class="portal-hero__image"
-        src="{{ hero_desktop_asset | asset_url }}"
-        width="1672"
-        height="941"
-        alt="{{ hero_image_alt | escape }}"
-        loading="{{ hero_image_loading }}"
-        fetchpriority="{{ hero_image_priority }}"
-        decoding="async"
-      >
-    </picture>
+    {%- if hero_product_image != blank -%}
+      <picture class="portal-hero__media portal-hero__media--product is-active">
+        {{ hero_product_image
+          | image_url: width: 1800
+          | image_tag:
+            widths: '480, 720, 960, 1280, 1600, 1800',
+            sizes: '(max-width: 820px) 100vw, 58vw',
+            loading: hero_image_loading,
+            fetchpriority: hero_image_priority,
+            class: 'portal-hero__image portal-hero__image--product',
+            alt: hero_image_alt
+        }}
+      </picture>
+    {%- else -%}
+      <picture class="portal-hero__media portal-hero__media--stone is-active">
+        <source
+          media="(max-width: 820px)"
+          srcset="{{ hero_mobile_asset | asset_url }}"
+        >
+        <img
+          class="portal-hero__image"
+          src="{{ hero_desktop_asset | asset_url }}"
+          width="1672"
+          height="941"
+          alt="{{ hero_image_alt | escape }}"
+          loading="{{ hero_image_loading }}"
+          fetchpriority="{{ hero_image_priority }}"
+          decoding="async"
+        >
+      </picture>
+    {%- endif -%}
 
   </div>
 
@@ -517,6 +554,20 @@
       "id": "image_alt",
       "label": "Description de l image",
       "default": "Collier en obsidienne noire, boucles en sodalite et bracelet en nacre MilAura sur fond aigue-marine"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "Produit photographié"
+    },
+    {
+      "type": "range",
+      "id": "product_media_index",
+      "label": "Photographie du produit",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 1
     }
   ],
   "presets": [
