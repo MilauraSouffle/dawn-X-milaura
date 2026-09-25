@@ -1,3 +1,11 @@
+# Ajustement visuel Notre histoire du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice.
+- Branche et checkout : `codex/milaura-integration`, checkout d integration.
+- Perimetre reserve : `sections/milaura-notre-histoire.liquid`, `assets/milaura-notre-histoire.css`, presente entree et checkpoint du lot. La section Cadeaux de la Home reste en lecture seule pour proposition copywriting.
+- Objectif : retirer le grand portrait de Karine du bloc Comment tout a commence, le remplacer par une bougie reelle du catalogue et ramener le visuel a un format d accent compact.
+- Etat au 2026-09-25 : `OUVERT, IMPLEMENTATION LOCALE`.
+
 # Section Home Pieces rares, lot refuse du 2026-09-25
 
 - Proprietaire : Codex, session arretee a la demande de Patrice le 2026-09-25 a 18:32 CEST.
