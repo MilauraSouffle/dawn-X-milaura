@@ -1,3 +1,13 @@
+## Copy de la section Nouveautes Home du 2026-09-25
+
+- Proprietaire : Codex, texte valide et GO direct de Patrice apres la section Best-sellers.
+- Branche et worktree : `codex/milaura-home-new-arrivals-copy-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/home-new-arrivals-copy-20260925`, base `7e5537c9` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : les seuls reglages `featured_products` dans `templates/index.json`, la presente entree et le checkpoint du lot. Les cartes produit, la collection, le CTA, le nombre de produits, les autres sections Home, Shopify Admin, prix, stocks, medias et Ads restent exclus.
+- Texte valide : surtitre `Tout juste arrivés`, titre conserve `Les nouveautés`, sous-titre `Découvrez les derniers bijoux, minéraux et produits bien-être arrivés chez MilAura.`
+- Publication : GO explicite pour commit, push et deploiement cible sur le theme public `190430282075` apres controle de la base live.
+- Etat au 2026-09-25 : `OUVERT, COPY EN IMPLEMENTATION LOCALE`.
+- Etat au 2026-09-25 : `COPY LOCALE PASS, GO LIVE DEJA RECU`. Le surtitre, le titre conserve et le sous-titre valide sont presents uniquement dans le bloc `featured_products`. JSON Shopify, `git diff --check`, contrat CSS et Theme Check valides ; seize avertissements historiques hors lot. Aucun theme Shopify modifie a ce stade.
+
 ## Copy de la section Best-sellers Home du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres validation de la section Karine.
