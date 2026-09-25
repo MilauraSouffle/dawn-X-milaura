@@ -24,7 +24,11 @@ test('the launch manifest contains the six approved live products and a pending 
   assert.equal(manifest.launch_products.length, 6);
   assert.equal(new Set(manifest.launch_products).size, 6);
   assert.equal(manifest.featured_product.handle, null);
+  assert.equal(manifest.featured_product.supplier_reference, 'GC0256');
+  assert.equal(manifest.featured_product.weight_g, 19900);
+  assert.deepEqual(manifest.featured_product.dimensions_mm, [395, 230]);
   assert.equal(manifest.photography_contract.ai_generation_allowed, false);
+  assert.equal(manifest.photography_contract.source_files.length, 7);
 });
 
 test('homepage and navigation point to the same future collection route', () => {
@@ -33,6 +37,9 @@ test('homepage and navigation point to the same future collection route', () => 
 
   assert.equal(homepage.sections.hero_homepage.settings.cta_link, 'shopify://collections/pieces-rares');
   assert.equal(homepage.sections.hero_homepage.settings.featured_product, '');
+  assert.equal(homepage.sections.hero_homepage.settings.title, '19,9 kg d’améthyste. Une seule pièce.');
+  assert.match(homepage.sections.hero_homepage.settings.description, /exactement la pièce présentée/);
+  assert.equal(homepage.sections.hero_homepage.settings.media_label, 'Photographie de la pièce vendue');
   assert.match(navigation, /routes\.collections_url\s*\}\}\/pieces-rares/);
 });
 
@@ -43,5 +50,7 @@ test('the geode contract is explicit in the implementation', () => {
   assert.match(section, /Photographie de la pièce vendue/);
   assert.match(section, /section\.settings\.featured_product/);
   assert.match(hero, /section\.settings\.featured_product/);
+  assert.match(hero, /section\.settings\.description/);
+  assert.match(hero, /section\.settings\.media_label/);
   assert.doesNotMatch(section, /génér(?:ée|ation) par IA/i);
 });
