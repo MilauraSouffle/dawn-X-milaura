@@ -1,5 +1,15 @@
 # Handoff Codex MilAura
 
+## Cloture Pinterest
+
+Date : 2026-09-25 09:09 CEST
+
+Statut : `SESSION FERMEE, AUTOMATISATION SUPPRIMEE`
+
+La campagne Pinterest `626759817213` est en pause avec 59,67 EUR depenses et 0 achat. FP01, FP02 et FP03 sont publiees ; FP06, FP04 et FP05 restent dans la file native jusqu'au 2026-09-26 a 09:00. Le rappel quotidien de 09:00 est supprime. Aucune action automatique ni relance Ads sans nouvelle demande explicite. Checkpoint : `docs/checkpoints/2026-09-25-0909-pinterest-session-close.md`.
+
+## Handoff creatif Meta precedent
+
 Date : 2026-09-25 08:03 CEST
 
 Statut : `SESSION CREATIVE META CLOSE, NIVEAU MOYEN, METHODE HIGGSFIELD A DURCIR`
