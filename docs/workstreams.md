@@ -4,7 +4,7 @@
 - Branche et checkout : `codex/milaura-integration`, checkout d integration. La creation du worktree dedie a ete interrompue par le systeme pendant la copie Git ; aucun worktree incomplet n est enregistre.
 - Perimetre reserve : `assets/milaura-home-occasions.css`, `assets/milaura-home-editorial.css`, `sections/milaura-home-editorial.liquid`, les seuls reglages `home_editorial` de `templates/index.json`, la presente entree et le checkpoint du lot. Aucun produit, prix, stock, collection, Shopify Admin, Ads ou page Notre histoire.
 - Direction validee : surface quartz rose sur toute la section Naissance et Mariage, cartes blanches conservees. Le bandeau final devient une entree explicite vers le Journal avec le surtitre `Le Journal MilAura`, le titre `Les pierres n’auront bientôt plus de secrets pour vous.`, la description validee, le CTA principal `Je file lire le Journal` et le lien secondaire `L’histoire de MilAura`.
-- Etat au 2026-09-25 18:17 CEST : `OUVERT, IMPLEMENTATION LOCALE`.
+- Etat au 2026-09-25 18:21 CEST : `FERME, POUSSE ET LIVE VERIFIE`. Commit fonctionnel `8f1e0734` pousse sur `codex/milaura-integration`. Quatre fichiers de theme publies de facon cible sur le live `190430282075`, sans suppression. Le nouveau reglage `lead` a exige un second push cible du template apres enregistrement du schema ; le pullback final est identique `4/4`. QA publique sans preview bar en `1440 x 900` et `390 x 844` : fond quartz rose `rgb(240, 217, 224)`, cartes blanches conservees, nouveau texte complet, CTA principal prune et lien histoire secondaire, aucun debordement horizontal. [Checkpoint](checkpoints/2026-09-25-1821-home-pink-journal-live.md).
 
 ## Refonte en cartes de la section Cadeaux Home du 2026-09-25
 
