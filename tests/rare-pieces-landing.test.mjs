@@ -58,7 +58,7 @@ test('homepage and navigation point to the rare-pieces collection route', () => 
   );
   assert.equal(
     homepage.sections.hero_homepage.settings.mobile_asset,
-    'milaura-hero-pieces-rares-lapis-mobile.webp',
+    'milaura-hero-pieces-rares-lapis-mobile-v5.webp',
   );
   assert.match(navigation, /routes\.collections_url\s*\}\}\/pieces-rares/);
 });
