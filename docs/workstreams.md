@@ -4,7 +4,7 @@
 - Branche et checkout : `codex/milaura-integration`, checkout d integration.
 - Perimetre reserve : les reglages `home_occasions` de `templates/index.json`, les valeurs par defaut correspondantes de `sections/milaura-home-occasions.liquid`, presente entree et checkpoint du lot. Design, images, destinations, produits, prix, stocks, Shopify Admin et autres sections Home exclus.
 - Texte valide : surtitre `Pierres de naissance & de mariage`, titre `À chaque date, sa pierre.`, description validée et cartes `Choisir votre bijou de naissance` / `Choisir votre pierre d’anniversaire de mariage` avec les actions `Trouver votre mois` / `Trouver votre année`.
-- Etat au 2026-09-25 : `OUVERT, COPY EN IMPLEMENTATION LOCALE`.
+- Etat au 2026-09-25 19:22 CEST : `FERME, POUSSE ET LIVE VERIFIE`. Commit `21ebdcd6` pousse sur `codex/milaura-integration`. La base live a ete relue identique avant publication pour ne pas ecraser la session concurrente Pieces rares. `templates/index.json` et `sections/milaura-home-occasions.liquid` ont ete deployes de facon ciblee sur le theme public `190430282075`, puis relus identiques `2/2`. QA publique en `1440 x 900` et `390 x 844` : textes exacts, deux cartes lisibles, rail mobile preserve, aucune erreur Liquid ni debordement de page. [Checkpoint](checkpoints/2026-09-25-1922-home-gift-copy-live.md).
 
 # Ajustement visuel Notre histoire du 2026-09-25
 
