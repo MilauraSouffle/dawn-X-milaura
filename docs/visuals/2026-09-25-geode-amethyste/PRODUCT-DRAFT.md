@@ -1,7 +1,7 @@
 # Brouillon fiche produit - Geode cathedrale en amethyste
 
 Date : 2026-09-25
-Statut : `COPY_DRAFT, PDP_MEDIA_VISUAL_GO, SHOPIFY_DRAFT_BLOCKED_COST_AND_TYPE`
+Statut : `SHOPIFY_DRAFT_VERIFIED, PDP_MEDIA_VISUAL_GO, NOT_PUBLISHED`
 Reference source : `GC0256`
 
 ## Identite commerciale
@@ -13,11 +13,12 @@ Reference source : `GC0256`
 - SKU propose : `GC0256`
 - Code-barres : aucun EAN prouve, conserver `null`
 - Produit Shopify lisible : `Géode d'améthyste`
-- Type canonique : `forme-minerale`
+- Type canonique : `geode`
 - Famille PDP : `pierre-mineral`
 - Audience : `non-applicable`
 - Stock physique : `1`, piece detenue par Patrice et photographiee le 2026-09-25
 - Livraison : transporteur prive, forfait `59,90 EUR`
+- Cout rendu HT confirme par Patrice : `300,00 EUR`, transport fournisseur inclus
 
 ## Accroche
 
@@ -117,8 +118,8 @@ Collections, maximum quatre :
 
 Tags :
 
-- `type:forme-minerale`
-- `forme-minerale`
+- `type:geode`
+- `geode`
 - `audience:non-applicable`
 - `intention:calme`
 - `pierre:amethyste`
@@ -149,10 +150,8 @@ Les neuf masters finaux `2048 x 2048` sont disponibles dans `/Users/paesano/Docu
 
 Une seconde serie studio locale non generative est disponible dans `/Users/paesano/Documents/MilAura website/photo geode/exports-studio-local-2026-09-25/`. Sept vues completes sont detourees sur fond nacre avec une ombre de contact legere. H04 et E01 restent des details plein cadre. Les PNG transparents conservent exactement les pixels RGB des masters sources; les versions studio appliquent uniquement une correction bornee de luminosite, contraste, couleur et nettete. Statut : `LOCAL_VISUAL_GO_INTEGRATION_PENDING`, valide par Patrice le 2026-09-25 avec l instruction `GO VISUEL GÉODE`.
 
-## Blocages avant Shopify
+## Gates avant activation
 
-1. Le cout d'achat rendu HT de la geode n'est pas encore renseigne dans le pipeline de marge. Les `59,90 EUR` correspondent aux frais de livraison client, pas au cout d'achat produit.
-2. Le type canonique `geode` doit etre ajoute au pipeline sans degrader le H1 public en `Forme minerale`.
-3. Les neuf rendus studio valides doivent etre raccordes au manifeste final avant creation Shopify.
-4. Le forfait de livraison privee `59,90 EUR` doit etre configure et teste dans Shopify avant activation.
-5. Activation, ajout effectif a la collection, publication et mise en avant restent des GO distincts.
+1. La fiche Shopify `10764374081883` est creee et verifiee en `DRAFT` avec neuf images, prix `1 299 EUR`, cout `300 EUR HT` et stock `1`.
+2. Le forfait de livraison privee `59,90 EUR` reste a configurer et tester dans Shopify avant activation.
+3. Activation, publication, navigation et mise en avant restent des GO distincts.

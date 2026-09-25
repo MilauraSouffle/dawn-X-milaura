@@ -4,7 +4,7 @@ slug: geode-amethyste
 chantier: fiche produit MilAura Pieces rares
 session_a: codex
 session_b: codex
-status: LOCAL_VISUAL_GO_SHOPIFY_DRAFT_BLOCKED_COST_AND_TYPE
+status: SHOPIFY_DRAFT_VERIFIED_NOT_PUBLISHED
 ---
 
 # VISUAL-MEMO - geode-amethyste
@@ -106,8 +106,8 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 ## Suite
 
 - Premier fichier a relire : ce memo, jamais les originaux.
-- Integrer le handoff de la session `rare-pieces-landing-20260925` avant tout raccord a la collection.
-- Renseigner le cout d achat rendu HT de la geode, distinct du forfait client de `59,90 EUR`.
-- Ajouter `geode` au type canonique du pipeline sans degrader le H1 public, puis relancer les gates locaux.
-- Raccorder les neuf rendus studio valides au manifeste final avant toute creation Shopify `DRAFT`.
-- Hors scope sans GO separe : activation, publication, stock final, ajout a une collection, navigation et live.
+- Collection `pieces-rares` raccordee au brouillon; toute evolution de sa landing theme reste dans le workstream dedie.
+- Cout rendu HT confirme par Patrice le 2026-09-25 : `300 EUR`, transport fournisseur inclus, distinct du forfait client de `59,90 EUR`.
+- Type canonique `geode` ajoute au pipeline local sans degrader le H1 public.
+- Fait le 2026-09-25 : contrat V6.4 raccorde, neuf masters charges et produit Shopify `10764374081883` verifie en `DRAFT`. URL publique HTTP `404`.
+- Reste avant activation : configurer et tester le forfait transporteur prive `59,90 EUR`, puis obtenir les GO activation et publication distincts.
