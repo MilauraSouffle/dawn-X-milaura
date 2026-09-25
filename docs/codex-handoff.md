@@ -1,5 +1,23 @@
 # Handoff Codex MilAura
 
+## Home et Notre histoire : polish ferme et live
+
+Date : 2026-09-25 19:24 CEST
+
+Statut : `SESSION FERMEE, VALIDEE PAR PATRICE, POUSSEE ET LIVE VERIFIEE`
+
+Patrice valide l ensemble de la passe. Les sections Karine, Best-sellers, Nouveautes, Cadeaux et Journal de la Home sont live sur le theme `190430282075`. La page `/pages/notre-histoire` est entierement refondue et live ; le second grand portrait de Karine a ete remplace par une bougie compacte. Les nouveaux textes Cadeaux sont egalement publies.
+
+La QA finale couvre `390 x 844` et `1440 x 900`, les lectures HTTP publiques et les pullbacks cibles. Aucun debordement horizontal, aucune erreur Liquid et aucune derive entre source et live. Theme Check reste sans erreur avec seize avertissements historiques hors lot.
+
+Le checkpoint canonique, la chronologie des huit lots, les commits, les textes finaux, les preuves, l etat Git sale preserve et le prompt de reprise sont dans `docs/checkpoints/2026-09-25-1924-home-polish-notre-histoire-handoff.md`.
+
+Le chantier `Pieces rares & de collection` reste hors perimetre et appartient a une autre session dans `/Users/paesano/Documents/MilAura website/_worktrees/home-rare-mobile-v2-20260925`. Ce worktree est encore sale. Ne pas modifier ni redeployer `templates/index.json` avant sa fermeture.
+
+```text
+Reprends MilAura depuis docs/checkpoints/2026-09-25-1924-home-polish-notre-histoire-handoff.md. Lis AGENTS.md, docs/project-state.md et docs/workstreams.md, puis commence en lecture seule. Les sections Karine, Best-sellers, Nouveautes, Cadeaux, Journal et la page Notre histoire sont fermees, validees par Patrice et live sur le theme 190430282075. Ne les redeploie pas par deduction. Le chantier Pieces rares appartient a une autre session encore sale sur son worktree ; ne modifie pas templates/index.json avant sa fermeture. Pour toute nouvelle demande, reserve un perimetre distinct, compare HEAD et live, puis separe PASS technique, GO visuel et live.
+```
+
 ## Home Pieces rares : version mobile refusee
 
 Date : 2026-09-25 18:32 CEST
