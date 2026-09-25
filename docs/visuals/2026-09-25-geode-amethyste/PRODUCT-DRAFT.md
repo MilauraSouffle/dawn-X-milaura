@@ -16,7 +16,8 @@ Reference source : `GC0256`
 - Type canonique : `forme-minerale`
 - Famille PDP : `pierre-mineral`
 - Audience : `non-applicable`
-- Stock physique : une piece indiquee comme detenue par Patrice le 2026-09-25, a relire dans le brouillon avant activation
+- Stock physique : `1`, piece detenue par Patrice et photographiee le 2026-09-25
+- Livraison : transporteur prive, forfait `59,90 EUR`
 
 ## Accroche
 
@@ -26,11 +27,11 @@ La pièce phare de notre collection Pièces rares : une géode cathédrale en am
 
 ```html
 <p><strong>Cette géode cathédrale en améthyste est la pièce phare de notre collection Pièces rares.</strong> Il s'agit de l'exemplaire exact photographié : une pièce numérotée de 19,9 kg, choisie pour sa présence sculpturale, sa cavité profonde et le contraste visible entre son coeur violet sombre et son pourtour plus clair.</p>
-<p>La géode mesure 395 x 230 mm selon la fiche fournisseur. Sa face révèle des cristaux violets de tailles variées, entourés de nuances lilas, blanches et translucides. Son dos sombre, sa base plane et sa silhouette haute permettent d'en apprécier la forme complète sur les photographies contractuelles. La qualité fournisseur est classée AA+.</p>
+<p>La géode mesure 39,5 x 23 x 14 cm. Sa face révèle des cristaux violets de tailles variées, entourés de nuances lilas, blanches et translucides. Son dos sombre, sa base plane et sa silhouette haute permettent d'en apprécier la forme complète sur les photographies contractuelles. La qualité fournisseur est classée AA+.</p>
 <p>Cette pièce peut devenir le point d'ancrage d'une collection de minéraux, d'une bibliothèque ou d'un intérieur sobre. Prévoyez un support stable, sec et adapté à son poids. Placez-la à l'abri des chocs, des passages fréquents et d'une exposition prolongée à une lumière intense.</p>
 <ul>
   <li><strong>La pièce exacte :</strong> vous recevez la géode photographiée, référence GC0256.</li>
-  <li><strong>Un format remarquable :</strong> 19,9 kg pour 395 x 230 mm.</li>
+  <li><strong>Un format remarquable :</strong> 19,9 kg pour 39,5 x 23 x 14 cm.</li>
   <li><strong>Une lecture complète :</strong> face, profils, dos, cavité et détails des cristaux sont documentés.</li>
 </ul>
 <p>Dépoussiérez délicatement les cristaux avec un pinceau souple et sec. N'utilisez ni produit ménager, ni abrasif. Manipulez la géode par sa base et protégez les pointes de cristal de tout contact direct.</p>
@@ -61,8 +62,7 @@ L'améthyste se reconnaît à ses nuances de violet, qui peuvent aller du lilas 
 | Type | Geode cathedrale numerotee |
 | Pierre | Amethyste |
 | Couleurs | Violet et transparent |
-| Dimensions prouvees | 395 x 230 mm |
-| Profondeur | Non communiquee, ne pas inventer |
+| Dimensions | 39,5 x 23 x 14 cm |
 | Poids | 19 900 g |
 | Qualite fournisseur | AA+ - Excellente |
 | Reference | GC0256 |
@@ -76,7 +76,7 @@ Oui. La reference GC0256 correspond a une piece numerotee unique. Les photograph
 
 ### Quelles sont ses dimensions et son poids ?
 
-La fiche fournisseur indique 395 x 230 mm et un poids de 19 900 g. Aucune troisieme dimension n'est publiee tant qu'elle n'a pas ete mesuree sur la piece physique.
+La géode mesure 39,5 cm de hauteur, 23 cm de largeur et 14 cm de profondeur. Son poids est de 19,9 kg.
 
 ### Comment installer cette geode chez soi ?
 
@@ -90,19 +90,19 @@ Utilisez un pinceau tres souple et sec pour retirer la poussiere. Evitez les pro
 
 En lithotherapie, l'amethyste est associee a l'apaisement, au calme et a la clarte. Cette dimension accompagne l'experience de la pierre sans constituer une promesse medicale.
 
-### Comment cette piece de 19,9 kg sera-t-elle livree ?
+### Comment cette pièce de 19,9 kg sera-t-elle livrée ?
 
-Texte bloque avant publication. La politique generale MilAura calcule les frais selon le poids, la destination et le mode de livraison, mais le parcours exact de cette piece fragile doit etre verifie dans Shopify avant activation.
+Cette pièce est expédiée par transporteur privé. Le forfait de livraison est de 59,90 €.
 
 ## SEO
 
 - Title : `Géode cathédrale en améthyste 19,9 kg | MilAura`
-- Meta description : `Pièce exacte photographiée, 19,9 kg et 395 x 230 mm. Géode cathédrale en améthyste sélectionnée par MilAura pour la collection Pièces rares.`
+- Meta description : `Pièce exacte photographiée, 19,9 kg et 39,5 x 23 x 14 cm. Géode cathédrale en améthyste sélectionnée pour les Pièces rares MilAura.`
 - Requete principale : `géode cathédrale améthyste 19,9 kg`
 - Longue traine :
   - `grande géode cathédrale améthyste 19,9 kg`
   - `géode améthyste pièce unique photo contractuelle`
-  - `géode cathédrale améthyste 395 x 230 mm`
+  - `géode cathédrale améthyste 39,5 x 23 x 14 cm`
   - `géode améthyste de collection MilAura`
   - `grande géode améthyste pour intérieur`
 
@@ -135,23 +135,22 @@ Les sept fichiers fournis restent les seules sources produit. Aucun visuel Camil
 
 | Position | Role | Source prevue | Etat |
 |---|---|---|---|
-| H01 | Produit complet face | `IMG_2576.JPG` | Source disponible, etiquette visible a traiter par nouvelle prise |
-| H02 | Echelle produit | future photo avec repere d echelle neutre ou mesure visible | Manquante |
-| H03 | Trois quarts face | `IMG_2582.HEIC` | Source disponible |
-| H04 | Macro cristaux | recadrage haute definition de `IMG_2578.HEIC` | Derive contractuelle possible |
-| H05 | Profil complet | `IMG_2580.HEIC` | Source disponible |
-| H06 | Vue complete alternative | `IMG_2577.HEIC` | Source disponible, etiquette visible |
-| E01 | Detail bord mineral et cristaux | recadrage haute definition de `IMG_2579.HEIC` | Derive contractuelle possible |
-| E02 | Dos et finition | `IMG_2581.HEIC` | Source disponible |
-| E03 | Seconde vue face | `IMG_2579.HEIC` | Source disponible, etiquette visible |
+| H01 | Produit complet face | `IMG_2576.JPG` | Master carre disponible, etiquette visible |
+| H02 | Vue complete et proportions | `IMG_2577.HEIC` | Master carre disponible, dimensions renseignees dans la fiche |
+| H03 | Trois quarts droit | `IMG_2582.HEIC` | Master carre disponible |
+| H04 | Macro du coeur cristallin | recadrage contractuel de `IMG_2578.HEIC` | Master carre disponible |
+| H05 | Profil gauche | `IMG_2580.HEIC` | Master carre disponible |
+| H06 | Vue face rapprochee | `IMG_2578.HEIC` | Master carre disponible, etiquette visible |
+| E01 | Detail du bord mineral et de la base | recadrage contractuel de `IMG_2579.HEIC` | Master carre disponible |
+| E02 | Dos et finition | `IMG_2581.HEIC` | Master carre disponible |
+| E03 | Vue face alternative | `IMG_2579.HEIC` | Master carre disponible, etiquette visible |
 
-Le contrat V6.4 exige neuf masters finaux carres `1:1`. Les deux recadrages macro peuvent completer neuf fichiers contractuels sans creer de faux produit. Pour une galerie digne d'un article a 1 299 EUR, la meilleure option reste cependant deux nouvelles prises reelles sans etiquette, dont une face principale et une vue avec un repere d'echelle sobre.
+Les neuf masters finaux `2048 x 2048` sont disponibles dans `/Users/paesano/Documents/MilAura website/photo geode/exports-v6-2026-09-25/`. Les deux gros plans sont de simples recadrages des fichiers haute definition. Aucun element du produit n'a ete genere, reconstruit ou supprime. Pour une galerie encore plus aboutie, une nouvelle prise principale sans etiquette reste souhaitable mais n'est plus un blocage technique.
 
 ## Blocages avant Shopify
 
-1. Sept fichiers fournis au lieu de neuf.
-2. Etiquettes fournisseur visibles sur plusieurs vues face.
-3. Profondeur exacte non mesuree.
-4. Modalite d expedition de la piece fragile de 19,9 kg non verifiee dans le checkout.
-5. `PDP_MEDIA_VISUAL_GO` de Patrice requis avant raccord du manifeste et creation Shopify.
-6. Activation, stock final, ajout effectif a la collection et publication restent des GO distincts.
+1. Etiquettes fournisseur visibles sur plusieurs vues face, acceptees techniquement mais a valider visuellement.
+2. `PDP_MEDIA_VISUAL_GO` de Patrice requis avant raccord du manifeste et creation Shopify.
+3. Le cout d'achat rendu HT de la geode n'est pas encore renseigne dans le pipeline de marge. Les `59,90 EUR` correspondent aux frais de livraison client, pas au cout d'achat produit.
+4. Le forfait de livraison privee `59,90 EUR` doit etre configure et teste dans Shopify avant activation.
+5. Activation, ajout effectif a la collection, publication et mise en avant restent des GO distincts.

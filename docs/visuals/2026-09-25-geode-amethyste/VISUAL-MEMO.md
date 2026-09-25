@@ -4,7 +4,7 @@ slug: geode-amethyste
 chantier: fiche produit MilAura Pieces rares
 session_a: codex
 session_b: codex
-status: EVIDENCE_CAPTURED_BLOCKED_7_OF_9
+status: NINE_MASTERS_TECHNICAL_PASS_PATRICE_VISUAL_GO_REQUIRED
 ---
 
 # VISUAL-MEMO - geode-amethyste
@@ -17,11 +17,13 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 |---|---|---|---|
 | photos produit | `/Users/paesano/Documents/MilAura website/photo geode/IMG_2576.JPG` a `IMG_2579.HEIC` | 2026-09-25 | `previews/01-vues-2576-2579.jpg` |
 | photos produit | `/Users/paesano/Documents/MilAura website/photo geode/IMG_2580.HEIC` a `IMG_2582.HEIC` | 2026-09-25 | `previews/02-vues-2580-2582.jpg` |
+| neuf masters carres derives des sept photos | `/Users/paesano/Documents/MilAura website/photo geode/exports-v6-2026-09-25/` | 2026-09-25 | `previews/03-neuf-masters-contact-sheet.jpg` |
 
 ## Previews 768 px JPEG
 
 - `previews/01-vues-2576-2579.jpg` : quatre vues avant proches, du plan plus large au cadrage serre.
 - `previews/02-vues-2580-2582.jpg` : profil gauche, dos complet puis trois quarts droit.
+- `previews/03-neuf-masters-contact-sheet.jpg` : neuf masters carres, dont deux recadrages contractuels. Le premier gros plan montre le coeur cristallin. Le second montre le bord mineral clair, les cristaux inferieurs et la base.
 
 ## Inventaire et hashes des originaux
 
@@ -52,7 +54,8 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 - Type : geode amethyste cathedrale numerotee.
 - Pierre : amethyste.
 - Couleurs fournisseur : violet et transparent.
-- Dimensions fournisseur : `395 x 230 mm`, sans troisieme mesure prouvee.
+- Dimensions fournisseur : `395 x 230 mm`.
+- Profondeur mesuree par Patrice : `140 mm`, communiquee le 2026-09-25.
 - Poids fournisseur : `19 900 g`.
 - Qualite fournisseur : `AA+`, a conserver dans les specifications et non dans le titre public.
 - La page fournisseur n est utilisee que pour ces faits. Ses images ne sont ni telechargees ni reutilisees.
@@ -61,11 +64,13 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 
 - GO : les sept photos reelles sont l autorite visuelle contractuelle du produit exact.
 - GO : la vue face, le profil gauche, le dos et le trois quarts droit suffisent pour verrouiller la silhouette, la cavite, la base et la finition arriere.
+- GO Patrice 2026-09-25 : deux gros plans contractuels peuvent etre derives des fichiers haute definition.
+- GO technique : neuf masters PNG natifs `2048 x 2048` et neuf derives JPEG Shopify `2048 x 2048` sont disponibles dans `/Users/paesano/Documents/MilAura website/photo geode/exports-v6-2026-09-25/`.
 - NO-GO : ne pas generer ni reconstruire la geode par IA.
 - NO-GO : ne pas presenter les sept sources comme neuf photographies distinctes.
-- NO-GO : ne pas inventer la profondeur, l origine geographique, les traitements, un certificat ou une echelle humaine.
-- A trancher par Patrice : fournir deux prises supplementaires reelles, ou autoriser deux masters contractuels derives des fichiers haute definition, un macro des cristaux et un detail du bord mineral/base, sans modification du produit.
+- NO-GO : ne pas inventer l origine geographique, les traitements, un certificat ou une echelle humaine.
 - A trancher par Patrice : conserver les etiquettes visibles, les retirer physiquement et refaire les vues principales, ou autoriser leur retouche locale sans alteration de la pierre.
+- A valider par Patrice : `PDP_MEDIA_VISUAL_GO` sur la planche des neuf masters. Le PASS technique ne vaut pas validation visuelle.
 
 ## Interdit de reouvrir
 
@@ -77,11 +82,12 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 - `/Users/paesano/Documents/MilAura website/photo geode/IMG_2581.HEIC`
 - `/Users/paesano/Documents/MilAura website/photo geode/IMG_2582.HEIC`
 - `https://camille-ambiance-nature.fr/produit/geode-amethyste-cathedrale-n%C2%B00256-19900g-aa+`
+- `/Users/paesano/Documents/MilAura website/photo geode/exports-v6-2026-09-25/previews/03-neuf-masters-contact-sheet.jpg`
 
 ## Suite
 
 - Premier fichier a relire : ce memo, jamais les originaux.
 - Integrer le handoff de la session `rare-pieces-landing-20260925` avant tout raccord a la collection.
-- Finaliser les neuf roles media apres decision sur les deux visuels manquants.
-- Construire l enrichissement `pierre-mineral`, appliquer l override prix Patrice a `1299 EUR`, puis executer les gates locaux avant toute creation Shopify `DRAFT`.
+- Attendre le `PDP_MEDIA_VISUAL_GO` de Patrice sur les neuf masters.
+- Finaliser l enrichissement `pierre-mineral`, appliquer l override prix Patrice a `1299 EUR`, la profondeur `140 mm` et la livraison privee `59,90 EUR`, puis executer les gates locaux avant toute creation Shopify `DRAFT`.
 - Hors scope sans GO separe : activation, publication, stock final, ajout a une collection, navigation et live.
