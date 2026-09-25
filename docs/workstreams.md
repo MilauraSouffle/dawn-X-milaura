@@ -1,3 +1,24 @@
+## Refonte en cartes de la section Cadeaux Home du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice apres validation de la section Nouveautes.
+- Branche et worktree : `codex/milaura-home-gift-cards-20260925`, `/Users/paesano/Documents/MilAura website/_worktrees/home-gift-cards-20260925`, base `5956faf4` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : `sections/milaura-home-occasions.liquid`, `assets/milaura-home-occasions.css`, suppression de `assets/milaura-home-occasions.js`, les deux détourages `assets/milaura-home-occasions-*-cutout-v1.webp`, les seuls réglages `home_occasions` de `templates/index.json`, la présente entrée et les checkpoints du lot. Les autres textes, destinations, autres sections Home, Shopify Admin, produits, prix, stocks, navigation, Ads et thème live restent exclus.
+- Direction : reprendre exactement la grammaire visuelle des cartes de la section `Trois façons de choisir` : surface blanche, filet or fin, numéro et titre en tête, bijoux détourés au centre et CTA en pied. Aucun repère ni paragraphe dans les cartes ; le surtitre, le titre et la description de section portent seuls l'explication. Sur mobile, le rail tactile laisse apercevoir la carte suivante.
+- Publication : implementation isolee et preview privee uniquement. Le theme public `190430282075` reste exclu sans GO visuel puis GO live explicites de Patrice.
+- Etat au 2026-09-25 : `OUVERT, IMPLEMENTATION LOCALE`. Les worktrees historiques susceptibles de toucher cette section sont propres et sans diff sur les fichiers cibles. Le checkout d integration sale est preserve.
+
+### Direction contract
+
+- THESIS : les cadeaux deviennent deux destinations visibles et desirables, jamais un choix abstrait cache derriere des onglets.
+- OWN-WORLD : fond blanc, photographies de bijoux détourées, filets or mats, Gloock pour les titres et Instrument Sans pour les numéros et actions, uniquement avec les tokens MilAura existants.
+- STORY : la visiteuse compare immédiatement le choix par mois et le choix par années, puis ouvre le guide adapté depuis toute la carte.
+- FIRST VIEWPORT : après le titre de section, deux cartes verticales de `424 x 576px` sont centrées sur bureau ; chacune montre uniquement son numéro, son titre, le détourage produit et son CTA. Sur mobile, une carte de `290 x 425px` laisse entrevoir la suivante dans un rail tactile.
+- FORM : extension locale de la section `Trois facons de choisir`, choisie explicitement par Patrice ; aucun concept aleatoire ni nouvelle identite visuelle.
+- FINISH : unreviewed and undocumented is unfinished; ce lot se termine par une revue de finition indépendante, un verdict explicite, la provenance des deux détourages et un checkpoint daté.
+- Etat au 2026-09-25 17:35 CEST : `PREVIEW PRIVEE PRETE, GO VISUEL PATRICE REQUIS`. Les onglets sont remplacés par deux cartes de destination entièrement cliquables. Bureau : grille équilibrée de deux cartes. Mobile : rail tactile de cartes de `290px` avec aperçu de la suivante. Les titres de cartes sont des `h3`, le JavaScript d'onglets et son réglage de schéma devenu inutile sont supprimés. Contrat CSS, `git diff --check` et Theme Check sont conformes ; les seize avertissements Theme Check restent historiques et hors lot. QA sur le thème privé `201797534043` en `390 x 844` et `1440 x 900` sans débordement, images responsive chargées et liens exacts. Pullback Shopify strictement identique `2/2`. La revue de finition indépendante est `PASS` après résolution de ses quatre constats. Le texte existant est volontairement conservé pour la prochaine passe et le thème public `190430282075` reste intact. [Checkpoint](checkpoints/2026-09-25-1735-home-gift-cards-preview.md).
+- Correction Patrice du 2026-09-25 17:40 CEST : première direction rejetée car elle reprenait l'idée de cartes sans reprendre leur grammaire visuelle réelle. La référence obligatoire devient la section `Trois façons de choisir` : titre en haut, produit détouré au centre, CTA en bas, fond blanc et aucune description dans les cartes.
+- Etat au 2026-09-25 17:49 CEST : `PREVIEW CIBLE PRETE, REVUE PASS, GO VISUEL PATRICE REQUIS`. Les deux cartes mesurent `424 x 576px` sur bureau et `290 x 425px` sur mobile, comme la référence. Les compositions Naissance et Mariage ont été détourées depuis les photographies existantes, exportées en WebP transparent `1254 x 1254px`, puis intégrées sans fond. Les descriptions et repères internes ont été retirés ; les liens restent inchangés. QA `1440 x 900` et `390 x 844` sans débordement, console sans erreur et pullback Shopify identique `5/5`. Revue indépendante `PASS`, aucun correctif supplémentaire demandé. Le thème public `190430282075` reste intact. [Checkpoint](checkpoints/2026-09-25-1749-home-gift-cards-target-preview.md).
+
 ## Copy de la section Nouveautes Home du 2026-09-25
 
 - Proprietaire : Codex, texte valide et GO direct de Patrice apres la section Best-sellers.
