@@ -4,7 +4,7 @@ slug: geode-amethyste
 chantier: fiche produit MilAura Pieces rares
 session_a: codex
 session_b: codex
-status: NINE_MASTERS_TECHNICAL_PASS_PATRICE_VISUAL_GO_REQUIRED
+status: LOCAL_STUDIO_TECHNICAL_PASS_PATRICE_VISUAL_GO_REQUIRED
 ---
 
 # VISUAL-MEMO - geode-amethyste
@@ -18,12 +18,14 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 | photos produit | `/Users/paesano/Documents/MilAura website/photo geode/IMG_2576.JPG` a `IMG_2579.HEIC` | 2026-09-25 | `previews/01-vues-2576-2579.jpg` |
 | photos produit | `/Users/paesano/Documents/MilAura website/photo geode/IMG_2580.HEIC` a `IMG_2582.HEIC` | 2026-09-25 | `previews/02-vues-2580-2582.jpg` |
 | neuf masters carres derives des sept photos | `/Users/paesano/Documents/MilAura website/photo geode/exports-v6-2026-09-25/` | 2026-09-25 | `previews/03-neuf-masters-contact-sheet.jpg` |
+| neuf candidats studio locaux non generatifs | `/Users/paesano/Documents/MilAura website/photo geode/exports-studio-local-2026-09-25/` | 2026-09-25 | `previews/04-neuf-masters-studio-local.jpg` |
 
 ## Previews 768 px JPEG
 
 - `previews/01-vues-2576-2579.jpg` : quatre vues avant proches, du plan plus large au cadrage serre.
 - `previews/02-vues-2580-2582.jpg` : profil gauche, dos complet puis trois quarts droit.
 - `previews/03-neuf-masters-contact-sheet.jpg` : neuf masters carres, dont deux recadrages contractuels. Le premier gros plan montre le coeur cristallin. Le second montre le bord mineral clair, les cristaux inferieurs et la base.
+- `previews/04-neuf-masters-studio-local.jpg` : sept vues completes detourees sur fond nacre avec ombre de contact et deux details plein cadre corriges sans detourage. Les etiquettes fournisseur restent visibles. Aucun cristal ou relief n est reconstruit.
 
 ## Inventaire et hashes des originaux
 
@@ -79,6 +81,15 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 - Decision : aucun de ces deux pilotes ne rejoint le dossier produit, le manifeste, Shopify ou la collection. Ne pas lancer les huit autres vues avec l editeur generatif.
 - Alternative recommandee : detourage local non generatif avec conservation des pixels produit, puis correction colorimetrique globale bornee et composition sur fond nacre. Cette voie exige une autorisation explicite de Patrice car elle remplace le chemin image natif apres son echec de fidelite.
 
+## Traitement studio local autorise et execute le 2026-09-25
+
+- GO Patrice : `ok ben vas y`, autorisation explicite du chemin local non generatif.
+- Sept vues completes : masque local, PNG transparent conservant exactement les pixels RGB de la source, fond nacre `#FFFDF9` vers `#F4EEE6`, correction bornee et ombre de contact douce.
+- Deux details H04 et E01 : plein cadre conserve, sans masque de silhouette, avec correction de lumiere bornee uniquement.
+- Reglages reproductibles : luminosite `1.07`, contraste `1.08`, couleur `1.03`, nettete `1.18`; occupation cible `84 pour cent` pour les vues completes initialement trop petites.
+- Validation automatisee : neuf sources et trente-six derives `2048 x 2048`, RGB des neuf cutouts identique aux sources, hashes et bboxes consignes dans `local-retouch/LOCAL-RETOUCH-MANIFEST.json`.
+- Statut : `LOCAL_TECHNICAL_PASS_PATRICE_VISUAL_GO_REQUIRED`. Les rendus studio ne remplacent pas encore les masters contractuels dans le manifeste Shopify.
+
 ## Interdit de reouvrir
 
 - `/Users/paesano/Documents/MilAura website/photo geode/IMG_2576.JPG`
@@ -90,11 +101,12 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 - `/Users/paesano/Documents/MilAura website/photo geode/IMG_2582.HEIC`
 - `https://camille-ambiance-nature.fr/produit/geode-amethyste-cathedrale-n%C2%B00256-19900g-aa+`
 - `/Users/paesano/Documents/MilAura website/photo geode/exports-v6-2026-09-25/previews/03-neuf-masters-contact-sheet.jpg`
+- `/Users/paesano/Documents/MilAura website/photo geode/exports-studio-local-2026-09-25/previews/04-neuf-masters-studio-local.jpg`
 
 ## Suite
 
 - Premier fichier a relire : ce memo, jamais les originaux.
 - Integrer le handoff de la session `rare-pieces-landing-20260925` avant tout raccord a la collection.
-- Attendre le `PDP_MEDIA_VISUAL_GO` de Patrice sur les neuf masters.
+- Attendre le `PDP_MEDIA_VISUAL_GO` de Patrice sur les neuf candidats studio locaux.
 - Finaliser l enrichissement `pierre-mineral`, appliquer l override prix Patrice a `1299 EUR`, la profondeur `140 mm` et la livraison privee `59,90 EUR`, puis executer les gates locaux avant toute creation Shopify `DRAFT`.
 - Hors scope sans GO separe : activation, publication, stock final, ajout a une collection, navigation et live.
