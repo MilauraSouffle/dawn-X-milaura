@@ -1,5 +1,19 @@
 # Handoff Codex MilAura
 
+## Pinterest Ads Automne : session creative arretee
+
+Date : 2026-09-25 18:00 CEST
+
+Statut : `CAMPAGNE EN PAUSE, AUCUNE CREA FINALE VALIDEE`
+
+La nouvelle campagne Pinterest `626759918955` est preparee a 7 EUR par jour mais reste en pause, sans annonce, diffusion ou depense. Aucun GO d activation n a ete donne. Les associations couleur produit par produit sont retenues, mais le lot n est pas publiable : la cornaline sur masque propre est la meilleure candidate, rhodolite reste recuperable, les boucles grenat doivent etre redetourees et Iris est encore defectueux.
+
+La prochaine session doit utiliser l outil natif d edition d image en priorite, une creation a la fois, conserver le bijou exact et obtenir un GO visuel avant texte ou upload. Les masters, essais, candidats, rejets et sources sont inventories avec leurs chemins absolus dans `docs/checkpoints/2026-09-25-1800-pinterest-ads-creative-handoff.md`. Le dossier de fermeture est `/Users/paesano/.codex/visualizations/2026/09/22/01a0ca26-71d2-7341-b8a4-a534a888a7b8/pinterest-ads-automne-session-close-2026-09-25/`.
+
+```text
+Reprends les Ads Pinterest MilAura depuis docs/checkpoints/2026-09-25-1800-pinterest-ads-creative-handoff.md. La campagne brouillon 626759918955 reste en pause a 7 EUR par jour. N active rien et ne modifie aucun budget. Utilise l outil natif d edition d image, pas Pixelmator, pour produire une creation a la fois avec le produit exact. Conserve les couleurs validees, controle les contours a 100 pour cent, montre les images sans texte a Patrice et attends son GO visuel. Aucun upload avant GO du lot, aucun lancement avant GO d activation distinct.
+```
+
 ## Cartes des trois chemins de la Home live
 
 Date : 2026-09-25 11:34 CEST
