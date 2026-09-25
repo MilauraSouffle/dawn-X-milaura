@@ -6,6 +6,14 @@
 - Theme : public `190430282075`. Le rendu refuse reste temporairement live ; aucun rollback execute.
 - Etat au 2026-09-25 18:32 CEST : `FERME, VERSION MOBILE REFUSEE PAR PATRICE, REPRISE TRANSFEREE A UNE AUTRE SESSION`. Le PASS technique, le pullback identique et la QA responsive ne valent pas validation visuelle. L asset mobile et la composition actuelle ne doivent pas etre reutilises comme references approuvees. La prochaine session commence en lecture seule, confirme avec Patrice ce qui reste conserve et reserve ses fichiers avant edition. [Checkpoint](checkpoints/2026-09-25-1832-home-rare-pieces-rejected-handoff.md).
 
+## Refonte page Notre histoire du 2026-09-25
+
+- Proprietaire : Codex, demande directe de Patrice apres validation de la nouvelle entree Journal sur la Home.
+- Branche et checkout : `codex/milaura-integration`, checkout d integration. Travail cible sur une route hors du perimetre de la session Pieces rares concurrente.
+- Perimetre reserve : `sections/milaura-notre-histoire.liquid`, nouveau `assets/milaura-notre-histoire.css`, `templates/page.milaura-notre-histoire.json`, la presente entree et le checkpoint du lot. Aucun produit, prix, stock, navigation, autre template, Shopify Admin ou Ads.
+- Direction validee : hero produit et Karine, recit court, methode de selection en trois criteres, trois portes vers Bijoux, Mineraux et Bien-etre, puis diagnostic. Les affirmations non documentees sur certification, gemmologue, tracabilite, fabrication et composition des bougies sont retirees.
+- Etat au 2026-09-25 : `OUVERT, IMPLEMENTATION LOCALE`.
+
 ## Fond rose Cadeaux et bandeau Journal Home du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres validation des cartes Naissance et Mariage.
