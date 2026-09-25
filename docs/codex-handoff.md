@@ -1,5 +1,15 @@
 # Handoff Codex MilAura
 
+## Cartes des trois chemins de la Home live
+
+Date : 2026-09-25 11:34 CEST
+
+Statut : `LIVE DEPLOYE ET PASS TECHNIQUE, REVUE VISUELLE PATRICE ATTENDUE`
+
+La section 2 de la Home remplace ses onglets et son panneau unique par trois cartes completes visibles sur bureau. Le texte commercial long est restaure, `Trois facons de choisir` reste en turquoise dans la colonne droite, et les trois compositions existantes restent les medias de reference. Sous `750px`, le rail utilise le defilement tactile natif et `scroll-snap`, avec apercu de la carte suivante.
+
+Source `4756694e`, integration `a8fb2c16`, theme public `190430282075`. Push cible de quatre fichiers, pullback `4/4` identique, Theme Check sans erreur et 16 avertissements historiques hors lot. QA publique `1280 x 720` : trois cartes, trois medias charges, trois liens exacts, aucun overflow et console vide. La surface navigateur de ce run ne permettait pas une capture reelle a `390px`; la revue mobile de Patrice est donc la prochaine verification visuelle prioritaire. Checkpoint : `docs/checkpoints/2026-09-25-1134-home-paths-cards-live.md`.
+
 ## Cloture polish Automne et section 2 de la Home
 
 Date : 2026-09-25 11:08 CEST
