@@ -9,21 +9,26 @@ const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'u
 
 const stripShopifyHeader = (source) => source.replace(/^\/\*[\s\S]*?\*\//, '').trim();
 
-test('the rare-pieces collection template is valid and starts without an invented geode handle', () => {
+test('the rare-pieces collection template uses the verified geode handle', () => {
   const template = JSON.parse(stripShopifyHeader(read('templates/collection.milaura-pieces-rares.json')));
 
   assert.equal(template.sections.rare_pieces.type, 'milaura-rare-pieces-landing');
   assert.equal(template.sections.rare_pieces.settings.heading, 'Pièces rares & de collection');
-  assert.equal(template.sections.rare_pieces.settings.featured_product, '');
+  assert.equal(
+    template.sections.rare_pieces.settings.featured_product,
+    'geode-cathedrale-en-amethyste-19-9-kg',
+  );
 });
 
-test('the launch manifest contains the six approved live products and a pending geode', () => {
+test('the launch manifest contains the six approved products and the verified geode', () => {
   const manifest = JSON.parse(read('docs/reference/2026-09-25-pieces-rares-manifest.json'));
 
   assert.equal(manifest.collection.handle, 'pieces-rares');
   assert.equal(manifest.launch_products.length, 6);
   assert.equal(new Set(manifest.launch_products).size, 6);
-  assert.equal(manifest.featured_product.handle, null);
+  assert.equal(manifest.featured_product.handle, 'geode-cathedrale-en-amethyste-19-9-kg');
+  assert.equal(manifest.featured_product.status, 'active_pending_collection_publication');
+  assert.equal(manifest.featured_product.media_count, 9);
   assert.equal(manifest.featured_product.supplier_reference, 'GC0256');
   assert.equal(manifest.featured_product.weight_g, 19900);
   assert.deepEqual(manifest.featured_product.dimensions_mm, [395, 230]);
@@ -31,12 +36,15 @@ test('the launch manifest contains the six approved live products and a pending 
   assert.equal(manifest.photography_contract.source_files.length, 7);
 });
 
-test('homepage and navigation point to the same future collection route', () => {
+test('homepage and navigation point to the rare-pieces collection route', () => {
   const homepage = JSON.parse(stripShopifyHeader(read('templates/index.json')));
   const navigation = read('snippets/milaura-nav-curated-links.liquid');
 
   assert.equal(homepage.sections.hero_homepage.settings.cta_link, 'shopify://collections/pieces-rares');
-  assert.equal(homepage.sections.hero_homepage.settings.featured_product, '');
+  assert.equal(
+    homepage.sections.hero_homepage.settings.featured_product,
+    'geode-cathedrale-en-amethyste-19-9-kg',
+  );
   assert.equal(homepage.sections.hero_homepage.settings.title, '19,9 kg d’améthyste. Une seule pièce.');
   assert.match(homepage.sections.hero_homepage.settings.description, /exactement la pièce présentée/);
   assert.equal(homepage.sections.hero_homepage.settings.media_label, 'Photographie de la pièce vendue');
