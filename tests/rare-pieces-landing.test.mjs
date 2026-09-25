@@ -107,7 +107,10 @@ test('the compact visual contract keeps the hero, bento, and page surface under 
   const css = read('assets/milaura-rare-pieces-landing.css');
 
   assert.match(css, /\.milaura-rare-pieces \{[\s\S]*?background: var\(--milaura-surface-blanche\)/);
-  assert.match(css, /\.milaura-rare-pieces__hero \{[\s\S]*?min-height: clamp\(500px, 42vw, 600px\)/);
-  assert.match(css, /\.milaura-rare-pieces__star-gallery \{[\s\S]*?min-height: clamp\(420px, 34vw, 480px\)/);
-  assert.match(css, /\.milaura-rare-pieces__star-layout \{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /\.milaura-rare-pieces__hero \{[\s\S]*?height: clamp\(420px, 34vw, 480px\)/);
+  assert.match(css, /\.milaura-rare-pieces__star-gallery \{[\s\S]*?height: clamp\(360px, 29vw, 410px\)/);
+  assert.match(css, /\.milaura-rare-pieces__star-gallery \{[\s\S]*?display: grid/);
+  assert.match(css, /\.milaura-rare-pieces__star-tile--primary \{[\s\S]*?grid-row: 1 \/ 3/);
+  assert.doesNotMatch(css, /\.milaura-rare-pieces__star-tile[^}]*position: absolute/);
+  assert.doesNotMatch(css, /\.milaura-rare-pieces__star-tile[^}]*box-shadow/);
 });
