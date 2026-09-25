@@ -1,3 +1,11 @@
+# Section Home Pieces rares, lot refuse du 2026-09-25
+
+- Proprietaire : Codex, session arretee a la demande de Patrice le 2026-09-25 a 18:32 CEST.
+- Branche et checkout : `codex/milaura-integration`, `/Users/paesano/Documents/MilAura website/dawn-X-milaura`.
+- Perimetre touche : `sections/milaura-hero-portal.liquid`, `templates/index.json`, `assets/milaura-tokens.css`, `assets/milaura-hero-pieces-rares-lapis.webp`, `assets/milaura-hero-pieces-rares-lapis-mobile.webp` et documentation de fermeture.
+- Theme : public `190430282075`. Le rendu refuse reste temporairement live ; aucun rollback execute.
+- Etat au 2026-09-25 18:32 CEST : `FERME, VERSION MOBILE REFUSEE PAR PATRICE, REPRISE TRANSFEREE A UNE AUTRE SESSION`. Le PASS technique, le pullback identique et la QA responsive ne valent pas validation visuelle. L asset mobile et la composition actuelle ne doivent pas etre reutilises comme references approuvees. La prochaine session commence en lecture seule, confirme avec Patrice ce qui reste conserve et reserve ses fichiers avant edition. [Checkpoint](checkpoints/2026-09-25-1832-home-rare-pieces-rejected-handoff.md).
+
 ## Fond rose Cadeaux et bandeau Journal Home du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres validation des cartes Naissance et Mariage.

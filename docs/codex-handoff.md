@@ -1,5 +1,21 @@
 # Handoff Codex MilAura
 
+## Home Pieces rares : version mobile refusee
+
+Date : 2026-09-25 18:32 CEST
+
+Statut : `SESSION FERMEE, VERSION MOBILE REFUSEE, LIVE ACTUEL A REMPLACER`
+
+Patrice refuse la version finale produite par cette session et confie la reprise a une autre session. Le live `190430282075` contient encore cette version : panneau turquoise avec copy en premier sur mobile, puis portrait vertical du mannequin et collier lapis. Le rendu est techniquement valide mais visuellement refuse. Ne pas le citer comme approuve et ne pas reutiliser l asset mobile par deduction.
+
+Le bureau avait ete juge reussi pendant les iterations et la copy avait recu un accord anterieur, mais la formulation de fermeture `ta version est refusee` interdit d en deduire un GO durable. La prochaine session doit commencer en lecture seule, verifier la Home publique et demander a Patrice ce qui reste conserve avant toute edition. Aucun rollback n a ete execute.
+
+Checkpoint canonique, fichiers, commits, preuves techniques, etat sale preserve et prompt de reprise : `docs/checkpoints/2026-09-25-1832-home-rare-pieces-rejected-handoff.md`.
+
+```text
+Reprends la section Home Pieces rares depuis docs/checkpoints/2026-09-25-1832-home-rare-pieces-rejected-handoff.md. Inspecte le live en lecture seule. La version mobile actuelle est explicitement refusee et ne constitue pas une reference. Fais confirmer a Patrice ce qui reste conserve, puis travaille uniquement le nouveau perimetre valide. Compare toujours le live, le HEAD et templates/index.json avant toute edition. Aucun push live avant le nouveau GO exact.
+```
+
 ## Pinterest Ads Automne : session creative arretee
 
 Date : 2026-09-25 18:00 CEST
