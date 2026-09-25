@@ -44,24 +44,23 @@ test('homepage and navigation point to the rare-pieces collection route', () => 
   const navigation = read('snippets/milaura-nav-curated-links.liquid');
 
   assert.equal(homepage.sections.hero_homepage.settings.cta_link, 'shopify://collections/pieces-rares');
+  assert.equal(homepage.sections.hero_homepage.settings.title, 'L’harmonie parfaite.');
+  assert.equal(homepage.sections.hero_homepage.settings.cta_label, 'Découvrir nos bijoux');
   assert.equal(
-    homepage.sections.hero_homepage.settings.featured_product,
-    'geode-cathedrale-en-amethyste-19-9-kg',
+    homepage.sections.hero_homepage.settings.desktop_asset,
+    'milaura-hero-bijoux-pierres-naturelles-obsidienne-sodalite-desktop.webp',
   );
-  assert.equal(homepage.sections.hero_homepage.settings.title, '19,9 kg d’améthyste. Une seule pièce.');
-  assert.match(homepage.sections.hero_homepage.settings.description, /exactement la pièce présentée/);
-  assert.equal(homepage.sections.hero_homepage.settings.media_label, 'Photographie de la pièce vendue');
+  assert.equal(
+    homepage.sections.hero_homepage.settings.mobile_asset,
+    'milaura-hero-bijoux-pierres-naturelles-obsidienne-sodalite-mobile.webp',
+  );
   assert.match(navigation, /routes\.collections_url\s*\}\}\/pieces-rares/);
 });
 
 test('the geode contract is explicit in the implementation', () => {
   const section = read('sections/milaura-rare-pieces-landing.liquid');
-  const hero = read('sections/milaura-hero-portal.liquid');
 
   assert.match(section, /Photographie de la pièce vendue/);
   assert.match(section, /section\.settings\.featured_product/);
-  assert.match(hero, /section\.settings\.featured_product/);
-  assert.match(hero, /section\.settings\.description/);
-  assert.match(hero, /section\.settings\.media_label/);
   assert.doesNotMatch(section, /génér(?:ée|ation) par IA/i);
 });
