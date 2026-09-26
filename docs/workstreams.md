@@ -1,3 +1,12 @@
+# Rythme et autoplay du carousel Pieces rares du 2026-09-26
+
+- Proprietaire : Codex, demande directe de Patrice apres controle du site public.
+- Branche et worktree : `codex/milaura-rare-carousel-rhythm-20260926`, `/Users/paesano/Documents/MilAura website/_worktrees/rare-carousel-rhythm-20260926`, base `a1b96bd5` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : `assets/milaura-home-rare-carousel.css`, `assets/milaura-home-rare-carousel.js`, `sections/milaura-home-rare-carousel.liquid`, le seul reglage de tempo de `templates/index.json`, cette entree et le checkpoint du lot. Les medias, produits, prix, stocks, autres sections Home, Shopify Admin et Ads restent exclus.
+- Diagnostic : le tempo public est de `6 s`. Le carousel demarre automatiquement, mais une interaction par fleche, point, clavier ou swipe le place en pause permanente. Le rythme vertical est trop serre entre le titre de section, le produit, ses informations et les commandes sur bureau et mobile.
+- Direction : rotation toutes les `5 s`, autoplay actif par defaut, navigation manuelle qui relance le cycle sans forcer la pause, bouton pause/reprise conserve, respiration verticale augmentee aux deux breakpoints. Deploiement direct et cible sur le theme live `190430282075`, autorise par Patrice pour ce lot.
+- Etat au 2026-09-26 18:20 CEST : `PASS TECHNIQUE, GO LIVE DEJA RECU`. Tempo configure a `5 s`; navigation manuelle sans pause permanente; rythme vertical elargi sur bureau, tablette et mobile. `git diff --check`, syntaxe JavaScript, JSON Home, contrat CSS et Theme Check passent sans erreur; les `16` avertissements Theme Check sont historiques et hors lot.
+
 # Restauration du header verre Home du 2026-09-26
 
 - Proprietaire : Codex, demande directe de Patrice apres regression visuelle observee sur le site public.

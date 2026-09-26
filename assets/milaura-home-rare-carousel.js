@@ -8,7 +8,7 @@ if (!customElements.get('milaura-rare-carousel')) {
       this.toggleButton = this.querySelector('[data-rare-toggle]');
       this.stage = this.querySelector('.milaura-rare-carousel__stage');
       this.index = Math.max(0, this.slides.findIndex((slide) => slide.classList.contains('is-active')));
-      this.interval = Number(this.dataset.interval) || 6000;
+      this.interval = Number(this.dataset.interval) || 5000;
       this.autoplay = this.dataset.autoplay === 'true';
       this.motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
       this.controller = new AbortController();
@@ -80,15 +80,11 @@ if (!customElements.get('milaura-rare-carousel')) {
       this.observer?.disconnect();
     }
 
-    show(requestedIndex, restart) {
+    show(requestedIndex, restartAutoplay) {
       const total = this.slides.length;
       this.index = (requestedIndex + total) % total;
 
-      if (restart) {
-        this.userPaused = true;
-        this.stop();
-        this.updateToggle();
-      }
+      if (restartAutoplay) this.stop();
 
       this.slides.forEach((slide, slideIndex) => {
         const active = slideIndex === this.index;
@@ -105,6 +101,7 @@ if (!customElements.get('milaura-rare-carousel')) {
         dot.setAttribute('aria-current', active ? 'true' : 'false');
       });
 
+      if (restartAutoplay && !this.userPaused) this.start(true);
     }
 
     toggleAutoplay() {
