@@ -1,11 +1,12 @@
 # MilAura theme: etat courant
 
-Derniere validation: 2026-09-25
+Derniere validation: 2026-09-26
 Fichier slim. Historique : `docs/project-state-ledger.md` (interdit au boot, 700 lignes).
 Theme live : `190430282075`. Copy : `docs/reference/2026-08-12-copywriting-milaura.md`.
 
 ## Maintenant
 
+- Meta Automne : session creative du 2026-09-26 arretee sur rejet total de Patrice. V4 et V5 sont explicitement refusees ; la video finale est jugee horrible, inregardable et comparable a un mauvais montage Canva. `187 credits` Higgsfield ont ete consommes, sans retry. Aucun import Meta, aucune campagne activee, aucune depense Ads, aucun changement Shopify. Ne pas reutiliser les sorties comme masters. Reprise uniquement dans une session fraiche, documentation et methode d abord, puis un seul pilote brut avec GO visuel avant la suite. Handoff canonique : `docs/checkpoints/2026-09-26-1039-meta-automne-creative-failure-handoff.md`.
 - Home et Notre histoire : passe du 2026-09-25 fermee, validee par Patrice, poussee et live sur le theme `190430282075`. Karine, Best-sellers, Nouveautes, Cadeaux, Journal et `/pages/notre-histoire` sont verifies en `390 x 844` et `1440 x 900`, sans debordement ni erreur Liquid. Handoff canonique : `docs/checkpoints/2026-09-25-1924-home-polish-notre-histoire-handoff.md`.
 - Cadeaux Home : deux cartes premium avec detourages produits, fond Quartz rose et copy finale `À chaque date, sa pierre.` Les destinations restent `/pages/pierres-de-naissance` et `/pages/cadeaux-anniversaire-de-mariage`.
 - Notre histoire : page editoriale complete live. Le second grand portrait de Karine a ete remplace par la bougie Protection - Obsidienne dans un cadre compact. Risque residuel limite : mesurer le LCP du Hero dans une future passe performance avant toute recompression.

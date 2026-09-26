@@ -1,5 +1,25 @@
 # Handoff Codex MilAura
 
+## Meta Automne : echec creatif et arret
+
+Date : 2026-09-26 10:39 CEST
+
+Statut : `SESSION ARRETEE, ECHEC VISUEL CATASTROPHIQUE, V4 ET V5 REJETEES`
+
+Patrice a refuse la video finale sans reserve : resultat horrible, inregardable, comparable a une blague ou a un mauvais montage Canva. Ce verdict remplace tout statut anterieur de candidat ou de base exploitable. Les montages V4 et V5 ainsi que leurs rushes ne doivent pas etre reutilises comme masters, corriges par petites touches ou proposes a Meta.
+
+La methode a echoue : Codex a produit un plan Seedance multi-produit avec quatre references, puis a assemble une timeline complete avec FFmpeg et Pillow avant d avoir obtenu le GO visuel de Patrice sur un seul rush brut. La postproduction a tente de sauver une matiere insuffisante et a renforce le rendu artificiel. `187 credits` Higgsfield ont ete consommes : GPT Image 2.5 Sunburst `7`, Seedance 2.5 telephone `60`, Seedance 2.5 quatre produits `120`. Solde observe apres operations : `437,51 credits`. Aucun retry.
+
+Aucune importation Meta, aucune campagne publiee ou activee, aucune depense publicitaire et aucune mutation Shopify. Le budget envisage de 30 EUR par jour n a jamais ete active.
+
+La reprise doit se faire dans une session fraiche, en commencant par la documentation et la recherche de methode. La prochaine session doit proposer un storyboard, un preset et une feature justifies, puis produire un seul pilote brut de trois a cinq secondes avec un seul produit. Aucun autre plan, texte, logo, montage ou credit avant le GO visuel explicite de Patrice.
+
+Checkpoint complet, jobs, couts, fichiers, diagnostic, interdictions et prompt de reprise : `docs/checkpoints/2026-09-26-1039-meta-automne-creative-failure-handoff.md`.
+
+```text
+Reprends le chantier Meta Automne MilAura depuis docs/checkpoints/2026-09-26-1039-meta-automne-creative-failure-handoff.md. V4 et V5 sont entierement refusees et ne sont pas des bases de travail. Commence par documenter les methodes et presets Higgsfield actuels ainsi que des references solides de publicites bijoux verticales. Presente un storyboard plan par plan, la methode exacte et le cout maximal. Produis ensuite un seul pilote brut de trois a cinq secondes avec un seul produit et attends le GO visuel explicite de Patrice. Aucun autre credit, montage, import Meta, activation Ads ou changement Shopify sans GO exact.
+```
+
 ## Home et Notre histoire : polish ferme et live
 
 Date : 2026-09-25 19:24 CEST
