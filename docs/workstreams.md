@@ -1,3 +1,12 @@
+# Hero premium et bandeau Pieces rares du 2026-09-26
+
+- Proprietaire : Codex, GO execution, commit, push et live direct de Patrice.
+- Branche et worktree : `codex/milaura-rare-hero-premium-20260926`, `/Users/paesano/.codex/worktrees/rare-hero-premium/dawn-X-milaura`, base `8e5df228` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : nouveaux assets versionnes de la scene F04 validee, `assets/milaura-rare-pieces-landing.css`, `sections/milaura-rare-pieces-landing.liquid`, les seuls reglages Pieces rares de `templates/index.json` et `templates/collection.milaura-pieces-rares.json`, cette entree et le checkpoint du lot. Le CTA Home, le carousel, les produits, prix, stocks, autres sections, Shopify Admin et Ads restent exclus.
+- Direction validee : conserver le master carre V1 pour le panneau droit desktop de la Home sans modifier son CTA; produire une extension panoramique desktop et une recomposition verticale mobile pour le hero de landing; texte HTML directement sur la photographie; aucun panneau Nacre; remplacer les trois cadres par un bandeau defilant premium avec la copie exacte validee par Patrice.
+- Publication : deploiement cible direct sur le theme live `190430282075`, sans preview, puis pullback et QA publique. Les fichiers concurrents du checkout d integration restent exclus.
+- Etat : `EN COURS`.
+
 # Rythme et autoplay du carousel Pieces rares du 2026-09-26
 
 - Proprietaire : Codex, demande directe de Patrice apres controle du site public.
