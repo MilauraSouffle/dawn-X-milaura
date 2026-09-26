@@ -1,3 +1,23 @@
+# Home et landing Pieces rares, carousel joaillerie du 2026-09-26
+
+- Proprietaire : Codex, demande directe de Patrice.
+- Branche et worktree : `codex/milaura-rare-carousel-preview-20260926`, `/Users/paesano/Documents/MilAura website/_worktrees/rare-carousel-preview-20260926`, base `9324d0e4` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : nouvelle section et nouveaux assets namespaced du carousel Pieces rares, le seul bloc correspondant de `templates/index.json`, `sections/milaura-rare-pieces-landing.liquid`, `assets/milaura-rare-pieces-landing.css`, `templates/collection.milaura-pieces-rares.json`, assets mannequin et detourages du lot, tests et documentation propres au lot. Aucun autre bloc Home, PDP, produit, prix, stock, navigation, Shopify Admin, Ads ou theme live.
+- Produits : collier lapis-lazuli 4 mm, bracelet cyanite bleue 6 mm, bracelet zoisite 10 mm, boucles pendantes grenat rouge 12 mm et geode cathedrale amethyste 19,9 kg. Les quatre bijoux sont portes par un seul cast MilAura V6 approuve dans le media editorial ; les cinq produits tournent dans le carousel gauche.
+- Direction : bureau coupe en deux, carousel produit ultra epure a gauche et photographie mannequin fixe a droite. Chaque slide synchronise detourage, titre, matieres, benefice factuel, prix et lien produit. Mobile masque entierement le panneau mannequin et donne toute la largeur au carousel. Le hero de la landing reutilise la photographie mannequin sur mobile et bureau avec une composition des bijoux stars.
+- Cast pressenti : `cast-f03-deep-warm`, sous reserve de verification du Cast Truth Pack et d un Product Truth Pack suffisant pour chaque bijou porte. Aucune geometrie, fermeture, echelle ou interaction corporelle ne sera inventee.
+- Publication : implementation locale puis theme Shopify prive dedie. Le theme public `190430282075` reste strictement exclu sans GO visuel puis GO live distincts de Patrice.
+- Etat au 2026-09-26 09:01 CEST : `PREVIEW PRIVEE PRETE, PASS TECHNIQUE, RELEASE-CANDIDATE, GO VISUEL PATRICE REQUIS`. Le theme prive `201935323483` contient la section Home et le hero de landing; le theme public `190430282075` est intact. Le master Higgsfield V2 utilise `cast-f03-deep-warm` et reste `TECHNICAL_PASS_VISUAL_GO_PENDING`. QA Home passee a `320`, `390`, `768` et `1440px`; landing controlee sur mobile et bureau; aucune erreur console ni largeur parasite. Les controles proposent pause et reprise, les cinq cibles de pagination mesurent `44 x 44px`, et le panneau mannequin disparait uniquement sous `750px`. Pullback Shopify final identique aux sources, dont le correctif tablette CSS controle octet par octet. La revue de finition independante conclut `PASS / RELEASE-CANDIDATE`, sans residuel bloquant. Aucun deploiement live.
+
+### Direction contract
+
+- THESIS : cinq pieces rares tournent comme des objets de joaillerie sur une scene silencieuse ; le mannequin prouve leur presence et leur echelle sans voler la premiere lecture.
+- OWN-WORLD : Nacre, Encre prune, Or mat et photographie pleine hauteur ; Gloock pour le nom du produit, Instrument Sans pour matieres, benefice, prix et commandes ; aucun panneau, pill, gradient decoratif ou carte Dawn.
+- STORY : la visiteuse identifie un produit, comprend sa pierre et son prix, puis ouvre sa fiche depuis le bijou detoure ou le titre. Le portrait fixe relie les quatre bijoux portables en une selection coherente.
+- FIRST VIEWPORT : sur bureau, deux moities strictes avec carousel centre dans un grand vide Nacre a gauche et portrait editorial bord a bord a droite. Sur mobile, seul le carousel reste, avec produit plus grand, pagination tactile et contenu synchronise.
+- SIGNATURE INTERACTION : transition unique en fondu et rotation optique tres legere du detourage, pendant que le titre et les faits changent sur le meme tempo. `prefers-reduced-motion` supprime rotation et translation.
+- FINISH : preview privee seulement ; PASS technique, TECHNICAL_PASS de l image, GO visuel Patrice, integration, release et live restent des gates distinctes.
+
 # Reprise mobile Home Pieces rares du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres refus explicite de la composition mobile precedente.
