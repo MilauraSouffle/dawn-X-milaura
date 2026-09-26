@@ -3,6 +3,7 @@
 
 {%- liquid
   assign fixed_asset = section.settings.fixed_asset | default: 'milaura-rare-pieces-f03-selection-v2.avif'
+  assign collection_link = section.settings.fixed_link | default: section.settings.fallback_link
   assign section_title_id = 'MilauraRareCarouselTitle-' | append: section.id
   assign interval_ms = section.settings.interval_seconds | times: 1000
 -%}
@@ -137,9 +138,16 @@
         </button>
       </div>
     {%- endif -%}
+
+    {%- if collection_link != blank and section.settings.collection_cta_label != blank -%}
+      <a class="milaura-rare-carousel__collection-cta" href="{{ collection_link }}">
+        <span>{{ section.settings.collection_cta_label | escape }}</span>
+        {% render 'milaura-action-icon' %}
+      </a>
+    {%- endif -%}
   </div>
 
-  <a class="milaura-rare-carousel__fixed-panel" href="{{ section.settings.fixed_link }}" aria-label="{{ section.settings.fixed_link_label | escape }}">
+  <a class="milaura-rare-carousel__fixed-panel" href="{{ collection_link }}" aria-label="{{ section.settings.fixed_link_label | escape }}">
     <img
       class="milaura-rare-carousel__fixed-image"
       src="{{ fixed_asset | asset_url }}"
@@ -150,6 +158,12 @@
       fetchpriority="high"
       decoding="async"
     >
+    {%- if section.settings.collection_cta_label != blank -%}
+      <span class="milaura-rare-carousel__fixed-cta" aria-hidden="true">
+        <span>{{ section.settings.collection_cta_label | escape }}</span>
+        {% render 'milaura-action-icon' %}
+      </span>
+    {%- endif -%}
   </a>
 </milaura-rare-carousel>
 
@@ -168,6 +182,7 @@
     { "type": "text", "id": "fixed_asset", "label": "Fichier mannequin", "default": "milaura-rare-pieces-f03-selection-v2.avif" },
     { "type": "url", "id": "fixed_link", "label": "Lien de la photographie" },
     { "type": "text", "id": "fixed_link_label", "label": "Libellé accessible du lien", "default": "Découvrir la sélection Pièces rares" },
+    { "type": "text", "id": "collection_cta_label", "label": "Action vers la collection", "default": "Voir toute la collection" },
     { "type": "text", "id": "fixed_alt", "label": "Description de la photographie", "default": "Mannequin MilAura portant un collier en lapis-lazuli, deux bracelets en pierres et des boucles en grenat" }
   ],
   "blocks": [
