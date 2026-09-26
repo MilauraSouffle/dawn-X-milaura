@@ -1,5 +1,7 @@
 # Rapport Shopify DRAFT - Geode GC0256
 
+> Rapport historique du 2026-09-25. Le produit a depuis ete active et sa galerie remplace le 2026-09-26. Voir `SHOPIFY-LIVE-GALLERY-REPORT-2026-09-26.md`.
+
 Date : 2026-09-25
 Agent : Codex
 Statut final : `DRAFT_VERIFIED_NOT_PUBLISHED`

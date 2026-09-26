@@ -111,3 +111,33 @@ Un artefact = une visite. Ce fichier est le baton. Les pixels originaux ne revie
 - Type canonique `geode` ajoute au pipeline local sans degrader le H1 public.
 - Fait le 2026-09-25 : contrat V6.4 raccorde, neuf masters charges et produit Shopify `10764374081883` verifie en `DRAFT`. URL publique HTTP `404`.
 - Reste avant activation : configurer et tester le forfait transporteur prive `59,90 EUR`, puis obtenir les GO activation et publication distincts.
+
+## Nouvelle serie source et generation Higgsfield du 2026-09-26
+
+- Huit nouvelles photos physiques ont ete fournies dans `new pict/` : `IMG_2591.HEIC` a `IMG_2598.HEIC`.
+- Ces prises sont nettement plus exploitables que la premiere serie : definition superieure, lumiere plus propre, cristaux plus lisibles, trois vues generales, trois macros, un profil rapproche et une vue avec repere d echelle.
+- La vue arriere reste `IMG_2581.HEIC`, issue de la serie du 2026-09-25.
+- Planche source inspectee : `/private/tmp/geode-new-pict-review/contact-sheet-heif.jpg`.
+- Hashes SHA-256 des huit nouvelles sources :
+  - `IMG_2591.HEIC` : `f4f3d6c62664e71efaa5ae9105112ee3771626835c24b7c39259e552ad326884`
+  - `IMG_2592.HEIC` : `ec84cca617bc07b9521db3e93fd247b012229cfe3276c770ffe0eca44591b4ca`
+  - `IMG_2593.HEIC` : `d75a50269a15a237c3ac7311e0cec8380c5239b430720fe9076e9ebb5cc61dc8`
+  - `IMG_2594.HEIC` : `954c32eb7f2a0ed88bb5705718b6c92235a8c4509a00b54e68878fcda1c29c64`
+  - `IMG_2595.HEIC` : `66e97f49d2f69bbae44b46e54041d26d9e0765a3867e7b6c1a2cf2a68c7b49fb`
+  - `IMG_2596.HEIC` : `db6aedc2124d6995cb5fa841a26ea2f985ca9e0b6811b5d33f85e60f5dc26040`
+  - `IMG_2597.HEIC` : `5d5555aa70b7652fda1b6f081580a4aa34c8264c68f70f4c79b3116b378e0e1c`
+  - `IMG_2598.HEIC` : `aa3f65134fd45ac4ddb5534d89b0937a4b50652aa53a0ca3a9da536ecc1cec71`
+- Exception explicite demandee par Patrice le 2026-09-26 : utilisation de Higgsfield avec le modele expose `gpt_image_2_5` pour produire neuf propositions `2048 x 2048`.
+- Cout confirme : dix generations a `4,5` credits, soit `45` credits. Une premiere generation a ete rejetee pour derive produit; neuf propositions restent dans la planche finale. Solde apres execution : `701,51` credits.
+- Les neuf masters sont archives dans `/Users/paesano/Documents/MilAura website/photo geode/exports-higgsfield-gpt-image-2-5-2026-09-26/` avec derives JPEG Shopify et planche contact.
+- Planche de validation : `previews/05-higgsfield-gpt-image-2-5-contact-sheet.png`.
+- GO visuel Patrice 2026-09-26 : `magnifique ! bravo. tu push sur la fiche produit qui est live ?`.
+- Statut final : `LIVE_MEDIA_BOUND_VERIFIED`.
+- Alerte verite produit : meme avec des references multiples et des consignes strictes, GPT Image 2.5 a reinterprete une partie des cristaux et des bandes d agate. Les images sont des maquettes premium coherentes, mais ne sont pas pixel-fideles aux sources contractuelles.
+- Integration Shopify executee le 2026-09-26 sur le produit `10764374081883`, reste `ACTIVE`, URL publique preservee, prix `1299.00`, stock `1` et SKU `GC0256` inchanges.
+- La galerie live contient exactement neuf JPEG dans l ordre valide. Le packshot principal est `01-packshot-principal-strict.jpg`.
+- Le metafield `milaura.pdp_media_manifest` est passe a `LIVE_MEDIA_BOUND` avec neuf slots.
+- Verification publique : endpoint produit et page PDP confirment les neuf images; controle visuel du hero reussi sur desktop.
+- Incident recupere : la premiere execution a charge les neuf nouveaux medias puis s est interrompue apres la suppression de trois anciens medias. La reprise a detecte les neuf medias deja charges, retire les cinq anciens restants sans doublon et finalise l ordre.
+- Snapshots : `shopify/snapshots/10764374081883-20260926T062458Z-before-live-gallery-v2.json` avant mutation, puis `10764374081883-20260926T062608Z-before-live-gallery-v2.json` avant reprise.
+- Les sources physiques et la serie locale non generative restent l autorite de preuve produit; les neuf visuels generatifs sont publies avec le GO explicite du proprietaire.

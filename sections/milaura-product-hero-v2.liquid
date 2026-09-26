@@ -15,6 +15,9 @@
   assign hero_stone_handle = product.metafields.milaura.stone_handle.value | default: product.metafields.milaura.stone_handle
   assign hero_materials = product.metafields.milaura.materials.value
   assign hero_specifications = product.metafields.milaura.specifications.value
+  assign hero_grade = product.metafields.milaura.pdp_hero_grade.value
+  assign photo_notice = product.metafields.milaura.pdp_photo_notice.value
+  assign hide_social_proof = product.metafields.milaura.pdp_hide_social_proof.value
   assign social_subject = 'ce produit'
   case pdp_family
     when 'bijou'
@@ -152,12 +155,20 @@
         </nav>
       {%- endif -%}
 
-      {%- if has_natural_stone -%}
-        <aside class="milaura-pdp-variation-note" aria-label="Information sur les variations naturelles">
+      {%- if photo_notice != blank or has_natural_stone -%}
+        <aside
+          class="milaura-pdp-variation-note"
+          aria-label="{% if photo_notice != blank %}Information sur les photographies du produit{% else %}Information sur les variations naturelles{% endif %}"
+        >
           <span class="milaura-pdp-variation-note__icon" aria-hidden="true">i</span>
           <p class="milaura-pdp-variation-note__text">
-            Chaque pierre naturelle possède ses propres nuances, son veinage et parfois une forme légèrement
-            différente. C’est ce qui donne à chaque pièce son caractère.
+            {%- if photo_notice != blank -%}
+              {{ photo_notice | escape }}
+              <a href="/pages/contact-milaura">Nous contacter</a>
+            {%- else -%}
+              Chaque pierre naturelle possède ses propres nuances, son veinage et parfois une forme légèrement
+              différente. C’est ce qui donne à chaque pièce son caractère.
+            {%- endif -%}
           </p>
         </aside>
       {%- endif -%}
@@ -280,7 +291,7 @@
         {{ form | payment_terms }}
       {%- endform -%}
 
-      {%- if section.settings.show_social_proof -%}
+      {%- if section.settings.show_social_proof and hide_social_proof != true -%}
         <div class="milaura-pdp-social" aria-label="Preuve sociale MilAura">
           <span class="milaura-pdp-social__stars" aria-hidden="true">★★★★★</span>
           <p>Plus de <strong>{{ social_count }}</strong> clientes et clients ont déjà choisi {{ social_subject }}.</p>
@@ -301,14 +312,29 @@
               <dd>{{ hero_materials | join: ', ' | replace: '-', ' ' }}</dd>
             </div>
           {%- endif -%}
-          {%- for spec in hero_specifications limit: 2 -%}
-            {%- if spec.label != blank and spec.value != blank -%}
-              <div>
-                <dt>{{ spec.label | escape }}</dt>
-                <dd>{{ spec.value | escape }}</dd>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
+          {%- if hero_grade != blank -%}
+            {%- for spec in hero_specifications limit: 1 -%}
+              {%- if spec.label != blank and spec.value != blank -%}
+                <div>
+                  <dt>{{ spec.label | escape }}</dt>
+                  <dd>{{ spec.value | escape }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+            <div>
+              <dt>Grade</dt>
+              <dd>{{ hero_grade | escape }}</dd>
+            </div>
+          {%- else -%}
+            {%- for spec in hero_specifications limit: 2 -%}
+              {%- if spec.label != blank and spec.value != blank -%}
+                <div>
+                  <dt>{{ spec.label | escape }}</dt>
+                  <dd>{{ spec.value | escape }}</dd>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
         </dl>
       {%- endif -%}
     </div>
