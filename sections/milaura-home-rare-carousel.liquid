@@ -1,0 +1,217 @@
+{{ 'milaura-home-rare-carousel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'milaura-home-rare-carousel.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign fixed_asset = section.settings.fixed_asset | default: 'milaura-rare-pieces-f03-selection-v2.avif'
+  assign collection_link = section.settings.fixed_link | default: section.settings.fallback_link
+  assign section_title_id = 'MilauraRareCarouselTitle-' | append: section.id
+  assign interval_ms = section.settings.interval_seconds | times: 1000
+-%}
+
+<milaura-rare-carousel
+  id="MilauraRareCarousel-{{ section.id }}"
+  class="milaura-rare-carousel"
+  data-milaura-home-hero
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-interval="{{ interval_ms }}"
+  aria-labelledby="{{ section_title_id }}"
+>
+  <div class="milaura-rare-carousel__product-panel">
+    <h2 id="{{ section_title_id }}" class="milaura-rare-carousel__section-title">
+      {{ section.settings.heading | escape }}
+    </h2>
+
+    <div class="milaura-rare-carousel__stage" aria-live="{% if section.settings.autoplay %}off{% else %}polite{% endif %}" aria-atomic="true">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign product = block.settings.product
+          assign image_asset = block.settings.image_asset
+          assign product_url = section.settings.fallback_link
+          assign product_title = block.settings.fallback_title
+          assign product_price = block.settings.fallback_price
+          assign image_loading = 'lazy'
+          assign image_priority = 'auto'
+
+          if product != blank
+            assign product_url = product.url
+            assign product_title = product.title
+            assign product_price = product.price | money
+          endif
+
+          if forloop.first
+            assign image_loading = 'eager'
+            assign image_priority = 'high'
+          endif
+        -%}
+
+        <article
+          class="milaura-rare-carousel__slide{% if forloop.first %} is-active{% endif %}"
+          data-rare-slide
+          data-slide-index="{{ forloop.index0 }}"
+          aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          <a
+            class="milaura-rare-carousel__visual-link"
+            href="{{ product_url }}"
+            aria-label="Voir {{ product_title | escape }}"
+            tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+          >
+            <img
+              class="milaura-rare-carousel__product-image"
+              src="{{ image_asset | asset_url }}"
+              alt="{{ product_title | escape }}"
+              width="1254"
+              height="1254"
+              loading="{{ image_loading }}"
+              fetchpriority="{{ image_priority }}"
+              decoding="async"
+              style="--rare-scale: {{ block.settings.visual_scale | divided_by: 100.0 }}; --rare-rotation: {{ block.settings.visual_rotation }}deg;"
+            >
+          </a>
+
+          <div class="milaura-rare-carousel__product-copy">
+            <h3 class="milaura-rare-carousel__product-title">
+              <a href="{{ product_url }}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}">
+                {{ product_title | escape }}
+              </a>
+            </h3>
+
+            {%- if block.settings.material_line != blank -%}
+              <p class="milaura-rare-carousel__material">{{ block.settings.material_line | escape }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.benefit_line != blank -%}
+              <p class="milaura-rare-carousel__benefit">{{ block.settings.benefit_line | escape }}</p>
+            {%- endif -%}
+
+            {%- if product_price != blank -%}
+              <p class="milaura-rare-carousel__price">{{ product_price }}</p>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="milaura-rare-carousel__controls{% if section.settings.autoplay %} is-autoplay{% endif %}">
+        <button class="milaura-rare-carousel__arrow milaura-rare-carousel__arrow--previous" type="button" data-rare-previous aria-label="Produit précédent">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+        </button>
+
+        <div class="milaura-rare-carousel__dots" role="group" aria-label="Choisir un produit">
+          {%- for block in section.blocks -%}
+            {%- assign dot_product = block.settings.product -%}
+            {%- assign dot_title = block.settings.fallback_title -%}
+            {%- if dot_product != blank -%}
+              {%- assign dot_title = dot_product.title -%}
+            {%- endif -%}
+            <button
+              class="milaura-rare-carousel__dot{% if forloop.first %} is-active{% endif %}"
+              type="button"
+              data-rare-dot="{{ forloop.index0 }}"
+              aria-label="Afficher {{ dot_title | escape }}"
+              aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+            ></button>
+          {%- endfor -%}
+        </div>
+
+        {%- if section.settings.autoplay -%}
+          <button
+            class="milaura-rare-carousel__toggle"
+            type="button"
+            data-rare-toggle
+            data-paused="false"
+            aria-label="Mettre le carousel en pause"
+          >
+            <svg class="milaura-rare-carousel__pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 7v10M15 7v10"/>
+            </svg>
+            <svg class="milaura-rare-carousel__play-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9 7 8 5-8 5Z"/>
+            </svg>
+          </button>
+        {%- endif -%}
+
+        <button class="milaura-rare-carousel__arrow milaura-rare-carousel__arrow--next" type="button" data-rare-next aria-label="Produit suivant">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    {%- endif -%}
+
+    {%- if collection_link != blank and section.settings.collection_cta_label != blank -%}
+      <a class="milaura-rare-carousel__collection-cta" href="{{ collection_link }}">
+        <span>{{ section.settings.collection_cta_label | escape }}</span>
+        {% render 'milaura-action-icon' %}
+      </a>
+    {%- endif -%}
+  </div>
+
+  <a class="milaura-rare-carousel__fixed-panel" href="{{ collection_link }}" aria-label="{{ section.settings.fixed_link_label | escape }}">
+    <img
+      class="milaura-rare-carousel__fixed-image"
+      src="{{ fixed_asset | asset_url }}"
+      alt="{{ section.settings.fixed_alt | escape }}"
+      width="1800"
+      height="1800"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    >
+    {%- if section.settings.collection_cta_label != blank -%}
+      <span class="milaura-rare-carousel__fixed-cta" aria-hidden="true">
+        <span>{{ section.settings.collection_cta_label | escape }}</span>
+        {% render 'milaura-action-icon' %}
+      </span>
+    {%- endif -%}
+  </a>
+</milaura-rare-carousel>
+
+{% schema %}
+{
+  "name": "Carousel pièces rares",
+  "tag": "section",
+  "class": "milaura-hero-homepage",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre de section", "default": "Pièces rares & de collection" },
+    { "type": "checkbox", "id": "autoplay", "label": "Rotation automatique", "default": true },
+    { "type": "range", "id": "interval_seconds", "label": "Durée par produit", "min": 4, "max": 10, "step": 1, "unit": "s", "default": 6 },
+    { "type": "url", "id": "fallback_link", "label": "Lien de repli" },
+    { "type": "header", "content": "Photographie fixe" },
+    { "type": "text", "id": "fixed_asset", "label": "Fichier mannequin", "default": "milaura-rare-pieces-f03-selection-v2.avif" },
+    { "type": "url", "id": "fixed_link", "label": "Lien de la photographie" },
+    { "type": "text", "id": "fixed_link_label", "label": "Libellé accessible du lien", "default": "Découvrir la sélection Pièces rares" },
+    { "type": "text", "id": "collection_cta_label", "label": "Action vers la collection", "default": "Voir toute la collection" },
+    { "type": "text", "id": "fixed_alt", "label": "Description de la photographie", "default": "Mannequin MilAura portant un collier en lapis-lazuli, deux bracelets en pierres et des boucles en grenat" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Produit",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Produit Shopify" },
+        { "type": "text", "id": "image_asset", "label": "Fichier détouré" },
+        { "type": "text", "id": "fallback_title", "label": "Titre de repli" },
+        { "type": "text", "id": "fallback_price", "label": "Prix de repli" },
+        { "type": "text", "id": "material_line", "label": "Matière et format" },
+        { "type": "text", "id": "benefit_line", "label": "Caractéristique utile" },
+        { "type": "range", "id": "visual_scale", "label": "Échelle visuelle", "min": 55, "max": 100, "step": 1, "unit": "%", "default": 82 },
+        { "type": "range", "id": "visual_rotation", "label": "Rotation visuelle", "min": -4, "max": 4, "step": 1, "unit": "deg", "default": 0 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Carousel pièces rares",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}
