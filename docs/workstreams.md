@@ -1,3 +1,11 @@
+# Typographie mobile du hero Pieces rares du 2026-09-26
+
+- Proprietaire : Codex, correction mobile demandee apres controle public de Patrice.
+- Branche et worktree : `codex/milaura-rare-mobile-type-20260926`, `/Users/paesano/Documents/MilAura website/_worktrees/rare-mobile-type-20260926`, base `0f71fe8e` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : rendu mobile du H1 et contraste mobile de l introduction dans `sections/milaura-rare-pieces-landing.liquid`, `assets/milaura-rare-pieces-landing.css`, cette entree et le checkpoint du lot. Desktop, photographie, hero, bandeau, catalogue, CTA, produits, prix, stocks et Shopify Admin restent exclus.
+- Direction : conserver la taille et le blanc du H1, retirer uniquement sa virgule sur mobile, garder Gloock 400 comme typographie premium canonique des titres de hero, forcer l introduction en blanc sur le contenu RTE mobile. Deploiement direct et cible sur le live `190430282075`, autorise par la regle de publication donnee par Patrice.
+- Etat : `EN COURS`.
+
 # Hero premium et bandeau Pieces rares du 2026-09-26
 
 - Proprietaire : Codex, GO execution, commit, push et live direct de Patrice.
