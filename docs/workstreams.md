@@ -1,3 +1,12 @@
+# Restauration du header verre Home du 2026-09-26
+
+- Proprietaire : Codex, demande directe de Patrice apres regression visuelle observee sur le site public.
+- Branche et worktree : `codex/milaura-header-glass-20260926`, `/Users/paesano/Documents/MilAura website/_worktrees/header-glass-20260926`, base `9dcc499c` alignee sur `codex/milaura-integration`.
+- Perimetre reserve : `assets/milaura-home-rare-carousel.css`, cette entree et le checkpoint du lot. Le carousel Pieces rares, les autres sections Home, la navigation structurelle, les produits, prix, stocks, Shopify Admin et Ads restent exclus.
+- Diagnostic : le CSS ajoute avec le carousel Pieces rares force la surface du header Home a `88 %` Nacre. La navigation centralisee utilisait auparavant un verre leger a `16 %` Nacre avec blur.
+- Direction : restaurer la transparence du header et son blur de lisibilite, sans modifier sa geometrie, ses liens, ses icones ou son comportement sticky. Validation locale et preview privee avant tout GO live distinct.
+- Etat au 2026-09-26 18:09 CEST : `PREVIEW PRIVEE PRETE, PASS TECHNIQUE, GO VISUEL PATRICE REQUIS`. Theme prive `201956753755`. QA `1440 x 900` et `390 x 844` : fond du header a `16 %` Nacre, blur `12px`, largeur document exacte, aucune erreur Liquid. CSS contract, `git diff --check` et Theme Check sans erreur. Pullback du CSS strictement identique, SHA-256 `c38ff3d6f2e5033747d69cad35563ce83731218ce463c8ce7013277995fc9ee2`. Theme public `190430282075` intact. [Checkpoint](checkpoints/2026-09-26-1809-header-glass-preview.md).
+
 # Bento produit star Geode du 2026-09-26
 
 - Proprietaire : Codex, GO visuel puis GO live explicites de Patrice.
