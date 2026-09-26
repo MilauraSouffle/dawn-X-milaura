@@ -1,3 +1,13 @@
+# Bento produit star Geode du 2026-09-26
+
+- Proprietaire : Codex, GO visuel puis GO live explicites de Patrice.
+- Branche et worktree : `codex/milaura-geode-bento-live-20260926`, `/Users/paesano/Documents/MilAura website/_worktrees/geode-bento-live-20260926`, base `9324d0e4` alignee sur `codex/milaura-integration` et verifiee identique aux trois fichiers du theme live avant edition.
+- Perimetre reserve : `assets/milaura-rare-pieces-landing.css`, les seuls reglages du bento dans `sections/milaura-rare-pieces-landing.liquid` et `templates/collection.milaura-pieces-rares.json`, cette entree et le checkpoint du lot. Le hero et le carousel F04 rejetes, la Home, les produits, prix, stocks, Shopify Admin et Ads restent exclus.
+- Direction validee : packshot contractuel frontal dominant, macro des cristaux et projection interieur en vues secondaires, panneau Nacre pour les faits, le prix et le CTA. Sur mobile, la vue complete precede les deux vues secondaires cote a cote et les informations.
+- Copy validee : `Cette cathedrale d amethyste AA+ a ete choisie pour sa silhouette elancee, sa cavite profonde et le contraste entre son coeur violet et ses bandes minerales plus claires. Une piece de collection qui prend immediatement sa place dans un interieur.`
+- Publication : GO live recu le 2026-09-26. Deploiement cible sur le theme public `190430282075`, sans suppression, suivi d un pullback strict et d une QA publique sans preview bar.
+- Etat au 2026-09-26 09:38 CEST : `RELEASE EN COURS`. Les trois fichiers live ont ete tires avant edition et sont strictement identiques a la base d integration. Les changements concurrents et rejetes du worktree carousel restent exclus.
+
 # Reprise mobile Home Pieces rares du 2026-09-25
 
 - Proprietaire : Codex, demande directe de Patrice apres refus explicite de la composition mobile precedente.
