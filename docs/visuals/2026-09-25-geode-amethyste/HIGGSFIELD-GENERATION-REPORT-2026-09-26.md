@@ -42,3 +42,7 @@ Limite importante : les generations restent interpretatives. Les cristaux, cavit
 `LIVE_MEDIA_BOUND_VERIFIED`
 
 GO visuel et integration donne par Patrice le 2026-09-26. Les neuf JPEG ont remplace la galerie du produit Shopify live `10764374081883` sans modification du prix, du stock, du SKU, de l URL ni du statut `ACTIVE`.
+
+## Revision du media recharge
+
+Le montage initial avec collier suspendu et deux bagues a ete rejete par Patrice le 2026-09-26 comme irrealiste. Il a ete remplace en position `8` par `08-recharge-bracelets-v2.jpg`, produit par edition precise avec le mode integre `image_gen`. La version live montre uniquement deux bracelets, amethyste et cristal de roche, poses dans la cavite. Les huit autres medias n ont pas change.
