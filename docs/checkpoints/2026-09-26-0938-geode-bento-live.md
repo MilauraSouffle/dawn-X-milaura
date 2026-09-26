@@ -33,4 +33,26 @@ Le hero et le carousel F04 rejetes sont explicitement exclus. Le theme live est 
 
 ## Etat
 
-`RELEASE EN COURS`. Commit, push, deploiement cible, pullback live et QA publique restent a inscrire ci-dessous.
+`FERME, INTEGRE, POUSSE ET LIVE VERIFIE` au 2026-09-26 09:42 CEST.
+
+## Release
+
+- Commit fonctionnel : `169c8d93 feat: refine rare pieces geode bento`.
+- Branche de release poussee : `codex/milaura-geode-bento-live-20260926`.
+- Integration : fast-forward sur `codex/milaura-integration`, puis push confirme.
+- Deploiement Shopify cible sur le theme public `190430282075`, sans suppression : les trois seuls fichiers du perimetre theme.
+- Pullback live final : identique `3/3` par SHA-256.
+
+## QA publique
+
+- Route : `https://milaura.fr/collections/pieces-rares`, sans parametre de preview ni barre de preview.
+- Bureau `1440 x 900` : bento `914 x 634px`, texte exact, titre et CTA presents, aucun debordement.
+- Mobile `390 x 844` : galerie `390 x 609px`, packshot principal `390 x 406px`, deux vues secondaires `191 x 187px`, aucun debordement.
+- Medias charges : `01-packshot-principal-strict.jpg`, `04-macro-cristaux.jpg`, `07-scene-interieur.jpg`.
+- Erreurs navigateur : aucune sur bureau et mobile.
+- Captures de preuve : `/private/tmp/milaura-geode-bento-live-desktop-1440.png`, `/private/tmp/milaura-geode-bento-live-mobile-390.png`, `/private/tmp/milaura-geode-bento-live-mobile-390-copy.png`.
+
+## Exclusions preservees
+
+- Le hero et le carousel F04 rejetes n ont pas ete deployes.
+- Les changements sales et concurrents du checkout d integration sont restes intacts.

@@ -6,7 +6,7 @@
 - Direction validee : packshot contractuel frontal dominant, macro des cristaux et projection interieur en vues secondaires, panneau Nacre pour les faits, le prix et le CTA. Sur mobile, la vue complete precede les deux vues secondaires cote a cote et les informations.
 - Copy validee : `Cette cathedrale d amethyste AA+ a ete choisie pour sa silhouette elancee, sa cavite profonde et le contraste entre son coeur violet et ses bandes minerales plus claires. Une piece de collection qui prend immediatement sa place dans un interieur.`
 - Publication : GO live recu le 2026-09-26. Deploiement cible sur le theme public `190430282075`, sans suppression, suivi d un pullback strict et d une QA publique sans preview bar.
-- Etat au 2026-09-26 09:38 CEST : `RELEASE EN COURS`. Les trois fichiers live ont ete tires avant edition et sont strictement identiques a la base d integration. Les changements concurrents et rejetes du worktree carousel restent exclus.
+- Etat au 2026-09-26 09:42 CEST : `FERME, INTEGRE, POUSSE ET LIVE VERIFIE`. Commit fonctionnel `169c8d93` pousse sur la branche de release puis en fast-forward sur `codex/milaura-integration`. Les trois fichiers de theme ont ete deployes de facon ciblee sur le live `190430282075`, sans suppression, puis relus strictement identiques `3/3`. QA publique sans preview en `1440 x 900` et `390 x 844` : texte exact, trois medias attendus charges, aucun debordement horizontal ni erreur navigateur. Les changements concurrents et rejetes du worktree carousel F04 restent exclus. [Checkpoint](checkpoints/2026-09-26-0938-geode-bento-live.md).
 
 # Reprise mobile Home Pieces rares du 2026-09-25
 
