@@ -19,9 +19,23 @@
 
 .milaura-rare-pieces__hero {
   position: relative;
-  height: clamp(620px, 68svh, 760px);
+  height: clamp(660px, 78svh, 860px);
   overflow: hidden;
-  background: var(--milaura-nacre);
+  background: var(--milaura-encre);
+}
+
+.milaura-rare-pieces__hero::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--milaura-encre) 76%, transparent) 0%,
+    color-mix(in srgb, var(--milaura-encre) 48%, transparent) 28%,
+    transparent 58%
+  );
 }
 
 .milaura-rare-pieces__hero-media,
@@ -34,44 +48,44 @@
 }
 
 .milaura-rare-pieces__hero-image {
-  object-fit: contain;
-  object-position: right center;
-  background: var(--milaura-nacre);
+  object-fit: cover;
+  object-position: center;
 }
 
 .milaura-rare-pieces__hero-copy {
-  position: relative;
-  z-index: 1;
-  box-sizing: border-box;
-  width: min(460px, 36vw);
-  height: 100%;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: clamp(36px, 6.5vw, 108px);
+  width: min(620px, 42vw);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  margin-left: clamp(44px, 7vw, 112px);
-  padding: calc(var(--header-height-desktop) - 24px) 0 14px;
+  padding: calc(var(--header-height-desktop) + 24px) 0 24px;
 }
 
 .milaura-rare-pieces__title {
-  max-width: 9ch;
+  max-width: 11ch;
   margin: 0;
-  color: var(--milaura-prune);
+  color: var(--milaura-nacre-pure);
   font-family: var(--milaura-font-display);
-  font-size: clamp(44px, 3.8vw, 56px);
+  font-size: clamp(54px, 5.1vw, 78px);
   font-weight: 400;
   letter-spacing: var(--milaura-ls-display);
-  line-height: var(--milaura-lh-display);
+  line-height: 0.98;
   text-wrap: balance;
 }
 
 .milaura-rare-pieces__introduction {
-  max-width: 46ch;
-  margin-top: var(--milaura-esp-sm);
-  color: var(--milaura-prune);
+  max-width: 31ch;
+  margin-top: clamp(18px, 2vw, 28px);
+  color: var(--milaura-nacre-pure);
   font-family: var(--milaura-font-texte);
-  font-size: var(--milaura-t-corps);
-  line-height: var(--milaura-lh-corps);
+  font-size: clamp(17px, 1.45vw, 21px);
+  font-weight: 500;
+  line-height: 1.45;
 }
 
 .milaura-rare-pieces__introduction p,
@@ -84,41 +98,63 @@
 }
 
 .milaura-rare-pieces__criteria {
-  border-top: var(--milaura-filet);
-  border-bottom: var(--milaura-filet);
-  background: var(--milaura-surface-blanche);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  color: var(--milaura-nacre-pure);
+  background: var(--milaura-prune);
 }
 
-.milaura-rare-pieces__criteria-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 0;
+.milaura-rare-pieces__ticker {
+  width: 100%;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
-.milaura-rare-pieces__criteria-list > div {
-  padding: clamp(24px, 2.4vw, 34px) clamp(20px, 3vw, 44px) clamp(24px, 2.4vw, 34px) 0;
+.milaura-rare-pieces__ticker-track {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  will-change: transform;
+  animation: milaura-rare-pieces-ticker 32s linear infinite;
 }
 
-.milaura-rare-pieces__criteria-list > div + div {
-  padding-left: clamp(20px, 3vw, 44px);
-  border-left: var(--milaura-filet);
+.milaura-rare-pieces__ticker:hover .milaura-rare-pieces__ticker-track {
+  animation-play-state: paused;
 }
 
-.milaura-rare-pieces__criteria-list dt {
-  color: var(--milaura-prune);
+.milaura-rare-pieces__ticker-group {
+  flex: none;
+  display: flex;
+  align-items: center;
+}
+
+.milaura-rare-pieces__ticker-text {
+  padding-inline: clamp(28px, 3vw, 52px);
   font-family: var(--milaura-font-texte);
-  font-size: var(--milaura-t-petit);
-  font-weight: 700;
-  line-height: var(--milaura-lh-petit);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.055em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.milaura-rare-pieces__criteria-list dd {
-  max-width: 40ch;
-  margin: var(--milaura-esp-xs) 0 0;
-  color: var(--milaura-encre-secondaire);
-  font-family: var(--milaura-font-texte);
-  font-size: var(--milaura-t-petit);
-  line-height: 1.55;
+.milaura-rare-pieces__ticker-separator {
+  flex: none;
+  width: 5px;
+  height: 5px;
+  margin-right: clamp(28px, 3vw, 52px);
+  border-radius: 50%;
+  background: var(--milaura-or);
+}
+
+@keyframes milaura-rare-pieces-ticker {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
 .milaura-rare-pieces__star {
@@ -367,12 +403,12 @@
 
 @media screen and (max-width: 989px) {
   .milaura-rare-pieces__hero {
-    height: 620px;
+    height: 680px;
   }
 
   .milaura-rare-pieces__hero-copy {
-    width: min(460px, 47vw);
-    margin-left: clamp(30px, 5vw, 56px);
+    left: clamp(30px, 5vw, 56px);
+    width: min(500px, 48vw);
   }
 
   .milaura-rare-pieces__star-layout {
@@ -394,75 +430,70 @@
   }
 
   .milaura-rare-pieces__hero {
-    height: auto;
-    min-height: 0;
-    display: grid;
-    grid-template-rows: min(100vw, 590px) auto;
+    height: clamp(660px, 88svh, 780px);
+    min-height: 660px;
   }
 
   .milaura-rare-pieces__hero-media {
-    position: relative;
-    inset: auto;
-    grid-row: 1;
-    height: 100%;
-    display: block;
-    overflow: hidden;
-    background: var(--milaura-nacre);
+    position: absolute;
+    inset: 0;
   }
 
   .milaura-rare-pieces__hero-image {
     position: absolute;
     inset: 0;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
     transform: none;
   }
 
+  .milaura-rare-pieces__hero::after {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--milaura-encre) 62%, transparent) 0%,
+      color-mix(in srgb, var(--milaura-encre) 24%, transparent) 34%,
+      transparent 58%
+    );
+  }
+
   .milaura-rare-pieces__hero-copy {
-    position: relative;
+    position: absolute;
     z-index: 2;
-    right: auto;
+    top: calc(var(--header-height-mobile) + 34px);
+    right: 22px;
     bottom: auto;
-    left: auto;
-    grid-row: 2;
-    width: 100%;
+    left: 22px;
+    width: auto;
     height: auto;
-    min-height: 0;
     margin: 0;
-    padding: 26px 22px 32px;
-    background: var(--milaura-nacre);
+    padding: 0;
   }
 
   .milaura-rare-pieces__title {
-    max-width: 11ch;
-    color: var(--milaura-encre);
-    font-size: clamp(38px, 11vw, 44px);
+    max-width: 10ch;
+    color: var(--milaura-nacre-pure);
+    font-size: clamp(46px, 13vw, 58px);
+    line-height: 0.96;
   }
 
   .milaura-rare-pieces__introduction {
-    display: none;
+    display: block;
+    max-width: 19ch;
+    margin-top: 16px;
+    color: var(--milaura-nacre-pure);
+    font-size: clamp(16px, 4.6vw, 19px);
+    line-height: 1.4;
   }
 
-  .milaura-rare-pieces__criteria-list {
-    grid-template-columns: 1fr;
+  .milaura-rare-pieces__ticker {
+    min-height: 58px;
   }
 
-  .milaura-rare-pieces__criteria-list > div,
-  .milaura-rare-pieces__criteria-list > div + div {
-    display: grid;
-    grid-template-columns: minmax(112px, 0.45fr) minmax(0, 1fr);
-    gap: var(--milaura-esp-sm);
-    padding: 18px 22px;
-    border-left: 0;
-  }
-
-  .milaura-rare-pieces__criteria-list > div + div {
-    border-top: var(--milaura-filet);
-  }
-
-  .milaura-rare-pieces__criteria-list dd {
-    margin: 0;
+  .milaura-rare-pieces__ticker-text {
+    padding-inline: 24px;
+    font-size: 12px;
+    letter-spacing: 0.045em;
   }
 
   .milaura-rare-pieces__star {
@@ -565,12 +596,11 @@
 
 @media screen and (max-width: 430px) {
   .milaura-rare-pieces__hero-image {
-    object-position: center;
+    object-position: 50% center;
   }
 }
 
 @media screen and (max-width: 380px) {
-  .milaura-rare-pieces__hero-copy,
   .milaura-rare-pieces__star-head,
   .milaura-rare-pieces__star-copy,
   .milaura-rare-pieces__catalogue {
@@ -578,17 +608,38 @@
     padding-left: 18px;
   }
 
-  .milaura-rare-pieces__criteria-list > div,
-  .milaura-rare-pieces__criteria-list > div + div {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding-right: 18px;
-    padding-left: 18px;
+  .milaura-rare-pieces__hero-copy {
+    right: 18px;
+    left: 18px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .milaura-rare-pieces__star-image {
     transition: none;
+  }
+
+  .milaura-rare-pieces__ticker-track {
+    width: 100%;
+    justify-content: center;
+    animation: none;
+    transform: none;
+  }
+
+  .milaura-rare-pieces__ticker-group {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .milaura-rare-pieces__ticker-group:nth-child(2),
+  .milaura-rare-pieces__ticker-separator {
+    display: none;
+  }
+
+  .milaura-rare-pieces__ticker-text {
+    max-width: 1100px;
+    padding: 14px 22px;
+    text-align: center;
+    white-space: normal;
   }
 }
